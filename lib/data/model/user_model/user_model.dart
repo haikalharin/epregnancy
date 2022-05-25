@@ -1,4 +1,4 @@
-import 'package:PragnancyApps/data/model/user_model/user_entity.dart';
+import 'package:PregnancyApps/data/model/user_model/user_entity.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../base_model/base_model.dart';

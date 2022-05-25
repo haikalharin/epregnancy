@@ -1,6 +1,6 @@
-import 'package:PragnancyApps/pages/login_page/bloc/login_bloc.dart';
-import 'package:PragnancyApps/pages/login_page/login_page.dart';
-import 'package:PragnancyApps/routes/routes.dart';
+import 'package:PregnancyApps/pages/login_page/bloc/login_bloc.dart';
+import 'package:PregnancyApps/pages/login_page/login_page.dart';
+import 'package:PregnancyApps/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
