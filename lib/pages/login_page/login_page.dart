@@ -49,7 +49,6 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   SizedBox(height: 80),
                   SizedBox(height: 120),
-
                   _UsernameInput(),
                   SizedBox(height: 12),
                   _PasswordInput(),
