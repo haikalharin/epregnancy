@@ -232,7 +232,7 @@ class UserModel extends UserEntity implements BaseModel {
   jsonToModel(Map<String, dynamic> json) {
     return fromJson(json);
   }
-  static UserModel empty() {
+  static UserModel empty(Map<String, dynamic> json) {
     return UserModel(
         userId: "",
         userName: "",
@@ -258,6 +258,8 @@ class UserModel extends UserEntity implements BaseModel {
         jobName: "",
         userType: "",
         cluster: [],
-        outletNickName: "");
+        outletNickName: ""
+    );
   }
+
 }
