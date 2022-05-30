@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:PregnancyApps/data/repository/user_repository.dart';
+import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';

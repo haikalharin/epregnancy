@@ -1,9 +1,9 @@
 
-import '../../common/exceptions/network_connection_exception.dart';
-import '../../common/network/network_info.dart';
-import '../model/user_model/user_model.dart';
-import '../remote_datasource/remote_datasource.dart';
-import '../repository/user_repository.dart';
+import '../../../common/exceptions/network_connection_exception.dart';
+import '../../../common/network/network_info.dart';
+import '../../model/user_model/user_model.dart';
+import '../../remote_datasource/remote_datasource.dart';
+import 'user_repository.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final NetworkInfoImpl networkInfo;

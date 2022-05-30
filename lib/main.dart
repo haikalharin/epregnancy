@@ -1,6 +1,6 @@
-import 'package:PregnancyApps/pages/login_page/bloc/login_bloc.dart';
-import 'package:PregnancyApps/pages/login_page/login_page.dart';
-import 'package:PregnancyApps/routes/routes.dart';
+import 'package:PregnancyApp/pages/login_page/bloc/login_bloc.dart';
+import 'package:PregnancyApp/pages/login_page/login_page.dart';
+import 'package:PregnancyApp/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,11 +8,14 @@ import 'common/configurations/configurations.dart';
 import 'common/injector/injector.dart';
 import 'common/injector/injector_config.dart';
 import 'env.dart' as config;
+import 'package:firebase_core/firebase_core.dart';
 import 'utils/simple_bloc_observer.dart';
 
 // void main() => runApp(MyApp());
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   InjectorConfig.setup();
   WidgetsFlutterBinding.ensureInitialized();
 

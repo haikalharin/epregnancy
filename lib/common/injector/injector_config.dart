@@ -2,8 +2,8 @@
 import 'package:kiwi/kiwi.dart';
 
 import '../../data/remote_datasource/remote_datasource.dart';
-import '../../data/repository/user_repository.dart';
-import '../../data/repository_impl/user_repository_impl.dart';
+import '../../data/repository/user_repository/user_repository.dart';
+import '../../data/repository/user_repository/user_repository_impl.dart';
 import '../../pages/login_page/bloc/login_bloc.dart';
 import '../network/http/http_client.dart';
 import '../network/network_info.dart';

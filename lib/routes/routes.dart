@@ -1,4 +1,4 @@
-import 'package:PregnancyApps/pages/home_page/home_page.dart';
+import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
