@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>919103931700-d21bmpdv31v6udb9lijsfq28st5pjd3t.apps.googleusercontent.com</string>
+	<string>1004476940990-long836c3qqovqd8uvqg5dsa80bh6neo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.919103931700-d21bmpdv31v6udb9lijsfq28st5pjd3t</string>
+	<string>com.googleusercontent.apps.1004476940990-long836c3qqovqd8uvqg5dsa80bh6neo</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>919103931700-1te573b912ksmpm5ncaqm1s5hmebar3k.apps.googleusercontent.com</string>
+	<string>1004476940990-g84fpb15lgub3pfauameb8snmhdfee4s.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBdreZ3DK83IRxbCkol2VaJ_gvaR1Nu_qk</string>
+	<string>AIzaSyA6GinDQ4JpifO7IhS3lkqm--yuC95-Qnw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>919103931700</string>
+	<string>1004476940990</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.pregnancyApp</string>
 	<key>PROJECT_ID</key>
-	<string>pregnancyapp-5b424</string>
+	<string>pregnancyapp-27dd4</string>
 	<key>STORAGE_BUCKET</key>
-	<string>pregnancyapp-5b424.appspot.com</string>
+	<string>pregnancyapp-27dd4.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:919103931700:ios:85b25368663cc1c187d161</string>
+	<string>1:1004476940990:ios:5dd0cb13811ebf8438d4ef</string>
 </dict>
 </plist>

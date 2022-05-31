@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:PregnancyApp/data/repository/user_repository.dart';
+import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
