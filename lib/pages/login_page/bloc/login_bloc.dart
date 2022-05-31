@@ -61,6 +61,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     // if (state.status.isValidated) {
       yield state.copyWith(status: FormzStatus.submissionInProgress);
       try {
+
         User? user =
         await GAuthentication.signInWithGoogle();
         // await Future.delayed(const Duration(seconds: 5));
@@ -71,6 +72,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield state.copyWith(status: FormzStatus.submissionFailure);
         }
       } on LoginErrorException catch (e) {
+        print(e);
         yield state.copyWith(status: FormzStatus.submissionFailure);
       } on Exception catch (_) {
         yield state.copyWith(status: FormzStatus.submissionFailure);
