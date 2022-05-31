@@ -1,4 +1,4 @@
-name: PregnancyApps
+name: PregnancyApp
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -38,6 +38,11 @@ dependencies:
   flutter_bloc: ^7.0.0
   equatable: ^2.0.3
   formz: ^0.4.0
+#  cloud_firestore: ^3.0.0
+  firebase_core: ^1.17.0
+  firebase_auth: ^3.3.18
+  google_sign_in: ^5.3.1
+
 
 
 

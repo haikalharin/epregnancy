@@ -1,12 +1,14 @@
 import 'dart:async';
 
-import 'package:PregnancyApps/data/repository/user_repository.dart';
+import 'package:PregnancyApp/data/repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../data/firebase/g_authentication.dart';
 import '../model/password.dart';
 import '../model/username.dart';
 
@@ -56,14 +58,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginSubmitted event,
     LoginState state,
   ) async* {
-    if (state.status.isValidated) {
+    // if (state.status.isValidated) {
       yield state.copyWith(status: FormzStatus.submissionInProgress);
       try {
-        String response = await userRepository.login(
-            state.username.value, state.password.value);
-        await Future.delayed(const Duration(seconds: 5));
+        User? user =
+        await GAuthentication.signInWithGoogle();
+        // await Future.delayed(const Duration(seconds: 5));
 
-        if (response == "Berhasil") {
+        if(user!.uid.isNotEmpty) {
           yield state.copyWith(status: FormzStatus.submissionSuccess);
         } else {
           yield state.copyWith(status: FormzStatus.submissionFailure);
@@ -73,10 +75,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } on Exception catch (_) {
         yield state.copyWith(status: FormzStatus.submissionFailure);
       }
-    } else {
-      final username = Username.dirty(state.username.value);
-      final password = Password.dirty(state.password.value);
-      yield state.copyWith(username: username, password: password);
     }
-  }
+    // else {
+    //   final username = Username.dirty(state.username.value);
+    //   final password = Password.dirty(state.password.value);
+    //   yield state.copyWith(username: username, password: password);
+    // }
+  // }
 }

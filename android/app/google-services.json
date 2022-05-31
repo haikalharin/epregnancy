@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1004476940990",
+    "project_id": "pregnancyapp-27dd4",
+    "storage_bucket": "pregnancyapp-27dd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004476940990:android:09bdb5e9c0187c7e38d4ef",
+        "android_client_info": {
+          "package_name": "com.example.pregnancyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004476940990-g84fpb15lgub3pfauameb8snmhdfee4s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pregnancyapp",
+            "certificate_hash": "e6bfcbaf51198383868648112b8d8dbeddc92d02"
+          }
+        },
+        {
+          "client_id": "1004476940990-vk6j35n8sh53sab6othr8800fmhsr61h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnGAi3m89QS7VVn5y5KBtbF8WCjBBIqXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004476940990-vk6j35n8sh53sab6othr8800fmhsr61h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

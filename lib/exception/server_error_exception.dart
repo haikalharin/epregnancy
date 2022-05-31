@@ -3,7 +3,7 @@
 
 
 
-import 'package:PregnancyApps/exception/server_exception.dart';
+import 'package:PregnancyApp/exception/server_exception.dart';
 
 import 'constant/exception_constants.dart';
 

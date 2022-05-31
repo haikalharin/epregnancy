@@ -1,5 +1,4 @@
-import 'package:PregnancyApps/pages/login_page/bloc/login_bloc.dart';
-import 'package:PregnancyApps/pages/login_page/bloc/login_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +6,9 @@ import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../data/firebase/g_authentication.dart';
+import '../home_page/home_page.dart';
+import 'bloc/login_bloc.dart';
 
 const _horizontalPadding = 24.0;
 
@@ -25,12 +27,16 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
 
           child:
-              BlocListener<LoginBloc, LoginState>(listener: (context, state) {
+              BlocListener<LoginBloc, LoginState>(listener: (context, state) async {
         if (state.status == FormzStatus.submissionFailure) {
           final snackBar = SnackBar(content: new Text("gagal"),
               backgroundColor: Colors.red);
           Scaffold.of(context).showSnackBar(snackBar);
         } else if (state.status == FormzStatus.submissionSuccess) {
+          final snackBar = SnackBar(content: new Text("berhasil"),
+              backgroundColor: Colors.blue);
+          Scaffold.of(context).showSnackBar(snackBar);
+          await Future.delayed(const Duration(seconds: 3));
           Navigator.of(context).pushNamed(RouteName.homeScreen);
           // Navigator.of(context).pushNamedAndRemoveUntil(
           //                 RouteName.homeScreen,
@@ -55,9 +61,10 @@ class _LoginPageState extends State<LoginPage> {
                   // _PasswordTextField(),
                   SizedBox(height: 16),
                   RaisedButton(
-                    onPressed: () {
-                      Injector.resolve<LoginBloc>().add(const LoginSubmitted());
+                    onPressed: () async {
+                      Injector.resolve<LoginBloc>().add(LoginSubmitted());
                     },
+                    child: Text("Login With Google"),
                   ),
                 ],
               );
