@@ -11,7 +11,7 @@ import '../../common/constants/router_constants.dart';
 import '../../data/firebase/event/event_person.dart';
 import '../../data/firebase/event/event_storage.dart';
 import '../../data/firebase/g_authentication.dart';
-import '../../data/model/chat_model/person.dart';
+import '../../data/model/person_model/person_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import 'fragment/list_chat_room.dart';
 import 'fragment/list_contact.dart';
@@ -22,7 +22,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  Person? _myPerson;
+  PersonModel? _myPerson;
   var _controllerPassword = TextEditingController();
 
   final List<Widget> _listFragment = [
@@ -31,7 +31,7 @@ class _DashboardState extends State<Dashboard> {
   ];
 
   void getMyPerson() async {
-    Person person = await AppSharedPreference.getPerson();
+    PersonModel person = await AppSharedPreference.getPerson();
     setState(() {
       _myPerson = person;
     });

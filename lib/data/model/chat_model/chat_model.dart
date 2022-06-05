@@ -1,6 +1,6 @@
 import 'package:PregnancyApp/data/model/base_model/base_model.dart';
 
-class Chat implements BaseModel {
+class ChatModel implements BaseModel {
   int? dateTime;
   bool? isRead;
   String? message;
@@ -8,7 +8,7 @@ class Chat implements BaseModel {
   String? uidReceiver;
   String? uidSender;
 
-  Chat({
+  ChatModel({
     this.dateTime,
     this.isRead,
     this.message,
@@ -17,8 +17,8 @@ class Chat implements BaseModel {
     this.uidSender,
   });
 
-  static Chat fromJson(Map<String, dynamic> json) {
-    return Chat(
+  static ChatModel fromJson(Map<String, dynamic> json) {
+    return ChatModel(
       dateTime: json['dateTime'] ?? 0,
       isRead: json['isRead'] ?? false,
       message: json['message'] ?? '',

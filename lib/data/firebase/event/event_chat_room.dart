@@ -2,8 +2,8 @@ import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../../model/chat_model/chat.dart';
-import '../../model/chat_model/room.dart';
+import '../../model/chat_model/chat_model.dart';
+import '../../model/room_model/room_model.dart';
 
 class EventChatRoom {
   static Future<bool> checkRoomIsExist({
@@ -24,7 +24,7 @@ class EventChatRoom {
     bool isSender = false,
     String? myUid,
     String? personUid,
-    Room? room,
+    RoomModel? room,
   }) {
     try {
       FirebaseFirestore.instance
@@ -44,7 +44,7 @@ class EventChatRoom {
     bool isSender = false,
     String? myUid,
     String? personUid,
-    Room? room,
+    RoomModel? room,
   }) {
     try {
       FirebaseFirestore.instance
@@ -64,7 +64,7 @@ class EventChatRoom {
     bool isSender = false,
     String? myUid,
     String? personUid,
-    Chat? chat,
+    ChatModel? chat,
   }) {
     try {
       FirebaseFirestore.instance

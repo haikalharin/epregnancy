@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../model/chat_model/person.dart';
+import '../../model/person_model/person_model.dart';
 
 class EventContact {
-  static void addContact({String? myUid, Person? person}) {
+  static void addContact({String? myUid, PersonModel? person}) {
     try {
       FirebaseFirestore.instance
           .collection('person')

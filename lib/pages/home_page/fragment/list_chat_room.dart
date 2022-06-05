@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../data/firebase/event/event_chat_room.dart';
-import '../../../data/model/chat_model/chat.dart';
-import '../../../data/model/chat_model/person.dart';
-import '../../../data/model/chat_model/room.dart';
+import '../../../data/model/chat_model/chat_model.dart';
+import '../../../data/model/person_model/person_model.dart';
+import '../../../data/model/room_model/room_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 
 class ListChatRoom extends StatefulWidget {
@@ -18,10 +18,10 @@ class ListChatRoom extends StatefulWidget {
 }
 
 class _ListChatRoomState extends State<ListChatRoom> {
-  Person? _myPerson;
+  PersonModel? _myPerson;
   Stream<QuerySnapshot>? _streamRoom;
   void getMyPerson() async {
-    Person? person = await AppSharedPreference.getPerson();
+    PersonModel? person = await AppSharedPreference.getPerson();
     setState(() {
       _myPerson = person;
     });
@@ -82,7 +82,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
             },
             itemBuilder: (context, index) {
               final data = getDataFireBase(listRoom[index].data());
-              Room? room = Room.fromJson(data);
+              RoomModel? room = RoomModel.fromJson(data);
               return itemRoom(room);
             },
           );
@@ -93,7 +93,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
     );
   }
 
-  Widget itemRoom(Room? room) {
+  Widget itemRoom(RoomModel? room) {
     String today = DateFormat('yyyy/MM/dd').format(DateTime.now());
     String yesterday = DateFormat('yyyy/MM/dd')
         .format(DateTime.now().subtract(Duration(days: 1)));
@@ -125,7 +125,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Person person = Person(
+                  PersonModel person = PersonModel(
                     email: room.email,
                     name: room.name,
                     photo: room.photo,
@@ -233,7 +233,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
             .where((element) => getDateTimeFirebase(element.data()) == lastDateTime)
             .toList()[0];
        final data = getDataFireBase(lastChat.data());
-        Chat? lastDataChat= Chat.fromJson(data);
+        ChatModel? lastDataChat= ChatModel.fromJson(data);
 
         if (lastDataChat.uidSender == _myPerson!.uid) {
           return Icon(
@@ -245,7 +245,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
           int unRead = 0;
           for (var doc in listChat) {
            final data = getDataFireBase(doc.data());
-           Chat? docChat = Chat.fromJson(data);
+           ChatModel? docChat = ChatModel.fromJson(data);
            if (!docChat.isRead! && docChat.uidSender == personUid) {
               unRead = unRead + 1;
             }

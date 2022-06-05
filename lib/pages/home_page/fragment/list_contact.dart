@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 import '../../../data/firebase/event/event_contact.dart';
 import '../../../data/firebase/event/event_person.dart';
-import '../../../data/model/chat_model/person.dart';
-import '../../../data/model/chat_model/room.dart';
+import '../../../data/model/person_model/person_model.dart';
+import '../../../data/model/room_model/room_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 
 class ListContact extends StatefulWidget {
@@ -16,10 +16,10 @@ class ListContact extends StatefulWidget {
 
 class _ListContactState extends State<ListContact> {
   var _controllerEmail = TextEditingController();
-  Person? _myPerson;
+  PersonModel? _myPerson;
   Stream<QuerySnapshot>? _streamContact;
   void getMyPerson() async {
-    Person person = await AppSharedPreference.getPerson();
+    PersonModel person = await AppSharedPreference.getPerson();
     setState(() {
       _myPerson = person;
     });
@@ -104,7 +104,7 @@ class _ListContactState extends State<ListContact> {
                 },
                 itemBuilder: (context, index) {
                   final data = getDataFireBase(listContact[index].data());
-                  Person person = Person.fromJson(data);
+                  PersonModel person = PersonModel.fromJson(data);
                   return itemContact(person);
                 },
               );
@@ -127,7 +127,7 @@ class _ListContactState extends State<ListContact> {
     );
   }
 
-  Widget itemContact(Person? person) {
+  Widget itemContact(PersonModel? person) {
     return ListTile(
       leading: GestureDetector(
         onTap: () {
@@ -169,7 +169,7 @@ class _ListContactState extends State<ListContact> {
       trailing: IconButton(
         icon: Icon(Icons.message),
         onPressed: () {
-          Room room = Room(
+          RoomModel room = RoomModel(
             email: person.email,
             inRoom: false,
             lastChat: '',

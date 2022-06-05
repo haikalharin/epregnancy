@@ -10,7 +10,7 @@ import 'package:meta/meta.dart';
 import '../../../common/exceptions/login_error_exception.dart';
 import '../../../data/firebase/event/event_person.dart';
 import '../../../data/firebase/g_authentication.dart';
-import '../../../data/model/chat_model/person.dart';
+import '../../../data/model/person_model/person_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../model/password.dart';
 import '../model/username.dart';

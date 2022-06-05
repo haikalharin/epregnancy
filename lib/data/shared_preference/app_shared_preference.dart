@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/chat_model/person.dart';
+import '../model/person_model/person_model.dart';
 import '../model/user_model/user_model.dart';
 
 class AppSharedPreference {
@@ -56,14 +56,14 @@ class AppSharedPreference {
     prefs.setString(_user, json);
   }
 
-  static Future<Person> getPerson() async {
-    Person? person;
+  static Future<PersonModel> getPerson() async {
+    PersonModel? person;
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
       String? personString = await AppSharedPreference.getString('person');
       if (personString != null) {
         Map<String, dynamic> personJson = json.decode(personString);
-        person = Person.fromJson(personJson);
+        person = PersonModel.fromJson(personJson);
       }
     } catch (e) {
       print(e);
@@ -71,7 +71,7 @@ class AppSharedPreference {
     return person!;
   }
 
-  static Future<void> setPerson(Person person) async {
+  static Future<void> setPerson(PersonModel person) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('person', json.encode(person.toJson()));
   }

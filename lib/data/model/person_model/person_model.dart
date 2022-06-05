@@ -1,16 +1,16 @@
 import '../base_model/base_model.dart';
 
-class Person implements BaseModel {
+class PersonModel implements BaseModel {
   String? email;
   String? name;
   String? photo;
   String? token;
   String? uid;
 
-  Person({this.email, this.name, this.photo, this.token, this.uid});
+  PersonModel({this.email, this.name, this.photo, this.token, this.uid});
 
-  static Person fromJson(Map<String, dynamic> json) {
-    return Person(
+  static PersonModel fromJson(Map<String, dynamic> json) {
+    return PersonModel(
       email: json['email'] ?? '',
       name: json['name'] ?? '',
       photo: json['photo'] ?? '',

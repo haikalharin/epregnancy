@@ -1,7 +1,7 @@
 import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../model/chat_model/person.dart';
+import '../../model/person_model/person_model.dart';
 
 class EventPerson {
   static Future<String> checkEmail(String email) async {
@@ -20,7 +20,7 @@ class EventPerson {
     return '';
   }
 
-  static void addPerson(Person person) {
+  static void addPerson(PersonModel person) {
     try {
       FirebaseFirestore.instance
           .collection('person')
@@ -68,8 +68,8 @@ class EventPerson {
     }
   }
 
-  static Future<Person> getPerson(String? uid) async {
-    Person? person;
+  static Future<PersonModel> getPerson(String? uid) async {
+    PersonModel? person;
     try {
       DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
           .collection('person')
@@ -77,7 +77,7 @@ class EventPerson {
           .get()
           .catchError((onError) => print(onError));
      final data = getDataFireBase(documentSnapshot.data());
-     person = Person.fromJson(data);
+     person = PersonModel.fromJson(data);
     } catch (e) {
       print(e);
     }
