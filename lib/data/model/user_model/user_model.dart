@@ -4,61 +4,60 @@ import 'package:flutter/cupertino.dart';
 import '../base_model/base_model.dart';
 import '../master_menu_model/master_parent_menu_model.dart';
 
+class UserModel implements BaseModel {
+  String? userId;
+  String? userName;
+  String? userPassword;
+  String? userCreated;
+  String? userCreatedBy;
+  String? userUpdated;
+  String? userUpdateBy;
+  String? userPersonId;
+  String? userStartDate;
+  String? userEndDate;
+  String? userDescription;
+  String? userLastLogon;
+  String? userLastPassword;
+  String? userPassLifespan;
+  String? userPassNeedChg;
+  String? userEnableSts;
+  String? userCoyoutlet;
+  String? referralCode;
+  String? token;
+  String? userImgUrl;
+  List<MasterParentMenuModel>? masterParent;
+  String? jobName;
+  String? userType;
+  List<String?>? cluster;
+  String? outletNickName;
 
-class UserModel extends UserEntity implements BaseModel {
   UserModel({
-     String? userId,
-     String? userName,
-     String? userPassword,
-     String? userCreated,
-     String? userCreatedBy,
-     String? userUpdated,
-     String? userUpdateBy,
-     String? userPersonId,
-     String? userStartDate,
-     String? userEndDate,
-     String? userDescription,
-     String? userLastLogon,
-     String? userLastPassword,
-     String? userPassLifespan,
-     String? userPassNeedChg,
-     String? userEnableSts,
-     String? userCoyoutlet,
-     String? referralCode,
-     String? token,
-     String? userImgUrl,
-     List<MasterParentMenuModel>? masterParent,
-     String? jobName,
-     String? userType,
-     List<String?>? cluster,
-     String? outletNickName,
-  }) : super(
-          userId: userId,
-          userName: userName,
-          userPassword: userPassword,
-          userCreated: userCreated,
-          userCreatedBy: userCreatedBy,
-          userUpdated: userUpdated,
-          userUpdateBy: userUpdateBy,
-          userPersonId: userPersonId,
-          userStartDate: userStartDate,
-          userEndDate: userEndDate,
-          userDescription: userDescription,
-          userLastLogon: userLastLogon,
-          userLastPassword: userLastPassword,
-          userPassLifespan: userPassLifespan,
-          userPassNeedChg: userPassNeedChg,
-          userEnableSts: userEnableSts,
-          userCoyoutlet: userCoyoutlet,
-          referralCode: referralCode,
-          token: token,
-          userImgUrl: userImgUrl,
-          masterParent: masterParent,
-          jobName: jobName,
-          userType: userType,
-          cluster: cluster,
-          outletNickName: outletNickName,
-        );
+    this.userId,
+    this.userName,
+    this.userPassword,
+    this.userCreated,
+    this.userCreatedBy,
+    this.userUpdated,
+    this.userUpdateBy,
+    this.userPersonId,
+    this.userStartDate,
+    this.userEndDate,
+    this.userDescription,
+    this.userLastLogon,
+    this.userLastPassword,
+    this.userPassLifespan,
+    this.userPassNeedChg,
+    this.userEnableSts,
+    this.userCoyoutlet,
+    this.referralCode,
+    this.token,
+    this.userImgUrl,
+    this.masterParent,
+    this.jobName,
+    this.userType,
+    this.cluster,
+    this.outletNickName,
+  });
 
   UserModel copyWith(
       {String? userId,
@@ -139,8 +138,6 @@ class UserModel extends UserEntity implements BaseModel {
     return data;
   }
 
-
-
   Map<String, dynamic> toChangeProfileJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['user_img'] = this.userImgUrl;
@@ -171,7 +168,8 @@ class UserModel extends UserEntity implements BaseModel {
     data['token'] = this.token;
     data['user_img_url'] = this.userImgUrl;
     if (this.masterParent != null) {
-      data['master_parent'] = this.masterParent!.map((v) => v.toJson()).toList();
+      data['master_parent'] =
+          this.masterParent!.map((v) => v.toJson()).toList();
     }
     data['job_name'] = this.jobName;
     data['user_type'] = this.userType;
@@ -181,8 +179,7 @@ class UserModel extends UserEntity implements BaseModel {
   }
 
   static UserModel fromJson(Map<String, dynamic> json) {
-    List<MasterParentMenuModel> masterParentMenus =
-        <MasterParentMenuModel>[];
+    List<MasterParentMenuModel> masterParentMenus = <MasterParentMenuModel>[];
 
     try {
       if (json['master_parent'] != null) {
@@ -232,6 +229,7 @@ class UserModel extends UserEntity implements BaseModel {
   jsonToModel(Map<String, dynamic> json) {
     return fromJson(json);
   }
+
   static UserModel empty(Map<String, dynamic> json) {
     return UserModel(
         userId: "",
@@ -258,8 +256,6 @@ class UserModel extends UserEntity implements BaseModel {
         jobName: "",
         userType: "",
         cluster: [],
-        outletNickName: ""
-    );
+        outletNickName: "");
   }
-
 }

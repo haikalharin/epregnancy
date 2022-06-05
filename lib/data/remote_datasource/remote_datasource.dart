@@ -24,13 +24,13 @@ class RemoteDataSource {
     return data;
   }
 
-  Future<String> login(String userName, String password) async {
-    String data = "";
+  Future<bool> login(String userName, String password) async {
+    bool data = false;
 
     if (userName == "haikal" && password == "admin"){
-      data = "Berhasil";
+      data = true;
     } else{
-      data = "Gagal";
+      data = false;
     }
 
     return data;

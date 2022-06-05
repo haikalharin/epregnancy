@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/pages/home_page/dashboard.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,6 +11,8 @@ class Routes {
     switch (settings.name) {
       case RouteName.homeScreen:
         return MaterialPageRoute(builder: (_) => HomePage());
+      case RouteName.dashboard:
+        return MaterialPageRoute(builder: (_) => Dashboard());
       case RouteName.login:
         return MaterialPageRoute(builder: (_) => LoginPage());
 

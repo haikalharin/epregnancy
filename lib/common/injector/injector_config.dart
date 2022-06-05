@@ -38,7 +38,7 @@ abstract class InjectorConfig {
   }
 
 
-  @Register.singleton(LoginBloc)
+  @Register.singleton(LoginBloc)@Register.singleton(LoginBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)

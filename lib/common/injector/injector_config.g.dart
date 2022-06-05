@@ -10,7 +10,9 @@ class _$InjectorConfig extends InjectorConfig {
   @override
   void _configureBlocs() {
     final KiwiContainer container = KiwiContainer();
-    container.registerSingleton((c) => LoginBloc(c<UserRepository>()));
+    container
+      ..registerSingleton((c) => LoginBloc(c<UserRepository>()))
+      ..registerSingleton((c) => LoginBloc(c<UserRepository>()));
   }
 
   @override

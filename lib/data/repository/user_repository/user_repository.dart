@@ -7,6 +7,7 @@ abstract class UserRepository {
   Future insertUser(UserModel todo);
 
 
+  Future loginWithGoogle();
   Future login(String userName, String password);
 
 

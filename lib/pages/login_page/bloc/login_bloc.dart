@@ -8,7 +8,10 @@ import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../data/firebase/event/event_person.dart';
 import '../../../data/firebase/g_authentication.dart';
+import '../../../data/model/chat_model/person.dart';
+import '../../../data/shared_preference/app_shared_preference.dart';
 import '../model/password.dart';
 import '../model/username.dart';
 
@@ -32,10 +35,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  LoginState _mapUsernameChangedToState(
-    LoginUsernameChanged event,
-    LoginState state,
-  ) {
+  LoginState _mapUsernameChangedToState(LoginUsernameChanged event,
+      LoginState state,) {
     final username = Username.dirty(event.username);
     return state.copyWith(
       username: username,
@@ -43,10 +44,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  LoginState _mapPasswordChangedToState(
-    LoginPasswordChanged event,
-    LoginState state,
-  ) {
+  LoginState _mapPasswordChangedToState(LoginPasswordChanged event,
+      LoginState state,) {
     final password = Password.dirty(event.password);
     return state.copyWith(
       password: password,
@@ -54,19 +53,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  Stream<LoginState> _mapLoginSubmittedToState(
-    LoginSubmitted event,
-    LoginState state,
-  ) async* {
-    // if (state.status.isValidated) {
+  Stream<LoginState> _mapLoginSubmittedToState(LoginSubmitted event,
+      LoginState state,) async* {
+    if (state.status.isValidated) {
       yield state.copyWith(status: FormzStatus.submissionInProgress);
       try {
-
-        User? user =
-        await GAuthentication.signInWithGoogle();
-        // await Future.delayed(const Duration(seconds: 5));
-
-        if(user!.uid.isNotEmpty) {
+        // User? user =
+        // await userRepository.loginWithGoogle();
+        // // await Future.delayed(const Duration(seconds: 5));
+        //
+        // if(user!.uid.isNotEmpty) {
+        //   Person person = Person(
+        //     email: user.email,
+        //     name: user.displayName,
+        //     photo: user.photoURL,
+        //     token: '',
+        //     uid: user.uid,
+        //   );
+        //   EventPerson.addPerson(person);
+        //   await AppSharedPreference.setPerson(person);
+        final response = await userRepository.login(
+            state.username.value, state.password.value);
+        if (response) {
           yield state.copyWith(status: FormzStatus.submissionSuccess);
         } else {
           yield state.copyWith(status: FormzStatus.submissionFailure);
@@ -78,10 +86,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield state.copyWith(status: FormzStatus.submissionFailure);
       }
     }
-    // else {
-    //   final username = Username.dirty(state.username.value);
-    //   final password = Password.dirty(state.password.value);
-    //   yield state.copyWith(username: username, password: password);
-    // }
-  // }
+    else {
+      final username = Username.dirty(state.username.value);
+      final password = Password.dirty(state.password.value);
+      yield state.copyWith(username: username, password: password);
+    }
+  }
 }

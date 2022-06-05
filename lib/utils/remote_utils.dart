@@ -1,3 +1,14 @@
+
+dynamic getDataFireBase(dynamic result) => result;
+
+dynamic cekPersonInRoom(dynamic result) => result['inRoom'];
+
+dynamic getPersonTokenFirebase(dynamic result) => result['token'];
+
+dynamic getDateTimeFirebase(dynamic result) => result['dateTime'];
+
+dynamic getPersonUid(dynamic result) => result['uid'];
+
 dynamic getData(dynamic result) => result['data'];
 
 int getCode(dynamic result) => result['code'];
