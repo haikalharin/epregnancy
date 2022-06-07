@@ -1,6 +1,6 @@
 import 'package:PregnancyApp/data/model/base_model/base_model.dart';
 
-class RoomModel implements BaseModel{
+class RoomModel implements BaseModel {
   String? email;
   bool? inRoom;
   String? lastChat;
@@ -52,5 +52,19 @@ class RoomModel implements BaseModel{
   @override
   jsonToModel(Map<String, dynamic> json) {
     return fromJson(json);
+  }
+
+  static RoomModel empty() {
+    return RoomModel(
+      email: '',
+      inRoom: false,
+      lastChat: '',
+      lastDateTime: 0,
+      lastUid: '',
+      name: '',
+      photo: '',
+      type: '',
+      uid: '',
+    );
   }
 }

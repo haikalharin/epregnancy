@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-
 import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import '../../../data/model/chat_model/chat_model.dart';
 import '../../../data/model/person_model/person_model.dart';
 import '../../../data/model/room_model/room_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../chat_room.dart';
 
 class ListChatRoom extends StatefulWidget {
   @override
@@ -20,6 +20,8 @@ class ListChatRoom extends StatefulWidget {
 class _ListChatRoomState extends State<ListChatRoom> {
   PersonModel? _myPerson;
   Stream<QuerySnapshot>? _streamRoom;
+  Stream<QuerySnapshot>? _streamChat;
+
   void getMyPerson() async {
     PersonModel? person = await AppSharedPreference.getPerson();
     setState(() {
@@ -81,7 +83,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
               return Divider(thickness: 1, height: 1);
             },
             itemBuilder: (context, index) {
-              final data = getDataFireBase(listRoom[index].data());
+              final data = getDataValue(listRoom[index].data());
               RoomModel? room = RoomModel.fromJson(data);
               return itemRoom(room);
             },
@@ -111,10 +113,10 @@ class _ListChatRoomState extends State<ListChatRoom> {
     return Material(
       child: InkWell(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => ChatRoom(room: room)),
-          // );
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatRoom(arguments: {'room': room})));
         },
         onLongPress: () {
           // deleteChatRoom(room.uid);
@@ -122,11 +124,12 @@ class _ListChatRoomState extends State<ListChatRoom> {
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               GestureDetector(
                 onTap: () {
                   PersonModel person = PersonModel(
-                    email: room.email,
+                    phoneNumber: room.email,
                     name: room.name,
                     photo: room.photo,
                     token: '',
@@ -167,7 +170,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(room.name!),
+                    Text(room.name! == ""? room.email! : room.name!),
                     Row(
                       children: [
                         SizedBox(
@@ -177,12 +180,18 @@ class _ListChatRoomState extends State<ListChatRoom> {
                               : null,
                         ),
                         SizedBox(height: 4),
-                        Text(
-                          room.type! == 'text'
-                              ? room.lastChat!.length > 20
-                                  ? room.lastChat!.substring(0, 20) + '...'
-                                  : room.lastChat!
-                              : ' <Image>',
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                            Text(
+                              room.type! == 'text'
+                                  ? room.lastChat!.length > 20
+                                      ? room.lastChat!.substring(0, 20) + '...'
+                                      : room.lastChat!
+                                  : ' <Image>',
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -198,7 +207,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
                     style: TextStyle(fontSize: 12),
                   ),
                   SizedBox(height: 4),
-                  countUnreadMessage(room.uid!, room.lastDateTime!),
+                  countUnreadMessage(room.uid, room.lastDateTime),
                 ],
               ),
             ],
@@ -208,16 +217,17 @@ class _ListChatRoomState extends State<ListChatRoom> {
     );
   }
 
-  Widget countUnreadMessage(String personUid, int lastDateTime) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('person')
-          .doc(_myPerson!.uid)
-          .collection('room')
-          .doc(personUid)
-          .collection('chat')
-          .snapshots(includeMetadataChanges: true),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+  Widget countUnreadMessage(String? personUid, int? lastDateTime) {
+    _streamChat = FirebaseFirestore.instance
+        .collection('person')
+        .doc(_myPerson!.uid ?? "")
+        .collection('room')
+        .doc(personUid ?? "")
+        .collection('chat')
+        .snapshots(includeMetadataChanges: true);
+    return StreamBuilder<QuerySnapshot?>(
+      stream: _streamChat,
+      builder: (BuildContext? context, AsyncSnapshot<QuerySnapshot?> snapshot) {
         if (snapshot.hasError) {
           return SizedBox();
         }
@@ -227,13 +237,28 @@ class _ListChatRoomState extends State<ListChatRoom> {
         if (snapshot.data == null) {
           return SizedBox();
         }
-        List<QueryDocumentSnapshot> listChat = snapshot.data!.docs;
+        List<QueryDocumentSnapshot>? listChat = [];
+        listChat = snapshot.data!.docs;
+        // int lastTime = 0;
+        var data;
+        if (listChat.isNotEmpty) {
+          QueryDocumentSnapshot? lastChat;
+          listChat.forEach((element) {
+final datas = getDateTimeFirebase(element.data());
+            if ( datas == lastDateTime) {
+              lastChat = element;
+              data = getDataValue(lastChat!.data());
+            }
+          });
 
-        QueryDocumentSnapshot lastChat = listChat
-            .where((element) => getDateTimeFirebase(element.data()) == lastDateTime)
-            .toList()[0];
-       final data = getDataFireBase(lastChat.data());
-        ChatModel? lastDataChat= ChatModel.fromJson(data);
+          // QueryDocumentSnapshot? lastChat = listChat
+          //     .where((element) =>
+          // getDateTimeFirebase(element.data()) == lastDateTime)
+          //     .toList().first;
+          //  data = getDataValue(lastChat.data());
+        }
+        ChatModel? lastDataChat =
+            data != null ? ChatModel.fromJson(data) : ChatModel.empty();
 
         if (lastDataChat.uidSender == _myPerson!.uid) {
           return Icon(
@@ -242,14 +267,15 @@ class _ListChatRoomState extends State<ListChatRoom> {
             color: lastDataChat.isRead! ? Colors.blue : Colors.grey,
           );
         } else {
-          int unRead = 0;
+          int? unRead = 0;
           for (var doc in listChat) {
-           final data = getDataFireBase(doc.data());
-           ChatModel? docChat = ChatModel.fromJson(data);
-           if (!docChat.isRead! && docChat.uidSender == personUid) {
-              unRead = unRead + 1;
+            final data = getDataValue(doc.data());
+            ChatModel? docChat = ChatModel.fromJson(data);
+            if (!docChat.isRead! && docChat.uidSender == personUid) {
+              unRead = unRead! + 1;
             }
           }
+
           if (unRead == 0) {
             return SizedBox();
           } else {
@@ -260,7 +286,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
               ),
               padding: EdgeInsets.all(4),
               child: Text(
-                unRead.toString(),
+                unRead!.toString(),
                 style: TextStyle(color: Colors.white, fontSize: 12),
               ),
             );

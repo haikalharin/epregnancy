@@ -134,7 +134,7 @@ class _DashboardState extends State<Dashboard> {
       Navigator.pop(context);
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _myPerson!.email!,
+        email: _myPerson!.phoneNumber!,
         password: _controllerPassword.text,
       );
       if (userCredential != null) {
@@ -216,7 +216,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        _myPerson == null ? '' : _myPerson!.email!,
+                        _myPerson == null ? '' : _myPerson!.phoneNumber!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.white60),

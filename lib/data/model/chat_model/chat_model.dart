@@ -41,4 +41,14 @@ class ChatModel implements BaseModel {
   jsonToModel(Map<String, dynamic> json) {
     return fromJson(json);
   }
+  static ChatModel empty() {
+    return ChatModel(
+      dateTime: 0,
+      isRead:  false,
+      message:  '',
+      type:  '',
+      uidReceiver:  '',
+      uidSender:  '',
+    );
+  }
 }

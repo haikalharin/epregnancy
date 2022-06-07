@@ -7,7 +7,7 @@ class EventPerson {
   static Future<String> checkEmail(String email) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('person')
-        .where('email', isEqualTo: email)
+        .where('phoneNumber', isEqualTo: email)
         .get()
         .catchError((onError) => print(onError));
     if (querySnapshot != null && querySnapshot.docs.length > 0) {
@@ -76,7 +76,7 @@ class EventPerson {
           .doc(uid!)
           .get()
           .catchError((onError) => print(onError));
-     final data = getDataFireBase(documentSnapshot.data());
+     final data = getDataValue(documentSnapshot.data());
      person = PersonModel.fromJson(data);
     } catch (e) {
       print(e);

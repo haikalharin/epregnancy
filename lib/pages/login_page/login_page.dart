@@ -6,7 +6,10 @@ import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../data/firebase/event/event_person.dart';
 import '../../data/firebase/g_authentication.dart';
+import '../../data/model/person_model/person_model.dart';
+import '../../data/shared_preference/app_shared_preference.dart';
 import '../home_page/home_page.dart';
 import 'bloc/login_bloc.dart';
 
@@ -19,6 +22,8 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+final _codeController = TextEditingController();
+
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
@@ -28,16 +33,11 @@ class _LoginPageState extends State<LoginPage> {
           child: BlocListener<LoginBloc, LoginState>(
               listener: (context, state) async {
                 if (state.status == FormzStatus.submissionFailure) {
-                  final snackBar = SnackBar(
-                      content: new Text("gagal"), backgroundColor: Colors.red);
+                  const snackBar = SnackBar(
+                      content: Text("failed"), backgroundColor: Colors.red);
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
-                  final snackBar = SnackBar(
-                      content: new Text("berhasil"),
-                      backgroundColor: Colors.blue);
-                  Scaffold.of(context).showSnackBar(snackBar);
-                  await Future.delayed(const Duration(seconds: 3));
-                  Navigator.of(context).pushNamed(RouteName.dashboard);
+                  // Navigator.of(context).pushNamed(RouteName.dashboard);
                   // Navigator.of(context).pushNamedAndRemoveUntil(
                   //                 RouteName.homeScreen,
                   //                 ModalRoute.withName(RouteName.homeScreen),
@@ -57,14 +57,16 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: 80),
                           SizedBox(height: 120),
                           _UsernameInput(),
-                          SizedBox(height: 12),
-                          _PasswordInput(),
+                          // SizedBox(height: 12),
+                          // _PasswordInput(),
                           // _PasswordTextField(),
                           SizedBox(height: 16),
                           RaisedButton(
                             onPressed: () async {
+
+
                               Injector.resolve<LoginBloc>()
-                                  .add(LoginSubmitted());
+                                  .add(LoginSubmittedWithNumberPhone(context, _codeController));
                             },
                             child: Text("Login With Google"),
                           ),
@@ -100,15 +102,15 @@ class _UsernameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
-      buildWhen: (previous, current) => previous.username != current.username,
+      buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
           onChanged: (username) =>
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
-            labelText: 'username',
-            errorText: state.username.invalid ? 'invalid username' : null,
+            labelText: 'Number Phone',
+            errorText: state.phoneNumber.invalid ? 'invalid username' : null,
           ),
         );
       },

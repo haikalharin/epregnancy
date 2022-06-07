@@ -5,8 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:formz/formz.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../common/constants/router_constants.dart';
+import '../model/person_model/person_model.dart';
+import '../shared_preference/app_shared_preference.dart';
+import 'event/event_person.dart';
 import 'firebase_options.dart';
 
 class GAuthentication {
@@ -59,10 +64,11 @@ class GAuthentication {
       try {
         final GoogleSignIn googleSignIn = GoogleSignIn();
 
-        final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+        final GoogleSignInAccount? googleSignInAccount =
+            await googleSignIn.signIn();
         if (googleSignInAccount != null) {
           final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication;
+              await googleSignInAccount.authentication;
 
           final AuthCredential credential = GoogleAuthProvider.credential(
             accessToken: googleSignInAuthentication.accessToken,
@@ -71,7 +77,7 @@ class GAuthentication {
 
           try {
             final UserCredential userCredential =
-            await auth.signInWithCredential(credential);
+                await auth.signInWithCredential(credential);
 
             user = userCredential.user;
           } on FirebaseAuthException catch (e) {
@@ -101,8 +107,6 @@ class GAuthentication {
       } catch (e) {
         log(e.toString());
       }
-
-
     }
 
     return user;
@@ -125,5 +129,87 @@ class GAuthentication {
     }
   }
 
+  static Future<void> signinWithNumerPhone(
+      {required BuildContext context,
+      required TextEditingController codeController, required String phoneNumber}) async {
+    bool? status = false;
+    try {
+      FirebaseAuth _auth = FirebaseAuth.instance;
+     String phoneNumberFix = phoneNumber.replaceFirst("0", "+62");
+      await _auth.verifyPhoneNumber(
+          phoneNumber: phoneNumberFix,
+          verificationCompleted: (PhoneAuthCredential credential) async {
+            // ANDROID ONLY!
 
+            // Sign the user in (or link) with the auto-generated credential
+            await _auth.signInWithCredential(credential);
+          },
+          verificationFailed: (FirebaseAuthException error) {
+            print(error);
+          },
+          timeout: const Duration(seconds: 60),
+          codeAutoRetrievalTimeout: (String verificationId) {
+            // Auto-resolution timed out...
+          },
+          codeSent: (String verificationId, int? forceResendingToken) async {
+            showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Give the code?"),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        TextField(
+                          controller: codeController,
+                        ),
+                      ],
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("Confirm"),
+                        textColor: Colors.white,
+                        color: Colors.blue,
+                        onPressed: () async {
+                          final code = codeController.text.trim();
+                          PhoneAuthCredential credential =
+                              PhoneAuthProvider.credential(
+                                  verificationId: verificationId,
+                                  smsCode: code);
+                          await _auth.signInWithCredential(credential);
+
+                          if (_auth.currentUser != null) {
+                            PersonModel person = PersonModel(
+                              phoneNumber: phoneNumberFix,
+                              name: _auth.currentUser!.displayName,
+                              photo: _auth.currentUser!.photoURL,
+                              token: '',
+                              uid: _auth.currentUser!.uid,
+                            );
+                            EventPerson.addPerson(person);
+                            await AppSharedPreference.setPerson(person);
+                            Navigator.of(context)
+                                .pushNamed(RouteName.dashboard);
+                          } else {
+                            print("Error");
+                          }
+                        },
+                      )
+                    ],
+                  );
+                });
+
+            // Create a PhoneAuthCredential with the code
+
+            // Sign the user in (or link) with the credential
+          });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        GAuthentication.customSnackBar(
+          content: 'Error signing out. Try again.',
+        ),
+      );
+    }
+  }
 }

@@ -4,10 +4,12 @@ import 'package:PregnancyApp/data/repository/user_repository/user_repository.dar
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../common/validators/phone_validator.dart';
 import '../../../data/firebase/event/event_person.dart';
 import '../../../data/firebase/g_authentication.dart';
 import '../../../data/model/person_model/person_model.dart';
@@ -32,49 +34,90 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield _mapPasswordChangedToState(event, state);
     } else if (event is LoginSubmitted) {
       yield* _mapLoginSubmittedToState(event, state);
+    } else if (event is LoginSubmittedWithNumberPhone) {
+      yield* _mapLoginSubmittedLoginSubmittedWithNumberPhoneToState(
+          event, state);
     }
   }
 
-  LoginState _mapUsernameChangedToState(LoginUsernameChanged event,
-      LoginState state,) {
-    final username = Username.dirty(event.username);
+  LoginState _mapUsernameChangedToState(
+    LoginUsernameChanged event,
+    LoginState state,
+  ) {
+    final phoneNumber = PhoneValidator.dirty(event.phoneNumber);
     return state.copyWith(
-      username: username,
-      status: Formz.validate([state.password, username]),
+      phoneNumber: phoneNumber,
+      status: Formz.validate([phoneNumber]),
     );
   }
 
-  LoginState _mapPasswordChangedToState(LoginPasswordChanged event,
-      LoginState state,) {
+  LoginState _mapPasswordChangedToState(
+    LoginPasswordChanged event,
+    LoginState state,
+  ) {
     final password = Password.dirty(event.password);
     return state.copyWith(
       password: password,
-      status: Formz.validate([password, state.username]),
+      status: Formz.validate([password, state.phoneNumber]),
     );
   }
 
-  Stream<LoginState> _mapLoginSubmittedToState(LoginSubmitted event,
-      LoginState state,) async* {
+  Stream<LoginState> _mapLoginSubmittedLoginSubmittedWithNumberPhoneToState(
+    LoginSubmittedWithNumberPhone event,
+    LoginState state,
+  ) async* {
     if (state.status.isValidated) {
       yield state.copyWith(status: FormzStatus.submissionInProgress);
       try {
         // User? user =
         // await userRepository.loginWithGoogle();
-        // // await Future.delayed(const Duration(seconds: 5));
-        //
-        // if(user!.uid.isNotEmpty) {
-        //   Person person = Person(
-        //     email: user.email,
-        //     name: user.displayName,
-        //     photo: user.photoURL,
-        //     token: '',
-        //     uid: user.uid,
-        //   );
-        //   EventPerson.addPerson(person);
-        //   await AppSharedPreference.setPerson(person);
-        final response = await userRepository.login(
-            state.username.value, state.password.value);
-        if (response) {
+        await GAuthentication.signinWithNumerPhone(
+            context: event.context,
+            codeController: event.codeController,
+            phoneNumber: state.phoneNumber.value);
+        yield state.copyWith(status: FormzStatus.submissionSuccess);
+      } on LoginErrorException catch (e) {
+        print(e);
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      } on Exception catch (a) {
+        print(a);
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
+    } else {
+      final phoneNumber = PhoneValidator.dirty(state.phoneNumber.value);
+      yield state.copyWith(phoneNumber: phoneNumber);
+    }
+  }
+
+    Stream<LoginState> _mapLoginSubmittedToState(
+      LoginSubmitted event,
+      LoginState state,
+    ) async* {
+      yield state.copyWith(status: FormzStatus.submissionInProgress);
+      try {
+        // User? user =
+        // await userRepository.loginWithGoogle();
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: state.phoneNumber.value,
+          password: state.password.value,
+        );
+        await Future.delayed(const Duration(seconds: 5));
+
+        if (userCredential.user!.uid.isNotEmpty) {
+          PersonModel person = PersonModel(
+            phoneNumber: userCredential.user!.email,
+            name: userCredential.user!.displayName,
+            photo: userCredential.user!.photoURL,
+            token: '',
+            uid: userCredential.user!.uid,
+          );
+          EventPerson.addPerson(person);
+          await userCredential.user!.sendEmailVerification();
+          await AppSharedPreference.setPerson(person);
+          // final response = await userRepository.login(
+          //     state.username.value, state.password.value);
+          // if (response) {
           yield state.copyWith(status: FormzStatus.submissionSuccess);
         } else {
           yield state.copyWith(status: FormzStatus.submissionFailure);
@@ -82,14 +125,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } on LoginErrorException catch (e) {
         print(e);
         yield state.copyWith(status: FormzStatus.submissionFailure);
-      } on Exception catch (_) {
+      } on Exception catch (a) {
+        print(a);
         yield state.copyWith(status: FormzStatus.submissionFailure);
       }
     }
-    else {
-      final username = Username.dirty(state.username.value);
-      final password = Password.dirty(state.password.value);
-      yield state.copyWith(username: username, password: password);
-    }
   }
-}
+

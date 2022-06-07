@@ -1,5 +1,5 @@
 
-dynamic getDataFireBase(dynamic result) => result;
+dynamic getDataValue(dynamic result) => result;
 
 dynamic cekPersonInRoom(dynamic result) => result['inRoom'];
 

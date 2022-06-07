@@ -8,6 +8,7 @@ import '../../../data/firebase/event/event_person.dart';
 import '../../../data/model/person_model/person_model.dart';
 import '../../../data/model/room_model/room_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../chat_room.dart';
 
 class ListContact extends StatefulWidget {
   @override
@@ -103,7 +104,7 @@ class _ListContactState extends State<ListContact> {
                   return Divider(thickness: 1, height: 1);
                 },
                 itemBuilder: (context, index) {
-                  final data = getDataFireBase(listContact[index].data());
+                  final data = getDataValue(listContact[index].data());
                   PersonModel person = PersonModel.fromJson(data);
                   return itemContact(person);
                 },
@@ -165,12 +166,12 @@ class _ListContactState extends State<ListContact> {
         ),
       ),
       title: Text(person.name!),
-      subtitle: Text(person.email!),
+      subtitle: Text(person.phoneNumber!),
       trailing: IconButton(
         icon: Icon(Icons.message),
         onPressed: () {
           RoomModel room = RoomModel(
-            email: person.email,
+            email: person.phoneNumber,
             inRoom: false,
             lastChat: '',
             lastDateTime: 0,
@@ -180,10 +181,10 @@ class _ListContactState extends State<ListContact> {
             type: '',
             uid: person.uid,
           );
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => ChatRoom(room: room)),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatRoom(arguments:{'room': room})),
+          );
         },
       ),
     );

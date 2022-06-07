@@ -1,17 +1,17 @@
 import '../base_model/base_model.dart';
 
 class PersonModel implements BaseModel {
-  String? email;
+  String? phoneNumber;
   String? name;
   String? photo;
   String? token;
   String? uid;
 
-  PersonModel({this.email, this.name, this.photo, this.token, this.uid});
+  PersonModel({this.phoneNumber, this.name, this.photo, this.token, this.uid});
 
   static PersonModel fromJson(Map<String, dynamic> json) {
     return PersonModel(
-      email: json['email'] ?? '',
+      phoneNumber: json['phoneNumber'] ?? '',
       name: json['name'] ?? '',
       photo: json['photo'] ?? '',
       token: json['token'] ?? '',
@@ -20,7 +20,7 @@ class PersonModel implements BaseModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'email': email,
+        'phoneNumber': phoneNumber,
         'name': name,
         'photo': photo,
         'token': token,

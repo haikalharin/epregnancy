@@ -4,17 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../common/constants/router_constants.dart';
+import '../pages/home_page/chat_room.dart';
 import '../pages/login_page/login_page.dart';
+import '../utils/remote_utils.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case RouteName.login:
+        return MaterialPageRoute(builder: (_) => LoginPage());
       case RouteName.homeScreen:
         return MaterialPageRoute(builder: (_) => HomePage());
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());
-      case RouteName.login:
-        return MaterialPageRoute(builder: (_) => LoginPage());
+      case RouteName.chatRoom:
+        return MaterialPageRoute(builder: (_) => ChatRoom(arguments:getDataValue(settings.arguments) ));
+
 
       // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());

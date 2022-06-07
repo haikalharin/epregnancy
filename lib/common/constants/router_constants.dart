@@ -1,6 +1,7 @@
 class RouteName {
   static const homeScreen = '/home';
   static const login = '/login';
+  static const chatRoom = '/chatRoom';
   static const dashboard = '/dashboard';
   static const register = '/register';
   static const movieDetailScreen = '/detail';

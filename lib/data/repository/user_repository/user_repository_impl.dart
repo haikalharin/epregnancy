@@ -45,10 +45,10 @@ class UserRepositoryImpl extends UserRepository {
   }
   @override
   Future login(String userName, String password) async {
-    if (await networkInfo.isConnected) {
+    // if (await networkInfo.isConnected) {
       return remoteDatasource.login(userName, password);
-    }
-    throw NetworkConnectionException();
+    // }
+    // throw NetworkConnectionException();
   }
 
 }
