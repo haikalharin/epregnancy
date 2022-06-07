@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "1004476940990",
-    "project_id": "pregnancyapp-27dd4",
-    "storage_bucket": "pregnancyapp-27dd4.appspot.com"
+    "project_number": "1088754075559",
+    "project_id": "epregnancy-2022",
+    "storage_bucket": "epregnancy-2022.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1004476940990:android:09bdb5e9c0187c7e38d4ef",
+        "mobilesdk_app_id": "1:1088754075559:android:375488648b848582fe5882",
         "android_client_info": {
           "package_name": "com.example.pregnancyapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1004476940990-g84fpb15lgub3pfauameb8snmhdfee4s.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.pregnancyapp",
-            "certificate_hash": "e6bfcbaf51198383868648112b8d8dbeddc92d02"
-          }
-        },
-        {
-          "client_id": "1004476940990-vk6j35n8sh53sab6othr8800fmhsr61h.apps.googleusercontent.com",
+          "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCnGAi3m89QS7VVn5y5KBtbF8WCjBBIqXE"
+          "current_key": "AIzaSyAyAUb34zPv2yFYc9nlqRGNWzhib72OX1o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1004476940990-vk6j35n8sh53sab6othr8800fmhsr61h.apps.googleusercontent.com",
+              "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

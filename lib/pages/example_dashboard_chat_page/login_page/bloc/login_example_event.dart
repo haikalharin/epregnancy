@@ -1,14 +1,14 @@
-part of 'login_bloc.dart';
+part of 'login_example_bloc.dart';
 
 @immutable
-abstract class LoginEvent extends Equatable{
-  const LoginEvent();
+abstract class LoginExampleEvent extends Equatable{
+  const LoginExampleEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class LoginUsernameChanged extends LoginEvent {
+class LoginUsernameChanged extends LoginExampleEvent {
   const LoginUsernameChanged(this.phoneNumber);
 
   final String phoneNumber;
@@ -17,7 +17,7 @@ class LoginUsernameChanged extends LoginEvent {
   List<Object> get props => [phoneNumber];
 }
 
-class LoginPasswordChanged extends LoginEvent {
+class LoginPasswordChanged extends LoginExampleEvent {
   const LoginPasswordChanged(this.password);
 
   final String password;
@@ -26,11 +26,11 @@ class LoginPasswordChanged extends LoginEvent {
   List<Object> get props => [password];
 }
 
-class LoginSubmitted extends LoginEvent {
+class LoginSubmitted extends LoginExampleEvent {
   const LoginSubmitted();
 }
 
-class LoginSubmittedWithNumberPhone extends LoginEvent {
+class LoginSubmittedWithNumberPhone extends LoginExampleEvent {
   const LoginSubmittedWithNumberPhone(this.context, this.codeController);
 
   final BuildContext context;

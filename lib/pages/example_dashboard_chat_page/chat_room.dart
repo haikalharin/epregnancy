@@ -71,127 +71,131 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
 
   void sendMessage(String type, String message) async {
     if (type == 'text') _controllerMessage.clear();
-    ChatModel chat = ChatModel(
-      dateTime: DateTime.now().microsecondsSinceEpoch,
-      isRead: false,
-      message: message,
-      type: type,
-      uidReceiver:widget.arguments["room"].uid,
-      uidSender: _myPerson!.uid,
-    );
-
-    bool personInRoom = await EventChatRoom.checkIsPersonInRoom(
-      myUid: _myPerson!.uid,
-      personUid:widget.arguments["room"].uid,
-    );
-    RoomModel roomSender = RoomModel(
-      email: _myPerson!.phoneNumber,
-      inRoom: true,
-      lastChat: message,
-      lastDateTime: chat.dateTime,
-      lastUid: _myPerson!.uid,
-      name: _myPerson!.name,
-      photo: _myPerson!.photo,
-      type: type,
-      uid: _myPerson!.uid,
-    );
-    RoomModel roomReceiver = RoomModel(
-      email:widget.arguments["room"].email,
-      inRoom: personInRoom,
-      lastChat: message,
-      lastDateTime: chat.dateTime,
-      lastUid: _myPerson!.uid,
-      name:widget.arguments["room"].name,
-      photo:widget.arguments["room"].photo,
-      type: type,
-      uid:widget.arguments["room"].uid,
-    );
-
-    // Sender Room
-    bool isSenderRoomExist = await EventChatRoom.checkRoomIsExist(
-      isSender: true,
-      myUid: _myPerson!.uid,
-      personUid:widget.arguments["room"].uid,
-    );
-    if (isSenderRoomExist) {
-      EventChatRoom.updateRoom(
-        isSender: true,
-        myUid: _myPerson!.uid,
-        personUid:widget.arguments["room"].uid,
-        room: roomSender,
+    if (message != '') {
+      ChatModel chat = ChatModel(
+        dateTime: DateTime
+            .now()
+            .microsecondsSinceEpoch,
+        isRead: false,
+        message: message,
+        type: type,
+        uidReceiver: widget.arguments["room"].uid,
+        uidSender: _myPerson!.uid,
       );
-    } else {
-      EventChatRoom.addRoom(
-        isSender: true,
-        myUid: _myPerson!.uid,
-        personUid:widget.arguments["room"].uid,
-        room: roomSender,
-      );
-    }
-    EventChatRoom.addChat(
-      chat: chat,
-      isSender: true,
-      myUid: _myPerson!.uid,
-      personUid:widget.arguments["room"].uid,
-    );
 
-    // Receiver Room
-    bool isReceiverRoomExist = await EventChatRoom.checkRoomIsExist(
-      isSender: false,
-      myUid: _myPerson!.uid,
-      personUid:widget.arguments["room"].uid,
-    );
-    if (isReceiverRoomExist) {
-      EventChatRoom.updateRoom(
-        isSender: false,
+      bool personInRoom = await EventChatRoom.checkIsPersonInRoom(
         myUid: _myPerson!.uid,
-        personUid:widget.arguments["room"].uid,
-        room: roomReceiver,
+        personUid: widget.arguments["room"].uid,
       );
-    } else {
-      EventChatRoom.addRoom(
-        isSender: false,
-        myUid: _myPerson!.uid,
-        personUid:widget.arguments["room"].uid,
-        room: roomReceiver,
-      );
-    }
-    EventChatRoom.addChat(
-      chat: chat,
-      isSender: false,
-      myUid: _myPerson!.uid,
-      personUid:widget.arguments["room"].uid,
-    );
-
-    String token = await EventPerson.getPersonToken(widget.arguments["room"].uid!);
-    if (token != '') {
-      await NotifController.sendNotification(
-        myLastChat: message,
-        myName: _myPerson!.name,
-        myUid: _myPerson!.uid,
-        personToken: token,
+      RoomModel roomSender = RoomModel(
+        phoneNumber: _myPerson!.phoneNumber,
+        inRoom: true,
+        lastChat: message,
+        lastDateTime: chat.dateTime,
+        lastUid: _myPerson!.uid,
+        name: _myPerson!.name,
         photo: _myPerson!.photo,
         type: type,
+        uid: _myPerson!.uid,
       );
-    }
-    print(token);
+      RoomModel roomReceiver = RoomModel(
+        phoneNumber: widget.arguments["room"].phoneNumber,
+        inRoom: personInRoom,
+        lastChat: message,
+        lastDateTime: chat.dateTime,
+        lastUid: _myPerson!.uid,
+        name: widget.arguments["room"].name,
+        photo: widget.arguments["room"].photo,
+        type: type,
+        uid: widget.arguments["room"].uid,
+      );
 
-    if (personInRoom) {
-      EventChatRoom.updateChatIsRead(
-        chatId: chat.dateTime.toString(),
+      // Sender Room
+      bool isSenderRoomExist = await EventChatRoom.checkRoomIsExist(
         isSender: true,
         myUid: _myPerson!.uid,
-        personUid:widget.arguments["room"].uid,
+        personUid: widget.arguments["room"].uid,
       );
-      EventChatRoom.updateChatIsRead(
-        chatId: chat.dateTime.toString(),
+      if (isSenderRoomExist) {
+        EventChatRoom.updateRoom(
+          isSender: true,
+          myUid: _myPerson!.uid,
+          personUid: widget.arguments["room"].uid,
+          room: roomSender,
+        );
+      } else {
+        EventChatRoom.addRoom(
+          isSender: true,
+          myUid: _myPerson!.uid,
+          personUid: widget.arguments["room"].uid,
+          room: roomSender,
+        );
+      }
+      EventChatRoom.addChat(
+        chat: chat,
+        isSender: true,
+        myUid: _myPerson!.uid,
+        personUid: widget.arguments["room"].uid,
+      );
+
+      // Receiver Room
+      bool isReceiverRoomExist = await EventChatRoom.checkRoomIsExist(
         isSender: false,
         myUid: _myPerson!.uid,
-        personUid:widget.arguments["room"].uid,
+        personUid: widget.arguments["room"].uid,
       );
+      if (isReceiverRoomExist) {
+        EventChatRoom.updateRoom(
+          isSender: false,
+          myUid: _myPerson!.uid,
+          personUid: widget.arguments["room"].uid,
+          room: roomReceiver,
+        );
+      } else {
+        EventChatRoom.addRoom(
+          isSender: false,
+          myUid: _myPerson!.uid,
+          personUid: widget.arguments["room"].uid,
+          room: roomReceiver,
+        );
+      }
+      EventChatRoom.addChat(
+        chat: chat,
+        isSender: false,
+        myUid: _myPerson!.uid,
+        personUid: widget.arguments["room"].uid,
+      );
+
+      String token = await EventPerson.getPersonToken(
+          widget.arguments["room"].uid!);
+      if (token != '') {
+        await NotifController.sendNotification(
+          myLastChat: message,
+          myName: _myPerson!.name,
+          myUid: _myPerson!.uid,
+          personToken: token,
+          photo: _myPerson!.photo,
+          type: type,
+        );
+      }
+      print(token);
+
+      if (personInRoom) {
+        EventChatRoom.updateChatIsRead(
+          chatId: chat.dateTime.toString(),
+          isSender: true,
+          myUid: _myPerson!.uid,
+          personUid: widget.arguments["room"].uid,
+        );
+        EventChatRoom.updateChatIsRead(
+          chatId: chat.dateTime.toString(),
+          isSender: false,
+          myUid: _myPerson!.uid,
+          personUid: widget.arguments["room"].uid,
+        );
+      }
     }
   }
-
   void pickAndCropImage() async {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
@@ -289,7 +293,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             GestureDetector(
               onTap: () {
                 PersonModel person = PersonModel(
-                  phoneNumber:widget.arguments["room"].email,
+                  phoneNumber:widget.arguments["room"].phoneNumber,
                   name:widget.arguments["room"].name,
                   photo:widget.arguments["room"].photo,
                   token: '',
@@ -326,14 +330,14 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             ),
             SizedBox(width: 8),
             Text(
-             widget.arguments["room"].name!,
+             widget.arguments["room"].phoneNumber!,
               style: TextStyle(fontSize: 18),
             ),
           ],
         ),
         actions: [
           SizedBox(
-            child: _selectedChat!.message != '' && _selectedChat!.type == 'text'
+            child: _selectedChat!.message != 'delete' && _selectedChat!.type == 'text'
                 ? IconButton(
                     icon: Icon(Icons.copy),
                     onPressed: () {
@@ -345,7 +349,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                 : null,
           ),
           SizedBox(
-            child: _selectedChat!.message != '' &&
+            child: _selectedChat!.message != 'delete' &&
                     _selectedChat!.uidSender == _myPerson!.uid
                 ? IconButton(
                     icon: Icon(Icons.delete),
@@ -553,7 +557,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         maxWidth: MediaQuery.of(context).size.width * 0.7,
       ),
       decoration: BoxDecoration(
-        color: chat.message == ''
+        color: chat.message == 'delete'
             ? Colors.blue.withOpacity(0.3)
             : chat.uidSender == _myPerson!.uid
                 ? Colors.blue
@@ -571,9 +575,9 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
       ),
       padding: EdgeInsets.all(8),
       child: ParsedText(
-        text: chat.message! == '' ? 'message was deleted' : chat.message!,
+        text: chat.message! == 'delete' ? 'message was deleted' : chat.message!,
         style: TextStyle(
-          color: chat.message == '' ? Colors.grey[600] : Colors.white,
+          color: chat.message == 'delete' ? Colors.grey[600] : Colors.white,
         ),
         parse: [
           MatchText(

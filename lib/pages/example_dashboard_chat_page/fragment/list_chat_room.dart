@@ -129,7 +129,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
               GestureDetector(
                 onTap: () {
                   PersonModel person = PersonModel(
-                    phoneNumber: room.email,
+                    phoneNumber: room.phoneNumber,
                     name: room.name,
                     photo: room.photo,
                     token: '',
@@ -164,13 +164,14 @@ class _ListChatRoomState extends State<ListChatRoom> {
                   ),
                 ),
               ),
+
               SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(room.name! == ""? room.email! : room.name!),
+                    Text(room.name!.isEmpty? room.phoneNumber! : room.name!),
                     Row(
                       children: [
                         SizedBox(

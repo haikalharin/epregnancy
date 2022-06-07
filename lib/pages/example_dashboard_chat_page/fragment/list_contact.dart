@@ -26,8 +26,9 @@ class _ListContactState extends State<ListContact> {
     });
     _streamContact = FirebaseFirestore.instance
         .collection('person')
-        .doc(_myPerson!.uid)
-        .collection('contact')
+        .where('phoneNumber', isNotEqualTo: person.phoneNumber)
+        // .doc(_myPerson!.uid)
+        // .collection('contact')
         .snapshots(includeMetadataChanges: true);
   }
 
@@ -66,7 +67,7 @@ class _ListContactState extends State<ListContact> {
       },
     );
     if (value == 'add') {
-      String personUid = await EventPerson.checkEmail(_controllerEmail.text);
+      String personUid = await EventPerson.checkPhoneNumber(_controllerEmail.text);
       if (personUid != '') {
         EventPerson.getPerson(personUid).then((person) {
           EventContact.addContact(myUid: _myPerson!.uid, person: person);
@@ -171,7 +172,7 @@ class _ListContactState extends State<ListContact> {
         icon: Icon(Icons.message),
         onPressed: () {
           RoomModel room = RoomModel(
-            email: person.phoneNumber,
+            phoneNumber: person.phoneNumber,
             inRoom: false,
             lastChat: '',
             lastDateTime: 0,

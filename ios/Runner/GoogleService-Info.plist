@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1004476940990-long836c3qqovqd8uvqg5dsa80bh6neo.apps.googleusercontent.com</string>
+	<string>1088754075559-5ff8dod4c93tc129f99sk127mjkpm5e1.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1004476940990-long836c3qqovqd8uvqg5dsa80bh6neo</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>1004476940990-g84fpb15lgub3pfauameb8snmhdfee4s.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.1088754075559-5ff8dod4c93tc129f99sk127mjkpm5e1</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA6GinDQ4JpifO7IhS3lkqm--yuC95-Qnw</string>
+	<string>AIzaSyDMiYGULcLjHA_ZgUgoHPQjZJGjZj76YYY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1004476940990</string>
+	<string>1088754075559</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.pregnancyApp</string>
 	<key>PROJECT_ID</key>
-	<string>pregnancyapp-27dd4</string>
+	<string>epregnancy-2022</string>
 	<key>STORAGE_BUCKET</key>
-	<string>pregnancyapp-27dd4.appspot.com</string>
+	<string>epregnancy-2022.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1004476940990:ios:5dd0cb13811ebf8438d4ef</string>
+	<string>1:1088754075559:ios:87b40468266b0272fe5882</string>
 </dict>
 </plist>

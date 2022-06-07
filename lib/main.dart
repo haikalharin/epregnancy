@@ -1,5 +1,5 @@
-import 'package:PregnancyApp/pages/login_page/bloc/login_bloc.dart';
-import 'package:PregnancyApp/pages/login_page/login_page.dart';
+import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/bloc/login_example_bloc.dart';
+import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/login_example_page.dart';
 import 'package:PregnancyApp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         providers: _getProviders(),
         child: const MaterialApp(
           title: 'Sehati Syariah',
-          home:  LoginPage(),
+          home:  LoginExamplePage(),
           onGenerateRoute: Routes.generateRoute,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
   }
 
   List<BlocProvider> _getProviders() => [
-    BlocProvider<LoginBloc>(
-        create: (context) => Injector.container.resolve<LoginBloc>()),
+    BlocProvider<LoginExampleBloc>(
+        create: (context) => Injector.container.resolve<LoginExampleBloc>()),
 
       ];
 }

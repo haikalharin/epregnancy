@@ -4,33 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-import '../../common/constants/router_constants.dart';
-import '../../common/injector/injector.dart';
-import '../../data/firebase/event/event_person.dart';
-import '../../data/firebase/g_authentication.dart';
-import '../../data/model/person_model/person_model.dart';
-import '../../data/shared_preference/app_shared_preference.dart';
-import '../home_page/home_page.dart';
-import 'bloc/login_bloc.dart';
+import '../../../common/injector/injector.dart';
+import 'bloc/login_example_bloc.dart';
 
 const _horizontalPadding = 24.0;
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class LoginExamplePage extends StatefulWidget {
+  const LoginExamplePage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginExamplePageState createState() => _LoginExamplePageState();
 }
 
 final _codeController = TextEditingController();
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginExamplePageState extends State<LoginExamplePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-          child: BlocListener<LoginBloc, LoginState>(
+          child: BlocListener<LoginExampleBloc, LoginExampleState>(
               listener: (context, state) async {
                 if (state.status == FormzStatus.submissionFailure) {
                   const snackBar = SnackBar(
@@ -46,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Stack(
                 children: [
-                  BlocBuilder<LoginBloc, LoginState>(
+                  BlocBuilder<LoginExampleBloc, LoginExampleState>(
                     builder: (context, state) {
                       return ListView(
                         physics: const ClampingScrollPhysics(),
@@ -65,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () async {
 
 
-                              Injector.resolve<LoginBloc>()
+                              Injector.resolve<LoginExampleBloc>()
                                   .add(LoginSubmittedWithNumberPhone(context, _codeController));
                             },
                             child: Text("Login With Google"),
@@ -84,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
 class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+    return BlocBuilder<LoginExampleBloc, LoginExampleState>(builder: (context, state) {
       if (state.status == FormzStatus.submissionInProgress) {
         return Container(
             color: Colors.white.withAlpha(90),
@@ -101,13 +95,13 @@ class _UsernameInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<LoginExampleBloc, LoginExampleState>(
       buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
           onChanged: (username) =>
-              Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
+              Injector.resolve<LoginExampleBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
             labelText: 'Number Phone',
             errorText: state.phoneNumber.invalid ? 'invalid username' : null,
@@ -123,13 +117,13 @@ class _PasswordInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<LoginExampleBloc, LoginExampleState>(
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textField'),
           onChanged: (password) =>
-              Injector.resolve<LoginBloc>().add(LoginPasswordChanged(password)),
+              Injector.resolve<LoginExampleBloc>().add(LoginPasswordChanged(password)),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'password',

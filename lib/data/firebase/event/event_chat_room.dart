@@ -208,7 +208,7 @@ class EventChatRoom {
           .doc(isSender ? myUid : personUid)
           .collection('chat')
           .doc(chatId)
-          .update({'message': ''})
+          .update({'message': 'delete'})
           .then((value) => null)
           .catchError((onError) => print(onError));
     } catch (e) {

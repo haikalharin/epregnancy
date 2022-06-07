@@ -1,17 +1,18 @@
 import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../model/person_model/person_model.dart';
 
 class EventPerson {
-  static Future<String> checkEmail(String email) async {
+  static Future<String> checkPhoneNumber(String email) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('person')
         .where('phoneNumber', isEqualTo: email)
         .get()
         .catchError((onError) => print(onError));
-    if (querySnapshot != null && querySnapshot.docs.length > 0) {
-      if (querySnapshot.docs.length > 0) {
+    if (querySnapshot != null && querySnapshot.docs.isNotEmpty) {
+      if (querySnapshot.docs.isNotEmpty) {
         return getPersonUid(querySnapshot.docs[0].data());
       } else {
         return '';
@@ -19,7 +20,22 @@ class EventPerson {
     }
     return '';
   }
-
+  static Future<List<PersonModel>> getListPerson(String? phoneNumber) async {
+    final person = <PersonModel>[];
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('person')
+          .where('phoneNumber', isNotEqualTo: phoneNumber)
+          .get()
+          .catchError((onError) => print(onError));
+      getDataValue(querySnapshot).forEach((item) {
+        person.add(PersonModel.fromJson(item.data));
+      });
+    } catch (e) {
+      print(e);
+    }
+    return person;
+  }
   static void addPerson(PersonModel person) {
     try {
       FirebaseFirestore.instance

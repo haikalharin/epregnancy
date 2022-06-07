@@ -182,8 +182,8 @@ class GAuthentication {
                           if (_auth.currentUser != null) {
                             PersonModel person = PersonModel(
                               phoneNumber: phoneNumberFix,
-                              name: _auth.currentUser!.displayName,
-                              photo: _auth.currentUser!.photoURL,
+                              name: _auth.currentUser!.displayName??"",
+                              photo: _auth.currentUser!.photoURL??"",
                               token: '',
                               uid: _auth.currentUser!.uid,
                             );

@@ -27,7 +27,6 @@ class ChatModel implements BaseModel {
       uidSender: json['uidSender'] ?? '',
     );
   }
-
   Map<String, dynamic> toJson() => {
         'dateTime': dateTime,
         'isRead': isRead,

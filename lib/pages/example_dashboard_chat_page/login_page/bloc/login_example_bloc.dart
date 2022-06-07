@@ -8,26 +8,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
-import '../../../common/exceptions/login_error_exception.dart';
-import '../../../common/validators/phone_validator.dart';
-import '../../../data/firebase/event/event_person.dart';
-import '../../../data/firebase/g_authentication.dart';
-import '../../../data/model/person_model/person_model.dart';
-import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../../common/exceptions/login_error_exception.dart';
+import '../../../../common/validators/phone_validator.dart';
+import '../../../../data/firebase/event/event_person.dart';
+import '../../../../data/firebase/g_authentication.dart';
+import '../../../../data/model/person_model/person_model.dart';
+import '../../../../data/shared_preference/app_shared_preference.dart';
+
 import '../model/password.dart';
 import '../model/username.dart';
 
-part 'login_event.dart';
+part 'login_example_event.dart';
 
-part 'login_state.dart';
+part 'login_example_state.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc(this.userRepository) : super(LoginInitial());
+class LoginExampleBloc extends Bloc<LoginExampleEvent, LoginExampleState> {
+  LoginExampleBloc(this.userRepository) : super(LoginInitial());
 
   final UserRepository userRepository;
 
   @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
+  Stream<LoginExampleState> mapEventToState(LoginExampleEvent event) async* {
     if (event is LoginUsernameChanged) {
       yield _mapUsernameChangedToState(event, state);
     } else if (event is LoginPasswordChanged) {
@@ -40,9 +41,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  LoginState _mapUsernameChangedToState(
+  LoginExampleState _mapUsernameChangedToState(
     LoginUsernameChanged event,
-    LoginState state,
+    LoginExampleState state,
   ) {
     final phoneNumber = PhoneValidator.dirty(event.phoneNumber);
     return state.copyWith(
@@ -51,9 +52,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  LoginState _mapPasswordChangedToState(
+  LoginExampleState _mapPasswordChangedToState(
     LoginPasswordChanged event,
-    LoginState state,
+    LoginExampleState state,
   ) {
     final password = Password.dirty(event.password);
     return state.copyWith(
@@ -62,9 +63,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  Stream<LoginState> _mapLoginSubmittedLoginSubmittedWithNumberPhoneToState(
+  Stream<LoginExampleState> _mapLoginSubmittedLoginSubmittedWithNumberPhoneToState(
     LoginSubmittedWithNumberPhone event,
-    LoginState state,
+    LoginExampleState state,
   ) async* {
     if (state.status.isValidated) {
       yield state.copyWith(status: FormzStatus.submissionInProgress);
@@ -75,6 +76,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             context: event.context,
             codeController: event.codeController,
             phoneNumber: state.phoneNumber.value);
+        await Future.delayed(const Duration(seconds: 5));
         yield state.copyWith(status: FormzStatus.submissionSuccess);
       } on LoginErrorException catch (e) {
         print(e);
@@ -89,9 +91,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-    Stream<LoginState> _mapLoginSubmittedToState(
+    Stream<LoginExampleState> _mapLoginSubmittedToState(
       LoginSubmitted event,
-      LoginState state,
+      LoginExampleState state,
     ) async* {
       yield state.copyWith(status: FormzStatus.submissionInProgress);
       try {
