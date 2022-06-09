@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         providers: _getProviders(),
         child: const MaterialApp(
           title: 'Sehati Syariah',
-          home:  LoginPage(),
+          home:  LoginExamplePage(),
           onGenerateRoute: Routes.generateRoute,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
