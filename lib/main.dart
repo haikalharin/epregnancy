@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/login_example_page.dart';
+import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         providers: _getProviders(),
         child: const MaterialApp(
           title: 'Sehati Syariah',
-          home:  LoginExamplePage(),
+          home:  LoginPage(),
           onGenerateRoute: Routes.generateRoute,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,

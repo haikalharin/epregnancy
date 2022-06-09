@@ -57,7 +57,7 @@ class AppSharedPreference {
   }
 
   static Future<PersonModel> getPerson() async {
-    PersonModel? person;
+    PersonModel? person = PersonModel.empty();
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
       String? personString = await AppSharedPreference.getString('person');
