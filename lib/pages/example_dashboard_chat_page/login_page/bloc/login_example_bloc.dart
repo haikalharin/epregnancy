@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:PregnancyApp/data/firebase/event/event_user.dart';
+import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -31,24 +33,39 @@ class LoginExampleBloc extends Bloc<LoginExampleEvent, LoginExampleState> {
   Stream<LoginExampleState> mapEventToState(LoginExampleEvent event) async* {
     if (event is LoginUsernameChanged) {
       yield _mapUsernameChangedToState(event, state);
+    } else if (event is LoginPhoneNumberChanged) {
+      yield _mapPhoneNumberChangedToState(event, state);
     } else if (event is LoginPasswordChanged) {
       yield _mapPasswordChangedToState(event, state);
     } else if (event is LoginSubmitted) {
       yield* _mapLoginSubmittedToState(event, state);
+    } else if (event is LoginWithGoogleSubmitted) {
+      yield* _mapLoginWithGoogleSubmittedToState(event, state);
     } else if (event is LoginSubmittedWithNumberPhone) {
       yield* _mapLoginSubmittedLoginSubmittedWithNumberPhoneToState(
           event, state);
     }
   }
 
-  LoginExampleState _mapUsernameChangedToState(
-    LoginUsernameChanged event,
+  LoginExampleState _mapPhoneNumberChangedToState(
+    LoginPhoneNumberChanged event,
     LoginExampleState state,
   ) {
     final phoneNumber = PhoneValidator.dirty(event.phoneNumber);
     return state.copyWith(
       phoneNumber: phoneNumber,
       status: Formz.validate([phoneNumber]),
+    );
+  }
+
+  LoginExampleState _mapUsernameChangedToState(
+    LoginUsernameChanged event,
+    LoginExampleState state,
+  ) {
+    final userName = Username.dirty(event.userName);
+    return state.copyWith(
+      username: userName,
+      status: Formz.validate([userName]),
     );
   }
 
@@ -63,7 +80,8 @@ class LoginExampleBloc extends Bloc<LoginExampleEvent, LoginExampleState> {
     );
   }
 
-  Stream<LoginExampleState> _mapLoginSubmittedLoginSubmittedWithNumberPhoneToState(
+  Stream<LoginExampleState>
+      _mapLoginSubmittedLoginSubmittedWithNumberPhoneToState(
     LoginSubmittedWithNumberPhone event,
     LoginExampleState state,
   ) async* {
@@ -91,46 +109,98 @@ class LoginExampleBloc extends Bloc<LoginExampleEvent, LoginExampleState> {
     }
   }
 
-    Stream<LoginExampleState> _mapLoginSubmittedToState(
-      LoginSubmitted event,
-      LoginExampleState state,
-    ) async* {
-      yield state.copyWith(status: FormzStatus.submissionInProgress);
-      try {
-        // User? user =
-        // await userRepository.loginWithGoogle();
-        UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: state.phoneNumber.value,
-          password: state.password.value,
-        );
-        await Future.delayed(const Duration(seconds: 5));
+  Stream<LoginExampleState> _mapLoginSubmittedToState(
+    LoginSubmitted event,
+    LoginExampleState state,
+  ) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    try {
+      // User? user =
+      // await userRepository.loginWithGoogle();
+      // UserCredential userCredential =
+      //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      //   email: state.phoneNumber.value,
+      //   password: state.password.value,
+      // );
+      // await Future.delayed(const Duration(seconds: 5));
+      // if (userCredential.user!.uid.isNotEmpty) {
+      //   PersonModel person = PersonModel(
+      //     phoneNumber: userCredential.user!.email,
+      //     name: userCredential.user!.displayName,
+      //     photo: userCredential.user!.photoURL,
+      //     token: '',
+      //     uid: userCredential.user!.uid,
+      //   );
+      //   EventPerson.addPerson(person);
+      //   await userCredential.user!.sendEmailVerification();
+      // await AppSharedPreference.setPerson(person);
 
-        if (userCredential.user!.uid.isNotEmpty) {
-          PersonModel person = PersonModel(
-            phoneNumber: userCredential.user!.email,
-            name: userCredential.user!.displayName,
-            photo: userCredential.user!.photoURL,
-            token: '',
-            uid: userCredential.user!.uid,
-          );
-          EventPerson.addPerson(person);
-          await userCredential.user!.sendEmailVerification();
-          await AppSharedPreference.setPerson(person);
-          // final response = await userRepository.login(
-          //     state.username.value, state.password.value);
-          // if (response) {
-          yield state.copyWith(status: FormzStatus.submissionSuccess);
-        } else {
-          yield state.copyWith(status: FormzStatus.submissionFailure);
-        }
-      } on LoginErrorException catch (e) {
-        print(e);
-        yield state.copyWith(status: FormzStatus.submissionFailure);
-      } on Exception catch (a) {
-        print(a);
-        yield state.copyWith(status: FormzStatus.submissionFailure);
+      UserModelFirebase userModelFirebase =
+          await EventUser.checkUser(state.username.value, state.password.value);
+      // await Future.delayed(const Duration(seconds: 5));
+      if (userModelFirebase.userid!.isNotEmpty) {
+        await AppSharedPreference.setUserFirebase(userModelFirebase);
+        yield state.copyWith(status: FormzStatus.submissionSuccess);
       }
+      // final response = await userRepository.login(
+      //     state.username.value, state.password.value);
+      // if (response) {
+
+      else {
+        final username = Username.dirty(state.username.value);
+        final password = Password.dirty(state.password.value);
+        yield state.copyWith(
+            status: FormzStatus.submissionFailure,
+            username: username,
+            password: password);
+      }
+    } on LoginErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
     }
   }
 
+  Stream<LoginExampleState> _mapLoginWithGoogleSubmittedToState(
+    LoginWithGoogleSubmitted event,
+    LoginExampleState state,
+  ) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    try {
+      User? user = await userRepository.loginWithGoogle();
+      // UserCredential userCredential =
+      //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      //   email: state.phoneNumber.value,
+      //   password: state.password.value,
+      // );
+      await Future.delayed(const Duration(seconds: 5));
+
+      if (user!.uid.isNotEmpty) {
+        PersonModel person = PersonModel(
+          phoneNumber: user.email,
+          name: user.displayName,
+          photo: user.photoURL,
+          token: '',
+          uid: user.uid,
+        );
+        EventPerson.addPerson(person);
+        await user.sendEmailVerification();
+        await AppSharedPreference.setPerson(person);
+        // final response = await userRepository.login(
+        //     state.username.value, state.password.value);
+        // if (response) {
+        yield state.copyWith(status: FormzStatus.submissionSuccess);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
+    } on LoginErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    }
+  }
+}

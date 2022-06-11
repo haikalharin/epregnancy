@@ -1,5 +1,4 @@
 import 'package:PregnancyApp/data/model/person_model/person_model.dart';
-import 'package:PregnancyApp/data/model/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

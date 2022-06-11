@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/person_model/person_model.dart';
-import '../model/user_model/user_model.dart';
+import '../model/user_example_model/user_example_model.dart';
 
 class AppSharedPreference {
   static final String _userLogin = "user_login";
@@ -43,14 +44,32 @@ class AppSharedPreference {
   }
 
 
-  static Future<UserModel> getUser() async {
+  static Future<UserExampleModel> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString(_user);
     Map<String,dynamic> map = jsonDecode(json!);
-    return UserModel.fromJson(map);
+    return UserExampleModel.fromJson(map);
   }
 
-  static setUser(UserModel data) async {
+  static setUser(UserExampleModel data) async {
+    String json = jsonEncode(data.toJson());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_user, json);
+  }
+  static Future<UserModelFirebase> getUserFirebaseInit() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(_user);
+    Map<String,dynamic> map = jsonDecode(json!);
+    return UserModelFirebase.fromJson(map);
+  }
+  static Future<UserModelFirebase> getUserFirebase() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(_user);
+    Map<String,dynamic> map = jsonDecode(json!);
+    return UserModelFirebase.fromJson(map);
+  }
+
+  static setUserFirebase(UserModelFirebase data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_user, json);

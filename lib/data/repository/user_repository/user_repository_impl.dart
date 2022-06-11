@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../../common/exceptions/network_connection_exception.dart';
 import '../../../common/network/network_info.dart';
 import '../../firebase/g_authentication.dart';
-import '../../model/user_model/user_model.dart';
+import '../../model/user_example_model/user_example_model.dart';
 import '../../remote_datasource/remote_datasource.dart';
 import 'user_repository.dart';
 
@@ -15,7 +15,7 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl(this.networkInfo, this.remoteDatasource);
 
   @override
-  Future<List<UserModel>> fetchUserList() async {
+  Future<List<UserExampleModel>> fetchUserList() async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchUserList();
     }
@@ -23,7 +23,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future insertUser(UserModel todo) {
+  Future insertUser(UserExampleModel todo) {
     // TODO: implement logout
     throw UnimplementedError();
   }

@@ -1,9 +1,8 @@
 import 'package:PregnancyApp/data/model/person_model/person_model.dart';
-import 'package:PregnancyApp/data/model/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ListPrivilegesWidget extends StatelessWidget {
+class ListArticle extends StatelessWidget {
   List<PersonModel> listPrivilegesData = [
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",

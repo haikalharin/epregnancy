@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
+import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,6 +16,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => LoginExamplePage());
       case RouteName.homeScreen:
         return MaterialPageRoute(builder: (_) => HomePage());
+      case RouteName.navBar:
+        return MaterialPageRoute(builder: (_) => BottomNav());
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());
       case RouteName.chatRoom:

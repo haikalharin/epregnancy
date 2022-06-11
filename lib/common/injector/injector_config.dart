@@ -1,5 +1,8 @@
 
+import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
+import 'package:PregnancyApp/data/repository/home_repository/home_repository_impl.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/bloc/login_example_bloc.dart';
+import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../data/remote_datasource/remote_datasource.dart';
@@ -39,9 +42,11 @@ abstract class InjectorConfig {
 
 
   @Register.singleton(LoginExampleBloc)
+  @Register.singleton(HomePageBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)
+  @Register.factory(HomeRepository, from: HomeRepositoryImpl)
   void _configureRepositories();
 
   @Register.factory(RemoteDataSource)
