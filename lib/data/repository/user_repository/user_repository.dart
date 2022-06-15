@@ -1,10 +1,10 @@
 
-import '../../model/user_model/user_model.dart';
+import '../../model/user_example_model/user_example_model.dart';
 
 abstract class UserRepository {
-  Future<List<UserModel>> fetchUserList();
+  Future<List<UserExampleModel>> fetchUserList();
 
-  Future insertUser(UserModel todo);
+  Future insertUser(UserExampleModel todo);
 
 
   Future loginWithGoogle();

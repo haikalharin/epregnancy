@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import 'bloc/login_example_bloc.dart';
 
@@ -31,7 +32,7 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
                       content: Text("failed"), backgroundColor: Colors.red);
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
-                  // Navigator.of(context).pushNamed(RouteName.dashboard);
+                  Navigator.of(context).pushNamed(RouteName.navBar);
                   // Navigator.of(context).pushNamedAndRemoveUntil(
                   //                 RouteName.homeScreen,
                   //                 ModalRoute.withName(RouteName.homeScreen),
@@ -51,8 +52,8 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
                           SizedBox(height: 80),
                           SizedBox(height: 120),
                           _UsernameInput(),
-                          // SizedBox(height: 12),
-                          // _PasswordInput(),
+                          SizedBox(height: 12),
+                          _PasswordInput(),
                           // _PasswordTextField(),
                           SizedBox(height: 16),
                           RaisedButton(
@@ -60,7 +61,7 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
 
 
                               Injector.resolve<LoginExampleBloc>()
-                                  .add(LoginSubmittedWithNumberPhone(context, _codeController));
+                                  .add(LoginSubmitted());
                             },
                             child: Text("Login With Google"),
                           ),
@@ -96,15 +97,15 @@ class _UsernameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginExampleBloc, LoginExampleState>(
-      buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
+      buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
           onChanged: (username) =>
               Injector.resolve<LoginExampleBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
-            labelText: 'Number Phone',
-            errorText: state.phoneNumber.invalid ? 'invalid username' : null,
+            labelText: 'username',
+            errorText: state.username.invalid ? 'invalid username' : null,
           ),
         );
       },

@@ -8,13 +8,22 @@ abstract class LoginExampleEvent extends Equatable{
   List<Object> get props => [];
 }
 
-class LoginUsernameChanged extends LoginExampleEvent {
-  const LoginUsernameChanged(this.phoneNumber);
+class LoginPhoneNumberChanged extends LoginExampleEvent {
+  const LoginPhoneNumberChanged(this.phoneNumber);
 
   final String phoneNumber;
 
   @override
   List<Object> get props => [phoneNumber];
+}
+
+class LoginUsernameChanged extends LoginExampleEvent {
+  const LoginUsernameChanged(this.userName);
+
+  final String userName;
+
+  @override
+  List<Object> get props => [userName];
 }
 
 class LoginPasswordChanged extends LoginExampleEvent {
@@ -28,6 +37,9 @@ class LoginPasswordChanged extends LoginExampleEvent {
 
 class LoginSubmitted extends LoginExampleEvent {
   const LoginSubmitted();
+}
+class LoginWithGoogleSubmitted extends LoginExampleEvent {
+  const LoginWithGoogleSubmitted();
 }
 
 class LoginSubmittedWithNumberPhone extends LoginExampleEvent {

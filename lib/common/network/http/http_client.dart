@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/model/user_model/user_model.dart';
+import '../../../data/model/user_example_model/user_example_model.dart';
 import '../../configurations/configurations.dart';
 import '../../remote/url/service_url.dart';
 import '../http_constants.dart';
@@ -112,6 +112,6 @@ class HttpClient {
     final userString = prefs.getString('user');
     if (userString == null) return null;
     Map <String, dynamic> userMap = jsonDecode(userString);
-    return UserModel.fromJson(userMap).token;
+    return UserExampleModel.fromJson(userMap).token;
   }
 }

@@ -47,7 +47,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
             ),
             ListTile(
               onTap: () => Navigator.pop(context),
-              title: Text('CLose'),
+              title: Text('Close'),
             ),
           ],
         );
@@ -119,7 +119,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
                   builder: (context) => ChatRoom(arguments: {'room': room})));
         },
         onLongPress: () {
-          // deleteChatRoom(room.uid);
+          deleteChatRoom(room.uid!);
         },
         child: Padding(
           padding: EdgeInsets.all(16),

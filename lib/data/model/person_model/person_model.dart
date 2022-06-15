@@ -31,4 +31,14 @@ class PersonModel implements BaseModel {
   jsonToModel(Map<String, dynamic> json) {
     return fromJson(json);
   }
+
+  static PersonModel empty() {
+    return PersonModel(
+      phoneNumber: '',
+      name:  '',
+      photo:  '',
+      token:  '',
+      uid:  '',
+    );
+  }
 }
