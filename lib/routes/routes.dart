@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../common/constants/router_constants.dart';
+import '../login_page/login_page.dart';
 import '../pages/example_dashboard_chat_page/chat_room.dart';
-import '../pages/example_dashboard_chat_page/login_page/login_example_page.dart';
+import '../pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import '../utils/remote_utils.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouteName.login:
-        return MaterialPageRoute(builder: (_) => LoginExamplePage());
+        return MaterialPageRoute(builder: (_) => LoginPage());
       case RouteName.homeScreen:
         return MaterialPageRoute(builder: (_) => HomePage());
       case RouteName.navBar:
