@@ -2,6 +2,8 @@ import 'package:PregnancyApp/data/model/person_model/person_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../utils/epragnancy_color.dart';
+
 class ListCalendarWidget extends StatelessWidget {
   List<PersonModel> listPrivilegesData = [
     PersonModel(
@@ -59,7 +61,7 @@ class ListCalendarWidget extends StatelessWidget {
                 return Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.grey,
+                      color: EpragnancyColors.pink,
                     ),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -101,7 +103,7 @@ class ListCalendarWidget extends StatelessWidget {
                                               borderRadius:
                                               BorderRadius.circular(
                                                   25.0),
-                                              color: Colors.grey)),
+                                              color: EpragnancyColors.pink)),
                                       Container(
                                           margin:
                                           EdgeInsets.only(right: 10),
@@ -111,7 +113,7 @@ class ListCalendarWidget extends StatelessWidget {
                                               borderRadius:
                                               BorderRadius.circular(
                                                   25.0),
-                                              color: Colors.grey)),
+                                              color: EpragnancyColors.pink)),
                                       Container(
                                           margin:
                                           EdgeInsets.only(right: 10),
@@ -121,7 +123,7 @@ class ListCalendarWidget extends StatelessWidget {
                                               borderRadius:
                                               BorderRadius.circular(
                                                   25.0),
-                                              color: Colors.grey)),
+                                              color: EpragnancyColors.pink)),
                                     ],
                                   )),
                             ],
@@ -130,7 +132,7 @@ class ListCalendarWidget extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30.0),
-                              color: Colors.grey),
+                              color: EpragnancyColors.pink),
                           height: 60,
                           width: 60,
                         ),

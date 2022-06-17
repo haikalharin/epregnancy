@@ -3,8 +3,13 @@ import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/login_
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
+import '../survey_page/survey_page.dart';
+int indexBottomNavSelected = 0;
+bool isChangeIndex = false;
+
 class BottomNav extends StatefulWidget {
-  const BottomNav({Key? key}) : super(key: key);
+  int? arguments = 0;
+   BottomNav({Key? key, this.arguments}) : super(key: key);
 
   // final UserModel bottomUserModelData;
 
@@ -12,13 +17,20 @@ class BottomNav extends StatefulWidget {
   _BottomNavState createState() => _BottomNavState();
 }
 
-class _BottomNavState extends State<BottomNav> {
-  int indexSelected = 0;
+class _BottomNavState extends State<BottomNav>  with TickerProviderStateMixin {
+  TabController? controller ;
 
-  // _BottomNavState(UserModel bottomUserModelData);
+  int indexSelected = 0;
 
   @override
   Widget build(BuildContext context) {
+    if( indexSelected != indexBottomNavSelected && isChangeIndex) {
+     setState(() {
+       indexSelected = indexBottomNavSelected;
+       isChangeIndex = false;
+     });
+
+    }
     return Stack(children: [
       Scaffold(
         body: _buildWidgetBody(),
@@ -240,7 +252,7 @@ class _BottomNavState extends State<BottomNav> {
       case 0:
         return HomePage();
       case 1:
-        return LoginExamplePage();
+        return SurveyPage();
       case 2:
         return  Dashboard();
       case 3:

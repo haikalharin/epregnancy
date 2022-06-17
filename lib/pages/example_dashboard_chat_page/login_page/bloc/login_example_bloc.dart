@@ -11,6 +11,7 @@ import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../common/exceptions/login_error_exception.dart';
+import '../../../../common/validators/email_validator.dart';
 import '../../../../common/validators/phone_validator.dart';
 import '../../../../data/firebase/event/event_person.dart';
 import '../../../../data/firebase/g_authentication.dart';

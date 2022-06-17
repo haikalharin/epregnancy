@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/epragnancy_color.dart';
+
 class AcaraUmumPage extends StatelessWidget {
   const AcaraUmumPage({Key? key}) : super(key: key);
 
@@ -11,7 +13,7 @@ class AcaraUmumPage extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.grey,
+              color: EpragnancyColors.pink,
             ),
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -53,7 +55,7 @@ class AcaraUmumPage extends StatelessWidget {
                                       borderRadius:
                                       BorderRadius.circular(
                                           25.0),
-                                      color: Colors.grey)),
+                                      color: EpragnancyColors.pink)),
                               Container(
                                   margin:
                                   EdgeInsets.only(right: 10),
@@ -63,7 +65,7 @@ class AcaraUmumPage extends StatelessWidget {
                                       borderRadius:
                                       BorderRadius.circular(
                                           25.0),
-                                      color: Colors.grey)),
+                                      color: EpragnancyColors.pink)),
                               Container(
                                   margin:
                                   EdgeInsets.only(right: 10),
@@ -73,7 +75,7 @@ class AcaraUmumPage extends StatelessWidget {
                                       borderRadius:
                                       BorderRadius.circular(
                                           25.0),
-                                      color: Colors.grey)),
+                                      color: EpragnancyColors.pink)),
                             ],
                           )),
                     ],
@@ -82,7 +84,7 @@ class AcaraUmumPage extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30.0),
-                      color: Colors.grey),
+                      color: EpragnancyColors.pink),
                   height: 60,
                   width: 60,
                 ),

@@ -2,6 +2,8 @@ import 'package:PregnancyApp/data/model/person_model/person_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../utils/epragnancy_color.dart';
+
 class ListArticle extends StatelessWidget {
   List<PersonModel> listPrivilegesData = [
     PersonModel(
@@ -44,7 +46,7 @@ class ListArticle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 150,
+        height: 130,
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         decoration: BoxDecoration(color: Colors.white),
         child: listPrivilegesData.isEmpty
@@ -61,7 +63,7 @@ class ListArticle extends StatelessWidget {
                         padding: EdgeInsets.only(left: 20,right: 20,top: 10),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.grey,
+                            color: EpragnancyColors.pink,
                           ),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -89,7 +91,7 @@ class ListArticle extends StatelessWidget {
                             Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey),
+                                  color: EpragnancyColors.pink),
                               height: 100,
                               width: 100,
                             ),
