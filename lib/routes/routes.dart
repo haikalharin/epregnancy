@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import '../common/constants/router_constants.dart';
 import '../pages/example_dashboard_chat_page/chat_room.dart';
 import '../pages/example_dashboard_chat_page/login_page/login_example_page.dart';
+import '../pages/landing_page/landing_page.dart';
 import '../utils/remote_utils.dart';
 
 class Routes {
@@ -22,6 +23,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => Dashboard());
       case RouteName.chatRoom:
         return MaterialPageRoute(builder: (_) => ChatRoom(arguments:getDataValue(settings.arguments) ));
+      case RouteName.landingPage:
+        return MaterialPageRoute(builder: (_) => LandingPage());
+
 
 
       // case RouteName.order:
