@@ -67,14 +67,18 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                               )
                           ),
-                          // _PasswordTextField(),
-                          SizedBox(height: 16),
-                          RaisedButton(
-                            onPressed: () async {
-                              Injector.resolve<LoginBloc>().add(LoginSubmitted());
-                            },
-                            child: Text("Login With Google"),
+                          SizedBox(height: 10),
+                          Container(
+                              height: 50,
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  Injector.resolve<LoginBloc>().add(LoginSubmitted());
+                                },
+                                child: Text("Login With Google"),
+                              )
                           ),
+                          // _PasswordTextField(),
                         ],
                       );
                     },
@@ -153,7 +157,7 @@ class _UsernameInput extends StatelessWidget {
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
             labelText: 'E-mail',
-            errorText: state.username.invalid ? 'invalid username' : null,
+            errorText: state.username.invalid ? 'Format e-mail salah' : null,
           ),
         );
       },
@@ -175,8 +179,8 @@ class _PasswordInput extends StatelessWidget {
               Injector.resolve<LoginBloc>().add(LoginPasswordChanged(password)),
           obscureText: true,
           decoration: InputDecoration(
-            labelText: 'password',
-            errorText: state.password.invalid ? 'invalid password' : null,
+            labelText: 'Kata Sandi',
+            errorText: state.password.invalid ? 'Kata Sandi salah' : null,
           ),
         );
       },

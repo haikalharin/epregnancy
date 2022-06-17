@@ -18,7 +18,7 @@ import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
 import '../model/password.dart';
-import '../model/username.dart';
+import '../model/email_address.dart';
 
 part 'login_event.dart';
 
@@ -62,7 +62,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginUsernameChanged event,
     LoginState state,
   ) {
-    final userName = Username.dirty(event.userName);
+    final userName = EmailAddressUsername.dirty(event.userName);
     return state.copyWith(
       username: userName,
       status: Formz.validate([userName]),
@@ -147,7 +147,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // if (response) {
 
       else {
-        final username = Username.dirty(state.username.value);
+        final username = EmailAddressUsername.dirty(state.username.value);
         final password = Password.dirty(state.password.value);
         yield state.copyWith(
             status: FormzStatus.submissionFailure,

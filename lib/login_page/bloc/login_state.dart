@@ -2,14 +2,14 @@ part of 'login_bloc.dart';
 
 class LoginState {
   final PhoneValidator phoneNumber;
-  final Username username;
+  final EmailAddressUsername username;
   final Password password;
   final FormzStatus status;
   final String? errorMessage;
 
   LoginState(
       {this.phoneNumber = const PhoneValidator.pure(),
-        this.username = const Username.pure(),
+        this.username = const EmailAddressUsername.pure(),
         this.password = const Password.pure(),
         this.status = FormzStatus.pure,
         this.errorMessage});
@@ -17,7 +17,7 @@ class LoginState {
   LoginState copyWith(
       {FormzStatus? status,
         PhoneValidator? phoneNumber,
-        Username? username,
+        EmailAddressUsername? username,
         Password? password,
         String? errorMessage}) {
     return LoginState(
