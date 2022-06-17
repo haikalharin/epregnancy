@@ -17,11 +17,11 @@ import '../../../../data/firebase/g_authentication.dart';
 import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
+import '../../common/services/auth_service.dart';
 import '../model/password.dart';
 import '../model/email_address.dart';
 
 part 'login_event.dart';
-
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -114,6 +114,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginState state,
   ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress);
+
     try {
       // User? user =
       // await userRepository.loginWithGoogle();
@@ -135,25 +136,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       //   await userCredential.user!.sendEmailVerification();
       // await AppSharedPreference.setPerson(person);
 
-      UserModelFirebase userModelFirebase =
-          await EventUser.checkUser(state.username.value, state.password.value);
+      // UserModelFirebase userModelFirebase =
+      //     await EventUser.checkUser(state.username.value, state.password.value);
       // await Future.delayed(const Duration(seconds: 5));
-      if (userModelFirebase.userid!.isNotEmpty) {
-        await AppSharedPreference.setUserFirebase(userModelFirebase);
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
-      }
+      // if (userModelFirebase.userid!.isNotEmpty) {
+      //   await AppSharedPreference.setUserFirebase(userModelFirebase);
+      //   yield state.copyWith(status: FormzStatus.submissionSuccess);
+      // }
       // final response = await userRepository.login(
       //     state.username.value, state.password.value);
       // if (response) {
 
-      else {
-        final username = EmailAddressUsername.dirty(state.username.value);
-        final password = Password.dirty(state.password.value);
-        yield state.copyWith(
-            status: FormzStatus.submissionFailure,
-            username: username,
-            password: password);
-      }
+      // else {
+      //   final username = EmailAddressUsername.dirty(state.username.value);
+      //   final password = Password.dirty(state.password.value);
+      //   yield state.copyWith(
+      //       status: FormzStatus.submissionFailure,
+      //       username: username,
+      //       password: password);
+      // }
+
+      var result = AuthService().loginUser(email: state.username.value, password: state.password.value);
+      print(result);
+
+      yield state.copyWith(status: FormzStatus.submissionSuccess);
+
     } on LoginErrorException catch (e) {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);
@@ -169,32 +176,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
-      User? user = await userRepository.loginWithGoogle();
-      // UserCredential userCredential =
-      //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      //   email: state.phoneNumber.value,
-      //   password: state.password.value,
-      // );
-      await Future.delayed(const Duration(seconds: 5));
+      await FirebaseAuth.instance.signOut();
+      var result = AuthService().signInWithGoogle();
+      print(result);
+      yield state.copyWith(status: FormzStatus.submissionSuccess);
 
-      if (user!.uid.isNotEmpty) {
-        PersonModel person = PersonModel(
-          phoneNumber: user.email,
-          name: user.displayName,
-          photo: user.photoURL,
-          token: '',
-          uid: user.uid,
-        );
-        EventPerson.addPerson(person);
-        await user.sendEmailVerification();
-        await AppSharedPreference.setPerson(person);
-        // final response = await userRepository.login(
-        //     state.username.value, state.password.value);
-        // if (response) {
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
-      } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure);
-      }
     } on LoginErrorException catch (e) {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);

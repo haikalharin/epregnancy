@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ const _horizontalPadding = 24.0;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -41,49 +43,84 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Stack(
                 children: [
-                  BlocBuilder<LoginBloc, LoginState>(
-                    builder: (context, state) {
-                      return ListView(
-                        physics: const ClampingScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: _horizontalPadding,
-                        ),
-                        children: [
-                          SizedBox(height: 80),
-                          // SizedBox(height: 120),
-                          _HeadingText(),
-                          SizedBox(height: 20),
-                          _UsernameInput(),
-                          SizedBox(height: 12),
-                          _PasswordInput(),
-                          _ForgotPasswordButton(),
-                          Container(
-                              height: 50,
-                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: ElevatedButton(
-                                child: const Text('Login'),
-                                onPressed: () {
 
-                                },
-                              )
+                  Positioned.fill(
+                    child: Image.asset(
+                      "assets/login_background.png",
+                      fit: BoxFit.fitWidth,
+                      alignment: Alignment.bottomLeft,
+                    ),
+                  ),
+                  Center(
+                    child: BlocBuilder<LoginBloc, LoginState>(
+                      builder: (context, state) {
+                        return ListView(
+                          physics: const ClampingScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: _horizontalPadding,
                           ),
-                          SizedBox(height: 10),
-                          Container(
+                          children: [
+                            SizedBox(height: 60),
+                            // SizedBox(height: 120),
+                            //_HeadingText(),
+                            Text(
+                              "Masuk dengan email",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 40,
+                              ),
+                            ),
+                            Text(
+                              "Masuk dengan akun email yang terdaftar",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            _UsernameInput(),
+                            SizedBox(height: 12),
+                            _PasswordInput(),
+                            _ForgotPasswordButton(),
+                            SizedBox(height: 20),
+                            Container(
                               height: 50,
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: ElevatedButton(
-                                onPressed: () async {
-                                  Injector.resolve<LoginBloc>().add(LoginSubmitted());
-                                },
-                                child: Text("Login With Google"),
-                              )
-                          ),
-                          // _PasswordTextField(),
-                        ],
-                      );
-                    },
+                                  child: const Text('Login'),
+                                  onPressed: () {
+                                    if(state.username.valid && state.password.valid) {
+                                      Injector.resolve<LoginBloc>().add(LoginSubmitted());
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      primary: HexColor('#FF7F90'))
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              height: 50,
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: ElevatedButton(
+                                  onPressed: () async {
+                                    Injector.resolve<LoginBloc>().add(LoginWithGoogleSubmitted());
+                                  },
+                                  child: Text("Lanjut dengan Google"),
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.white,
+                                      onPrimary: Colors.black
+                                  )
+                              ),
+                            ),
+                            // _PasswordTextField(),
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                  _Loading()
+                  _Loading(),
                 ],
               ))),
     );
@@ -112,13 +149,14 @@ class _HeadingText extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return Center(
+        return Align(
+          alignment: Alignment.topLeft,
           child: Container(
             margin: EdgeInsets.only(top: 100),
             child: Column(
               children: const <Widget>[
                 Text(
-                  "Masuk",
+                  "Masuk dengan email",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -126,8 +164,7 @@ class _HeadingText extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Masukkan akun untuk mulai menggunakan aplikasi ke ePregnancy",
-                  textAlign: TextAlign.center,
+                  "Masuk dengan akun email yang terdaftar",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.normal,
@@ -195,16 +232,19 @@ class _ForgotPasswordButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return Center(
+        return Align(
+          alignment: Alignment.centerRight,
           child: Container(
-            margin: EdgeInsets.only(top: 100),
             child: Column(
               children: <Widget>[
                 TextButton(
-                  child: Text('➔ Lupa Akun'),
+                  child: Text('Lupa kata sandi?'),
                   onPressed: () {
                     print('Pressed');
                   },
+                  style: TextButton.styleFrom(
+                    primary: HexColor('#FF7F90'),
+                  ),
                 ),
               ],
             ),
