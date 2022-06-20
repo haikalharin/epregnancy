@@ -14,4 +14,5 @@ class RouteName {
   static const profile = '/profile';
   static const simpanan = '/simpanan';
   static const simpananDeposan = '/simpananDeposan';
+  static const landingPage = '/landingPage';
 }

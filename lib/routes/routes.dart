@@ -27,6 +27,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => Dashboard());
       case RouteName.chatRoom:
         return MaterialPageRoute(builder: (_) => ChatRoom(arguments:getDataValue(settings.arguments) ));
+      case RouteName.landingPage:
+        return MaterialPageRoute(builder: (_) => LandingPage());
+
 
 
       // case RouteName.order:
