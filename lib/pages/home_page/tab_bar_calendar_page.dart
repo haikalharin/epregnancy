@@ -126,8 +126,8 @@ class _TabBarCalendarPageState extends State<TabBarCalendarPage>
                             controller: _tabController,
                             physics: NeverScrollableScrollPhysics(),
                             children:  [
-                              ListCalendarWidget(),
-                              ListCalendarWidget(),
+                              ListCalendarWidget(tipeAcara: 'Acara umum' ,),
+                              ListCalendarWidget(tipeAcara: 'Acara Saya',),
                               // AcaraUmumPage(),
                             ]),
                       ),

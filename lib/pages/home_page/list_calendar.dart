@@ -5,38 +5,45 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../utils/epragnancy_color.dart';
 
 class ListCalendarWidget extends StatelessWidget {
+  ListCalendarWidget({Key? key, this.tipeAcara}) : super(key: key);
+  final String? tipeAcara;
   List<PersonModel> listPrivilegesData = [
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
+        photo: "Pastikan Kesehatan Bayi Balita",
+        phoneNumber: "Sel, 9 Agu 2022"),
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
+        photo: "Pastikan Kesehatan Bayi Balita",
+        phoneNumber: "Sel, 9 Agu 2022"),
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
+        photo: "Pastikan Kesehatan Bayi Balita",
+        phoneNumber: "Sel, 9 Agu 2022"),
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
+        photo: "Pastikan Kesehatan Bayi Balita",
+        phoneNumber: "Sel, 9 Agu 2022"),
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
+        photo: "Pastikan Kesehatan Bayi Balita",
+        phoneNumber: "Sel, 9 Agu 2022"),
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
+        photo: "Pastikan Kesehatan Bayi Balita",
+        phoneNumber: "Sel, 9 Agu 2022"),
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
+        photo: "Pastikan Kesehatan Bayi Balita",
+        phoneNumber: "Sel, 9 Agu 2022"),
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
+        photo: "Pastikan Kesehatan Bayi Balita",
+        phoneNumber: "Sel, 9 Agu 2022"),
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-
+        photo: "Pastikan Kesehatan Bayi Balita",
+        phoneNumber: "Sel, 9 Agu 2022"),
   ];
 
   // final String nextMenu, content;
@@ -51,99 +58,95 @@ class ListCalendarWidget extends StatelessWidget {
         decoration: BoxDecoration(color: Colors.white),
         child: listPrivilegesData.isEmpty
             ? Stack(children: [
-          Container(margin: EdgeInsets.only(), child: Container())
-        ])
+                Container(margin: EdgeInsets.only(), child: Container())
+              ])
             : Stack(
-          children: [
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: EpragnancyColors.pink,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  margin: EdgeInsets.only(left: 50, right: 50, bottom: 30),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 20, bottom: 20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-
-                          margin: EdgeInsets.only(right: 20),
-                          child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  child: const Text(
-                                    "Trimester Pertama",
-                                    style: TextStyle(fontSize: 16),
-                                  )),
-                              Container(
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  child: const Text(
-                                    "8 minggu 1 hari ",
-                                    style: TextStyle(fontSize: 12),
-                                  )),
-                              Container(
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          margin:
-                                          EdgeInsets.only(right: 10),
-                                          height: 10,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  25.0),
-                                              color: EpragnancyColors.pink)),
-                                      Container(
-                                          margin:
-                                          EdgeInsets.only(right: 10),
-                                          height: 10,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  25.0),
-                                              color: EpragnancyColors.pink)),
-                                      Container(
-                                          margin:
-                                          EdgeInsets.only(right: 10),
-                                          height: 10,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  25.0),
-                                              color: EpragnancyColors.pink)),
-                                    ],
-                                  )),
-                            ],
+                children: [
+                  ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        // padding: EdgeInsets.,
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: EpragnancyColors.pink,
                           ),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              color: EpragnancyColors.pink),
-                          height: 60,
-                          width: 60,
+                        // color: Colors.greenAccent,
+                        margin:
+                            EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      // width: 62,
+
+                                      child: Text(
+                                        listPrivilegesData[index].phoneNumber!,
+                                        style: TextStyle(fontSize: 12),
+                                      )),
+                                  Container(
+                                      // width: 62,
+
+                                      child: Text(
+                                        tipeAcara ?? '',
+                                        style: TextStyle(fontSize: 12,color: EpragnancyColors.pink),
+                                      )),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                            width: 230,
+                                            margin: EdgeInsets.only(bottom: 10),
+                                            child: Text(
+                                                listPrivilegesData[index]
+                                                    .photo!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)),
+                                        Container(
+                                            width: 230,
+                                            margin: EdgeInsets.only(),
+                                            child: Text(
+                                                listPrivilegesData[index]
+                                                    .name!)),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        color: EpragnancyColors.pink),
+                                    height: 80,
+                                    width: 80,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
+                    itemCount: listPrivilegesData.length,
                   ),
-                );
-              },
-              itemCount: listPrivilegesData.length,
-            ),
-          ],
-        ));
+                ],
+              ));
   }
 }
