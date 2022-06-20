@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +8,7 @@ import 'package:formz/formz.dart';
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../utils/epragnancy_color.dart';
-import '../example_dashboard_chat_page/login_page/bloc/login_example_bloc.dart';
-import '../navbar_page/bottom_nav.dart';
+
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPage extends StatefulWidget {
