@@ -10,6 +10,7 @@ import '../common/constants/router_constants.dart';
 import '../login_page/login_page.dart';
 import '../pages/example_dashboard_chat_page/chat_room.dart';
 import '../pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
+import '../pages/landing_page/landing_page.dart';
 import '../utils/remote_utils.dart';
 
 class Routes {
