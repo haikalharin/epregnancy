@@ -12,7 +12,8 @@ class _$InjectorConfig extends InjectorConfig {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton((c) => LoginExampleBloc(c<UserRepository>()))
-      ..registerSingleton((c) => HomePageBloc(c<HomeRepository>()));
+      ..registerSingleton((c) => HomePageBloc(c<HomeRepository>()))
+      ..registerSingleton((c) => SurveyPageBloc(c<UserRepository>()));
   }
 
   @override

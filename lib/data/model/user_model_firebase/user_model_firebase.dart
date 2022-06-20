@@ -22,6 +22,7 @@ class UserModelFirebase implements BaseModel {
     this.name,
     this.password,
     this.sex,
+    this.uid,
     this.status,
     this.userid,
   });
@@ -39,6 +40,7 @@ class UserModelFirebase implements BaseModel {
       name: json['Name'] ?? '',
       password: json['Password'] ?? '',
       sex: json['Sex'] ?? '',
+      uid: json['Uid'] ?? '',
       status: json['Status'] ?? '',
       userid: json['Userid'] ?? '',
     );
@@ -52,6 +54,7 @@ class UserModelFirebase implements BaseModel {
         'Name': name,
         'Password': password,
         'Sex': sex,
+        'Uid': uid,
         'Status': status,
         'Userid': userid,
       };
@@ -70,6 +73,7 @@ class UserModelFirebase implements BaseModel {
       name: '',
       password: '',
       sex: '',
+      uid: '',
       status: '',
       userid: '',
     );
