@@ -175,15 +175,30 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await FirebaseAuth.instance.signOut();
       final User? user = await GAuthentication.signInWithGoogle();
       if (user != null) {
-        UserModelFirebase userModelFirebase = UserModelFirebase(
-              email: user.email,
-              name: user.displayName,
-              status: 'InActive',
-              uid: user.uid,
-        );
-        EventUser.addUser(userModelFirebase);
+        UserModelFirebase? userModelFirebase;
+        final UserModelFirebase userExist =
+            await EventUser.checkUserExist(user.email!);
+        if (userExist.email!.isEmpty) {
+          userModelFirebase = UserModelFirebase(
+            email: user.email,
+            name: user.displayName,
+            status: 'InActive',
+            uid: user.uid,
+          );
+          EventUser.addUser(userModelFirebase);
+        } else {
+          userModelFirebase = UserModelFirebase(
+            email: userExist.email,
+            name: userExist.name,
+            status: userExist.status,
+            uid: user.uid,
+          );
+        }
+
         await AppSharedPreference.setUserFirebase(userModelFirebase);
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
+        yield state.copyWith(
+            status: FormzStatus.submissionSuccess,
+            userModelFirebase: userModelFirebase);
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure);
       }

@@ -39,6 +39,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    Injector.resolve<HomePageBloc>().add(HomeInitEvent());
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey.shade200,

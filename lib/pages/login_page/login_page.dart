@@ -17,7 +17,6 @@ const _horizontalPadding = 24.0;
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -39,7 +38,12 @@ class _LoginPageState extends State<LoginPage> {
                       content: Text("failed"), backgroundColor: Colors.red);
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
-                  Navigator.of(context).pushNamed(RouteName.surveyPage);
+                  if (state.userModelFirebase!.status == 'Active') {
+                    Navigator.of(context).pushNamed(RouteName.navBar);
+                  } else {
+                    Navigator.of(context).pushNamed(RouteName.surveyPage);
+                  }
+
                   // Navigator.of(context).pushNamedAndRemoveUntil(
                   //                 RouteName.homeScreen,
                   //                 ModalRoute.withName(RouteName.homeScreen),
@@ -80,8 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 15
-                              ),
+                                  fontSize: 15),
                             ),
                             SizedBox(height: 20),
                             _UsernameInput(),
@@ -95,7 +98,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: ElevatedButton(
                                   child: const Text('Login'),
                                   onPressed: () {
-                                    Injector.resolve<LoginBloc>().add(LoginSubmitted());
+                                    Injector.resolve<LoginBloc>()
+                                        .add(LoginSubmitted());
 
                                     // if(state.username.valid && state.password.valid) {
                                     //
@@ -109,8 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                                     // }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      primary: HexColor('#FF7F90'))
-                              ),
+                                      primary: HexColor('#FF7F90'))),
                             ),
                             SizedBox(height: 10),
                             Container(
@@ -120,14 +123,13 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: () async {
                                     // GAuthentication.signOut(context: context);
                                     // GAuthentication.signInWithGoogle();
-                                    Injector.resolve<LoginBloc>().add(LoginWithGoogleSubmitted());
+                                    Injector.resolve<LoginBloc>()
+                                        .add(LoginWithGoogleSubmitted());
                                   },
                                   child: Text("Lanjut dengan Google"),
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.white,
-                                      onPrimary: Colors.black
-                                  )
-                              ),
+                                      onPrimary: Colors.black)),
                             ),
                             // _PasswordTextField(),
                           ],
@@ -181,10 +183,9 @@ class _HeadingText extends StatelessWidget {
                 Text(
                   "Masuk dengan akun email yang terdaftar",
                   style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 15
-                  ),
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15),
                 ),
               ],
             ),

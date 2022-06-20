@@ -26,18 +26,19 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     }
   }
 
-  Stream<SurveyPageState> _mapSurveyAddDataToState(
-    SurveyAddDataEvent event,
-    SurveyPageState state,
-  ) async* {
+  Stream<SurveyPageState> _mapSurveyAddDataToState(SurveyAddDataEvent event,
+      SurveyPageState state,) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
       final UserModelFirebase user = await userRepository.fetchUser();
-      EventUser.updateActiveUser(myUid: user.uid, status: 'Active');
-      EventUser.updateConditionUser(
+      final bool isUpdateActive = await EventUser.updateActiveUser(
+          myUid: user.uid, status: 'Active');
+      final bool isUpdateCondition = await EventUser.updateConditionUser(
           myUid: user.uid, condition: event.condition);
 
-      yield state.copyWith(status: FormzStatus.submissionSuccess);
+      if(isUpdateActive && isUpdateCondition){
+        yield state.copyWith(status: FormzStatus.submissionSuccess);
+      }
     } on SurveyErrorException catch (e) {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);

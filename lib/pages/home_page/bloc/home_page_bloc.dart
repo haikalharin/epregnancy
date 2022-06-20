@@ -24,7 +24,15 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   Stream<HomePageState> mapEventToState(HomePageEvent event) async* {
     if (event is HomeFetchDataEvent) {
       yield* _mapHomeFetchUserToState(event, state);
+    } else if (event is HomeInitEvent){
+      yield _mapHomeInitEventToState(event,state);
+
     }
+  }
+
+  HomePageState _mapHomeInitEventToState(
+      HomeInitEvent event, HomePageState state) {
+    return HomePageState();
   }
 
   Stream<HomePageState> _mapHomeFetchUserToState(
@@ -36,7 +44,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       final UserModelFirebase response = await homeRepository.fetchUser();
 
-      if(response.userid!.isNotEmpty){
+      if(response.uid!.isNotEmpty){
         yield state.copyWith(
           status: FormzStatus.submissionSuccess,
           user: response,

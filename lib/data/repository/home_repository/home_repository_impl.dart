@@ -17,7 +17,7 @@ class HomeRepositoryImpl extends HomeRepository {
     if (await networkInfo.isConnected) {
       UserModelFirebase userModelFirebase =
           await AppSharedPreference.getUserFirebase();
-      if (userModelFirebase.userid!.isNotEmpty) {
+      if (userModelFirebase.email!.isNotEmpty) {
         return userModelFirebase;
       } else {
         return UserModelFirebase.empty();
