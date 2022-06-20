@@ -156,9 +156,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       //       password: password);
       // }
 
-      var result = AuthService().loginUser(email: state.username.value, password: state.password.value);
-      print(result);
-
       yield state.copyWith(status: FormzStatus.submissionSuccess);
 
     } on LoginErrorException catch (e) {
