@@ -1,6 +1,8 @@
 
 dynamic getDataValue(dynamic result) => result;
 
+dynamic getDataCondition(dynamic result) => result['Condition'];
+
 dynamic cekPersonInRoom(dynamic result) => result['inRoom'];
 
 dynamic getPersonTokenFirebase(dynamic result) => result['token'];

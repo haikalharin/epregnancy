@@ -1,6 +1,7 @@
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../model/person_model/person_model.dart';
@@ -26,30 +27,38 @@ class EventUser {
     return UserModelFirebase.empty();
   }
 
-  static Future<bool> updateActiveUser({String? myUid, String? status}) async {
+  static void addUser(UserModelFirebase user) {
     try {
-      final data = FirebaseFirestore.instance
+      FirebaseFirestore.instance
+          .collection('USERS')
+          .doc(user.uid)
+          .set(user.toJson())
+          .then((value) => null)
+          .catchError((onError) => print(onError));
+    } catch (e) {
+      print(e);
+    }
+  }
+
+ static void updateActiveUser({String? myUid, String? status})  {
+    try {
+      FirebaseFirestore.instance
           .collection('USERS')
           .doc(myUid)
           .update({'Status': status})
           .then((value) => null)
           .catchError((onError) => print(onError));
-      if(data != null){
-        return true;
-      } else{
-        return false;
-      }
+
 
     } catch (e) {
       print(e);
-      return false;
     }
   }
 
-  static Future<bool> updateConditionUser({
+  static void updateConditionUser({
     String? myUid,
     String? condition,
-  }) async {
+  })  {
     try {
       FirebaseFirestore.instance
           .collection('USER_ROLES')
@@ -57,10 +66,8 @@ class EventUser {
           .update({'Condition': condition})
           .then((value) => null)
           .catchError((onError) => print(onError));
-      return true;
     } catch (e) {
       print(e);
-      return false;
     }
   }
 }

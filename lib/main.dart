@@ -48,6 +48,8 @@ class MyApp extends StatelessWidget {
   }
 
   List<BlocProvider> _getProviders() => [
+    BlocProvider<LoginExampleBloc>(
+        create: (context) => Injector.container.resolve<LoginExampleBloc>()),
     BlocProvider<LoginBloc>(
         create: (context) => Injector.container.resolve<LoginBloc>()),
     BlocProvider<HomePageBloc>(
