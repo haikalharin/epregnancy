@@ -2,7 +2,7 @@ import 'package:PregnancyApp/pages/landing_page/slider_modal.dart';
 import 'package:PregnancyApp/pages/landing_page/widget/slider_list.dart';
 import 'package:flutter/material.dart';
 
-import '../example_dashboard_chat_page/login_page/login_example_page.dart';
+import '../login_page/login_page.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -95,7 +95,7 @@ class _LandingPageState extends State<LandingPage> {
                   // Navigate to next screen
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginExamplePage()),
+                    MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 }
                 _controller.nextPage(
