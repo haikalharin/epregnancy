@@ -12,8 +12,8 @@ import 'common/configurations/configurations.dart';
 import 'common/injector/injector.dart';
 import 'common/injector/injector_config.dart';
 import 'env.dart' as config;
-import 'login_page/bloc/login_bloc.dart';
-import 'login_page/login_page.dart';
+import 'pages/login_page/bloc/login_bloc.dart';
+import 'pages/login_page/login_page.dart';
 import 'utils/simple_bloc_observer.dart';
 
 // void main() => runApp(MyApp());

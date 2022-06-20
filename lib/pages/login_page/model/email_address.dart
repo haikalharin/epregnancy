@@ -1,6 +1,6 @@
 import 'package:formz/formz.dart';
 
-import '../../common/constants/regex_constants.dart';
+import '../../../common/constants/regex_constants.dart';
 
 enum UsernameValidationError { empty, invalid }
 

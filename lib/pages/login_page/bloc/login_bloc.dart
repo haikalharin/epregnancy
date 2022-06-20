@@ -17,7 +17,7 @@ import '../../../../data/firebase/g_authentication.dart';
 import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
-import '../../common/services/auth_service.dart';
+import '../../../common/services/auth_service.dart';
 import '../model/password.dart';
 import '../model/email_address.dart';
 
