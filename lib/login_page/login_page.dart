@@ -26,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
           child: BlocListener<LoginBloc, LoginState>(
               listener: (context, state) async {
@@ -43,7 +44,6 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Stack(
                 children: [
-
                   Positioned.fill(
                     child: Image.asset(
                       "assets/login_background.png",
