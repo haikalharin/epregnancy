@@ -1,5 +1,5 @@
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/dashboard.dart';
-import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/login_example_page.dart';
+import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
