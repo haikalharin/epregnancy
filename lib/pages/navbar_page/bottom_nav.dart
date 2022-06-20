@@ -3,6 +3,7 @@ import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_pag
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
+import '../home_page/logout_page.dart';
 import '../survey_page/survey_page.dart';
 int indexBottomNavSelected = 0;
 bool isChangeIndex = false;
@@ -256,7 +257,7 @@ class _BottomNavState extends State<BottomNav>  with TickerProviderStateMixin {
       case 2:
         return  Dashboard();
       case 3:
-        return  HomePage();
+        return  LogoutPage();
       default:
         return Container();
     }

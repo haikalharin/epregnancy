@@ -141,7 +141,9 @@ class LoginExampleBloc extends Bloc<LoginExampleEvent, LoginExampleState> {
       // await Future.delayed(const Duration(seconds: 5));
       if (userModelFirebase.userid!.isNotEmpty) {
         await AppSharedPreference.setUserFirebase(userModelFirebase);
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
+        yield state.copyWith(
+            status: FormzStatus.submissionSuccess,
+            userModelFirebase: userModelFirebase);
       }
       // final response = await userRepository.login(
       //     state.username.value, state.password.value);

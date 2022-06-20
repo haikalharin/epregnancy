@@ -11,31 +11,29 @@ class ListArticle extends StatelessWidget {
         phoneNumber: "2 jam yang lalu"),
     PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
+        phoneNumber: "2 jam yang lalu"),
+   PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
+        phoneNumber: "2 jam yang lalu"),
+   PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
+        phoneNumber: "2 jam yang lalu"),
+   PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
+        phoneNumber: "2 jam yang lalu"),
+   PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
+        phoneNumber: "2 jam yang lalu"),
+   PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
+        phoneNumber: "2 jam yang lalu"),
+   PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
+        phoneNumber: "2 jam yang lalu"),
+   PersonModel(
         name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
+        phoneNumber: "2 jam yang lalu"),
+
 
   ];
 
@@ -46,7 +44,7 @@ class ListArticle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 130,
+        height: 125,
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         decoration: BoxDecoration(color: Colors.white),
         child: listPrivilegesData.isEmpty
