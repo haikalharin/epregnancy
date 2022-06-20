@@ -7,6 +7,8 @@ import 'package:formz/formz.dart';
 
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
+import '../../common/services/auth_service.dart';
+import '../home_page/home_page.dart';
 import 'bloc/login_bloc.dart';
 
 const _horizontalPadding = 24.0;
@@ -20,6 +22,7 @@ class LoginPage extends StatefulWidget {
 }
 
 final _codeController = TextEditingController();
+var authService = AuthService();
 
 class _LoginPageState extends State<LoginPage> {
   @override
@@ -92,7 +95,14 @@ class _LoginPageState extends State<LoginPage> {
                                   child: const Text('Login'),
                                   onPressed: () {
                                     if(state.username.valid && state.password.valid) {
-                                      Injector.resolve<LoginBloc>().add(LoginSubmitted());
+                                      // Injector.resolve<LoginBloc>().add(LoginSubmitted());
+                                      authService.loginUser(state.username.value, state.password.value).then((User user) =>
+                                      {
+                                        print(user),
+                                      Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => HomePage()),
+                                      )}).catchError((e) => print(e));
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(

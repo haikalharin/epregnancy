@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService with ChangeNotifier {
   var currentUser;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   AuthService() {
     print("new AuthService");
@@ -29,34 +30,13 @@ class AuthService with ChangeNotifier {
         required String password}) async {}
 
   // logs in the user if password matches
-  Future loginUser({required String email, required String password}) {
+  Future<User> loginUser(String email, String password) async {
+    UserCredential result =
+    await auth.signInWithEmailAndPassword(email: email, password: password);
+    final User user = result.user!;
 
-    FirebaseAuth.instance
-        .authStateChanges()
-        .listen((User? user) async {
-      if (user == null) {
-        print('User is currently signed out!');
-
-        try {
-          final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-              email: email,
-              password: password
-          );
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'user-not-found') {
-            print('No user found for that email.');
-          } else if (e.code == 'wrong-password') {
-            print('Wrong password provided for that user.');
-          }
-        }
-
-      } else {
-        print('User is signed in!');
-      }
-    });
-
-    return Future.value(null);
-  }// logs in the user if password matches
+    return user;
+  }
 
   // logs in the user through google
   Future<UserCredential> signInWithGoogle() async {
