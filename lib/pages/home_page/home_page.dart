@@ -8,6 +8,7 @@ import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
+import '../../utils/epragnancy_color.dart';
 import 'bloc/home_page_bloc.dart';
 import 'list_privileges.dart';
 
@@ -69,11 +70,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: EpragnancyColors.pink),
                                   margin: EdgeInsets.only(left: 50, right: 50),
                                   child: Container(
                                     padding:
@@ -96,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                                                   child: const Text(
                                                     "Trimester Pertama",
                                                     style:
-                                                        TextStyle(fontSize: 16),
+                                                        TextStyle(fontSize: 16,color: Colors.white),
                                                   )),
                                               Container(
                                                   margin: EdgeInsets.only(
@@ -104,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                                                   child: const Text(
                                                     "8 minggu 1 hari ",
                                                     style:
-                                                        TextStyle(fontSize: 12),
+                                                        TextStyle(fontSize: 12,color: Colors.white),
                                                   )),
                                               Container(
                                                   child: Row(
@@ -151,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(30.0),
-                                              color: Colors.grey),
+                                              color: Colors.white),
                                           height: 60,
                                           width: 60,
                                         ),
@@ -180,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Colors.grey,
+                                        color: EpragnancyColors.pink,
                                       ),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
@@ -199,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(30.0),
-                                                color: Colors.grey),
+                                                color: EpragnancyColors.pink),
                                             height: 30,
                                             width: 30,
                                           ),
@@ -217,10 +215,24 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                   margin: const EdgeInsets.only(
                                       left: 50, right: 50, bottom: 20),
-                                  child: const Text("->  Tambahan Poin",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400)),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        child: const Icon(
+                                          Icons.arrow_forward_outlined,
+                                          size: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      const Text("Tambahan Poin",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400)),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -248,10 +260,12 @@ class _HomePageState extends State<HomePage> {
                                       style: TextStyle(fontSize: 20),
                                     )),
                                     Container(
-                                        child: const Text(
-                                      "-->",
-                                      style: TextStyle(fontSize: 20),
-                                    )),
+                                      child: const Icon(
+                                        Icons.arrow_forward_outlined,
+                                        size: 20,
+                                        color: Colors.black,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),

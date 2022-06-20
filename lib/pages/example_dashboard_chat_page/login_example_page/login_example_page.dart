@@ -32,7 +32,7 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
                       content: Text("failed"), backgroundColor: Colors.red);
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
-                  Navigator.of(context).pushNamed(RouteName.navBar);
+                  Navigator.of(context).pushNamed(RouteName.surveyPage);
                   // Navigator.of(context).pushNamedAndRemoveUntil(
                   //                 RouteName.homeScreen,
                   //                 ModalRoute.withName(RouteName.homeScreen),

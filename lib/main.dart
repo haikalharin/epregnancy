@@ -1,5 +1,5 @@
-import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/bloc/login_example_bloc.dart';
-import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/login_example_page.dart';
+import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
+import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/landing_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
@@ -12,6 +12,8 @@ import 'common/configurations/configurations.dart';
 import 'common/injector/injector.dart';
 import 'common/injector/injector_config.dart';
 import 'env.dart' as config;
+import 'login_page/bloc/login_bloc.dart';
+import 'login_page/login_page.dart';
 import 'utils/simple_bloc_observer.dart';
 
 // void main() => runApp(MyApp());
@@ -45,8 +47,8 @@ class MyApp extends StatelessWidget {
   }
 
   List<BlocProvider> _getProviders() => [
-    BlocProvider<LoginExampleBloc>(
-        create: (context) => Injector.container.resolve<LoginExampleBloc>()),
+    BlocProvider<LoginBloc>(
+        create: (context) => Injector.container.resolve<LoginBloc>()),
     BlocProvider<HomePageBloc>(
         create: (context) => Injector.container.resolve<HomePageBloc>()),
 

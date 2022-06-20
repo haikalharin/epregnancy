@@ -1,11 +1,12 @@
 
-import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_page/login_example_page.dart';
+import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/list_calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:sizer/sizer.dart';
 
 import '../../data/model/person_model/person_model.dart';
+import '../../utils/epragnancy_color.dart';
 import 'acara_umum_page.dart';
 
 class TabBarCalendarPage extends StatefulWidget {
@@ -98,8 +99,8 @@ class _TabBarCalendarPageState extends State<TabBarCalendarPage>
                   labelPadding: EdgeInsets.only(top: 20, bottom: 18),
                   indicator: const UnderlineTabIndicator(
                     borderSide: BorderSide(
-                        width: 7.0,
-                        color: Colors.green),
+                        width: 3.0,
+                        color: EpragnancyColors.pink),
                     insets: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0),
                   ),
                   tabs: const [
