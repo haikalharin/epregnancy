@@ -58,9 +58,9 @@ class _ConsultationPageState extends State<ConsultationPage> {
                     children: [
                       Container(
                         margin:
-                            EdgeInsets.only(left: 50, right: 50, bottom: 20),
-                        child: Text("Halo",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            EdgeInsets.only(top: 40,left: 20, right: 20, bottom: 20),
+                        child: Text("Konsultasi",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 10),
@@ -106,7 +106,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text("Darurat")
+                                      Text("Darurat", style: TextStyle(color: Colors.white),)
                                     ],
                                   ),
                                 ),
