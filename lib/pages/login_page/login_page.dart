@@ -22,6 +22,7 @@ class LoginPage extends StatefulWidget {
 }
 
 final _codeController = TextEditingController();
+final _auth = FirebaseAuth.instance;
 var authService = AuthService();
 
 class _LoginPageState extends State<LoginPage> {
@@ -39,10 +40,6 @@ class _LoginPageState extends State<LoginPage> {
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
                   Navigator.of(context).pushNamed(RouteName.navBar);
-                  // Navigator.of(context).pushNamedAndRemoveUntil(
-                  //                 RouteName.homeScreen,
-                  //                 ModalRoute.withName(RouteName.homeScreen),
-                  //               );
                 }
               },
               child: Stack(
@@ -93,16 +90,9 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: ElevatedButton(
                                   child: const Text('Login'),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if(state.username.valid && state.password.valid) {
-                                      // Injector.resolve<LoginBloc>().add(LoginSubmitted());
-                                      authService.loginUser(state.username.value, state.password.value).then((User user) =>
-                                      {
-                                        print(user),
-                                      Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => HomePage()),
-                                      )}).catchError((e) => print(e));
+                                      Injector.resolve<LoginBloc>().add(LoginSubmitted());
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -149,44 +139,6 @@ class _Loading extends StatelessWidget {
         return Text("");
       }
     });
-  }
-}
-
-class _HeadingText extends StatelessWidget {
-  const _HeadingText();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
-      builder: (context, state) {
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Container(
-            margin: EdgeInsets.only(top: 100),
-            child: Column(
-              children: const <Widget>[
-                Text(
-                  "Masuk dengan email",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-                Text(
-                  "Masuk dengan akun email yang terdaftar",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 15
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 }
 

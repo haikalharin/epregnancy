@@ -28,6 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(this.userRepository) : super(LoginInitial());
 
   final UserRepository userRepository;
+  final _auth = FirebaseAuth.instance;
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
@@ -156,7 +157,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       //       password: password);
       // }
 
-      yield state.copyWith(status: FormzStatus.submissionSuccess);
+      try {
+        final loggedUser =
+        await _auth.signInWithEmailAndPassword(
+            email: state.username.value, password: state.password.value);
+        if (loggedUser != null) {
+          // Navigator.pushNamed(context, RouteName.homeScreen);
+          yield state.copyWith(status: FormzStatus.submissionSuccess);
+        }
+      } catch (e) {
+        print('===== ERROR LOGIN =====');
+        print(e);
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
 
     } on LoginErrorException catch (e) {
       print(e);
