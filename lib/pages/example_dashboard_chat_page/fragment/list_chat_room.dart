@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,12 @@ class ListChatRoom extends StatefulWidget {
 }
 
 class _ListChatRoomState extends State<ListChatRoom> {
-  PersonModel? _myPerson;
+  UserModelFirebase? _myPerson;
   Stream<QuerySnapshot>? _streamRoom;
   Stream<QuerySnapshot>? _streamChat;
 
   void getMyPerson() async {
-    PersonModel? person = await AppSharedPreference.getPerson();
+    UserModelFirebase? person = await AppSharedPreference.getUserFirebase();
     setState(() {
       _myPerson = person;
     });

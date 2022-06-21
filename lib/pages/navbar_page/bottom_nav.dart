@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/pages/consultation_page/consultation_page.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
@@ -253,7 +254,7 @@ class _BottomNavState extends State<BottomNav>  with TickerProviderStateMixin {
       case 0:
         return HomePage();
       case 1:
-        return SurveyPage();
+        return ConsultationPage();
       case 2:
         return  Dashboard();
       case 3:

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 
+import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
-  PersonModel? _myPerson;
+  UserModelFirebase? _myPerson;
   Stream<QuerySnapshot>? _streamChat;
   String _inputMessage = '';
   var _controllerMessage = TextEditingController();
@@ -55,7 +56,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   }
 
   void getMyPerson() async {
-    PersonModel person = await AppSharedPreference.getPerson();
+    UserModelFirebase person = await AppSharedPreference.getUserFirebase();
     setState(() {
       _myPerson = person;
     });
@@ -88,13 +89,13 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         personUid: widget.arguments["room"].uid,
       );
       RoomModel roomSender = RoomModel(
-        phoneNumber: _myPerson!.phoneNumber,
+        phoneNumber: _myPerson!.email,
         inRoom: true,
         lastChat: message,
         lastDateTime: chat.dateTime,
         lastUid: _myPerson!.uid,
         name: _myPerson!.name,
-        photo: _myPerson!.photo,
+        photo: _myPerson!.name,
         type: type,
         uid: _myPerson!.uid,
       );
@@ -174,7 +175,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
           myName: _myPerson!.name,
           myUid: _myPerson!.uid,
           personToken: token,
-          photo: _myPerson!.photo,
+          photo: _myPerson!.name,
           type: type,
         );
       }

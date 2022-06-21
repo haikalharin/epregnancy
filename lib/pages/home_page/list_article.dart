@@ -61,7 +61,7 @@ class ListArticle extends StatelessWidget {
                         padding: EdgeInsets.only(left: 20,right: 20,top: 10),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: EpragnancyColors.pink,
+                            color: EpragnancyColors.primer,
                           ),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -89,7 +89,7 @@ class ListArticle extends StatelessWidget {
                             Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  color: EpragnancyColors.pink),
+                                  color: EpragnancyColors.primer),
                               height: 100,
                               width: 100,
                             ),

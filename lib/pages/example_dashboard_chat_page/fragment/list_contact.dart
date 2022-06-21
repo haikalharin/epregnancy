@@ -1,4 +1,5 @@
 
+import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,16 +18,16 @@ class ListContact extends StatefulWidget {
 
 class _ListContactState extends State<ListContact> {
   var _controllerEmail = TextEditingController();
-  PersonModel? _myPerson;
+  UserModelFirebase? _myPerson;
   Stream<QuerySnapshot>? _streamContact;
   void getMyPerson() async {
-    PersonModel person = await AppSharedPreference.getPerson();
+    UserModelFirebase person = await AppSharedPreference.getUserFirebase();
     setState(() {
       _myPerson = person;
     });
     _streamContact = FirebaseFirestore.instance
         .collection('person')
-        .where('phoneNumber', isNotEqualTo: person.phoneNumber)
+        .where('phoneNumber', isNotEqualTo: person.email)
         // .doc(_myPerson!.uid)
         // .collection('contact')
         .snapshots(includeMetadataChanges: true);

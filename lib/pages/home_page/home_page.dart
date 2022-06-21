@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15.0),
-                                      color: EpragnancyColors.pink),
+                                      color: EpragnancyColors.primer),
                                   margin: EdgeInsets.only(left: 20, right: 20),
                                   child: Container(
                                     margin: EdgeInsets.only(left: 30, right: 30),
@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                                                       child: Container(
                                                         child: const Text(
                                                           "Ubah Profil Kehamilan ",
-                                                          style: TextStyle(fontSize: 14,color: EpragnancyColors.pink),
+                                                          style: TextStyle(fontSize: 14,color: EpragnancyColors.primer),
                                                           maxLines: 3,
                                                         ),
                                                       ),
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
 
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10.0),
-                                        color: EpragnancyColors.pinkSoft),
+                                        color: EpragnancyColors.primerSoft),
                                     margin: EdgeInsets.only(
                                       top: 20,
                                         left: 20, right: 20, bottom: 20),
@@ -285,12 +285,21 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                                margin: EdgeInsets.only(
-                                    left: 20, bottom: 20, top: 20),
-                                child: const Text(
-                                  "Kalender Saya",
-                                  style: TextStyle(fontSize: 20),
-                                )),
+                              margin: EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 20, top: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+
+                                      child: const Text(
+                                        "Kalender Saya",
+                                        style: TextStyle(fontSize: 20),
+                                      )),
+                                  Container(child: Icon(Icons.calendar_today_outlined)),
+                                ],
+                              ),
+                            ),
                             Container(height: 500, child: TabBarCalendarPage()),
                           ],
                         )),

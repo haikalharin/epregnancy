@@ -100,7 +100,7 @@ class _TabBarCalendarPageState extends State<TabBarCalendarPage>
                   indicator: const UnderlineTabIndicator(
                     borderSide: BorderSide(
                         width: 3.0,
-                        color: EpragnancyColors.pink),
+                        color: EpragnancyColors.primer),
                     insets: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0),
                   ),
                   tabs: const [
