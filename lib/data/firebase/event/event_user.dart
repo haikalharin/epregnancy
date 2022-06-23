@@ -6,10 +6,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../model/person_model/person_model.dart';
 
 class EventUser {
-  static Future<UserModelFirebase> checkUser(String email, String password) async {
+  static Future<UserModelFirebase> checkUser(
+      String email, String password) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('USERS')
-        .where('Userid', isEqualTo: email)
+        .where('Email', isEqualTo: email)
         .where('Password', isEqualTo: password)
         .get()
         .catchError((onError) => print(onError));
@@ -17,7 +18,7 @@ class EventUser {
       if (querySnapshot.docs.isNotEmpty) {
         final data = getDataValue(querySnapshot.docs[0].data());
         UserModelFirebase userModelFirebase = UserModelFirebase.fromJson(data);
-        return userModelFirebase ;
+        return userModelFirebase;
       } else {
         return UserModelFirebase.empty();
       }
@@ -25,4 +26,73 @@ class EventUser {
     return UserModelFirebase.empty();
   }
 
+  static Future<UserModelFirebase> checkUserExist(
+      String email) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('USERS')
+        .where('Email', isEqualTo: email)
+        .get()
+        .catchError((onError) => print(onError));
+    if (querySnapshot != null && querySnapshot.docs.isNotEmpty) {
+      if (querySnapshot.docs.isNotEmpty) {
+        final data = getDataValue(querySnapshot.docs[0].data());
+        UserModelFirebase userModelFirebase = UserModelFirebase.fromJson(data);
+        return userModelFirebase;
+      } else {
+        return UserModelFirebase.empty();
+      }
+    }
+    return UserModelFirebase.empty();
+  }
+
+  static void addUser(UserModelFirebase user) {
+    try {
+      FirebaseFirestore.instance
+          .collection('USERS')
+          .doc(user.uid)
+          .set(user.toJson())
+          .then((value) => null)
+          .catchError((onError) => print(onError));
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<bool> updateActiveUser({String? myUid, String? status}) async {
+    try {
+      final data = FirebaseFirestore.instance
+          .collection('USERS')
+          .doc(myUid)
+          .update({'Status': status})
+          .then((value) => null)
+          .catchError((onError) => print(onError));
+      if(data != null){
+        return true;
+      } else{
+        return false;
+      }
+
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  static Future<bool> updateConditionUser({
+    String? myUid,
+    String? condition,
+  }) async {
+    try {
+      FirebaseFirestore.instance
+          .collection('USER_ROLES')
+          .doc(myUid)
+          .update({'Condition': condition})
+          .then((value) => null)
+          .catchError((onError) => print(onError));
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

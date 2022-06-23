@@ -18,4 +18,12 @@ class HomeFetchDataEvent extends HomePageEvent {
   List<Object> get props => [];
 }
 
+class HomeInitEvent extends HomePageEvent {
+  const HomeInitEvent();
+
+
+  @override
+  List<Object> get props => [];
+}
+
 

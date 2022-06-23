@@ -8,6 +8,7 @@ import 'package:formz/formz.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
+import '../../data/firebase/g_authentication.dart';
 import '../home_page/home_page.dart';
 import 'bloc/login_bloc.dart';
 
@@ -16,13 +17,11 @@ const _horizontalPadding = 24.0;
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 final _codeController = TextEditingController();
-final _auth = FirebaseAuth.instance;
 var authService = AuthService();
 
 class _LoginPageState extends State<LoginPage> {
@@ -39,7 +38,16 @@ class _LoginPageState extends State<LoginPage> {
                       content: Text("failed"), backgroundColor: Colors.red);
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
-                  Navigator.of(context).pushNamed(RouteName.navBar);
+                  if (state.userModelFirebase!.status == 'Active') {
+                    Navigator.of(context).pushNamed(RouteName.navBar);
+                  } else {
+                    Navigator.of(context).pushNamed(RouteName.surveyPage);
+                  }
+
+                  // Navigator.of(context).pushNamedAndRemoveUntil(
+                  //                 RouteName.homeScreen,
+                  //                 ModalRoute.withName(RouteName.homeScreen),
+                  //               );
                 }
               },
               child: Stack(
@@ -76,8 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 15
-                              ),
+                                  fontSize: 15),
                             ),
                             SizedBox(height: 20),
                             _UsernameInput(),
@@ -90,14 +97,23 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: ElevatedButton(
                                   child: const Text('Login'),
-                                  onPressed: () async {
-                                    if(state.username.valid && state.password.valid) {
-                                      Injector.resolve<LoginBloc>().add(LoginSubmitted());
-                                    }
+                                  onPressed: () {
+                                    Injector.resolve<LoginBloc>()
+                                        .add(LoginSubmitted());
+
+                                    // if(state.username.valid && state.password.valid) {
+                                    //
+                                    //   authService.loginUser(state.username.value, state.password.value).then((User user) =>
+                                    //   {
+                                    //     print(user),
+                                    //   Navigator.pushReplacement(
+                                    //   context,
+                                    //   MaterialPageRoute(builder: (context) => HomePage()),
+                                    //   )}).catchError((e) => print(e));
+                                    // }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      primary: HexColor('#FF7F90'))
-                              ),
+                                      primary: HexColor('#FF7F90'))),
                             ),
                             SizedBox(height: 10),
                             Container(
@@ -105,14 +121,15 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: ElevatedButton(
                                   onPressed: () async {
-                                    Injector.resolve<LoginBloc>().add(LoginWithGoogleSubmitted());
+                                    // GAuthentication.signOut(context: context);
+                                    // GAuthentication.signInWithGoogle();
+                                    Injector.resolve<LoginBloc>()
+                                        .add(LoginWithGoogleSubmitted());
                                   },
                                   child: Text("Lanjut dengan Google"),
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.white,
-                                      onPrimary: Colors.black
-                                  )
-                              ),
+                                      onPrimary: Colors.black)),
                             ),
                             // _PasswordTextField(),
                           ],
@@ -139,6 +156,43 @@ class _Loading extends StatelessWidget {
         return Text("");
       }
     });
+  }
+}
+
+class _HeadingText extends StatelessWidget {
+  const _HeadingText();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Container(
+            margin: EdgeInsets.only(top: 100),
+            child: Column(
+              children: const <Widget>[
+                Text(
+                  "Masuk dengan email",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+                Text(
+                  "Masuk dengan akun email yang terdaftar",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
