@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
-class EventStorage {
+class EventStorageExample {
   static void editPhoto({String? oldUrl, File? filePhoto, String? uid}) async {
     if (oldUrl != '') deleteOldFile(oldUrl!);
     try {

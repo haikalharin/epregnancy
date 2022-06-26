@@ -13,9 +13,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../data/firebase/event/event_chat_room.dart';
-import '../../data/firebase/event/event_person.dart';
-import '../../data/firebase/event/event_storage.dart';
+import 'event/event_chat_room.dart';
+import '../../data/firebase/event/event_person_example.dart';
+import '../../data/firebase/event/event_storage_example.dart';
+import 'event/event_user.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/chat_model/chat_model.dart';
 import '../../data/model/person_model/person_model.dart';
@@ -24,16 +25,16 @@ import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/notif_controller.dart';
 import '../../utils/remote_utils.dart';
 
-class ChatRoom extends StatefulWidget {
+class ChatArchive extends StatefulWidget {
   final Map<String, dynamic> arguments;
 
-  const ChatRoom({ Key? key, required this.arguments}) : super(key: key);
+  const ChatArchive({ Key? key, required this.arguments}) : super(key: key);
 
   @override
-  _ChatRoomState createState() => _ChatRoomState();
+  _ChatArchiveState createState() => _ChatArchiveState();
 }
 
-class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
+class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
   UserModelFirebase? _myPerson;
   Stream<QuerySnapshot>? _streamChat;
   String _inputMessage = '';
@@ -62,11 +63,11 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
     });
     EventChatRoom.setMeInRoom(_myPerson!.uid!, widget.arguments["room"].uid!);
     _streamChat = FirebaseFirestore.instance
-        .collection('person')
+        .collection('USERS')
         .doc(_myPerson!.uid)
-        .collection('room')
+        .collection('ARCHIVE')
         .doc(widget.arguments["room"].uid)
-        .collection('chat')
+        .collection('CHAT')
         .snapshots(includeMetadataChanges: true);
   }
 
@@ -167,7 +168,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         personUid: widget.arguments["room"].uid,
       );
 
-      String token = await EventPerson.getPersonToken(
+      String token = await EventUser.getUserToken(
           widget.arguments["room"].uid!);
       if (token != '') {
         await NotifController.sendNotification(
@@ -212,7 +213,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         CropAspectRatioPreset.ratio16x9,
       ]);
       if (croppedFile != null) {
-        EventStorage.uploadMessageImageAndGetUrl(
+        EventStorageExample.uploadMessageImageAndGetUrl(
           filePhoto: File(croppedFile.path),
           myUid: _myPerson!.uid,
           personUid:widget.arguments["room"].uid,
@@ -226,7 +227,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
 
   void deleteSelectedMessage() {
     if (_selectedChat!.type == 'image') {
-      EventStorage.deleteOldFile(_selectedChat!.message!);
+      EventStorageExample.deleteOldFile(_selectedChat!.message!);
     }
 
     EventChatRoom.deleteMessage(
@@ -331,7 +332,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             ),
             SizedBox(width: 8),
             Text(
-             widget.arguments["room"].phoneNumber!,
+             widget.arguments["room"].name!,
               style: TextStyle(fontSize: 18),
             ),
           ],
@@ -358,7 +359,17 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                       deleteSelectedMessage();
                     },
                   )
-                : null,
+                :  Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    deleteChatRoom( widget.arguments["room"].uid!);
+                  },
+                  child: Icon(
+                      Icons.more_vert
+                  ),
+                )
+            ),
           ),
         ],
       ),
@@ -664,6 +675,35 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+
+  void deleteChatRoom(String personUid) async {
+    var value = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return SimpleDialog(
+          children: [
+            ListTile(
+              onTap: () => Navigator.pop(context, 'delete'),
+              title: Text('Akhiri percakapan'),
+            ),
+            ListTile(
+              onTap: () => Navigator.pop(context),
+              title: Text(''
+                  'kembali'),
+            ),
+          ],
+        );
+      },
+    );
+    if (value == 'delete') {
+      final response = await EventChatRoom.archiveRoomChat(myUid: _myPerson!.uid, personUid: personUid);
+      if (response) {
+        EventChatRoom.deleteChatRoom(
+            myUid: _myPerson!.uid, personUid: personUid);
+      }
+    }
   }
 
   // void showImageFull(String imageUrl) {

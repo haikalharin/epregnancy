@@ -1,24 +1,26 @@
 import 'dart:ui';
 
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
+import 'package:PregnancyApp/pages/chat_page/chat_archive.dart';
 import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../data/firebase/event/event_chat_room.dart';
-import '../../../data/model/chat_model/chat_model.dart';
-import '../../../data/model/person_model/person_model.dart';
-import '../../../data/model/room_model/room_model.dart';
-import '../../../data/shared_preference/app_shared_preference.dart';
-import '../chat_room.dart';
+import 'chat_room.dart';
+import 'event/event_chat_room.dart';
+import '../../data/model/chat_model/chat_model.dart';
+import '../../data/model/person_model/person_model.dart';
+import '../../data/model/room_model/room_model.dart';
+import '../../data/shared_preference/app_shared_preference.dart';
 
-class ListChatRoom extends StatefulWidget {
+
+class ListChatArchive extends StatefulWidget {
   @override
-  _ListChatRoomState createState() => _ListChatRoomState();
+  _ListChatArchiveState createState() => _ListChatArchiveState();
 }
 
-class _ListChatRoomState extends State<ListChatRoom> {
+class _ListChatArchiveState extends State<ListChatArchive> {
   UserModelFirebase? _myPerson;
   Stream<QuerySnapshot>? _streamRoom;
   Stream<QuerySnapshot>? _streamChat;
@@ -29,9 +31,9 @@ class _ListChatRoomState extends State<ListChatRoom> {
       _myPerson = person;
     });
     _streamRoom = FirebaseFirestore.instance
-        .collection('person')
+        .collection('USERS')
         .doc(_myPerson!.uid)
-        .collection('room')
+        .collection('ARCHIVE')
         .snapshots(includeMetadataChanges: true);
   }
 
@@ -44,7 +46,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
           children: [
             ListTile(
               onTap: () => Navigator.pop(context, 'delete'),
-              title: Text('Delete Chat Room'),
+              title: Text('Delete Archive Room'),
             ),
             ListTile(
               onTap: () => Navigator.pop(context),
@@ -55,7 +57,8 @@ class _ListChatRoomState extends State<ListChatRoom> {
       },
     );
     if (value == 'delete') {
-      EventChatRoom.deleteChatRoom(myUid: _myPerson!.uid, personUid: personUid);
+      AppSharedPreference.remove("person");
+      EventChatRoom.deleteArchiveRoom(myUid: _myPerson!.uid, personUid: personUid);
     }
   }
 
@@ -117,7 +120,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ChatRoom(arguments: {'room': room})));
+                  builder: (context) => ChatArchive(arguments: {'room': room})));
         },
         onLongPress: () {
           deleteChatRoom(room.uid!);

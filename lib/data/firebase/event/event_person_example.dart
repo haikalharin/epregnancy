@@ -4,7 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../model/person_model/person_model.dart';
 
-class EventPerson {
+class EventPersonExample {
   static Future<String> checkPhoneNumber(String email) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('person')

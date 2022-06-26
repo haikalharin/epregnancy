@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +14,7 @@ class AppSharedPreference {
   static final String _userLogin = "user_login";
   static final String _userChangedProfile = "user_changed_profile";
   static final String _user = "user";
+  static final String _person = "person";
   static final String _lastLogin = "lastLogin";
   static final String _ukCount = "ukCount";
   static final String _ukVerifCount = "ukVerifCount";
@@ -31,6 +33,10 @@ class AppSharedPreference {
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
+  }
+ static remove(String key) async {
+   SharedPreferences preferences = await SharedPreferences.getInstance();
+   await preferences.remove(key);
   }
 
   static Future<String?> getString(String key) async {
@@ -73,6 +79,23 @@ class AppSharedPreference {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_user, json);
+  }
+
+  static Future<RoomModel> getPersonFirebase() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(_person);
+    if (json != null) {
+      Map<String, dynamic> map = jsonDecode(json);
+      return RoomModel.fromJson(map);
+    } else{
+      return RoomModel.empty();
+    }
+  }
+
+  static setPersonFirebase(RoomModel data) async {
+    String json = jsonEncode(data.toJson());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_person, json);
   }
 
   static Future<PersonModel> getPerson() async {

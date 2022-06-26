@@ -13,7 +13,7 @@ import 'package:meta/meta.dart';
 import '../../../../common/exceptions/login_error_exception.dart';
 import '../../../../common/validators/email_validator.dart';
 import '../../../../common/validators/phone_validator.dart';
-import '../../../../data/firebase/event/event_person.dart';
+import '../../../../data/firebase/event/event_person_example.dart';
 import '../../../../data/firebase/g_authentication.dart';
 import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
@@ -188,7 +188,7 @@ class LoginExampleBloc extends Bloc<LoginExampleEvent, LoginExampleState> {
           token: '',
           uid: user.uid,
         );
-        EventPerson.addPerson(person);
+        EventPersonExample.addPerson(person);
         await user.sendEmailVerification();
         await AppSharedPreference.setPerson(person);
         // final response = await userRepository.login(

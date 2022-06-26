@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:PregnancyApp/data/firebase/event/event_user.dart';
+import 'package:PregnancyApp/pages/chat_page/event/event_user.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -12,7 +12,7 @@ import 'package:meta/meta.dart';
 
 import '../../../../common/exceptions/login_error_exception.dart';
 import '../../../../common/validators/phone_validator.dart';
-import '../../../../data/firebase/event/event_person.dart';
+import '../../../../data/firebase/event/event_person_example.dart';
 import '../../../../data/firebase/g_authentication.dart';
 import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';

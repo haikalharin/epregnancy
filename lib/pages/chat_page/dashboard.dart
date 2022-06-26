@@ -1,20 +1,20 @@
 import 'dart:io';
 import 'dart:ui';
 
-
+import 'package:PregnancyApp/pages/chat_page/list_chat_archive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../common/constants/router_constants.dart';
-import '../../data/firebase/event/event_person.dart';
-import '../../data/firebase/event/event_storage.dart';
+import '../../data/firebase/event/event_person_example.dart';
+import '../../data/firebase/event/event_storage_example.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/person_model/person_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
-import 'fragment/list_chat_room.dart';
-import 'fragment/list_contact.dart';
+import 'list_chat_room.dart';
+import '../example_dashboard_chat_page/fragment/list_contact_example.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -27,7 +27,7 @@ class _DashboardState extends State<Dashboard> {
 
   final List<Widget> _listFragment = [
     ListChatRoom(),
-    ListContact(),
+    ListChatArchive(),
   ];
 
   void getMyPerson() async {
@@ -52,12 +52,12 @@ class _DashboardState extends State<Dashboard> {
         CropAspectRatioPreset.ratio16x9,
       ]);
       if (croppedFile != null) {
-        EventStorage.editPhoto(
+        EventStorageExample.editPhoto(
           filePhoto: File(croppedFile.path),
           oldUrl: _myPerson?.photo,
           uid: _myPerson?.uid,
         );
-        EventPerson.getPerson(_myPerson!.uid!).then((person) {
+        EventPersonExample.getPerson(_myPerson!.uid!).then((person) {
           AppSharedPreference.setPerson(person);
         });
       }
@@ -69,20 +69,21 @@ class _DashboardState extends State<Dashboard> {
     var value = await showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text('Logout'),
-        content: Text('You sure for logout?'),
-        actions: [
-          FlatButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('No'),
+      builder: (context) =>
+          AlertDialog(
+            title: Text('Logout'),
+            content: Text('You sure for logout?'),
+            actions: [
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('No'),
+              ),
+              FlatButton(
+                onPressed: () => Navigator.pop(context, 'logout'),
+                child: Text('Yes'),
+              ),
+            ],
           ),
-          FlatButton(
-            onPressed: () => Navigator.pop(context, 'logout'),
-            child: Text('Yes'),
-          ),
-        ],
-      ),
     );
     if (value == 'logout') {
       AppSharedPreference.clear();
@@ -133,13 +134,13 @@ class _DashboardState extends State<Dashboard> {
     if (value == 'delete') {
       Navigator.pop(context);
       UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _myPerson!.phoneNumber!,
         password: _controllerPassword.text,
       );
       if (userCredential != null) {
         userCredential.user?.delete().then((value) {
-          EventPerson.deleteAccount(_myPerson!.uid!);
+          EventPersonExample.deleteAccount(_myPerson!.uid!);
         });
       }
       _controllerPassword.clear();
@@ -155,25 +156,55 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 0,
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          titleSpacing: 0,
-          title: Text('ChatApp Course'),
-          bottom: TabBar(
-            tabs: [
-              Tab(text: 'Chat Room'),
-              Tab(text: 'Contact'),
-            ],
-          ),
+    return Scaffold(
+      appBar:AppBar(
+          elevation: 0.0,
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          leading: GestureDetector(
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),  onTap: () {
+            Navigator.pop(context);
+          })) ,
+      body: Container(
+        child: Column(
+          children: [
+            Container(height: MediaQuery.of(context).size.height/10,child: ListChatRoom()),
+            Container(width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            height: 2,
+            color: Colors.black,
+            margin: EdgeInsets.all(0),),
+            Expanded(child: ListChatArchive()),
+          ],
         ),
-        drawer: menuDrawer(),
-        body: TabBarView(children: _listFragment),
       ),
     );
   }
+
+  //   return DefaultTabController(
+  //     initialIndex: 0,
+  //     length: 2,
+  //     child: Scaffold(
+  //       appBar: AppBar(
+  //         titleSpacing: 0,
+  //         title: Text('ChatApp Course'),
+  //         bottom: TabBar(
+  //           tabs: [
+  //             Tab(text: 'Chat Room'),
+  //             Tab(text: 'Archive'),
+  //           ],
+  //         ),
+  //       ),
+  //       drawer: menuDrawer(),
+  //       body: TabBarView(children: _listFragment),
+  //     ),
+  //   );
+  // }
 
   Widget menuDrawer() {
     return Drawer(
@@ -187,8 +218,8 @@ class _DashboardState extends State<Dashboard> {
                   borderRadius: BorderRadius.circular(100),
                   child: FadeInImage(
                     placeholder: AssetImage('assets/logo_flikchat.png'),
-                    image:
-                        NetworkImage(_myPerson == null ? '' : _myPerson!.photo!),
+                    image: NetworkImage(
+                        _myPerson == null ? '' : _myPerson!.photo!),
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,

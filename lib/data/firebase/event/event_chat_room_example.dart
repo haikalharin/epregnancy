@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../../model/chat_model/chat_model.dart';
 import '../../model/room_model/room_model.dart';
 
-class EventChatRoom {
+class EventChatRoomExample {
   static Future<bool> checkRoomIsExist({
     bool isSender = false,
     String? myUid,

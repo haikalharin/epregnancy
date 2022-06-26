@@ -1,33 +1,32 @@
 
-import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/firebase/event/event_contact.dart';
-import '../../../data/firebase/event/event_person.dart';
+import '../../../data/firebase/event/event_contact_example.dart';
+import '../../../data/firebase/event/event_person_example.dart';
 import '../../../data/model/person_model/person_model.dart';
 import '../../../data/model/room_model/room_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
-import '../chat_room.dart';
+import '../chat_room_example.dart';
 
-class ListContact extends StatefulWidget {
+class ListContactExample extends StatefulWidget {
   @override
-  _ListContactState createState() => _ListContactState();
+  _ListContactExampleState createState() => _ListContactExampleState();
 }
 
-class _ListContactState extends State<ListContact> {
+class _ListContactExampleState extends State<ListContactExample> {
   var _controllerEmail = TextEditingController();
-  UserModelFirebase? _myPerson;
+  PersonModel? _myPerson;
   Stream<QuerySnapshot>? _streamContact;
   void getMyPerson() async {
-    UserModelFirebase person = await AppSharedPreference.getUserFirebase();
+    PersonModel person = await AppSharedPreference.getPerson();
     setState(() {
       _myPerson = person;
     });
     _streamContact = FirebaseFirestore.instance
         .collection('person')
-        .where('phoneNumber', isNotEqualTo: person.email)
+        .where('phoneNumber', isNotEqualTo: person.phoneNumber)
         // .doc(_myPerson!.uid)
         // .collection('contact')
         .snapshots(includeMetadataChanges: true);
@@ -68,10 +67,10 @@ class _ListContactState extends State<ListContact> {
       },
     );
     if (value == 'add') {
-      String personUid = await EventPerson.checkPhoneNumber(_controllerEmail.text);
+      String personUid = await EventPersonExample.checkPhoneNumber(_controllerEmail.text);
       if (personUid != '') {
-        EventPerson.getPerson(personUid).then((person) {
-          EventContact.addContact(myUid: _myPerson!.uid, person: person);
+        EventPersonExample.getPerson(personUid).then((person) {
+          EventContactExample.addContact(myUid: _myPerson!.uid, person: person);
         });
       }
     }
@@ -185,7 +184,7 @@ class _ListContactState extends State<ListContact> {
           );
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ChatRoom(arguments:{'room': room})),
+            MaterialPageRoute(builder: (context) => ChatRoomExample(arguments:{'room': room})),
           );
         },
       ),

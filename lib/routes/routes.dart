@@ -1,4 +1,4 @@
-import 'package:PregnancyApp/pages/example_dashboard_chat_page/dashboard.dart';
+import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page.dart';
@@ -7,7 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 
 import '../common/constants/router_constants.dart';
-import '../pages/example_dashboard_chat_page/chat_room.dart';
+import '../pages/chat_page/chat_page.dart';
+import '../pages/chat_page/chat_room.dart';
 import '../pages/landing_page/landing_page.dart';
 import '../pages/login_page/login_page.dart';
 import '../utils/remote_utils.dart';
@@ -21,16 +22,21 @@ class Routes {
         return MaterialPageRoute(builder: (_) => HomePage());
       case RouteName.surveyPage:
         return MaterialPageRoute(builder: (_) => SurveyPage());
+      case RouteName.chatPage:
+        return MaterialPageRoute(builder: (_) => ChatPage());
       case RouteName.navBar:
-        return MaterialPageRoute(builder: (_) => BottomNav(arguments: getDataValue(settings.arguments),));
+        return MaterialPageRoute(
+            builder: (_) => BottomNav(
+                  arguments: getDataValue(settings.arguments),
+                ));
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());
       case RouteName.chatRoom:
-        return MaterialPageRoute(builder: (_) => ChatRoom(arguments:getDataValue(settings.arguments) ));
+        return MaterialPageRoute(
+            builder: (_) =>
+                ChatRoom(arguments: getDataValue(settings.arguments)));
       case RouteName.landingPage:
         return MaterialPageRoute(builder: (_) => LandingPage());
-
-
 
       // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());

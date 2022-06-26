@@ -3,6 +3,7 @@ class RouteName {
   static const login = '/login';
   static const navBar = '/navBar';
   static const surveyPage = '/surveyPage';
+  static const chatPage = '/chatPage';
   static const chatRoom = '/chatRoom';
   static const dashboard = '/dashboard';
   static const register = '/register';

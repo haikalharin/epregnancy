@@ -1,4 +1,6 @@
+import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
+import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_calendar_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,8 @@ import '../../common/injector/injector.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
+import '../chat_page/chat_room.dart';
+import '../chat_page/event/event_chat_room.dart';
 import '../home_page/list_calendar.dart';
 import 'list_forum.dart';
 
@@ -57,36 +61,86 @@ class _ConsultationPageState extends State<ConsultationPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin:
-                            EdgeInsets.only(top: 40,left: 20, right: 20, bottom: 20),
+                        margin: EdgeInsets.only(
+                            top: 40, left: 20, right: 20, bottom: 20),
                         child: Text("Konsultasi",
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: EpragnancyColors.primer,
-                                ),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              margin: EdgeInsets.only(left: 20, right: 0),
+                            InkWell(
+                              onTap: () async {
+                                UserModelFirebase myData =
+                                    await AppSharedPreference.getUserFirebase();
+                                RoomModel person = await AppSharedPreference
+                                    .getPersonFirebase();
+                                bool isSenderRoomExist = false;
+                                bool isSenderAchiveExist =
+                                    await EventChatRoom.checkArchiveIsExist(
+                                  myUid: myData.uid,
+                                );
+
+                                if (person.uid!.isNotEmpty) {
+                                  isSenderRoomExist =
+                                      await EventChatRoom.checkRoomIsExist(
+                                    isSender: true,
+                                    myUid: myData.uid,
+                                    personUid: person.uid,
+                                  );
+                                  if (isSenderRoomExist &&
+                                      !isSenderAchiveExist) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ChatRoom(
+                                                arguments: {'room': person})));
+                                  } else if (isSenderRoomExist &&
+                                      isSenderAchiveExist) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Dashboard()));
+                                  } else{
+                                    Navigator.of(context)
+                                        .pushNamed(RouteName.chatPage);
+                                  }
+                                } else if (!isSenderRoomExist &&
+                                    isSenderAchiveExist) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Dashboard()));
+                                } else {
+                                  Navigator.of(context)
+                                      .pushNamed(RouteName.chatPage);
+                                }
+
+                              },
                               child: Container(
-                                margin: EdgeInsets.only(left: 20, right: 20),
-                                padding: EdgeInsets.only(top: 20, bottom: 20),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: EpragnancyColors.primer,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                margin: EdgeInsets.only(left: 20, right: 0),
                                 child: Container(
-                                  child: Row(
-                                    children: const [
-                                      Icon(Icons.warning),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text("Hubungi profesional")
-                                    ],
+                                  margin: EdgeInsets.only(left: 20, right: 20),
+                                  padding: EdgeInsets.only(top: 20, bottom: 20),
+                                  child: Container(
+                                    child: Row(
+                                      children: const [
+                                        Icon(Icons.warning),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text("Hubungi profesional")
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -106,7 +160,10 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text("Darurat", style: TextStyle(color: Colors.white),)
+                                      Text(
+                                        "Darurat",
+                                        style: TextStyle(color: Colors.white),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -118,17 +175,15 @@ class _ConsultationPageState extends State<ConsultationPage> {
                       Divider(),
                       Container(
                           margin: EdgeInsets.only(
-                            top: 20,
-                            bottom: 20,
-                            left: 20,right: 20
-                          ),
+                              top: 20, bottom: 20, left: 20, right: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
                                 child: const FadeInImage(
-                                  placeholder: AssetImage('assets/logo_flikchat.png'),
+                                  placeholder:
+                                      AssetImage('assets/logo_flikchat.png'),
                                   image: AssetImage('assets/logo_flikchat.png'),
                                   width: 40,
                                   height: 40,
@@ -157,9 +212,8 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(),
-                                child: Icon(Icons.image)
-                              ),
+                                  margin: EdgeInsets.only(),
+                                  child: Icon(Icons.image)),
                             ],
                           )),
                       Divider(),
@@ -167,8 +221,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                   ),
                 ],
               )),
-
-          Expanded( child:  ListForumWidget(tipeAcara: 'Acara umum' )),
+          Expanded(child: ListForumWidget(tipeAcara: 'Acara umum')),
         ],
       ),
     );
