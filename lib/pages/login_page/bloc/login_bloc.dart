@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:PregnancyApp/pages/chat_page/event/event_user.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -18,6 +17,7 @@ import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
 import '../../../common/services/auth_service.dart';
+import '../../../data/firebase/event/event_user.dart';
 import '../../example_dashboard_chat_page/login_example_page/model/username.dart';
 import '../model/password.dart';
 import '../model/email_address.dart';

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
-import 'package:PregnancyApp/pages/chat_page/event/event_user.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -10,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/survey_error_exception.dart';
+import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 

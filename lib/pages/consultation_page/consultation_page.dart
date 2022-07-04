@@ -76,20 +76,22 @@ class _ConsultationPageState extends State<ConsultationPage> {
                               onTap: () async {
                                 UserModelFirebase myData =
                                     await AppSharedPreference.getUserFirebase();
-                                RoomModel person = await AppSharedPreference
-                                    .getPersonFirebase();
                                 bool isSenderRoomExist = false;
                                 bool isSenderAchiveExist =
                                     await EventChatRoom.checkArchiveIsExist(
                                   myUid: myData.uid,
                                 );
+                                RoomModel roomModel =
+                                    await EventChatRoom.checkMessageNow(
+                                  myUid: myData.uid,
+                                );
 
-                                if (person.uid!.isNotEmpty) {
+                                if (roomModel.uid!.isNotEmpty) {
                                   isSenderRoomExist =
                                       await EventChatRoom.checkRoomIsExist(
                                     isSender: true,
                                     myUid: myData.uid,
-                                    personUid: person.uid,
+                                    personUid: roomModel.uid,
                                   );
                                   if (isSenderRoomExist &&
                                       !isSenderAchiveExist) {
@@ -97,14 +99,14 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => ChatRoom(
-                                                arguments: {'room': person})));
+                                                arguments: {'room': roomModel})));
                                   } else if (isSenderRoomExist &&
                                       isSenderAchiveExist) {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => Dashboard()));
-                                  } else{
+                                  } else {
                                     Navigator.of(context)
                                         .pushNamed(RouteName.chatPage);
                                   }
@@ -118,7 +120,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   Navigator.of(context)
                                       .pushNamed(RouteName.chatPage);
                                 }
-
                               },
                               child: Container(
                                 decoration: BoxDecoration(

@@ -25,7 +25,6 @@ class EventChatRoom {
   static Future<bool> checkArchiveIsExist({
     String? myUid,
   }) async {
-
     QuerySnapshot response = await FirebaseFirestore.instance
         .collection('USERS')
         .doc(myUid)
@@ -228,6 +227,36 @@ class EventChatRoom {
     }
   }
 
+  static Future<RoomModel> checkMessageNow({
+    String? myUid,
+  }) async {
+    try {
+      RoomModel? roomModel;
+      await FirebaseFirestore.instance
+          .collection('USERS')
+          .doc(myUid)
+          .collection('ROOM')
+          .get()
+          .then((querySnapshot) {
+
+        if (querySnapshot != null && querySnapshot.docs.isNotEmpty) {
+          if (querySnapshot.docs.isNotEmpty) {
+            List<QueryDocumentSnapshot> listRoom = querySnapshot.docs;
+            final data = getDataValue(querySnapshot.docs[0].data());
+             roomModel = RoomModel.fromJson(data);
+          } else {
+            roomModel = RoomModel.empty();
+          }
+        }
+      }
+      ).catchError((onError) => print(onError));
+      return roomModel!;
+    } catch (e) {
+      print(e);
+      return RoomModel.empty();
+    }
+  }
+
   static Future<bool> archiveRoomChat({
     bool isSender = false,
     String? myUid,
@@ -276,11 +305,13 @@ class EventChatRoom {
       //         .catchError((onError) => print(onError));
       //   });
       // }).catchError((onError) => print(onError));
-      const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+      const _chars =
+          'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
       Random _rnd = Random();
 
-      String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-          length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+      String getRandomString(int length) =>
+          String.fromCharCodes(Iterable.generate(
+              length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
       String random = getRandomString(28);
       await FirebaseFirestore.instance
@@ -290,7 +321,6 @@ class EventChatRoom {
           .doc(isSender ? myUid : personUid)
           .get()
           .then((querySnapshot) {
-
         RoomModel roomModel = RoomModel.fromJson(querySnapshot.data()!);
         roomModel = RoomModel(
           phoneNumber: roomModel.phoneNumber,
@@ -312,7 +342,6 @@ class EventChatRoom {
             .set(roomModel.toJson())
             .then((value) => null)
             .catchError((onError) => print(onError));
-
       }).catchError((onError) => print(onError));
 
       await FirebaseFirestore.instance
@@ -340,26 +369,23 @@ class EventChatRoom {
         });
       }).catchError((onError) => print(onError));
 
-
       await FirebaseFirestore.instance
           .collection('USERS')
-          .doc( personUid )
+          .doc(personUid)
           .collection('ROOM')
-          .doc( myUid )
+          .doc(myUid)
           .get()
           .then((querySnapshot) {
         RoomModel roomModel = RoomModel.fromJson(querySnapshot.data()!);
 
-
         FirebaseFirestore.instance
             .collection('USERS')
-            .doc(personUid )
+            .doc(personUid)
             .collection('ARCHIVE')
             .doc(random)
             .set(roomModel.toJson())
             .then((value) => null)
             .catchError((onError) => print(onError));
-
       }).catchError((onError) => print(onError));
 
       await FirebaseFirestore.instance
@@ -394,7 +420,6 @@ class EventChatRoom {
     }
   }
 
-
   static deleteArchiveRoom({
     String? myUid,
     String? personUid,
@@ -420,8 +445,6 @@ class EventChatRoom {
           docChat.reference.delete();
         }
       }).catchError((onError) => print(onError));
-
-
     } catch (e) {
       print(e);
     }

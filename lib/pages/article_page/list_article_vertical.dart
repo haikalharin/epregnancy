@@ -7,10 +7,10 @@ import 'package:intl/intl.dart';
 
 import '../../utils/epragnancy_color.dart';
 
-class ListArticle extends StatelessWidget {
+class ListArticleVertical extends StatelessWidget {
   List<ArticleModel>? listArticle = [];
 
-  ListArticle({this.listArticle});
+  ListArticleVertical({this.listArticle});
 
   List<PersonModel> listPrivilegesData = [
     PersonModel(
@@ -59,7 +59,7 @@ class ListArticle extends StatelessWidget {
             : Stack(
                 children: [
                   ListView.builder(
-                    scrollDirection: Axis.horizontal,
+                    scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       String outputDate = "";
                       var outputFormat = DateFormat.yMMMMd('id');
@@ -77,7 +77,7 @@ class ListArticle extends StatelessWidget {
                         child: Container(
                           // padding: EdgeInsets.,
                           padding:
-                              EdgeInsets.only(left: 20, right: 20, top: 10),
+                              EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(
@@ -87,7 +87,7 @@ class ListArticle extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10.0),
                               color: EpragnancyColors.primer),
                           // color: Colors.greenAccent,
-                          margin: EdgeInsets.only(left: 20),
+                          margin: EdgeInsets.only(left: 20,right: 20,top: 20),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -107,7 +107,7 @@ class ListArticle extends StatelessWidget {
                                               color: Colors.white),
                                         )),
                                     Container(
-                                        margin: EdgeInsets.only(top: 40),
+                                        margin: EdgeInsets.only(top: 50),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,

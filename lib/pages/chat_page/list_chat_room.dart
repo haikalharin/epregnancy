@@ -14,7 +14,6 @@ import '../../data/model/person_model/person_model.dart';
 import '../../data/model/room_model/room_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 
-
 class ListChatRoom extends StatefulWidget {
   @override
   _ListChatRoomState createState() => _ListChatRoomState();
@@ -71,6 +70,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: StreamBuilder<QuerySnapshot>(
         stream: _streamRoom,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -94,11 +94,19 @@ class _ListChatRoomState extends State<ListChatRoom> {
               },
             );
           } else {
-            return Center(child: InkWell(
-                onTap: (){
-                  Navigator.of(context)
-                      .pushNamed(RouteName.chatPage);
-                },child: Container(child: Text('Press here if will Start'))));
+            return InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(RouteName.chatPage);
+                },
+                child: Container(
+                    margin: EdgeInsets.only(left: 20, top: 20),
+                    child: Row(
+                      children: [
+                        Icon(Icons.text_snippet_outlined),
+                        SizedBox(width: 2,),
+                        Text('Mulai percakapan', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
+                      ],
+                    )));
           }
         },
       ),
@@ -121,6 +129,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
       time = DateFormat('yyyy/MM/dd').format(roomDateTime);
     }
     return Material(
+      color: Colors.white,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -174,14 +183,13 @@ class _ListChatRoomState extends State<ListChatRoom> {
                   ),
                 ),
               ),
-
               SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(room.name!.isEmpty? room.phoneNumber! : room.name!),
+                    Text(room.name!.isEmpty ? room.phoneNumber! : room.name!),
                     Row(
                       children: [
                         SizedBox(
@@ -194,7 +202,6 @@ class _ListChatRoomState extends State<ListChatRoom> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
                             Text(
                               room.type! == 'text'
                                   ? room.lastChat!.length > 20
@@ -255,8 +262,8 @@ class _ListChatRoomState extends State<ListChatRoom> {
         if (listChat.isNotEmpty) {
           QueryDocumentSnapshot? lastChat;
           listChat.forEach((element) {
-final datas = getDateTimeFirebase(element.data());
-            if ( datas == lastDateTime) {
+            final datas = getDateTimeFirebase(element.data());
+            if (datas == lastDateTime) {
               lastChat = element;
               data = getDataValue(lastChat!.data());
             }

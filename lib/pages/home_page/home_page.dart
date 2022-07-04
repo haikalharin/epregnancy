@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:formz/formz.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -12,6 +14,7 @@ import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
 import 'bloc/home_page_bloc.dart';
 import 'list_article.dart';
+import 'list_shimmer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -34,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+    Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
 
     super.initState();
   }
@@ -80,9 +84,10 @@ class _HomePageState extends State<HomePage> {
                                       color: EpragnancyColors.primer),
                                   margin: EdgeInsets.only(left: 20, right: 20),
                                   child: Container(
-                                    margin: EdgeInsets.only(left: 30, right: 30),
+                                    margin:
+                                        EdgeInsets.only(left: 30, right: 30),
                                     padding:
-                                        EdgeInsets.only(top: 20, bottom: 20 ),
+                                        EdgeInsets.only(top: 20, bottom: 20),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -100,15 +105,17 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                         Container(
-
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Container(
                                                         margin: EdgeInsets.only(
@@ -117,12 +124,15 @@ class _HomePageState extends State<HomePage> {
                                                           "Trimester Pertama anda",
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontWeight:
-                                                                  FontWeight.bold),
+                                                                  FontWeight
+                                                                      .bold),
                                                         )),
-                                                    SizedBox(width: 20,),
-
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
                                                     Container(
                                                       child: const Icon(
                                                         Icons.arrow_forward_ios,
@@ -138,7 +148,9 @@ class _HomePageState extends State<HomePage> {
                                                   width: 200,
                                                   child: const Text(
                                                     "Anda akan mengalami morning sickness secars berkala ",
-                                                    style: TextStyle(fontSize: 12, color: Colors.white),
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.white),
                                                     maxLines: 3,
                                                   )),
                                               Container(
@@ -148,11 +160,15 @@ class _HomePageState extends State<HomePage> {
                                                     "8 minggu 1 hari ",
                                                     style: TextStyle(
                                                         fontSize: 12,
-                                                        color: Colors.white, fontWeight: FontWeight.bold),
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   )),
                                               Container(
                                                   decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(6.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6.0),
                                                       color: Colors.white),
                                                   child: Container(
                                                     width: 210,
@@ -161,7 +177,11 @@ class _HomePageState extends State<HomePage> {
                                                       child: Container(
                                                         child: const Text(
                                                           "Ubah Profil Kehamilan ",
-                                                          style: TextStyle(fontSize: 14,color: EpragnancyColors.primer),
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              color:
+                                                                  EpragnancyColors
+                                                                      .primer),
                                                           maxLines: 3,
                                                         ),
                                                       ),
@@ -174,8 +194,6 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ),
-
-
                                 Container(
                                     // decoration: BoxDecoration(
                                     //   border: Border.all(
@@ -185,44 +203,54 @@ class _HomePageState extends State<HomePage> {
                                     // ),
 
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
                                         color: EpragnancyColors.primerSoft),
                                     margin: EdgeInsets.only(
-                                      top: 20,
-                                        left: 20, right: 20, bottom: 20),
+                                        top: 20,
+                                        left: 20,
+                                        right: 20,
+                                        bottom: 20),
                                     child: Container(
                                       margin: EdgeInsets.only(
-                                          top: 20,
-                                          bottom: 20,),
+                                        top: 20,
+                                        bottom: 20,
+                                      ),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-
                                           Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Container(
-                                                margin: EdgeInsets.only(left: 10),
-                                                child:Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 10),
+                                                child: Container(
                                                     // margin: EdgeInsets.only(
                                                     //     left: 50, right: 50, bottom: 20),
                                                     child: const Text(
-                                                      "Menangkan poin untuk tukar hadiah ",
-                                                      style: TextStyle(fontSize: 12),
-                                                      maxLines: 3,
-                                                    )),
+                                                  "Menangkan poin untuk tukar hadiah ",
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                  maxLines: 3,
+                                                )),
                                               ),
                                               Container(
-                                                margin: EdgeInsets.only(left: 10),
-                                                child:Container(
-                                                  // margin: EdgeInsets.only(
-                                                  //     left: 50, right: 50, bottom: 20),
+                                                margin:
+                                                    EdgeInsets.only(left: 10),
+                                                child: Container(
+                                                    // margin: EdgeInsets.only(
+                                                    //     left: 50, right: 50, bottom: 20),
                                                     child: const Text(
-                                                      "2.000 POIN ",
-                                                      style: TextStyle(fontSize: 12),
-                                                      maxLines: 3,
-                                                    )),
+                                                  "2.000 POIN ",
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                  maxLines: 3,
+                                                )),
                                               ),
                                             ],
                                           ),
@@ -263,18 +291,42 @@ class _HomePageState extends State<HomePage> {
                                       "Artikel Untuk Anda",
                                       style: TextStyle(fontSize: 20),
                                     )),
-                                    Container(
-                                      child: const Icon(
-                                        Icons.arrow_forward_outlined,
-                                        size: 20,
-                                        color: Colors.black,
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .pushNamed(RouteName.dashboardArticle);
+                                      },
+                                      child: Container(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 5),
+                                                child: Text("Artikel lainnya")),
+                                            Container(
+                                              child: const Icon(
+                                                Icons.arrow_forward_outlined,
+                                                size: 20,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               Row(
-                                children: [Expanded(child: ListArticle())],
+                                children: [
+                                  state.status ==
+                                          FormzStatus.submissionInProgress
+                                      ? Expanded(child: ListShimmer())
+                                      : Expanded(
+                                          child: ListArticle(
+                                          listArticle: state.listArticle ?? [],
+                                        ))
+                                ],
                               ),
                             ],
                           ),
@@ -288,15 +340,17 @@ class _HomePageState extends State<HomePage> {
                               margin: EdgeInsets.only(
                                   left: 20, right: 20, bottom: 20, top: 20),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-
                                       child: const Text(
-                                        "Kalender Saya",
-                                        style: TextStyle(fontSize: 20),
-                                      )),
-                                  Container(child: Icon(Icons.calendar_today_outlined)),
+                                    "Kalender Saya",
+                                    style: TextStyle(fontSize: 20),
+                                  )),
+                                  Container(
+                                      child:
+                                          Icon(Icons.calendar_today_outlined)),
                                 ],
                               ),
                             ),

@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: _getProviders(),
         child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Sehati Syariah',
           home:  LandingPage(),
           onGenerateRoute: Routes.generateRoute,
@@ -56,6 +58,8 @@ class MyApp extends StatelessWidget {
         create: (context) => Injector.container.resolve<HomePageBloc>()),
  BlocProvider<SurveyPageBloc>(
         create: (context) => Injector.container.resolve<SurveyPageBloc>()),
+    BlocProvider<ArticlePageBloc>(
+        create: (context) => Injector.container.resolve<ArticlePageBloc>()),
 
       ];
 }

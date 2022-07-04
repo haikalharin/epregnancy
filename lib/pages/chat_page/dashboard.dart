@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:PregnancyApp/pages/chat_page/list_chat_archive.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -69,21 +70,20 @@ class _DashboardState extends State<Dashboard> {
     var value = await showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) =>
-          AlertDialog(
-            title: Text('Logout'),
-            content: Text('You sure for logout?'),
-            actions: [
-              FlatButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('No'),
-              ),
-              FlatButton(
-                onPressed: () => Navigator.pop(context, 'logout'),
-                child: Text('Yes'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: Text('Logout'),
+        content: Text('You sure for logout?'),
+        actions: [
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('No'),
           ),
+          FlatButton(
+            onPressed: () => Navigator.pop(context, 'logout'),
+            child: Text('Yes'),
+          ),
+        ],
+      ),
     );
     if (value == 'logout') {
       AppSharedPreference.clear();
@@ -134,7 +134,7 @@ class _DashboardState extends State<Dashboard> {
     if (value == 'delete') {
       Navigator.pop(context);
       UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _myPerson!.phoneNumber!,
         password: _controllerPassword.text,
       );
@@ -157,7 +157,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
@@ -165,21 +165,39 @@ class _DashboardState extends State<Dashboard> {
               child: const Icon(
                 Icons.arrow_back_ios,
                 color: Colors.black,
-              ),  onTap: () {
-            Navigator.pop(context);
-          })) ,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              })),
       body: Container(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(height: MediaQuery.of(context).size.height/10,child: ListChatRoom()),
-            Container(width: MediaQuery
-                .of(context)
-                .size
-                .width,
-            height: 2,
-            color: Colors.black,
-            margin: EdgeInsets.all(0),),
-            Expanded(child: ListChatArchive()),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              padding: EdgeInsets.only(left: 20,bottom: 10),
+              child: Text(
+                "Percakapan Saya",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            Container(
+                color: EpragnancyColors.white,
+                height: MediaQuery.of(context).size.height / 10,
+                child: ListChatRoom()),
+
+
+            Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey.shade200,
+              padding: EdgeInsets.only(left: 20,bottom: 20,top: 20),
+              child: Text(
+                "Arsip",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(child: Container(color:Colors.grey.shade200,child: ListChatArchive())),
           ],
         ),
       ),

@@ -87,6 +87,7 @@ class _ListChatArchiveState extends State<ListChatArchive> {
               return Divider(thickness: 1, height: 1);
             },
             itemBuilder: (context, index) {
+              final reverseIndex = listRoom.length - 1 - index;
               final data = getDataValue(listRoom[index].data());
               RoomModel? room = RoomModel.fromJson(data);
               return itemRoom(room);
@@ -115,6 +116,7 @@ class _ListChatArchiveState extends State<ListChatArchive> {
       time = DateFormat('yyyy/MM/dd').format(roomDateTime);
     }
     return Material(
+      color: Colors.grey.shade200,
       child: InkWell(
         onTap: () {
           Navigator.push(

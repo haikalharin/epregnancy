@@ -14,10 +14,10 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/constants/router_constants.dart';
+import '../../data/firebase/event/event_user.dart';
 import 'event/event_chat_room.dart';
 import '../../data/firebase/event/event_person_example.dart';
 import '../../data/firebase/event/event_storage_example.dart';
-import 'event/event_user.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/chat_model/chat_model.dart';
 import '../../data/model/person_model/person_model.dart';

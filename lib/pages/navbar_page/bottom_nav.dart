@@ -3,23 +3,24 @@ import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../home_page/logout_page.dart';
 import '../survey_page/survey_page.dart';
 int indexBottomNavSelected = 0;
 bool isChangeIndex = false;
 
-class BottomNav extends StatefulWidget {
+class NavbarPage extends StatefulWidget {
   int? arguments = 0;
-   BottomNav({Key? key, this.arguments}) : super(key: key);
+   NavbarPage({Key? key, this.arguments}) : super(key: key);
 
   // final UserModel bottomUserModelData;
 
   @override
-  _BottomNavState createState() => _BottomNavState();
+  _NavbarPageState createState() => _NavbarPageState();
 }
 
-class _BottomNavState extends State<BottomNav>  with TickerProviderStateMixin {
+class _NavbarPageState extends State<NavbarPage>  with TickerProviderStateMixin {
   TabController? controller ;
 
   int indexSelected = 0;
@@ -54,164 +55,87 @@ class _BottomNavState extends State<BottomNav>  with TickerProviderStateMixin {
             BottomNavigationBarItem(
               label: "Beranda",
               activeIcon: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
-                  image:
-                  AssetImage('assets/logo_flikchat.png'),
+                borderRadius: BorderRadius.circular(0),
+                child: SvgPicture.asset(
+                  'assets/ic_home_bar.svg',
                   width: 30,
                   height: 30,
                   fit: BoxFit.cover,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/logo_flikchat.png',
-                      width: 30,
-                      height: 30,
-                      fit: BoxFit.cover,
-                    );
-                  },
                 ),
               ),
               icon: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
-                  image:
-                  AssetImage('assets/logo_flikchat.png'),
+                borderRadius: BorderRadius.circular(0),
+                child: SvgPicture.asset(
+                  'assets/ic_home_bar.svg',
                   width: 30,
                   height: 30,
                   fit: BoxFit.cover,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/logo_flikchat.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    );
-                  },
                 ),
               ),
             ),
             BottomNavigationBarItem(
               label: "Favorit",
               activeIcon: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
-                  image:
-                  AssetImage('assets/logo_flikchat.png'),
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/logo_flikchat.png',
-                      width: 30,
-                      height: 30,
-                      fit: BoxFit.cover,
-                    );
-                  },
+                borderRadius: BorderRadius.circular(0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(0),
+                  child:SvgPicture.asset(
+                    'assets/ic_favorit_bar.svg',
+                    width: 30,
+                    height: 30,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               icon: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
-                  image:
-                  AssetImage('assets/logo_flikchat.png'),
+                borderRadius: BorderRadius.circular(0),
+                child:SvgPicture.asset(
+                  'assets/ic_favorit_bar.svg',
                   width: 30,
                   height: 30,
                   fit: BoxFit.cover,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/logo_flikchat.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    );
-                  },
                 ),
               ),
             ),
             BottomNavigationBarItem(
               label: "Konsultasi",
               activeIcon: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
-                  image:
-                  AssetImage('assets/logo_flikchat.png'),
+                borderRadius: BorderRadius.circular(0),
+                child: SvgPicture.asset(
+                  'assets/ic_consultation_bar.svg',
                   width: 30,
                   height: 30,
                   fit: BoxFit.cover,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/logo_flikchat.png',
-                      width: 30,
-                      height: 30,
-                      fit: BoxFit.cover,
-                    );
-                  },
                 ),
               ),
               icon: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
-                  image:
-                  AssetImage('assets/logo_flikchat.png'),
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/logo_flikchat.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
+                borderRadius: BorderRadius.circular(0),
+                child: SvgPicture.asset(
+                'assets/ic_consultation_bar.svg',
+                width: 30,
+                height: 30,
+                fit: BoxFit.cover,
+              ),
               ),
             ),
             BottomNavigationBarItem(
               label: "Akun",
               activeIcon: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
-                  image:
-                  AssetImage('assets/logo_flikchat.png'),
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/logo_flikchat.png',
-                      width: 30,
-                      height: 30,
-                      fit: BoxFit.cover,
-                    );
-                  },
+                borderRadius: BorderRadius.circular(0),
+                child: SvgPicture.asset(
+                    'assets/ic_profile_bar.svg',
+                    width: 30,
+                    height: 30,
+                    fit: BoxFit.cover,
                 ),
               ),
               icon: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
-                  image:
-                  AssetImage('assets/logo_flikchat.png'),
+                borderRadius: BorderRadius.circular(0),
+                child: SvgPicture.asset(
+                  'assets/ic_profile_bar.svg',
                   width: 30,
                   height: 30,
                   fit: BoxFit.cover,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/logo_flikchat.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    );
-                  },
                 ),
               ),
             ),
@@ -254,9 +178,9 @@ class _BottomNavState extends State<BottomNav>  with TickerProviderStateMixin {
       case 0:
         return HomePage();
       case 1:
-        return ConsultationPage();
+        return Dashboard();
       case 2:
-        return  Dashboard();
+        return ConsultationPage();
       case 3:
         return  LogoutPage();
       default:

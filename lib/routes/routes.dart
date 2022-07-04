@@ -1,4 +1,6 @@
+import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
+import 'package:PregnancyApp/pages/article_page/dashboard_article.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page.dart';
@@ -22,15 +24,19 @@ class Routes {
         return MaterialPageRoute(builder: (_) => HomePage());
       case RouteName.surveyPage:
         return MaterialPageRoute(builder: (_) => SurveyPage());
+      case RouteName.articleDetailPage:
+        return MaterialPageRoute(builder: (_) => ArticleDetailPage());
       case RouteName.chatPage:
         return MaterialPageRoute(builder: (_) => ChatPage());
       case RouteName.navBar:
         return MaterialPageRoute(
-            builder: (_) => BottomNav(
+            builder: (_) => NavbarPage(
                   arguments: getDataValue(settings.arguments),
                 ));
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());
+      case RouteName.dashboardArticle:
+        return MaterialPageRoute(builder: (_) => DashboardArticle());
       case RouteName.chatRoom:
         return MaterialPageRoute(
             builder: (_) =>
