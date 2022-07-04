@@ -28,178 +28,207 @@ class _OtpPageState extends State<SignUpQuestionnairePage> {
     return Scaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
-        body: SafeArea(
+        body: SingleChildScrollView(
           child: Stack(
             children: [
-              ListView(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: _horizontalPadding
-                ),
+              Column(
                 children: [
-                  SizedBox(height: 20),
+                  SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(RouteName.signup);
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => LoginPage()),
+                      // );
+                    },
+                    child: Image.asset(
+                      'assets/back.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                   Image.asset(
-                    "assets/signup_questionnaire_icon.png",
-                    height: 220,
+                      "assets/signup_questionnaire_icon.png",
+                      height: 220,
+                      fit: BoxFit.fitWidth
                   ),
-                  Text(
-                    "Lengkapi data diri",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 35,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: _horizontalPadding
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Lengkapi data diri",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Untuk personalisasi kebutuhan Anda dalam kehamilan",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14),
+                        ),
+                        SizedBox(height: 30),
+                        Text(
+                          "Nama Depan",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        SizedBox(height: 10),
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(color: Colors.grey[800]),
+                            fillColor: Colors.white70,
+                            hintText: 'Isi dengan nama depan Anda',
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          "Nama Belakang",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        SizedBox(height: 10),
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(color: Colors.grey[800]),
+                            fillColor: Colors.white70,
+                            hintText: 'Isi dengan nama belakang Anda',
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          "Kata Sandi",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        SizedBox(height: 10),
+                        TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          "Konfirmasi Kata Sandi",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        SizedBox(height: 10),
+                        TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          "Tanggal lahir",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        SizedBox(height: 10),
+                        DateTimeFormField(
+                          mode: DateTimeFieldPickerMode.date,
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.black45),
+                            errorStyle: TextStyle(color: Colors.redAccent),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            suffixIcon: Icon(Icons.event_note),
+                            labelText: 'DD / MM / YYYY',
+                            labelStyle: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          firstDate: DateTime.now().add(const Duration(days: 10)),
+                          lastDate: DateTime.now().add(const Duration(days: 40)),
+                          initialDate: DateTime.now().add(const Duration(days: 20)),
+                          autovalidateMode: AutovalidateMode.always,
+                          validator: (DateTime? e) =>
+                          (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
+                          onDateSelected: (DateTime value) {
+                            print(value);
+                          },
+                        ),
+                        SizedBox(height: 30),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Untuk personalisasi kebutuhan Anda dalam kehamilan",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14),
-                  ),
-                  SizedBox(height: 30),
-                  Text(
-                    "Nama Depan",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      filled: true,
-                      hintStyle: TextStyle(color: Colors.grey[800]),
-                      fillColor: Colors.white70,
-                      hintText: 'Isi dengan nama depan Anda',
+                  Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          "1 dari 2",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          width: 350,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => SignUpQuestionnairePageTwo()),
+                                );
+                              },
+                              child: Text("Selanjutnya"),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue,
+                                onPrimary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                        ),
+                        SizedBox(height: 20),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Nama Belakang",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      filled: true,
-                      hintStyle: TextStyle(color: Colors.grey[800]),
-                      fillColor: Colors.white70,
-                      hintText: 'Isi dengan nama belakang Anda',
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Kata Sandi",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Konfirmasi Kata Sandi",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Tanggal lahir",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  DateTimeFormField(
-                    mode: DateTimeFieldPickerMode.date,
-                    decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Colors.black45),
-                      errorStyle: TextStyle(color: Colors.redAccent),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      suffixIcon: Icon(Icons.event_note),
-                      labelText: 'DD / MM / YYYY',
-                      labelStyle: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    firstDate: DateTime.now().add(const Duration(days: 10)),
-                    lastDate: DateTime.now().add(const Duration(days: 40)),
-                    initialDate: DateTime.now().add(const Duration(days: 20)),
-                    autovalidateMode: AutovalidateMode.always,
-                    validator: (DateTime? e) =>
-                    (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
-                    onDateSelected: (DateTime value) {
-                      print(value);
-                    },
-                  ),
-                  SizedBox(height: 30),
-                  Text(
-                    "1 dari 2",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 12),
-                  ),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignUpQuestionnairePageTwo()),
-                      );
-                    },
-                    child: Text("Selanjutnya"),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(50, 50),
-                      primary: Colors.blue,
-                      onPrimary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
+                  )
                 ],
-              ),
+              )
             ],
           ),
-        ));
+        ),
+    );
   }
 }

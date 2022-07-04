@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,8 @@ import '../../common/services/auth_service.dart';
 import 'bloc/signup_bloc.dart';
 
 const _horizontalPadding = 24.0;
+var _signUpWithEmail = false;
+var _signUpWithMobile = false;
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -23,6 +26,7 @@ class SignupPage extends StatefulWidget {
 
 final _codeController = TextEditingController();
 var authService = AuthService();
+
 
 class _SignupPageState extends State<SignupPage> {
   @override
@@ -60,7 +64,7 @@ class _SignupPageState extends State<SignupPage> {
                               child: Image.asset(
                                 "assets/signup_background.png",
                                 alignment: Alignment.center,
-                                height: 300,
+                                height: 280,
                               ),
                             ),
                             // Image.asset(
@@ -88,6 +92,7 @@ class _SignupPageState extends State<SignupPage> {
                                 labelText: 'Mobile Number',
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                               initialCountryCode: 'ID',
@@ -104,7 +109,7 @@ class _SignupPageState extends State<SignupPage> {
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12),
                             ),
-                            SizedBox(height: 50),
+                            SizedBox(height: 30),
                             Text(
                               "Atau daftar dengan akun email",
                               style: TextStyle(
@@ -121,7 +126,25 @@ class _SignupPageState extends State<SignupPage> {
                                   fontSize: 16),
                             ),
                             SizedBox(height: 10),
-                            _UsernameInput(),
+                            _EmailInput(),
+                            SizedBox(height: 50),
+                            ElevatedButton(
+                              onPressed: () async {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OtpPage()),
+                                );
+                              },
+                              child: Text("Daftar/Masuk"),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(50, 50),
+                                primary: Colors.blue,
+                                onPrimary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
+                            ),
                             // _PasswordTextField(),
                           ],
                         );
@@ -150,8 +173,8 @@ class _Loading extends StatelessWidget {
   }
 }
 
-class _UsernameInput extends StatelessWidget {
-  const _UsernameInput();
+class _EmailInput extends StatelessWidget {
+  const _EmailInput();
 
   @override
   Widget build(BuildContext context) {
@@ -159,11 +182,13 @@ class _UsernameInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
         return TextField(
-          key: const Key('loginForm_usernameInput_textField'),
+          key: const Key('loginForm_emailInput_textField'),
           onChanged: (username) =>
               Injector.resolve<SignupBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
             hintText: 'email@mail.com',
             errorText: state.username.invalid ? 'Format e-mail salah' : null,
           ),
