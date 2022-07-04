@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,76 +34,104 @@ class _OtpPageState extends State<EmailVerificationPage> {
             children: [
               ListView(
                 physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: _horizontalPadding
-                ),
                 children: [
-                  SizedBox(height: 100),
-                  Image.asset(
-                    "assets/email_verification_icon.png",
-                    height: 220,
-                  ),
-                  Text(
-                    "Verifikasi Akun Anda",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 35,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpQuestionnairePageTwo()),
+                      );
+                    },
+                    child: Image.asset(
+                      'assets/back.png',
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Klik tautan dalam email yang kami kirimkan ke",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16),
-                  ),
-                  Text(
-                    "abc@gmail.com",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  Text(
-                    "ntuk verifikasi akun",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16),
-                  ),
-                  SizedBox(height: 60),
-                  ElevatedButton(
-                    onPressed: () async {},
-                    child: Text("Ke aplikasi email"),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(50, 50),
-                      primary: Colors.blue,
-                      onPrimary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(height: 30),
+                      Image.asset(
+                        "assets/email_verification_icon.png",
+                        height: 220,
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {},
-                    child: Text("Lewati sekarang"),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(50, 50),
-                      primary: HexColor("#F1F6FB"),
-                      onPrimary: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                      Text(
+                        "Verifikasi Akun Anda",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 35,
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 10),
+                      Text(
+                        "Klik tautan dalam email yang kami kirimkan ke",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16),
+                      ),
+                      Text(
+                        "abc@gmail.com",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                      Text(
+                        "ntuk verifikasi akun",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16),
+                      ),
+                      SizedBox(height: 60),
+                      SizedBox(height: 20),
+                      Container(
+                        width: 350,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => EmailVerificationPage()),
+                            );
+                          },
+                          child: Text("Ke aplikasi email"),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            onPrimary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 350,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => EmailVerificationPage()),
+                            );
+                          },
+                          child: Text("Lewati sekarang"),
+                          style: ElevatedButton.styleFrom(
+                            primary: HexColor("#F1F6FB"),
+                            onPrimary: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                    ]
                   ),
-                  SizedBox(height: 20),
                 ],
               ),
             ],

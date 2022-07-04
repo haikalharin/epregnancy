@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,11 +37,10 @@ class _OtpPageState extends State<SignUpQuestionnairePage> {
                   SizedBox(height: 30),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(RouteName.signup);
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => LoginPage()),
-                      // );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => OtpPage()),
+                      );
                     },
                     child: Image.asset(
                       'assets/back.png',

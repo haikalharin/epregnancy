@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
@@ -23,16 +24,6 @@ class _OtpPageState extends State<OtpPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.cleaning_services),
-          onPressed: () {
-            print("Floating button was pressed.");
-            otpController.clear();
-            // otpController.set(['2', '3', '5', '5', '7']);
-            // otpController.setValue('3', 0);
-            // otpController.setFocus(1);
-          },
-        ),
         body: SafeArea(
           child: Stack(
             children: [
@@ -106,6 +97,10 @@ class _OtpPageState extends State<OtpPage> {
                           },
                           onCompleted: (pin) {
                             print("Completed: " + pin);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignUpQuestionnairePage()),
+                            );
                           }),
                     ]
                   ),
