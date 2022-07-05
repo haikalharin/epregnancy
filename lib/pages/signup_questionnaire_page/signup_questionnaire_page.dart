@@ -175,9 +175,9 @@ class _OtpPageState extends State<SignUpQuestionnairePage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          firstDate: DateTime.now().add(const Duration(days: 10)),
-                          lastDate: DateTime.now().add(const Duration(days: 40)),
-                          initialDate: DateTime.now().add(const Duration(days: 20)),
+                          // firstDate: DateTime.now().add(const Duration(days: 10)),
+                          // lastDate: DateTime.now().add(const Duration(days: 40)),
+                          // initialDate: DateTime.now().add(const Duration(days: 20)),
                           autovalidateMode: AutovalidateMode.always,
                           validator: (DateTime? e) =>
                           (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
