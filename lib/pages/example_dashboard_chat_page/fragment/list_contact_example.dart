@@ -149,14 +149,14 @@ class _ListContactExampleState extends State<ListContactExample> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(40),
             child: FadeInImage(
-              placeholder: AssetImage('assets/logo_flikchat.png'),
+              placeholder: AssetImage('assets/ic_no_photo.png'),
               image: NetworkImage(person!.photo!),
               width: 40,
               height: 40,
               fit: BoxFit.cover,
               imageErrorBuilder: (context, error, stackTrace) {
                 return Image.asset(
-                  'assets/logo_flikchat.png',
+                  'assets/ic_no_photo.png',
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,

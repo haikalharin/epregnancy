@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
 
-
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../data/firebase/event/event_user.dart';
+import '../../utils/epragnancy_color.dart';
 import 'event/event_chat_room.dart';
 import '../../data/firebase/event/event_person_example.dart';
 import '../../data/firebase/event/event_storage_example.dart';
@@ -29,7 +29,7 @@ import '../../utils/remote_utils.dart';
 class ChatRoom extends StatefulWidget {
   final Map<String, dynamic> arguments;
 
-  const ChatRoom({ Key? key, required this.arguments}) : super(key: key);
+  const ChatRoom({Key? key, required this.arguments}) : super(key: key);
 
   @override
   _ChatRoomState createState() => _ChatRoomState();
@@ -41,8 +41,6 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   String _inputMessage = '';
   var _controllerMessage = TextEditingController();
   ChatModel? _selectedChat;
-
-
 
   void getSelectedDefault() {
     setState(() {
@@ -76,9 +74,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
     if (type == 'text') _controllerMessage.clear();
     if (message != '') {
       ChatModel chat = ChatModel(
-        dateTime: DateTime
-            .now()
-            .microsecondsSinceEpoch,
+        dateTime: DateTime.now().microsecondsSinceEpoch,
         isRead: false,
         message: message,
         type: type,
@@ -169,8 +165,8 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         personUid: widget.arguments["room"].uid,
       );
 
-      String token = await EventUser.getUserToken(
-          widget.arguments["room"].uid!);
+      String token =
+          await EventUser.getUserToken(widget.arguments["room"].uid!);
       if (token != '') {
         await NotifController.sendNotification(
           myLastChat: message,
@@ -199,6 +195,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
       }
     }
   }
+
   void pickAndCropImage() async {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
@@ -217,7 +214,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         EventStorageExample.uploadMessageImageAndGetUrl(
           filePhoto: File(croppedFile.path),
           myUid: _myPerson!.uid,
-          personUid:widget.arguments["room"].uid,
+          personUid: widget.arguments["room"].uid,
         ).then((imageUrl) {
           sendMessage('image', imageUrl);
         });
@@ -235,13 +232,13 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
       chatId: _selectedChat!.dateTime.toString(),
       isSender: true,
       myUid: _myPerson!.uid,
-      personUid:widget.arguments["room"].uid,
+      personUid: widget.arguments["room"].uid,
     );
     EventChatRoom.deleteMessage(
       chatId: _selectedChat!.dateTime.toString(),
       isSender: false,
       myUid: _myPerson!.uid,
-      personUid:widget.arguments["room"].uid,
+      personUid: widget.arguments["room"].uid,
     );
     getSelectedDefault();
   }
@@ -257,7 +254,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance!.addObserver(this);
-    EventChatRoom.setMeOutRoom(_myPerson!.uid!,widget.arguments["room"].uid!);
+    EventChatRoom.setMeOutRoom(_myPerson!.uid!, widget.arguments["room"].uid!);
     super.dispose();
   }
 
@@ -269,11 +266,13 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         print('-----------------AppLifecycleState.inactive');
         break;
       case AppLifecycleState.resumed:
-        EventChatRoom.setMeInRoom(_myPerson!.uid!,widget.arguments["room"].uid!);
+        EventChatRoom.setMeInRoom(
+            _myPerson!.uid!, widget.arguments["room"].uid!);
         print('-----------------AppLifecycleState.resumed');
         break;
       case AppLifecycleState.paused:
-        EventChatRoom.setMeOutRoom(_myPerson!.uid!,widget.arguments["room"].uid!);
+        EventChatRoom.setMeOutRoom(
+            _myPerson!.uid!, widget.arguments["room"].uid!);
         print('-----------------AppLifecycleState.paused');
         break;
 
@@ -290,17 +289,26 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: GestureDetector(
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            }),
         titleSpacing: 0,
         title: Row(
           children: [
             GestureDetector(
               onTap: () {
                 PersonModel person = PersonModel(
-                  phoneNumber:widget.arguments["room"].phoneNumber,
-                  name:widget.arguments["room"].name,
-                  photo:widget.arguments["room"].photo,
+                  phoneNumber: widget.arguments["room"].phoneNumber,
+                  name: widget.arguments["room"].name,
+                  photo: widget.arguments["room"].photo,
                   token: '',
-                  uid:widget.arguments["room"].uid,
+                  uid: widget.arguments["room"].uid,
                 );
                 // Navigator.push(
                 //   context,
@@ -315,14 +323,14 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(40),
                 child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
+                  placeholder: AssetImage('assets/ic_no_photo.png'),
                   image: NetworkImage(widget.arguments["room"].photo!),
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,
                   imageErrorBuilder: (context, error, stackTrace) {
                     return Image.asset(
-                      'assets/logo_flikchat.png',
+                      'assets/ic_no_photo.png',
                       width: 40,
                       height: 40,
                       fit: BoxFit.cover,
@@ -333,44 +341,44 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             ),
             SizedBox(width: 8),
             Text(
-             widget.arguments["room"].name!,
-              style: TextStyle(fontSize: 18),
-            ),
+              widget.arguments["room"].role == "MIDWIFE"
+                  ? "Bidan ${widget.arguments["room"].name!}"
+                  : widget.arguments["room"].name!,
+              style: TextStyle(fontSize: 18,color: EpragnancyColors.black),
+            )
           ],
         ),
         actions: [
           SizedBox(
-            child: _selectedChat!.message != 'delete' && _selectedChat!.type == 'text'
+            child: _selectedChat!.message != 'delete' &&
+                _selectedChat!.type == 'text'
                 ? IconButton(
-                    icon: Icon(Icons.copy),
-                    onPressed: () {
-                      FlutterClipboard.copy(_selectedChat!.message!)
-                          .then((value) => print('copied'));
-                      getSelectedDefault();
-                    },
-                  )
+              icon: Icon(Icons.copy),
+              onPressed: () {
+                FlutterClipboard.copy(_selectedChat!.message!)
+                    .then((value) => print('copied'));
+                getSelectedDefault();
+              },
+            )
                 : null,
           ),
           SizedBox(
             child: _selectedChat!.message != 'delete' &&
-                    _selectedChat!.uidSender == _myPerson!.uid
+                _selectedChat!.uidSender == _myPerson!.uid
                 ? IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      deleteSelectedMessage();
-                    },
-                  )
-                :  Padding(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                deleteSelectedMessage();
+              },
+            )
+                : Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    deleteChatRoom( widget.arguments["room"].uid!);
+                    deleteChatRoom(widget.arguments["room"].uid!);
                   },
-                  child: Icon(
-                      Icons.more_vert
-                  ),
-                )
-            ),
+                  child: Icon(Icons.more_vert, color: Colors.black,),
+                )),
           ),
         ],
       ),
@@ -550,12 +558,12 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
               : null,
         ),
         SizedBox(width: 4),
-        chat.type == 'text' || (chat.message == ''&& chat.type == 'text')
+        chat.type == 'text' || (chat.message == '' && chat.type == 'text')
             ? messageText(chat)
             : messageImage(chat),
         SizedBox(width: 4),
         SizedBox(
-          child: chat.uidSender ==widget.arguments["room"].uid
+          child: chat.uidSender == widget.arguments["room"].uid
               ? Text(dateTime, style: TextStyle(fontSize: 12))
               : null,
         ),
@@ -659,14 +667,14 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             bottomRight: Radius.circular(10),
           ),
           child: FadeInImage(
-            placeholder: AssetImage('assets/logo_flikchat.png'),
+            placeholder: AssetImage('assets/ic_no_photo.png'),
             image: NetworkImage(chat.message!),
             width: MediaQuery.of(context).size.width * 0.5,
             height: MediaQuery.of(context).size.width * 0.5,
             fit: BoxFit.cover,
             imageErrorBuilder: (context, error, stackTrace) {
               return Image.asset(
-                'assets/logo_flikchat.png',
+                'assets/ic_no_photo.png',
                 width: 40,
                 height: 40,
                 fit: BoxFit.cover,
@@ -699,7 +707,8 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
       },
     );
     if (value == 'delete') {
-      final response = await EventChatRoom.archiveRoomChat(myUid: _myPerson!.uid, personUid: personUid);
+      final response = await EventChatRoom.archiveRoomChat(
+          myUid: _myPerson!.uid, personUid: personUid);
       AppSharedPreference.remove("person");
       if (response) {
         EventChatRoom.deleteChatRoom(
@@ -710,30 +719,30 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
     }
   }
 
-  // void showImageFull(String imageUrl) {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (context) => Stack(
-  //       children: [
-  //         PhotoView(
-  //           enableRotation: true,
-  //           imageProvider: NetworkImage(imageUrl),
-  //         ),
-  //         Positioned(
-  //           top: MediaQuery.of(context).padding.top,
-  //           left: 0,
-  //           right: 0,
-  //           child: AppBar(
-  //             backgroundColor: Colors.black.withOpacity(0.5),
-  //             leading: IconButton(
-  //               icon: Icon(Icons.arrow_back),
-  //               onPressed: () => Navigator.pop(context),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+// void showImageFull(String imageUrl) {
+//   showDialog(
+//     context: context,
+//     barrierDismissible: false,
+//     builder: (context) => Stack(
+//       children: [
+//         PhotoView(
+//           enableRotation: true,
+//           imageProvider: NetworkImage(imageUrl),
+//         ),
+//         Positioned(
+//           top: MediaQuery.of(context).padding.top,
+//           left: 0,
+//           right: 0,
+//           child: AppBar(
+//             backgroundColor: Colors.black.withOpacity(0.5),
+//             leading: IconButton(
+//               icon: Icon(Icons.arrow_back),
+//               onPressed: () => Navigator.pop(context),
+//             ),
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
 }

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:ui';
 
-
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ import '../../utils/remote_utils.dart';
 class ChatArchive extends StatefulWidget {
   final Map<String, dynamic> arguments;
 
-  const ChatArchive({ Key? key, required this.arguments}) : super(key: key);
+  const ChatArchive({Key? key, required this.arguments}) : super(key: key);
 
   @override
   _ChatArchiveState createState() => _ChatArchiveState();
@@ -40,8 +40,6 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
   String _inputMessage = '';
   var _controllerMessage = TextEditingController();
   ChatModel? _selectedChat;
-
-
 
   void getSelectedDefault() {
     setState(() {
@@ -75,9 +73,7 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
     if (type == 'text') _controllerMessage.clear();
     if (message != '') {
       ChatModel chat = ChatModel(
-        dateTime: DateTime
-            .now()
-            .microsecondsSinceEpoch,
+        dateTime: DateTime.now().microsecondsSinceEpoch,
         isRead: false,
         message: message,
         type: type,
@@ -168,8 +164,8 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
         personUid: widget.arguments["room"].uid,
       );
 
-      String token = await EventUser.getUserToken(
-          widget.arguments["room"].uid!);
+      String token =
+          await EventUser.getUserToken(widget.arguments["room"].uid!);
       if (token != '') {
         await NotifController.sendNotification(
           myLastChat: message,
@@ -198,6 +194,7 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
       }
     }
   }
+
   void pickAndCropImage() async {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
@@ -216,7 +213,7 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
         EventStorageExample.uploadMessageImageAndGetUrl(
           filePhoto: File(croppedFile.path),
           myUid: _myPerson!.uid,
-          personUid:widget.arguments["room"].uid,
+          personUid: widget.arguments["room"].uid,
         ).then((imageUrl) {
           sendMessage('image', imageUrl);
         });
@@ -234,13 +231,13 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
       chatId: _selectedChat!.dateTime.toString(),
       isSender: true,
       myUid: _myPerson!.uid,
-      personUid:widget.arguments["room"].uid,
+      personUid: widget.arguments["room"].uid,
     );
     EventChatRoom.deleteMessage(
       chatId: _selectedChat!.dateTime.toString(),
       isSender: false,
       myUid: _myPerson!.uid,
-      personUid:widget.arguments["room"].uid,
+      personUid: widget.arguments["room"].uid,
     );
     getSelectedDefault();
   }
@@ -256,7 +253,7 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance!.addObserver(this);
-    EventChatRoom.setMeOutRoom(_myPerson!.uid!,widget.arguments["room"].uid!);
+    EventChatRoom.setMeOutRoom(_myPerson!.uid!, widget.arguments["room"].uid!);
     super.dispose();
   }
 
@@ -268,11 +265,13 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
         print('-----------------AppLifecycleState.inactive');
         break;
       case AppLifecycleState.resumed:
-        EventChatRoom.setMeInRoom(_myPerson!.uid!,widget.arguments["room"].uid!);
+        EventChatRoom.setMeInRoom(
+            _myPerson!.uid!, widget.arguments["room"].uid!);
         print('-----------------AppLifecycleState.resumed');
         break;
       case AppLifecycleState.paused:
-        EventChatRoom.setMeOutRoom(_myPerson!.uid!,widget.arguments["room"].uid!);
+        EventChatRoom.setMeOutRoom(
+            _myPerson!.uid!, widget.arguments["room"].uid!);
         print('-----------------AppLifecycleState.paused');
         break;
 
@@ -289,17 +288,26 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: GestureDetector(
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            }),
         titleSpacing: 0,
         title: Row(
           children: [
             GestureDetector(
               onTap: () {
                 PersonModel person = PersonModel(
-                  phoneNumber:widget.arguments["room"].phoneNumber,
-                  name:widget.arguments["room"].name,
-                  photo:widget.arguments["room"].photo,
+                  phoneNumber: widget.arguments["room"].phoneNumber,
+                  name: widget.arguments["room"].name,
+                  photo: widget.arguments["room"].photo,
                   token: '',
-                  uid:widget.arguments["room"].uid,
+                  uid: widget.arguments["room"].uid,
                 );
                 // Navigator.push(
                 //   context,
@@ -314,14 +322,14 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(40),
                 child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
+                  placeholder: AssetImage('assets/ic_no_photo.png'),
                   image: NetworkImage(widget.arguments["room"].photo!),
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,
                   imageErrorBuilder: (context, error, stackTrace) {
                     return Image.asset(
-                      'assets/logo_flikchat.png',
+                      'assets/ic_no_photo.png',
                       width: 40,
                       height: 40,
                       fit: BoxFit.cover,
@@ -332,14 +340,17 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
             ),
             SizedBox(width: 8),
             Text(
-             widget.arguments["room"].name!,
-              style: TextStyle(fontSize: 18),
-            ),
+              widget.arguments["room"].role == "MIDWIFE"
+                  ? "Bidan ${widget.arguments["room"].name!}"
+                  : widget.arguments["room"].name!,
+              style: TextStyle(fontSize: 18,color: EpragnancyColors.black),
+            )
           ],
         ),
         actions: [
           SizedBox(
-            child: _selectedChat!.message != 'delete' && _selectedChat!.type == 'text'
+            child: _selectedChat!.message != 'delete' &&
+                    _selectedChat!.type == 'text'
                 ? IconButton(
                     icon: Icon(Icons.copy),
                     onPressed: () {
@@ -359,17 +370,14 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
                       deleteSelectedMessage();
                     },
                   )
-                :  Padding(
-                padding: EdgeInsets.only(right: 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    deleteChatRoom( widget.arguments["room"].uid!);
-                  },
-                  child: Icon(
-                      Icons.more_vert
-                  ),
-                )
-            ),
+                : Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        deleteChatRoom(widget.arguments["room"].uid!);
+                      },
+                      child: Icon(Icons.more_vert, color: Colors.black,),
+                    )),
           ),
         ],
       ),
@@ -476,48 +484,23 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              color: Colors.blue,
+              color: Colors.white,
               child: Row(
                 children: [
-                  IconButton(
-                      icon: Icon(Icons.image, color: Colors.white),
-                      onPressed: () {
-                        pickAndCropImage();
-                      }),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        vertical: _inputMessage.contains('\n') ? 4 : 8,
-                        horizontal: 16,
-                      ),
-                      child: TextField(
-                        controller: _controllerMessage,
-                        maxLines: 3,
-                        minLines: 1,
-                        decoration: const InputDecoration(
-                          hintText: 'Message...',
-                          border: InputBorder.none,
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(0),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            _inputMessage = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.send, color: Colors.white),
-                      onPressed: () {
-                        sendMessage('text', _controllerMessage.text);
-                      }),
+                  Container(
+                    height: 60,
+                  )
+                  // IconButton(
+                  //     icon: Icon(Icons.image, color: Colors.white),
+                  //     onPressed: () {
+                  //       pickAndCropImage();
+                  //     }),
+                  //
+                  // IconButton(
+                  //     icon: Icon(Icons.send, color: Colors.white),
+                  //     onPressed: () {
+                  //       sendMessage('text', _controllerMessage.text);
+                  //     }),
                 ],
               ),
             ),
@@ -549,12 +532,12 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
               : null,
         ),
         SizedBox(width: 4),
-        chat.type == 'text' || (chat.message == ''&& chat.type == 'text')
+        chat.type == 'text' || (chat.message == '' && chat.type == 'text')
             ? messageText(chat)
             : messageImage(chat),
         SizedBox(width: 4),
         SizedBox(
-          child: chat.uidSender ==widget.arguments["room"].uid
+          child: chat.uidSender == widget.arguments["room"].uid
               ? Text(dateTime, style: TextStyle(fontSize: 12))
               : null,
         ),
@@ -658,14 +641,14 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
             bottomRight: Radius.circular(10),
           ),
           child: FadeInImage(
-            placeholder: AssetImage('assets/logo_flikchat.png'),
+            placeholder: AssetImage('assets/ic_no_photo.png'),
             image: NetworkImage(chat.message!),
             width: MediaQuery.of(context).size.width * 0.5,
             height: MediaQuery.of(context).size.width * 0.5,
             fit: BoxFit.cover,
             imageErrorBuilder: (context, error, stackTrace) {
               return Image.asset(
-                'assets/logo_flikchat.png',
+                'assets/ic_no_photo.png',
                 width: 40,
                 height: 40,
                 fit: BoxFit.cover,
@@ -698,7 +681,8 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
       },
     );
     if (value == 'delete') {
-      final response = await EventChatRoom.archiveRoomChat(myUid: _myPerson!.uid, personUid: personUid);
+      final response = await EventChatRoom.archiveRoomChat(
+          myUid: _myPerson!.uid, personUid: personUid);
       if (response) {
         EventChatRoom.deleteChatRoom(
             myUid: _myPerson!.uid, personUid: personUid);
@@ -706,30 +690,30 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
     }
   }
 
-  // void showImageFull(String imageUrl) {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (context) => Stack(
-  //       children: [
-  //         PhotoView(
-  //           enableRotation: true,
-  //           imageProvider: NetworkImage(imageUrl),
-  //         ),
-  //         Positioned(
-  //           top: MediaQuery.of(context).padding.top,
-  //           left: 0,
-  //           right: 0,
-  //           child: AppBar(
-  //             backgroundColor: Colors.black.withOpacity(0.5),
-  //             leading: IconButton(
-  //               icon: Icon(Icons.arrow_back),
-  //               onPressed: () => Navigator.pop(context),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+// void showImageFull(String imageUrl) {
+//   showDialog(
+//     context: context,
+//     barrierDismissible: false,
+//     builder: (context) => Stack(
+//       children: [
+//         PhotoView(
+//           enableRotation: true,
+//           imageProvider: NetworkImage(imageUrl),
+//         ),
+//         Positioned(
+//           top: MediaQuery.of(context).padding.top,
+//           left: 0,
+//           right: 0,
+//           child: AppBar(
+//             backgroundColor: Colors.black.withOpacity(0.5),
+//             leading: IconButton(
+//               icon: Icon(Icons.arrow_back),
+//               onPressed: () => Navigator.pop(context),
+//             ),
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
 }

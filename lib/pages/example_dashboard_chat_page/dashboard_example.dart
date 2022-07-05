@@ -186,7 +186,7 @@ class _DashboardExampleState extends State<DashboardExample> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: FadeInImage(
-                    placeholder: AssetImage('assets/logo_flikchat.png'),
+                    placeholder: AssetImage('assets/ic_no_photo.png'),
                     image:
                         NetworkImage(_myPerson == null ? '' : _myPerson!.photo!),
                     width: 100,
@@ -194,7 +194,7 @@ class _DashboardExampleState extends State<DashboardExample> {
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(
-                        'assets/logo_flikchat.png',
+                        'assets/ic_no_photo.png',
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,

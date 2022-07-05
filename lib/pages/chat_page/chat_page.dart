@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/constants/router_constants.dart';
+import '../../data/firebase/event/event_user.dart';
 import '../../data/model/room_model/room_model.dart';
+import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
 import 'chat_room.dart';
@@ -264,6 +266,8 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     onPressed: () async {
                       if(type != 0){
+                        final UserRolesModelFirebase role =
+                        await EventUser.checkRoleExist("ACosa0u7gSm2nNqXgPLd");
                         RoomModel room = RoomModel(
                           phoneNumber: "uma.babu@allianz.co.id",
                           inRoom: false,
@@ -274,6 +278,7 @@ class _ChatPageState extends State<ChatPage> {
                           photo: "",
                           type: '',
                           uid: "ACosa0u7gSm2nNqXgPLd",
+                          role: role.role?? '',
                         );
                         await AppSharedPreference.setPersonFirebase(room);
                         Navigator.pushReplacement(

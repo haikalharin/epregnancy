@@ -71,8 +71,12 @@ class AppSharedPreference {
   static Future<UserModelFirebase> getUserFirebase() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString(_user);
-    Map<String,dynamic> map = jsonDecode(json!);
-    return UserModelFirebase.fromJson(map);
+    if (json != null) {
+      Map<String, dynamic> map = jsonDecode(json);
+      return UserModelFirebase.fromJson(map);
+    } else{
+      return UserModelFirebase.empty();
+    }
   }
 
   static setUserFirebase(UserModelFirebase data) async {

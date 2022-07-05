@@ -14,7 +14,6 @@ import '../../data/model/person_model/person_model.dart';
 import '../../data/model/room_model/room_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 
-
 class ListChatArchive extends StatefulWidget {
   @override
   _ListChatArchiveState createState() => _ListChatArchiveState();
@@ -58,7 +57,8 @@ class _ListChatArchiveState extends State<ListChatArchive> {
     );
     if (value == 'delete') {
       AppSharedPreference.remove("person");
-      EventChatRoom.deleteArchiveRoom(myUid: _myPerson!.uid, personUid: personUid);
+      EventChatRoom.deleteArchiveRoom(
+          myUid: _myPerson!.uid, personUid: personUid);
     }
   }
 
@@ -122,7 +122,8 @@ class _ListChatArchiveState extends State<ListChatArchive> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ChatArchive(arguments: {'room': room})));
+                  builder: (context) =>
+                      ChatArchive(arguments: {'room': room})));
         },
         onLongPress: () {
           deleteChatRoom(room.uid!);
@@ -154,14 +155,14 @@ class _ListChatArchiveState extends State<ListChatArchive> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(40),
                   child: FadeInImage(
-                    placeholder: AssetImage('assets/logo_flikchat.png'),
+                    placeholder: AssetImage('assets/ic_no_photo.png'),
                     image: NetworkImage(room.photo!),
                     width: 40,
                     height: 40,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(
-                        'assets/logo_flikchat.png',
+                        'assets/ic_no_photo.png',
                         width: 40,
                         height: 40,
                         fit: BoxFit.cover,
@@ -170,14 +171,17 @@ class _ListChatArchiveState extends State<ListChatArchive> {
                   ),
                 ),
               ),
-
               SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(room.name!.isEmpty? room.phoneNumber! : room.name!),
+                    Text(room.name!.isEmpty
+                        ? room.phoneNumber!
+                        : room.role == "MIDWIFE"
+                            ? "Bidan ${room.name!}"
+                            : room.name!),
                     Row(
                       children: [
                         SizedBox(
@@ -190,7 +194,6 @@ class _ListChatArchiveState extends State<ListChatArchive> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
                             Text(
                               room.type! == 'text'
                                   ? room.lastChat!.length > 20
@@ -251,8 +254,8 @@ class _ListChatArchiveState extends State<ListChatArchive> {
         if (listChat.isNotEmpty) {
           QueryDocumentSnapshot? lastChat;
           listChat.forEach((element) {
-final datas = getDateTimeFirebase(element.data());
-            if ( datas == lastDateTime) {
+            final datas = getDateTimeFirebase(element.data());
+            if (datas == lastDateTime) {
               lastChat = element;
               data = getDataValue(lastChat!.data());
             }

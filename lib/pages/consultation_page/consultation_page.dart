@@ -184,8 +184,8 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 borderRadius: BorderRadius.circular(40),
                                 child: const FadeInImage(
                                   placeholder:
-                                      AssetImage('assets/logo_flikchat.png'),
-                                  image: AssetImage('assets/logo_flikchat.png'),
+                                      AssetImage('assets/ic_no_photo.png'),
+                                  image: AssetImage('assets/ic_no_photo.png'),
                                   width: 40,
                                   height: 40,
                                   fit: BoxFit.cover,

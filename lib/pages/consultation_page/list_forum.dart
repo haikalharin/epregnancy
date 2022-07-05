@@ -110,9 +110,9 @@ class ListForumWidget extends StatelessWidget {
                                                       BorderRadius.circular(40),
                                                   child: const FadeInImage(
                                                     placeholder: AssetImage(
-                                                        'assets/logo_flikchat.png'),
+                                                        'assets/ic_no_photo.png'),
                                                     image: AssetImage(
-                                                        'assets/logo_flikchat.png'),
+                                                        'assets/ic_no_photo.png'),
                                                     width: 40,
                                                     height: 40,
                                                     fit: BoxFit.cover,
@@ -169,7 +169,7 @@ class ListForumWidget extends StatelessWidget {
                                   ClipRRect(
                                     child: FadeInImage(
                                       placeholder: AssetImage(
-                                          'assets/logo_flikchat.png'),
+                                          'assets/ic_no_photo.png'),
                                       image: NetworkImage(
                                           listPrivilegesData[index].photo ??
                                               ''),
@@ -287,9 +287,9 @@ class ListForumWidget extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(40),
                                         child: const FadeInImage(
                                           placeholder: AssetImage(
-                                              'assets/logo_flikchat.png'),
+                                              'assets/ic_no_photo.png'),
                                           image: AssetImage(
-                                              'assets/logo_flikchat.png'),
+                                              'assets/ic_no_photo.png'),
                                           width: 40,
                                           height: 40,
                                           fit: BoxFit.cover,

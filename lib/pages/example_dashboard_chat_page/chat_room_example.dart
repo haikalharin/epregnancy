@@ -312,14 +312,14 @@ class _ChatRoomExampleState extends State<ChatRoomExample> with WidgetsBindingOb
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(40),
                 child: FadeInImage(
-                  placeholder: AssetImage('assets/logo_flikchat.png'),
+                  placeholder: AssetImage('assets/ic_no_photo.png'),
                   image: NetworkImage(widget.arguments["room"].photo!),
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,
                   imageErrorBuilder: (context, error, stackTrace) {
                     return Image.asset(
-                      'assets/logo_flikchat.png',
+                      'assets/ic_no_photo.png',
                       width: 40,
                       height: 40,
                       fit: BoxFit.cover,
@@ -646,14 +646,14 @@ class _ChatRoomExampleState extends State<ChatRoomExample> with WidgetsBindingOb
             bottomRight: Radius.circular(10),
           ),
           child: FadeInImage(
-            placeholder: AssetImage('assets/logo_flikchat.png'),
+            placeholder: AssetImage('assets/ic_no_photo.png'),
             image: NetworkImage(chat.message!),
             width: MediaQuery.of(context).size.width * 0.5,
             height: MediaQuery.of(context).size.width * 0.5,
             fit: BoxFit.cover,
             imageErrorBuilder: (context, error, stackTrace) {
               return Image.asset(
-                'assets/logo_flikchat.png',
+                'assets/ic_no_photo.png',
                 width: 40,
                 height: 40,
                 fit: BoxFit.cover,

@@ -103,8 +103,14 @@ class _ListChatRoomState extends State<ListChatRoom> {
                     child: Row(
                       children: [
                         Icon(Icons.text_snippet_outlined),
-                        SizedBox(width: 2,),
-                        Text('Mulai percakapan', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          'Mulai percakapan',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w600),
+                        ),
                       ],
                     )));
           }
@@ -167,14 +173,14 @@ class _ListChatRoomState extends State<ListChatRoom> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(40),
                   child: FadeInImage(
-                    placeholder: AssetImage('assets/logo_flikchat.png'),
+                    placeholder: AssetImage('assets/ic_no_photo.png'),
                     image: NetworkImage(room.photo!),
                     width: 40,
                     height: 40,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(
-                        'assets/logo_flikchat.png',
+                        'assets/ic_no_photo.png',
                         width: 40,
                         height: 40,
                         fit: BoxFit.cover,
@@ -189,7 +195,11 @@ class _ListChatRoomState extends State<ListChatRoom> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(room.name!.isEmpty ? room.phoneNumber! : room.name!),
+                    Text(room.name!.isEmpty
+                        ? room.phoneNumber!
+                        : room.role == "MIDWIFE"
+                            ? "Bidan ${room.name!}"
+                            : room.name!),
                     Row(
                       children: [
                         SizedBox(

@@ -10,6 +10,7 @@ class RoomModel implements BaseModel {
   String? photo;
   String? type;
   String? uid;
+  String? role;
 
   RoomModel({
     this.phoneNumber,
@@ -21,6 +22,7 @@ class RoomModel implements BaseModel {
     this.photo,
     this.type,
     this.uid,
+    this.role,
   });
 
   static RoomModel fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class RoomModel implements BaseModel {
       photo: json['photo'] ?? '',
       type: json['type'] ?? '',
       uid: json['uid'] ?? '',
+      role: json['role'] ?? '',
     );
   }
 
@@ -47,6 +50,7 @@ class RoomModel implements BaseModel {
         'photo': photo,
         'type': type,
         'uid': uid,
+        'role': role,
       };
 
   @override
@@ -65,6 +69,7 @@ class RoomModel implements BaseModel {
       photo: '',
       type: '',
       uid: '',
+      role: '',
     );
   }
 }
