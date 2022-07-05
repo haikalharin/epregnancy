@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15.0),
-                                      color: EpragnancyColors.primer),
+                                      color: EpregnancyColors.primer),
                                   margin: EdgeInsets.only(left: 20, right: 20),
                                   child: Container(
                                     margin:
@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                                                           style: TextStyle(
                                                               fontSize: 14,
                                                               color:
-                                                                  EpragnancyColors
+                                                                  EpregnancyColors
                                                                       .primer),
                                                           maxLines: 3,
                                                         ),
@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                                     decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
-                                        color: EpragnancyColors.primerSoft),
+                                        color: EpregnancyColors.primerSoft),
                                     margin: EdgeInsets.only(
                                         top: 20,
                                         left: 20,

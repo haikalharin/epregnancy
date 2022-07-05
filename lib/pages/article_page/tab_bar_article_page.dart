@@ -98,13 +98,13 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
                   labelStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700),
-                  labelColor: EpragnancyColors.primer,
+                  labelColor: EpregnancyColors.primer,
                   unselectedLabelColor: Colors.grey,
                   labelPadding: EdgeInsets.only(top: 20, bottom: 18),
                   indicator: const UnderlineTabIndicator(
                     borderSide: BorderSide(
                         width: 3.0,
-                        color: EpragnancyColors.primer),
+                        color: EpregnancyColors.primer),
                     insets: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0),
                   ),
                   tabs:  [

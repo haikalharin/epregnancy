@@ -183,7 +183,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             Container(
-                color: EpragnancyColors.white,
+                color: EpregnancyColors.white,
                 height: MediaQuery.of(context).size.height / 10,
                 child: ListChatRoom()),
 

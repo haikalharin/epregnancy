@@ -9,6 +9,7 @@ import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
 import '../../data/firebase/g_authentication.dart';
+import '../../utils/epragnancy_color.dart';
 import '../home_page/home_page.dart';
 import 'bloc/login_bloc.dart';
 
@@ -54,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Positioned.fill(
                     child: Image.asset(
-                      "assets/login_background.png",
+                      "assets/ePregnancy_login_logo.png",
                       fit: BoxFit.fitWidth,
                       alignment: Alignment.bottomLeft,
                     ),
@@ -113,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                                     // }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      primary: HexColor('#FF7F90'))),
+                                      primary: EpregnancyColors.primer),)
                             ),
                             SizedBox(height: 10),
                             Container(
@@ -254,13 +255,11 @@ class _ForgotPasswordButton extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 TextButton(
-                  child: Text('Lupa kata sandi?'),
+                  child: Text('Lupa kata sandi?',style: TextStyle(color: EpregnancyColors.primer),),
                   onPressed: () {
                     print('Pressed');
                   },
-                  style: TextButton.styleFrom(
-                    primary: HexColor('#FF7F90'),
-                  ),
+
                 ),
               ],
             ),

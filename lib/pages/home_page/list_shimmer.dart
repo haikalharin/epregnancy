@@ -69,7 +69,7 @@ class ListShimmer extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius:
                         BorderRadius.circular(10.0),
-                        color: EpragnancyColors.primer),
+                        color: EpregnancyColors.primer),
                     // color: Colors.greenAccent,
                     margin: EdgeInsets.only(left: 20),
                     child: Row(

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-class EpragnancyColors {
+class EpregnancyColors {
   static const Color red = Color(0xFFD12B34);
   static const Color primer = Color(0xFF75B3EB);
   static const Color primerSoft = Color(0xFFE1EEFA);

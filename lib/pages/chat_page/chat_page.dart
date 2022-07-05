@@ -58,14 +58,14 @@ class _ChatPageState extends State<ChatPage> {
                       children: const [
                         Text(
                           "Admin",
-                          style: TextStyle(color: EpragnancyColors.primer),
+                          style: TextStyle(color: EpregnancyColors.primer),
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
                           "Halo mama ! Mohon tunggu sebentar, kami akan segera membantu anda",
-                          style: TextStyle(color: EpragnancyColors.black),
+                          style: TextStyle(color: EpregnancyColors.black),
                         )
                       ],
                     ),
@@ -86,14 +86,14 @@ class _ChatPageState extends State<ChatPage> {
                       children: const [
                         Text(
                           "Admin",
-                          style: TextStyle(color: EpragnancyColors.primer),
+                          style: TextStyle(color: EpregnancyColors.primer),
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
                           "Untuk pengalaman konsultasi terbaik, hubungi kami pukul 15:00 - 16:00 WIB",
-                          style: TextStyle(color: EpragnancyColors.black),
+                          style: TextStyle(color: EpregnancyColors.black),
                         )
                       ],
                     ),
@@ -114,14 +114,14 @@ class _ChatPageState extends State<ChatPage> {
                       children: const [
                         Text(
                           "Admin",
-                          style: TextStyle(color: EpragnancyColors.primer),
+                          style: TextStyle(color: EpregnancyColors.primer),
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
                           "Apa tujuan mama konsultasi hari ini ?",
-                          style: TextStyle(color: EpragnancyColors.black),
+                          style: TextStyle(color: EpregnancyColors.black),
                         )
                       ],
                     ),
@@ -152,10 +152,10 @@ class _ChatPageState extends State<ChatPage> {
                         decoration: isChoise1
                             ? BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
-                                color: EpragnancyColors.primer)
+                                color: EpregnancyColors.primer)
                             : BoxDecoration(
                                 border: Border.all(
-                                  color: EpragnancyColors.primer,
+                                  color: EpregnancyColors.primer,
                                 ),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -170,8 +170,8 @@ class _ChatPageState extends State<ChatPage> {
                                 "Permasalahan Umum",
                                 style: TextStyle(
                                     color: isChoise1
-                                        ? EpragnancyColors.white
-                                        : EpragnancyColors.primer,
+                                        ? EpregnancyColors.white
+                                        : EpregnancyColors.primer,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -182,8 +182,8 @@ class _ChatPageState extends State<ChatPage> {
                                 "Pantangan, saran atau mitos tentang kehamilan",
                                 style: TextStyle(
                                     color: isChoise1
-                                        ? EpragnancyColors.white
-                                        : EpragnancyColors.black),
+                                        ? EpregnancyColors.white
+                                        : EpregnancyColors.black),
                               )
                             ],
                           ),
@@ -203,10 +203,10 @@ class _ChatPageState extends State<ChatPage> {
                         decoration: isChoise2
                             ? BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
-                                color: EpragnancyColors.primer)
+                                color: EpregnancyColors.primer)
                             : BoxDecoration(
                                 border: Border.all(
-                                  color: EpragnancyColors.primer,
+                                  color: EpregnancyColors.primer,
                                 ),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -220,7 +220,7 @@ class _ChatPageState extends State<ChatPage> {
                               Text(
                                 "Permasalahan Umum",
                                 style: TextStyle(
-                                    color: isChoise2? EpragnancyColors.white: EpragnancyColors.primer,
+                                    color: isChoise2? EpregnancyColors.white: EpregnancyColors.primer,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -229,7 +229,7 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               Text(
                                 "Pantangan, saran atau mitos tentang kehamilan",
-                                style: TextStyle(color: isChoise2?EpragnancyColors.white: EpragnancyColors.black),
+                                style: TextStyle(color: isChoise2?EpregnancyColors.white: EpregnancyColors.black),
                               )
                             ],
                           ),
@@ -252,12 +252,12 @@ class _ChatPageState extends State<ChatPage> {
                   width: MediaQuery.of(context).size.width-40,
                   height: 50,
                   child: RaisedButton(
-                    color: EpragnancyColors.primer,
+                    color: EpregnancyColors.primer,
                     child: Padding(
                       padding: EdgeInsets.zero,
                       child: Text(
                         "Mulai Konsultasi",
-                        style: TextStyle(fontSize: 16, color: EpragnancyColors.white),
+                        style: TextStyle(fontSize: 16, color: EpregnancyColors.white),
                       ),
                     ),
                     elevation: 8,

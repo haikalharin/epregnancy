@@ -124,7 +124,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: EpragnancyColors.primer,
+                                    color: EpregnancyColors.primer,
                                   ),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
@@ -149,7 +149,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                             Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  color: EpragnancyColors.primer),
+                                  color: EpregnancyColors.primer),
                               margin: EdgeInsets.only(left: 10, right: 20),
                               child: Container(
                                 margin: EdgeInsets.only(left: 20, right: 20),

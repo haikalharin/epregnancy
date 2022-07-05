@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/landing_page/slider_modal.dart';
 import 'package:PregnancyApp/pages/landing_page/widget/slider_list.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/shared_preference/app_shared_preference.dart';
@@ -86,10 +87,11 @@ class _LandingPageState extends State<LandingPage> {
             height: 60,
             margin: EdgeInsets.all(40),
             width: double.infinity,
-            color: Color.fromRGBO(255, 127, 144, 1),
+            color: EpregnancyColors.primer,
 
             // Button
             child: FlatButton(
+              color: EpregnancyColors.primer,
               child: Text(currentIndex == slides.length -1
                   ? "Mulai Sekarang"
                   : "Selanjutnya"),
@@ -122,7 +124,7 @@ class _LandingPageState extends State<LandingPage> {
           ),
         ],
       ),
-      backgroundColor: Color.fromRGBO(255, 235, 237, 1),
+      backgroundColor: EpregnancyColors.primerSoft,
     );
   }
 
@@ -133,7 +135,7 @@ class _LandingPageState extends State<LandingPage> {
       margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Color.fromRGBO(255, 132, 148, 1),
+        color:  EpregnancyColors.primer,
       ),
     );
   }

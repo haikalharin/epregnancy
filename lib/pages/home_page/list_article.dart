@@ -85,7 +85,7 @@ class ListArticle extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                               borderRadius: BorderRadius.circular(10.0),
-                              color: EpragnancyColors.primer),
+                              color: EpregnancyColors.primer),
                           // color: Colors.greenAccent,
                           margin: EdgeInsets.only(left: 20),
                           child: Row(
@@ -141,7 +141,7 @@ class ListArticle extends StatelessWidget {
                                                       BorderRadius.circular(
                                                           10.0),
                                                   color:
-                                                      EpragnancyColors.primer),
+                                                      EpregnancyColors.primer),
                                               height: 18,
                                               width: 60,
                                               child: Center(
