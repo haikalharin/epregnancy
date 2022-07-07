@@ -236,7 +236,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                   child: Container(
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                          color: EpragnancyColors.pink,
+                                          color: EpregnancyColors.primer,
                                         ),
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),
@@ -273,7 +273,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                   child: Container(
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                          color: EpragnancyColors.pink,
+                                          color: EpregnancyColors.primer,
                                         ),
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),
@@ -313,7 +313,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                   child: Container(
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                          color: EpragnancyColors.pink,
+                                          color: EpregnancyColors.primer,
                                         ),
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),

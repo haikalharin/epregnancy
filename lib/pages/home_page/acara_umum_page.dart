@@ -13,7 +13,7 @@ class AcaraUmumPage extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: EpragnancyColors.pink,
+              color: EpregnancyColors.primer,
             ),
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -55,7 +55,7 @@ class AcaraUmumPage extends StatelessWidget {
                                       borderRadius:
                                       BorderRadius.circular(
                                           25.0),
-                                      color: EpragnancyColors.pink)),
+                                      color: EpregnancyColors.primer)),
                               Container(
                                   margin:
                                   EdgeInsets.only(right: 10),
@@ -65,7 +65,7 @@ class AcaraUmumPage extends StatelessWidget {
                                       borderRadius:
                                       BorderRadius.circular(
                                           25.0),
-                                      color: EpragnancyColors.pink)),
+                                      color: EpregnancyColors.primer)),
                               Container(
                                   margin:
                                   EdgeInsets.only(right: 10),
@@ -75,7 +75,7 @@ class AcaraUmumPage extends StatelessWidget {
                                       borderRadius:
                                       BorderRadius.circular(
                                           25.0),
-                                      color: EpragnancyColors.pink)),
+                                      color: EpregnancyColors.primer)),
                             ],
                           )),
                     ],
@@ -84,7 +84,7 @@ class AcaraUmumPage extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30.0),
-                      color: EpragnancyColors.pink),
+                      color: EpregnancyColors.primer),
                   height: 60,
                   width: 60,
                 ),

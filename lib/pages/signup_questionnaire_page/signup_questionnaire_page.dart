@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
+import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,6 @@ import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
 import 'bloc/signup_questionnaire_bloc.dart';
-import 'package:date_field/date_field.dart';
 
 const _horizontalPadding = 30.0;
 

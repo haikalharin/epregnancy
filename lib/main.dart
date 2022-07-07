@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/email_verification_page/email_verification_page.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
@@ -65,6 +66,8 @@ class MyApp extends StatelessWidget {
         create: (context) => Injector.container.resolve<HomePageBloc>()),
  BlocProvider<SurveyPageBloc>(
         create: (context) => Injector.container.resolve<SurveyPageBloc>()),
+    BlocProvider<ArticlePageBloc>(
+        create: (context) => Injector.container.resolve<ArticlePageBloc>()),
 
       ];
 }

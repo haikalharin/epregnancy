@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../model/person_model/person_model.dart';
 
-class EventContact {
+class EventContactExample {
   static void addContact({String? myUid, PersonModel? person}) {
     try {
       FirebaseFirestore.instance

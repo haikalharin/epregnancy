@@ -8,26 +8,26 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../common/constants/router_constants.dart';
-import '../../data/firebase/event/event_person.dart';
-import '../../data/firebase/event/event_storage.dart';
+import '../../data/firebase/event/event_person_example.dart';
+import '../../data/firebase/event/event_storage_example.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/person_model/person_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
-import 'fragment/list_chat_room.dart';
-import 'fragment/list_contact.dart';
+import 'fragment/list_chat_room_example.dart';
+import 'fragment/list_contact_example.dart';
 
-class Dashboard extends StatefulWidget {
+class DashboardExample extends StatefulWidget {
   @override
-  _DashboardState createState() => _DashboardState();
+  _DashboardExampleState createState() => _DashboardExampleState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardExampleState extends State<DashboardExample> {
   PersonModel? _myPerson;
   var _controllerPassword = TextEditingController();
 
   final List<Widget> _listFragment = [
-    ListChatRoom(),
-    ListContact(),
+    ListChatRoomExample(),
+    ListContactExample(),
   ];
 
   void getMyPerson() async {
@@ -52,12 +52,12 @@ class _DashboardState extends State<Dashboard> {
         CropAspectRatioPreset.ratio16x9,
       ]);
       if (croppedFile != null) {
-        EventStorage.editPhoto(
+        EventStorageExample.editPhoto(
           filePhoto: File(croppedFile.path),
           oldUrl: _myPerson?.photo,
           uid: _myPerson?.uid,
         );
-        EventPerson.getPerson(_myPerson!.uid!).then((person) {
+        EventPersonExample.getPerson(_myPerson!.uid!).then((person) {
           AppSharedPreference.setPerson(person);
         });
       }
@@ -139,7 +139,7 @@ class _DashboardState extends State<Dashboard> {
       );
       if (userCredential != null) {
         userCredential.user?.delete().then((value) {
-          EventPerson.deleteAccount(_myPerson!.uid!);
+          EventPersonExample.deleteAccount(_myPerson!.uid!);
         });
       }
       _controllerPassword.clear();
@@ -186,7 +186,7 @@ class _DashboardState extends State<Dashboard> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: FadeInImage(
-                    placeholder: AssetImage('assets/logo_flikchat.png'),
+                    placeholder: AssetImage('assets/ic_no_photo.png'),
                     image:
                         NetworkImage(_myPerson == null ? '' : _myPerson!.photo!),
                     width: 100,
@@ -194,7 +194,7 @@ class _DashboardState extends State<Dashboard> {
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(
-                        'assets/logo_flikchat.png',
+                        'assets/ic_no_photo.png',
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,

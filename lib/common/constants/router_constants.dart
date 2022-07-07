@@ -4,8 +4,12 @@ class RouteName {
   static const login = '/login';
   static const navBar = '/navBar';
   static const surveyPage = '/surveyPage';
+  static const chatPage = '/chatPage';
+  static const articleDetailPage = '/articleDetailPage';
   static const chatRoom = '/chatRoom';
   static const dashboard = '/dashboard';
+  static const dashboardMidwife = '/dashboardMidwife';
+  static const dashboardArticle = '/dashboardArticle';
   static const register = '/register';
   static const movieDetailScreen = '/detail';
   static const product = '/product';

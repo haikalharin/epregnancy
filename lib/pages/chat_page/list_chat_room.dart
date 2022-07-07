@@ -1,16 +1,19 @@
 import 'dart:ui';
 
+import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/utils/remote_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../data/firebase/event/event_chat_room.dart';
-import '../../../data/model/chat_model/chat_model.dart';
-import '../../../data/model/person_model/person_model.dart';
-import '../../../data/model/room_model/room_model.dart';
-import '../../../data/shared_preference/app_shared_preference.dart';
-import '../chat_room.dart';
+import '../../common/constants/router_constants.dart';
+import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
+import 'chat_room.dart';
+import 'event/event_chat_room.dart';
+import '../../data/model/chat_model/chat_model.dart';
+import '../../data/model/person_model/person_model.dart';
+import '../../data/model/room_model/room_model.dart';
+import '../../data/shared_preference/app_shared_preference.dart';
 
 class ListChatRoom extends StatefulWidget {
   @override
@@ -18,19 +21,23 @@ class ListChatRoom extends StatefulWidget {
 }
 
 class _ListChatRoomState extends State<ListChatRoom> {
-  PersonModel? _myPerson;
+  UserModelFirebase? _myPerson;
+  UserRolesModelFirebase _myRole = UserRolesModelFirebase.empty();
   Stream<QuerySnapshot>? _streamRoom;
   Stream<QuerySnapshot>? _streamChat;
 
   void getMyPerson() async {
-    PersonModel? person = await AppSharedPreference.getPerson();
+    UserModelFirebase? person = await AppSharedPreference.getUserFirebase();
+    UserRolesModelFirebase? role =
+        await AppSharedPreference.getUserRoleFirebase();
     setState(() {
       _myPerson = person;
+      _myRole = role ;
     });
     _streamRoom = FirebaseFirestore.instance
-        .collection('person')
+        .collection('USERS')
         .doc(_myPerson!.uid)
-        .collection('room')
+        .collection('ROOM')
         .snapshots(includeMetadataChanges: true);
   }
 
@@ -66,32 +73,55 @@ class _ListChatRoomState extends State<ListChatRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _streamRoom,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text('Something went wrong'));
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.data != null && snapshot.data!.docs.isNotEmpty) {
-          List<QueryDocumentSnapshot> listRoom = snapshot.data!.docs;
-          return ListView.separated(
-            itemCount: listRoom.length,
-            separatorBuilder: (context, index) {
-              return Divider(thickness: 1, height: 1);
-            },
-            itemBuilder: (context, index) {
-              final data = getDataValue(listRoom[index].data());
-              RoomModel? room = RoomModel.fromJson(data);
-              return itemRoom(room);
-            },
-          );
-        } else {
-          return Center(child: Text('Empty'));
-        }
-      },
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _streamRoom,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Something went wrong'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.data != null && snapshot.data!.docs.isNotEmpty) {
+            List<QueryDocumentSnapshot> listRoom = snapshot.data!.docs;
+            return ListView.separated(
+              itemCount: listRoom.length,
+              separatorBuilder: (context, index) {
+                return Divider(thickness: 1, height: 1);
+              },
+              itemBuilder: (context, index) {
+                final data = getDataValue(listRoom[index].data());
+                RoomModel? room = RoomModel.fromJson(data);
+                return itemRoom(room);
+              },
+            );
+          } else {
+            return _myRole.role == "PATIENT"
+                ? InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(RouteName.chatPage);
+                    },
+                    child: Container(
+                        margin: EdgeInsets.only(left: 20, top: 20),
+                        child: Row(
+                          children: const [
+                            Icon(Icons.text_snippet_outlined),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Text(
+                              'Mulai percakapan',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        )))
+                : Center(child: Text('Empty'));
+          }
+        },
+      ),
     );
   }
 
@@ -111,6 +141,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
       time = DateFormat('yyyy/MM/dd').format(roomDateTime);
     }
     return Material(
+      color: Colors.white,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -148,14 +179,14 @@ class _ListChatRoomState extends State<ListChatRoom> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(40),
                   child: FadeInImage(
-                    placeholder: AssetImage('assets/logo_flikchat.png'),
+                    placeholder: AssetImage('assets/ic_no_photo.png'),
                     image: NetworkImage(room.photo!),
                     width: 40,
                     height: 40,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(
-                        'assets/logo_flikchat.png',
+                        'assets/ic_no_photo.png',
                         width: 40,
                         height: 40,
                         fit: BoxFit.cover,
@@ -164,14 +195,17 @@ class _ListChatRoomState extends State<ListChatRoom> {
                   ),
                 ),
               ),
-
               SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(room.name!.isEmpty? room.phoneNumber! : room.name!),
+                    Text(room.name!.isEmpty
+                        ? room.phoneNumber!
+                        : room.role == "MIDWIFE"
+                            ? "Bidan ${room.name!}"
+                            : room.name!),
                     Row(
                       children: [
                         SizedBox(
@@ -184,7 +218,6 @@ class _ListChatRoomState extends State<ListChatRoom> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
                             Text(
                               room.type! == 'text'
                                   ? room.lastChat!.length > 20
@@ -220,11 +253,11 @@ class _ListChatRoomState extends State<ListChatRoom> {
 
   Widget countUnreadMessage(String? personUid, int? lastDateTime) {
     _streamChat = FirebaseFirestore.instance
-        .collection('person')
+        .collection('USERS')
         .doc(_myPerson!.uid ?? "")
-        .collection('room')
+        .collection('ROOM')
         .doc(personUid ?? "")
-        .collection('chat')
+        .collection('CHAT')
         .snapshots(includeMetadataChanges: true);
     return StreamBuilder<QuerySnapshot?>(
       stream: _streamChat,
@@ -245,8 +278,8 @@ class _ListChatRoomState extends State<ListChatRoom> {
         if (listChat.isNotEmpty) {
           QueryDocumentSnapshot? lastChat;
           listChat.forEach((element) {
-final datas = getDateTimeFirebase(element.data());
-            if ( datas == lastDateTime) {
+            final datas = getDateTimeFirebase(element.data());
+            if (datas == lastDateTime) {
               lastChat = element;
               data = getDataValue(lastChat!.data());
             }

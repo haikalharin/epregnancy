@@ -15,7 +15,8 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => SignupBloc(c<UserRepository>()))
       ..registerSingleton((c) => LoginBloc(c<UserRepository>()))
       ..registerSingleton((c) => HomePageBloc(c<HomeRepository>()))
-      ..registerSingleton((c) => SurveyPageBloc(c<UserRepository>()));
+      ..registerSingleton((c) => SurveyPageBloc(c<UserRepository>()))
+      ..registerSingleton((c) => ArticlePageBloc(c<UserRepository>()));
   }
 
   @override
@@ -25,7 +26,9 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerFactory<UserRepository>((c) =>
           UserRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<HomeRepository>((c) =>
-          HomeRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
+          HomeRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
+      ..registerFactory<ArticleRepository>((c) =>
+          ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
   }
 
   @override

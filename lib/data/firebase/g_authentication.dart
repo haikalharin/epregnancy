@@ -11,7 +11,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../common/constants/router_constants.dart';
 import '../model/person_model/person_model.dart';
 import '../shared_preference/app_shared_preference.dart';
-import 'event/event_person.dart';
+import 'event/event_person_example.dart';
 import 'firebase_options.dart';
 
 class GAuthentication {
@@ -187,7 +187,7 @@ class GAuthentication {
                               token: '',
                               uid: _auth.currentUser!.uid,
                             );
-                            EventPerson.addPerson(person);
+                            EventPersonExample.addPerson(person);
                             await AppSharedPreference.setPerson(person);
                             Navigator.of(context)
                                 .pushNamed(RouteName.dashboard);

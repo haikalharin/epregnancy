@@ -71,7 +71,7 @@ class ListCalendarWidget extends StatelessWidget {
                             left: 20, right: 20, top: 10, bottom: 10),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: EpragnancyColors.pink,
+                            color: EpregnancyColors.primer,
                           ),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -100,7 +100,7 @@ class ListCalendarWidget extends StatelessWidget {
 
                                       child: Text(
                                         tipeAcara ?? '',
-                                        style: TextStyle(fontSize: 12,color: EpragnancyColors.pink),
+                                        style: TextStyle(fontSize: 12,color: EpregnancyColors.primer),
                                       )),
                                 ],
                               ),
@@ -133,7 +133,7 @@ class ListCalendarWidget extends StatelessWidget {
                                     decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
-                                        color: EpragnancyColors.pink),
+                                        color: EpregnancyColors.primer),
                                     height: 80,
                                     width: 80,
                                   ),

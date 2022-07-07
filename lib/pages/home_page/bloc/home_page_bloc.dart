@@ -10,7 +10,9 @@ import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/home_error_exception.dart';
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../data/model/article_model/article_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../article_page/event/event_article.dart';
 
 part 'home_page_event.dart';
 part 'home_page_state.dart';
@@ -27,9 +29,34 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } else if (event is HomeInitEvent){
       yield _mapHomeInitEventToState(event,state);
 
+    } else if (event is ArticleFetchEvent) {
+      yield* _mapArticleFetchEventToState(event, state);
     }
   }
-
+  Stream<HomePageState> _mapArticleFetchEventToState(
+      ArticleFetchEvent event,
+      HomePageState state,
+      ) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    try {
+      List<ArticleModel> lisArticleFix =[];
+      final List<ArticleModel> lisArticle =
+      await EventArticle.fetchAllArticle();
+      if (lisArticle.isNotEmpty) {
+        for(var i=0; i< 3; i++){
+          lisArticleFix.add(lisArticle[i]);
+        }
+        yield state.copyWith(
+            listArticle: lisArticleFix, status: FormzStatus.submissionSuccess);
+      }
+    } on HomeErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    }
+  }
   HomePageState _mapHomeInitEventToState(
       HomeInitEvent event, HomePageState state) {
     return HomePageState();
@@ -39,7 +66,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       HomeFetchDataEvent event,
       HomePageState state,
       ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    yield state.copyWith(status: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
 
       final UserModelFirebase response = await homeRepository.fetchUser();
