@@ -1,9 +1,15 @@
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
+import 'package:PregnancyApp/pages/email_verification_page/email_verification_page.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/landing_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
+import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
+import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
+import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
+import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page.dart';
+import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
 import 'package:PregnancyApp/pages/survey_page/bloc/survey_page_bloc.dart';
 import 'package:PregnancyApp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,6 +23,7 @@ import 'env.dart' as config;
 import 'pages/login_page/bloc/login_bloc.dart';
 import 'pages/login_page/login_page.dart';
 import 'utils/simple_bloc_observer.dart';
+
 
 // void main() => runApp(MyApp());
 
@@ -37,7 +44,6 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: _getProviders(),
         child: const MaterialApp(
-          debugShowCheckedModeBanner: false,
           title: 'Sehati Syariah',
           home:  LandingPage(),
           onGenerateRoute: Routes.generateRoute,
@@ -52,6 +58,8 @@ class MyApp extends StatelessWidget {
   List<BlocProvider> _getProviders() => [
     BlocProvider<LoginExampleBloc>(
         create: (context) => Injector.container.resolve<LoginExampleBloc>()),
+    BlocProvider<SignupBloc>(
+        create: (context) => Injector.container.resolve<SignupBloc>()),
     BlocProvider<LoginBloc>(
         create: (context) => Injector.container.resolve<LoginBloc>()),
     BlocProvider<HomePageBloc>(
