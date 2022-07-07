@@ -13,6 +13,7 @@ class UserModelFirebase implements BaseModel {
   String? uid;
   String? status;
   String? userid;
+  String? photo;
 
   UserModelFirebase({
     this.createdDate,
@@ -25,6 +26,7 @@ class UserModelFirebase implements BaseModel {
     this.uid,
     this.status,
     this.userid,
+    this.photo,
   });
 
   static UserModelFirebase fromJson(Map<String, dynamic> json) {
@@ -43,6 +45,7 @@ class UserModelFirebase implements BaseModel {
       uid: json['Uid'] ?? '',
       status: json['Status'] ?? '',
       userid: json['Userid'] ?? '',
+      photo: json['Photo'] ?? '',
     );
   }
 
@@ -57,6 +60,7 @@ class UserModelFirebase implements BaseModel {
         'Uid': uid,
         'Status': status,
         'Userid': userid,
+        'Photo': photo,
       };
 
   @override
@@ -76,6 +80,7 @@ class UserModelFirebase implements BaseModel {
       uid: '',
       status: '',
       userid: '',
+      photo: ''
     );
   }
 }

@@ -78,14 +78,19 @@ class ListArticle extends StatelessWidget {
                           // padding: EdgeInsets.,
                           padding:
                               EdgeInsets.only(left: 20, right: 20, top: 10),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    listArticle![index].cardImgURL!),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: EpregnancyColors.primer),
+                          decoration: listArticle![index].cardImgURL != null &&
+                                  listArticle![index].cardImgURL != ""
+                              ? BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                        listArticle![index].cardImgURL!),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: EpregnancyColors.primer)
+                              : BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: EpregnancyColors.primer),
                           // color: Colors.greenAccent,
                           margin: EdgeInsets.only(left: 20),
                           child: Row(
@@ -98,16 +103,18 @@ class ListArticle extends StatelessWidget {
                                       children: [
                                     Container(
                                         width: 200,
+                                        height: 85,
                                         margin: EdgeInsets.only(),
                                         child: Text(
                                           listArticle![index].title!,
+                                          maxLines: 4,
                                           style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white),
                                         )),
                                     Container(
-                                        margin: EdgeInsets.only(top: 40),
+                                        // margin: EdgeInsets.only(top: 40),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,

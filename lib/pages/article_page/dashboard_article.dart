@@ -37,7 +37,7 @@ class _DashboardArticleState extends State<DashboardArticle> {
             title: Container(child: BlocBuilder<ArticlePageBloc, ArticlePageState>(
               builder: (context, state) {
                 return  Container(
-                  margin: EdgeInsets.only(right: 20, top: 10, bottom: 5),
+                  margin: EdgeInsets.only(right: 20, top: 12, bottom: 5),
                   decoration: BoxDecoration(
                     color: Colors.grey.shade200,
                     borderRadius:  BorderRadius.circular(12),
@@ -77,7 +77,7 @@ class _DashboardArticleState extends State<DashboardArticle> {
                         .size
                         .width,
                     color: Colors.white,
-                    padding: EdgeInsets.only(left: 20, bottom: 30),
+                    padding: EdgeInsets.only(left: 20, bottom: 16),
 
                   ),
                   Container(

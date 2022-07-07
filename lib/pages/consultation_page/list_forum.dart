@@ -240,7 +240,7 @@ class ListForumWidget extends StatelessWidget {
 
                                                 child: Container(
                                                   margin: EdgeInsets.only(
-                                                      right: 10),
+                                                      right: 2),
                                                   child: SvgPicture.asset(
                                                     'assets/like_logo.svg',
                                                     fit: BoxFit.fitHeight,

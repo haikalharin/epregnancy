@@ -49,7 +49,6 @@ class ListArticleVertical extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 150,
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         decoration: BoxDecoration(color: Colors.white),
         child: listArticle!.isEmpty
@@ -75,6 +74,7 @@ class ListArticleVertical extends StatelessWidget {
                                       article: listArticle![index])));
                         },
                         child: Container(
+                          height: 200,
                           // padding: EdgeInsets.,
                           padding:
                               EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
@@ -96,18 +96,19 @@ class ListArticleVertical extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                    Expanded(
+                                      child: Container(
+                                          width: MediaQuery.of(context).size.width-80,
+                                          margin: EdgeInsets.only(),
+                                          child: Text(
+                                            listArticle![index].title!,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          )),
+                                    ),
                                     Container(
-                                        width: 200,
-                                        margin: EdgeInsets.only(),
-                                        child: Text(
-                                          listArticle![index].title!,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        )),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 50),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,

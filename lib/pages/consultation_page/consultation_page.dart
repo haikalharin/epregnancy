@@ -9,7 +9,9 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../data/firebase/event/event_user.dart';
 import '../../data/firebase/g_authentication.dart';
+import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
 import '../chat_page/chat_room.dart';
@@ -26,17 +28,22 @@ class ConsultationPage extends StatefulWidget {
 
 class _ConsultationPageState extends State<ConsultationPage> {
   UserModelFirebase user = UserModelFirebase.empty();
+  UserRolesModelFirebase rolesModel = UserRolesModelFirebase.empty();
 
   void getMyPerson() async {
     UserModelFirebase userModelFirebase =
         await AppSharedPreference.getUserFirebase();
+    UserRolesModelFirebase? userRolesModelFirebase =
+        await AppSharedPreference.getUserRoleFirebase();
     setState(() {
       user = userModelFirebase;
+      rolesModel = userRolesModelFirebase;
     });
   }
 
   @override
   void initState() {
+    getMyPerson();
     super.initState();
   }
 
@@ -85,22 +92,42 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                     await EventChatRoom.checkMessageNow(
                                   myUid: myData.uid,
                                 );
+                                UserRolesModelFirebase myRole =
+                                    await AppSharedPreference
+                                        .getUserRoleFirebase();
 
-                                if (roomModel.uid!.isNotEmpty) {
-                                  isSenderRoomExist =
-                                      await EventChatRoom.checkRoomIsExist(
-                                    isSender: true,
-                                    myUid: myData.uid,
-                                    personUid: roomModel.uid,
-                                  );
-                                  if (isSenderRoomExist &&
-                                      !isSenderAchiveExist) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ChatRoom(
-                                                arguments: {'room': roomModel})));
-                                  } else if (isSenderRoomExist &&
+                                if (myRole.role == 'MIDWIFE') {
+                                  Navigator.of(context)
+                                      .pushNamed(RouteName.dashboardMidwife);
+                                } else {
+                                  if (roomModel.uid!.isNotEmpty) {
+                                    isSenderRoomExist =
+                                        await EventChatRoom.checkRoomIsExist(
+                                      isSender: true,
+                                      myUid: myData.uid,
+                                      personUid: roomModel.uid,
+                                    );
+                                    if (isSenderRoomExist &&
+                                        !isSenderAchiveExist) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ChatRoom(
+                                                      arguments: {
+                                                        'room': roomModel
+                                                      })));
+                                    } else if (isSenderRoomExist &&
+                                        isSenderAchiveExist) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Dashboard()));
+                                    } else {
+                                      Navigator.of(context)
+                                          .pushNamed(RouteName.chatPage);
+                                    }
+                                  } else if (!isSenderRoomExist &&
                                       isSenderAchiveExist) {
                                     Navigator.push(
                                         context,
@@ -110,15 +137,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                     Navigator.of(context)
                                         .pushNamed(RouteName.chatPage);
                                   }
-                                } else if (!isSenderRoomExist &&
-                                    isSenderAchiveExist) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Dashboard()));
-                                } else {
-                                  Navigator.of(context)
-                                      .pushNamed(RouteName.chatPage);
                                 }
                               },
                               child: Container(
@@ -134,19 +152,21 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   padding: EdgeInsets.only(top: 20, bottom: 20),
                                   child: Container(
                                     child: Row(
-                                      children: const [
+                                      children: [
                                         Icon(Icons.warning),
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Text("Hubungi profesional")
+                                        rolesModel.role == "PATIENT"
+                                            ? Text("Hubungi profesional")
+                                            : Text("Cek Konsultasi")
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            Container(
+                            rolesModel.role == "PATIENT"?  Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
                                   color: EpregnancyColors.primer),
@@ -169,7 +189,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   ),
                                 ),
                               ),
-                            ),
+                            ): Container(),
                           ],
                         ),
                       ),

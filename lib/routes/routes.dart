@@ -1,6 +1,7 @@
 import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/article_page/dashboard_article.dart';
+import 'package:PregnancyApp/pages/chat_page/dashboard_midwife.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page.dart';
@@ -35,6 +36,8 @@ class Routes {
                 ));
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());
+      case RouteName.dashboardMidwife:
+        return MaterialPageRoute(builder: (_) => DashboardMidwife());
       case RouteName.dashboardArticle:
         return MaterialPageRoute(builder: (_) => DashboardArticle());
       case RouteName.chatRoom:

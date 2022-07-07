@@ -228,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Container(
                                                 margin:
-                                                    EdgeInsets.only(left: 10),
+                                                EdgeInsets.only(left: 16),
                                                 child: Container(
                                                     // margin: EdgeInsets.only(
                                                     //     left: 50, right: 50, bottom: 20),
@@ -241,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                               Container(
                                                 margin:
-                                                    EdgeInsets.only(left: 10),
+                                                    EdgeInsets.only(left: 16),
                                                 child: Container(
                                                     // margin: EdgeInsets.only(
                                                     //     left: 50, right: 50, bottom: 20),
@@ -257,7 +257,7 @@ class _HomePageState extends State<HomePage> {
                                           Container(
                                             margin: EdgeInsets.only(right: 10),
                                             child: SvgPicture.asset(
-                                              'assets/trophy_logo.svg',
+                                              'assets/ic_trophy.svg',
                                               fit: BoxFit.fitHeight,
                                               // height: 200,
                                               // height: 60,
@@ -289,7 +289,7 @@ class _HomePageState extends State<HomePage> {
                                     Container(
                                         child: const Text(
                                       "Artikel Untuk Anda",
-                                      style: TextStyle(fontSize: 20),
+                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
                                     )),
                                     InkWell(
                                       onTap: () {
@@ -301,13 +301,13 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             Container(
                                                 margin:
-                                                    EdgeInsets.only(left: 5),
-                                                child: Text("Artikel lainnya")),
+                                                    EdgeInsets.only(right: 5),
+                                                child: Text("Artikel lainnya",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: Colors.grey),)),
                                             Container(
                                               child: const Icon(
-                                                Icons.arrow_forward_outlined,
+                                                Icons.arrow_forward_ios,
                                                 size: 20,
-                                                color: Colors.black,
+                                                color: Colors.grey,
                                               ),
                                             ),
                                           ],
@@ -346,7 +346,7 @@ class _HomePageState extends State<HomePage> {
                                   Container(
                                       child: const Text(
                                     "Kalender Saya",
-                                    style: TextStyle(fontSize: 20),
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
                                   )),
                                   Container(
                                       child:

@@ -252,12 +252,12 @@ class _ChatPageState extends State<ChatPage> {
                   width: MediaQuery.of(context).size.width-40,
                   height: 50,
                   child: RaisedButton(
-                    color: EpregnancyColors.primer,
+                    color: type!= 0?EpregnancyColors.primer:Colors.grey.shade200,
                     child: Padding(
                       padding: EdgeInsets.zero,
                       child: Text(
                         "Mulai Konsultasi",
-                        style: TextStyle(fontSize: 16, color: EpregnancyColors.white),
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
                     elevation: 8,
@@ -280,7 +280,6 @@ class _ChatPageState extends State<ChatPage> {
                           uid: "ACosa0u7gSm2nNqXgPLd",
                           role: role.role?? '',
                         );
-                        await AppSharedPreference.setPersonFirebase(room);
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => ChatRoom(arguments:{'room': room})),

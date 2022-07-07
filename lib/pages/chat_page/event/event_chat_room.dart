@@ -263,48 +263,7 @@ class EventChatRoom {
     String? personUid,
   }) async {
     try {
-      // await FirebaseFirestore.instance
-      //     .collection('USERS')
-      //     .doc(isSender ? personUid : myUid)
-      //     .collection('ROOM')
-      //     .doc(isSender ? myUid : personUid)
-      //     .get()
-      //     .then((querySnapshot) {
-      //   RoomModel roomModel = RoomModel.fromJson(querySnapshot.data()!);
-      //   FirebaseFirestore.instance
-      //       .collection('USERS')
-      //       .doc(isSender ? personUid : myUid)
-      //       .collection('ARCHIVE')
-      //       .doc(isSender ? myUid : personUid)
-      //       .set(roomModel.toJson())
-      //       .then((value) => null)
-      //       .catchError((onError) => print(onError));
-      // }).catchError((onError) => print(onError));
-      //
-      // await FirebaseFirestore.instance
-      //     .collection('USERS')
-      //     .doc(isSender ? personUid : myUid)
-      //     .collection('ROOM')
-      //     .doc(isSender ? myUid : personUid)
-      //     .collection('CHAT')
-      //     .get()
-      //     .then((querySnapshot) {
-      //   List<QueryDocumentSnapshot> listChat = querySnapshot.docs;
-      //   listChat.forEach((element) {
-      //     final data = getDataValue(element.data());
-      //     ChatModel? chatModel = ChatModel.fromJson(data);
-      //     FirebaseFirestore.instance
-      //         .collection('USERS')
-      //         .doc(isSender ? personUid : myUid)
-      //         .collection('ARCHIVE')
-      //         .doc(isSender ? myUid : personUid)
-      //         .collection("CHAT")
-      //         .doc(chatModel.dateTime.toString())
-      //         .set(chatModel.toJson())
-      //         .then((value) => null)
-      //         .catchError((onError) => print(onError));
-      //   });
-      // }).catchError((onError) => print(onError));
+
       const _chars =
           'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
       Random _rnd = Random();
@@ -332,6 +291,7 @@ class EventChatRoom {
           photo: roomModel.photo,
           type: roomModel.type,
           uid: random,
+          role: roomModel.role
         );
 
         FirebaseFirestore.instance
@@ -377,8 +337,18 @@ class EventChatRoom {
           .get()
           .then((querySnapshot) {
         RoomModel roomModel = RoomModel.fromJson(querySnapshot.data()!);
-
-        FirebaseFirestore.instance
+        roomModel = RoomModel(
+            phoneNumber: roomModel.phoneNumber,
+            inRoom: roomModel.inRoom,
+            lastChat: roomModel.lastChat,
+            lastDateTime: roomModel.lastDateTime,
+            lastUid: roomModel.lastUid,
+            name: roomModel.name,
+            photo: roomModel.photo,
+            type: roomModel.type,
+            uid: random,
+            role: roomModel.role
+        );        FirebaseFirestore.instance
             .collection('USERS')
             .doc(personUid)
             .collection('ARCHIVE')

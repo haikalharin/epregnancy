@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../common/constants/router_constants.dart';
+import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import 'chat_room.dart';
 import 'event/event_chat_room.dart';
 import '../../data/model/chat_model/chat_model.dart';
@@ -21,13 +22,17 @@ class ListChatRoom extends StatefulWidget {
 
 class _ListChatRoomState extends State<ListChatRoom> {
   UserModelFirebase? _myPerson;
+  UserRolesModelFirebase _myRole = UserRolesModelFirebase.empty();
   Stream<QuerySnapshot>? _streamRoom;
   Stream<QuerySnapshot>? _streamChat;
 
   void getMyPerson() async {
     UserModelFirebase? person = await AppSharedPreference.getUserFirebase();
+    UserRolesModelFirebase? role =
+        await AppSharedPreference.getUserRoleFirebase();
     setState(() {
       _myPerson = person;
+      _myRole = role ;
     });
     _streamRoom = FirebaseFirestore.instance
         .collection('USERS')
@@ -56,7 +61,6 @@ class _ListChatRoomState extends State<ListChatRoom> {
       },
     );
     if (value == 'delete') {
-      AppSharedPreference.remove("person");
       EventChatRoom.deleteChatRoom(myUid: _myPerson!.uid, personUid: personUid);
     }
   }
@@ -94,25 +98,27 @@ class _ListChatRoomState extends State<ListChatRoom> {
               },
             );
           } else {
-            return InkWell(
-                onTap: () {
-                  Navigator.of(context).pushNamed(RouteName.chatPage);
-                },
-                child: Container(
-                    margin: EdgeInsets.only(left: 20, top: 20),
-                    child: Row(
-                      children: [
-                        Icon(Icons.text_snippet_outlined),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          'Mulai percakapan',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    )));
+            return _myRole.role == "PATIENT"
+                ? InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(RouteName.chatPage);
+                    },
+                    child: Container(
+                        margin: EdgeInsets.only(left: 20, top: 20),
+                        child: Row(
+                          children: const [
+                            Icon(Icons.text_snippet_outlined),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Text(
+                              'Mulai percakapan',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        )))
+                : Center(child: Text('Empty'));
           }
         },
       ),
@@ -247,11 +253,11 @@ class _ListChatRoomState extends State<ListChatRoom> {
 
   Widget countUnreadMessage(String? personUid, int? lastDateTime) {
     _streamChat = FirebaseFirestore.instance
-        .collection('person')
+        .collection('USERS')
         .doc(_myPerson!.uid ?? "")
-        .collection('room')
+        .collection('ROOM')
         .doc(personUid ?? "")
-        .collection('chat')
+        .collection('CHAT')
         .snapshots(includeMetadataChanges: true);
     return StreamBuilder<QuerySnapshot?>(
       stream: _streamChat,

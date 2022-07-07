@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/pages/chat_page/dashboard_midwife.dart';
 import 'package:PregnancyApp/pages/consultation_page/consultation_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
@@ -73,30 +74,30 @@ class _NavbarPageState extends State<NavbarPage>  with TickerProviderStateMixin 
                 ),
               ),
             ),
-            BottomNavigationBarItem(
-              label: "Favorit",
-              activeIcon: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(0),
-                  child:SvgPicture.asset(
-                    'assets/ic_favorit_bar.svg',
-                    width: 30,
-                    height: 30,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              icon: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
-                child:SvgPicture.asset(
-                  'assets/ic_favorit_bar.svg',
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            // BottomNavigationBarItem(
+            //   label: "Favorit",
+            //   activeIcon: ClipRRect(
+            //     borderRadius: BorderRadius.circular(0),
+            //     child: ClipRRect(
+            //       borderRadius: BorderRadius.circular(0),
+            //       child:SvgPicture.asset(
+            //         'assets/ic_favorit_bar.svg',
+            //         width: 30,
+            //         height: 30,
+            //         fit: BoxFit.cover,
+            //       ),
+            //     ),
+            //   ),
+            //   icon: ClipRRect(
+            //     borderRadius: BorderRadius.circular(0),
+            //     child:SvgPicture.asset(
+            //       'assets/ic_favorit_bar.svg',
+            //       width: 30,
+            //       height: 30,
+            //       fit: BoxFit.cover,
+            //     ),
+            //   ),
+            // ),
             BottomNavigationBarItem(
               label: "Konsultasi",
               activeIcon: ClipRRect(
@@ -178,10 +179,8 @@ class _NavbarPageState extends State<NavbarPage>  with TickerProviderStateMixin 
       case 0:
         return HomePage();
       case 1:
-        return Dashboard();
-      case 2:
         return ConsultationPage();
-      case 3:
+      case 2:
         return  LogoutPage();
       default:
         return Container();

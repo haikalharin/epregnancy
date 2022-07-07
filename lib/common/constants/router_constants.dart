@@ -7,6 +7,7 @@ class RouteName {
   static const articleDetailPage = '/articleDetailPage';
   static const chatRoom = '/chatRoom';
   static const dashboard = '/dashboard';
+  static const dashboardMidwife = '/dashboardMidwife';
   static const dashboardArticle = '/dashboardArticle';
   static const register = '/register';
   static const movieDetailScreen = '/detail';

@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../data/firebase/event/event_user.dart';
+import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../utils/epragnancy_color.dart';
 import 'event/event_chat_room.dart';
 import '../../data/firebase/event/event_person_example.dart';
@@ -37,6 +38,7 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   UserModelFirebase? _myPerson;
+  UserRolesModelFirebase _myRole = UserRolesModelFirebase.empty();
   Stream<QuerySnapshot>? _streamChat;
   String _inputMessage = '';
   var _controllerMessage = TextEditingController();
@@ -57,8 +59,11 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
 
   void getMyPerson() async {
     UserModelFirebase person = await AppSharedPreference.getUserFirebase();
+    UserRolesModelFirebase role =
+    await AppSharedPreference.getUserRoleFirebase();
     setState(() {
       _myPerson = person;
+      _myRole = role ;
     });
     EventChatRoom.setMeInRoom(_myPerson!.uid!, widget.arguments["room"].uid!);
     _streamChat = FirebaseFirestore.instance
@@ -96,6 +101,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         photo: _myPerson!.name,
         type: type,
         uid: _myPerson!.uid,
+        role: _myRole.role,
       );
       RoomModel roomReceiver = RoomModel(
         phoneNumber: widget.arguments["room"].phoneNumber,
@@ -107,6 +113,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         photo: widget.arguments["room"].photo,
         type: type,
         uid: widget.arguments["room"].uid,
+        role:  widget.arguments["room"].role
       );
 
       // Sender Room

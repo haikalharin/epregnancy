@@ -17,14 +17,13 @@ import '../../data/firebase/g_authentication.dart';
 import '../../data/model/person_model/person_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import 'list_chat_room.dart';
-import '../example_dashboard_chat_page/fragment/list_contact_example.dart';
 
-class Dashboard extends StatefulWidget {
+class DashboardMidwife extends StatefulWidget {
   @override
-  _DashboardState createState() => _DashboardState();
+  _DashboardMidwifeState createState() => _DashboardMidwifeState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardMidwifeState extends State<DashboardMidwife> {
   UserModelFirebase? _myPerson;
   var _controllerPassword = TextEditingController();
 
@@ -136,7 +135,7 @@ class _DashboardState extends State<Dashboard> {
     if (value == 'delete') {
       Navigator.pop(context);
       UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _myPerson!.email!,
         password: _controllerPassword.text,
       );
@@ -158,50 +157,29 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
-          leading: GestureDetector(
-              child: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              })),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.white,
-              padding: EdgeInsets.only(left: 20,bottom: 10),
-              child: Text(
-                "Percakapan Saya",
-                style: TextStyle(fontSize: 20),
-              ),
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+            elevation: 0.0,
+            backgroundColor: EpregnancyColors.primer,
+            iconTheme: IconThemeData(color: Colors.black),
+            bottom: TabBar(
+              tabs: [
+                Tab(text: 'Chat Room'),
+                Tab(text: 'Arsip'),
+              ],
             ),
-            Container(
-                color: EpregnancyColors.white,
-                height: MediaQuery.of(context).size.height / 10,
-                child: ListChatRoom()),
-
-
-            Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.grey.shade200,
-              padding: EdgeInsets.only(left: 20,bottom: 20,top: 20),
-              child: Text(
-                "Arsip",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(child: Container(color:Colors.grey.shade200,child: ListChatArchive())),
-          ],
-        ),
+            leading: GestureDetector(
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                })),
+        body: TabBarView(children: _listFragment),
       ),
     );
   }

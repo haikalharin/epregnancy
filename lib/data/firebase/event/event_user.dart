@@ -56,9 +56,9 @@ class EventUser {
     if (querySnapshot != null && querySnapshot.docs.isNotEmpty) {
       if (querySnapshot.docs.isNotEmpty) {
         final data = getDataValue(querySnapshot.docs[0].data());
-        UserRolesModelFirebase userModelFirebase =
+        UserRolesModelFirebase userRolesModelFirebase =
             UserRolesModelFirebase.fromJson(data);
-        return userModelFirebase;
+        return userRolesModelFirebase;
       } else {
         return UserRolesModelFirebase.empty();
       }
@@ -146,5 +146,21 @@ class EventUser {
       print(e);
       return false;
     }
+  }
+
+  static Future<UserModelFirebase> getUser(String? uid) async {
+    UserModelFirebase? user;
+    try {
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('USERS')
+          .doc(uid!)
+          .get()
+          .catchError((onError) => print(onError));
+      final data = getDataValue(documentSnapshot.data());
+      user = UserModelFirebase.fromJson(data);
+    } catch (e) {
+      print(e);
+    }
+    return user!;
   }
 }
