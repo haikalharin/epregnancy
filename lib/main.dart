@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         providers: _getProviders(),
         child: const MaterialApp(
           title: 'Sehati Syariah',
-          home:  SignUpQuestionnairePage(),
+          home:  LandingPage(),
           onGenerateRoute: Routes.generateRoute,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,

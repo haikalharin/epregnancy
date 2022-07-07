@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/landing_page/slider_modal.dart';
 import 'package:PregnancyApp/pages/landing_page/widget/slider_list.dart';
+import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
 import 'package:flutter/material.dart';
 
 import '../login_page/login_page.dart';
@@ -96,7 +97,7 @@ class _LandingPageState extends State<LandingPage> {
                   // Navigate to next screen
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => SignUpPage()),
                   );
                 }
                 _controller.nextPage(
