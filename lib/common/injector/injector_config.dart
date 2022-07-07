@@ -4,6 +4,7 @@ import 'package:PregnancyApp/data/repository/home_repository/home_repository.dar
 import 'package:PregnancyApp/data/repository/home_repository/home_repository_impl.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
+import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../data/remote_datasource/remote_datasource.dart';
