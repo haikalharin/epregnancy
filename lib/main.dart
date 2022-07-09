@@ -8,6 +8,7 @@ import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
 import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
+import 'package:PregnancyApp/pages/signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
 import 'package:PregnancyApp/pages/survey_page/bloc/survey_page_bloc.dart';
@@ -23,7 +24,6 @@ import 'env.dart' as config;
 import 'pages/login_page/bloc/login_bloc.dart';
 import 'pages/login_page/login_page.dart';
 import 'utils/simple_bloc_observer.dart';
-
 
 // void main() => runApp(MyApp());
 
@@ -44,8 +44,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: _getProviders(),
         child: const MaterialApp(
-          title: 'Sehati Syariah',
-          home:  LandingPage(),
+          debugShowCheckedModeBanner: false,
+          title: 'Epregnancy App',
+          home: SignUpPage(),
           onGenerateRoute: Routes.generateRoute,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -56,19 +57,22 @@ class MyApp extends StatelessWidget {
   }
 
   List<BlocProvider> _getProviders() => [
-    BlocProvider<LoginExampleBloc>(
-        create: (context) => Injector.container.resolve<LoginExampleBloc>()),
-    BlocProvider<SignupBloc>(
-        create: (context) => Injector.container.resolve<SignupBloc>()),
-    BlocProvider<LoginBloc>(
-        create: (context) => Injector.container.resolve<LoginBloc>()),
-    BlocProvider<HomePageBloc>(
-        create: (context) => Injector.container.resolve<HomePageBloc>()),
- BlocProvider<SurveyPageBloc>(
-        create: (context) => Injector.container.resolve<SurveyPageBloc>()),
-    BlocProvider<ArticlePageBloc>(
-        create: (context) => Injector.container.resolve<ArticlePageBloc>()),
-
+        BlocProvider<LoginExampleBloc>(
+            create: (context) =>
+                Injector.container.resolve<LoginExampleBloc>()),
+        BlocProvider<SignupBloc>(
+            create: (context) => Injector.container.resolve<SignupBloc>()),
+        BlocProvider<LoginBloc>(
+            create: (context) => Injector.container.resolve<LoginBloc>()),
+        BlocProvider<HomePageBloc>(
+            create: (context) => Injector.container.resolve<HomePageBloc>()),
+        BlocProvider<SurveyPageBloc>(
+            create: (context) => Injector.container.resolve<SurveyPageBloc>()),
+        BlocProvider<ArticlePageBloc>(
+            create: (context) => Injector.container.resolve<ArticlePageBloc>()),
+        BlocProvider<SignUpQuestionnaireBloc>(
+            create: (context) =>
+                Injector.container.resolve<SignUpQuestionnaireBloc>()),
       ];
 }
 

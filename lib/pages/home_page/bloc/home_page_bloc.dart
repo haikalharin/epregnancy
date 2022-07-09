@@ -11,10 +11,12 @@ import 'package:meta/meta.dart';
 import '../../../common/exceptions/home_error_exception.dart';
 import '../../../common/exceptions/login_error_exception.dart';
 import '../../../data/model/article_model/article_model.dart';
+import '../../../data/model/baby_model/baby_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../article_page/event/event_article.dart';
 
 part 'home_page_event.dart';
+
 part 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
@@ -26,24 +28,24 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   Stream<HomePageState> mapEventToState(HomePageEvent event) async* {
     if (event is HomeFetchDataEvent) {
       yield* _mapHomeFetchUserToState(event, state);
-    } else if (event is HomeInitEvent){
-      yield _mapHomeInitEventToState(event,state);
-
+    } else if (event is HomeInitEvent) {
+      yield _mapHomeInitEventToState(event, state);
     } else if (event is ArticleFetchEvent) {
       yield* _mapArticleFetchEventToState(event, state);
     }
   }
+
   Stream<HomePageState> _mapArticleFetchEventToState(
-      ArticleFetchEvent event,
-      HomePageState state,
-      ) async* {
+    ArticleFetchEvent event,
+    HomePageState state,
+  ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
-      List<ArticleModel> lisArticleFix =[];
+      List<ArticleModel> lisArticleFix = [];
       final List<ArticleModel> lisArticle =
-      await EventArticle.fetchAllArticle();
+          await EventArticle.fetchAllArticle();
       if (lisArticle.isNotEmpty) {
-        for(var i=0; i< 3; i++){
+        for (var i = 0; i < 3; i++) {
           lisArticleFix.add(lisArticle[i]);
         }
         yield state.copyWith(
@@ -57,31 +59,30 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(status: FormzStatus.submissionFailure);
     }
   }
+
   HomePageState _mapHomeInitEventToState(
       HomeInitEvent event, HomePageState state) {
     return HomePageState();
   }
 
   Stream<HomePageState> _mapHomeFetchUserToState(
-      HomeFetchDataEvent event,
-      HomePageState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, tipe: "listArticle");
+    HomeFetchDataEvent event,
+    HomePageState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
-
       final UserModelFirebase response = await homeRepository.fetchUser();
+      final BabyModel myBaby = await AppSharedPreference.getUserBabyirebase();
 
-      if(response.uid!.isNotEmpty){
+      if (response.uid!.isNotEmpty) {
         yield state.copyWith(
           status: FormzStatus.submissionSuccess,
+          baby: myBaby,
           user: response,
         );
-      }
-
-
-      else {
-        yield state.copyWith(
-            status: FormzStatus.submissionFailure);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
       }
     } on HomeErrorException catch (e) {
       print(e);
@@ -91,6 +92,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(status: FormzStatus.submissionFailure);
     }
   }
-  //
+//
 
 }

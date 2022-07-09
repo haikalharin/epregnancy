@@ -4,8 +4,10 @@ import 'package:PregnancyApp/pages/article_page/dashboard_article.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard_midwife.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
+import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page.dart';
+import 'package:PregnancyApp/pages/survey_page/survey_page_baby.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
@@ -28,6 +30,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => HomePage());
       case RouteName.surveyPage:
         return MaterialPageRoute(builder: (_) => SurveyPage());
+      case RouteName.surveyPageBaby:
+        return MaterialPageRoute(builder: (_) => SurveyPageBaby());
       case RouteName.articleDetailPage:
         return MaterialPageRoute(builder: (_) => ArticleDetailPage());
       case RouteName.chatPage:
@@ -49,6 +53,8 @@ class Routes {
                 ChatRoom(arguments: getDataValue(settings.arguments)));
       case RouteName.landingPage:
         return MaterialPageRoute(builder: (_) => LandingPage());
+      case RouteName.otpPage:
+        return MaterialPageRoute(builder: (_) => OtpPage());
 
       // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());

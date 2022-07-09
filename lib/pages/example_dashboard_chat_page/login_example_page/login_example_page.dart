@@ -6,6 +6,7 @@ import 'package:formz/formz.dart';
 
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
+import '../../../utils/string_constans.dart';
 import 'bloc/login_example_bloc.dart';
 
 const _horizontalPadding = 24.0;
@@ -32,7 +33,7 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
                       content: Text("failed"), backgroundColor: Colors.red);
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
-                  if(state.userModelFirebase!.status == 'Active'){
+                  if(state.userModelFirebase!.status == StringConstant.active){
                     Navigator.of(context).pushNamed(RouteName.navBar,arguments: 0);
                   } else {
                     Navigator.of(context).pushNamed(RouteName.surveyPage);

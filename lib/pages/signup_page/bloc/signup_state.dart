@@ -1,35 +1,41 @@
 part of 'signup_bloc.dart';
 
-class SignupState {
+class SignupState with FormzMixin {
   final UserModelFirebase? userModelFirebase;
   final PhoneValidator phoneNumber;
   final EmailAddressUsername username;
-  final FormzStatus status;
+  final FormzStatus submitStatus;
   final String? errorMessage;
+  final bool? isExist;
 
   SignupState(
       {this.phoneNumber = const PhoneValidator.pure(),
         this.username = const EmailAddressUsername.pure(),
         this.userModelFirebase,
-        this.status = FormzStatus.pure,
-        this.errorMessage});
+        this.submitStatus = FormzStatus.pure,
+        this.errorMessage,
+        this.isExist = false
+      });
 
   SignupState copyWith(
-      {FormzStatus? status,
+      {FormzStatus? submitStatus,
         PhoneValidator? phoneNumber,
         UserModelFirebase? userModelFirebase,
         EmailAddressUsername? username,
-        String? errorMessage}) {
+        String? errorMessage,
+        bool? isExist,
+      }) {
     return SignupState(
-        status: status ?? this.status,
+        submitStatus: submitStatus ?? this.submitStatus,
         phoneNumber: phoneNumber ?? this.phoneNumber,
         username: username ?? this.username,
+        isExist: isExist ?? this.isExist,
         userModelFirebase: userModelFirebase?? this.userModelFirebase,
         errorMessage: errorMessage);
   }
 
   @override
-  List<Object> get props => [status, username];
+  List<FormzInput> get inputs => [username];
 }
 
 class SignupInitial extends SignupState {}

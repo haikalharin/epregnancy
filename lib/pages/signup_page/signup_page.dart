@@ -11,6 +11,7 @@ import 'package:otp_text_field/style.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
+import '../../utils/string_constans.dart';
 import 'bloc/signup_bloc.dart';
 
 const _horizontalPadding = 24.0;
@@ -27,8 +28,13 @@ class SignUpPage extends StatefulWidget {
 final _codeController = TextEditingController();
 var authService = AuthService();
 
-
 class _SignUpPageState extends State<SignUpPage> {
+  @override
+  void dispose() {
+    Injector.resolve<SignupBloc>().add(LoginInitEvent());
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,15 +43,20 @@ class _SignUpPageState extends State<SignUpPage> {
       body: SafeArea(
           child: BlocListener<SignupBloc, SignupState>(
               listener: (context, state) async {
-                if (state.status == FormzStatus.submissionFailure) {
+                if (state.submitStatus == FormzStatus.submissionFailure) {
                   const snackBar = SnackBar(
                       content: Text("failed"), backgroundColor: Colors.red);
                   Scaffold.of(context).showSnackBar(snackBar);
-                } else if (state.status == FormzStatus.submissionSuccess) {
-                  if (state.userModelFirebase!.status == 'Active') {
-                    Navigator.of(context).pushNamed(RouteName.navBar);
+                } else if (state.submitStatus ==
+                    FormzStatus.submissionSuccess) {
+                  if (state.isExist == true) {
+                    if (state.userModelFirebase!.status == StringConstant.active) {
+                      Navigator.of(context).pushNamed(RouteName.login);
+                    } else{
+                      Navigator.of(context).pushNamed(RouteName.surveyPage);
+                    }
                   } else {
-                    Navigator.of(context).pushNamed(RouteName.surveyPage);
+                    Navigator.of(context).pushNamed(RouteName.otpPage);
                   }
                 }
               },
@@ -60,12 +71,10 @@ class _SignUpPageState extends State<SignUpPage> {
                             horizontal: _horizontalPadding,
                           ),
                           children: [
-                            Positioned.fill(
-                              child: Image.asset(
-                                "assets/signup_background.png",
-                                alignment: Alignment.center,
-                                height: 280,
-                              ),
+                            Image.asset(
+                              "assets/signup_background.png",
+                              alignment: Alignment.center,
+                              height: 280,
                             ),
                             // Image.asset(
                             //   'assets/signup_background.png',
@@ -130,10 +139,13 @@ class _SignUpPageState extends State<SignUpPage> {
                             SizedBox(height: 50),
                             ElevatedButton(
                               onPressed: () async {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => OtpPage()),
-                                );
+                                Injector.resolve<SignupBloc>()
+                                    .add(LoginSubmitted());
+                                //
+                                // Navigator.pushReplacement(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => OtpPage()),
+                                // );
                               },
                               child: Text("Daftar/Masuk"),
                               style: ElevatedButton.styleFrom(
@@ -162,7 +174,7 @@ class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignupBloc, SignupState>(builder: (context, state) {
-      if (state.status == FormzStatus.submissionInProgress) {
+      if (state.submitStatus == FormzStatus.submissionInProgress) {
         return Container(
             color: Colors.white.withAlpha(90),
             child: Center(child: CircularProgressIndicator()));
@@ -183,8 +195,8 @@ class _EmailInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_emailInput_textField'),
-          onChanged: (username) =>
-              Injector.resolve<SignupBloc>().add(LoginUsernameChanged(username)),
+          onChanged: (username) => Injector.resolve<SignupBloc>()
+              .add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),

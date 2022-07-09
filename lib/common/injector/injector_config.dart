@@ -14,6 +14,7 @@ import '../../data/remote_datasource/remote_datasource.dart';
 import '../../data/repository/user_repository/user_repository.dart';
 import '../../data/repository/user_repository/user_repository_impl.dart';
 import '../../pages/login_page/bloc/login_bloc.dart';
+import '../../pages/signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import '../../pages/survey_page/bloc/survey_page_bloc.dart';
 import '../network/http/http_client.dart';
 import '../network/network_info.dart';
@@ -53,6 +54,8 @@ abstract class InjectorConfig {
   @Register.singleton(HomePageBloc)
   @Register.singleton(SurveyPageBloc)
   @Register.singleton(ArticlePageBloc)
+  @Register.singleton(SignupBloc)
+  @Register.singleton(SignUpQuestionnaireBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)

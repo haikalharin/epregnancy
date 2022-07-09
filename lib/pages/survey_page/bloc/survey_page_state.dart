@@ -1,27 +1,41 @@
 part of 'survey_page_bloc.dart';
 
-class SurveyPageState {
+class SurveyPageState with FormzMixin {
   final UserModelFirebase? user;
-  final FormzStatus status;
+  final int page;
+  final MandatoryFieldValidator name;
+  final MandatoryFieldValidator date;
+  final FormzStatus submitStatus;
   final String? errorMessage;
 
   SurveyPageState(
       {this.user,
-        this.status = FormzStatus.pure,
+        this.page = 3,
+        this.name = const MandatoryFieldValidator.pure(),
+        this.date = const MandatoryFieldValidator.pure(),
+        this.submitStatus = FormzStatus.pure,
         this.errorMessage});
 
   SurveyPageState copyWith(
-      {FormzStatus? status,
+      {FormzStatus? submitStatus,
+        MandatoryFieldValidator? name,
+        MandatoryFieldValidator? date,
         UserModelFirebase? user,
+        int? page,
         String? errorMessage}) {
     return SurveyPageState(
-        status: status ?? this.status,
+        submitStatus: submitStatus ?? this.submitStatus,
+        name: name ?? this.name,
+        date: date ?? this.date,
         user: user ?? this.user,
+        page: page ?? this.page,
         errorMessage: errorMessage);
   }
 
+
   @override
-  List<Object> get props => [status];
+  // TODO: implement inputs
+  List<FormzInput> get inputs =>[name,date];
 }
 
 class SurveyPageInitial extends SurveyPageState {}

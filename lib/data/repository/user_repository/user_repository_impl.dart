@@ -28,7 +28,7 @@ class UserRepositoryImpl extends UserRepository {
   Future<UserModelFirebase> fetchUser() async {
     if (await networkInfo.isConnected) {
       UserModelFirebase userModelFirebase =
-      await AppSharedPreference.getUserFirebase();
+      await AppSharedPreference.getUserRegister();
       if (userModelFirebase.email!.isNotEmpty) {
         return userModelFirebase;
       } else {

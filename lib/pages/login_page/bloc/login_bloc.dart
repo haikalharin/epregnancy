@@ -19,6 +19,7 @@ import '../../../../data/shared_preference/app_shared_preference.dart';
 import '../../../common/services/auth_service.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
+import '../../../utils/string_constans.dart';
 import '../../example_dashboard_chat_page/login_example_page/model/username.dart';
 import '../model/password.dart';
 import '../model/email_address.dart';
@@ -163,20 +164,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           userModelFirebase = UserModelFirebase(
             email: user.email,
             name: user.displayName,
-            status: 'InActive',
+            status: StringConstant.inActive,
             uid: user.uid,
+            userid: user.email
 
           );
+          await AppSharedPreference.setUserRegister(userModelFirebase);
           EventUser.addUser(userModelFirebase);
         } else {
           userModelFirebase = UserModelFirebase(
             email: userExist.email,
             name: userExist.name,
             status: userExist.status,
-            uid: user.uid,
+            uid: userExist.uid,
+            userid: userExist.email
           );
         }
-
+        await AppSharedPreference.setUserRegister(userModelFirebase);
         await AppSharedPreference.setUserFirebase(userModelFirebase);
         yield state.copyWith(
             status: FormzStatus.submissionSuccess,

@@ -4,6 +4,7 @@ class RouteName {
   static const login = '/login';
   static const navBar = '/navBar';
   static const surveyPage = '/surveyPage';
+  static const surveyPageBaby = '/surveyPage2';
   static const chatPage = '/chatPage';
   static const articleDetailPage = '/articleDetailPage';
   static const chatRoom = '/chatRoom';
@@ -20,4 +21,5 @@ class RouteName {
   static const simpanan = '/simpanan';
   static const simpananDeposan = '/simpananDeposan';
   static const landingPage = '/landingPage';
+  static const otpPage = '/otpPage';
 }

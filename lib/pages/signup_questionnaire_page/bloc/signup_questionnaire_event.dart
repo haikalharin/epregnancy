@@ -8,26 +8,27 @@ abstract class SignUpQuestionnaireEvent extends Equatable{
   List<Object> get props => [];
 }
 
-class LoginPhoneNumberChanged extends SignUpQuestionnaireEvent {
-  const LoginPhoneNumberChanged(this.phoneNumber);
 
-  final String phoneNumber;
+class SignupFirstnameChanged extends SignUpQuestionnaireEvent {
+  const SignupFirstnameChanged(this.firstName);
 
-  @override
-  List<Object> get props => [phoneNumber];
-}
-
-class LoginUsernameChanged extends SignUpQuestionnaireEvent {
-  const LoginUsernameChanged(this.userName);
-
-  final String userName;
+  final String firstName;
 
   @override
-  List<Object> get props => [userName];
+  List<Object> get props => [firstName];
 }
 
-class LoginPasswordChanged extends SignUpQuestionnaireEvent {
-  const LoginPasswordChanged(this.password);
+class SignupSecondnameChanged extends SignUpQuestionnaireEvent {
+  const SignupSecondnameChanged(this.secondName);
+
+  final String secondName;
+
+  @override
+  List<Object> get props => [secondName];
+}
+
+class SignupPasswordChanged extends SignUpQuestionnaireEvent {
+  const SignupPasswordChanged(this.password);
 
   final String password;
 
@@ -35,16 +36,43 @@ class LoginPasswordChanged extends SignUpQuestionnaireEvent {
   List<Object> get props => [password];
 }
 
-class LoginSubmitted extends SignUpQuestionnaireEvent {
-  const LoginSubmitted();
-}
-class LoginWithGoogleSubmitted extends SignUpQuestionnaireEvent {
-  const LoginWithGoogleSubmitted();
+
+class SignupConfirmPasswordChanged extends SignUpQuestionnaireEvent {
+  const SignupConfirmPasswordChanged(this.confirmPassword);
+
+  final String confirmPassword;
+
+  @override
+  List<Object> get props => [confirmPassword];
 }
 
-class LoginSubmittedWithNumberPhone extends SignUpQuestionnaireEvent {
-  const LoginSubmittedWithNumberPhone(this.context, this.codeController);
+class SignupDateChanged extends SignUpQuestionnaireEvent {
+  const SignupDateChanged(this.date);
+
+  final String date;
+
+  @override
+  List<Object> get props => [date];
+}
+
+class SignupSubmitted extends SignUpQuestionnaireEvent {
+  const SignupSubmitted();
+}
+class SignupWithGoogleSubmitted extends SignUpQuestionnaireEvent {
+  const SignupWithGoogleSubmitted();
+}
+
+class SignupSubmittedWithNumberPhone extends SignUpQuestionnaireEvent {
+  const SignupSubmittedWithNumberPhone(this.context, this.codeController);
 
   final BuildContext context;
   final TextEditingController codeController;
+}
+
+class SignupInitEvent extends SignUpQuestionnaireEvent {
+  const SignupInitEvent();
+
+
+  @override
+  List<Object> get props => [];
 }

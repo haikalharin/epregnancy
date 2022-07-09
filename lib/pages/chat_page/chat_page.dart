@@ -17,8 +17,8 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  bool isChoise1 = false;
-  bool isChoise2 = false;
+  bool isChoice1 = false;
+  bool isChoice2 = false;
   int type = 0;
 
   @override
@@ -143,13 +143,13 @@ class _ChatPageState extends State<ChatPage> {
                       onTap: () {
                         setState(() {
                           type = 1;
-                          isChoise1 = true;
-                          isChoise2 = false;
+                          isChoice1 = true;
+                          isChoice2 = false;
                         });
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width - 120,
-                        decoration: isChoise1
+                        decoration: isChoice1
                             ? BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: EpregnancyColors.primer)
@@ -169,7 +169,7 @@ class _ChatPageState extends State<ChatPage> {
                               Text(
                                 "Permasalahan Umum",
                                 style: TextStyle(
-                                    color: isChoise1
+                                    color: isChoice1
                                         ? EpregnancyColors.white
                                         : EpregnancyColors.primer,
                                     fontSize: 16,
@@ -181,7 +181,7 @@ class _ChatPageState extends State<ChatPage> {
                               Text(
                                 "Pantangan, saran atau mitos tentang kehamilan",
                                 style: TextStyle(
-                                    color: isChoise1
+                                    color: isChoice1
                                         ? EpregnancyColors.white
                                         : EpregnancyColors.black),
                               )
@@ -194,13 +194,13 @@ class _ChatPageState extends State<ChatPage> {
                       onTap: () {
                         setState(() {
                           type = 2;
-                          isChoise2 = true;
-                          isChoise1 = false;
+                          isChoice2 = true;
+                          isChoice1 = false;
                         });
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width - 100,
-                        decoration: isChoise2
+                        decoration: isChoice2
                             ? BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: EpregnancyColors.primer)
@@ -220,7 +220,7 @@ class _ChatPageState extends State<ChatPage> {
                               Text(
                                 "Permasalahan Umum",
                                 style: TextStyle(
-                                    color: isChoise2? EpregnancyColors.white: EpregnancyColors.primer,
+                                    color: isChoice2? EpregnancyColors.white: EpregnancyColors.primer,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -229,7 +229,7 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               Text(
                                 "Pantangan, saran atau mitos tentang kehamilan",
-                                style: TextStyle(color: isChoise2?EpregnancyColors.white: EpregnancyColors.black),
+                                style: TextStyle(color: isChoice2?EpregnancyColors.white: EpregnancyColors.black),
                               )
                             ],
                           ),

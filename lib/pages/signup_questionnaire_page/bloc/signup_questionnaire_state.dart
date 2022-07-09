@@ -1,35 +1,49 @@
 part of 'signup_questionnaire_bloc.dart';
 
-class SignUpQuestionnaireState {
+class SignUpQuestionnaireState with FormzMixin {
   final UserModelFirebase? userModelFirebase;
-  final PhoneValidator phoneNumber;
-  final EmailAddressUsername username;
-  final FormzStatus status;
+  final MandatoryFieldValidator firstName;
+  final MandatoryFieldValidator secondName;
+  final PasswordValidator password;
+  final ConfirmPasswordValidator confirmPassword;
+  final MandatoryFieldValidator date;
+  final FormzStatus submitStatus;
   final String? errorMessage;
 
   SignUpQuestionnaireState(
-      {this.phoneNumber = const PhoneValidator.pure(),
-        this.username = const EmailAddressUsername.pure(),
-        this.userModelFirebase,
-        this.status = FormzStatus.pure,
-        this.errorMessage});
+      {this.firstName = const MandatoryFieldValidator.pure(),
+      this.secondName = const MandatoryFieldValidator.pure(),
+      this.password = const PasswordValidator.pure(),
+      this.confirmPassword = const ConfirmPasswordValidator.pure(''),
+      this.date = const MandatoryFieldValidator.pure(),
+      this.userModelFirebase,
+      this.submitStatus = FormzStatus.pure,
+      this.errorMessage});
 
   SignUpQuestionnaireState copyWith(
-      {FormzStatus? status,
-        PhoneValidator? phoneNumber,
-        UserModelFirebase? userModelFirebase,
-        EmailAddressUsername? username,
-        String? errorMessage}) {
+      {FormzStatus? submitStatus,
+      UserModelFirebase? userModelFirebase,
+      MandatoryFieldValidator? firstName,
+      MandatoryFieldValidator? secondName,
+      PasswordValidator? password,
+      ConfirmPasswordValidator? confirmPassword,
+      MandatoryFieldValidator? date,
+      String? errorMessage}) {
     return SignUpQuestionnaireState(
-        status: status ?? this.status,
-        phoneNumber: phoneNumber ?? this.phoneNumber,
-        username: username ?? this.username,
-        userModelFirebase: userModelFirebase?? this.userModelFirebase,
+        submitStatus: submitStatus ?? this.submitStatus,
+        firstName: firstName ?? this.firstName,
+        secondName: secondName ?? this.secondName,
+        password: password ?? this.password,
+        confirmPassword: confirmPassword ?? this.confirmPassword,
+        date: date ?? this.date,
+        userModelFirebase: userModelFirebase ?? this.userModelFirebase,
         errorMessage: errorMessage);
   }
 
   @override
-  List<Object> get props => [status, username];
+  // TODO: implement inputs
+  List<FormzInput> get inputs =>
+      [firstName, secondName, password, confirmPassword, date];
 }
 
 class SignUpQuestionnaireInitial extends SignUpQuestionnaireState {}

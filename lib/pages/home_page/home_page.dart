@@ -88,107 +88,125 @@ class _HomePageState extends State<HomePage> {
                                         EdgeInsets.only(left: 30, right: 30),
                                     padding:
                                         EdgeInsets.only(top: 20, bottom: 20),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Container(
-                                          // margin: EdgeInsets.only(left: 50, right: 50),
-                                          child: SvgPicture.asset(
-                                            'assets/ePregnancy_logo.svg',
-                                            fit: BoxFit.fitHeight,
-                                            // height: 200,
-                                            height: 60,
-                                            width: 60,
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                        margin: EdgeInsets.only(
-                                                            bottom: 10),
-                                                        child: const Text(
-                                                          "Trimester Pertama anda",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        )),
-                                                    SizedBox(
-                                                      width: 20,
-                                                    ),
-                                                    Container(
-                                                      child: const Icon(
-                                                        Icons.arrow_forward_ios,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                        state.baby != null ? Container(
+                                            margin: EdgeInsets.only(
+                                                bottom: 10),
+                                            child:  Expanded(
+                                              child: Text(
+                                                 state.baby!.babyName!,
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.white,fontWeight: FontWeight.bold),
+                                                maxLines: 3,
                                               ),
-                                              Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 10),
-                                                  width: 200,
-                                                  child: const Text(
-                                                    "Anda akan mengalami morning sickness secars berkala ",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white),
-                                                    maxLines: 3,
-                                                  )),
-                                              Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 20),
-                                                  child: const Text(
-                                                    "8 minggu 1 hari ",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )),
-                                              Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6.0),
-                                                      color: Colors.white),
-                                                  child: Container(
-                                                    width: 210,
-                                                    height: 30,
-                                                    child: Center(
-                                                      child: Container(
-                                                        child: const Text(
-                                                          "Ubah Profil Kehamilan ",
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              color:
-                                                                  EpregnancyColors
-                                                                      .primer),
-                                                          maxLines: 3,
+                                            )): Container(),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              // margin: EdgeInsets.only(left: 50, right: 50),
+                                              child: SvgPicture.asset(
+                                                'assets/ePregnancy_logo.svg',
+                                                fit: BoxFit.fitHeight,
+                                                // height: 200,
+                                                height: 60,
+                                                width: 60,
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+
+                                                  Container(
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                            margin: EdgeInsets.only(
+                                                                bottom: 10),
+                                                            child: const Text(
+                                                              "Trimester Pertama anda",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color:
+                                                                      Colors.white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )),
+                                                        SizedBox(
+                                                          width: 20,
                                                         ),
-                                                      ),
+                                                        Container(
+                                                          child: const Icon(
+                                                            Icons.arrow_forward_ios,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  )),
-                                            ],
-                                          ),
+                                                  ),
+                                                  Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 10),
+                                                      width: 200,
+                                                      child: const Text(
+                                                        "Anda akan mengalami morning sickness secars berkala ",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.white),
+                                                        maxLines: 3,
+                                                      )),
+                                                  Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 20),
+                                                      child: const Text(
+                                                        "8 minggu 1 hari ",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold),
+                                                      )),
+                                                  Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  6.0),
+                                                          color: Colors.white),
+                                                      child: Container(
+                                                        width: 210,
+                                                        height: 30,
+                                                        child: Center(
+                                                          child: Container(
+                                                            child: const Text(
+                                                              "Ubah Profil Kehamilan ",
+                                                              style: TextStyle(
+                                                                  fontSize: 14,
+                                                                  color:
+                                                                      EpregnancyColors
+                                                                          .primer),
+                                                              maxLines: 3,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),

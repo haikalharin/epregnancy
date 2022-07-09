@@ -10,6 +10,7 @@ import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../utils/epragnancy_color.dart';
+import '../../utils/string_constans.dart';
 import '../home_page/home_page.dart';
 import 'bloc/login_bloc.dart';
 
@@ -28,119 +29,126 @@ var authService = AuthService();
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-          child: BlocListener<LoginBloc, LoginState>(
-              listener: (context, state) async {
-                if (state.status == FormzStatus.submissionFailure) {
-                  const snackBar = SnackBar(
-                      content: Text("failed"), backgroundColor: Colors.red);
-                  Scaffold.of(context).showSnackBar(snackBar);
-                } else if (state.status == FormzStatus.submissionSuccess) {
-                  if (state.userModelFirebase!.status == 'Active') {
-                    Navigator.of(context).pushNamed(RouteName.navBar);
-                  } else {
-                    Navigator.of(context).pushNamed(RouteName.surveyPage);
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pushNamed(RouteName.signup);
+          return Future.value(true);
+
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+            child: BlocListener<LoginBloc, LoginState>(
+                listener: (context, state) async {
+                  if (state.status == FormzStatus.submissionFailure) {
+                    const snackBar = SnackBar(
+                        content: Text("failed"), backgroundColor: Colors.red);
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  } else if (state.status == FormzStatus.submissionSuccess) {
+                    if (state.userModelFirebase!.status == StringConstant.active) {
+                      Navigator.of(context).pushNamed(RouteName.navBar);
+                    } else {
+                      Navigator.of(context).pushNamed(RouteName.surveyPage);
+                    }
+
+                    // Navigator.of(context).pushNamedAndRemoveUntil(
+                    //                 RouteName.homeScreen,
+                    //                 ModalRoute.withName(RouteName.homeScreen),
+                    //               );
                   }
-
-                  // Navigator.of(context).pushNamedAndRemoveUntil(
-                  //                 RouteName.homeScreen,
-                  //                 ModalRoute.withName(RouteName.homeScreen),
-                  //               );
-                }
-              },
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Image.asset(
-                      "assets/ePregnancy_login_logo.png",
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.bottomLeft,
+                },
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.asset(
+                        "assets/ePregnancy_login_logo.png",
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.bottomLeft,
+                      ),
                     ),
-                  ),
-                  Center(
-                    child: BlocBuilder<LoginBloc, LoginState>(
-                      builder: (context, state) {
-                        return ListView(
-                          physics: const ClampingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: _horizontalPadding,
-                          ),
-                          children: [
-                            SizedBox(height: 60),
-                            // SizedBox(height: 120),
-                            //_HeadingText(),
-                            Text(
-                              "Masuk dengan email",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 40,
-                              ),
+                    Center(
+                      child: BlocBuilder<LoginBloc, LoginState>(
+                        builder: (context, state) {
+                          return ListView(
+                            physics: const ClampingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: _horizontalPadding,
                             ),
-                            Text(
-                              "Masuk dengan akun email yang terdaftar",
-                              style: TextStyle(
+                            children: [
+                              SizedBox(height: 60),
+                              // SizedBox(height: 120),
+                              //_HeadingText(),
+                              Text(
+                                "Masuk dengan email",
+                                style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15),
-                            ),
-                            SizedBox(height: 20),
-                            _UsernameInput(),
-                            SizedBox(height: 12),
-                            _PasswordInput(),
-                            _ForgotPasswordButton(),
-                            SizedBox(height: 20),
-                            Container(
-                              height: 50,
-                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: ElevatedButton(
-                                  child: const Text('Login'),
-                                  onPressed: () {
-                                    Injector.resolve<LoginBloc>()
-                                        .add(LoginSubmitted());
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 40,
+                                ),
+                              ),
+                              Text(
+                                "Masuk dengan akun email yang terdaftar",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15),
+                              ),
+                              SizedBox(height: 20),
+                              _UsernameInput(),
+                              SizedBox(height: 12),
+                              _PasswordInput(),
+                              _ForgotPasswordButton(),
+                              SizedBox(height: 20),
+                              Container(
+                                height: 50,
+                                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                child: ElevatedButton(
+                                    child: const Text('Login'),
+                                    onPressed: () {
+                                      Injector.resolve<LoginBloc>()
+                                          .add(LoginSubmitted());
 
-                                    // if(state.username.valid && state.password.valid) {
-                                    //
-                                    //   authService.loginUser(state.username.value, state.password.value).then((User user) =>
-                                    //   {
-                                    //     print(user),
-                                    //   Navigator.pushReplacement(
-                                    //   context,
-                                    //   MaterialPageRoute(builder: (context) => HomePage()),
-                                    //   )}).catchError((e) => print(e));
-                                    // }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      primary: EpregnancyColors.primer),)
-                            ),
-                            SizedBox(height: 10),
-                            Container(
-                              height: 50,
-                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: ElevatedButton(
-                                  onPressed: () async {
-                                    // GAuthentication.signOut(context: context);
-                                    // GAuthentication.signInWithGoogle();
-                                    Injector.resolve<LoginBloc>()
-                                        .add(LoginWithGoogleSubmitted());
-                                  },
-                                  child: Text("Lanjut dengan Google"),
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.white,
-                                      onPrimary: Colors.black)),
-                            ),
-                            // _PasswordTextField(),
-                          ],
-                        );
-                      },
+                                      // if(state.username.valid && state.password.valid) {
+                                      //
+                                      //   authService.loginUser(state.username.value, state.password.value).then((User user) =>
+                                      //   {
+                                      //     print(user),
+                                      //   Navigator.pushReplacement(
+                                      //   context,
+                                      //   MaterialPageRoute(builder: (context) => HomePage()),
+                                      //   )}).catchError((e) => print(e));
+                                      // }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        primary: EpregnancyColors.primer),)
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                height: 50,
+                                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                child: ElevatedButton(
+                                    onPressed: () async {
+                                      // GAuthentication.signOut(context: context);
+                                      // GAuthentication.signInWithGoogle();
+                                      Injector.resolve<LoginBloc>()
+                                          .add(LoginWithGoogleSubmitted());
+                                    },
+                                    child: Text("Lanjut dengan Google"),
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.white,
+                                        onPrimary: Colors.black)),
+                              ),
+                              // _PasswordTextField(),
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  _Loading(),
-                ],
-              ))),
+                    _Loading(),
+                  ],
+                ))),
+      ),
     );
   }
 }

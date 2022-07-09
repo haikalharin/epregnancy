@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../../data/model/person_model/person_model.dart';
+import '../../model/baby_model/baby_model.dart';
 
 class EventUser {
   static Future<UserModelFirebase> checkUser(
@@ -64,6 +65,25 @@ class EventUser {
       }
     }
     return UserRolesModelFirebase.empty();
+  }
+
+  static Future<BabyModel> checkBabyExist(String userId) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('BABY_PROFILE')
+        .where('UserUid', isEqualTo: userId)
+        .get()
+        .catchError((onError) => print(onError));
+    if (querySnapshot != null && querySnapshot.docs.isNotEmpty) {
+      if (querySnapshot.docs.isNotEmpty) {
+        final data = getDataValue(querySnapshot.docs[0].data());
+        BabyModel babyModel =
+        BabyModel.fromJson(data);
+        return babyModel;
+      } else {
+        return BabyModel.empty();
+      }
+    }
+    return BabyModel.empty();
   }
 
   static Future<String> getUserToken(String uid) async {
@@ -138,6 +158,25 @@ class EventUser {
       FirebaseFirestore.instance
           .collection('USER_ROLES')
           .doc(data!.uid)
+          .set(data.toJson())
+          .then((value) => null)
+          .catchError((onError) => print(onError));
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+
+  static Future<bool> addBabyUser({
+    BabyModel? data,
+  }) async {
+    try {
+
+      FirebaseFirestore.instance
+          .collection('BABY_PROFILE')
+          .doc(data!.babyProfileid)
           .set(data.toJson())
           .then((value) => null)
           .catchError((onError) => print(onError));

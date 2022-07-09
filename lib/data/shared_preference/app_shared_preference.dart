@@ -7,27 +7,29 @@ import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../model/baby_model/baby_model.dart';
 import '../model/person_model/person_model.dart';
 import '../model/user_example_model/user_example_model.dart';
 import '../model/user_roles_model_firebase/user_roles_model_firebase.dart';
 
 class AppSharedPreference {
-
   static final String _user = "user";
-  static final String _role= "role";
+  static final String _emailRegister = "_emailRegister";
+  static final String _userRegister = "_userRegister";
+  static final String _role = "role";
+  static final String _baby = "baby";
   static final String _person = "person";
 
   static final String bmSignature = "bm_signature";
-
-
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }
- static remove(String key) async {
-   SharedPreferences preferences = await SharedPreferences.getInstance();
-   await preferences.remove(key);
+
+  static remove(String key) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove(key);
   }
 
   static Future<String?> getString(String key) async {
@@ -40,32 +42,45 @@ class AppSharedPreference {
     prefs.setString(key, value);
   }
 
-
-  static Future<UserExampleModel> getUser() async {
+  static Future<UserModelFirebase> getUserRegister() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString(_user);
-    Map<String,dynamic> map = jsonDecode(json!);
-    return UserExampleModel.fromJson(map);
+    String? json = prefs.getString(_userRegister);
+    Map<String, dynamic> map = jsonDecode(json!);
+    return UserModelFirebase.fromJson(map);
   }
 
-  static setUser(UserExampleModel data) async {
+  static setUserRegister(UserModelFirebase data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_user, json);
+    prefs.setString(_userRegister, json);
   }
+
+  static Future<String> getEmailRegisterUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? data = prefs.getString(_emailRegister);
+    return data!;
+  }
+
+  static setEmailRegisterUser(String data) async {
+    String dataFix = data;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_emailRegister, dataFix);
+  }
+
   static Future<UserModelFirebase> getUserFirebaseInit() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString(_user);
-    Map<String,dynamic> map = jsonDecode(json!);
+    Map<String, dynamic> map = jsonDecode(json!);
     return UserModelFirebase.fromJson(map);
   }
+
   static Future<UserModelFirebase> getUserFirebase() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString(_user);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       return UserModelFirebase.fromJson(map);
-    } else{
+    } else {
       return UserModelFirebase.empty();
     }
   }
@@ -82,7 +97,7 @@ class AppSharedPreference {
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       return UserRolesModelFirebase.fromJson(map);
-    } else{
+    } else {
       return UserRolesModelFirebase.empty();
     }
   }
@@ -91,6 +106,23 @@ class AppSharedPreference {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_role, json);
+  }
+
+  static Future<BabyModel> getUserBabyirebase() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(_baby);
+    if (json != null) {
+      Map<String, dynamic> map = jsonDecode(json);
+      return BabyModel.fromJson(map);
+    } else {
+      return BabyModel.empty();
+    }
+  }
+
+  static setUserBabyFirebase(BabyModel data) async {
+    String json = jsonEncode(data.toJson());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_baby, json);
   }
 
   static Future<PersonModel> getPerson() async {
@@ -112,6 +144,4 @@ class AppSharedPreference {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('person', json.encode(person.toJson()));
   }
-
-
 }
