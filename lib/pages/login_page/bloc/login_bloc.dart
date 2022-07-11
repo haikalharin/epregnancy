@@ -17,6 +17,7 @@ import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
 import '../../../common/services/auth_service.dart';
+import '../../../common/validators/mandatory_field_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../../utils/string_constans.dart';
@@ -66,7 +67,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginUsernameChanged event,
     LoginState state,
   ) {
-    final userName = EmailAddressUsername.dirty(event.userName);
+    final userName = MandatoryFieldValidator.dirty(event.userName);
     return state.copyWith(
       username: userName,
       status: Formz.validate([userName]),
@@ -124,7 +125,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await EventUser.checkUser(state.username.value, state.password.value);
 
       // await Future.delayed(const Duration(seconds: 5));
-      if (userModelFirebase.userid!.isNotEmpty) {
+      if (userModelFirebase.uid!.isNotEmpty) {
         await AppSharedPreference.setUserFirebase(userModelFirebase);
         yield state.copyWith(
             status: FormzStatus.submissionSuccess,
@@ -132,7 +133,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
 
       else {
-        final username = EmailAddressUsername.dirty(state.username.value);
+        final username = MandatoryFieldValidator.dirty(state.username.value);
         final password = Password.dirty(state.password.value);
         yield state.copyWith(
             status: FormzStatus.submissionFailure,

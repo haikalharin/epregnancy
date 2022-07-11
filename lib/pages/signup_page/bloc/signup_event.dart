@@ -18,12 +18,12 @@ class LoginPhoneNumberChanged extends SignupEvent {
 }
 
 class LoginUsernameChanged extends SignupEvent {
-  const LoginUsernameChanged(this.userName);
+  const LoginUsernameChanged(this.email);
 
-  final String userName;
+  final String email;
 
   @override
-  List<Object> get props => [userName];
+  List<Object> get props => [email];
 }
 
 class LoginInitEvent extends SignupEvent {

@@ -29,8 +29,15 @@ final _codeController = TextEditingController();
 var authService = AuthService();
 
 class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _controller = TextEditingController();
+ @override
+  void initState() {
+   Injector.resolve<SignupBloc>().add(LoginInitEvent());
+    super.initState();
+  }
+
   @override
-  void dispose() {
+  Future<void> dispose() async {
     Injector.resolve<SignupBloc>().add(LoginInitEvent());
     super.dispose();
   }
@@ -44,15 +51,19 @@ class _SignUpPageState extends State<SignUpPage> {
           child: BlocListener<SignupBloc, SignupState>(
               listener: (context, state) async {
                 if (state.submitStatus == FormzStatus.submissionFailure) {
-                  const snackBar = SnackBar(
-                      content: Text("failed"), backgroundColor: Colors.red);
+                  var snackBar = SnackBar(
+                      content: Text(state.errorMessage!.isNotEmpty
+                          ? state.errorMessage!
+                          : 'failed'),
+                      backgroundColor: Colors.red);
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.submitStatus ==
                     FormzStatus.submissionSuccess) {
                   if (state.isExist == true) {
-                    if (state.userModelFirebase!.status == StringConstant.active) {
-                      Navigator.of(context).pushNamed(RouteName.login);
-                    } else{
+                    if (state.userModelFirebase!.status ==
+                        StringConstant.active) {
+                      Navigator.of(context).pushReplacementNamed(RouteName.login);
+                    } else {
                       Navigator.of(context).pushNamed(RouteName.surveyPage);
                     }
                   } else {
@@ -103,10 +114,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                   borderSide: BorderSide(),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
+                                errorText:  state.phoneNumber.invalid ? 'Format nomor salah' : null,
                               ),
+                              autovalidateMode: AutovalidateMode.disabled,
                               initialCountryCode: 'ID',
                               onChanged: (phone) {
-                                print(phone.completeNumber);
+                                Injector.resolve<SignupBloc>().add(
+                                    LoginPhoneNumberChanged(phone.completeNumber));
                               },
                             ),
                             SizedBox(height: 10),
@@ -191,7 +205,7 @@ class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignupBloc, SignupState>(
-      buildWhen: (previous, current) => previous.username != current.username,
+      buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_emailInput_textField'),
@@ -202,7 +216,7 @@ class _EmailInput extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
             ),
             hintText: 'email@mail.com',
-            errorText: state.username.invalid ? 'Format e-mail salah' : null,
+            errorText: state.email.invalid ? 'Format e-mail salah' : null,
           ),
         );
       },

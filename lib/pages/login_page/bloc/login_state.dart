@@ -3,14 +3,14 @@ part of 'login_bloc.dart';
 class LoginState {
   final UserModelFirebase? userModelFirebase;
   final PhoneValidator phoneNumber;
-  final EmailAddressUsername username;
+  final MandatoryFieldValidator username;
   final Password password;
   final FormzStatus status;
   final String? errorMessage;
 
   LoginState(
       {this.phoneNumber = const PhoneValidator.pure(),
-        this.username = const EmailAddressUsername.pure(),
+        this.username = const MandatoryFieldValidator.pure(),
         this.password = const Password.pure(),
         this.userModelFirebase,
         this.status = FormzStatus.pure,
@@ -20,7 +20,7 @@ class LoginState {
       {FormzStatus? status,
         PhoneValidator? phoneNumber,
         UserModelFirebase? userModelFirebase,
-        EmailAddressUsername? username,
+        MandatoryFieldValidator? username,
         Password? password,
         String? errorMessage}) {
     return LoginState(

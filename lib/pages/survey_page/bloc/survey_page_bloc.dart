@@ -86,11 +86,17 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
       final UserModelFirebase user = await userRepository.fetchUser();
       bool isUpdateCondition = false;
 
+      if(event.condition != StringConstant.pregnant){
+        await EventUser.updateActiveUser(myUid: user.uid, status: StringConstant.active);
+      }
+
       final UserRolesModelFirebase role =
           await EventUser.checkRoleExist(user.uid!);
       UserRolesModelFirebase? userRolesModelFirebase;
+
       final df = DateFormat('yyyyMMdd');
       String timeNow = df.format(new DateTime.now());
+
       if (role.uid!.isNotEmpty) {
         userRolesModelFirebase = UserRolesModelFirebase(
             condition: event.condition,

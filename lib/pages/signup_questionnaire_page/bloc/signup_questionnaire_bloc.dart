@@ -116,14 +116,21 @@ class SignUpQuestionnaireBloc
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      var email = await AppSharedPreference.getEmailRegisterUser();
+      String email = "";
+      String phoneNumber = "";
+      var userid = await AppSharedPreference.getUsernameRegisterUser();
+      if (userid.contains('@')){
+        email = userid;
+      } else{
+        phoneNumber = userid;
+      }
       UserModelFirebase userModelFirebase = UserModelFirebase.empty();
       if (state.status.isValidated) {
         final UserModelFirebase userExist =
-            await EventUser.checkUserExist(email);
+            await EventUser.checkUserExist(userid);
         final df = DateFormat('yyyyMMdd');
         String timeNow = df.format(new DateTime.now());
-        if (userExist.email!.isEmpty) {
+        if (userExist.userid!.isEmpty) {
           const _chars =
               'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
           Random _rnd = Random();
@@ -140,7 +147,8 @@ class SignUpQuestionnaireBloc
               name: " ${state.firstName.value} ${state.secondName.value}",
               status: StringConstant.inActive,
               uid: random,
-              userid: email,
+              userid: userid,
+              mobilePhone: phoneNumber,
               password: state.password.value,
               birthDate: state.date.value);
           yield state.copyWith(
@@ -153,7 +161,8 @@ class SignUpQuestionnaireBloc
               name: userExist.name,
               status: userExist.status,
               uid: userExist.uid,
-              userid: email,
+              userid: userid,
+              mobilePhone: userExist.mobilePhone,
               password: userExist.password,
               birthDate: userExist.birthDate);
           yield state.copyWith(

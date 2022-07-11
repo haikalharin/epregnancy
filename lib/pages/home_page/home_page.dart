@@ -89,20 +89,23 @@ class _HomePageState extends State<HomePage> {
                                     padding:
                                         EdgeInsets.only(top: 20, bottom: 20),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        state.baby != null ? Container(
-                                            margin: EdgeInsets.only(
-                                                bottom: 10),
-                                            child:  Expanded(
-                                              child: Text(
-                                                 state.baby!.babyName!,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.white,fontWeight: FontWeight.bold),
-                                                maxLines: 3,
-                                              ),
-                                            )): Container(),
+                                        state.baby != null
+                                            ? Container(
+                                                margin:
+                                                    EdgeInsets.only(bottom: 10),
+                                                child: Text(
+                                                  state.baby!.babyName!,
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  maxLines: 3,
+                                                ))
+                                            : Container(),
                                         Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -124,34 +127,43 @@ class _HomePageState extends State<HomePage> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-
                                                   Container(
                                                     child: Row(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
                                                         Container(
-                                                            margin: EdgeInsets.only(
-                                                                bottom: 10),
-                                                            child: const Text(
-                                                              "Trimester Pertama anda",
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 10),
+                                                            width: 200,
+                                                            child: Text(
+                                                              state.babyProgressModel !=
+                                                                      null
+                                                                  ? state
+                                                                      .babyProgressModel!
+                                                                      .title!
+                                                                  : '',
                                                               style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  color:
-                                                                      Colors.white,
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold),
+                                                              maxLines: 5,
                                                             )),
                                                         SizedBox(
                                                           width: 20,
                                                         ),
                                                         Container(
                                                           child: const Icon(
-                                                            Icons.arrow_forward_ios,
+                                                            Icons
+                                                                .arrow_forward_ios,
                                                             color: Colors.white,
                                                           ),
                                                         ),
@@ -162,29 +174,40 @@ class _HomePageState extends State<HomePage> {
                                                       margin: EdgeInsets.only(
                                                           bottom: 10),
                                                       width: 200,
-                                                      child: const Text(
-                                                        "Anda akan mengalami morning sickness secars berkala ",
+                                                      child: Text(
+                                                        state.babyProgressModel !=
+                                                                null
+                                                            ? state
+                                                                .babyProgressModel!
+                                                                .condition!
+                                                            : '',
                                                         style: TextStyle(
                                                             fontSize: 12,
-                                                            color: Colors.white),
+                                                            color:
+                                                                Colors.white),
                                                         maxLines: 3,
                                                       )),
                                                   Container(
                                                       margin: EdgeInsets.only(
                                                           bottom: 20),
-                                                      child: const Text(
-                                                        "8 minggu 1 hari ",
+                                                      child: Text(
+                                                        state.babyProgressModel !=
+                                                                null
+                                                            ? "${state.babyProgressModel!.babyAgeInWeeks!} Minggu ${state.days} Hari"
+                                                            : '',
                                                         style: TextStyle(
                                                             fontSize: 12,
                                                             color: Colors.white,
                                                             fontWeight:
-                                                                FontWeight.bold),
+                                                                FontWeight
+                                                                    .bold),
                                                       )),
                                                   Container(
                                                       decoration: BoxDecoration(
                                                           borderRadius:
-                                                              BorderRadius.circular(
-                                                                  6.0),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      6.0),
                                                           color: Colors.white),
                                                       child: Container(
                                                         width: 210,
@@ -195,9 +218,8 @@ class _HomePageState extends State<HomePage> {
                                                               "Ubah Profil Kehamilan ",
                                                               style: TextStyle(
                                                                   fontSize: 14,
-                                                                  color:
-                                                                      EpregnancyColors
-                                                                          .primer),
+                                                                  color: EpregnancyColors
+                                                                      .primer),
                                                               maxLines: 3,
                                                             ),
                                                           ),
@@ -246,7 +268,7 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Container(
                                                 margin:
-                                                EdgeInsets.only(left: 16),
+                                                    EdgeInsets.only(left: 16),
                                                 child: Container(
                                                     // margin: EdgeInsets.only(
                                                     //     left: 50, right: 50, bottom: 20),
@@ -307,12 +329,14 @@ class _HomePageState extends State<HomePage> {
                                     Container(
                                         child: const Text(
                                       "Artikel Untuk Anda",
-                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700),
                                     )),
                                     InkWell(
                                       onTap: () {
-                                        Navigator.of(context)
-                                            .pushNamed(RouteName.dashboardArticle);
+                                        Navigator.of(context).pushNamed(
+                                            RouteName.dashboardArticle);
                                       },
                                       child: Container(
                                         child: Row(
@@ -320,7 +344,14 @@ class _HomePageState extends State<HomePage> {
                                             Container(
                                                 margin:
                                                     EdgeInsets.only(right: 5),
-                                                child: Text("Artikel lainnya",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: Colors.grey),)),
+                                                child: Text(
+                                                  "Artikel lainnya",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.grey),
+                                                )),
                                             Container(
                                               child: const Icon(
                                                 Icons.arrow_forward_ios,
@@ -364,7 +395,9 @@ class _HomePageState extends State<HomePage> {
                                   Container(
                                       child: const Text(
                                     "Kalender Saya",
-                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
                                   )),
                                   Container(
                                       child:

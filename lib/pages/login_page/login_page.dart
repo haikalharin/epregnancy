@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               Text(
-                                "Masuk dengan akun email yang terdaftar",
+                                "Masuk dengan akun email/nomor handphone yang terdaftar",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.normal,
@@ -218,7 +218,7 @@ class _UsernameInput extends StatelessWidget {
           onChanged: (username) =>
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
-            labelText: 'E-mail',
+            labelText: 'E-mail/Nomor handphone',
             errorText: state.username.invalid ? 'Format e-mail salah' : null,
           ),
         );

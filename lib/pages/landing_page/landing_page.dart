@@ -98,17 +98,11 @@ class _LandingPageState extends State<LandingPage> {
               onPressed: () async {
                 if (currentIndex == slides.length-1) {
                   // Navigate to next screen
-                 final data = await AppSharedPreference.getUserFirebase();
-                 if (data.uid != ''){
-                   Navigator.pushReplacement(
-                       context,
-                       MaterialPageRoute(builder: (context) => NavbarPage()));
-                 }else {
                    Navigator.pushReplacement(
                      context,
                      MaterialPageRoute(builder: (context) => LoginPage()),
                    );
-                 }
+
                 }
                 _controller.nextPage(
                     duration: Duration(milliseconds: 100),

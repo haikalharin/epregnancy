@@ -11,7 +11,7 @@ class PhoneValidator extends FormzInput<String, PhoneValidationError> {
 
   @override
   PhoneValidationError? validator(String value) {
-    return RegExp(RegexConstants.validPhoneBook).hasMatch(value)
+    return RegExp(RegexConstants.validPhoneRegex).hasMatch(value)
         ? null
         : PhoneValidationError.empty;
   }

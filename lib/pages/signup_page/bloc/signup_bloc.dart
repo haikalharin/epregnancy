@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/common/exceptions/login_error_exception.dart';
+import 'package:PregnancyApp/common/validators/mandatory_field_validator.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -28,25 +29,40 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       yield* _mapLoginSubmittedToState(event, state);
     } else if (event is LoginUsernameChanged) {
       yield _mapUsernameChangedToState(event, state);
-    } else if (event is LoginInitEvent){
-      yield _mapLoginInitEventToState(event,state);
-
+    } else if (event is LoginUsernameChanged) {
+      yield _mapUsernameChangedToState(event, state);
+    } else if (event is LoginPhoneNumberChanged) {
+      yield _mapLoginPhoneNumberChangedToState(event, state);
+    } else if (event is LoginInitEvent) {
+      yield _mapLoginInitEventToState(event, state);
     }
   }
 
   SignupState _mapLoginInitEventToState(
       LoginInitEvent event, SignupState state) {
-    return SignupState();
+    return SignupInitial();
+  }
+
+  SignupState _mapLoginPhoneNumberChangedToState(
+    LoginPhoneNumberChanged event,
+    SignupState state,
+  ) {
+    var phone =event.phoneNumber.replaceFirst('+62', '0');
+    final phoneNumber = PhoneValidator.dirty(phone);
+
+    return state.copyWith(
+        phoneNumber: phoneNumber,
+        userName: MandatoryFieldValidator.dirty(phoneNumber.value));
   }
 
   SignupState _mapUsernameChangedToState(
-      LoginUsernameChanged event,
-      SignupState state,
-      ) {
-    final userName = EmailAddressUsername.dirty(event.userName);
+    LoginUsernameChanged event,
+    SignupState state,
+  ) {
+    final email = EmailAddressUsername.dirty(event.email);
     return state.copyWith(
-      username: userName,
-      submitStatus: Formz.validate([userName]),
+      email: email,
+      userName: MandatoryFieldValidator.dirty(email.value),
     );
   }
 
@@ -56,35 +72,41 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      UserModelFirebase userModelFirebase =
-          await EventUser.checkUserExist(state.username.value);
+      if (state.email.valid && state.phoneNumber.valid) {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure,
+            errorMessage:
+                'Pilih salah satu meode login email atau nomor telfon');
 
-      if (state.status.isValidated){
+      } else if (state.email.valid || state.phoneNumber.valid) {
+        var data =
+            state.email.valid ? state.email.value : state.phoneNumber.value;
+        UserModelFirebase userModelFirebase =
+            await EventUser.checkUserExist(data);
+
         if (userModelFirebase.uid!.isNotEmpty) {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
               userModelFirebase: userModelFirebase,
               isExist: true);
           await AppSharedPreference.getUserRegister();
-        } else if (userModelFirebase.uid!.isNotEmpty && userModelFirebase.status == StringConstant.inActive) {
+        } else if (userModelFirebase.uid!.isNotEmpty &&
+            userModelFirebase.status == StringConstant.inActive) {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
               userModelFirebase: userModelFirebase,
               isExist: true);
           await AppSharedPreference.getUserRegister();
-        }else {
-          await AppSharedPreference.setEmailRegisterUser(state.username.value);
+        } else {
+          await AppSharedPreference.setUsernameRegisterUser(data);
           yield state.copyWith(
-              submitStatus: FormzStatus.submissionSuccess,
-              isExist: false);
+              submitStatus: FormzStatus.submissionSuccess, isExist: false);
         }
-      } else{
-        final username = EmailAddressUsername.dirty(state.username.value);
+      } else {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,
-            username: username);
-            }
-
+            errorMessage: 'Masukan nomor telfon atau email anda');
+      }
     } on LoginErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

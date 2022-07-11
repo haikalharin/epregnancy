@@ -76,7 +76,13 @@ class _SurveyPageState extends State<SurveyPage> {
                 SnackBar(content: Text("failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            Navigator.of(context).pushNamed(RouteName.surveyPageBaby);
+           if(isChoice ==1) {
+             Navigator.of(context).pushNamed(RouteName.surveyPageBaby);
+           } else{
+             Navigator.of(context).pushNamed(RouteName.login
+             );
+
+           }
             // Navigator.of(context).pushNamedAndRemoveUntil(
             //                 RouteName.homeScreen,
             //                 ModalRoute.withName(RouteName.homeScreen),
