@@ -50,7 +50,7 @@ class ListArticle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 150,
-        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
         decoration: BoxDecoration(color: Colors.white),
         child: listArticle!.isEmpty
             ? Stack(children: [
@@ -75,7 +75,6 @@ class ListArticle extends StatelessWidget {
                                       article: listArticle![index])));
                         },
                         child: Container(
-
                           margin:
                           EdgeInsets.only(left: 10, right: 10, top: 10),
                           decoration: listArticle![index].cardImgURL != null &&

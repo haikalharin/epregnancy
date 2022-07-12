@@ -33,7 +33,6 @@ class _SignUpPageState extends State<SignUpPage> {
  @override
   void initState() {
    Injector.resolve<SignupBloc>().add(SignupInitEvent());
-   Injector.resolve<SignupBloc>().add(SignupCheckUserExist());
     super.initState();
   }
 
@@ -63,11 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   if (state.isExist == true) {
                     if (state.userModelFirebase!.status ==
                         StringConstant.active) {
-                      if(state.type == "hasLogin"){
-                        Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: state.role!.role);
-                      }else{
                         Navigator.of(context).pushReplacementNamed(RouteName.login);
-                      }
                     } else {
                       Navigator.of(context).pushNamed(RouteName.surveyPage);
                     }

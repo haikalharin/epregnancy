@@ -15,9 +15,6 @@ class LogoutPage extends StatelessWidget {
             child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          child: Text("Welcome"),
-        ),
         RaisedButton(
           onPressed: () async {
             //
