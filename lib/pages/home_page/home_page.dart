@@ -54,7 +54,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.grey.shade200,
         body: BlocListener<HomePageBloc, HomePageState>(
           listener: (context, state) {
-            // TODO: implement listener
+            if (state.status == FormzStatus.submissionSuccess) {
+
+            }
           },
           child: BlocBuilder<HomePageBloc, HomePageState>(
             builder: (context, state) {
@@ -112,15 +114,27 @@ class _HomePageState extends State<HomePage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Container(
+                                            state.babyProgressModel != null
+                                                ?  Container(
                                               // margin: EdgeInsets.only(left: 50, right: 50),
-                                              child: SvgPicture.asset(
-                                                'assets/ePregnancy_logo.svg',
-                                                fit: BoxFit.fitHeight,
-                                                // height: 200,
+                                              child: FadeInImage(
+                                                placeholder: AssetImage('assets/ic_no_photo.png'),
+                                                image: NetworkImage(state.babyProgressModel!.iconUrl!),
+                                                width:60,
                                                 height: 60,
-                                                width: 60,
+                                                fit: BoxFit.cover,
+                                                imageErrorBuilder: (context, error, stackTrace) {
+                                                  return Image.asset(
+                                                    'assets/ic_no_photo.png',
+                                                    width: 60,
+                                                    height: 60,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
                                               ),
+                                            ):Container(
+                                              width: 60,
+                                              height: 60,
                                             ),
                                             Container(
                                               child: Column(
@@ -191,9 +205,9 @@ class _HomePageState extends State<HomePage> {
                                                       margin: EdgeInsets.only(
                                                           bottom: 20),
                                                       child: Text(
-                                                        state.babyProgressModel !=
+                                                        state.weeks !=
                                                                 null
-                                                            ? "${state.babyProgressModel!.babyAgeInWeeks!} Minggu ${state.days} Hari"
+                                                            ? "${state.weeks} Minggu ${state.days} Hari"
                                                             : '',
                                                         style: TextStyle(
                                                             fontSize: 12,

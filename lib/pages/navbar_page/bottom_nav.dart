@@ -6,14 +6,20 @@ import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../data/firebase/event/event_user.dart';
+import '../../data/model/user_model_firebase/user_model_firebase.dart';
+import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
+import '../../data/shared_preference/app_shared_preference.dart';
+import '../../utils/string_constans.dart';
 import '../home_page/logout_page.dart';
 import '../survey_page/survey_page.dart';
+
 int indexBottomNavSelected = 0;
 bool isChangeIndex = false;
 
 class NavbarPage extends StatefulWidget {
-  int? arguments = 0;
-   NavbarPage({Key? key, this.arguments}) : super(key: key);
+  String? role = StringConstant.patient;
+  NavbarPage({Key? key, this.role}) : super(key: key);
 
   // final UserModel bottomUserModelData;
 
@@ -21,142 +27,31 @@ class NavbarPage extends StatefulWidget {
   _NavbarPageState createState() => _NavbarPageState();
 }
 
-class _NavbarPageState extends State<NavbarPage>  with TickerProviderStateMixin {
-  TabController? controller ;
-
+class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
+  TabController? controller;
   int indexSelected = 0;
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    if( indexSelected != indexBottomNavSelected && isChangeIndex) {
-     setState(() {
-       indexSelected = indexBottomNavSelected;
-       isChangeIndex = false;
-     });
-
+    if (indexSelected != indexBottomNavSelected && isChangeIndex) {
+      setState(() {
+        indexSelected = indexBottomNavSelected;
+        isChangeIndex = false;
+      });
     }
     return Stack(children: [
+      widget.role == StringConstant.midwife
+          ? Scaffold(
+          body: _buildWidgetBodyMidwife(),
+          bottomNavigationBar: _bottomNavigatorBarMidwife()) :
       Scaffold(
         body: _buildWidgetBody(),
-        // floatingActionButton: FloatingActionButton(
-        //     onPressed: () {},
-        //     child: Image.asset('res/graphics/ic_order_40px.png')),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor:Colors.blue,
-          unselectedItemColor: Colors.black,
-          showUnselectedLabels: true,
-          currentIndex: indexSelected,
-          onTap: (indexSelected) {
-            setState(() {
-              this.indexSelected = indexSelected;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              label: "Beranda",
-              activeIcon: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
-                child: SvgPicture.asset(
-                  'assets/ic_home_bar.svg',
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              icon: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
-                child: SvgPicture.asset(
-                  'assets/ic_home_bar.svg',
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            // BottomNavigationBarItem(
-            //   label: "Favorit",
-            //   activeIcon: ClipRRect(
-            //     borderRadius: BorderRadius.circular(0),
-            //     child: ClipRRect(
-            //       borderRadius: BorderRadius.circular(0),
-            //       child:SvgPicture.asset(
-            //         'assets/ic_favorit_bar.svg',
-            //         width: 30,
-            //         height: 30,
-            //         fit: BoxFit.cover,
-            //       ),
-            //     ),
-            //   ),
-            //   icon: ClipRRect(
-            //     borderRadius: BorderRadius.circular(0),
-            //     child:SvgPicture.asset(
-            //       'assets/ic_favorit_bar.svg',
-            //       width: 30,
-            //       height: 30,
-            //       fit: BoxFit.cover,
-            //     ),
-            //   ),
-            // ),
-            BottomNavigationBarItem(
-              label: "Konsultasi",
-              activeIcon: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
-                child: SvgPicture.asset(
-                  'assets/ic_consultation_bar.svg',
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              icon: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
-                child: SvgPicture.asset(
-                'assets/ic_consultation_bar.svg',
-                width: 30,
-                height: 30,
-                fit: BoxFit.cover,
-              ),
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: "Akun",
-              activeIcon: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
-                child: SvgPicture.asset(
-                    'assets/ic_profile_bar.svg',
-                    width: 30,
-                    height: 30,
-                    fit: BoxFit.cover,
-                ),
-              ),
-              icon: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
-                child: SvgPicture.asset(
-                  'assets/ic_profile_bar.svg',
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-
-
-            // BottomNavigationBarItem(
-            //   label: "Pengaturan",
-            //   icon: Icon(Icons.settings),
-            // ),
-//          BottomNavigationBarItem(
-//            label: "Collection",
-//            icon: Icon(Icons.list_alt),
-//          ),
-//          BottomNavigationBarItem(
-//            label: "Akun",
-//            icon: Icon(Icons.settings),
-//          ),
-          ],
-        ),
-      ),
+        bottomNavigationBar: _bottomNavigatorBar(),
+      )
+      ,
       // Positioned.fill(
       //     bottom: 20,
       //     child: Align(
@@ -171,7 +66,125 @@ class _NavbarPageState extends State<NavbarPage>  with TickerProviderStateMixin 
       //           },
       //           child: Image.asset('res/graphics/ic_order_40px.png')),
       //     ))
-    ]);
+    ]
+    );
+  }
+
+  Widget _bottomNavigatorBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.black,
+      showUnselectedLabels: true,
+      currentIndex: indexSelected,
+      onTap: (indexSelected) {
+        setState(() {
+          this.indexSelected = indexSelected;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          label: "Beranda",
+          activeIcon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_home_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+          icon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_home_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        // BottomNavigationBarItem(
+        //   label: "Favorit",
+        //   activeIcon: ClipRRect(
+        //     borderRadius: BorderRadius.circular(0),
+        //     child: ClipRRect(
+        //       borderRadius: BorderRadius.circular(0),
+        //       child:SvgPicture.asset(
+        //         'assets/ic_favorit_bar.svg',
+        //         width: 30,
+        //         height: 30,
+        //         fit: BoxFit.cover,
+        //       ),
+        //     ),
+        //   ),
+        //   icon: ClipRRect(
+        //     borderRadius: BorderRadius.circular(0),
+        //     child:SvgPicture.asset(
+        //       'assets/ic_favorit_bar.svg',
+        //       width: 30,
+        //       height: 30,
+        //       fit: BoxFit.cover,
+        //     ),
+        //   ),
+        // ),
+        BottomNavigationBarItem(
+          label: "Konsultasi",
+          activeIcon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_consultation_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+          icon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_consultation_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        BottomNavigationBarItem(
+          label: "Akun",
+          activeIcon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_profile_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+          icon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_profile_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+
+        // BottomNavigationBarItem(
+        //   label: "Pengaturan",
+        //   icon: Icon(Icons.settings),
+        // ),
+//          BottomNavigationBarItem(
+//            label: "Collection",
+//            icon: Icon(Icons.list_alt),
+//          ),
+//          BottomNavigationBarItem(
+//            label: "Akun",
+//            icon: Icon(Icons.settings),
+//          ),
+      ],
+    );
   }
 
   Widget _buildWidgetBody() {
@@ -181,7 +194,90 @@ class _NavbarPageState extends State<NavbarPage>  with TickerProviderStateMixin 
       case 1:
         return ConsultationPage();
       case 2:
-        return  LogoutPage();
+        return LogoutPage();
+      default:
+        return Container();
+    }
+  }
+
+  Widget _bottomNavigatorBarMidwife() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.black,
+      showUnselectedLabels: true,
+      currentIndex: indexSelected,
+      onTap: (indexSelected) {
+        setState(() {
+          this.indexSelected = indexSelected;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          label: "Konsultasi",
+          activeIcon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_consultation_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+          icon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_consultation_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        BottomNavigationBarItem(
+          label: "Akun",
+          activeIcon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_profile_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+          icon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: SvgPicture.asset(
+              'assets/ic_profile_bar.svg',
+              width: 30,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+
+        // BottomNavigationBarItem(
+        //   label: "Pengaturan",
+        //   icon: Icon(Icons.settings),
+        // ),
+//          BottomNavigationBarItem(
+//            label: "Collection",
+//            icon: Icon(Icons.list_alt),
+//          ),
+//          BottomNavigationBarItem(
+//            label: "Akun",
+//            icon: Icon(Icons.settings),
+//          ),
+      ],
+    );
+  }
+
+  Widget _buildWidgetBodyMidwife() {
+    switch (indexSelected) {
+      case 0:
+        return DashboardMidwife();
+      case 1:
+        return LogoutPage();
       default:
         return Container();
     }

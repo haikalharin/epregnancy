@@ -262,7 +262,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                                       color: EpregnancyColors.primer)
                                                       : BoxDecoration(
                                                     border: Border.all(
-                                                      color: EpregnancyColors.primer,
+                                                      color: EpregnancyColors.primerSoft,
                                                     ),
                                                     borderRadius: BorderRadius.circular(8.0),
                                                   ),
@@ -285,9 +285,11 @@ class _SurveyPageState extends State<SurveyPage> {
                                                       children: [
                                                         Container(
                                                           // margin: EdgeInsets.only(left: 20),
-                                                          child: const Text(
+                                                          child: Text(
                                                             "Ya ",
                                                             style: TextStyle(
+                                                              color: isChoice == 1
+                                                                  ?Colors.white:Colors.black ,
                                                                 fontSize:
                                                                     14),
                                                             maxLines: 3,
@@ -312,7 +314,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                                       color: EpregnancyColors.primer)
                                                       : BoxDecoration(
                                                     border: Border.all(
-                                                      color: EpregnancyColors.primer,
+                                                      color: EpregnancyColors.primerSoft,
                                                     ),
                                                     borderRadius: BorderRadius.circular(8.0),
                                                   ),
@@ -342,12 +344,14 @@ class _SurveyPageState extends State<SurveyPage> {
                                                                     right:
                                                                         20),
                                                             child:
-                                                                const Text(
+                                                                 Text(
                                                               "Tidak, tapi saya sedang merencanakannya ",
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
                                                               style: TextStyle(
+                                                                color: isChoice == 2
+                                                                    ?Colors.white:Colors.black ,
                                                                   fontSize:
                                                                       14),
                                                               maxLines: 3,
@@ -373,7 +377,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                                       color: EpregnancyColors.primer)
                                                       : BoxDecoration(
                                                     border: Border.all(
-                                                      color: EpregnancyColors.primer,
+                                                      color: EpregnancyColors.primerSoft,
                                                     ),
                                                     borderRadius: BorderRadius.circular(8.0),
                                                   ),
@@ -400,9 +404,11 @@ class _SurveyPageState extends State<SurveyPage> {
                                                                   left: 20,
                                                                   right:
                                                                       20),
-                                                          child: const Text(
+                                                          child:  Text(
                                                             "Saya sudah punya bayi ",
                                                             style: TextStyle(
+                                                              color:  isChoice == 3
+                                                                  ?Colors.white:Colors.black ,
                                                                 fontSize:
                                                                     14),
                                                             maxLines: 3,

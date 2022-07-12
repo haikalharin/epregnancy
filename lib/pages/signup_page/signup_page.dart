@@ -32,13 +32,14 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _controller = TextEditingController();
  @override
   void initState() {
-   Injector.resolve<SignupBloc>().add(LoginInitEvent());
+   Injector.resolve<SignupBloc>().add(SignupInitEvent());
+   Injector.resolve<SignupBloc>().add(SignupCheckUserExist());
     super.initState();
   }
 
   @override
   Future<void> dispose() async {
-    Injector.resolve<SignupBloc>().add(LoginInitEvent());
+    Injector.resolve<SignupBloc>().add(SignupInitEvent());
     super.dispose();
   }
 
@@ -62,7 +63,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   if (state.isExist == true) {
                     if (state.userModelFirebase!.status ==
                         StringConstant.active) {
-                      Navigator.of(context).pushReplacementNamed(RouteName.login);
+                      if(state.type == "hasLogin"){
+                        Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: state.role!.role);
+                      }else{
+                        Navigator.of(context).pushReplacementNamed(RouteName.login);
+                      }
                     } else {
                       Navigator.of(context).pushNamed(RouteName.surveyPage);
                     }
@@ -99,62 +104,74 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                             SizedBox(height: 10),
-                            Text(
-                              "Daftar dengan akun telepon seluler",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 18),
-                            ),
-                            SizedBox(height: 20),
-                            IntlPhoneField(
-                              decoration: InputDecoration(
-                                labelText: 'Mobile Number',
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(),
-                                  borderRadius: BorderRadius.circular(10),
+                            state.email.value.length < 1?  Column(
+                              children: [
+                                Text(
+                                  "Daftar dengan akun telepon seluler",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 18),
                                 ),
-                                errorText:  state.phoneNumber.invalid ? 'Format nomor salah' : null,
-                              ),
-                              autovalidateMode: AutovalidateMode.disabled,
-                              initialCountryCode: 'ID',
-                              onChanged: (phone) {
-                                Injector.resolve<SignupBloc>().add(
-                                    LoginPhoneNumberChanged(phone.completeNumber));
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12),
-                            ),
-                            SizedBox(height: 30),
-                            Text(
-                              "Atau daftar dengan akun email",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 18),
-                            ),
-                            SizedBox(height: 30),
-                            Text(
-                              "Email",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            _EmailInput(),
-                            SizedBox(height: 50),
+                                SizedBox(height: 20),
+                                IntlPhoneField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Mobile Number',
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    errorText:  state.phoneNumber.invalid ? 'Format nomor salah' : null,
+                                  ),
+                                  autovalidateMode: AutovalidateMode.disabled,
+                                  initialCountryCode: 'ID',
+                                  onChanged: (phone) {
+                                    Injector.resolve<SignupBloc>().add(
+                                        SignupPhoneNumberChanged(phone.completeNumber));
+                                  },
+                                ),
+                                Text(
+                                  "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12),
+                                ),
+                                SizedBox(height: 10),
+                              ],
+                            ):Container(),
+
+                           state.phoneNumber.value.length <= 1? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+
+                                SizedBox(height: 30),
+                                Text(
+                                  "Atau daftar dengan akun email",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 18),
+                                ),
+                                SizedBox(height: 30),
+                                Text(
+                                  "Email",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                SizedBox(height: 10),
+                                _EmailInput(),
+                                SizedBox(height: 50),
+                              ],
+                            ):Container(),
+
                             ElevatedButton(
                               onPressed: () async {
                                 Injector.resolve<SignupBloc>()
-                                    .add(LoginSubmitted());
+                                    .add(SignupSubmitted());
                                 //
                                 // Navigator.pushReplacement(
                                 //   context,
@@ -208,9 +225,9 @@ class _EmailInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
-          key: const Key('loginForm_emailInput_textField'),
+          key: const Key('SignupForm_emailInput_textField'),
           onChanged: (username) => Injector.resolve<SignupBloc>()
-              .add(LoginUsernameChanged(username)),
+              .add(SignupUsernameChanged(username)),
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),

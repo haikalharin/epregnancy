@@ -9,6 +9,8 @@ import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
 import '../../data/firebase/g_authentication.dart';
+import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
+import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/string_constans.dart';
 import '../home_page/home_page.dart';
@@ -27,11 +29,17 @@ final _codeController = TextEditingController();
 var authService = AuthService();
 
 class _LoginPageState extends State<LoginPage> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.of(context).pushNamed(RouteName.signup);
+        Navigator.of(context).pushReplacementNamed(RouteName.signup);
           return Future.value(true);
 
       },
@@ -47,9 +55,15 @@ class _LoginPageState extends State<LoginPage> {
                     Scaffold.of(context).showSnackBar(snackBar);
                   } else if (state.status == FormzStatus.submissionSuccess) {
                     if (state.userModelFirebase!.status == StringConstant.active) {
-                      Navigator.of(context).pushNamed(RouteName.navBar);
+
+                      if (state.role!.role == 'MIDWIFE') {
+                        Navigator.of(context)
+                            .pushReplacementNamed(RouteName.navBar, arguments: state.role!.role);
+                      } else{
+                        Navigator.of(context).pushReplacementNamed(RouteName.navBar);
+                      }
                     } else {
-                      Navigator.of(context).pushNamed(RouteName.surveyPage);
+                      Navigator.of(context).pushReplacementNamed(RouteName.surveyPage);
                     }
 
                     // Navigator.of(context).pushNamedAndRemoveUntil(

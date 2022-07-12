@@ -7,5 +7,7 @@ class StringConstant {
   static const pregnant = 'PREGNANT';
   static const notPregnant = 'NOT PREGNANT';
   static const postMaternity = 'POST MATERNITY';
+  static const midwife = 'MIDWIFE';
+  static const patient = 'PATIENT';
 
 }
