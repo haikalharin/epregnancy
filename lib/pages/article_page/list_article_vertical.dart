@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:PregnancyApp/data/model/article_model/article_model.dart';
 import 'package:PregnancyApp/data/model/person_model/person_model.dart';
 import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../main.dart';
 import '../../utils/epragnancy_color.dart';
 
 class ListArticleVertical extends StatelessWidget {
@@ -42,6 +45,15 @@ class ListArticleVertical extends StatelessWidget {
         phoneNumber: "2 jam yang lalu"),
   ];
 
+  var articleBgColor = [
+    HexColor('96D9C9'),
+    HexColor('8775B8'),
+    HexColor('FF9999'),
+    HexColor('96D9C9'),
+    HexColor('8775B8'),
+    HexColor('8775B8')
+  ];
+
   // final String nextMenu, content;
 
   // ListPrivilegesWidget(this.content,{this.listPrivilegesData,this.nextMenu});
@@ -74,16 +86,23 @@ class ListArticleVertical extends StatelessWidget {
                                       article: listArticle![index])));
                         },
                         child: Container(
-                          height: 200,
+                          height: 150,
                           // padding: EdgeInsets.,
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
+                              image: listArticle![index].cardImgURL!.isEmpty
+                                  ? DecorationImage(
+                                    image: new AssetImage('assets/article-default-bg.png'),
+                                    fit: BoxFit.scaleDown,
+                                    alignment: Alignment.bottomRight,
+                                  )
+                                  : DecorationImage(
+                                    image: NetworkImage(
                                     listArticle![index].cardImgURL!),
-                                fit: BoxFit.cover,
-                              ),
+                                    fit: BoxFit.cover,
+                                  ),
                               borderRadius: BorderRadius.circular(10.0),
-                              color: EpregnancyColors.primer),
+                              color: articleBgColor[Random().nextInt(6)],
+                          ),
                           // color: Colors.greenAccent,
                           margin: EdgeInsets.only(left: 20,right: 20,top: 20),
                           child: Container(
