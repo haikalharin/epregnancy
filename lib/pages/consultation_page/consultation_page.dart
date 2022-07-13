@@ -144,7 +144,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   border: Border.all(
                                     color: EpregnancyColors.primer,
                                   ),
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 margin: EdgeInsets.only(left: 20, right: 0),
                                 child: Container(
@@ -153,13 +153,19 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   child: Container(
                                     child: Row(
                                       children: [
-                                        Icon(Icons.warning),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Image.asset('assets/icon-hubungi-profesional.png', height: 25),
                                         SizedBox(
                                           width: 10,
                                         ),
                                         rolesModel.role == "PATIENT"
                                             ? Text("Hubungi profesional")
-                                            : Text("Cek Konsultasi")
+                                            : Text("Cek Konsultasi"),
+                                        SizedBox(
+                                          width: 5,
+                                        )
                                       ],
                                     ),
                                   ),
@@ -176,14 +182,20 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 padding: EdgeInsets.only(top: 20, bottom: 20),
                                 child: Container(
                                   child: Row(
-                                    children: const [
-                                      Icon(Icons.warning),
+                                    children: [
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Image.asset('assets/icon-emergency.png'),
                                       SizedBox(
                                         width: 10,
                                       ),
                                       Text(
                                         "Darurat",
                                         style: TextStyle(color: Colors.white),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
                                       )
                                     ],
                                   ),
