@@ -8,16 +8,18 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/baby_model/baby_model.dart';
+import '../model/baby_progress_model/baby_progress_model.dart';
 import '../model/person_model/person_model.dart';
 import '../model/user_example_model/user_example_model.dart';
 import '../model/user_roles_model_firebase/user_roles_model_firebase.dart';
 
 class AppSharedPreference {
   static final String _user = "user";
-  static final String _emailRegister = "_emailRegister";
+  static final String _usernameRegister = "_usernameRegister";
   static final String _userRegister = "_userRegister";
   static final String _role = "role";
   static final String _baby = "baby";
+  static final String _babyProgress = "babyProfress";
   static final String _person = "person";
 
   static final String bmSignature = "bm_signature";
@@ -55,16 +57,16 @@ class AppSharedPreference {
     prefs.setString(_userRegister, json);
   }
 
-  static Future<String> getEmailRegisterUser() async {
+  static Future<String> getUsernameRegisterUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? data = prefs.getString(_emailRegister);
+    String? data = prefs.getString(_usernameRegister);
     return data!;
   }
 
-  static setEmailRegisterUser(String data) async {
+  static setUsernameRegisterUser(String data) async {
     String dataFix = data;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_emailRegister, dataFix);
+    prefs.setString(_usernameRegister, dataFix);
   }
 
   static Future<UserModelFirebase> getUserFirebaseInit() async {
@@ -123,6 +125,23 @@ class AppSharedPreference {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_baby, json);
+  }
+
+  static Future<BabyProgressModel> getBabyProgressFirebase() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(_babyProgress);
+    if (json != null) {
+      Map<String, dynamic> map = jsonDecode(json);
+      return BabyProgressModel.fromJson(map);
+    } else {
+      return BabyProgressModel.empty();
+    }
+  }
+
+  static setBabyProgressFirebase(BabyModel data) async {
+    String json = jsonEncode(data.toJson());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_babyProgress, json);
   }
 
   static Future<PersonModel> getPerson() async {

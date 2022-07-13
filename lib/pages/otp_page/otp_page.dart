@@ -5,6 +5,8 @@ import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
 import '../../common/constants/router_constants.dart';
+import '../../common/injector/injector.dart';
+import '../signup_page/bloc/signup_bloc.dart';
 
 const _horizontalPadding = 24.0;
 
@@ -18,6 +20,12 @@ class OtpPage extends StatefulWidget {
 
 class _OtpPageState extends State<OtpPage> {
   OtpFieldController otpController = OtpFieldController();
+
+  @override
+  void initState() {
+    Injector.resolve<SignupBloc>().add(SignupInitEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

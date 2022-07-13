@@ -29,7 +29,7 @@ class UserRepositoryImpl extends UserRepository {
     if (await networkInfo.isConnected) {
       UserModelFirebase userModelFirebase =
       await AppSharedPreference.getUserRegister();
-      if (userModelFirebase.email!.isNotEmpty) {
+      if (userModelFirebase.uid!.isNotEmpty) {
         return userModelFirebase;
       } else {
         return UserModelFirebase.empty();

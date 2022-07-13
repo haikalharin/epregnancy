@@ -25,7 +25,7 @@ class HomeRepositoryImpl extends HomeRepository {
           userModelFirebase.uid ?? "");
       final BabyModel baby = await EventUser.checkBabyExist(userModelFirebase.uid!);
 
-      if (userModelFirebase.email!.isNotEmpty) {
+      if (userModelFirebase.uid!.isNotEmpty) {
 
         await AppSharedPreference.setUserRoleFirebase(role);
         await AppSharedPreference.setUserBabyFirebase(baby);

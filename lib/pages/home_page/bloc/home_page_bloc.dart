@@ -10,8 +10,10 @@ import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/home_error_exception.dart';
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/article_model/article_model.dart';
 import '../../../data/model/baby_model/baby_model.dart';
+import '../../../data/model/baby_progress_model/baby_progress_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../article_page/event/event_article.dart';
 
@@ -39,7 +41,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     ArticleFetchEvent event,
     HomePageState state,
   ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
       List<ArticleModel> lisArticleFix = [];
       final List<ArticleModel> lisArticle =
@@ -62,23 +65,39 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
   HomePageState _mapHomeInitEventToState(
       HomeInitEvent event, HomePageState state) {
-    return HomePageState();
+    return HomePageInitial();
   }
 
   Stream<HomePageState> _mapHomeFetchUserToState(
     HomeFetchDataEvent event,
     HomePageState state,
   ) async* {
-    yield state.copyWith(
-        status: FormzStatus.submissionInProgress, tipe: "listArticle");
+    yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
+      var days = 0;
+      var weeks = 0;
+      BabyProgressModel babyProgressModel = BabyProgressModel.empty();
       final UserModelFirebase response = await homeRepository.fetchUser();
       final BabyModel myBaby = await AppSharedPreference.getUserBabyirebase();
+      if (myBaby.babyProfileid != '') {
+        DateTime dateTimeCreatedAt =
+            DateTime.parse(myBaby.lastMenstruationDate!);
+        DateTime dateTimeNow = DateTime.now();
+        final differenceInDays =
+            dateTimeNow.difference(dateTimeCreatedAt).inDays;
+        weeks = (differenceInDays / 7).floor();
+        days = (differenceInDays % 7).floor();
+        babyProgressModel = await EventUser.checkBabyProgress(weeks.toString());
+        print('$differenceInDays');
+      }
 
       if (response.uid!.isNotEmpty) {
         yield state.copyWith(
           status: FormzStatus.submissionSuccess,
           baby: myBaby,
+          days: days.toString(),
+          weeks: weeks.toString(),
+          babyProgressModel: babyProgressModel,
           user: response,
         );
       } else {

@@ -171,14 +171,7 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
                 Tab(text: 'Arsip'),
               ],
             ),
-            leading: GestureDetector(
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.black,
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                })),
+           ),
         body: TabBarView(children: _listFragment),
       ),
     );

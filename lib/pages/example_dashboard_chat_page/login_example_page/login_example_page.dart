@@ -34,7 +34,7 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
                   if(state.userModelFirebase!.status == StringConstant.active){
-                    Navigator.of(context).pushNamed(RouteName.navBar,arguments: 0);
+                    // Navigator.of(context).pushNamed(RouteName.navBar,arguments: 0);
                   } else {
                     Navigator.of(context).pushNamed(RouteName.surveyPage);
                   }

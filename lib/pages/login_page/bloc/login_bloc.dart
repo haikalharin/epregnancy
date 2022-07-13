@@ -17,6 +17,7 @@ import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
 import '../../../common/services/auth_service.dart';
+import '../../../common/validators/mandatory_field_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../../utils/string_constans.dart';
@@ -66,7 +67,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginUsernameChanged event,
     LoginState state,
   ) {
-    final userName = EmailAddressUsername.dirty(event.userName);
+    final userName = MandatoryFieldValidator.dirty(event.userName);
     return state.copyWith(
       username: userName,
       status: Formz.validate([userName]),
@@ -118,21 +119,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
-
-
       UserModelFirebase userModelFirebase =
           await EventUser.checkUser(state.username.value, state.password.value);
 
       // await Future.delayed(const Duration(seconds: 5));
-      if (userModelFirebase.userid!.isNotEmpty) {
+      if (userModelFirebase.uid!.isNotEmpty) {
         await AppSharedPreference.setUserFirebase(userModelFirebase);
+        final UserRolesModelFirebase role =
+            await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
         yield state.copyWith(
             status: FormzStatus.submissionSuccess,
-            userModelFirebase: userModelFirebase);
-      }
-
-      else {
-        final username = EmailAddressUsername.dirty(state.username.value);
+            userModelFirebase: userModelFirebase,
+            role: role);
+      } else {
+        final username = MandatoryFieldValidator.dirty(state.username.value);
         final password = Password.dirty(state.password.value);
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
@@ -162,29 +162,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await EventUser.checkUserExist(user.email!);
         if (userExist.email!.isEmpty) {
           userModelFirebase = UserModelFirebase(
-            email: user.email,
-            name: user.displayName,
-            status: StringConstant.inActive,
-            uid: user.uid,
-            userid: user.email
-
-          );
+              email: user.email,
+              name: user.displayName,
+              status: StringConstant.inActive,
+              uid: user.uid,
+              userid: user.email);
           await AppSharedPreference.setUserRegister(userModelFirebase);
           EventUser.addUser(userModelFirebase);
         } else {
           userModelFirebase = UserModelFirebase(
-            email: userExist.email,
-            name: userExist.name,
-            status: userExist.status,
-            uid: userExist.uid,
-            userid: userExist.email
-          );
+              email: userExist.email,
+              name: userExist.name,
+              status: userExist.status,
+              uid: userExist.uid,
+              userid: userExist.email);
         }
+        final UserRolesModelFirebase role =
+            await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
         await AppSharedPreference.setUserRegister(userModelFirebase);
         await AppSharedPreference.setUserFirebase(userModelFirebase);
         yield state.copyWith(
             status: FormzStatus.submissionSuccess,
-            userModelFirebase: userModelFirebase);
+            userModelFirebase: userModelFirebase,
+        role: role);
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure);
       }

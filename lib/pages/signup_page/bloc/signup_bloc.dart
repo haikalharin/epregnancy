@@ -1,4 +1,4 @@
-import 'package:PregnancyApp/common/exceptions/login_error_exception.dart';
+import 'package:PregnancyApp/common/validators/mandatory_field_validator.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -8,10 +8,12 @@ import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../common/validators/phone_validator.dart';
+import '../../../common/exceptions/login_error_exception.dart';
 import '../../../data/firebase/event/event_user.dart';
+import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../utils/string_constans.dart';
-import '../../login_page/model/email_address.dart';
+import '../../Signup_page/model/email_address.dart';
 
 part 'signup_event.dart';
 
@@ -24,67 +26,109 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
   @override
   Stream<SignupState> mapEventToState(SignupEvent event) async* {
-    if (event is LoginSubmitted) {
-      yield* _mapLoginSubmittedToState(event, state);
-    } else if (event is LoginUsernameChanged) {
+    if (event is SignupSubmitted) {
+      yield* _mapSignupSubmittedToState(event, state);
+    } else if (event is SignupUsernameChanged) {
       yield _mapUsernameChangedToState(event, state);
-    } else if (event is LoginInitEvent){
-      yield _mapLoginInitEventToState(event,state);
-
+    } else if (event is SignupUsernameChanged) {
+      yield _mapUsernameChangedToState(event, state);
+    } else if (event is SignupPhoneNumberChanged) {
+      yield _mapSignupPhoneNumberChangedToState(event, state);
+    } else if (event is SignupInitEvent) {
+      yield _mapSignupInitEventToState(event, state);
+    } else if (event is SignupCheckUserExist) {
+      yield* _mapSignupCheckUserExistToState(event, state);
     }
   }
 
-  SignupState _mapLoginInitEventToState(
-      LoginInitEvent event, SignupState state) {
-    return SignupState();
+  Stream<SignupState> _mapSignupCheckUserExistToState(
+      SignupCheckUserExist event,
+      SignupState state,
+      ) async* {
+
+    final userModelFirebase = await AppSharedPreference.getUserFirebase();
+    if(userModelFirebase.uid != ''){
+      final UserRolesModelFirebase role =
+      await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionSuccess,
+          userModelFirebase: userModelFirebase,
+      isExist: true,
+      type: 'hasLogin',
+      role: role);
+    }
+
+  }
+
+  SignupState _mapSignupInitEventToState(
+      SignupInitEvent event, SignupState state) {
+    return SignupInitial();
+  }
+
+  SignupState _mapSignupPhoneNumberChangedToState(
+    SignupPhoneNumberChanged event,
+    SignupState state,
+  ) {
+    var phone =event.phoneNumber.replaceFirst('+62', '0');
+    final phoneNumber = PhoneValidator.dirty(phone);
+
+    return state.copyWith(
+        phoneNumber: phoneNumber,
+        userName: MandatoryFieldValidator.dirty(phoneNumber.value));
   }
 
   SignupState _mapUsernameChangedToState(
-      LoginUsernameChanged event,
-      SignupState state,
-      ) {
-    final userName = EmailAddressUsername.dirty(event.userName);
+    SignupUsernameChanged event,
+    SignupState state,
+  ) {
+    final email = EmailAddressUsername.dirty(event.email);
     return state.copyWith(
-      username: userName,
-      submitStatus: Formz.validate([userName]),
+      email: email,
+      userName: MandatoryFieldValidator.dirty(email.value),
     );
   }
 
-  Stream<SignupState> _mapLoginSubmittedToState(
-    LoginSubmitted event,
+  Stream<SignupState> _mapSignupSubmittedToState(
+    SignupSubmitted event,
     SignupState state,
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      UserModelFirebase userModelFirebase =
-          await EventUser.checkUserExist(state.username.value);
+      if (state.email.valid && state.phoneNumber.valid) {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure,
+            errorMessage:
+                'Pilih salah satu meode Signup email atau nomor telfon');
 
-      if (state.status.isValidated){
+      } else if (state.email.valid || state.phoneNumber.valid) {
+        var data =
+            state.email.valid ? state.email.value : state.phoneNumber.value;
+        UserModelFirebase userModelFirebase =
+            await EventUser.checkUserExist(data);
+
         if (userModelFirebase.uid!.isNotEmpty) {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
               userModelFirebase: userModelFirebase,
               isExist: true);
           await AppSharedPreference.getUserRegister();
-        } else if (userModelFirebase.uid!.isNotEmpty && userModelFirebase.status == StringConstant.inActive) {
+        } else if (userModelFirebase.uid!.isNotEmpty &&
+            userModelFirebase.status == StringConstant.inActive) {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
               userModelFirebase: userModelFirebase,
               isExist: true);
           await AppSharedPreference.getUserRegister();
-        }else {
-          await AppSharedPreference.setEmailRegisterUser(state.username.value);
+        } else {
+          await AppSharedPreference.setUsernameRegisterUser(data);
           yield state.copyWith(
-              submitStatus: FormzStatus.submissionSuccess,
-              isExist: false);
+              submitStatus: FormzStatus.submissionSuccess, isExist: false);
         }
-      } else{
-        final username = EmailAddressUsername.dirty(state.username.value);
+      } else {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,
-            username: username);
-            }
-
+            errorMessage: 'Masukan nomor telfon atau email anda');
+      }
     } on LoginErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

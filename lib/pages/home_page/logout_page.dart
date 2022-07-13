@@ -15,11 +15,9 @@ class LogoutPage extends StatelessWidget {
             child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          child: Text("Welcome"),
-        ),
         RaisedButton(
           onPressed: () async {
+            //
             await GAuthentication.signOut(context: context);
             await AppSharedPreference.clear();
             Navigator.of(context).pushNamedAndRemoveUntil(

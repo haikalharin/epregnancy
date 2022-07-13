@@ -8,13 +8,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../../data/model/person_model/person_model.dart';
 import '../../model/baby_model/baby_model.dart';
+import '../../model/baby_progress_model/baby_progress_model.dart';
 
 class EventUser {
   static Future<UserModelFirebase> checkUser(
-      String email, String password) async {
+      String username, String password) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('USERS')
-        .where('Email', isEqualTo: email)
+        .where('Userid', isEqualTo: username)
         .where('Password', isEqualTo: password)
         .get()
         .catchError((onError) => print(onError));
@@ -29,11 +30,28 @@ class EventUser {
     }
     return UserModelFirebase.empty();
   }
+  static Future<BabyProgressModel> checkBabyProgress(String babyAgeInWeeks) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('BABY_PROGRESS')
+        .where('BabyAgeInWeeks', isEqualTo: babyAgeInWeeks)
+        .get()
+        .catchError((onError) => print(onError));
+    if (querySnapshot != null && querySnapshot.docs.isNotEmpty) {
+      if (querySnapshot.docs.isNotEmpty) {
+        final data = getDataValue(querySnapshot.docs[0].data());
+        BabyProgressModel babyProgressModel = BabyProgressModel.fromJson(data);
+        return babyProgressModel;
+      } else {
+        return BabyProgressModel.empty();
+      }
+    }
+    return BabyProgressModel.empty();
+  }
 
-  static Future<UserModelFirebase> checkUserExist(String email) async {
+  static Future<UserModelFirebase> checkUserExist(String userId) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('USERS')
-        .where('Email', isEqualTo: email)
+        .where('Userid', isEqualTo: userId)
         .get()
         .catchError((onError) => print(onError));
     if (querySnapshot != null && querySnapshot.docs.isNotEmpty) {
