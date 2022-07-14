@@ -167,11 +167,13 @@ class ListArticleVertical extends StatelessWidget {
                                                 width: 60,
                                                 child: Center(
                                                     child: Text(
-                                                  "Berita",
-                                                  style: TextStyle(
-                                                      fontSize: 10,
-                                                      color: Colors.white),
-                                                )),
+                                                      "Berita",
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight.bold),
+                                                    )
+                                                ),
                                               ),
                                             ],
                                           )),
