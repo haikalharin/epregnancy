@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:PregnancyApp/data/model/article_model/article_model.dart';
 import 'package:PregnancyApp/data/model/person_model/person_model.dart';
 import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../main.dart';
 import '../../utils/epragnancy_color.dart';
 
 class ListArticleVertical extends StatelessWidget {
@@ -45,15 +42,6 @@ class ListArticleVertical extends StatelessWidget {
         phoneNumber: "2 jam yang lalu"),
   ];
 
-  var articleBgColor = [
-    HexColor('96D9C9'),
-    HexColor('8775B8'),
-    HexColor('FF9999'),
-    HexColor('96D9C9'),
-    HexColor('8775B8'),
-    HexColor('8775B8')
-  ];
-
   // final String nextMenu, content;
 
   // ListPrivilegesWidget(this.content,{this.listPrivilegesData,this.nextMenu});
@@ -86,96 +74,94 @@ class ListArticleVertical extends StatelessWidget {
                                       article: listArticle![index])));
                         },
                         child: Container(
-                          height: 150,
+                          height: 200,
                           // padding: EdgeInsets.,
-                          padding:
-                              EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
                           decoration: BoxDecoration(
-                              image: listArticle![index].cardImgURL!.isEmpty
-                                  ? DecorationImage(
-                                    image: new AssetImage('assets/article-default-bg.png'),
-                                    fit: BoxFit.scaleDown,
-                                    alignment: Alignment.bottomRight,
-                                  )
-                                  : DecorationImage(
-                                    image: NetworkImage(
+                              image: DecorationImage(
+                                image: NetworkImage(
                                     listArticle![index].cardImgURL!),
-                                    fit: BoxFit.cover,
-                                  ),
+                                fit: BoxFit.cover,
+                              ),
                               borderRadius: BorderRadius.circular(10.0),
-                              color: articleBgColor[Random().nextInt(6)],
-                          ),
+                              color: EpregnancyColors.primer),
                           // color: Colors.greenAccent,
                           margin: EdgeInsets.only(left: 20,right: 20,top: 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                    Expanded(
-                                      child: Container(
-                                          width: MediaQuery.of(context).size.width-80,
-                                          margin: EdgeInsets.only(),
-                                          child: Text(
-                                            listArticle![index].title!,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          )),
-                                    ),
-                                    Container(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                      child: Icon(
-                                                    Icons.access_time,
-                                                    color: Colors.white,
-                                                    size: 12,
-                                                  )),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Container(
-                                                      child: Text(
-                                                    outputDate,
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white),
-                                                  )),
-                                                ],
+                          child: Container(
+                            padding:
+                              EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: EpregnancyColors.primer.withAlpha(110)),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                      Expanded(
+                                        child: Container(
+                                            width: MediaQuery.of(context).size.width-80,
+                                            margin: EdgeInsets.only(),
+                                            child: Text(
+                                              listArticle![index].title!,
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            )),
+                                      ),
+                                      Container(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                        child: Icon(
+                                                      Icons.access_time,
+                                                      color: Colors.white,
+                                                      size: 12,
+                                                    )),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Container(
+                                                        child: Text(
+                                                      outputDate,
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.white),
+                                                    )),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(top: 5),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
-                                                  color:
-                                                      EpregnancyColors.primer),
-                                              height: 18,
-                                              width: 60,
-                                              child: Center(
-                                                  child: Text(
-                                                "Berita",
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.white),
-                                              )),
-                                            ),
-                                          ],
-                                        )),
-                                  ])),
-                            ],
+                                              Container(
+                                                margin: EdgeInsets.only(top: 5),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                    color:
+                                                        EpregnancyColors.primer),
+                                                height: 18,
+                                                width: 60,
+                                                child: Center(
+                                                    child: Text(
+                                                  "Berita",
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.white),
+                                                )),
+                                              ),
+                                            ],
+                                          )),
+                                    ])),
+                              ],
+                            ),
                           ),
                         ),
                       );

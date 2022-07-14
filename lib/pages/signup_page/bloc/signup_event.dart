@@ -8,8 +8,8 @@ abstract class SignupEvent extends Equatable{
   List<Object> get props => [];
 }
 
-class LoginPhoneNumberChanged extends SignupEvent {
-  const LoginPhoneNumberChanged(this.phoneNumber);
+class SignupPhoneNumberChanged extends SignupEvent {
+  const SignupPhoneNumberChanged(this.phoneNumber);
 
   final String phoneNumber;
 
@@ -17,8 +17,8 @@ class LoginPhoneNumberChanged extends SignupEvent {
   List<Object> get props => [phoneNumber];
 }
 
-class LoginUsernameChanged extends SignupEvent {
-  const LoginUsernameChanged(this.email);
+class SignupUsernameChanged extends SignupEvent {
+  const SignupUsernameChanged(this.email);
 
   final String email;
 
@@ -26,16 +26,25 @@ class LoginUsernameChanged extends SignupEvent {
   List<Object> get props => [email];
 }
 
-class LoginInitEvent extends SignupEvent {
-  const LoginInitEvent();
+class SignupInitEvent extends SignupEvent {
+  const SignupInitEvent();
 
 
   @override
   List<Object> get props => [];
 }
 
-class LoginPasswordChanged extends SignupEvent {
-  const LoginPasswordChanged(this.password);
+class SignupCheckUserExist extends SignupEvent {
+  const SignupCheckUserExist();
+
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class SignupPasswordChanged extends SignupEvent {
+  const SignupPasswordChanged(this.password);
 
   final String password;
 
@@ -43,15 +52,15 @@ class LoginPasswordChanged extends SignupEvent {
   List<Object> get props => [password];
 }
 
-class LoginSubmitted extends SignupEvent {
-  const LoginSubmitted();
+class SignupSubmitted extends SignupEvent {
+  const SignupSubmitted();
 }
-class LoginWithGoogleSubmitted extends SignupEvent {
-  const LoginWithGoogleSubmitted();
+class SignupWithGoogleSubmitted extends SignupEvent {
+  const SignupWithGoogleSubmitted();
 }
 
-class LoginSubmittedWithNumberPhone extends SignupEvent {
-  const LoginSubmittedWithNumberPhone(this.context, this.codeController);
+class SignupSubmittedWithNumberPhone extends SignupEvent {
+  const SignupSubmittedWithNumberPhone(this.context, this.codeController);
 
   final BuildContext context;
   final TextEditingController codeController;

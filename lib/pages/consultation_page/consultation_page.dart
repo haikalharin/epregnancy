@@ -92,14 +92,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                     await EventChatRoom.checkMessageNow(
                                   myUid: myData.uid,
                                 );
-                                UserRolesModelFirebase myRole =
-                                    await AppSharedPreference
-                                        .getUserRoleFirebase();
 
-                                if (myRole.role == 'MIDWIFE') {
-                                  Navigator.of(context)
-                                      .pushNamed(RouteName.dashboardMidwife);
-                                } else {
                                   if (roomModel.uid!.isNotEmpty) {
                                     isSenderRoomExist =
                                         await EventChatRoom.checkRoomIsExist(
@@ -137,14 +130,14 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                     Navigator.of(context)
                                         .pushNamed(RouteName.chatPage);
                                   }
-                                }
+
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: EpregnancyColors.primer,
                                   ),
-                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 margin: EdgeInsets.only(left: 20, right: 0),
                                 child: Container(
@@ -153,19 +146,13 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   child: Container(
                                     child: Row(
                                       children: [
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Image.asset('assets/icon-hubungi-profesional.png', height: 25),
+                                        Icon(Icons.warning),
                                         SizedBox(
                                           width: 10,
                                         ),
                                         rolesModel.role == "PATIENT"
                                             ? Text("Hubungi profesional")
-                                            : Text("Cek Konsultasi"),
-                                        SizedBox(
-                                          width: 5,
-                                        )
+                                            : Text("Cek Konsultasi")
                                       ],
                                     ),
                                   ),
@@ -182,20 +169,14 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 padding: EdgeInsets.only(top: 20, bottom: 20),
                                 child: Container(
                                   child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Image.asset('assets/icon-emergency.png'),
+                                    children: const [
+                                      Icon(Icons.warning),
                                       SizedBox(
                                         width: 10,
                                       ),
                                       Text(
                                         "Darurat",
                                         style: TextStyle(color: Colors.white),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
                                       )
                                     ],
                                   ),
