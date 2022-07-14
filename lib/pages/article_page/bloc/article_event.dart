@@ -9,7 +9,9 @@ abstract class ArticlePageEvent extends Equatable{
 }
 
 class ArticleFetchEvent extends ArticlePageEvent {
-  const ArticleFetchEvent();
+  const ArticleFetchEvent(this.condition);
+
+  final String condition;
 
   @override
   List<Object> get props => [];

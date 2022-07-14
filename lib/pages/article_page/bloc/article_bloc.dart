@@ -38,7 +38,7 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
     yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
       final List<ArticleModel> lisArticle =
-          await EventArticle.fetchAllArticle();
+          await EventArticle.fetchCategoriArticle(condition: event.condition);
       if (lisArticle.isNotEmpty) {
         yield state.copyWith(
             listArticle: lisArticle, status: FormzStatus.submissionSuccess);

@@ -2,6 +2,7 @@ part of 'home_page_bloc.dart';
 
 class HomePageState {
   final UserModelFirebase? user;
+  final UserRolesModelFirebase? role;
   final BabyModel? baby;
   final BabyProgressModel? babyProgressModel;
   final FormzStatus status;
@@ -14,6 +15,7 @@ class HomePageState {
 
   HomePageState(
       {this.user,
+      this.role,
       this.baby,
       this.babyProgressModel,
       this.status = FormzStatus.pure,
@@ -27,8 +29,9 @@ class HomePageState {
   HomePageState copyWith(
       {FormzStatus? status,
       UserModelFirebase? user,
+      UserRolesModelFirebase? role,
       BabyModel? baby,
-        BabyProgressModel? babyProgressModel,
+      BabyProgressModel? babyProgressModel,
       List<ArticleModel>? listArticle,
       ArticleModel? articleModel,
       String? tipe,
@@ -38,6 +41,7 @@ class HomePageState {
     return HomePageState(
         status: status ?? this.status,
         user: user ?? this.user,
+        role: role ?? this.role,
         baby: baby ?? this.baby,
         babyProgressModel: babyProgressModel ?? this.babyProgressModel,
         listArticle: listArticle ?? this.listArticle,

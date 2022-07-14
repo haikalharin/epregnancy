@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_calendar_page.dart';
+import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
                                 ),
-                                Container(
+                                state.role != null && state.role!.role == StringConstant.pregnant ? Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15.0),
                                       color: EpregnancyColors.primer),
@@ -247,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                   ),
-                                ),
+                                ): Container(),
                                 Container(
                                     // decoration: BoxDecoration(
                                     //   border: Border.all(
