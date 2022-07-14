@@ -1,6 +1,7 @@
 
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/list_calendar.dart';
+import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:sizer/sizer.dart';
@@ -63,7 +64,7 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
   @override
   void initState() {
     _tabController = TabController(
-        length: 4, vsync: this, initialIndex: widget.type == 'expiry' ? 1 : 0);
+        length: 3, vsync: this, initialIndex: widget.type == 'expiry' ? 1 : 0);
     TabBarArticlePage.reloadExpiry = true;
     TabBarArticlePage.listHistory = [];
     super.initState();
@@ -81,58 +82,56 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
 
     return Scaffold(
         body: DefaultTabController(
-          length: 4,
+          length: 3,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                constraints: BoxConstraints.expand(height: 75),
+                width: MediaQuery.of(context).size.width,
+                // constraints: BoxConstraints.expand(height: 75),
                 color: Colors.white,
-                child: TabBar(
-                  isScrollable: true,
-                  controller: _tabController,
-                  physics: NeverScrollableScrollPhysics(),
-                  unselectedLabelStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal),
-                  labelStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700),
-                  labelColor: EpregnancyColors.primer,
-                  unselectedLabelColor: Colors.grey,
-                  labelPadding: EdgeInsets.only(top: 20, bottom: 18),
-                  indicator: const UnderlineTabIndicator(
-                    borderSide: BorderSide(
-                        width: 3.0,
-                        color: EpregnancyColors.primer),
-                    insets: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0),
+                child: Center(
+                  child: TabBar(
+                    isScrollable: true,
+                    controller: _tabController,
+                    physics: NeverScrollableScrollPhysics(),
+                    unselectedLabelStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal),
+                    labelStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
+                    labelColor: EpregnancyColors.primer,
+                    unselectedLabelColor: Colors.grey,
+                    labelPadding: EdgeInsets.only(top: 20, bottom: 18),
+                    indicator: const UnderlineTabIndicator(
+                      borderSide: BorderSide(
+                          width: 3.0,
+                          color: EpregnancyColors.primer),
+                      insets: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0),
+                    ),
+                    tabs:  [
+                      Container(
+                        margin:EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
+                        child: Tab(
+                          text: "Kehamilan",
+                        ),
+                      ),
+                      Container(
+                        margin:EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
+                        child: Tab(
+                          text: "Tidak Hamil",
+                        ),
+                      ),
+                      Container(
+                        margin:EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
+                        child: Tab(
+                          text: "Memiliki Bayi",
+                        ),
+                      ),
+
+                    ],
                   ),
-                  tabs:  [
-                    Container(
-                      margin:EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                      child: Tab(
-                        text: "Kehamilan",
-                      ),
-                    ),
-                    Container(
-                      margin:EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                      child: Tab(
-                        text: "Kelahiran",
-                      ),
-                    ),
-                    Container(
-                      margin:EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                      child: Tab(
-                        text: "Masa Nifas",
-                      ),
-                    ),
-                    Container(
-                      margin:EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                      child: Tab(
-                        text: "Periode Haid",
-                      ),
-                    ),
-                  ],
                 ),
               ),
               Expanded(
@@ -145,15 +144,14 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
                     // ),
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(top: 20),
+                        // margin: EdgeInsets.only(top: 20),
                         child: TabBarView(
                             controller: _tabController,
                             physics: NeverScrollableScrollPhysics(),
                             children:  [
-                              ListArticleVertical(listArticle: widget.listArticle),
-                              ListArticleVertical(listArticle: widget.listArticle),
-                              ListArticleVertical(listArticle: widget.listArticle),
-                              ListArticleVertical(listArticle: widget.listArticle),
+                              ListArticleVertical(condition: StringConstant.pregnant,),
+                              ListArticleVertical(condition: StringConstant.notPregnant,),
+                              ListArticleVertical(condition: StringConstant.postMaternity,),
                               // AcaraUmumPage(),
                             ]),
                       ),

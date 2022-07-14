@@ -20,12 +20,6 @@ class _DashboardArticleState extends State<DashboardArticle> {
 
 
   @override
-  void initState() {
-    Injector.resolve<ArticlePageBloc>().add(ArticleFetchEvent());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocListener<ArticlePageBloc, ArticlePageState>(
       listener: (context, state) {
@@ -95,24 +89,11 @@ class _DashboardArticleState extends State<DashboardArticle> {
                           style: TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                          child: Row(
-                            children: [
-                              Text(
-                                "Filter",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w300),
-                              ),
-                              SizedBox(width: 2,),
-                              Icon(Icons.filter_list),
-                            ],
-                          ),
-                        )
+
                       ],
                     ),
                   ),
-                  Expanded(child: TabBarArticlePage(
-                    listArticle: state.listArticle ?? [],)),
+                  Expanded(child: TabBarArticlePage()),
 
                 ],
               ),
