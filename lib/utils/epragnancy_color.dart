@@ -16,5 +16,8 @@ class EpregnancyColors {
   static const Color green = Color(0xFF21BE1D);
   static const Color softBlue = Color(0xFFF7F9FF);
   static const Color blue = Color(0xFFCDD7EE);
-  static const Color containerShadow = Color(0xFF737373);
+  static const Color coolGreen = Color(0xFF96D9C9);
+  static const Color periwinkle = Color(0xFF8775B8);
+  static const Color rosePink = Color(0xFFFF9999);
+
 }
