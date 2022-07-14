@@ -110,16 +110,16 @@ class _ListArticleVerticalState extends State<ListArticleVertical> {
                               image: state.listArticle != null && state
                                   .listArticle![index].cardImgURL != ''
                                   ? DecorationImage(
-                                    image: new AssetImage('assets/article-default-bg.png'),
-                                    fit: BoxFit.scaleDown,
-                                    alignment: Alignment.bottomRight,
-                                  )
+                                image: NetworkImage(
+                                    state
+                                        .listArticle![index].cardImgURL!),
+                                fit: BoxFit.cover,
+                              )
                                   : DecorationImage(
-                                    image: NetworkImage(
-                                        state
-                                            .listArticle![index].cardImgURL!),
-                                    fit: BoxFit.cover,
-                                  ),
+                                image: new AssetImage('assets/article-default-bg.png'),
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.bottomRight,
+                              ),
                               borderRadius: BorderRadius.circular(10.0),
                               color: articleBgColor[Random().nextInt(3)],
                           ),
