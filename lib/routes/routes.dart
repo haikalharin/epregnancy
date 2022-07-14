@@ -39,7 +39,7 @@ class Routes {
       case RouteName.navBar:
         return MaterialPageRoute(
             builder: (_) => NavbarPage(
-                  role: getDataValue(settings.arguments),
+                  arguments: getDataValue(settings.arguments),
                 ));
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());

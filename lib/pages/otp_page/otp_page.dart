@@ -23,7 +23,7 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   void initState() {
-    Injector.resolve<SignupBloc>().add(SignupInitEvent());
+    Injector.resolve<SignupBloc>().add(LoginInitEvent());
     super.initState();
   }
 

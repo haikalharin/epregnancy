@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/common/exceptions/login_error_exception.dart';
 import 'package:PregnancyApp/common/validators/mandatory_field_validator.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
@@ -8,12 +9,10 @@ import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../common/validators/phone_validator.dart';
-import '../../../common/exceptions/login_error_exception.dart';
 import '../../../data/firebase/event/event_user.dart';
-import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../utils/string_constans.dart';
-import '../../Signup_page/model/email_address.dart';
+import '../../login_page/model/email_address.dart';
 
 part 'signup_event.dart';
 
@@ -26,47 +25,26 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
   @override
   Stream<SignupState> mapEventToState(SignupEvent event) async* {
-    if (event is SignupSubmitted) {
-      yield* _mapSignupSubmittedToState(event, state);
-    } else if (event is SignupUsernameChanged) {
+    if (event is LoginSubmitted) {
+      yield* _mapLoginSubmittedToState(event, state);
+    } else if (event is LoginUsernameChanged) {
       yield _mapUsernameChangedToState(event, state);
-    } else if (event is SignupUsernameChanged) {
+    } else if (event is LoginUsernameChanged) {
       yield _mapUsernameChangedToState(event, state);
-    } else if (event is SignupPhoneNumberChanged) {
-      yield _mapSignupPhoneNumberChangedToState(event, state);
-    } else if (event is SignupInitEvent) {
-      yield _mapSignupInitEventToState(event, state);
-    } else if (event is SignupCheckUserExist) {
-      yield* _mapSignupCheckUserExistToState(event, state);
+    } else if (event is LoginPhoneNumberChanged) {
+      yield _mapLoginPhoneNumberChangedToState(event, state);
+    } else if (event is LoginInitEvent) {
+      yield _mapLoginInitEventToState(event, state);
     }
   }
 
-  Stream<SignupState> _mapSignupCheckUserExistToState(
-      SignupCheckUserExist event,
-      SignupState state,
-      ) async* {
-
-    final userModelFirebase = await AppSharedPreference.getUserFirebase();
-    if(userModelFirebase.uid != ''){
-      final UserRolesModelFirebase role =
-      await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
-      yield state.copyWith(
-          submitStatus: FormzStatus.submissionSuccess,
-          userModelFirebase: userModelFirebase,
-      isExist: true,
-      type: 'hasLogin',
-      role: role);
-    }
-
-  }
-
-  SignupState _mapSignupInitEventToState(
-      SignupInitEvent event, SignupState state) {
+  SignupState _mapLoginInitEventToState(
+      LoginInitEvent event, SignupState state) {
     return SignupInitial();
   }
 
-  SignupState _mapSignupPhoneNumberChangedToState(
-    SignupPhoneNumberChanged event,
+  SignupState _mapLoginPhoneNumberChangedToState(
+    LoginPhoneNumberChanged event,
     SignupState state,
   ) {
     var phone =event.phoneNumber.replaceFirst('+62', '0');
@@ -78,7 +56,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   }
 
   SignupState _mapUsernameChangedToState(
-    SignupUsernameChanged event,
+    LoginUsernameChanged event,
     SignupState state,
   ) {
     final email = EmailAddressUsername.dirty(event.email);
@@ -88,8 +66,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     );
   }
 
-  Stream<SignupState> _mapSignupSubmittedToState(
-    SignupSubmitted event,
+  Stream<SignupState> _mapLoginSubmittedToState(
+    LoginSubmitted event,
     SignupState state,
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
@@ -98,7 +76,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,
             errorMessage:
-                'Pilih salah satu meode Signup email atau nomor telfon');
+                'Pilih salah satu meode login email atau nomor telfon');
 
       } else if (state.email.valid || state.phoneNumber.valid) {
         var data =

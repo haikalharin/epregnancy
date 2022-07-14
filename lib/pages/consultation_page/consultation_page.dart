@@ -92,7 +92,14 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                     await EventChatRoom.checkMessageNow(
                                   myUid: myData.uid,
                                 );
+                                UserRolesModelFirebase myRole =
+                                    await AppSharedPreference
+                                        .getUserRoleFirebase();
 
+                                if (myRole.role == 'MIDWIFE') {
+                                  Navigator.of(context)
+                                      .pushNamed(RouteName.dashboardMidwife);
+                                } else {
                                   if (roomModel.uid!.isNotEmpty) {
                                     isSenderRoomExist =
                                         await EventChatRoom.checkRoomIsExist(
@@ -130,7 +137,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                     Navigator.of(context)
                                         .pushNamed(RouteName.chatPage);
                                   }
-
+                                }
                               },
                               child: Container(
                                 decoration: BoxDecoration(

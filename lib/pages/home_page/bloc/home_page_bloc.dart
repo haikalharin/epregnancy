@@ -75,7 +75,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
       var days = 0;
-      var weeks = 0;
       BabyProgressModel babyProgressModel = BabyProgressModel.empty();
       final UserModelFirebase response = await homeRepository.fetchUser();
       final BabyModel myBaby = await AppSharedPreference.getUserBabyirebase();
@@ -85,7 +84,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         DateTime dateTimeNow = DateTime.now();
         final differenceInDays =
             dateTimeNow.difference(dateTimeCreatedAt).inDays;
-        weeks = (differenceInDays / 7).floor();
+        var weeks = (differenceInDays / 7).floor();
         days = (differenceInDays % 7).floor();
         babyProgressModel = await EventUser.checkBabyProgress(weeks.toString());
         print('$differenceInDays');
@@ -96,7 +95,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           status: FormzStatus.submissionSuccess,
           baby: myBaby,
           days: days.toString(),
-          weeks: weeks.toString(),
           babyProgressModel: babyProgressModel,
           user: response,
         );
