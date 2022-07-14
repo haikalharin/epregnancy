@@ -11,8 +11,6 @@ import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
-import 'package:PregnancyApp/pages/splashscreen_page/bloc/splash_screen_bloc.dart';
-import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
 import 'package:PregnancyApp/pages/survey_page/bloc/survey_page_bloc.dart';
 import 'package:PregnancyApp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -48,7 +46,7 @@ class MyApp extends StatelessWidget {
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Epregnancy App',
-          home: SplashscreenPage(),
+          home: SignUpPage(),
           onGenerateRoute: Routes.generateRoute,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -75,9 +73,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<SignUpQuestionnaireBloc>(
             create: (context) =>
                 Injector.container.resolve<SignUpQuestionnaireBloc>()),
-        BlocProvider<SplashscreenBloc>(
-            create: (context) =>
-                Injector.container.resolve<SplashscreenBloc>()),
       ];
 }
 

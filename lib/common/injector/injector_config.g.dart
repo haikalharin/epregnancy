@@ -17,8 +17,7 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => SurveyPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => ArticlePageBloc(c<UserRepository>()))
       ..registerSingleton((c) => SignupBloc(c<UserRepository>()))
-      ..registerSingleton((c) => SignUpQuestionnaireBloc(c<UserRepository>()))
-      ..registerSingleton((c) => SplashscreenBloc());
+      ..registerSingleton((c) => SignUpQuestionnaireBloc(c<UserRepository>()));
   }
 
   @override

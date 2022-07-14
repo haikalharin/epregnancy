@@ -88,6 +88,8 @@ class ListArticleVertical extends StatelessWidget {
                         child: Container(
                           height: 150,
                           // padding: EdgeInsets.,
+                          padding:
+                              EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
                           decoration: BoxDecoration(
                               image: listArticle![index].cardImgURL!.isEmpty
                                   ? DecorationImage(
@@ -105,82 +107,75 @@ class ListArticleVertical extends StatelessWidget {
                           ),
                           // color: Colors.greenAccent,
                           margin: EdgeInsets.only(left: 20,right: 20,top: 20),
-                          child: Container(
-                            padding:
-                              EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: EpregnancyColors.primer.withAlpha(110)),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                      Expanded(
-                                        child: Container(
-                                            width: MediaQuery.of(context).size.width-80,
-                                            margin: EdgeInsets.only(),
-                                            child: Text(
-                                              listArticle![index].title!,
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
-                                            )),
-                                      ),
-                                      Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                        child: Icon(
-                                                      Icons.access_time,
-                                                      color: Colors.white,
-                                                      size: 12,
-                                                    )),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Container(
-                                                        child: Text(
-                                                      outputDate,
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          color: Colors.white),
-                                                    )),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(top: 5),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                    color:
-                                                        EpregnancyColors.primer),
-                                                height: 18,
-                                                width: 60,
-                                                child: Center(
-                                                    child: Text(
-                                                  "Berita",
-                                                  style: TextStyle(
-                                                      fontSize: 10,
-                                                      color: Colors.white),
-                                                )),
-                                              ),
-                                            ],
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                    Expanded(
+                                      child: Container(
+                                          width: MediaQuery.of(context).size.width-80,
+                                          margin: EdgeInsets.only(),
+                                          child: Text(
+                                            listArticle![index].title!,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
                                           )),
-                                    ])),
-                              ],
-                            ),
+                                    ),
+                                    Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                      child: Icon(
+                                                    Icons.access_time,
+                                                    color: Colors.white,
+                                                    size: 12,
+                                                  )),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Container(
+                                                      child: Text(
+                                                    outputDate,
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.white),
+                                                  )),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(top: 5),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  color:
+                                                      EpregnancyColors.primer),
+                                              height: 18,
+                                              width: 60,
+                                              child: Center(
+                                                  child: Text(
+                                                "Berita",
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: Colors.white),
+                                              )),
+                                            ),
+                                          ],
+                                        )),
+                                  ])),
+                            ],
                           ),
                         ),
                       );
