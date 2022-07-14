@@ -110,9 +110,9 @@ class ListForumWidget extends StatelessWidget {
                                                       BorderRadius.circular(40),
                                                   child: const FadeInImage(
                                                     placeholder: AssetImage(
-                                                        'assets/ic_no_photo.png'),
+                                                        'assets/photo_dummy.png'),
                                                     image: AssetImage(
-                                                        'assets/ic_no_photo.png'),
+                                                        'assets/photo_dummy.png'),
                                                     width: 40,
                                                     height: 40,
                                                     fit: BoxFit.cover,
@@ -130,7 +130,7 @@ class ListForumWidget extends StatelessWidget {
                                                       margin: EdgeInsets.only(
                                                           bottom: 10),
                                                       child: const Text(
-                                                        "Haikal",
+                                                        "Mariah",
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             fontWeight:

@@ -197,8 +197,8 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 borderRadius: BorderRadius.circular(40),
                                 child: const FadeInImage(
                                   placeholder:
-                                      AssetImage('assets/ic_no_photo.png'),
-                                  image: AssetImage('assets/ic_no_photo.png'),
+                                      AssetImage('assets/photo_dummy.png'),
+                                  image: AssetImage('assets/photo_dummy.png'),
                                   width: 40,
                                   height: 40,
                                   fit: BoxFit.cover,
