@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/model/article_model/article_model.dart';
+import '../../utils/epragnancy_color.dart';
 import '../../utils/string_constans.dart';
 import 'list_body_article.dart';
 
@@ -62,8 +63,27 @@ class ArticleDetailPage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(Icons.photo),
-                              Icon(Icons.download_rounded),
+                              Container(
+                                margin: EdgeInsets.only(top: 5),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(
+                                        10.0),
+                                    color:
+                                    EpregnancyColors.primer),
+                                height: 20,
+                                width: 80,
+                                child: Center(
+                                    child: Text(
+                                      "Berita",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                ),
+                              ),
+                              Icon(Icons.ios_share),
                             ],
                           ),
                         ),
@@ -77,7 +97,7 @@ class ArticleDetailPage extends StatelessWidget {
                                     article!.title ?? '',
                                     maxLines: 5,
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -92,7 +112,7 @@ class ArticleDetailPage extends StatelessWidget {
                                 Container(
                                     child: Icon(
                                   Icons.access_time,
-                                  size: 12,
+                                  size: 18,
                                 )),
                                 SizedBox(
                                   width: 5,
@@ -101,7 +121,7 @@ class ArticleDetailPage extends StatelessWidget {
                                     child: Text(
                                   outputDate,
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                      fontSize: 16, color: Colors.black),
                                 )),
                               ],
                             )),

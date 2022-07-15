@@ -196,22 +196,23 @@ class _ListArticleVerticalState extends State<ListArticleVertical> {
                                                         borderRadius:
                                                         BorderRadius.circular(
                                                             10.0),
-                                                        color: EpregnancyColors
-                                                            .primer),
-                                                    height: 18,
-                                                    width: 60,
-                                                    child: Center(
-                                                        child: Text(
-                                                          "Berita",
-                                                          style: TextStyle(
-                                                              fontSize: 10,
-                                                              color: Colors
-                                                                  .white),
-                                                        )),
-                                                  ),
-                                                ],
-                                              )),
-                                        ])),
+                                                    color:
+                                                        EpregnancyColors.primer),
+                                                height: 18,
+                                                width: 60,
+                                                child: Center(
+                                                    child: Text(
+                                                      "Berita",
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight.bold),
+                                                    )
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                    ])),
                               ],
                             ),
                           ),
