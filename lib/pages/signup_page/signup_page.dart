@@ -67,7 +67,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.of(context).pushNamed(RouteName.surveyPage);
                     }
                   } else {
-                    Navigator.of(context).pushNamed(RouteName.otpPage);
+                    if(state.userId!.contains('@')){
+                      Navigator.of(context).pushNamed(RouteName.verifikasiPage, arguments: state.userId);
+                    } else {
+                      Navigator.of(context).pushNamed(
+                          RouteName.otpPage, arguments: state.userId);
+                    }
                   }
                 }
               },

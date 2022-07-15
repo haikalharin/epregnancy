@@ -22,4 +22,5 @@ class RouteName {
   static const simpananDeposan = '/simpananDeposan';
   static const landingPage = '/landingPage';
   static const otpPage = '/otpPage';
+  static const verifikasiPage = '/verifikasiPage';
 }

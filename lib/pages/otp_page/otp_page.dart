@@ -11,8 +11,8 @@ import '../signup_page/bloc/signup_bloc.dart';
 const _horizontalPadding = 24.0;
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({Key? key, this.title}) : super(key: key);
-  final String? title;
+  const OtpPage({Key? key, this.userId}) : super(key: key);
+  final String? userId;
 
   @override
   _OtpPageState createState() => _OtpPageState();
@@ -83,7 +83,7 @@ class _OtpPageState extends State<OtpPage> {
                             fontSize: 14),
                       ),
                       Text(
-                        "+62 812891XXX",
+                        widget.userId??"",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.black,

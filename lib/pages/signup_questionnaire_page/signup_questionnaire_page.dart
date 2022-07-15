@@ -49,10 +49,7 @@ class _OtpPageState extends State<SignUpQuestionnairePage> {
                       SizedBox(height: 30),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => OtpPage()),
-                          );
+                          Navigator.pop(context);
                         },
                         child: Image.asset(
                           'assets/back.png',

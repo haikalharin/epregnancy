@@ -5,6 +5,7 @@ import 'package:PregnancyApp/pages/chat_page/dashboard_midwife.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
+import 'package:PregnancyApp/pages/otp_page/verifikasi_page.dart';
 import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page_baby.dart';
@@ -54,9 +55,12 @@ class Routes {
       case RouteName.landingPage:
         return MaterialPageRoute(builder: (_) => LandingPage());
       case RouteName.otpPage:
-        return MaterialPageRoute(builder: (_) => OtpPage());
+        return MaterialPageRoute(builder: (_) => OtpPage(userId: getDataValue(settings.arguments)));
+      case RouteName.verifikasiPage:
+        return MaterialPageRoute(builder: (_) => VerifikasiPage(userId: getDataValue(settings.arguments)));
 
-      // case RouteName.order:
+
+    // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());
       // case RouteName.movieDetailScreen:
       //   final MovieDetailArguments arguments = settings.arguments;

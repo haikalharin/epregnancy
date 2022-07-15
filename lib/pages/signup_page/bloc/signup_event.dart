@@ -34,14 +34,6 @@ class SignupInitEvent extends SignupEvent {
   List<Object> get props => [];
 }
 
-class SignupCheckUserExist extends SignupEvent {
-  const SignupCheckUserExist();
-
-
-
-  @override
-  List<Object> get props => [];
-}
 
 class SignupPasswordChanged extends SignupEvent {
   const SignupPasswordChanged(this.password);

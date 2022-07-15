@@ -36,40 +36,20 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       yield _mapSignupPhoneNumberChangedToState(event, state);
     } else if (event is SignupInitEvent) {
       yield _mapSignupInitEventToState(event, state);
-    } else if (event is SignupCheckUserExist) {
-      yield* _mapSignupCheckUserExistToState(event, state);
     }
-  }
-
-  Stream<SignupState> _mapSignupCheckUserExistToState(
-      SignupCheckUserExist event,
-      SignupState state,
-      ) async* {
-
-    final userModelFirebase = await AppSharedPreference.getUserFirebase();
-    if(userModelFirebase.uid != ''){
-      final UserRolesModelFirebase role =
-      await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
-      yield state.copyWith(
-          submitStatus: FormzStatus.submissionSuccess,
-          userModelFirebase: userModelFirebase,
-      isExist: true,
-      type: 'hasLogin',
-      role: role);
-    }
-
   }
 
   SignupState _mapSignupInitEventToState(
       SignupInitEvent event, SignupState state) {
-    return SignupInitial();
+    return state.copyWith(
+        submitStatus: FormzStatus.pure);
   }
 
   SignupState _mapSignupPhoneNumberChangedToState(
     SignupPhoneNumberChanged event,
     SignupState state,
   ) {
-    var phone =event.phoneNumber.replaceFirst('+62', '0');
+    var phone = event.phoneNumber.replaceFirst('+62', '0');
     final phoneNumber = PhoneValidator.dirty(phone);
 
     return state.copyWith(
@@ -99,7 +79,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
             submitStatus: FormzStatus.submissionFailure,
             errorMessage:
                 'Pilih salah satu meode Signup email atau nomor telfon');
-
       } else if (state.email.valid || state.phoneNumber.valid) {
         var data =
             state.email.valid ? state.email.value : state.phoneNumber.value;
@@ -110,6 +89,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
               userModelFirebase: userModelFirebase,
+              userId: data,
               isExist: true);
           await AppSharedPreference.getUserRegister();
         } else if (userModelFirebase.uid!.isNotEmpty &&
@@ -117,12 +97,15 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
               userModelFirebase: userModelFirebase,
+              userId: data,
               isExist: true);
           await AppSharedPreference.getUserRegister();
         } else {
           await AppSharedPreference.setUsernameRegisterUser(data);
           yield state.copyWith(
-              submitStatus: FormzStatus.submissionSuccess, isExist: false);
+              submitStatus: FormzStatus.submissionSuccess,
+              userId: data,
+              isExist: false);
         }
       } else {
         yield state.copyWith(

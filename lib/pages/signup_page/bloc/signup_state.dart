@@ -7,7 +7,7 @@ class SignupState with FormzMixin {
   final MandatoryFieldValidator userName;
   final EmailAddressUsername email;
   final FormzStatus submitStatus;
-  final String? type;
+  final String? userId;
   final String? errorMessage;
   final bool? isExist;
 
@@ -17,7 +17,7 @@ class SignupState with FormzMixin {
     this.userModelFirebase,
     this.role,
     this.submitStatus = FormzStatus.pure,
-    this.type,
+    this.userId,
     this.errorMessage,
     this.isExist = false
   });
@@ -28,7 +28,7 @@ class SignupState with FormzMixin {
      UserRolesModelFirebase? role,
     EmailAddressUsername? email,
     MandatoryFieldValidator? userName,
-    String? type,
+    String? userId,
     String? errorMessage,
     bool? isExist,
   }) {
@@ -41,7 +41,7 @@ class SignupState with FormzMixin {
         userModelFirebase: userModelFirebase ?? this.userModelFirebase,
         role: role?? this.role,
         errorMessage: errorMessage,
-        type: type ?? this.type
+        userId: userId ?? this.userId
     );
   }
 
