@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
                                 ),
-                                state.role != null && state.role!.role == StringConstant.pregnant ? Container(
+                                state.role != null && state.role!.condition == StringConstant.pregnant ? Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15.0),
                                       color: EpregnancyColors.primer),
