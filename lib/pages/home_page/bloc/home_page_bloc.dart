@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
+import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -79,6 +80,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       BabyProgressModel babyProgressModel = BabyProgressModel.empty();
       final UserModelFirebase response = await homeRepository.fetchUser();
       final BabyModel myBaby = await AppSharedPreference.getUserBabyirebase();
+      final UserRolesModelFirebase role = await AppSharedPreference.getUserRoleFirebase();
       if (myBaby.babyProfileid != '') {
         DateTime dateTimeCreatedAt =
             DateTime.parse(myBaby.lastMenstruationDate!);
@@ -99,6 +101,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           weeks: weeks.toString(),
           babyProgressModel: babyProgressModel,
           user: response,
+          role: role,
         );
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure);

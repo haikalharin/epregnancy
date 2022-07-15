@@ -38,4 +38,35 @@ class EventArticle {
       return listArticle;
     }
   }
+
+  static Future<List<ArticleModel>> fetchCategoriArticle({
+    String? condition,
+  }) async {
+    List<ArticleModel> listArticle = [];
+    try {
+      ArticleModel? articleModel;
+      await FirebaseFirestore.instance
+          .collection('INFOS')
+          .where('Condition', isEqualTo: condition)
+          .get()
+          .then((querySnapshot) {
+
+        if (querySnapshot != null && querySnapshot.docs.isNotEmpty) {
+          if (querySnapshot.docs.isNotEmpty) {
+            List<QueryDocumentSnapshot> listData = querySnapshot.docs;
+            listData.forEach((element) {
+              final data = getDataValue(element.data());
+              articleModel = ArticleModel.fromJson(data);
+              listArticle.add(articleModel!);
+            });
+          }
+        }
+      }
+      ).catchError((onError) => print(onError));
+      return listArticle;
+    } catch (e) {
+      print(e);
+      return listArticle;
+    }
+  }
 }
