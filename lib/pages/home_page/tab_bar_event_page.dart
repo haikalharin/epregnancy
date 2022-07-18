@@ -1,6 +1,7 @@
 
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
-import 'package:PregnancyApp/pages/home_page/list_calendar.dart';
+import 'package:PregnancyApp/pages/home_page/list_event.dart';
+import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:sizer/sizer.dart';
@@ -9,7 +10,7 @@ import '../../data/model/person_model/person_model.dart';
 import '../../utils/epragnancy_color.dart';
 import 'acara_umum_page.dart';
 
-class TabBarCalendarPage extends StatefulWidget {
+class TabBarEventPage extends StatefulWidget {
   // static List<ContentPointHistory> listHistory;
   static List<PersonModel> listHistory = [
     PersonModel(
@@ -48,13 +49,13 @@ class TabBarCalendarPage extends StatefulWidget {
   static bool? reloadExpiry;
   final String? type;
 
-   TabBarCalendarPage({Key? key, this.type}) : super(key: key);
+   TabBarEventPage({Key? key, this.type}) : super(key: key);
 
   @override
-  _TabBarCalendarPageState createState() => _TabBarCalendarPageState();
+  _TabBarEventPageState createState() => _TabBarEventPageState();
 }
 
-class _TabBarCalendarPageState extends State<TabBarCalendarPage>
+class _TabBarEventPageState extends State<TabBarEventPage>
     with TickerProviderStateMixin {
   TabController? _tabController;
 
@@ -62,15 +63,15 @@ class _TabBarCalendarPageState extends State<TabBarCalendarPage>
   void initState() {
     _tabController = TabController(
         length: 2, vsync: this, initialIndex: widget.type == 'expiry' ? 1 : 0);
-    TabBarCalendarPage.reloadExpiry = true;
-    TabBarCalendarPage.listHistory = [];
+    TabBarEventPage.reloadExpiry = true;
+    TabBarEventPage.listHistory = [];
     super.initState();
   }
 
   @override
   void dispose() {
-    TabBarCalendarPage.reloadExpiry = true;
-    TabBarCalendarPage.listHistory = [];
+    TabBarEventPage.reloadExpiry = true;
+    TabBarEventPage.listHistory = [];
     super.dispose();
   }
 
@@ -126,8 +127,8 @@ class _TabBarCalendarPageState extends State<TabBarCalendarPage>
                             controller: _tabController,
                             physics: NeverScrollableScrollPhysics(),
                             children:  [
-                              ListCalendarWidget(tipeAcara: 'Acara umum' ,),
-                              ListCalendarWidget(tipeAcara: 'Acara Saya',),
+                              ListEventWidget(tipeAcara: StringConstant.typeEventJadwalUmum),
+                              ListEventWidget(tipeAcara: StringConstant.typeEventJadwalPribadi),
                               // AcaraUmumPage(),
                             ]),
                       ),

@@ -1,7 +1,7 @@
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
-import 'package:PregnancyApp/pages/home_page/tab_bar_calendar_page.dart';
+import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +16,7 @@ import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
 import '../chat_page/chat_room.dart';
 import '../chat_page/event/event_chat_room.dart';
-import '../home_page/list_calendar.dart';
+import '../home_page/list_event.dart';
 import 'list_forum.dart';
 
 class ConsultationPage extends StatefulWidget {
@@ -75,7 +75,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
                       Container(
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: EdgeInsets.only(bottom: 10,right:20, left: 20 ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -139,7 +139,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   ),
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
-                                margin: EdgeInsets.only(left: 20, right: 0),
                                 child: Container(
                                   margin: EdgeInsets.only(left: 20, right: 20),
                                   padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -165,11 +164,10 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 ),
                               ),
                             ),
-                            rolesModel.role == "PATIENT"?  Container(
+                         Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
                                   color: EpregnancyColors.primer),
-                              margin: EdgeInsets.only(left: 10, right: 20),
                               child: Container(
                                 margin: EdgeInsets.only(left: 20, right: 20),
                                 padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -194,7 +192,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   ),
                                 ),
                               ),
-                            ): Container(),
+                            ),
                           ],
                         ),
                       ),

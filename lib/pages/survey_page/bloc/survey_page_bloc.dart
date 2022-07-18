@@ -191,7 +191,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
       }
 
       if (isUpdateActive && isUpdateCondition) {
-        AppSharedPreference.remove("_userRegister");
+        // AppSharedPreference.remove("_userRegister");
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
       }
     } on SurveyErrorException catch (e) {

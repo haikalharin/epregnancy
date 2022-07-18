@@ -42,6 +42,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield _mapPhoneNumberChangedToState(event, state);
     } else if (event is LoginPasswordChanged) {
       yield _mapPasswordChangedToState(event, state);
+
+    } else if (event is LoginDispose) {
+      yield _mapLoginDispose(event, state);
+    } else if (event is LoginInitDataChanged) {
+      yield* _mapLoginInitDataChangedToState(event, state);
     } else if (event is LoginSubmitted) {
       yield* _mapLoginSubmittedToState(event, state);
     } else if (event is LoginWithGoogleSubmitted) {
@@ -52,6 +57,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+  LoginState _mapLoginDispose(
+      LoginDispose event,
+      LoginState state,
+      ) {
+    return LoginInitial();
+  }
+
+  Stream<LoginState> _mapLoginInitDataChangedToState(
+      LoginInitDataChanged event,
+      LoginState state,
+      ) async* {
+
+    final userNameData = await AppSharedPreference.getUsernameRegisterUser();
+    final userName = MandatoryFieldValidator.dirty(userNameData);
+
+      yield state.copyWith(
+          username: userName);
+
+
+  }
+
   LoginState _mapPhoneNumberChangedToState(
     LoginPhoneNumberChanged event,
     LoginState state,
@@ -59,20 +85,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final phoneNumber = PhoneValidator.dirty(event.phoneNumber);
     return state.copyWith(
       phoneNumber: phoneNumber,
-      status: Formz.validate([phoneNumber]),
+    );
+  }
+  LoginState _mapUsernameChangedToState(
+      LoginUsernameChanged event,
+      LoginState state,
+      ) {
+    final userName = MandatoryFieldValidator.dirty(event.userName);
+    return state.copyWith(
+      username: userName
     );
   }
 
-  LoginState _mapUsernameChangedToState(
-    LoginUsernameChanged event,
-    LoginState state,
-  ) {
-    final userName = MandatoryFieldValidator.dirty(event.userName);
-    return state.copyWith(
-      username: userName,
-      status: Formz.validate([userName]),
-    );
-  }
 
   LoginState _mapPasswordChangedToState(
     LoginPasswordChanged event,
@@ -81,7 +105,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final password = Password.dirty(event.password);
     return state.copyWith(
       password: password,
-      status: Formz.validate([password, state.phoneNumber]),
     );
   }
 
@@ -89,8 +112,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginSubmittedWithNumberPhone event,
     LoginState state,
   ) async* {
-    if (state.status.isValidated) {
-      yield state.copyWith(status: FormzStatus.submissionInProgress);
+    if (state.submitStatus.isValidated) {
+      yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
       try {
         // User? user =
         // await userRepository.loginWithGoogle();
@@ -99,13 +122,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             codeController: event.codeController,
             phoneNumber: state.phoneNumber.value);
         await Future.delayed(const Duration(seconds: 5));
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
       } on LoginErrorException catch (e) {
         print(e);
-        yield state.copyWith(status: FormzStatus.submissionFailure);
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       } on Exception catch (a) {
         print(a);
-        yield state.copyWith(status: FormzStatus.submissionFailure);
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     } else {
       final phoneNumber = PhoneValidator.dirty(state.phoneNumber.value);
@@ -117,7 +140,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginSubmitted event,
     LoginState state,
   ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       UserModelFirebase userModelFirebase =
           await EventUser.checkUser(state.username.value, state.password.value);
@@ -128,23 +151,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final UserRolesModelFirebase role =
             await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
         yield state.copyWith(
-            status: FormzStatus.submissionSuccess,
+            submitStatus: FormzStatus.submissionSuccess,
             userModelFirebase: userModelFirebase,
             role: role);
       } else {
         final username = MandatoryFieldValidator.dirty(state.username.value);
         final password = Password.dirty(state.password.value);
         yield state.copyWith(
-            status: FormzStatus.submissionFailure,
+            submitStatus: FormzStatus.submissionFailure,
             username: username,
             password: password);
       }
     } on LoginErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 
@@ -152,7 +175,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWithGoogleSubmitted event,
     LoginState state,
   ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       await FirebaseAuth.instance.signOut();
       final User? user = await GAuthentication.signInWithGoogle();
@@ -182,18 +205,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await AppSharedPreference.setUserRegister(userModelFirebase);
         await AppSharedPreference.setUserFirebase(userModelFirebase);
         yield state.copyWith(
-            status: FormzStatus.submissionSuccess,
+            submitStatus: FormzStatus.submissionSuccess,
             userModelFirebase: userModelFirebase,
         role: role);
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure);
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     } on LoginErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 }

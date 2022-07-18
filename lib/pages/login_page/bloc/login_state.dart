@@ -1,12 +1,12 @@
 part of 'login_bloc.dart';
 
-class LoginState {
+class LoginState with FormzMixin {
   final UserModelFirebase? userModelFirebase;
   final PhoneValidator phoneNumber;
   final MandatoryFieldValidator username;
   final UserRolesModelFirebase? role;
   final Password password;
-  final FormzStatus status;
+  final FormzStatus submitStatus;
   final String? errorMessage;
 
   LoginState(
@@ -15,11 +15,11 @@ class LoginState {
         this.password = const Password.pure(),
         this.role,
         this.userModelFirebase,
-        this.status = FormzStatus.pure,
+        this.submitStatus = FormzStatus.pure,
         this.errorMessage});
 
   LoginState copyWith(
-      {FormzStatus? status,
+      {FormzStatus? submitStatus,
         PhoneValidator? phoneNumber,
         UserModelFirebase? userModelFirebase,
         MandatoryFieldValidator? username,
@@ -27,7 +27,7 @@ class LoginState {
         Password? password,
         String? errorMessage}) {
     return LoginState(
-        status: status ?? this.status,
+        submitStatus: submitStatus ?? this.submitStatus,
         phoneNumber: phoneNumber ?? this.phoneNumber,
         username: username ?? this.username,
         password: password ?? this.password,
@@ -36,8 +36,11 @@ class LoginState {
         errorMessage: errorMessage);
   }
 
+
+
   @override
-  List<Object> get props => [status, username, password,username];
+  // TODO: implement inputs
+  List<FormzInput> get inputs => [];
 }
 
 class LoginInitial extends LoginState {}

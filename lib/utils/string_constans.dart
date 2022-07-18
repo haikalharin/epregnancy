@@ -9,5 +9,9 @@ class StringConstant {
   static const postMaternity = 'POST MATERNITY';
   static const midwife = 'MIDWIFE';
   static const patient = 'PATIENT';
+  static const typePersonal = 'PERSONAL';
+  static const typePublic = 'PUBLIC';
+  static const typeEventJadwalUmum = 'Jadwal Umum';
+  static const typeEventJadwalPribadi = 'Jadwal Pribadi';
 
 }

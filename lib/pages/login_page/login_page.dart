@@ -26,22 +26,28 @@ class LoginPage extends StatefulWidget {
 }
 
 final _codeController = TextEditingController();
+final _userNameController = TextEditingController();
 var authService = AuthService();
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
   void initState() {
-    // TODO: implement initState
+    Injector.resolve<LoginBloc>().add(LoginInitDataChanged());
     super.initState();
   }
+
+  @override
+  void dispose() {
+    Injector.resolve<LoginBloc>().add(LoginDispose());
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
         Navigator.of(context).pushReplacementNamed(RouteName.signup);
-          return Future.value(true);
-
+        return Future.value(true);
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -49,21 +55,25 @@ class _LoginPageState extends State<LoginPage> {
         body: SafeArea(
             child: BlocListener<LoginBloc, LoginState>(
                 listener: (context, state) async {
-                  if (state.status == FormzStatus.submissionFailure) {
+                  if (state.submitStatus == FormzStatus.submissionFailure) {
                     const snackBar = SnackBar(
                         content: Text("failed"), backgroundColor: Colors.red);
                     Scaffold.of(context).showSnackBar(snackBar);
-                  } else if (state.status == FormzStatus.submissionSuccess) {
-                    if (state.userModelFirebase!.status == StringConstant.active) {
-
+                  } else if (state.submitStatus ==
+                      FormzStatus.submissionSuccess) {
+                    if (state.userModelFirebase!.status ==
+                        StringConstant.active) {
                       if (state.role!.role == 'MIDWIFE') {
+                        Navigator.of(context).pushReplacementNamed(
+                            RouteName.navBar,
+                            arguments: state.role!.role);
+                      } else {
                         Navigator.of(context)
-                            .pushReplacementNamed(RouteName.navBar, arguments: state.role!.role);
-                      } else{
-                        Navigator.of(context).pushReplacementNamed(RouteName.navBar);
+                            .pushReplacementNamed(RouteName.navBar);
                       }
                     } else {
-                      Navigator.of(context).pushReplacementNamed(RouteName.surveyPage);
+                      Navigator.of(context)
+                          .pushReplacementNamed(RouteName.surveyPage);
                     }
 
                     // Navigator.of(context).pushNamedAndRemoveUntil(
@@ -115,9 +125,10 @@ class _LoginPageState extends State<LoginPage> {
                               _ForgotPasswordButton(),
                               SizedBox(height: 20),
                               Container(
-                                height: 50,
-                                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                child: ElevatedButton(
+                                  height: 50,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: ElevatedButton(
                                     child: const Text('Login'),
                                     onPressed: () {
                                       Injector.resolve<LoginBloc>()
@@ -135,12 +146,13 @@ class _LoginPageState extends State<LoginPage> {
                                       // }
                                     },
                                     style: ElevatedButton.styleFrom(
-                                        primary: EpregnancyColors.primer),)
-                              ),
+                                        primary: EpregnancyColors.primer),
+                                  )),
                               SizedBox(height: 10),
                               Container(
                                 height: 50,
-                                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: ElevatedButton(
                                     onPressed: () async {
                                       // GAuthentication.signOut(context: context);
@@ -171,7 +183,7 @@ class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-      if (state.status == FormzStatus.submissionInProgress) {
+      if (state.submitStatus == FormzStatus.submissionInProgress) {
         return Container(
             color: Colors.white.withAlpha(90),
             child: Center(child: CircularProgressIndicator()));
@@ -227,7 +239,10 @@ class _UsernameInput extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
+        _userNameController.text = state.username.value;
         return TextField(
+          enabled: false,
+          controller: _userNameController,
           key: const Key('loginForm_usernameInput_textField'),
           onChanged: (username) =>
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
@@ -277,11 +292,13 @@ class _ForgotPasswordButton extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 TextButton(
-                  child: Text('Lupa kata sandi?',style: TextStyle(color: EpregnancyColors.primer),),
+                  child: Text(
+                    'Lupa kata sandi?',
+                    style: TextStyle(color: EpregnancyColors.primer),
+                  ),
                   onPressed: () {
                     print('Pressed');
                   },
-
                 ),
               ],
             ),

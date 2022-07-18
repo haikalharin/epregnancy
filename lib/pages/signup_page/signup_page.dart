@@ -127,7 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   initialCountryCode: 'ID',
                                   onChanged: (phone) {
                                     Injector.resolve<SignupBloc>().add(
-                                        SignupPhoneNumberChanged(phone.completeNumber));
+                                        SignupPhoneNumberChanged(phone.number));
                                   },
                                 ),
                                 Text(

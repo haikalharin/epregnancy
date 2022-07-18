@@ -24,35 +24,7 @@ class ListArticleVertical extends StatefulWidget {
 }
 
 class _ListArticleVerticalState extends State<ListArticleVertical> {
-  List<PersonModel> listPrivilegesData = [
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-  ];
+
 
   @override
   void initState() {

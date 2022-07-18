@@ -49,7 +49,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     SignupPhoneNumberChanged event,
     SignupState state,
   ) {
-    var phone = event.phoneNumber.replaceFirst('+62', '0');
+    var phone = event.phoneNumber.contains('0',0)? event.phoneNumber: "0${event.phoneNumber}";
     final phoneNumber = PhoneValidator.dirty(phone);
 
     return state.copyWith(
@@ -86,6 +86,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
             await EventUser.checkUserExist(data);
 
         if (userModelFirebase.uid!.isNotEmpty) {
+          await AppSharedPreference.setUsernameRegisterUser(data);
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
               userModelFirebase: userModelFirebase,
@@ -94,6 +95,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           await AppSharedPreference.getUserRegister();
         } else if (userModelFirebase.uid!.isNotEmpty &&
             userModelFirebase.status == StringConstant.inActive) {
+          await AppSharedPreference.setUsernameRegisterUser(data);
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
               userModelFirebase: userModelFirebase,

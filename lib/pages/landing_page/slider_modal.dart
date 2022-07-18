@@ -29,7 +29,7 @@ class SliderModal {
     SliderModal sliderModal = SliderModal();
     sliderModal.setImage('assets/slider1.png');
     sliderModal.setTitle('Konsultasi dengan Bidan dimana saja');
-    sliderModal.setDescription('Gunakan fiture obrolan di aplikasi untuk konsultasi dengan Bidan');
+    sliderModal.setDescription('Gunakan fitur obrolan di aplikasi untuk konsultasi dengan Bidan');
     slides.add(sliderModal);
 
     sliderModal = SliderModal();

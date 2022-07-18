@@ -1,5 +1,5 @@
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
-import 'package:PregnancyApp/pages/home_page/tab_bar_calendar_page.dart';
+import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +78,8 @@ class _HomePageState extends State<HomePage> {
                                   margin: EdgeInsets.only(
                                       left: 50, right: 50, bottom: 20),
                                   child: Text("Halo, $name",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold, color: EpregnancyColors.primer)),
                                 ),
                                 state.role != null && state.role!.condition == StringConstant.pregnant ? Container(
                                   decoration: BoxDecoration(
@@ -384,7 +384,7 @@ class _HomePageState extends State<HomePage> {
                               Row(
                                 children: [
                                   state.status ==
-                                          FormzStatus.submissionInProgress
+                                          FormzStatus.submissionInProgress && state.tipe == 'listArticle'
                                       ? Expanded(child: ListShimmer())
                                       : Expanded(
                                           child: ListArticle(
@@ -420,7 +420,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
-                            Container(height: 500, child: TabBarCalendarPage()),
+                            Container(height: 500, child: TabBarEventPage()),
                           ],
                         )),
                   ],

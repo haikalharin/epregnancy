@@ -4,7 +4,7 @@ import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 
 import '../../../common/exceptions/network_connection_exception.dart';
 import '../../../common/network/network_info.dart';
-import '../../../pages/article_page/event/event_article.dart';
+import '../../firebase/event/event_article.dart';
 import '../../remote_datasource/remote_datasource.dart';
 import '../../shared_preference/app_shared_preference.dart';
 import 'article_repository.dart';

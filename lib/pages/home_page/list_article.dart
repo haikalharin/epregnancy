@@ -12,40 +12,6 @@ class ListArticle extends StatelessWidget {
 
   ListArticle({this.listArticle});
 
-  List<PersonModel> listPrivilegesData = [
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "2 jam yang lalu"),
-  ];
-
-  // final String nextMenu, content;
-
-  // ListPrivilegesWidget(this.content,{this.listPrivilegesData,this.nextMenu});
-
   @override
   Widget build(BuildContext context) {
     return Container(

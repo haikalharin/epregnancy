@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:PregnancyApp/data/firebase/event/event_event.dart';
+import 'package:PregnancyApp/data/model/event_model/event_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
@@ -16,7 +18,7 @@ import '../../../data/model/article_model/article_model.dart';
 import '../../../data/model/baby_model/baby_model.dart';
 import '../../../data/model/baby_progress_model/baby_progress_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
-import '../../article_page/event/event_article.dart';
+import '../../../data/firebase/event/event_article.dart';
 
 part 'home_page_event.dart';
 
@@ -35,8 +37,33 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield _mapHomeInitEventToState(event, state);
     } else if (event is ArticleFetchEvent) {
       yield* _mapArticleFetchEventToState(event, state);
+    } else if (event is EventFetchEvent) {
+      yield* _mapEventFetchEventToState(event, state);
     }
   }
+
+  Stream<HomePageState> _mapEventFetchEventToState(
+      EventFetchEvent event,
+      HomePageState state,
+      ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress);
+    try {
+      final List<EventModel> listEvent =
+      await EventEvent.fetchCategoriEvent(type: event.type);
+      if (listEvent.isNotEmpty) {
+        yield state.copyWith(
+            listEvent: listEvent, status: FormzStatus.submissionSuccess);
+      }
+    } on HomeErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    }
+  }
+
 
   Stream<HomePageState> _mapArticleFetchEventToState(
     ArticleFetchEvent event,
@@ -78,6 +105,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       var days = 0;
       var weeks = 0;
       BabyProgressModel babyProgressModel = BabyProgressModel.empty();
+      AppSharedPreference.remove("_userRegister");
       final UserModelFirebase response = await homeRepository.fetchUser();
       final BabyModel myBaby = await AppSharedPreference.getUserBabyirebase();
       final UserRolesModelFirebase role = await AppSharedPreference.getUserRoleFirebase();

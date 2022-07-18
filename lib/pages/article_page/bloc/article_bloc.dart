@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/article_model/article_model.dart';
-import 'package:PregnancyApp/pages/article_page/event/event_article.dart';
+import 'package:PregnancyApp/data/firebase/event/event_article.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';

@@ -10,6 +10,7 @@ class HomePageState {
   final String? days;
   final String? weeks;
   final List<ArticleModel>? listArticle;
+  final List<EventModel>? listEvent;
   final ArticleModel? articleModel;
   final String? errorMessage;
 
@@ -20,6 +21,7 @@ class HomePageState {
       this.babyProgressModel,
       this.status = FormzStatus.pure,
       this.listArticle,
+      this.listEvent,
       this.tipe,
       this.days,
       this.weeks,
@@ -33,6 +35,7 @@ class HomePageState {
       BabyModel? baby,
       BabyProgressModel? babyProgressModel,
       List<ArticleModel>? listArticle,
+        List<EventModel>? listEvent,
       ArticleModel? articleModel,
       String? tipe,
       String? days,
@@ -45,6 +48,7 @@ class HomePageState {
         baby: baby ?? this.baby,
         babyProgressModel: babyProgressModel ?? this.babyProgressModel,
         listArticle: listArticle ?? this.listArticle,
+        listEvent: listEvent ?? this.listEvent,
         articleModel: articleModel ?? this.articleModel,
         tipe: tipe ?? this.tipe,
         days: days ?? this.days,
