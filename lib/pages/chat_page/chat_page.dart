@@ -218,7 +218,7 @@ class _ChatPageState extends State<ChatPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Permasalahan Umum",
+                                "Permasalahan Kesehatan",
                                 style: TextStyle(
                                     color: isChoice2? EpregnancyColors.white: EpregnancyColors.primer,
                                     fontSize: 16,
@@ -274,7 +274,7 @@ class _ChatPageState extends State<ChatPage> {
                           lastChat: '',
                           lastDateTime: 0,
                           lastUid: '',
-                          name: "Uma Babu",
+                          name: "Puskesmas",
                           photo: "",
                           type: '',
                           uid: "ACosa0u7gSm2nNqXgPLd",

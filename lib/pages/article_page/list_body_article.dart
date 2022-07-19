@@ -62,6 +62,7 @@ class ListBodyArticle extends StatelessWidget {
                   return Container(
                     padding: EdgeInsets.only(left: 20, right: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         index != 0 ? SizedBox(height: 10) : Container(),
                         Container(
