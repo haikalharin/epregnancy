@@ -34,8 +34,16 @@ class ArticleFetchEvent extends HomePageEvent {
 }
 
 class EventFetchEvent extends HomePageEvent {
-  const EventFetchEvent(this.type);
+  const EventFetchEvent(this.type, this.date);
   final String type;
+  final DateTime date;
+  @override
+  List<Object> get props => [];
+}
+
+class HomeEventDateChanged extends HomePageEvent {
+  const HomeEventDateChanged(this.date);
+  final DateTime date;
   @override
   List<Object> get props => [];
 }

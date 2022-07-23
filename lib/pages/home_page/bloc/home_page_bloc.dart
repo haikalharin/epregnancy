@@ -9,6 +9,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:formz/formz.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/home_error_exception.dart';
@@ -19,6 +20,7 @@ import '../../../data/model/baby_model/baby_model.dart';
 import '../../../data/model/baby_progress_model/baby_progress_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../data/firebase/event/event_article.dart';
+import '../../../utils/function_utils.dart';
 
 part 'home_page_event.dart';
 
@@ -35,6 +37,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapHomeFetchUserToState(event, state);
     } else if (event is HomeInitEvent) {
       yield _mapHomeInitEventToState(event, state);
+    } else if (event is HomeEventDateChanged) {
+      yield _mapHomeEventDateChangedEventToState(event, state);
     } else if (event is ArticleFetchEvent) {
       yield* _mapArticleFetchEventToState(event, state);
     } else if (event is EventFetchEvent) {
@@ -42,18 +46,43 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
   }
 
-  Stream<HomePageState> _mapEventFetchEventToState(
-      EventFetchEvent event,
-      HomePageState state,
-      ) async* {
-    yield state.copyWith(
-        status: FormzStatus.submissionInProgress);
+  HomePageState _mapHomeEventDateChangedEventToState(HomeEventDateChanged event,
+      HomePageState state,) {
+    final eventDate = event.date;
+    return state.copyWith(eventDate: eventDate);
+  }
+
+  Stream<HomePageState> _mapEventFetchEventToState(EventFetchEvent event,
+      HomePageState state,) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
+      List<EventModel> listEventFix = [];
       final List<EventModel> listEvent =
       await EventEvent.fetchCategoriEvent(type: event.type);
+      var outputFormat = DateFormat('yyyyMMdd');
+      var dateCurent = outputFormat.format(event.date);
       if (listEvent.isNotEmpty) {
-        yield state.copyWith(
-            listEvent: listEvent, status: FormzStatus.submissionSuccess);
+        listEvent.forEach((element) async {
+          var isContain = await FunctionUtils.checkDate(
+              startDate: element.eventStartDate,
+              lastDate: element.eventEndDate,
+              dateCurrent: dateCurent);
+
+          if (isContain) {
+            listEventFix.add(element);
+          }
+        });
+        var outputFormat = DateFormat.yMMMMd('id');
+        var dateTimeString = outputFormat.format(event.date);
+        if (listEvent.isNotEmpty) {
+          yield state.copyWith(
+            eventDateString: dateTimeString ,
+              eventDate:event.date,
+              listEvent: listEventFix, status: FormzStatus.submissionSuccess);
+        } else{
+          yield state.copyWith(
+              eventDateString: dateTimeString , status: FormzStatus.submissionFailure);
+        }
       }
     } on HomeErrorException catch (e) {
       print(e);
@@ -64,17 +93,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
   }
 
-
-  Stream<HomePageState> _mapArticleFetchEventToState(
-    ArticleFetchEvent event,
-    HomePageState state,
-  ) async* {
+  Stream<HomePageState> _mapArticleFetchEventToState(ArticleFetchEvent event,
+      HomePageState state,) async* {
     yield state.copyWith(
         status: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
       List<ArticleModel> lisArticleFix = [];
       final List<ArticleModel> lisArticle =
-          await EventArticle.fetchAllArticle();
+      await EventArticle.fetchAllArticle();
       if (lisArticle.isNotEmpty) {
         for (var i = 0; i < 3; i++) {
           lisArticleFix.add(lisArticle[i]);
@@ -91,16 +117,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
   }
 
-  HomePageState _mapHomeInitEventToState(
-      HomeInitEvent event, HomePageState state) {
+  HomePageState _mapHomeInitEventToState(HomeInitEvent event,
+      HomePageState state) {
     return HomePageInitial();
   }
 
-  Stream<HomePageState> _mapHomeFetchUserToState(
-    HomeFetchDataEvent event,
-    HomePageState state,
-  ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress);
+  Stream<HomePageState> _mapHomeFetchUserToState(HomeFetchDataEvent event,
+      HomePageState state,) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress, tipe: "listEvent");
     try {
       var days = 0;
       var weeks = 0;
@@ -108,13 +132,16 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       AppSharedPreference.remove("_userRegister");
       final UserModelFirebase response = await homeRepository.fetchUser();
       final BabyModel myBaby = await AppSharedPreference.getUserBabyirebase();
-      final UserRolesModelFirebase role = await AppSharedPreference.getUserRoleFirebase();
+      final UserRolesModelFirebase role =
+      await AppSharedPreference.getUserRoleFirebase();
       if (myBaby.babyProfileid != '') {
         DateTime dateTimeCreatedAt =
-            DateTime.parse(myBaby.lastMenstruationDate!);
+        DateTime.parse(myBaby.lastMenstruationDate!);
         DateTime dateTimeNow = DateTime.now();
         final differenceInDays =
-            dateTimeNow.difference(dateTimeCreatedAt).inDays;
+            dateTimeNow
+                .difference(dateTimeCreatedAt)
+                .inDays;
         weeks = (differenceInDays / 7).floor();
         days = (differenceInDays % 7).floor();
         babyProgressModel = await EventUser.checkBabyProgress(weeks.toString());
