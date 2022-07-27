@@ -11,6 +11,7 @@ import '../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/string_constans.dart';
+import '../event_page/add_event_page.dart';
 import '../home_page/logout_page.dart';
 import '../survey_page/survey_page.dart';
 
@@ -192,7 +193,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
       case 0:
         return HomePage();
       case 1:
-        return ConsultationPage();
+        return AddEventPage();
       case 2:
         return LogoutPage();
       default:

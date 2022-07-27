@@ -5,6 +5,7 @@ import 'package:PregnancyApp/data/repository/article_repository/article_reposito
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository_impl.dart';
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
+import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
@@ -58,6 +59,7 @@ abstract class InjectorConfig {
   @Register.singleton(SignupBloc)
   @Register.singleton(SignUpQuestionnaireBloc)
   @Register.singleton(SplashscreenBloc)
+  @Register.singleton(EventPageBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)

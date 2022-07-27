@@ -245,7 +245,13 @@ class _ListEventWidgetState extends State<ListEventWidget> {
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
-                          onPressed: () async {},
+                          onPressed: () async {
+                            TimeOfDay initialTime = TimeOfDay.now();
+                            TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: initialTime,
+                            );
+                          },
                         ),
                       ),
                     )
