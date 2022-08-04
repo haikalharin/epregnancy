@@ -97,7 +97,7 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
         uid: _myPerson!.uid,
       );
       RoomModel roomReceiver = RoomModel(
-        phoneNumber: widget.arguments["room"].phoneNumber,
+        phoneNumber: widget.arguments["room"].scheduleName,
         inRoom: personInRoom,
         lastChat: message,
         lastDateTime: chat.dateTime,
@@ -303,7 +303,7 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
             GestureDetector(
               onTap: () {
                 PersonModel person = PersonModel(
-                  phoneNumber: widget.arguments["room"].phoneNumber,
+                  phoneNumber: widget.arguments["room"].scheduleName,
                   name: widget.arguments["room"].name,
                   photo: widget.arguments["room"].photo,
                   token: '',
@@ -340,7 +340,7 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
             ),
             SizedBox(width: 8),
             Text(
-              widget.arguments["room"].role == "MIDWIFE"
+              widget.arguments["room"].dateStart == "MIDWIFE"
                   ? "Bidan ${widget.arguments["room"].name!}"
                   : widget.arguments["room"].name!,
               style: TextStyle(fontSize: 18,color: EpregnancyColors.black),

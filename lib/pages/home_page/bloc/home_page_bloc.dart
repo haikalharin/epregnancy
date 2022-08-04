@@ -5,6 +5,7 @@ import 'package:PregnancyApp/data/model/event_model/event_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
+import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -57,8 +58,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
       List<EventModel> listEventFix = [];
+      UserModelFirebase person = await AppSharedPreference.getUserFirebase();
       final List<EventModel> listEvent =
-      await EventEvent.fetchCategoriEvent(type: event.type);
+      await EventEvent.fetchCategoriEvent(type: event.type, userId:person.uid );
       var outputFormat = DateFormat('yyyyMMdd');
       var dateCurent = outputFormat.format(event.date);
       if (listEvent.isNotEmpty) {
@@ -75,10 +77,19 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         var outputFormat = DateFormat.yMMMMd('id');
         var dateTimeString = outputFormat.format(event.date);
         if (listEvent.isNotEmpty) {
-          yield state.copyWith(
-            eventDateString: dateTimeString ,
-              eventDate:event.date,
-              listEvent: listEventFix, status: FormzStatus.submissionSuccess);
+          if(event.type == StringConstant.typePublic){
+            yield state.copyWith(
+                eventDateString: dateTimeString ,
+                eventDate:event.date,
+                listEvent: listEventFix, status: FormzStatus.submissionSuccess);
+          }else{
+            yield state.copyWith(
+                eventDateString: dateTimeString ,
+                eventDate:event.date,
+                listEventPersonal: listEventFix, status: FormzStatus.submissionSuccess);
+
+          }
+
         } else{
           yield state.copyWith(
               eventDateString: dateTimeString , status: FormzStatus.submissionFailure);

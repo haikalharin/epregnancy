@@ -46,9 +46,11 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
     return Stack(children: [
       widget.role == StringConstant.midwife
           ? Scaffold(
+        resizeToAvoidBottomInset: false,
           body: _buildWidgetBodyMidwife(),
           bottomNavigationBar: _bottomNavigatorBarMidwife()) :
       Scaffold(
+        resizeToAvoidBottomInset: false,
         body: _buildWidgetBody(),
         bottomNavigationBar: _bottomNavigatorBar(),
       )

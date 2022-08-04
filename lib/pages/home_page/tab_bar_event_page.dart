@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../data/model/person_model/person_model.dart';
 import '../../utils/epragnancy_color.dart';
 import 'acara_umum_page.dart';
+import 'list_event_personal.dart';
 
 class TabBarEventPage extends StatefulWidget {
   // static List<ContentPointHistory> listHistory;
@@ -94,7 +95,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                             physics: NeverScrollableScrollPhysics(),
                             children:  [
                               ListEventWidget(tipeAcara: StringConstant.typeEventJadwalUmum,dateTime: widget.dateTime,),
-                              ListEventWidget(tipeAcara: StringConstant.typeEventJadwalPribadi,dateTime: widget.dateTime,),
+                              ListEventPersonalWidget(tipeAcara: StringConstant.typeEventJadwalPribadi,dateTime: widget.dateTime,),
                               // AcaraUmumPage(),
                             ]),
                       ),

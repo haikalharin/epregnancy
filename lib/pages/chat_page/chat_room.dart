@@ -104,7 +104,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         role: _myRole.role,
       );
       RoomModel roomReceiver = RoomModel(
-        phoneNumber: widget.arguments["room"].phoneNumber,
+        phoneNumber: widget.arguments["room"].scheduleName,
         inRoom: personInRoom,
         lastChat: message,
         lastDateTime: chat.dateTime,
@@ -113,7 +113,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         photo: widget.arguments["room"].photo,
         type: type,
         uid: widget.arguments["room"].uid,
-        role:  widget.arguments["room"].role
+        role:  widget.arguments["room"].dateStart
       );
 
       // Sender Room
@@ -311,7 +311,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             GestureDetector(
               onTap: () {
                 PersonModel person = PersonModel(
-                  phoneNumber: widget.arguments["room"].phoneNumber,
+                  phoneNumber: widget.arguments["room"].scheduleName,
                   name: widget.arguments["room"].name,
                   photo: widget.arguments["room"].photo,
                   token: '',
@@ -348,7 +348,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             ),
             SizedBox(width: 8),
             Text(
-              widget.arguments["room"].role == "MIDWIFE"
+              widget.arguments["room"].dateStart == "MIDWIFE"
                   ? "Bidan ${widget.arguments["room"].name!}"
                   : widget.arguments["room"].name!,
               style: TextStyle(fontSize: 18,color: EpregnancyColors.black),

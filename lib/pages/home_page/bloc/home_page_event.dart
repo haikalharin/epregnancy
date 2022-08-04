@@ -41,6 +41,14 @@ class EventFetchEvent extends HomePageEvent {
   List<Object> get props => [];
 }
 
+class EventFetchEventPersonal extends HomePageEvent {
+  const EventFetchEventPersonal(this.type, this.date);
+  final String type;
+  final DateTime date;
+  @override
+  List<Object> get props => [];
+}
+
 class HomeEventDateChanged extends HomePageEvent {
   const HomeEventDateChanged(this.date);
   final DateTime date;
