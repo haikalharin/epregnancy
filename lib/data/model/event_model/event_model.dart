@@ -8,10 +8,17 @@ class EventModel implements BaseModel {
   String? entityid;
   String? eventEndDate;
   String? eventStartDate;
-  int? eventid;
+  String? eventid;
   String? createdDate;
   String? title;
   String? type;
+  String? consulType;
+  String? time;
+  String? totalConsume;
+  String? days;
+  String? userid;
+  List<String>? listScheduleTime;
+
 
   EventModel({
     this. imageURL,          
@@ -23,10 +30,21 @@ class EventModel implements BaseModel {
     this. createdDate,
     this. title,             
     this. type,                               
+    this. consulType,
+    this. time,
+    this.totalConsume,
+    this.days,
+    this. userid,
+    this. listScheduleTime,
   });
 
   static EventModel fromJson(Map<String, dynamic> json) {
+    List<String> listScheduleTime = [];
+    if (json['ListScheduleTime'] != null) {
+      listScheduleTime = json['ListScheduleTime'].cast<String>();
+    }
     return EventModel(
+
       createdDate: json['CreatedDate'] != null
           ? json['CreatedDate'] is String
           ? json['CreatedDate']
@@ -41,6 +59,12 @@ class EventModel implements BaseModel {
       eventStartDate: json['EventStartDate'] ?? '',
       eventid: json['Eventid'] ?? 0,
       type: json['Type'] ?? '',
+      consulType: json['ConsulType'] ?? '',
+      time: json['Time'] ?? '',
+      totalConsume: json['TotalConsume'] ?? '',
+      days: json['Days'] ?? '',
+      userid: json['Userid'] ?? '',
+      listScheduleTime: listScheduleTime,
     );
   }
 
@@ -54,6 +78,12 @@ class EventModel implements BaseModel {
     'EventStartDate': eventStartDate,
     'Eventid': eventid,
     'Type': type,
+    'ConsulType': consulType,
+    'Time': time,
+    'TotalConsume': totalConsume,
+    'Days': days,
+    'Userid': userid,
+    'ListScheduleTime': listScheduleTime,
 
   };
 
@@ -71,8 +101,14 @@ class EventModel implements BaseModel {
       description: '',
       eventEndDate: '',
       eventStartDate: '',
-      eventid: 0,
+      eventid: '',
       type: '',
+      consulType: '',
+      time: '',
+      totalConsume: '',
+      days: '',
+      userid: '',
+      listScheduleTime: [],
     );
   }
 }

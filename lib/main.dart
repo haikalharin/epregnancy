@@ -1,5 +1,7 @@
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/email_verification_page/email_verification_page.dart';
+import 'package:PregnancyApp/pages/event_page/add_event_page.dart';
+import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
@@ -78,6 +80,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<SplashscreenBloc>(
             create: (context) =>
                 Injector.container.resolve<SplashscreenBloc>()),
+        BlocProvider<EventPageBloc>(
+            create: (context) => Injector.container.resolve<EventPageBloc>()),
       ];
 }
 

@@ -1,7 +1,9 @@
+import 'package:PregnancyApp/common/constants/regex_constants.dart';
 import 'package:PregnancyApp/main.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -30,9 +32,10 @@ var authService = AuthService();
 
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _controller = TextEditingController();
- @override
+
+  @override
   void initState() {
-   Injector.resolve<SignupBloc>().add(SignupInitEvent());
+    Injector.resolve<SignupBloc>().add(SignupInitEvent());
     super.initState();
   }
 
@@ -62,16 +65,22 @@ class _SignUpPageState extends State<SignUpPage> {
                   if (state.isExist == true) {
                     if (state.userModelFirebase!.status ==
                         StringConstant.active) {
-                        Navigator.of(context).pushReplacementNamed(RouteName.login);
+                      var snackBar = SnackBar(
+                          content: Text("Akun Telah Terdaftar"),
+                          backgroundColor: Colors.red);
+                      Injector.resolve<SignupBloc>().add(
+                          SignupInitEvent());
+                      Scaffold.of(context).showSnackBar(snackBar);
                     } else {
                       Navigator.of(context).pushNamed(RouteName.surveyPage);
                     }
                   } else {
-                    if(state.userId!.contains('@')){
-                      Navigator.of(context).pushNamed(RouteName.verifikasiPage, arguments: state.userId);
+                    if (state.userId!.contains('@')) {
+                      Navigator.of(context).pushNamed(RouteName.verifikasiPage,
+                          arguments: state.userId);
                     } else {
-                      Navigator.of(context).pushNamed(
-                          RouteName.otpPage, arguments: state.userId);
+                      Navigator.of(context).pushNamed(RouteName.otpPage,
+                          arguments: state.userId);
                     }
                   }
                 }
@@ -104,69 +113,83 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                             SizedBox(height: 10),
-                            state.email.value.length < 1?  Column(
-                              children: [
-                                Text(
-                                  "Daftar dengan akun telepon seluler",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 18),
-                                ),
-                                SizedBox(height: 20),
-                                IntlPhoneField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Mobile Number',
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    errorText:  state.phoneNumber.invalid ? 'Format nomor salah' : null,
-                                  ),
-                                  autovalidateMode: AutovalidateMode.disabled,
-                                  initialCountryCode: 'ID',
-                                  onChanged: (phone) {
-                                    Injector.resolve<SignupBloc>().add(
-                                        SignupPhoneNumberChanged(phone.number));
-                                  },
-                                ),
-                                Text(
-                                  "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 12),
-                                ),
-                                SizedBox(height: 10),
-                              ],
-                            ):Container(),
+                            state.email.value.length < 1
+                                ? Column(
+                                    children: [
+                                      Text(
+                                        "Daftar dengan akun telepon seluler",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 18),
+                                      ),
+                                      SizedBox(height: 20),
+                                      IntlPhoneField(
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp(RegexConstants
+                                                  .validPhoneFirstNotZeroRegex)),
+                                        ],
+                                        decoration: InputDecoration(
+                                          labelText: 'Mobile Number',
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          errorText: state.phoneNumber.invalid
+                                              ? 'Format nomor salah'
+                                              : null,
+                                        ),
+                                        autovalidateMode:
+                                            AutovalidateMode.disabled,
+                                        initialCountryCode: 'ID',
+                                        onChanged: (phone) {
+                                          Injector.resolve<SignupBloc>().add(
+                                              SignupPhoneNumberChanged(
+                                                  phone.number));
+                                        },
+                                      ),
+                                      Text(
+                                        "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 12),
+                                      ),
+                                      SizedBox(height: 10),
+                                    ],
+                                  )
+                                : Container(),
 
-                           state.phoneNumber.value.length <= 1? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-
-                                SizedBox(height: 30),
-                                Text(
-                                  "Atau daftar dengan akun email",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 18),
-                                ),
-                                SizedBox(height: 30),
-                                Text(
-                                  "Email",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                                SizedBox(height: 10),
-                                _EmailInput(),
-                                SizedBox(height: 50),
-                              ],
-                            ):Container(),
+                            state.phoneNumber.value.length <= 1
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: const [
+                                      SizedBox(height: 30),
+                                      Text(
+                                        "Atau daftar dengan akun email",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 18),
+                                      ),
+                                      SizedBox(height: 30),
+                                      Text(
+                                        "Email",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      SizedBox(height: 10),
+                                      _EmailInput(),
+                                      SizedBox(height: 50),
+                                    ],
+                                  )
+                                : Container(),
 
                             ElevatedButton(
                               onPressed: () async {

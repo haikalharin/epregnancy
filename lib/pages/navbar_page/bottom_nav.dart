@@ -11,6 +11,7 @@ import '../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/string_constans.dart';
+import '../event_page/add_event_page.dart';
 import '../home_page/logout_page.dart';
 import '../survey_page/survey_page.dart';
 
@@ -45,9 +46,11 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
     return Stack(children: [
       widget.role == StringConstant.midwife
           ? Scaffold(
+        resizeToAvoidBottomInset: false,
           body: _buildWidgetBodyMidwife(),
           bottomNavigationBar: _bottomNavigatorBarMidwife()) :
       Scaffold(
+        resizeToAvoidBottomInset: false,
         body: _buildWidgetBody(),
         bottomNavigationBar: _bottomNavigatorBar(),
       )
@@ -88,7 +91,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_home_bar.svg',
+              'assets/ic_home_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,
@@ -133,7 +136,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_consultation_bar.svg',
+              'assets/ic_consultation_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,
@@ -154,7 +157,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_profile_bar.svg',
+              'assets/ic_profile_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,
@@ -192,7 +195,9 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
       case 0:
         return HomePage();
       case 1:
+        // return AddEventPage();
         return ConsultationPage();
+
       case 2:
         return LogoutPage();
       default:
@@ -218,7 +223,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_consultation_bar.svg',
+              'assets/ic_consultation_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,
@@ -239,7 +244,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_profile_bar.svg',
+              'assets/ic_profile_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,

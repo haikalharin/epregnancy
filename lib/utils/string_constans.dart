@@ -13,5 +13,8 @@ class StringConstant {
   static const typePublic = 'PUBLIC';
   static const typeEventJadwalUmum = 'Jadwal Umum';
   static const typeEventJadwalPribadi = 'Jadwal Pribadi';
+  static const consumeMedicine = 'CONSUME MEDICINE';
+  static const visitHospital = 'VISIT HOSPITAL';
+  static const other = 'OTHER';
 
 }

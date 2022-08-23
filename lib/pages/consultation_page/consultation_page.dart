@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -79,19 +81,28 @@ class _ConsultationPageState extends State<ConsultationPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InkWell(
-                              onTap: () async {
-                                UserModelFirebase myData =
-                                    await AppSharedPreference.getUserFirebase();
-                                bool isSenderRoomExist = false;
-                                bool isSenderAchiveExist =
-                                    await EventChatRoom.checkArchiveIsExist(
-                                  myUid: myData.uid,
-                                );
-                                RoomModel roomModel =
-                                    await EventChatRoom.checkMessageNow(
-                                  myUid: myData.uid,
-                                );
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: EpregnancyColors.primer,
+                                ),
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child:  FlatButton(
+                                minWidth: MediaQuery.of(context).size.width/4,
+                                padding: EdgeInsets.only(top: 20, bottom: 20,right: 10,left: 10),
+                                onPressed: () async {
+                                  UserModelFirebase myData =
+                                      await AppSharedPreference.getUserFirebase();
+                                  bool isSenderRoomExist = false;
+                                  bool isSenderAchiveExist =
+                                      await EventChatRoom.checkArchiveIsExist(
+                                    myUid: myData.uid,
+                                  );
+                                  RoomModel roomModel =
+                                      await EventChatRoom.checkMessageNow(
+                                    myUid: myData.uid,
+                                  );
 
                                   if (roomModel.uid!.isNotEmpty) {
                                     isSenderRoomExist =
@@ -106,9 +117,9 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => ChatRoom(
-                                                      arguments: {
-                                                        'room': roomModel
-                                                      })));
+                                                  arguments: {
+                                                    'room': roomModel
+                                                  })));
                                     } else if (isSenderRoomExist &&
                                         isSenderAchiveExist) {
                                       Navigator.push(
@@ -131,35 +142,24 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                         .pushNamed(RouteName.chatPage);
                                   }
 
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: EpregnancyColors.primer,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
+                                },
                                 child: Container(
-                                  margin: EdgeInsets.only(left: 20, right: 20),
-                                  padding: EdgeInsets.only(top: 20, bottom: 20),
-                                  child: Container(
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Image.asset('assets/icon-hubungi-profesional.png', height: 25),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        rolesModel.role == "PATIENT"
-                                            ? Text("Hubungi profesional")
-                                            : Text("Cek Konsultasi"),
-                                        SizedBox(
-                                          width: 5,
-                                        )
-                                      ],
-                                    ),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Image.asset('assets/icon-hubungi-profesional.png', height: 25),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      rolesModel.role == "PATIENT"
+                                          ? Text("Hubungi profesional", style: TextStyle(fontSize: 12),)
+                                          : Text("Cek Konsultasi",style: TextStyle(fontSize: 12),),
+                                      SizedBox(
+                                        width: 5,
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
@@ -168,9 +168,12 @@ class _ConsultationPageState extends State<ConsultationPage> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
                                   color: EpregnancyColors.primer),
-                              child: Container(
-                                margin: EdgeInsets.only(left: 20, right: 20),
-                                padding: EdgeInsets.only(top: 20, bottom: 20),
+                              child: FlatButton(
+                                minWidth: MediaQuery.of(context).size.width/5,
+                                padding: EdgeInsets.only(top: 20, bottom: 20,right: 20,left: 20),
+                                onPressed: () {
+
+                                },
                                 child: Container(
                                   child: Row(
                                     children: [
@@ -228,6 +231,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   maxLines: 3,
                                   minLines: 1,
                                   decoration: const InputDecoration(
+                                    // prefixIcon: Image(image: image),
                                     hintText: 'Tanya ke komunitas...',
                                     border: InputBorder.none,
                                     isDense: true,
@@ -235,9 +239,14 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   onChanged: (value) {},
                                 ),
                               ),
-                              Container(
-                                  margin: EdgeInsets.only(),
-                                  child: Icon(Icons.image)),
+                              InkWell(
+                                onTap: (){
+                                  _showPicker(context);
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.only(),
+                                    child: Icon(Icons.image)),
+                              ),
                             ],
                           )),
                       Divider(),
@@ -250,4 +259,86 @@ class _ConsultationPageState extends State<ConsultationPage> {
       ),
     );
   }
+  void pickAndCropImageGallery() async {
+    final pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      imageQuality: 25,
+    );
+    if (pickedFile != null) {
+      CroppedFile? croppedFile = await ImageCropper.platform
+          .cropImage(sourcePath: pickedFile.path, aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9,
+      ]);
+      // if (croppedFile != null) {
+      //   EventStorageExample.uploadMessageImageAndGetUrl(
+      //     filePhoto: File(croppedFile.path),
+      //     myUid: _myPerson!.uid,
+      //     personUid: widget.arguments["room"].uid,
+      //   ).then((imageUrl) {
+      //     sendMessage('image', imageUrl);
+      //   });
+      // }
+    }
+    getMyPerson();
+  }
+  void pickAndCropImageCamera() async {
+    final pickedFile = await ImagePicker().getImage(
+      source: ImageSource.camera,
+      imageQuality: 25,
+    );
+    if (pickedFile != null) {
+      CroppedFile? croppedFile = await ImageCropper.platform
+          .cropImage(sourcePath: pickedFile.path, aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9,
+      ]);
+      // if (croppedFile != null) {
+      //   EventStorageExample.uploadMessageImageAndGetUrl(
+      //     filePhoto: File(croppedFile.path),
+      //     myUid: _myPerson!.uid,
+      //     personUid: widget.arguments["room"].uid,
+      //   ).then((imageUrl) {
+      //     sendMessage('image', imageUrl);
+      //   });
+      // }
+    }
+    getMyPerson();
+  }
+
+  void _showPicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: [
+                  ListTile(
+                      leading: Icon(Icons.photo_library),
+                      title: Text('Photo Library'),
+                      onTap: () async {
+                        pickAndCropImageGallery();
+                      }),
+                  ListTile(
+                    leading: Icon(Icons.photo_camera),
+                    title: Text('Camera'),
+                    onTap: () async {
+                      pickAndCropImageCamera();
+
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
 }
