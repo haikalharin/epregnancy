@@ -1,8 +1,8 @@
 class
 ResponseModel<T> {
-  int? statusCode;
-  String? statusMessage;
-  String? errorMessage;
+  int? code;
+  String? status;
+  String? message;
   dynamic data;
 
   /// Pagination from Mas Aamiin
@@ -15,9 +15,9 @@ ResponseModel<T> {
   List<T>? result;
 
   ResponseModel({
-    this.statusCode,
-    this.statusMessage,
-    this.errorMessage,
+    this.code,
+    this.status,
+    this.message,
     this.data,
     this.total,
     this.perPage,
@@ -29,9 +29,9 @@ ResponseModel<T> {
   });
 
   ResponseModel.fromJson(Map<String, dynamic> json, T fromJson(Map<String, dynamic> json)) {
-    statusCode = json['statusCode'];
-    statusMessage = json['statusMessage'];
-    errorMessage = json['errorMessage'];
+    code = json['statusCode'];
+    status = json['statusMessage'];
+    message = json['errorMessage'];
 
     if (json["data"] != null && fromJson != null) {
       if (json['data'].toString()[0] == "[") {
@@ -41,7 +41,6 @@ ResponseModel<T> {
       }
     }
 
-    /// Pagination from Mas Aamiin
     total = json['total'];
     perPage = json['per_page'];
     currentPage = json['current_page'];
@@ -67,9 +66,9 @@ ResponseModel<T> {
     List<T>? result,
   }) {
     return ResponseModel<T>(
-      statusCode: statusCode ?? this.statusCode,
-      statusMessage: statusMessage ?? this.statusMessage,
-      errorMessage: errorMessage ?? this.errorMessage,
+      code: statusCode ?? this.code,
+      status: statusMessage ?? this.status,
+      message: errorMessage ?? this.message,
       data: data ?? this.data,
       total: total ?? this.total,
       perPage: perPage ?? this.perPage,
