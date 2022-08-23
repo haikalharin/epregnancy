@@ -8,6 +8,8 @@ import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/otp_page/verifikasi_page.dart';
+import 'package:PregnancyApp/pages/poin_page/poin_activity_page.dart';
+import 'package:PregnancyApp/pages/poin_page/poin_page.dart';
 import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page_baby.dart';
@@ -69,6 +71,12 @@ class Routes {
                 AddEventPage(consulType: getDataValue(settings.arguments)));
       case RouteName.chooseTypeEvent:
         return MaterialPageRoute(builder: (_) => ChooseTypeEventPage());
+        return MaterialPageRoute(builder: (_) => VerifikasiPage(userId: getDataValue(settings.arguments)));
+      case RouteName.poinPage:
+        return MaterialPageRoute(builder: (_) => PoinPage());
+      case RouteName.poinActivityPage:
+        return MaterialPageRoute(builder: (_) => PoinActivityPage());
+
 
       // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());
