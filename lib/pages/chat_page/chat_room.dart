@@ -104,7 +104,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         role: _myRole.role,
       );
       RoomModel roomReceiver = RoomModel(
-        phoneNumber: widget.arguments["room"].scheduleName,
+        phoneNumber: widget.arguments["room"].phoneNumber,
         inRoom: personInRoom,
         lastChat: message,
         lastDateTime: chat.dateTime,
@@ -113,7 +113,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         photo: widget.arguments["room"].photo,
         type: type,
         uid: widget.arguments["room"].uid,
-        role:  widget.arguments["room"].dateStart
+        role:  widget.arguments["room"].role
       );
 
       // Sender Room
@@ -203,7 +203,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
     }
   }
 
-  void pickAndCropImage() async {
+  void pickAndCropImageGallery() async {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
       imageQuality: 25,
@@ -228,6 +228,64 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
       }
     }
     getMyPerson();
+  }
+  void pickAndCropImageCamera() async {
+    final pickedFile = await ImagePicker().getImage(
+      source: ImageSource.camera,
+      imageQuality: 25,
+    );
+    if (pickedFile != null) {
+      CroppedFile? croppedFile = await ImageCropper.platform
+          .cropImage(sourcePath: pickedFile.path, aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9,
+      ]);
+      if (croppedFile != null) {
+        EventStorageExample.uploadMessageImageAndGetUrl(
+          filePhoto: File(croppedFile.path),
+          myUid: _myPerson!.uid,
+          personUid: widget.arguments["room"].uid,
+        ).then((imageUrl) {
+          sendMessage('image', imageUrl);
+        });
+      }
+    }
+    getMyPerson();
+  }
+
+
+
+  void _showPicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: [
+                  ListTile(
+                      leading: Icon(Icons.photo_library),
+                      title: Text('Photo Library'),
+                      onTap: () async {
+                        pickAndCropImageGallery();
+                        Navigator.pop(context);
+                      }),
+                  ListTile(
+                    leading: Icon(Icons.photo_camera),
+                    title: Text('Camera'),
+                    onTap: () async {
+                      pickAndCropImageCamera();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   void deleteSelectedMessage() {
@@ -311,7 +369,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             GestureDetector(
               onTap: () {
                 PersonModel person = PersonModel(
-                  phoneNumber: widget.arguments["room"].scheduleName,
+                  phoneNumber: widget.arguments["room"].phoneNumber,
                   name: widget.arguments["room"].name,
                   photo: widget.arguments["room"].photo,
                   token: '',
@@ -348,7 +406,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             ),
             SizedBox(width: 8),
             Text(
-              widget.arguments["room"].dateStart == "MIDWIFE"
+              widget.arguments["room"].role == "MIDWIFE"
                   ? "Bidan ${widget.arguments["room"].name!}"
                   : widget.arguments["room"].name!,
               style: TextStyle(fontSize: 18,color: EpregnancyColors.black),
@@ -498,7 +556,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                   IconButton(
                       icon: Icon(Icons.image, color: Colors.white),
                       onPressed: () {
-                        pickAndCropImage();
+                        _showPicker(context);
                       }),
                   Expanded(
                     child: Container(

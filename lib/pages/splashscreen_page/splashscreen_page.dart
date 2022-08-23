@@ -29,7 +29,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
         if(state.isExist){
           Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: state.role!.role);
         } else{
-          Navigator.of(context).pushReplacementNamed(RouteName.signup);
+          Navigator.of(context).pushReplacementNamed(RouteName.login);
 
         }
       }
@@ -43,7 +43,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
                     children: [
                       Container(
                         child:  SvgPicture.asset(
-                          'assets/ePregnancy_logo.svg',
+                          'assets/ePregnancy_ss_logo.svg',
                           fit: BoxFit.fitHeight,
                           height: 200,
                           width: 200,

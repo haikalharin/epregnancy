@@ -91,7 +91,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_home_bar.svg',
+              'assets/ic_home_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,
@@ -136,7 +136,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_consultation_bar.svg',
+              'assets/ic_consultation_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,
@@ -157,7 +157,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_profile_bar.svg',
+              'assets/ic_profile_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,
@@ -195,7 +195,9 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
       case 0:
         return HomePage();
       case 1:
-        return AddEventPage();
+        // return AddEventPage();
+        return ConsultationPage();
+
       case 2:
         return LogoutPage();
       default:
@@ -221,7 +223,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_consultation_bar.svg',
+              'assets/ic_consultation_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,
@@ -242,7 +244,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
-              'assets/ic_profile_bar.svg',
+              'assets/ic_profile_bar_selected.svg',
               width: 30,
               height: 30,
               fit: BoxFit.cover,

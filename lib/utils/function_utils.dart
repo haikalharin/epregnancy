@@ -1,6 +1,31 @@
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
+import 'package:intl/intl.dart';
 
 class FunctionUtils {
+  static Future<List<EventModel>> getCheckDate({
+    List<EventModel> listEvent = const [],
+    DateTime? date
+  }) async {
+    List<EventModel> listEventFix = [];
+    var outputFormat = DateFormat('yyyyMMdd');
+    var dateCurent = outputFormat.format(date?? DateTime.now());
+    try{
+      listEvent.forEach((element) async {
+        var isContain = await FunctionUtils.checkDate(
+            startDate: element.eventStartDate,
+            lastDate: element.eventEndDate,
+            dateCurrent: dateCurent);
+
+        if (isContain) {
+          listEventFix.add(element);
+        }
+      });
+      return listEventFix;
+    }catch (e) {
+      print(e);
+      return listEventFix;
+    }
+  }
   static Future<bool> checkDate({
     String? startDate,
     String? lastDate,
@@ -32,5 +57,20 @@ class FunctionUtils {
       return false;
     }
   }
-}
 
+  static Future<List<EventModel>> sortDate({
+    List<EventModel> listEvent  = const [],
+  }) async {
+    try {
+      DateFormat format = DateFormat("yyyy-MM-dd hh:mm:ss");
+      listEvent.sort((a, b) => format
+          .parse(b.createdDate ?? "")
+          .compareTo(format.parse(a.createdDate ?? "")));
+      return listEvent;
+
+    } catch (e) {
+      print(e);
+      return listEvent;
+    }
+  }
+}

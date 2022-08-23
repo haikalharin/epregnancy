@@ -59,6 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                     const snackBar = SnackBar(
                         content: Text("failed"), backgroundColor: Colors.red);
                     Scaffold.of(context).showSnackBar(snackBar);
+                    Injector.resolve<LoginBloc>().add(
+                        LoginDispose());
                   } else if (state.submitStatus ==
                       FormzStatus.submissionSuccess) {
                     if (state.userModelFirebase!.status ==
@@ -133,17 +135,6 @@ class _LoginPageState extends State<LoginPage> {
                                     onPressed: () {
                                       Injector.resolve<LoginBloc>()
                                           .add(LoginSubmitted());
-
-                                      // if(state.username.valid && state.password.valid) {
-                                      //
-                                      //   authService.loginUser(state.username.value, state.password.value).then((User user) =>
-                                      //   {
-                                      //     print(user),
-                                      //   Navigator.pushReplacement(
-                                      //   context,
-                                      //   MaterialPageRoute(builder: (context) => HomePage()),
-                                      //   )}).catchError((e) => print(e));
-                                      // }
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary: EpregnancyColors.primer),
@@ -165,6 +156,8 @@ class _LoginPageState extends State<LoginPage> {
                                         primary: Colors.white,
                                         onPrimary: Colors.black)),
                               ),
+                              SizedBox(height: 12),
+                              _RegisterButton()
                               // _PasswordTextField(),
                             ],
                           );
@@ -239,9 +232,7 @@ class _UsernameInput extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
-        _userNameController.text = state.username.value;
         return TextField(
-          enabled: false,
           controller: _userNameController,
           key: const Key('loginForm_usernameInput_textField'),
           onChanged: (username) =>
@@ -299,6 +290,53 @@ class _ForgotPasswordButton extends StatelessWidget {
                   onPressed: () {
                     print('Pressed');
                   },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _RegisterButton extends StatelessWidget {
+  const _RegisterButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                RichText(
+                  textAlign: TextAlign.center,
+                  text:  TextSpan(
+                    // Note: Styles for TextSpans must be explicitly defined.
+                    // Child text spans will inherit styles from parent
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black,
+                    ),
+                    children: [
+                      TextSpan(text: 'Belum punya akun? '),
+                      WidgetSpan(
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.of(context).pushNamed(RouteName.signup);
+
+                          },
+                          child: const Text("Register",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: EpregnancyColors.primer)),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),

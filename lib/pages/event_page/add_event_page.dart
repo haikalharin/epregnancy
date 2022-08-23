@@ -17,6 +17,7 @@ import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/date_picker.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/string_constans.dart';
+import '../home_page/bloc/home_page_bloc.dart';
 import '../home_page/home_page.dart';
 import 'bloc/event_page_bloc.dart';
 import 'list_schedule_time.dart';
@@ -24,9 +25,7 @@ import 'list_schedule_time.dart';
 const _horizontalPadding = 24.0;
 
 class AddEventPage extends StatefulWidget {
-  const AddEventPage(
-      {Key? key, this.consulType = StringConstant.consumeMedicine})
-      : super(key: key);
+  const AddEventPage({Key? key, this.consulType}) : super(key: key);
   final String? consulType;
 
   @override
@@ -53,100 +52,98 @@ class _AddEventPageState extends State<AddEventPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Navigator.of(context).pushReplacementNamed(RouteName.signup);
-        return Future.value(true);
-      },
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        elevation: 1.0,
         backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          elevation: 1.0,
-          backgroundColor: Colors.white,
-          title: Container(
-              margin: EdgeInsets.symmetric(horizontal: 25.0),
-              child: Text(
-                "Kunjugan Rumah Sakit",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
-              )),
-          leading: GestureDetector(
-              child: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              }),
-        ),
-        body: SafeArea(
-            child: BlocListener<EventPageBloc, EventPageState>(
-                listener: (context, state) async {
-          if (state.submitStatus == FormzStatus.submissionFailure) {
-          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            const snackBar = SnackBar(
-                content: Text("Berhasil"),
-                backgroundColor: EpregnancyColors.primer);
-            Scaffold.of(context).showSnackBar(snackBar);
+        title: Container(
+            margin: EdgeInsets.symmetric(horizontal: 25.0),
+            child: Text(
+              widget.consulType == StringConstant.visitHospital
+                  ? "Kunjugan Rumah Sakit"
+                  : widget.consulType == StringConstant.consumeMedicine
+                      ? "Konsumsi Obat"
+                      : "Lain-lain",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black),
+            )),
+        leading: GestureDetector(
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            }),
+      ),
+      body: SafeArea(
+          child: BlocListener<EventPageBloc, EventPageState>(
+              listener: (context, state) async {
+        if (state.submitStatus == FormzStatus.submissionFailure) {
+        } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+          const snackBar = SnackBar(
+              content: Text("Berhasil"),
+              backgroundColor: EpregnancyColors.primer);
+          Scaffold.of(context).showSnackBar(snackBar);
 
-            await Future.delayed(const Duration(seconds: 2));
+          await Future.delayed(const Duration(seconds: 1));
 
-            // Navigator.pop(context);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteName.navBar, (Route<dynamic> route) => false, arguments: state.role!.role);
 
-          }
-        }, child: BlocBuilder<EventPageBloc, EventPageState>(
-          builder: (context, state) {
-            return Stack(
-              children: [
-                widget.consulType == StringConstant.consumeMedicine
-                    ? _BodyConsumeMedicine(widget.consulType ?? "")
-                    : _BodyVisit(widget.consulType ?? ""),
-                Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Align(
-                        alignment: Alignment(0, 1),
-                        child: Container(
-                          margin: EdgeInsets.only(top: 10, bottom: 10),
-                          width: MediaQuery.of(context).size.width - 40,
-                          height: 50,
-                          child: RaisedButton(
-                            color: state.status.isValidated
-                                ? EpregnancyColors.primer
-                                : EpregnancyColors.primerSoft,
-                            child: Padding(
-                              padding: EdgeInsets.zero,
-                              child: Text(
-                                "Buat Jadwal",
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white),
-                              ),
+        }
+      }, child: BlocBuilder<EventPageBloc, EventPageState>(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              widget.consulType == StringConstant.consumeMedicine
+                  ? _BodyConsumeMedicine(widget.consulType ?? "")
+                  : _BodyVisit(widget.consulType ?? ""),
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Align(
+                      alignment: Alignment(0, 1),
+                      child: Container(
+                        margin: EdgeInsets.only(top: 10, bottom: 10),
+                        width: MediaQuery.of(context).size.width - 40,
+                        height: 50,
+                        child: RaisedButton(
+                          color: state.status.isValidated
+                              ? EpregnancyColors.primer
+                              : EpregnancyColors.primerSoft,
+                          child: Padding(
+                            padding: EdgeInsets.zero,
+                            child: Text(
+                              "Buat Jadwal",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
                             ),
-                            elevation: 8,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(7)),
-                            ),
-                            onPressed: () async {
-                              if(state.status.isValidated) {
-                                Injector.resolve<EventPageBloc>()
-                                    .add(EventAddSubmitted());
-                              }
-                            },
                           ),
+                          elevation: 8,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(7)),
+                          ),
+                          onPressed: () async {
+                            if (state.status.isValidated) {
+                              Injector.resolve<EventPageBloc>()
+                                  .add(EventAddSubmitted());
+                            }
+                          },
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                _Loading(),
-              ],
-            );
-          },
-        ))),
-      ),
+              ),
+              _Loading(),
+            ],
+          );
+        },
+      ))),
     );
   }
 }
@@ -670,12 +667,12 @@ class _ScheduleNameInput extends StatelessWidget {
           onChanged: (value) => Injector.resolve<EventPageBloc>()
               .add(EventScheduleNameChanged(value)),
           decoration: InputDecoration(
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
                 // or whatever
-                height: 1, //
+                height: 1,
                 fontSize: 16,
                 fontWeight: FontWeight
-                    .w700 //                             <----- this was the key
+                    .w700
                 ),
             prefixIcon: consulType == StringConstant.visitHospital
                 ? state.scheduleName.valid
@@ -736,7 +733,19 @@ class _DescInput extends StatelessWidget {
                 fontSize:
                     12 //                                <----- this was the key
                 ),
-            prefixIcon: Icon(Icons.description_outlined),
+            prefixIcon: state.description.valid
+                ? Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: SvgPicture.asset(
+                  'assets/ic_desc.svg',
+                  fit: BoxFit.fitHeight,
+                ))
+                : Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: SvgPicture.asset(
+                  'assets/ic_desc_unselected.svg',
+                  fit: BoxFit.fitHeight,
+                )),
             hintText: 'Deskripsi',
             errorText: state.description.invalid ? 'Tidak boleh kososng' : null,
           ),

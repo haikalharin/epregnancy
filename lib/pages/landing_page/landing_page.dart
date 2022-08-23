@@ -1,3 +1,5 @@
+import 'package:PregnancyApp/common/constants/router_constants.dart';
+import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/landing_page/slider_modal.dart';
 import 'package:PregnancyApp/pages/landing_page/widget/slider_list.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
@@ -98,10 +100,8 @@ class _LandingPageState extends State<LandingPage> {
               onPressed: () async {
                 if (currentIndex == slides.length-1) {
                   // Navigate to next screen
-                   Navigator.pushReplacement(
-                     context,
-                     MaterialPageRoute(builder: (context) => LoginPage()),
-                   );
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(RouteName.homeScreen, (Route<dynamic> route) => false);
 
                 }
                 _controller.nextPage(

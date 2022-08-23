@@ -11,23 +11,19 @@ import '../../model/event_model/event_model.dart';
 import '../../model/room_model/room_model.dart';
 
 class EventEvent {
-
   static Future<List<EventModel>> fetchCategoriEvent({
     String? type,
     String? userId,
-
   }) async {
     List<EventModel> listEvent = [];
     try {
       EventModel? eventModel;
-      if(type == StringConstant.typePersonal){
+      if (type == StringConstant.typePersonal) {
         await FirebaseFirestore.instance
             .collection('EVENTS_PERSONAL')
-            .where('Type', isEqualTo: type)
             .where('Userid', isEqualTo: userId)
             .get()
             .then((querySnapshot) {
-
           if (querySnapshot != null && querySnapshot.docs.isNotEmpty) {
             if (querySnapshot.docs.isNotEmpty) {
               List<QueryDocumentSnapshot> listData = querySnapshot.docs;
@@ -37,10 +33,11 @@ class EventEvent {
                 listEvent.add(eventModel!);
               });
             }
+          } else {
+            listEvent = [];
           }
-        }
-        ).catchError((onError) => print(onError));
-      }else {
+        }).catchError((onError) => print(onError));
+      } else {
         await FirebaseFirestore.instance
             .collection('EVENTS')
             .where('Type', isEqualTo: type)
@@ -55,9 +52,44 @@ class EventEvent {
                 listEvent.add(eventModel!);
               });
             }
+          } else {
+            listEvent = [];
           }
-        }
-        ).catchError((onError) => print(onError));
+        }).catchError((onError) => print(onError));
+      }
+      return listEvent;
+    } catch (e) {
+      print(e);
+      return listEvent;
+    }
+  }
+
+  static Future<List<EventModel>> fetchCategoriEventPersonal({
+    String? type,
+    String? userId,
+  }) async {
+    List<EventModel> listEvent = [];
+    try {
+      EventModel? eventModel;
+      if (type == StringConstant.typePersonal) {
+        await FirebaseFirestore.instance
+            .collection('EVENTS_PERSONAL')
+            .where('Userid', isEqualTo: userId)
+            .get()
+            .then((querySnapshot) {
+          if (querySnapshot != null) {
+            if (querySnapshot.docs.isNotEmpty) {
+              List<QueryDocumentSnapshot> listData = querySnapshot.docs;
+              listData.forEach((element) {
+                final data = getDataValue(element.data());
+                eventModel = EventModel.fromJson(data);
+                listEvent.add(eventModel!);
+              });
+            }
+          }
+        }).catchError((onError) {
+          return listEvent;
+        });
       }
       return listEvent;
     } catch (e) {

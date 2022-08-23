@@ -65,8 +65,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   if (state.isExist == true) {
                     if (state.userModelFirebase!.status ==
                         StringConstant.active) {
-                      Navigator.of(context)
-                          .pushReplacementNamed(RouteName.login);
+                      var snackBar = SnackBar(
+                          content: Text("Akun Telah Terdaftar"),
+                          backgroundColor: Colors.red);
+                      Injector.resolve<SignupBloc>().add(
+                          SignupInitEvent());
+                      Scaffold.of(context).showSnackBar(snackBar);
                     } else {
                       Navigator.of(context).pushNamed(RouteName.surveyPage);
                     }

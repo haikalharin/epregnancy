@@ -184,6 +184,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
       try {
         UserModelFirebase person = await AppSharedPreference.getUserFirebase();
+        UserRolesModelFirebase role = await AppSharedPreference.getUserRoleFirebase();
         final df = DateFormat('yyyyMMdd');
         var dateStart = df.format(state.dateStart ?? DateTime.now());
         var dateEnd = df.format(state.dateEnd ?? DateTime.now());
@@ -209,7 +210,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
               eventid: random,
               consulType: state.consulType.value,
               type: StringConstant.typePersonal,
-              createdDate: DateFormat('yyyyMMdd').format(DateTime.now())));
+              createdDate: DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now())));
         }else {
           response = await EventEvent.addEvent(EventModel(
               title: state.scheduleName.value,
@@ -218,13 +219,13 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
               eventStartDate: dateStart,
               eventEndDate: dateStart,
               time: state.timeString.value,
-              eventid: dateStart,
+              eventid: random,
               consulType: state.consulType.value,
               type: StringConstant.typePersonal,
-              createdDate: DateFormat('yyyyMMdd').format(DateTime.now())));
+              createdDate: DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now())));
         }
         if (response) {
-          yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
+          yield state.copyWith(submitStatus: FormzStatus.submissionSuccess,userModelFirebase:person, role: role);
         } else {
           yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
         }

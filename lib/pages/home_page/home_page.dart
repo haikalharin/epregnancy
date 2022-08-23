@@ -32,19 +32,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   String dateTimeString = "";
   TabController? _tabController;
 
-  void getMyPerson() async {
-    UserModelFirebase userModelFirebase =
-        await AppSharedPreference.getUserFirebase();
-    setState(() {
-      user = userModelFirebase;
-    });
-  }
+
 
   @override
   void initState() {
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
-
     Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
@@ -52,9 +45,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    Injector.resolve<HomePageBloc>().add(HomeInitEvent());
+    // Injector.resolve<HomePageBloc>().add(HomeInitEvent());
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {

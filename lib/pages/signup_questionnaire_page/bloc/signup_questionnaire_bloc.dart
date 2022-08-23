@@ -172,6 +172,7 @@ class SignUpQuestionnaireBloc
         EventUser.addUser(userModelFirebase);
         await Future.delayed(const Duration(seconds: 2));
         await AppSharedPreference.setUserRegister(userModelFirebase);
+        await AppSharedPreference.setUserFirebase(userModelFirebase);
       } else {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,

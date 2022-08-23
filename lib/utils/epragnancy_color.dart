@@ -20,5 +20,7 @@ class EpregnancyColors {
   static const Color coolGreen = Color(0xFF96D9C9);
   static const Color periwinkle = Color(0xFF8775B8);
   static const Color rosePink = Color(0xFFFF9999);
+  static const Color greenMight = Color(0xFF65E3C5);
+  static const Color purple = Color(0xFF8775B8);
 
 }

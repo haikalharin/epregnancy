@@ -61,7 +61,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginDispose event,
       LoginState state,
       ) {
-    return LoginInitial();
+    return state.copyWith(
+        submitStatus: FormzStatus.pure);
   }
 
   Stream<LoginState> _mapLoginInitDataChangedToState(

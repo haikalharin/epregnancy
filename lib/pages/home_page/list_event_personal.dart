@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 
+import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../utils/epragnancy_color.dart';
 import 'bloc/home_page_bloc.dart';
@@ -229,11 +230,7 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
                       borderRadius: BorderRadius.all(Radius.circular(7)),
                     ),
                     onPressed: () async {
-                      TimeOfDay initialTime = TimeOfDay.now();
-                      TimeOfDay? pickedTime = await showTimePicker(
-                        context: context,
-                        initialTime: initialTime,
-                      );
+                      Navigator.of(context).pushNamed(RouteName.chooseTypeEvent);
                     },
                   ),
                 ),

@@ -340,7 +340,7 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
             ),
             SizedBox(width: 8),
             Text(
-              widget.arguments["room"].dateStart == "MIDWIFE"
+              widget.arguments["room"].role == "MIDWIFE"
                   ? "Bidan ${widget.arguments["room"].name!}"
                   : widget.arguments["room"].name!,
               style: TextStyle(fontSize: 18,color: EpregnancyColors.black),

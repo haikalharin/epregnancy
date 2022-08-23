@@ -2,6 +2,7 @@ part of 'event_page_bloc.dart';
 
 class EventPageState with FormzMixin {
   final UserModelFirebase? userModelFirebase;
+  final UserRolesModelFirebase? role;
   final MandatoryFieldValidator consulType;
   final MandatoryFieldValidator scheduleName;
   final MandatoryFieldValidator description;
@@ -35,6 +36,7 @@ class EventPageState with FormzMixin {
       this.dateStart,
       this.dateEnd,
       this.userModelFirebase,
+      this.role,
       this.submitStatus = FormzStatus.pure,
       this.errorMessage});
 
@@ -43,6 +45,7 @@ class EventPageState with FormzMixin {
       MandatoryFieldValidator? consulType,
       MandatoryFieldValidator? scheduleName,
       UserModelFirebase? userModelFirebase,
+      UserRolesModelFirebase? role,
       MandatoryFieldValidator? description,
       MandatoryFieldValidator? dateStartString,
       MandatoryFieldValidator? dateEndString,
@@ -72,6 +75,7 @@ class EventPageState with FormzMixin {
         dateStart: dateStart ?? this.dateStart,
         dateStartString: dateStartString ?? this.dateStartString,
         dateEnd: dateEnd ?? this.dateEnd,
+        role: role ?? this.role,
         dateEndString: dateEndString ?? this.dateEndString,
         userModelFirebase: userModelFirebase ?? this.userModelFirebase,
         errorMessage: errorMessage);
