@@ -1,5 +1,5 @@
 final Map<String, dynamic> environment = <String, dynamic>{
-  'host': 'https://my-json-server.typicode.com/faisalariyanto/demo/',
+  'host': 'http://104.171.119.202:8080/',
   'image_host': 'https://image.tmdb.org/t/p/',
   'http_client': 'http',
   'wpUrl': 'http://192.168.64.2/panjistore',

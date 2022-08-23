@@ -13,7 +13,7 @@ class EpregnancyColors {
   static const Color softRed = Color(0xFFFAF0F1);
   static const Color greyDark = Color(0xFFAFAFAF);
   static const Color grey = Color(0xFFBBBBBB);
-  static const Color white = Color(0xFFF1F1F1);
+  static const Color white = Color(0xFFFFFFFF);
   static const Color green = Color(0xFF21BE1D);
   static const Color softBlue = Color(0xFFF7F9FF);
   static const Color blue = Color(0xFFCDD7EE);
@@ -24,5 +24,7 @@ class EpregnancyColors {
   static const Color blueDark = Color(0xFF3B8AD2);
   static const Color blueClipper = Color(0xFF69A4DB);
   static const Color blueBorder = Color(0xFFE1EEFA);
+  static const Color greenMight = Color(0xFF65E3C5);
+  static const Color purple = Color(0xFF8775B8);
 
 }

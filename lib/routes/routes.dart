@@ -2,6 +2,8 @@ import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/article_page/dashboard_article.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard_midwife.dart';
+import 'package:PregnancyApp/pages/event_page/add_event_page.dart';
+import 'package:PregnancyApp/pages/event_page/choose_type_event_page.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
@@ -57,8 +59,18 @@ class Routes {
       case RouteName.landingPage:
         return MaterialPageRoute(builder: (_) => LandingPage());
       case RouteName.otpPage:
-        return MaterialPageRoute(builder: (_) => OtpPage(userId: getDataValue(settings.arguments)));
+        return MaterialPageRoute(
+            builder: (_) => OtpPage(userId: getDataValue(settings.arguments)));
       case RouteName.verifikasiPage:
+        return MaterialPageRoute(
+            builder: (_) =>
+                VerifikasiPage(userId: getDataValue(settings.arguments)));
+      case RouteName.addEventPage:
+        return MaterialPageRoute(
+            builder: (_) =>
+                AddEventPage(consulType: getDataValue(settings.arguments)));
+      case RouteName.chooseTypeEvent:
+        return MaterialPageRoute(builder: (_) => ChooseTypeEventPage());
         return MaterialPageRoute(builder: (_) => VerifikasiPage(userId: getDataValue(settings.arguments)));
       case RouteName.poinPage:
         return MaterialPageRoute(builder: (_) => PoinPage());
@@ -66,7 +78,7 @@ class Routes {
         return MaterialPageRoute(builder: (_) => PoinActivityPage());
 
 
-    // case RouteName.order:
+      // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());
       // case RouteName.movieDetailScreen:
       //   final MovieDetailArguments arguments = settings.arguments;

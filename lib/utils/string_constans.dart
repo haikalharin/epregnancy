@@ -20,5 +20,8 @@ class StringConstant {
   static const checkInText = 'Check-in untuk mendapatkan 750 poin';
   static const titlePoin = 'Tukar poinmu sekarang';
   static const reedemPoin = 'Reedem Poin';
+  static const consumeMedicine = 'CONSUME MEDICINE';
+  static const visitHospital = 'VISIT HOSPITAL';
+  static const other = 'OTHER';
 
 }

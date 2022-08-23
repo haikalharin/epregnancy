@@ -9,47 +9,18 @@ import 'package:flutter/material.dart';
 import '../../data/model/person_model/person_model.dart';
 import '../../utils/epragnancy_color.dart';
 import 'acara_umum_page.dart';
+import 'list_event_personal.dart';
 
 class TabBarEventPage extends StatefulWidget {
   // static List<ContentPointHistory> listHistory;
-  static List<PersonModel> listHistory = [
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
 
-  ];
   static bool? isEndOfPage;
   static bool? reloadExpiry;
   final String? type;
+  TabController? tabController;
+  final DateTime? dateTime;
 
-   TabBarEventPage({Key? key, this.type}) : super(key: key);
+   TabBarEventPage({Key? key, this.type, this.tabController, this.dateTime}) : super(key: key);
 
   @override
   _TabBarEventPageState createState() => _TabBarEventPageState();
@@ -57,21 +28,17 @@ class TabBarEventPage extends StatefulWidget {
 
 class _TabBarEventPageState extends State<TabBarEventPage>
     with TickerProviderStateMixin {
-  TabController? _tabController;
+
 
   @override
   void initState() {
-    _tabController = TabController(
-        length: 2, vsync: this, initialIndex: widget.type == 'expiry' ? 1 : 0);
-    TabBarEventPage.reloadExpiry = true;
-    TabBarEventPage.listHistory = [];
+
     super.initState();
   }
 
   @override
   void dispose() {
-    TabBarEventPage.reloadExpiry = true;
-    TabBarEventPage.listHistory = [];
+
     super.dispose();
   }
 
@@ -88,7 +55,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                 constraints: BoxConstraints.expand(height: 75),
                 color: Colors.white,
                 child: TabBar(
-                  controller: _tabController,
+                  controller:  widget.tabController,
                   physics: NeverScrollableScrollPhysics(),
                   unselectedLabelStyle: const TextStyle(
                       fontSize: 16,
@@ -124,11 +91,11 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                       child: Container(
                         margin: EdgeInsets.only(top: 20),
                         child: TabBarView(
-                            controller: _tabController,
+                            controller:  widget.tabController,
                             physics: NeverScrollableScrollPhysics(),
                             children:  [
-                              ListEventWidget(tipeAcara: StringConstant.typeEventJadwalUmum),
-                              ListEventWidget(tipeAcara: StringConstant.typeEventJadwalPribadi),
+                              ListEventWidget(tipeAcara: StringConstant.typeEventJadwalUmum,dateTime: widget.dateTime,),
+                              ListEventPersonalWidget(tipeAcara: StringConstant.typeEventJadwalPribadi,dateTime: widget.dateTime,),
                               // AcaraUmumPage(),
                             ]),
                       ),

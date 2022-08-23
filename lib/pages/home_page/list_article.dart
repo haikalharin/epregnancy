@@ -1,10 +1,16 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:PregnancyApp/data/model/article_model/article_model.dart';
 import 'package:PregnancyApp/data/model/person_model/person_model.dart';
 import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../data/firebase/event/event_storage_example.dart';
 import '../../utils/epragnancy_color.dart';
 
 class ListArticle extends StatelessWidget {
@@ -41,6 +47,7 @@ class ListArticle extends StatelessWidget {
                                       article: listArticle![index])));
                         },
                         child: Container(
+                          height: 150,
                           margin:
                           EdgeInsets.only(left: 10, right: 10, top: 10),
                           decoration: listArticle![index].cardImgURL != null &&
@@ -57,6 +64,7 @@ class ListArticle extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: EpregnancyColors.primer),
                           child: Container(
+                            height: 150,
                             padding:
                             EdgeInsets.only(left: 20, right: 20, top: 10),
                             decoration: BoxDecoration(
@@ -140,4 +148,6 @@ class ListArticle extends StatelessWidget {
                 ],
               ));
   }
+
+
 }

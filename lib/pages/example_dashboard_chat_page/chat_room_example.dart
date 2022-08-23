@@ -99,7 +99,7 @@ class _ChatRoomExampleState extends State<ChatRoomExample> with WidgetsBindingOb
         uid: _myPerson!.uid,
       );
       RoomModel roomReceiver = RoomModel(
-        phoneNumber: widget.arguments["room"].phoneNumber,
+        phoneNumber: widget.arguments["room"].scheduleName,
         inRoom: personInRoom,
         lastChat: message,
         lastDateTime: chat.dateTime,
@@ -293,7 +293,7 @@ class _ChatRoomExampleState extends State<ChatRoomExample> with WidgetsBindingOb
             GestureDetector(
               onTap: () {
                 PersonModel person = PersonModel(
-                  phoneNumber:widget.arguments["room"].phoneNumber,
+                  phoneNumber:widget.arguments["room"].scheduleName,
                   name:widget.arguments["room"].name,
                   photo:widget.arguments["room"].photo,
                   token: '',
@@ -330,7 +330,7 @@ class _ChatRoomExampleState extends State<ChatRoomExample> with WidgetsBindingOb
             ),
             SizedBox(width: 8),
             Text(
-             widget.arguments["room"].phoneNumber!,
+             widget.arguments["room"].scheduleName!,
               style: TextStyle(fontSize: 18),
             ),
           ],

@@ -8,6 +8,8 @@ class RegexConstants {
 
   static const String validPhoneRegex =
       r'^[0-9]{8,17}$'; //Phone number should be in range 8 to 17 chars
+  static const String validPhoneFirstNotZeroRegex =
+      r'^[1-9][0-9]*$'; //Phone number
 
   static const String hasSpaceCharacter =
       r' '; //Phone number should be in range 3 to 15 chars
