@@ -13,5 +13,12 @@ class StringConstant {
   static const typePublic = 'PUBLIC';
   static const typeEventJadwalUmum = 'Jadwal Umum';
   static const typeEventJadwalPribadi = 'Jadwal Pribadi';
+  static const poinActivity = 'Aktivitas Poin';
+  static const yourPoin = 'Poin Anda';
+  static const today = 'Hari ini';
+  static const dayCount = 'Hari ke-';
+  static const checkInText = 'Check-in untuk mendapatkan 750 poin';
+  static const titlePoin = 'Tukar poinmu sekarang';
+  static const reedemPoin = 'Reedem Poin';
 
 }

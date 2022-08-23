@@ -249,7 +249,11 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ): Container(),
-                                Container(
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, RouteName.poinPage);
+                                  },
+                                  child:Container(
                                     // decoration: BoxDecoration(
                                     //   border: Border.all(
                                     //     color: EpragnancyColors.pink,
@@ -257,71 +261,72 @@ class _HomePageState extends State<HomePage> {
                                     //   borderRadius: BorderRadius.circular(10.0),
                                     // ),
 
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        color: EpregnancyColors.primerSoft),
-                                    margin: EdgeInsets.only(
-                                        top: 20,
-                                        left: 20,
-                                        right: 20,
-                                        bottom: 20),
-                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(10.0),
+                                          color: EpregnancyColors.primerSoft),
                                       margin: EdgeInsets.only(
-                                        top: 20,
-                                        bottom: 20,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 16),
-                                                child: Container(
+                                          top: 20,
+                                          left: 20,
+                                          right: 20,
+                                          bottom: 20),
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                          top: 20,
+                                          bottom: 20,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  margin:
+                                                  EdgeInsets.only(left: 16),
+                                                  child: Container(
                                                     // margin: EdgeInsets.only(
                                                     //     left: 50, right: 50, bottom: 20),
-                                                    child: const Text(
-                                                  "Menangkan poin untuk tukar hadiah ",
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                  maxLines: 3,
-                                                )),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 16),
-                                                child: Container(
+                                                      child: const Text(
+                                                        "Menangkan poin untuk tukar hadiah ",
+                                                        style:
+                                                        TextStyle(fontSize: 12),
+                                                        maxLines: 3,
+                                                      )),
+                                                ),
+                                                Container(
+                                                  margin:
+                                                  EdgeInsets.only(left: 16),
+                                                  child: Container(
                                                     // margin: EdgeInsets.only(
                                                     //     left: 50, right: 50, bottom: 20),
-                                                    child: const Text(
-                                                  "2.000 POIN ",
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                  maxLines: 3,
-                                                )),
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.only(right: 10),
-                                            child: SvgPicture.asset(
-                                              'assets/ic_trophy.svg',
-                                              fit: BoxFit.fitHeight,
-                                              // height: 200,
-                                              // height: 60,
-                                              // width: 60,
+                                                      child: const Text(
+                                                        "2.000 POIN ",
+                                                        style:
+                                                        TextStyle(fontSize: 12),
+                                                        maxLines: 3,
+                                                      )),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
+                                            Container(
+                                              margin: EdgeInsets.only(right: 10),
+                                              child: SvgPicture.asset(
+                                                'assets/ic_trophy.svg',
+                                                fit: BoxFit.fitHeight,
+                                                // height: 200,
+                                                // height: 60,
+                                                // width: 60,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                )
                               ],
                             ),
                           ],

@@ -23,4 +23,6 @@ class RouteName {
   static const landingPage = '/landingPage';
   static const otpPage = '/otpPage';
   static const verifikasiPage = '/verifikasiPage';
+  static const poinPage = '/poinPage';
+  static const poinActivityPage = '/poinActivityPage';
 }
