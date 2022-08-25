@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
+import 'package:PregnancyApp/data/model/user_mode_api/UserModelApi.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -130,7 +132,6 @@ class SignUpQuestionnaireBloc
             await EventUser.checkUserExist(userid);
         final df = DateFormat('yyyyMMdd');
         String timeNow = df.format(new DateTime.now());
-        if (userExist.userid!.isEmpty) {
           const _chars =
               'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
           Random _rnd = Random();
@@ -141,38 +142,25 @@ class SignUpQuestionnaireBloc
 
           String random = getRandomString(28);
 
-          userModelFirebase = UserModelFirebase(
-              createdDate: timeNow,
-              email: email,
-              name: " ${state.firstName.value} ${state.secondName.value}",
-              status: StringConstant.inActive,
-              uid: random,
-              userid: userid,
-              mobilePhone: phoneNumber,
-              password: state.password.value,
-              birthDate: state.date.value);
-          yield state.copyWith(
-              submitStatus: FormzStatus.submissionSuccess,
-              userModelFirebase: userModelFirebase);
-        } else {
-          userModelFirebase = UserModelFirebase(
-              createdDate: timeNow,
-              email: userExist.email,
-              name: userExist.name,
-              status: userExist.status,
-              uid: userExist.uid,
-              userid: userid,
-              mobilePhone: userExist.mobilePhone,
-              password: userExist.password,
-              birthDate: userExist.birthDate);
-          yield state.copyWith(
-              submitStatus: FormzStatus.submissionSuccess,
-              userModelFirebase: userModelFirebase);
-        }
-        EventUser.addUser(userModelFirebase);
-        await Future.delayed(const Duration(seconds: 2));
-        await AppSharedPreference.setUserRegister(userModelFirebase);
-        await AppSharedPreference.setUserFirebase(userModelFirebase);
+          ResponseModel response = await userRepository.register(UserModelApi(
+            name: "${state.firstName.value} ${state.secondName.value}",
+            username: userid,
+            mobile: phoneNumber,
+            email: email,
+            dob: state.date.value,
+            password: state.password.value,
+          ));
+
+          if(  response != null && response.code == 200){
+            await AppSharedPreference.setUserRegister(response.data);
+            await AppSharedPreference.setUser(response.data);
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionSuccess,
+                userModelApi: response.data);
+          } else{
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionFailure);
+          }
       } else {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,

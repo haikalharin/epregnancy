@@ -83,4 +83,13 @@ ResponseModel<T> {
   static void empty(Map<String, dynamic> json) {
     return;
   }
+
+  static ResponseModel dataEmpty() {
+    return ResponseModel(
+     code: 0,
+      status: '',
+      message: '',
+      data: null,
+    );
+  }
 }

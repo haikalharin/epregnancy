@@ -191,7 +191,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               status: StringConstant.inActive,
               uid: user.uid,
               userid: user.email);
-          await AppSharedPreference.setUserRegister(userModelFirebase);
+          await AppSharedPreference.setUserFirebase(userModelFirebase);
           EventUser.addUser(userModelFirebase);
         } else {
           userModelFirebase = UserModelFirebase(
@@ -203,7 +203,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
         final UserRolesModelFirebase role =
             await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
-        await AppSharedPreference.setUserRegister(userModelFirebase);
         await AppSharedPreference.setUserFirebase(userModelFirebase);
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,

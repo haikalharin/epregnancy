@@ -1,5 +1,7 @@
 
 
+import 'package:PregnancyApp/data/model/user_mode_api/UserModelApi.dart';
+
 import '../../common/network/http/http_client.dart';
 import '../../common/remote/url/service_url.dart';
 import '../../utils/remote_utils.dart';
@@ -14,7 +16,7 @@ class RemoteDataSource {
 
   /***proses***/
   Future<List<UserExampleModel>> fetchUserList() async {
-    final response = await httpClient.get(ServiceUrl.listUser);
+    final response = await httpClient.get(ServiceUrl.login);
     final data = <UserExampleModel>[];
 
     getData(response).forEach((item) {
@@ -45,7 +47,7 @@ class RemoteDataSource {
   }
 
   Future<List<UserExampleModel>> fetchListUser() async {
-    final response = await httpClient.get(ServiceUrl.listKlaster);
+    final response = await httpClient.get(ServiceUrl.login);
 
     ResponseModel<dynamic> res = ResponseModel<UserExampleModel>.fromJson(
         response, UserExampleModel.fromJson);
@@ -56,8 +58,19 @@ class RemoteDataSource {
     return datas;
   }
 
+  Future<ResponseModel> register(UserModelApi user) async {
+    try{
+      final response = await httpClient.post(ServiceUrl.register, user );
+      return ResponseModel.fromJson(response, ResponseModel.empty);
+    } catch(e){
+      return ResponseModel.dataEmpty();
+
+    }
+
+  }
+
   Future<ResponseModel> postUK(Map<String, dynamic> ujiKelayakan) async {
-    final response = await httpClient.post(ServiceUrl.postUK, ujiKelayakan);
+    final response = await httpClient.post(ServiceUrl.login, ujiKelayakan);
     return ResponseModel.fromJson(response, ResponseModel.empty);
   }
 
