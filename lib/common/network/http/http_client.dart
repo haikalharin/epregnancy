@@ -35,7 +35,7 @@ class HttpClient {
     }
 
     // return Uri.http(h, path, queryParameters);
-    return Uri.http(h, ServiceUrl.prefix + "/" + path, queryParameters);
+    return Uri.http(h, path, queryParameters);
   }
 
   dynamic get(String path, {Map<String, String>? queryParameters}) async {
