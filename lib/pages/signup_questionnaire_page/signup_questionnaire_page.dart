@@ -216,7 +216,7 @@ class _OtpPageState extends State<SignUpQuestionnairePage> {
                               // initialDate: DateTime.now().add(const Duration(days: 20)),
                               onDateSelected: (DateTime value) {
                                 String dateTime =
-                                    DateFormat('yyyyMMdd').format(value);
+                                    DateFormat('yyyy-MM-dd').format(value);
 
                                 Injector.resolve<SignUpQuestionnaireBloc>()
                                     .add(SignupDateChanged(dateTime));

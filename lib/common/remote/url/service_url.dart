@@ -6,6 +6,6 @@ class ServiceUrl {
   static String communities = 'communities';
   static String login = 'login';
   static String loginMobile = 'loginMobile';
-  static String register = 'patient/register';
+  static String register = 'user/register';
 
 }

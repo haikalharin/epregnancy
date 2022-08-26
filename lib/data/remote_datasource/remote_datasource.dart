@@ -61,8 +61,9 @@ class RemoteDataSource {
   Future<ResponseModel> register(UserModelApi user) async {
     try{
       final response = await httpClient.post(ServiceUrl.register, user );
-      return ResponseModel.fromJson(response, ResponseModel.empty);
+      return ResponseModel.fromJson(response, UserModelApi.fromJson);
     } catch(e){
+      print("###### $e #######");
       return ResponseModel.dataEmpty();
 
     }

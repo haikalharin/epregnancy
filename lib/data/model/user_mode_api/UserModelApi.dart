@@ -7,6 +7,7 @@ class UserModelApi implements BaseModel{
   String? dob;
   String? mobile;
   String? email;
+  bool? is_patient;
 
   UserModelApi(
       {this.name,
@@ -14,7 +15,9 @@ class UserModelApi implements BaseModel{
       this.password,
       this.dob,
       this.mobile,
-      this.email});
+      this.email,
+      this.is_patient
+      });
 
   static UserModelApi fromJson(Map<String, dynamic> json) {
     return UserModelApi(
@@ -24,6 +27,7 @@ class UserModelApi implements BaseModel{
       dob: json['dob'] ?? '',
       mobile: json['mobile'] ?? '',
       username: json['username'] ?? '',
+      is_patient: json['is_patient'] ?? '',
     );
   }
 
@@ -36,6 +40,7 @@ class UserModelApi implements BaseModel{
     data['dob'] = this.dob;
     data['mobile'] = this.mobile;
     data['email'] = this.email;
+    data['is_patient'] = this.is_patient;
     return data;
   }
 
@@ -52,6 +57,7 @@ class UserModelApi implements BaseModel{
       dob: '',
       mobile: '',
       username: '',
+      is_patient: true,
     );
   }
 }

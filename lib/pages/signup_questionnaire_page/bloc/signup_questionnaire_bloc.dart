@@ -130,8 +130,8 @@ class SignUpQuestionnaireBloc
       if (state.status.isValidated) {
         final UserModelFirebase userExist =
             await EventUser.checkUserExist(userid);
-        final df = DateFormat('yyyyMMdd');
-        String timeNow = df.format(new DateTime.now());
+        final df = DateFormat('yyyy-MM-dd');
+        String dateNow = df.format(new DateTime.now());
           const _chars =
               'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
           Random _rnd = Random();
@@ -149,9 +149,10 @@ class SignUpQuestionnaireBloc
             email: email,
             dob: state.date.value,
             password: state.password.value,
+            is_patient: true
           ));
 
-          if(  response != null && response.code == 200){
+          if(response.code == 200){
             await AppSharedPreference.setUserRegister(response.data);
             await AppSharedPreference.setUser(response.data);
             yield state.copyWith(

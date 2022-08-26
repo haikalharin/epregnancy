@@ -29,9 +29,9 @@ ResponseModel<T> {
   });
 
   ResponseModel.fromJson(Map<String, dynamic> json, T fromJson(Map<String, dynamic> json)) {
-    code = json['statusCode'];
-    status = json['statusMessage'];
-    message = json['errorMessage'];
+    code = json['code'];
+    status = json['status'];
+    message = json['message'];
 
     if (json["data"] != null && fromJson != null) {
       if (json['data'].toString()[0] == "[") {
