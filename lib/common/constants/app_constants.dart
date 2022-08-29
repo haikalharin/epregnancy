@@ -32,6 +32,11 @@ class AppConstants {
 
 // The desktop top padding for a page's first header (e.g. Gallery, Settings)
   static const firstHeaderDesktopTopPadding = 5.0;
+
+  static const String installDateKey = 'INSTALL_DATE';
+
+  // todo delete this static token
+  static const String token = 'Bearer soVFtudILzdqQMiCJzGtyAqXuwYhQXzjh~x!jtujx!!vC=ddTvIHSF.S!kUn';
 }
 
 const kSpacingUnit = 10;

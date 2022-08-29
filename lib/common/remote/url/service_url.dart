@@ -185,4 +185,10 @@ class ServiceUrl {
   static String masterInfoGetRvCollection = 'info';
   static String masterGetRvCollection = 'info/getRv';
   static String postFcmToken = 'notif/setTokenFcm';
+
+  // user
+  static String user = 'user';
+  static String userInfo = '$user/info';
+  static String checkIn = '$user/checkin/';
+
 }

@@ -1,5 +1,8 @@
 
 
+import 'package:PregnancyApp/data/model/point/checkin_response.dart';
+import 'package:PregnancyApp/data/model/user_info/user_info.dart';
+
 import '../../common/network/http/http_client.dart';
 import '../../common/remote/url/service_url.dart';
 import '../../utils/remote_utils.dart';
@@ -66,5 +69,19 @@ class RemoteDataSource {
 
 //    return null;
     return ResponseModel.fromJson(response, ResponseModel.empty);
+  }
+
+  Future<ResponseModel<UserInfo>> getUserInfo() async {
+    final response = await httpClient.get(ServiceUrl.userInfo);
+
+//    return null;
+    return ResponseModel<UserInfo>.fromJson(response, UserInfo.fromJson);
+  }
+
+  Future<ResponseModel<CheckinResponse>> hitCheckInToday(String day) async {
+    final response = await httpClient.post(ServiceUrl.checkIn + day, {});
+
+//    return null;
+    return ResponseModel<CheckinResponse>.fromJson(response, CheckinResponse.fromJson);
   }
 }

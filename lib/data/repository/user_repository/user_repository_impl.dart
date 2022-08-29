@@ -1,4 +1,7 @@
 
+import 'package:PregnancyApp/data/model/point/checkin_response.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
+import 'package:PregnancyApp/data/model/user_info/user_info.dart' as ui;
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../common/exceptions/network_connection_exception.dart';
@@ -65,6 +68,22 @@ class UserRepositoryImpl extends UserRepository {
       return remoteDatasource.login(userName, password);
     // }
     // throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<ui.UserInfo>> getUserInfo() async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.getUserInfo();
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<CheckinResponse>> hitCheckIn(String day) async {
+    if(await networkInfo.isConnected){
+      return remoteDatasource.hitCheckInToday(day);
+    }
+    throw NetworkConnectionException();
   }
 
 }

@@ -2,13 +2,15 @@ import 'dart:async';
 
 import 'package:PregnancyApp/data/firebase/event/event_event.dart';
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
+import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fa;
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -19,6 +21,7 @@ import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/article_model/article_model.dart';
 import '../../../data/model/baby_model/baby_model.dart';
 import '../../../data/model/baby_progress_model/baby_progress_model.dart';
+import '../../../data/model/user_info/user_info.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../data/firebase/event/event_article.dart';
 import '../../../utils/function_utils.dart';
@@ -28,9 +31,10 @@ part 'home_page_event.dart';
 part 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
-  HomePageBloc(this.homeRepository) : super(HomePageInitial());
+  HomePageBloc(this.homeRepository, this.userRepository) : super(HomePageInitial());
 
   final HomeRepository homeRepository;
+  final UserRepository userRepository;
 
   @override
   Stream<HomePageState> mapEventToState(HomePageEvent event) async* {
@@ -44,6 +48,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapArticleFetchEventToState(event, state);
     } else if (event is EventFetchEvent) {
       yield* _mapEventFetchEventToState(event, state);
+    } else if (event is PointFetchEvent) {
+      yield* _mapPointFetchEventToState(event, state);
     }
   }
 
@@ -116,16 +122,37 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
   }
 
-  Stream<HomePageState> _mapArticleFetchEventToState(
-    ArticleFetchEvent event,
+  Stream<HomePageState> _mapPointFetchEventToState(
+      PointFetchEvent event,
     HomePageState state,
   ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, tipe: "fetchtotalPoint");
+    try {
+      final ResponseModel<UserInfo> userInfo = await userRepository.getUserInfo();
+      if(userInfo.code == 200) {
+        await AppSharedPreference.setUserInfo(userInfo.data);
+        yield state.copyWith(
+            status: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.data.totalPointsEarned);
+      }
+    } on HomeErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: e.message);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.toString());
+    }
+  }
+
+  Stream<HomePageState> _mapArticleFetchEventToState(
+      ArticleFetchEvent event,
+      HomePageState state,
+      ) async* {
     yield state.copyWith(
         status: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
       List<ArticleModel> lisArticleFix = [];
-      final List<ArticleModel> lisArticle =
-          await EventArticle.fetchAllArticle();
+      final List<ArticleModel> lisArticle = await EventArticle.fetchAllArticle();
       if (lisArticle.isNotEmpty) {
         for (var i = 0; i < 3; i++) {
           lisArticleFix.add(lisArticle[i]);

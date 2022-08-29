@@ -13,7 +13,8 @@ class _$InjectorConfig extends InjectorConfig {
     container
       ..registerSingleton((c) => LoginExampleBloc(c<UserRepository>()))
       ..registerSingleton((c) => LoginBloc(c<UserRepository>()))
-      ..registerSingleton((c) => HomePageBloc(c<HomeRepository>()))
+      ..registerSingleton(
+          (c) => HomePageBloc(c<HomeRepository>(), c<UserRepository>()))
       ..registerSingleton((c) => SurveyPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => ArticlePageBloc(c<UserRepository>()))
       ..registerSingleton((c) => SignupBloc(c<UserRepository>()))
