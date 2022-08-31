@@ -75,7 +75,7 @@ class Routes {
       case RouteName.poinPage:
         return MaterialPageRoute(builder: (_) => PoinPage(point: getDataValue(settings.arguments)));
       case RouteName.poinActivityPage:
-        return MaterialPageRoute(builder: (_) => PoinActivityPage());
+        return MaterialPageRoute(builder: (_) => PoinActivityPage(point: getDataValue(settings.arguments),));
 
 
       // case RouteName.order:

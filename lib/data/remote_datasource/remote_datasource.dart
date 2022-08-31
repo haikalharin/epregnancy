@@ -1,6 +1,7 @@
 
 
-import 'package:PregnancyApp/data/model/point/checkin_response.dart';
+import 'package:PregnancyApp/data/model/point_model/checkin_response.dart';
+import 'package:PregnancyApp/data/model/point_model/point_history.dart';
 import 'package:PregnancyApp/data/model/user_info/user_info.dart';
 
 import '../../common/network/http/http_client.dart';
@@ -83,5 +84,14 @@ class RemoteDataSource {
 
 //    return null;
     return ResponseModel<CheckinResponse>.fromJson(response, CheckinResponse.fromJson);
+  }
+
+  Future<List<PointHistory>> fetchPointHistory() async {
+    final response = await httpClient.get(ServiceUrl.pointHistory);
+    final data = <PointHistory>[];
+    getData(response).forEach((item) {
+      data.add(PointHistory.fromJson(item));
+    });
+    return data;
   }
 }

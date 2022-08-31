@@ -8,6 +8,9 @@ import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/landing_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
+import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
+import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
+import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
 import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
 import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
@@ -82,6 +85,10 @@ class MyApp extends StatelessWidget {
                 Injector.container.resolve<SplashscreenBloc>()),
         BlocProvider<EventPageBloc>(
             create: (context) => Injector.container.resolve<EventPageBloc>()),
+        BlocProvider<PoinBloc>(
+            create: (context) => Injector.container.resolve<PoinBloc>()),
+        BlocProvider<PointHistoryBloc>(
+            create: (context) => Injector.container.resolve<PointHistoryBloc>()),
       ];
 }
 

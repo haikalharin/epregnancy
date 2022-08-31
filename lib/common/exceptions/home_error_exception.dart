@@ -8,3 +8,12 @@ class HomeErrorException extends AppException {
           message: message,
         );
 }
+
+class PointErrorException extends AppException {
+
+  PointErrorException(String message)
+      : super(
+    error: 'PointErrorException',
+    message: message,
+  );
+}

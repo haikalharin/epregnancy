@@ -190,5 +190,6 @@ class ServiceUrl {
   static String user = 'user';
   static String userInfo = '$user/info';
   static String checkIn = '$user/checkin/';
+  static String pointHistory = '$user/points-history';
 
 }

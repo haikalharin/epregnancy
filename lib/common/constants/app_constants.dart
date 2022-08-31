@@ -36,7 +36,7 @@ class AppConstants {
   static const String installDateKey = 'INSTALL_DATE';
 
   // todo delete this static token
-  static const String token = 'Bearer soVFtudILzdqQMiCJzGtyAqXuwYhQXzjh~x!jtujx!!vC=ddTvIHSF.S!kUn';
+  static const String token = 'Bearer ATcEhij.T,ZxlDv@ZFMzfLeZTWeLopUyT~NrtagC@,._~QZtRYyPCNdKrBIi';
 }
 
 const kSpacingUnit = 10;

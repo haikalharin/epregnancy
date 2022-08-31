@@ -20,7 +20,9 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => SignupBloc(c<UserRepository>()))
       ..registerSingleton((c) => SignUpQuestionnaireBloc(c<UserRepository>()))
       ..registerSingleton((c) => SplashscreenBloc())
-      ..registerSingleton((c) => EventPageBloc());
+      ..registerSingleton((c) => EventPageBloc())
+      ..registerSingleton((c) => PoinBloc(c<UserRepository>()))
+      ..registerSingleton((c) => PointHistoryBloc(c<UserRepository>()));
   }
 
   @override

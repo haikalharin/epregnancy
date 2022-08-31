@@ -22,7 +22,6 @@ class HttpClient {
     // todo delete hardcoded token
     header = {
       'Accept': 'application/json',
-      'Authorization': 'Bearer rVPbWZGecrY,F@KtCqPvDyogupHQz~OKLicQSe~sxrSTuqVTGt~wJXPEOQZq',
       'Content-Type': 'application/json',
     };
   }
@@ -79,7 +78,9 @@ class HttpClient {
 
     String? token = await getToken();
 
-    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    // header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    // TODO REMOVE THIS JUST FOR DEV PURPOSE
+    header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
     final response = await _client!.post(
       _getParsedUrl(path),

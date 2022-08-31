@@ -28,6 +28,7 @@ class EpregnancyColors {
   static const Color purple = Color(0xFF8775B8);
   static const Color blueCircle = Color(0xFFA6CFF5);
   static const Color greyText = Color(0xFFC7C7C7);
+  static const Color redText = Color(0xFFF14336);
 
   //border
   static const Color borderGrey = Color(0xFFE9E9E9);

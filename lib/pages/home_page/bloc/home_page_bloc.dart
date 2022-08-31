@@ -130,6 +130,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         status: FormzStatus.submissionInProgress, tipe: "fetchtotalPoint");
     try {
       final ResponseModel<UserInfo> userInfo = await userRepository.getUserInfo();
+      await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if(userInfo.code == 200) {
         await AppSharedPreference.setUserInfo(userInfo.data);
         yield state.copyWith(
