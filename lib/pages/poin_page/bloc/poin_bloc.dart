@@ -39,10 +39,6 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
     yield state.copyWith(
         status: FormzStatus.submissionInProgress, type: "check-in-event");
     List<CheckInEntity>? _currentEntityList = state.checkInEntityList;
-    // _currentEntityList![state.todayIndex!].done = true;
-    // int newPoint = (state.totalPoint ?? 0) + 750;
-    // // todo just for dummy test
-    // yield state.copyWith(checkInDoneForToday: true, checkInEntityList: _currentEntityList, totalPoint: newPoint);
     try {
       ResponseModel<CheckinResponse> checkInResponse =
           await userRepository.hitCheckIn(event.day.toString());
