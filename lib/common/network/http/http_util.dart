@@ -22,6 +22,8 @@ class HttpUtil {
     switch (response.statusCode) {
       case 200:
         return _getSuccessResponse(response);
+      case 400:
+        return _getSuccessResponse(response);
       default:
         throw ServerErrorException(
           getErrorResult(json.decode(response.body)),

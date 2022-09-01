@@ -74,7 +74,7 @@ class HttpClient {
 
     debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
     debugPrint('>>>>>>> [HEADER] ${header.toString()}');
-    debugPrint('>>>>>>> [DATA] ${data.toString()}');
+    debugPrint('>>>>>>> [DATA] ${ json.encode(data).toString()}');
 
     String? token = await getToken();
 

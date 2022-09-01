@@ -18,7 +18,7 @@ class RemoteDataSource {
 
   /***proses***/
   Future<List<UserExampleModel>> fetchUserList() async {
-    final response = await httpClient.get(ServiceUrl.listUser);
+    final response = await httpClient.get(ServiceUrl.login);
     final data = <UserExampleModel>[];
 
     getData(response).forEach((item) {
@@ -49,7 +49,7 @@ class RemoteDataSource {
   }
 
   Future<List<UserExampleModel>> fetchListUser() async {
-    final response = await httpClient.get(ServiceUrl.listKlaster);
+    final response = await httpClient.get(ServiceUrl.login);
 
     ResponseModel<dynamic> res = ResponseModel<UserExampleModel>.fromJson(
         response, UserExampleModel.fromJson);
@@ -61,7 +61,7 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel> postUK(Map<String, dynamic> ujiKelayakan) async {
-    final response = await httpClient.post(ServiceUrl.postUK, ujiKelayakan);
+    final response = await httpClient.post(ServiceUrl.login, ujiKelayakan);
     return ResponseModel.fromJson(response, ResponseModel.empty);
   }
 
