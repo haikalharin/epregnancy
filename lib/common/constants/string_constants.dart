@@ -45,6 +45,10 @@ const initialIndex = 0;
 const timeZoneCharacter = 'Z';
 const bulletCode = '\u2022';
 
+// poin
+const yourPoin = 'Poin Anda Sekarang';
+const checkInToday = 'Check-in hari ini dan kumpulkan ';
+
 class CommonTextConstants {
   static const send = 'common.text.send';
   static const check = 'common.text.check';

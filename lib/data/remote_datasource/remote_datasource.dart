@@ -1,6 +1,10 @@
 import 'package:PregnancyApp/data/baby_model_api/baby_Model_api.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
 
+import 'package:PregnancyApp/data/model/point_model/checkin_response.dart';
+import 'package:PregnancyApp/data/model/point_model/point_history.dart';
+import 'package:PregnancyApp/data/model/user_info/user_info.dart';
+
 import '../../common/network/http/http_client.dart';
 import '../../common/remote/url/service_url.dart';
 import '../../utils/remote_utils.dart';
@@ -137,5 +141,28 @@ class RemoteDataSource {
 
 //    return null;
     return ResponseModel.fromJson(response, ResponseModel.empty);
+  }
+
+  Future<ResponseModel<UserInfo>> getUserInfo() async {
+    final response = await httpClient.get(ServiceUrl.userInfo);
+
+//    return null;
+    return ResponseModel<UserInfo>.fromJson(response, UserInfo.fromJson);
+  }
+
+  Future<ResponseModel<CheckinResponse>> hitCheckInToday(String day) async {
+    final response = await httpClient.post(ServiceUrl.checkIn + day, {});
+
+//    return null;
+    return ResponseModel<CheckinResponse>.fromJson(response, CheckinResponse.fromJson);
+  }
+
+  Future<List<PointHistory>> fetchPointHistory() async {
+    final response = await httpClient.get(ServiceUrl.pointHistory);
+    final data = <PointHistory>[];
+    getData(response).forEach((item) {
+      data.add(PointHistory.fromJson(item));
+    });
+    return data;
   }
 }

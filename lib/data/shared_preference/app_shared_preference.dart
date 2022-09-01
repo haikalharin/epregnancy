@@ -12,6 +12,7 @@ import '../model/baby_progress_model/baby_progress_model.dart';
 import '../model/person_model/person_model.dart';
 import '../model/user_example_model/user_example_model.dart';
 import '../model/user_model_api/user_model_api.dart';
+import '../model/user_info/user_info.dart';
 import '../model/user_roles_model_firebase/user_roles_model_firebase.dart';
 
 class AppSharedPreference {
@@ -24,6 +25,8 @@ class AppSharedPreference {
   static final String _person = "person";
 
   static final String bmSignature = "bm_signature";
+
+  static final String checkIn = "checkin";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -53,6 +56,20 @@ class AppSharedPreference {
   }
 
   static setUserRegister(UserModelApi data) async {
+  static setUserInfo(UserInfo data) async {
+    String json = jsonEncode(data.toJson());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(checkIn, json);
+  }
+
+  static Future<UserInfo> getUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(checkIn);
+    Map<String, dynamic> map = jsonDecode(json!);
+    return UserInfo.fromJson(map);
+  }
+
+  static setUserRegister(UserModelFirebase data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_userRegister, json);
@@ -61,7 +78,7 @@ class AppSharedPreference {
   static Future<String> getUsernameRegisterUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? data = prefs.getString(_usernameRegister);
-    return data!;
+    return data ?? '';
   }
 
   static setUsernameRegisterUser(String data) async {

@@ -185,4 +185,8 @@ class ServiceUrl {
   static String masterInfoGetRvCollection = 'info';
   static String masterGetRvCollection = 'info/getRv';
   static String postFcmToken = 'notif/setTokenFcm';
+
+  //SERVICE URL EPREGNANCY
+
+
 }

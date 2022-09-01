@@ -33,6 +33,13 @@ class ArticleFetchEvent extends HomePageEvent {
   List<Object> get props => [];
 }
 
+class PointFetchEvent extends HomePageEvent {
+  const PointFetchEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class EventFetchEvent extends HomePageEvent {
   const EventFetchEvent(this.type, this.date);
   final String type;

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:PregnancyApp/common/constants/app_constants.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -19,6 +20,7 @@ class HttpClient {
 
    HttpClient() {
     _client = Client();
+    // todo delete hardcoded token
     header = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -44,7 +46,10 @@ class HttpClient {
 
     String? token = await getToken();
 
-    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    // header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+
+    // TODO DO NOT USE THIS STATIC TOKEN FOR PROD
+    header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
     final response = await _client
         !.get(
@@ -74,7 +79,9 @@ class HttpClient {
 
     String? token = await getToken();
 
-    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    // header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    // TODO REMOVE THIS JUST FOR DEV PURPOSE
+    header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
     final response = await _client!.post(
       _getParsedUrl(path),
