@@ -26,14 +26,18 @@ class _SurveyPageState extends State<SurveyPage> {
   Color color2 = Colors.black;
   bool _value = false;
   String condition = "";
+  bool isPregnant = false;
+  bool isPlanningPregnancy = false;
+  bool isHaveBaby = false;
   int val = -1;
   int val2 = -1;
-@override
+
+  @override
   void dispose() {
-  Injector.resolve<SurveyPageBloc>()
-      .add(const SurveyInitEvent());
-  super.dispose();
+    Injector.resolve<SurveyPageBloc>().add(const SurveyInitEvent());
+    super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     if (isPage1) {
@@ -76,13 +80,11 @@ class _SurveyPageState extends State<SurveyPage> {
                 SnackBar(content: Text("failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-           if(isChoice ==1) {
-             Navigator.of(context).pushNamed(RouteName.surveyPageBaby);
-           } else{
-             Navigator.of(context).pushNamed(RouteName.login
-             );
-
-           }
+            if (isChoice == 1) {
+              Navigator.of(context).pushNamed(RouteName.surveyPageBaby);
+            } else {
+              Navigator.of(context).pushNamed(RouteName.login);
+            }
             // Navigator.of(context).pushNamedAndRemoveUntil(
             //                 RouteName.homeScreen,
             //                 ModalRoute.withName(RouteName.homeScreen),
@@ -117,7 +119,8 @@ class _SurveyPageState extends State<SurveyPage> {
                               child: Center(
                                 child: Container(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         margin: EdgeInsets.only(left: 30),
@@ -167,185 +170,220 @@ class _SurveyPageState extends State<SurveyPage> {
                                   ),
                                   isPage1
                                       ? Container(
-                                        margin: EdgeInsets.only(top: 30),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          // mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  isChoice = 1;
-                                                  condition = 'PREGNANT';
-                                                });
-                                              },
-                                              child: Container(
-                                                  decoration:  isChoice == 1
-                                                      ? BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(8.0),
-                                                      color: EpregnancyColors.primer)
-                                                      : BoxDecoration(
-                                                    border: Border.all(
-                                                      color: EpregnancyColors.primerSoft,
-                                                    ),
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                  ),
-                                                  margin:
-                                                      const EdgeInsets.only(
-                                                          right: 30,
-                                                          left: 30,
-                                                          bottom: 30),
-                                                  child: Container(
-                                                    margin: const EdgeInsets
-                                                            .only(
-                                                        top: 25,
-                                                        bottom: 25,
-                                                        left: 20,
-                                                        right: 20),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Container(
-                                                          // margin: EdgeInsets.only(left: 20),
-                                                          child: Text(
-                                                            "Ya ",
-                                                            style: TextStyle(
-                                                              color: isChoice == 1
-                                                                  ?Colors.white:Colors.black ,
-                                                                fontSize:
-                                                                    14),
-                                                            maxLines: 3,
+                                          margin: EdgeInsets.only(top: 30),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            // mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    isChoice = 1;
+                                                    isPregnant = true;
+                                                  });
+                                                },
+                                                child: Container(
+                                                    decoration: isChoice == 1
+                                                        ? BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            color:
+                                                                EpregnancyColors
+                                                                    .primer)
+                                                        : BoxDecoration(
+                                                            border: Border.all(
+                                                              color:
+                                                                  EpregnancyColors
+                                                                      .primerSoft,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  isChoice = 2;
-                                                  condition =
-                                                      'NOT PREGNANT';
-                                                });
-                                              },
-                                              child: Container(
-                                                  decoration: isChoice == 2
-                                                      ? BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(8.0),
-                                                      color: EpregnancyColors.primer)
-                                                      : BoxDecoration(
-                                                    border: Border.all(
-                                                      color: EpregnancyColors.primerSoft,
-                                                    ),
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                  ),
-                                                  margin:
-                                                      const EdgeInsets.only(
-                                                          right: 30,
-                                                          left: 30,
-                                                          bottom: 30),
-                                                  child: Container(
-                                                    margin: const EdgeInsets
-                                                            .only(
-                                                        top: 25,
-                                                        bottom: 25,
-                                                        left: 20,
-                                                        right: 20),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Expanded(
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .only(
-                                                                    left:
-                                                                        20,
-                                                                    right:
-                                                                        20),
-                                                            child:
-                                                                 Text(
-                                                              "Tidak, tapi saya sedang merencanakannya ",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            right: 30,
+                                                            left: 30,
+                                                            bottom: 30),
+                                                    child: Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 25,
+                                                              bottom: 25,
+                                                              left: 20,
+                                                              right: 20),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                            // margin: EdgeInsets.only(left: 20),
+                                                            child: Text(
+                                                              "Ya ",
                                                               style: TextStyle(
-                                                                color: isChoice == 2
-                                                                    ?Colors.white:Colors.black ,
-                                                                  fontSize:
-                                                                      14),
+                                                                  color: isChoice ==
+                                                                          1
+                                                                      ? Colors
+                                                                          .white
+                                                                      : Colors
+                                                                          .black,
+                                                                  fontSize: 14),
                                                               maxLines: 3,
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  isChoice = 3;
-                                                  condition =
-                                                      'POST MATERNITY';
-                                                });
-                                              },
-                                              child: Container(
-                                                  decoration: isChoice == 3
-                                                      ? BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(8.0),
-                                                      color: EpregnancyColors.primer)
-                                                      : BoxDecoration(
-                                                    border: Border.all(
-                                                      color: EpregnancyColors.primerSoft,
-                                                    ),
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                  ),
-                                                  margin:
-                                                      const EdgeInsets.only(
-                                                          right: 30,
-                                                          left: 30,
-                                                          bottom: 30),
-                                                  child: Container(
-                                                    margin: const EdgeInsets
-                                                            .only(
-                                                        top: 25,
-                                                        bottom: 25,
-                                                        left: 20,
-                                                        right: 20),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Container(
-                                                          margin: EdgeInsets
-                                                              .only(
-                                                                  left: 20,
-                                                                  right:
-                                                                      20),
-                                                          child:  Text(
-                                                            "Saya sudah punya bayi ",
-                                                            style: TextStyle(
-                                                              color:  isChoice == 3
-                                                                  ?Colors.white:Colors.black ,
-                                                                fontSize:
-                                                                    14),
-                                                            maxLines: 3,
+                                                        ],
+                                                      ),
+                                                    )),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    isChoice = 2;
+                                                    isPlanningPregnancy = true;
+                                                  });
+                                                },
+                                                child: Container(
+                                                    decoration: isChoice == 2
+                                                        ? BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            color:
+                                                                EpregnancyColors
+                                                                    .primer)
+                                                        : BoxDecoration(
+                                                            border: Border.all(
+                                                              color:
+                                                                  EpregnancyColors
+                                                                      .primerSoft,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )),
-                                            ),
-                                          ],
-                                        ),
-                                      )
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            right: 30,
+                                                            left: 30,
+                                                            bottom: 30),
+                                                    child: Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 25,
+                                                              bottom: 25,
+                                                              left: 20,
+                                                              right: 20),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left: 20,
+                                                                      right:
+                                                                          20),
+                                                              child: Text(
+                                                                "Tidak, tapi saya sedang merencanakannya ",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    color: isChoice ==
+                                                                            2
+                                                                        ? Colors
+                                                                            .white
+                                                                        : Colors
+                                                                            .black,
+                                                                    fontSize:
+                                                                        14),
+                                                                maxLines: 3,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    isChoice = 3;
+                                                    isHaveBaby = true;
+                                                  });
+                                                },
+                                                child: Container(
+                                                    decoration: isChoice == 3
+                                                        ? BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            color:
+                                                                EpregnancyColors
+                                                                    .primer)
+                                                        : BoxDecoration(
+                                                            border: Border.all(
+                                                              color:
+                                                                  EpregnancyColors
+                                                                      .primerSoft,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            right: 30,
+                                                            left: 30,
+                                                            bottom: 30),
+                                                    child: Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 25,
+                                                              bottom: 25,
+                                                              left: 20,
+                                                              right: 20),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    left: 20,
+                                                                    right: 20),
+                                                            child: Text(
+                                                              "Saya sudah punya bayi ",
+                                                              style: TextStyle(
+                                                                  color: isChoice ==
+                                                                          3
+                                                                      ? Colors
+                                                                          .white
+                                                                      : Colors
+                                                                          .black,
+                                                                  fontSize: 14),
+                                                              maxLines: 3,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                              ),
+                                            ],
+                                          ),
+                                        )
                                       : Container(),
                                 ],
                               ),
@@ -357,8 +395,7 @@ class _SurveyPageState extends State<SurveyPage> {
                   ),
                   Container(
                     child: Column(
-                      mainAxisAlignment:
-                      MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
                           "2 dari 4",
@@ -371,43 +408,31 @@ class _SurveyPageState extends State<SurveyPage> {
                         Align(
                           alignment: Alignment(0, 1),
                           child: Container(
-                            margin: EdgeInsets.only(
-                                top: 10, bottom: 10),
-                            width: MediaQuery.of(context)
-                                .size
-                                .width -
-                                40,
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            width: MediaQuery.of(context).size.width - 40,
                             height: 50,
                             child: RaisedButton(
-                              color: condition != ""
-                                  ? EpregnancyColors
-                                  .primer
+                              color: isChoice != 0
+                                  ? EpregnancyColors.primer
                                   : Colors.grey.shade200,
                               child: Padding(
                                 padding: EdgeInsets.zero,
                                 child: Text(
                                   "Selanjutnya",
                                   style: TextStyle(
-                                      fontSize: 16,
-                                      color:
-                                      Colors.white),
+                                      fontSize: 16, color: Colors.white),
                                 ),
                               ),
                               elevation: 8,
-                              shape:
-                              const RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                 borderRadius:
-                                BorderRadius.all(
-                                    Radius.circular(
-                                        7)),
+                                    BorderRadius.all(Radius.circular(7)),
                               ),
                               onPressed: () async {
                                 if (isChoice != 0) {
-                                  Injector.resolve<
-                                      SurveyPageBloc>()
-                                      .add(
-                                      SurveyAddDataEvent(
-                                          condition));
+                                  Injector.resolve<SurveyPageBloc>().add(
+                                      SurveyAddDataEvent(isPregnant,
+                                          isPlanningPregnancy, isHaveBaby));
                                 }
                               },
                             ),

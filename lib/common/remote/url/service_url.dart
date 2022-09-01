@@ -6,6 +6,7 @@ class ServiceUrl {
   static String communities = 'communities';
   static String login = 'login';
   static String loginMobile = 'loginMobile';
-  static String register = 'user/register';
+  static String user = 'user';
+  static String baby = 'user-baby';
 
 }

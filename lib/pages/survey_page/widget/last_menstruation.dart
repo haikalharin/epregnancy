@@ -166,7 +166,7 @@ class LastMenstruation extends StatelessWidget {
                               onDateSelected:
                                   (DateTime value) {
                                 String dateTime =
-                                DateFormat('yyyyMMdd')
+                                DateFormat('yyyy-MM-dd')
                                     .format(value);
                                 Injector.resolve<
                                     SurveyPageBloc>()

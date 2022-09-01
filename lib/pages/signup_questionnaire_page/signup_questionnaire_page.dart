@@ -32,8 +32,9 @@ class _OtpPageState extends State<SignUpQuestionnairePage> {
       body: BlocListener<SignUpQuestionnaireBloc, SignUpQuestionnaireState>(
         listener: (context, state) {
           if (state.submitStatus == FormzStatus.submissionFailure) {
-            const snackBar =
-                SnackBar(content: Text("Mohon lengkapi data"), backgroundColor: Colors.red);
+            var message = state.errorMessage?? '';
+             final snackBar =
+                SnackBar(content: Text(message), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
             Navigator.of(context).pushNamed(RouteName.surveyPage);

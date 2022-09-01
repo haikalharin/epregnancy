@@ -4,6 +4,8 @@ import '../../../common/exceptions/network_connection_exception.dart';
 import '../../../common/network/network_info.dart';
 import '../../firebase/event/event_user.dart';
 import '../../model/baby_model/baby_model.dart';
+import '../../model/response_model/response_model.dart';
+import '../../model/user_model_api/user_model_api.dart';
 import '../../model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../remote_datasource/remote_datasource.dart';
 import '../../shared_preference/app_shared_preference.dart';
@@ -36,4 +38,14 @@ class HomeRepositoryImpl extends HomeRepository {
     }
     throw NetworkConnectionException();
   }
+
+  @override
+  Future<ResponseModel> getBaby(UserModelApi user) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.getBaby(user);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
 }

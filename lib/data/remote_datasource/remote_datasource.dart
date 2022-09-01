@@ -1,18 +1,17 @@
-
-
-import 'package:PregnancyApp/data/model/user_mode_api/UserModelApi.dart';
+import 'package:PregnancyApp/data/baby_model_api/baby_Model_api.dart';
+import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
 
 import '../../common/network/http/http_client.dart';
 import '../../common/remote/url/service_url.dart';
 import '../../utils/remote_utils.dart';
 import '../model/response_model/response_model.dart';
 import '../model/user_example_model/user_example_model.dart';
+import '../model/user_model_api/signup_quest_request.dart';
 
 class RemoteDataSource {
   final HttpClient httpClient;
 
-  RemoteDataSource({ required this.httpClient});
-
+  RemoteDataSource({required this.httpClient});
 
   /***proses***/
   Future<List<UserExampleModel>> fetchUserList() async {
@@ -29,21 +28,23 @@ class RemoteDataSource {
   Future<bool> login(String userName, String password) async {
     bool data = false;
 
-    if (userName == "haikal" && password == "admin"){
+    if (userName == "haikal" && password == "admin") {
       data = true;
-    } else{
+    } else {
       data = false;
     }
 
     return data;
   }
 
-  Future<ResponseModel<UserExampleModel>> loginOnine(UserExampleModel userModel) async {
+  Future<ResponseModel<UserExampleModel>> loginOnine(
+      UserExampleModel userModel) async {
     final response =
-    await httpClient.post(ServiceUrl.loginMobile, userModel.toLoginJson());
+        await httpClient.post(ServiceUrl.loginMobile, userModel.toLoginJson());
 
 //    return null;
-    return ResponseModel<UserExampleModel>.fromJson(response, UserExampleModel.fromJson);
+    return ResponseModel<UserExampleModel>.fromJson(
+        response, UserExampleModel.fromJson);
   }
 
   Future<List<UserExampleModel>> fetchListUser() async {
@@ -59,24 +60,80 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel> register(UserModelApi user) async {
-    try{
-      final response = await httpClient.post(ServiceUrl.register, user );
+    try {
+      final response =
+          await httpClient.post(ServiceUrl.user + '/register', user);
       return ResponseModel.fromJson(response, UserModelApi.fromJson);
-    } catch(e){
-      print("###### $e #######");
+    } catch (e) {
       return ResponseModel.dataEmpty();
-
     }
-
   }
+
+  Future<ResponseModel> updateUser(SignupQuestRequest user) async {
+    try {
+      final response =
+      await httpClient.put(ServiceUrl.user + '/update', user);
+      return ResponseModel.fromJson(response, UserModelApi.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+  Future<ResponseModel> saveBaby(BabyModelApi baby) async {
+    try {
+      final response =
+      await httpClient.post(ServiceUrl.baby + '/save', baby);
+      return ResponseModel.fromJson(response, BabyModelApi.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+  Future<ResponseModel> updateBaby(BabyModelApi baby) async {
+    try {
+      final response =
+      await httpClient.post(ServiceUrl.baby + '/update', baby);
+      return ResponseModel.fromJson(response, BabyModelApi.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> updateQuestioner(UserModelApi user) async {
+    try {
+      final response = await httpClient.put(ServiceUrl.user + '/update', user);
+      return ResponseModel.fromJson(response, UserModelApi.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> getBaby(UserModelApi userModelApi) async {
+    try {
+      final response =
+      await httpClient.post(ServiceUrl.baby + '/save' + "?user_id =${userModelApi.id}"  ,null);
+      return ResponseModel.fromJson(response, BabyModelApi.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+
+
+
+
+
+
+
+
 
   Future<ResponseModel> postUK(Map<String, dynamic> ujiKelayakan) async {
     final response = await httpClient.post(ServiceUrl.login, ujiKelayakan);
     return ResponseModel.fromJson(response, ResponseModel.empty);
   }
 
-  Future<ResponseModel> verifikasiOrKoreksi(UserExampleModel userModel, String ukRegNo) async {
-    final response = await httpClient.put(ServiceUrl.login +"/"+ ukRegNo, userModel.toJson());
+  Future<ResponseModel> verifikasiOrKoreksi(
+      UserExampleModel userModel, String ukRegNo) async {
+    final response = await httpClient.put(
+        ServiceUrl.login + "/" + ukRegNo, userModel.toJson());
 
 //    return null;
     return ResponseModel.fromJson(response, ResponseModel.empty);

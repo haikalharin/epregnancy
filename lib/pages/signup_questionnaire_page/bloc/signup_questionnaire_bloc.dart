@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
-import 'package:PregnancyApp/data/model/user_mode_api/UserModelApi.dart';
+import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -149,18 +149,18 @@ class SignUpQuestionnaireBloc
             email: email,
             dob: state.date.value,
             password: state.password.value,
-            is_patient: true
+            isPatient: true
           ));
 
           if(response.code == 200){
-            await AppSharedPreference.setUserRegister(response.data);
             await AppSharedPreference.setUser(response.data);
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
                 userModelApi: response.data);
           } else{
             yield state.copyWith(
-                submitStatus: FormzStatus.submissionFailure);
+                submitStatus: FormzStatus.submissionFailure,
+            errorMessage: response.message);
           }
       } else {
         yield state.copyWith(

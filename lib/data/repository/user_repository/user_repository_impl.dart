@@ -1,4 +1,6 @@
-import 'package:PregnancyApp/data/model/user_mode_api/UserModelApi.dart';
+import 'package:PregnancyApp/data/baby_model_api/baby_Model_api.dart';
+import 'package:PregnancyApp/data/model/user_model_api/signup_quest_request.dart';
+import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../common/exceptions/network_connection_exception.dart';
@@ -40,9 +42,36 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<ResponseModel> register(user) async {
+  Future<ResponseModel> register(UserModelApi user) async {
     if (await networkInfo.isConnected) {
       ResponseModel responseModel = await remoteDatasource.register(user);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> updateQuestioner(SignupQuestRequest user) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.updateUser(user);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> saveQuestionerBaby(BabyModelApi baby) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.saveBaby(baby);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> getBaby(UserModelApi user) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.getBaby(user);
       return responseModel;
     }
     throw NetworkConnectionException();

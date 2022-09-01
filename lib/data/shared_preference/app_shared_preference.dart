@@ -11,7 +11,7 @@ import '../model/baby_model/baby_model.dart';
 import '../model/baby_progress_model/baby_progress_model.dart';
 import '../model/person_model/person_model.dart';
 import '../model/user_example_model/user_example_model.dart';
-import '../model/user_mode_api/UserModelApi.dart';
+import '../model/user_model_api/user_model_api.dart';
 import '../model/user_roles_model_firebase/user_roles_model_firebase.dart';
 
 class AppSharedPreference {
@@ -96,7 +96,7 @@ class AppSharedPreference {
 
   static Future<UserModelApi> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString(_userRegister);
+    String? json = prefs.getString(_user);
     Map<String, dynamic> map = jsonDecode(json!);
     return UserModelApi.fromJson(map);
   }
@@ -104,7 +104,7 @@ class AppSharedPreference {
   static setUser(UserModelApi data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_userRegister, json);
+    prefs.setString(_user, json);
   }
 
   static Future<UserRolesModelFirebase> getUserRoleFirebase() async {

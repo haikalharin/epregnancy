@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -112,6 +113,6 @@ class HttpClient {
     final userString = prefs.getString('user');
     if (userString == null) return null;
     Map <String, dynamic> userMap = jsonDecode(userString);
-    return UserExampleModel.fromJson(userMap).token;
+    return UserModelApi.fromJson(userMap).token;
   }
 }
