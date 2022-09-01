@@ -8,4 +8,10 @@ class ServiceUrl {
   static String loginMobile = 'loginMobile';
   static String register = 'user/register';
 
+  // user
+  static String user = 'user';
+  static String userInfo = '$user/info';
+  static String checkIn = '$user/checkin/';
+  static String pointHistory = '$user/points-history';
+
 }

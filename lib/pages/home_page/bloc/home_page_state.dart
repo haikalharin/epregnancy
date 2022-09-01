@@ -15,6 +15,7 @@ class HomePageState {
   final List<EventModel>? listEvent;
   final List<EventModel>? listEventPersonal;
   final ArticleModel? articleModel;
+  final int? totalPointsEarned;
   final String? errorMessage;
 
   HomePageState({this.user,
@@ -31,6 +32,7 @@ class HomePageState {
     this.eventDateString,
     this.eventDate,
     this.articleModel,
+    this.totalPointsEarned,
     this.errorMessage});
 
   HomePageState copyWith({FormzStatus? status,
@@ -47,6 +49,7 @@ class HomePageState {
     String? weeks,
     String? eventDateString,
     DateTime? eventDate,
+    int? totalPointsEarned,
     String? errorMessage}) {
     return HomePageState(
         status: status ?? this.status,
@@ -63,6 +66,7 @@ class HomePageState {
         weeks: weeks ?? this.weeks,
         eventDateString: eventDateString ?? this.eventDateString,
         eventDate: eventDate ?? this.eventDate,
+        totalPointsEarned: totalPointsEarned ?? this.totalPointsEarned,
         errorMessage: errorMessage);
   }
 

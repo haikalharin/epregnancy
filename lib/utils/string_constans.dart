@@ -18,10 +18,15 @@ class StringConstant {
   static const today = 'Hari ini';
   static const dayCount = 'Hari ke-';
   static const checkInText = 'Check-in untuk mendapatkan 750 poin';
+  static const checkInDone = 'Check-in lagi besok untuk dapatkan 750 poin';
   static const titlePoin = 'Tukar poinmu sekarang';
   static const reedemPoin = 'Reedem Poin';
   static const consumeMedicine = 'CONSUME MEDICINE';
   static const visitHospital = 'VISIT HOSPITAL';
   static const other = 'OTHER';
+
+  //poin
+  static const amap = 'sebanyak-banyaknya ';
+  static const point = 'Poin';
 
 }
