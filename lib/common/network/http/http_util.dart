@@ -24,6 +24,14 @@ class HttpUtil {
         return _getSuccessResponse(response);
       case 400:
         return _getSuccessResponse(response);
+      case 404:
+        return _getSuccessResponse(response);
+      case 402:
+        return _getSuccessResponse(response);
+      case 405:
+        return _getSuccessResponse(response);
+      case 500:
+        return _getSuccessResponse(response);
       default:
         throw ServerErrorException(
           getErrorResult(json.decode(response.body)),

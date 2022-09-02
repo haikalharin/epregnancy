@@ -10,6 +10,7 @@ class ServiceUrl {
 
   // user
   static String user = 'user';
+  static String baby = 'user-baby';
   static String userInfo = '$user/info';
   static String checkIn = '$user/checkin/';
   static String pointHistory = '$user/points-history';

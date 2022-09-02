@@ -9,9 +9,11 @@ abstract class SurveyPageEvent extends Equatable{
 }
 
 class SurveyAddDataEvent extends SurveyPageEvent {
-  const SurveyAddDataEvent(this.condition);
+  const SurveyAddDataEvent(this.isPregnant, this.isPlanningPregnancy, this.isHaveBaby);
 
-  final String condition;
+  final bool isPregnant;
+  final bool isPlanningPregnancy;
+  final bool isHaveBaby;
 
 
   @override
