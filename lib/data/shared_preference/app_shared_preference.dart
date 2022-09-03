@@ -55,7 +55,7 @@ class AppSharedPreference {
     return UserModelApi.fromJson(map);
   }
 
-  static setUserRegister(UserModelApi data) async {
+
   static setUserInfo(UserInfo data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
