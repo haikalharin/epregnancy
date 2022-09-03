@@ -66,7 +66,7 @@ class RemoteDataSource {
   Future<ResponseModel> register(UserModelApi user) async {
     try {
       final response =
-          await httpClient.post(ServiceUrl.user + '/register', user);
+          await httpClient.post(ServiceUrl.register, user);
       return ResponseModel.fromJson(response, UserModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -76,7 +76,7 @@ class RemoteDataSource {
   Future<ResponseModel> updateUser(SignupQuestRequest user) async {
     try {
       final response =
-      await httpClient.put(ServiceUrl.user + '/update', user);
+      await httpClient.put(ServiceUrl.updateUser, user);
       return ResponseModel.fromJson(response, UserModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -85,7 +85,7 @@ class RemoteDataSource {
   Future<ResponseModel> saveBaby(BabyModelApi baby) async {
     try {
       final response =
-      await httpClient.post(ServiceUrl.baby + '/save', baby);
+      await httpClient.post(ServiceUrl.saveBaby, baby);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -94,7 +94,7 @@ class RemoteDataSource {
   Future<ResponseModel> updateBaby(BabyModelApi baby) async {
     try {
       final response =
-      await httpClient.post(ServiceUrl.baby + '/update', baby);
+      await httpClient.post(ServiceUrl.updateBaby, baby);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -103,7 +103,7 @@ class RemoteDataSource {
 
   Future<ResponseModel> updateQuestioner(UserModelApi user) async {
     try {
-      final response = await httpClient.put(ServiceUrl.user + '/update', user);
+      final response = await httpClient.put(ServiceUrl.updateQuestioner, user);
       return ResponseModel.fromJson(response, UserModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -113,7 +113,17 @@ class RemoteDataSource {
   Future<ResponseModel> getBaby(UserModelApi userModelApi) async {
     try {
       final response =
-      await httpClient.post(ServiceUrl.baby + '/save' + "?user_id =${userModelApi.id}"  ,null);
+      await httpClient.post(ServiceUrl.saveBaby + "?user_id =${userModelApi.id}"  ,null);
+      return ResponseModel.fromJson(response, BabyModelApi.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> requestOtp(UserModelApi userModelApi) async {
+    try {
+      final response =
+      await httpClient.post(ServiceUrl.requestOtp ,null);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();

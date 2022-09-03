@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                 margin:
                                                 EdgeInsets.only(bottom: 10),
                                                 child: Text(
-                                                  state.baby!.babyName!,
+                                                  state.baby!.name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.white,
