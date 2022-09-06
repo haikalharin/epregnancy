@@ -1,5 +1,6 @@
 
 
+import 'package:PregnancyApp/data/model/games_model/games_response.dart';
 import 'package:PregnancyApp/data/model/point_model/checkin_response.dart';
 import 'package:PregnancyApp/data/model/point_model/point_history.dart';
 import 'package:PregnancyApp/data/model/user_info/user_info.dart';
@@ -91,6 +92,15 @@ class RemoteDataSource {
     final data = <PointHistory>[];
     getData(response).forEach((item) {
       data.add(PointHistory.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<List<GamesResponse>> fetchGameList() async {
+    final response = await httpClient.get(ServiceUrl.gameList);
+    final data = <GamesResponse>[];
+    getData(response).forEach((item) {
+      data.add(GamesResponse.fromJson(item));
     });
     return data;
   }

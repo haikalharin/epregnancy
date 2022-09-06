@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/email_verification_page/email_verification_page.dart';
 import 'package:PregnancyApp/pages/event_page/add_event_page.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
+import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
+import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/landing_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
@@ -23,6 +27,7 @@ import 'package:PregnancyApp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'common/configurations/configurations.dart';
@@ -37,6 +42,9 @@ import 'utils/simple_bloc_observer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  }
   await Firebase.initializeApp();
   InjectorConfig.setup();
   WidgetsFlutterBinding.ensureInitialized();
@@ -95,7 +103,11 @@ class MyApp extends StatelessWidget {
         BlocProvider<PoinBloc>(
             create: (context) => Injector.container.resolve<PoinBloc>()),
         BlocProvider<PointHistoryBloc>(
-            create: (context) => Injector.container.resolve<PointHistoryBloc>()),
+            create: (context) =>
+                Injector.container.resolve<PointHistoryBloc>()),
+        BlocProvider<GamesBloc>(
+            create: (context) =>
+                Injector.container.resolve<GamesBloc>()),
       ];
 }
 

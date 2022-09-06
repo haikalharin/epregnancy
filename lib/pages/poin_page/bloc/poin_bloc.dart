@@ -76,7 +76,7 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
       String? installDate =
           await AppSharedPreference.getString(AppConstants.installDateKey);
       DateTime startDate =
-          DateFormatter.dateFormatForCheckinFilter.parse(installDate!);
+          DateFormatter.dateFormatForCheckinFilter.parse(installDate ?? DateTime.now().toString());
       String today =
           DateFormatter.dateFormatForCheckinFilter.format(DateTime.now());
       bool checkInDoneForToday = false;

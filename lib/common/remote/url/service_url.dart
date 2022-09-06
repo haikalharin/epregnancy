@@ -14,4 +14,8 @@ class ServiceUrl {
   static String checkIn = '$user/checkin/';
   static String pointHistory = '$user/points-history';
 
+  //game
+  static String game = 'game';
+  static String gameList = '$game/list';
+
 }

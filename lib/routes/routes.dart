@@ -15,6 +15,7 @@ import 'package:PregnancyApp/pages/profile_page/profile_nakes_page/profile_nakes
 import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page_baby.dart';
+import 'package:PregnancyApp/pages/webview_page/webview_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
@@ -22,6 +23,7 @@ import 'package:http/http.dart';
 import '../common/constants/router_constants.dart';
 import '../pages/chat_page/chat_page.dart';
 import '../pages/chat_page/chat_room.dart';
+import '../pages/games_page/games_page.dart';
 import '../pages/landing_page/landing_page.dart';
 import '../pages/login_page/login_page.dart';
 import '../utils/remote_utils.dart';
@@ -85,6 +87,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => PoinPage(point: getDataValue(settings.arguments)));
       case RouteName.poinActivityPage:
         return MaterialPageRoute(builder: (_) => PoinActivityPage(point: getDataValue(settings.arguments),));
+      case RouteName.gamesPage:
+        return MaterialPageRoute(builder: (_) => GamesPage());
+      case RouteName.webViewPage:
+        return MaterialPageRoute(builder: (_) => WebViewPage(url: getDataValue(settings.arguments)));
 
 
       // case RouteName.order:

@@ -28,6 +28,7 @@ class StringConstant {
   //poin
   static const amap = 'sebanyak-banyaknya ';
   static const point = 'Poin';
+  static const claimPoint = 'Klaim Poin';
 
   static const baru = 'Baru';
   static const onGoing = 'Sedang Berlangsung';
@@ -44,5 +45,13 @@ class StringConstant {
   static const profileChange = 'Ganti Profil';
   static const passwordChange = 'Ganti Kata Sandi';
   static const logout = 'Keluar';
+
+  //game
+  static const games = 'Games';
+  static const playGames = 'Mainkan Games';
+  static const playGamesDesc = 'Mainkan game dan kumpulkan';
+  static const playGameDescCon = 'ketika bermain';
+  static const playNow = 'Mainkan Sekarang';
+
 
 }
