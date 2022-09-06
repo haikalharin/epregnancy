@@ -5,11 +5,13 @@ import 'package:PregnancyApp/pages/chat_page/dashboard_midwife.dart';
 import 'package:PregnancyApp/pages/event_page/add_event_page.dart';
 import 'package:PregnancyApp/pages/event_page/choose_type_event_page.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
+import 'package:PregnancyApp/pages/nakes_page/dashboard_nakes_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/otp_page/verifikasi_page.dart';
 import 'package:PregnancyApp/pages/poin_page/poin_activity_page.dart';
 import 'package:PregnancyApp/pages/poin_page/poin_page.dart';
+import 'package:PregnancyApp/pages/profile_page/profile_nakes_page/profile_nakes_page.dart';
 import 'package:PregnancyApp/pages/signup_page/signup_page.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page.dart';
 import 'package:PregnancyApp/pages/survey_page/survey_page_baby.dart';
@@ -44,7 +46,8 @@ class Routes {
       case RouteName.navBar:
         return MaterialPageRoute(
             builder: (_) => NavbarPage(
-                  role: getDataValue(settings.arguments),
+                  role: getRoleArgument(settings.arguments),
+                  initalIndex: getInitialIndex(settings.arguments),
                 ));
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());
@@ -65,6 +68,10 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) =>
                 VerifikasiPage(userId: getDataValue(settings.arguments)));
+      case RouteName.dashboardNakesPage:
+        return MaterialPageRoute(
+            builder: (_) =>
+                DashBoardNakesPage(userName: getDataValue(settings.arguments)));
       case RouteName.addEventPage:
         return MaterialPageRoute(
             builder: (_) =>
@@ -72,6 +79,8 @@ class Routes {
       case RouteName.chooseTypeEvent:
         return MaterialPageRoute(builder: (_) => ChooseTypeEventPage());
         return MaterialPageRoute(builder: (_) => VerifikasiPage(userId: getDataValue(settings.arguments)));
+      case RouteName.profileNakesPage:
+        return MaterialPageRoute(builder: (_) => ProfileNakesPage());
       case RouteName.poinPage:
         return MaterialPageRoute(builder: (_) => PoinPage(point: getDataValue(settings.arguments)));
       case RouteName.poinActivityPage:

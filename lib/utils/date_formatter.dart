@@ -7,4 +7,6 @@ class DateFormatter {
 
   static  DateFormat dateFormatHistory =  DateFormat('dd MMM yyyy . hh:mm');
 
+  static  DateFormat dateFormatWithSpace =  DateFormat('d MMMM yyyy');
+
 }

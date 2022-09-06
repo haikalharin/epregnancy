@@ -24,6 +24,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'common/configurations/configurations.dart';
 import 'common/injector/injector.dart';
 import 'common/injector/injector_config.dart';
@@ -48,19 +49,25 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: _getProviders(),
-        child: const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Epregnancy App',
-          home: SplashscreenPage(),
-          onGenerateRoute: Routes.generateRoute,
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-        ));
+    return ScreenUtilInit(
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MultiBlocProvider(
+              providers: _getProviders(),
+              child: const MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Epregnancy App',
+                home: SplashscreenPage(),
+                onGenerateRoute: Routes.generateRoute,
+                localizationsDelegates: [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+              ));
+        });
   }
 
   List<BlocProvider> _getProviders() => [

@@ -66,12 +66,18 @@ class _LoginPageState extends State<LoginPage> {
                     if (state.userModelFirebase!.status ==
                         StringConstant.active) {
                       if (state.role!.role == 'MIDWIFE') {
+                        // Navigator.of(context).pushReplacementNamed(
+                        //     RouteName.navBar,
+                        //     arguments: state.role!.role);
+
+                        // todo handel login from API
                         Navigator.of(context).pushReplacementNamed(
-                            RouteName.navBar,
-                            arguments: state.role!.role);
+                          RouteName.dashboardNakesPage,
+                          arguments: state.userModelFirebase?.name
+                        );
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed(RouteName.navBar);
+                            .pushReplacementNamed(RouteName.navBar, arguments: {'role': state.role!.role, 'inital_index': 0});
                       }
                     } else {
                       Navigator.of(context)

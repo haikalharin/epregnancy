@@ -20,7 +20,8 @@ bool isChangeIndex = false;
 
 class NavbarPage extends StatefulWidget {
   String? role = StringConstant.patient;
-  NavbarPage({Key? key, this.role}) : super(key: key);
+  final int? initalIndex;
+  NavbarPage({Key? key, this.role, this.initalIndex}) : super(key: key);
 
   // final UserModel bottomUserModelData;
 
@@ -47,8 +48,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
       widget.role == StringConstant.midwife
           ? Scaffold(
         resizeToAvoidBottomInset: false,
-          body: _buildWidgetBodyMidwife(),
-          bottomNavigationBar: _bottomNavigatorBarMidwife()) :
+          body: _buildWidgetBodyMidwife()) :
       Scaffold(
         resizeToAvoidBottomInset: false,
         body: _buildWidgetBody(),
@@ -280,7 +280,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
   Widget _buildWidgetBodyMidwife() {
     switch (indexSelected) {
       case 0:
-        return DashboardMidwife();
+        return DashboardMidwife(initialIndex: widget.initalIndex ?? 0);
       case 1:
         return LogoutPage();
       default:
