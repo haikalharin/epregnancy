@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:PregnancyApp/common/constants/app_constants.dart';
-import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
+import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/user_example_model/user_example_model.dart';
+import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../configurations/configurations.dart';
 import '../../remote/url/service_url.dart';
 import '../http_constants.dart';
@@ -46,10 +47,10 @@ class HttpClient {
 
     String? token = await getToken();
 
-    // header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
 
     // TODO DO NOT USE THIS STATIC TOKEN FOR PROD
-    header![HttpHeaders.authorizationHeader] = AppConstants.token;
+    // header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
     final response = await _client
         !.get(
@@ -79,9 +80,9 @@ class HttpClient {
 
     String? token = await getToken();
 
-    // header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
-    header![HttpHeaders.authorizationHeader] = AppConstants.token;
+    // header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
     final response = await _client!.post(
       _getParsedUrl(path),
@@ -117,9 +118,8 @@ class HttpClient {
 
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    final userString = prefs.getString('user');
+    final userString = prefs.getString(AppSharedPreference.token);
     if (userString == null) return null;
-    Map <String, dynamic> userMap = jsonDecode(userString);
-    return UserModelApi.fromJson(userMap).token;
+    return userString;
   }
 }

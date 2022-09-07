@@ -19,10 +19,10 @@ class SignUpQuestionnairePageTwo extends StatefulWidget {
   final String? title;
 
   @override
-  _OtpPageState createState() => _OtpPageState();
+  _SignUpQuestionnairePageTwo createState() => _SignUpQuestionnairePageTwo();
 }
 
-class _OtpPageState extends State<SignUpQuestionnairePageTwo> {
+class _SignUpQuestionnairePageTwo extends State<SignUpQuestionnairePageTwo> {
 
   DateTime? selectedDate;
 

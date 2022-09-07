@@ -27,4 +27,5 @@ class RouteName {
   static const chooseTypeEvent = '/chooseTypeEvent';
   static const poinPage = '/poinPage';
   static const poinActivityPage = '/poinActivityPage';
+  static const signUpQuestionnairePage = '/signUpQuestionnairePage';
 }

@@ -27,7 +27,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
       listener: (context, state) {
       if (state.submitStatus == FormzStatus.submissionSuccess) {
         if(state.isExist){
-          Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: state.role!.role);
+          Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: state.role);
         } else{
           Navigator.of(context).pushReplacementNamed(RouteName.login);
 

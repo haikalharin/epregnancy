@@ -1,7 +1,7 @@
 part of 'splash_screen_bloc.dart';
 
 class SplashscreenState {
-  final UserRolesModelFirebase? role;
+  final String? role;
   final bool isExist;
   final FormzStatus submitStatus;
   final String? errorMessage;
@@ -16,7 +16,7 @@ class SplashscreenState {
   SplashscreenState copyWith(
       {FormzStatus? submitStatus,
         bool? isExist,
-        UserRolesModelFirebase? role,
+        String? role,
         String? errorMessage}) {
     return SplashscreenState(
         submitStatus: submitStatus ?? this.submitStatus,

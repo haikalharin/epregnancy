@@ -53,6 +53,9 @@ class LoginPasswordChanged extends LoginEvent {
 class LoginSubmitted extends LoginEvent {
   const LoginSubmitted();
 }
+class LoginRequestOtp extends LoginEvent {
+  const LoginRequestOtp();
+}
 class LoginWithGoogleSubmitted extends LoginEvent {
   const LoginWithGoogleSubmitted();
 }

@@ -22,7 +22,9 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => SplashscreenBloc())
       ..registerSingleton((c) => EventPageBloc())
       ..registerSingleton((c) => PoinBloc(c<UserRepository>()))
-      ..registerSingleton((c) => PointHistoryBloc(c<UserRepository>()));
+      ..registerSingleton((c) => PointHistoryBloc(c<UserRepository>()))
+      ..registerSingleton((c) => OtpPageBloc(c<UserRepository>()))
+      ..registerSingleton((c) => LandingPageBloc(c<UserRepository>()));
   }
 
   @override

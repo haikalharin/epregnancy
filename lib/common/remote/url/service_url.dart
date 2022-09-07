@@ -9,7 +9,7 @@ class ServiceUrl {
   static String userInfo = '$user/info';
   static String checkIn = '$user/checkin/';
   static String pointHistory = '$user/points-history';
-  static String login = 'login';
+  static String login = '$user/login';
   static String loginMobile = 'loginMobile';
   static String register = '$user/register';
   static String updateUser = '$user/update';
@@ -21,6 +21,11 @@ class ServiceUrl {
   static String baby = 'user-baby';
   static String saveBaby = '$baby/save';
   static String updateBaby = '$baby/update';
+  static String listBaby = '$baby/list';
+
+  //article
+static String article = 'article';
+static String listArticle = '$article/list';
 
 
 }

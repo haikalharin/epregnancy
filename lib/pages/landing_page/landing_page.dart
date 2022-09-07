@@ -1,13 +1,19 @@
 import 'package:PregnancyApp/common/constants/router_constants.dart';
+import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/landing_page/slider_modal.dart';
 import 'package:PregnancyApp/pages/landing_page/widget/slider_list.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
+import '../../common/injector/injector.dart';
+import '../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../login_page/login_page.dart';
 import '../navbar_page/bottom_nav.dart';
+import 'bloc/landing_page_bloc.dart';
 
 
 class LandingPage extends StatefulWidget {
@@ -37,86 +43,110 @@ class _LandingPageState extends State<LandingPage> {
     super.dispose();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: PageView.builder(
-              controller: _controller,
-              scrollDirection: Axis.horizontal,
-              onPageChanged: (value) {
-                setState(() {
-                  currentIndex = value;
-                });
-              },
-              itemCount: slides.length,
-              // itemBuilder: (BuildContext context, int index) {
-              itemBuilder: (context, index) {
-                return SliderList(
-                  image: slides[index].getImage(),
-                  title: slides[index].getTitle(),
-                  description: slides[index].getDescription(),
-                );
-              },
-            ),
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                slides.length,
-                (index) => buildDot(index, context),
-              ),
-            ),
-          ),
-          Container(
-            // height: 60,
-            // margin: EdgeInsets.all(40),
-            // width: double.infinity,
-            // color: Color.fromRGBO(255, 127, 144, 1),
-            // child: TextButton(onPressed: () {
-            //   if(currentIndex == slides.length - 1) {
-            //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginExamplePage()));
-            //   }
-            // },
-            // child: Text(
-            //   currentIndex == slides.length - 1 ? "Selanjutnya": "Mulai Sekarang", style: TextStyle(color: Colors.white)
-            // ),
-            // ),
-            height: 60,
-            margin: EdgeInsets.all(40),
-            width: double.infinity,
-            color: EpregnancyColors.primer,
+      body: BlocListener<LandingPageBloc, LandingPageState>(
+        listener: (context, state) {
+          if (state.submitStatus == FormzStatus.submissionFailure) {
+            const snackBar = SnackBar(
+                content: Text("failed"), backgroundColor: Colors.red);
+            Scaffold.of(context).showSnackBar(snackBar);
+          } else if (state.submitStatus ==
+              FormzStatus.submissionSuccess) {
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil(
+                RouteName.otpPage, (Route<dynamic> route) => false);
 
-            // Button
-            child: FlatButton(
-              color: EpregnancyColors.primer,
-              child: Text(currentIndex == slides.length -1
-                  ? "Mulai Sekarang"
-                  : "Selanjutnya"),
-              onPressed: () async {
-                if (currentIndex == slides.length-1) {
-                  // Navigate to next screen
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(RouteName.homeScreen, (Route<dynamic> route) => false);
+          }
+        },
+        child: BlocBuilder<LandingPageBloc, LandingPageState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                Column(
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                        controller: _controller,
+                        scrollDirection: Axis.horizontal,
+                        onPageChanged: (value) {
+                          setState(() {
+                            currentIndex = value;
+                          });
+                        },
+                        itemCount: slides.length,
+                        // itemBuilder: (BuildContext context, int index) {
+                        itemBuilder: (context, index) {
+                          return SliderList(
+                            image: slides[index].getImage(),
+                            title: slides[index].getTitle(),
+                            description: slides[index].getDescription(),
+                          );
+                        },
+                      ),
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          slides.length,
+                              (index) => buildDot(index, context),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      // height: 60,
+                      // margin: EdgeInsets.all(40),
+                      // width: double.infinity,
+                      // color: Color.fromRGBO(255, 127, 144, 1),
+                      // child: TextButton(onPressed: () {
+                      //   if(currentIndex == slides.length - 1) {
+                      //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginExamplePage()));
+                      //   }
+                      // },
+                      // child: Text(
+                      //   currentIndex == slides.length - 1 ? "Selanjutnya": "Mulai Sekarang", style: TextStyle(color: Colors.white)
+                      // ),
+                      // ),
+                      height: 60,
+                      margin: EdgeInsets.all(40),
+                      width: double.infinity,
+                      color: EpregnancyColors.primer,
 
-                }
-                _controller.nextPage(
-                    duration: Duration(milliseconds: 100),
-                    curve: Curves.bounceIn);
-              },
-              textColor: Colors.white,
+                      // Button
+                      child: FlatButton(
+                        color: EpregnancyColors.primer,
+                        child: Text(currentIndex == slides.length - 1
+                            ? "Mulai Sekarang"
+                            : "Selanjutnya"),
+                        onPressed: () async {
+                          if (currentIndex == slides.length - 1) {
+                            // Navigate to next screen
+                            Injector.resolve<LandingPageBloc>().add(LoginRequestOtp());
+                          }
+                          _controller.nextPage(
+                              duration: Duration(milliseconds: 100),
+                              curve: Curves.bounceIn);
+                        },
+                        textColor: Colors.white,
 
-              // Border radius to button
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
-              ),
-            ),
-          ),
-        ],
+                        // Border radius to button
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                _Loading()
+              ],
+            );
+          },
+        ),
       ),
       backgroundColor: EpregnancyColors.primerSoft,
     );
@@ -129,10 +159,23 @@ class _LandingPageState extends State<LandingPage> {
       margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color:  EpregnancyColors.primer,
+        color: EpregnancyColors.primer,
       ),
     );
   }
 }
-
+class _Loading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LandingPageBloc, LandingPageState>(builder: (context, state) {
+      if (state.submitStatus == FormzStatus.submissionInProgress) {
+        return Container(
+            color: Colors.white.withAlpha(90),
+            child: Center(child: CircularProgressIndicator()));
+      } else {
+        return Text("");
+      }
+    });
+  }
+}
 

@@ -10,6 +10,10 @@ abstract class OtpPageEvent extends Equatable{
   List<Object> get props => [];
 }
 
+class LoginRequestOtp extends OtpPageEvent {
+  const LoginRequestOtp();
+}
+
 class OtpNumberChanged extends OtpPageEvent {
   const OtpNumberChanged(this.otp);
 

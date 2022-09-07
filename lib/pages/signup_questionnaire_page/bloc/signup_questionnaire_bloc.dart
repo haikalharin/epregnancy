@@ -1,25 +1,25 @@
 import 'dart:math';
 
-import 'package:PregnancyApp/data/model/response_model/response_model.dart';
-import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
-import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
-import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
 
-import '../../../../common/validators/phone_validator.dart';
 import '../../../common/exceptions/login_error_exception.dart';
 import '../../../common/validators/confirmPassword_validator.dart';
 import '../../../common/validators/mandatory_field_validator.dart';
 import '../../../common/validators/password_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
+import '../../../data/model/response_model/response_model.dart';
+import '../../../data/model/user_model_api/user_model.dart';
+import '../../../data/model/user_model_firebase/user_model_firebase.dart';
+import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
-import '../../../utils/string_constans.dart';
-import '../../Signup_page/model/email_address.dart';
+
+
+
+
 
 part 'signup_questionnaire_event.dart';
 
@@ -142,7 +142,7 @@ class SignUpQuestionnaireBloc
 
           String random = getRandomString(28);
 
-          ResponseModel response = await userRepository.register(UserModelApi(
+          ResponseModel response = await userRepository.register(UserModel(
             name: "${state.firstName.value} ${state.secondName.value}",
             username: userid,
             mobile: phoneNumber,
@@ -153,10 +153,12 @@ class SignUpQuestionnaireBloc
           ));
 
           if(response.code == 200){
-            await AppSharedPreference.setUser(response.data);
+            UserModel userModel = response.data;
+            await AppSharedPreference.setUserRegister(userModel);
+            await AppSharedPreference.setString(AppSharedPreference.token,userModel.token??'');
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
-                userModelApi: response.data);
+                userModel: response.data);
           } else{
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionFailure,

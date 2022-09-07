@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             fontWeight: FontWeight.bold,
                                             color: EpregnancyColors.primer)),
                                   ),
-                                    state.role != null && state.role!.condition == StringConstant.pregnant ? Container(
+                                    state.user != null && state.user!.isPregnant == true ? Container(
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(15.0),
                                           color: EpregnancyColors.primer),
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                 margin:
                                                 EdgeInsets.only(bottom: 10),
                                                 child: Text(
-                                                  state.baby!.name!,
+                                                  state.baby!.first.name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.white,

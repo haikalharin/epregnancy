@@ -1,4 +1,4 @@
-import '../model/base_model/base_model.dart';
+import '../base_model/base_model.dart';
 
 class BabyModelApi implements BaseModel {
   String? id;

@@ -22,6 +22,7 @@ import '../pages/chat_page/chat_page.dart';
 import '../pages/chat_page/chat_room.dart';
 import '../pages/landing_page/landing_page.dart';
 import '../pages/login_page/login_page.dart';
+import '../pages/signup_questionnaire_page/signup_questionnaire_page.dart';
 import '../utils/remote_utils.dart';
 
 class Routes {
@@ -76,6 +77,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => PoinPage(point: getDataValue(settings.arguments)));
       case RouteName.poinActivityPage:
         return MaterialPageRoute(builder: (_) => PoinActivityPage(point: getDataValue(settings.arguments),));
+
+  case RouteName.signUpQuestionnairePage:
+        return MaterialPageRoute(builder: (_) => const SignUpQuestionnairePage());
 
 
       // case RouteName.order:

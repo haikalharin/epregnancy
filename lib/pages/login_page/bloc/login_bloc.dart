@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:PregnancyApp/data/model/login_model/login_model.dart';
+import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -19,6 +22,7 @@ import '../../../../data/shared_preference/app_shared_preference.dart';
 import '../../../common/services/auth_service.dart';
 import '../../../common/validators/mandatory_field_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
+import '../../../data/model/user_model_api/user_model.dart';
 import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../../utils/string_constans.dart';
 import '../../example_dashboard_chat_page/login_example_page/model/username.dart';
@@ -42,13 +46,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield _mapPhoneNumberChangedToState(event, state);
     } else if (event is LoginPasswordChanged) {
       yield _mapPasswordChangedToState(event, state);
-
     } else if (event is LoginDispose) {
       yield _mapLoginDispose(event, state);
     } else if (event is LoginInitDataChanged) {
       yield* _mapLoginInitDataChangedToState(event, state);
     } else if (event is LoginSubmitted) {
       yield* _mapLoginSubmittedToState(event, state);
+    } else if (event is LoginRequestOtp) {
+      yield* _mapLoginRequestOtpToState(event, state);
     } else if (event is LoginWithGoogleSubmitted) {
       yield* _mapLoginWithGoogleSubmittedToState(event, state);
     } else if (event is LoginSubmittedWithNumberPhone) {
@@ -58,25 +63,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   LoginState _mapLoginDispose(
-      LoginDispose event,
-      LoginState state,
-      ) {
-    return state.copyWith(
-        submitStatus: FormzStatus.pure);
+    LoginDispose event,
+    LoginState state,
+  ) {
+    return state.copyWith(submitStatus: FormzStatus.pure, typeEvent: '');
   }
 
   Stream<LoginState> _mapLoginInitDataChangedToState(
-      LoginInitDataChanged event,
-      LoginState state,
-      ) async* {
-
+    LoginInitDataChanged event,
+    LoginState state,
+  ) async* {
     final userNameData = await AppSharedPreference.getUsernameRegisterUser();
     final userName = MandatoryFieldValidator.dirty(userNameData);
 
-      yield state.copyWith(
-          username: userName);
-
-
+    yield state.copyWith(username: userName);
   }
 
   LoginState _mapPhoneNumberChangedToState(
@@ -88,16 +88,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       phoneNumber: phoneNumber,
     );
   }
-  LoginState _mapUsernameChangedToState(
-      LoginUsernameChanged event,
-      LoginState state,
-      ) {
-    final userName = MandatoryFieldValidator.dirty(event.userName);
-    return state.copyWith(
-      username: userName
-    );
-  }
 
+  LoginState _mapUsernameChangedToState(
+    LoginUsernameChanged event,
+    LoginState state,
+  ) {
+    final userName = MandatoryFieldValidator.dirty(event.userName);
+    return state.copyWith(username: userName);
+  }
 
   LoginState _mapPasswordChangedToState(
     LoginPasswordChanged event,
@@ -143,25 +141,61 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      UserModelFirebase userModelFirebase =
-          await EventUser.checkUser(state.username.value, state.password.value);
+      ResponseModel response = await userRepository.login(LoginModel(
+          username: state.username.value, password: state.password.value));
+      UserModel userModel = response.data ?? const UserModel() ;
 
-      // await Future.delayed(const Duration(seconds: 5));
-      if (userModelFirebase.uid!.isNotEmpty) {
-        await AppSharedPreference.setUserFirebase(userModelFirebase);
-        final UserRolesModelFirebase role =
-            await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
+      if (response.code == 200) {
+        await AppSharedPreference.setUserRegister(response.data);
+        bool isActive = false;
+        if (userModel.isPatient == true) {
+          if (userModel.isHaveBaby != false ||
+              userModel.isPregnant != false ||
+              userModel.isPlanningPregnancy != false) {
+            isActive = true;
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionSuccess,
+                userModel: response.data,
+                isActive: isActive);
+          } else {
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionSuccess,
+                userModel: response.data,
+                isActive: isActive);
+          }
+        }
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,
-            userModelFirebase: userModelFirebase,
-            role: role);
+            userModel: response.data, isActive: true);
       } else {
-        final username = MandatoryFieldValidator.dirty(state.username.value);
-        final password = Password.dirty(state.password.value);
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
+    } on LoginErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    }
+  }
+
+  Stream<LoginState> _mapLoginRequestOtpToState(
+    LoginRequestOtp event,
+    LoginState state,
+  ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    try {
+      ResponseModel response = await userRepository
+          .requestOtp(OtpModel(email: state.userModel?.email));
+      OtpModel otpModel = response.data;
+      if (response.code == 200) {
+        await AppSharedPreference.setString(
+            AppSharedPreference.otp, otpModel.otp ?? '');
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionFailure,
-            username: username,
-            password: password);
+            submitStatus: FormzStatus.submissionSuccess,
+            typeEvent: StringConstant.requestOtp);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     } on LoginErrorException catch (e) {
       print(e);
@@ -207,7 +241,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,
             userModelFirebase: userModelFirebase,
-        role: role);
+            role: role);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }

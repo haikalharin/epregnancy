@@ -62,28 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.submitStatus ==
                     FormzStatus.submissionSuccess) {
-                  if (state.isExist == true) {
-                    if (state.userModelFirebase!.status ==
-                        StringConstant.active) {
-                      var snackBar = SnackBar(
-                          content: Text("Akun Telah Terdaftar"),
-                          backgroundColor: Colors.red);
-                      Injector.resolve<SignupBloc>().add(
-                          SignupInitEvent());
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    } else {
-                      Navigator.of(context).pushNamed(RouteName.surveyPage);
-                    }
-                  } else {
-                    if (state.userId!.contains('@')) {
-                      Navigator.of(context).pushNamed(RouteName.verifikasiPage,
-                          arguments: state.userId);
-                    } else {
-                      Navigator.of(context).pushNamed(RouteName.otpPage,
-                          arguments: state.userId);
-                    }
-                  }
-                }
+                  Navigator.of(context).pushNamed(RouteName.signUpQuestionnairePage);}
               },
               child: Stack(
                 children: [
