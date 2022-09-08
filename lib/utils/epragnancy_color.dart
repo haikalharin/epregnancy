@@ -29,8 +29,14 @@ class EpregnancyColors {
   static const Color blueCircle = Color(0xFFA6CFF5);
   static const Color greyText = Color(0xFFC7C7C7);
   static const Color redText = Color(0xFFF14336);
+  static const Color greyDarkFontColor = Color(0xFF7A7E80);
 
   //border
   static const Color borderGrey = Color(0xFFE9E9E9);
+  static const Color greyDivider = Color(0xFFF2F4F5);
+  static const Color gameGradient1 = Color(0XFF4715D0);
+  static const Color gameGradient2 = Color(0XFFA59BE2);
+
+  static const Color orange = Color(0XFFFF9C39);
 
 }

@@ -23,4 +23,8 @@ class ServiceUrl {
   static String updateBaby = '$baby/update';
 
 
+  //game
+  static String game = 'game';
+  static String gameList = '$game/list';
+
 }

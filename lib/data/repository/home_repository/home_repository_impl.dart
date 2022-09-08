@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/games_model/games_response.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 
 import '../../../common/exceptions/network_connection_exception.dart';
@@ -40,12 +41,10 @@ class HomeRepositoryImpl extends HomeRepository {
   }
 
   @override
-  Future<ResponseModel> getBaby(UserModelApi user) async {
+  Future<List<GamesResponse>> fetchGameList() async {
     if (await networkInfo.isConnected) {
-      ResponseModel responseModel = await remoteDatasource.getBaby(user);
-      return responseModel;
+      return remoteDatasource.fetchGameList();
     }
     throw NetworkConnectionException();
   }
-
 }

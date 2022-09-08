@@ -28,5 +28,30 @@ class StringConstant {
   //poin
   static const amap = 'sebanyak-banyaknya ';
   static const point = 'Poin';
+  static const claimPoint = 'Klaim Poin';
+
+  static const baru = 'Baru';
+  static const onGoing = 'Sedang Berlangsung';
+  static const consultation = 'Konsultasi';
+  static const newestIncomingMessage = 'Chat yang baru masuk';
+  static const seeAllConsulation = 'Lihat Semua Konsulatasi';
+  static const topic = 'Topik';
+  static const publishedArticle = 'Artikel yang diterbitkan';
+  static const otherArticle = 'Artikel lainnya';
+  static const noConsultationYet = 'Belum ada perminataan\nkonsultasi';
+  static const noConsultationDetail = 'Permintaan konsulatsi dari pasien akan\nditampilkan di halaman ini';
+
+  //profile
+  static const profileChange = 'Ganti Profil';
+  static const passwordChange = 'Ganti Kata Sandi';
+  static const logout = 'Keluar';
+
+  //game
+  static const games = 'Games';
+  static const playGames = 'Mainkan Games';
+  static const playGamesDesc = 'Mainkan game dan kumpulkan';
+  static const playGameDescCon = 'ketika bermain';
+  static const playNow = 'Mainkan Sekarang';
+
 
 }
