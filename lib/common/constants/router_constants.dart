@@ -28,4 +28,8 @@ class RouteName {
   static const poinPage = '/poinPage';
   static const poinActivityPage = '/poinActivityPage';
   static const signUpQuestionnairePage = '/signUpQuestionnairePage';
+  static const dashboardNakesPage = '/dashboardNakesPage';
+  static const profileNakesPage = '/profileNakesPage';
+  static const gamesPage = '/gamesPage';
+  static const webViewPage = '/webViewPage';
 }

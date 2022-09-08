@@ -1,6 +1,7 @@
 import 'package:PregnancyApp/common/constants/string_constants.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../utils/epragnancy_color.dart';
@@ -19,11 +20,7 @@ class _PoinCardSectionState extends State<PoinCardSection> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: InkWell(
-        onTap: (){
-          Navigator.pushNamed(context, RouteName.poinPage, arguments: widget.point);
-        },
-        child: Container(
+      child: Container(
           // decoration: BoxDecoration(
           //   border: Border.all(
           //     color: EpragnancyColors.pink,
@@ -34,7 +31,7 @@ class _PoinCardSectionState extends State<PoinCardSection> {
             decoration: BoxDecoration(
                 borderRadius:
                 BorderRadius.circular(10.0),
-                color: EpregnancyColors.primerSoft),
+                color: EpregnancyColors.primer),
             margin: EdgeInsets.only(
                 top: 20,
                 left: 20,
@@ -51,7 +48,7 @@ class _PoinCardSectionState extends State<PoinCardSection> {
                       height: 120,
                       width: 120,
                       decoration: const BoxDecoration(
-                          color: EpregnancyColors.blueCircle,
+                          color: EpregnancyColors.blueDark,
                           shape: BoxShape.circle
                       ),
                     ),
@@ -80,7 +77,7 @@ class _PoinCardSectionState extends State<PoinCardSection> {
                                   child:  Text(
                                     yourPoin,
                                     style:
-                                    TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: EpregnancyColors.blueDark),
+                                    TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: EpregnancyColors.white),
                                   )),
                               Container(
                                 padding: EdgeInsets.all(3),
@@ -98,29 +95,46 @@ class _PoinCardSectionState extends State<PoinCardSection> {
                             child: Container(
                               // margin: EdgeInsets.only(
                               //     left: 50, right: 50, bottom: 20),
-                                child:  RichText(text: TextSpan(
+                                child:  RichText(text: const TextSpan(
                                     text: checkInToday,
-                                    style: TextStyle(fontSize: 13, color: EpregnancyColors.primer),
-                                    children: const <TextSpan>[
-                                      TextSpan(text: StringConstant.point, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: EpregnancyColors.blueDark))
+                                    style: TextStyle(fontSize: 13, color: EpregnancyColors.white),
+                                    children:  <TextSpan>[
+                                      TextSpan(text: StringConstant.point, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: EpregnancyColors.white))
                                     ]
                                 ))),
                           ),
+                          SizedBox(height: 5.h,),
                           Container(
-                            margin:
-                            EdgeInsets.only(left: 16),
-                            child: Container(
+                            margin: const EdgeInsets.only(left: 16),
+                            child:  Container(
                               // margin: EdgeInsets.only(
                               //     left: 50, right: 50, bottom: 20),
-                                child: const Text(
+                                child:  Text(
                                     StringConstant.amap,
-                                    style: TextStyle(fontSize: 13, color: EpregnancyColors.primer)
+                                    style: TextStyle(fontSize: 13, color: EpregnancyColors.white)
                                 )),
                           ),
+                          InkWell(
+                            onTap: (){
+                              Navigator.pushNamed(context, RouteName.poinPage, arguments: widget.point);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
+                              margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                              decoration: BoxDecoration(
+                                  color: EpregnancyColors.blueDark,
+                                  borderRadius: BorderRadius.circular(20)
+                              ),
+                              child: Center(
+                                child: Text(StringConstant.claimPoint, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700,
+                                    fontSize: 12.sp),),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                       Container(
-                        padding: EdgeInsets.only(right: 20, top: 10),
+                        padding: EdgeInsets.only(right: 10.w, top: 50.h),
                         child: Image.asset('assets/item_group.png'),
                       )
                     ],
@@ -128,7 +142,6 @@ class _PoinCardSectionState extends State<PoinCardSection> {
                 ),
               ],
             )),
-      ),
     );
   }
 }

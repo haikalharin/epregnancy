@@ -28,4 +28,8 @@ static String article = 'article';
 static String listArticle = '$article/list';
 
 
+  //game
+  static String game = 'game';
+  static String gameList = '$game/list';
+
 }

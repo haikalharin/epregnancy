@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:PregnancyApp/data/firebase/event/event_user.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
+import 'package:PregnancyApp/pages/chat_page/empty_chat_list_page.dart';
 import 'package:PregnancyApp/pages/chat_page/list_chat_archive.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,9 +17,13 @@ import '../../data/firebase/event/event_storage_example.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/person_model/person_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
+import '../../utils/string_constans.dart';
 import 'list_chat_room.dart';
 
 class DashboardMidwife extends StatefulWidget {
+  const DashboardMidwife({Key? key, this.initialIndex = 0});
+  final int initialIndex;
+
   @override
   _DashboardMidwifeState createState() => _DashboardMidwifeState();
 }
@@ -28,6 +33,7 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
   var _controllerPassword = TextEditingController();
 
   final List<Widget> _listFragment = [
+    const EmptyChatListPage(),
     ListChatRoom(),
     ListChatArchive(),
   ];
@@ -158,17 +164,21 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 0,
-      length: 2,
+      initialIndex: widget.initialIndex,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
             elevation: 0.0,
-            backgroundColor: EpregnancyColors.primer,
+            backgroundColor: Colors.white,
+            title: Text(StringConstant.consultation, style: TextStyle(color: Colors.black),),
             iconTheme: IconThemeData(color: Colors.black),
             bottom: TabBar(
+              unselectedLabelColor: EpregnancyColors.greyDarkFontColor,
+              labelColor: EpregnancyColors.primer,
               tabs: [
-                Tab(text: 'Chat Room'),
-                Tab(text: 'Arsip'),
+                Tab(text: 'Baru'),
+                Center(child: Text('Sedang\nBerlangsung', overflow: TextOverflow.visible, textAlign: TextAlign.center,)),
+                Tab(text: 'Selesai'),
               ],
             ),
            ),

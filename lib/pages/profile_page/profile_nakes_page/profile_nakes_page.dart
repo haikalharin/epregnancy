@@ -1,0 +1,80 @@
+import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
+import 'package:PregnancyApp/utils/string_constans.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../../common/constants/router_constants.dart';
+import '../../../data/firebase/g_authentication.dart';
+import '../../../data/shared_preference/app_shared_preference.dart';
+
+class ProfileNakesPage extends StatelessWidget {
+  const ProfileNakesPage({Key? key, this.name}) : super(key: key);
+  final String? name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: const BtnBackIosStyle(),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Text(name ?? 'Faisal Bahlil', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 24.sp),),
+        actions: [Container(
+          height: 40.h,
+          width: 40.w,
+          margin: EdgeInsets.only(right: 10.w),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle
+          ),
+          child: Image.asset('assets/dummies/dummy_avatar.png'),
+        )],
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        color: Colors.white,
+        padding: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
+        child: Column(
+          children: [
+            ListTile(
+              leading: Text(StringConstant.profileChange, style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
+              trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
+            ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),child: Divider(color: Colors.grey, height: 1.h,),),
+            ListTile(
+              leading: Text(StringConstant.passwordChange, style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
+              trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
+            ),
+          ],
+        ),
+      ),
+      bottomSheet: Container(
+        color: Colors.white,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        height: 70.h,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('App Versi 1.01', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),),
+            InkWell(
+              onTap: ()async {
+                //
+                await GAuthentication.signOut(context: context);
+                await AppSharedPreference.clear();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    RouteName.login, (Route<dynamic> route) => false);
+              },
+              child: Row(children: [
+                SvgPicture.asset('assets/icLogoutNakes.svg'),
+                SizedBox(width: 5.w,),
+                Text(StringConstant.logout, style: TextStyle(color: EpregnancyColors.primer, fontSize: 16.sp, fontWeight: FontWeight.w700),)
+              ],),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

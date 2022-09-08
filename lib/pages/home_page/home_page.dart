@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
+import 'package:PregnancyApp/pages/home_page/game_card_section.dart';
 import 'package:PregnancyApp/pages/home_page/poin_card_section.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
 import 'package:PregnancyApp/pages/poin_page/widget/poin_placeholder.dart';
@@ -20,6 +21,7 @@ import '../../utils/epragnancy_color.dart';
 import 'bloc/home_page_bloc.dart';
 import 'list_article.dart';
 import 'list_shimmer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -325,6 +327,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         )),
                     PoinCardSection(point: state.totalPointsEarned ?? 0),
+                    // Games Section
+                    const GameCardSection(),
+
                     Container(
                         color: Colors.white,
                         child: Column(
