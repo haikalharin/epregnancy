@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:PregnancyApp/data/firebase/event/event_event.dart';
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
+import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
@@ -17,6 +19,7 @@ import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/home_error_exception.dart';
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../data/baby_model_api/baby_Model_api.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/article_model/article_model.dart';
 import '../../../data/model/baby_model/baby_model.dart';
@@ -182,39 +185,45 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     yield state.copyWith(
         status: FormzStatus.submissionInProgress, tipe: "listEvent");
     try {
-      var days = 0;
-      var weeks = 0;
+      final UserModelApi user = await AppSharedPreference.getUser();
+      ResponseModel response = await homeRepository.getBaby(user);
       BabyProgressModel babyProgressModel = BabyProgressModel.empty();
-      AppSharedPreference.remove("_userRegister");
-      final UserModelFirebase response = await homeRepository.fetchUser();
-      final BabyModel myBaby = await AppSharedPreference.getUserBabyirebase();
+      babyProgressModel = await EventUser.checkBabyProgress("3");
       final UserRolesModelFirebase role =
           await AppSharedPreference.getUserRoleFirebase();
-      if (myBaby.babyProfileid != '') {
-        DateTime dateTimeCreatedAt =
-            DateTime.parse(myBaby.lastMenstruationDate!);
-        DateTime dateTimeNow = DateTime.now();
-        final differenceInDays =
-            dateTimeNow.difference(dateTimeCreatedAt).inDays;
-        weeks = (differenceInDays / 7).floor();
-        days = (differenceInDays % 7).floor();
-        babyProgressModel = await EventUser.checkBabyProgress(weeks.toString());
-        print('$differenceInDays');
-      }
-
-      if (response.uid!.isNotEmpty) {
+      if (response.code == 200) {
         yield state.copyWith(
           status: FormzStatus.submissionSuccess,
-          baby: myBaby,
-          days: days.toString(),
-          weeks: weeks.toString(),
+          baby: response.data,
+          days: '4',
+          weeks: '5',
           babyProgressModel: babyProgressModel,
-          user: response,
+          user: user,
           role: role,
         );
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure);
       }
+      // var days = 0;
+      // var weeks = 0;
+      // BabyProgressModel babyProgressModel = BabyProgressModel.empty();
+      // AppSharedPreference.remove("_userRegister");
+      // final UserModelFirebase response = await homeRepository.fetchUser();
+      // final BabyModel myBaby = await AppSharedPreference.getUserBabyirebase();
+      // final UserRolesModelFirebase role =
+      //     await AppSharedPreference.getUserRoleFirebase();
+      // if (myBaby.babyProfileid != '') {
+      //   DateTime dateTimeCreatedAt =
+      //       DateTime.parse(myBaby.lastMenstruationDate!);
+      //   DateTime dateTimeNow = DateTime.now();
+      //   final differenceInDays =
+      //       dateTimeNow.difference(dateTimeCreatedAt).inDays;
+      //   weeks = (differenceInDays / 7).floor();
+      //   days = (differenceInDays % 7).floor();
+      //   babyProgressModel = await EventUser.checkBabyProgress(weeks.toString());
+      //   print('$differenceInDays');
+      // }
+
     } on HomeErrorException catch (e) {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);

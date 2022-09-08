@@ -24,7 +24,7 @@ class SurveyPageState with FormzMixin {
         int? page,
         String? errorMessage}) {
     return SurveyPageState(
-        submitStatus: submitStatus ?? this.submitStatus,
+        submitStatus: submitStatus ??this.submitStatus,
         name: name ?? this.name,
         date: date ?? this.date,
         user: user ?? this.user,
