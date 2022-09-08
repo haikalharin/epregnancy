@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                       Injector.resolve<LoginBloc>().add(
                           LoginDispose());
 
-                    } else {
+                    } else if(state.typeEvent == StringConstant.submitLogin) {
                       if(state.userModel?.isPatient == true){
                         if(state.isActive == true){
                           Injector.resolve<LoginBloc>().add(LoginRequestOtp());

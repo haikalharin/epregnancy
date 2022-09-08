@@ -7,7 +7,7 @@ class LoginState with FormzMixin {
   final MandatoryFieldValidator username;
   final UserRolesModelFirebase? role;
   final Password password;
-  final FormzStatus submitStatus;
+  final FormzStatus? submitStatus;
   final String? errorMessage;
   final String? typeEvent;
   final bool? isActive;
@@ -37,7 +37,7 @@ class LoginState with FormzMixin {
         String? typeEvent,
       }) {
     return LoginState(
-        submitStatus: submitStatus ?? this.submitStatus,
+        submitStatus: submitStatus,
         phoneNumber: phoneNumber ?? this.phoneNumber,
         username: username ?? this.username,
         password: password ?? this.password,

@@ -82,9 +82,9 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ConsultationContainer(consultationEnum: ConsultationEnum.newest, value: 6, role: state.role,),
+                        ConsultationContainer(consultationEnum: ConsultationEnum.newest, value: 6, role: state.role??'',),
                         SizedBox(width: 20.w,),
-                        ConsultationContainer(consultationEnum: ConsultationEnum.onGoing, value: 34, role: state.role,),
+                        ConsultationContainer(consultationEnum: ConsultationEnum.onGoing, value: 34, role: state.role??'',),
                       ],
                     ),
                   ),
@@ -106,7 +106,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: (){
-                        Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': state.role?.role, 'initial_index': 0});
+                        Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': state.role??'', 'initial_index': 0});
                       },
                       child: Center(
                         child: Text(StringConstant.seeAllConsulation, style: TextStyle(color: EpregnancyColors.greyDarkFontColor),),

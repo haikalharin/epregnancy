@@ -111,7 +111,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginSubmittedWithNumberPhone event,
     LoginState state,
   ) async* {
-    if (state.submitStatus.isValidated) {
+    if (state.submitStatus!.isValidated) {
       yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
       try {
         // User? user =
@@ -155,17 +155,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             isActive = true;
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
+                typeEvent: StringConstant.submitLogin,
                 userModel: response.data,
                 isActive: isActive);
           } else {
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
+                typeEvent: StringConstant.submitLogin,
                 userModel: response.data,
                 isActive: isActive);
           }
         }
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,
+            typeEvent: StringConstant.submitLogin,
             userModel: response.data, isActive: true);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

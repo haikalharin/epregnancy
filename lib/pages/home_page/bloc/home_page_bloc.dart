@@ -221,7 +221,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           weeks: weeks.toString(),
           babyProgressModel: babyProgressModel,
           user: user,
-          role: role,
+          role: user.isPatient == true
+              ? StringConstant.patient
+              : StringConstant.midwife,
         );
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure);

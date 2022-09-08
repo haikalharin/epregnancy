@@ -23,8 +23,7 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => EventPageBloc())
       ..registerSingleton((c) => PoinBloc(c<UserRepository>()))
       ..registerSingleton((c) => PointHistoryBloc(c<UserRepository>()))
-      ..registerSingleton((c) => GamesBloc(c<HomeRepository>()));
-      ..registerSingleton((c) => PointHistoryBloc(c<UserRepository>()))
+      ..registerSingleton((c) => GamesBloc(c<HomeRepository>()))
       ..registerSingleton((c) => OtpPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => LandingPageBloc(c<UserRepository>()));
   }

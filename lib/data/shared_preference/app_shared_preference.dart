@@ -105,7 +105,7 @@ class AppSharedPreference {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString(_userRegister);
     if (json != null) {
-    Map<String, dynamic> map = jsonDecode(json!);
+    Map<String, dynamic> map = jsonDecode(json);
     return UserModel.fromJson(map);
   } else{
       return const UserModel();
