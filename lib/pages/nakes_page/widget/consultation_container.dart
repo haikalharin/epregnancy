@@ -15,7 +15,7 @@ class ConsultationContainer extends StatelessWidget {
   const ConsultationContainer({Key? key, this.value = 0, required this.consultationEnum, this.role}) : super(key: key);
   final int value;
   final ConsultationEnum consultationEnum;
-  final UserRolesModelFirebase? role;
+  final String? role;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,9 @@ class ConsultationContainer extends StatelessWidget {
       child: InkWell(
         onTap: (){
           if(consultationEnum == ConsultationEnum.newest) {
-            Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': role?.role, 'initial_index': 0});
+            Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': role, 'initial_index': 0});
           } else {
-            Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': role?.role, 'initial_index': 1});
+            Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': role, 'initial_index': 1});
           }
         },
         child: Container(

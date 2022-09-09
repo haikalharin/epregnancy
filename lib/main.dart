@@ -9,8 +9,10 @@ import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_pag
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
+import 'package:PregnancyApp/pages/landing_page/bloc/landing_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/landing_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
+import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
@@ -106,8 +108,11 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 Injector.container.resolve<PointHistoryBloc>()),
         BlocProvider<GamesBloc>(
-            create: (context) =>
-                Injector.container.resolve<GamesBloc>()),
+            create: (context) => Injector.container.resolve<GamesBloc>()),
+        BlocProvider<OtpPageBloc>(
+            create: (context) => Injector.container.resolve<OtpPageBloc>()),
+        BlocProvider<LandingPageBloc>(
+            create: (context) => Injector.container.resolve<LandingPageBloc>()),
       ];
 }
 

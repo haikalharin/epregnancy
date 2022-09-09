@@ -84,212 +84,176 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             fontWeight: FontWeight.bold,
                                             color: EpregnancyColors.primer)),
                                   ),
-                                  state.role != null &&
-                                          state.role!.condition ==
-                                              StringConstant.pregnant
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                              color: EpregnancyColors.primer),
-                                          margin: EdgeInsets.only(
-                                              left: 20, right: 20),
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                                left: 30, right: 30),
-                                            padding: EdgeInsets.only(
-                                                top: 20, bottom: 20),
-                                            child: Column(
+                                    state.user != null && state.user!.isPregnant == true ? Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(15.0),
+                                          color: EpregnancyColors.primer),
+                                      margin: EdgeInsets.only(left: 20, right: 20),
+                                      child: Container(
+                                        margin:
+                                        EdgeInsets.only(left: 30, right: 30),
+                                        padding:
+                                        EdgeInsets.only(top: 20, bottom: 20),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            state.baby != null
+                                                ? Container(
+                                                margin:
+                                                EdgeInsets.only(bottom: 10),
+                                                child: Text(
+                                                  state.baby!.first.name!,
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                      FontWeight.bold),
+                                                  maxLines: 3,
+                                                ))
+                                                : Container(),
+                                            Row(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                               children: [
-                                                state.baby != null
-                                                    ? Container(
-                                                        margin: EdgeInsets.only(
-                                                            bottom: 10),
-                                                        child: Text(
-                                                          state.baby!.babyName!,
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                          maxLines: 3,
-                                                        ))
-                                                    : Container(),
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    state.babyProgressModel !=
-                                                            null
-                                                        ? Container(
-                                                            // margin: EdgeInsets.only(left: 50, right: 50),
-                                                            child: FadeInImage(
-                                                              placeholder:
-                                                                  AssetImage(
-                                                                      'assets/ic_no_photo.png'),
-                                                              image: NetworkImage(state
-                                                                  .babyProgressModel!
-                                                                  .iconUrl!),
-                                                              width: 60,
-                                                              height: 60,
-                                                              fit: BoxFit.cover,
-                                                              imageErrorBuilder:
-                                                                  (context,
-                                                                      error,
-                                                                      stackTrace) {
-                                                                return Image
-                                                                    .asset(
-                                                                  'assets/ic_no_photo.png',
-                                                                  width: 60,
-                                                                  height: 60,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                );
-                                                              },
+                                                state.babyProgressModel != null
+                                                    ?  Container(
+                                                  // margin: EdgeInsets.only(left: 50, right: 50),
+                                                  child: FadeInImage(
+                                                    placeholder: AssetImage('assets/ic_no_photo.png'),
+                                                    image: NetworkImage(state.babyProgressModel!.iconUrl!),
+                                                    width:60,
+                                                    height: 60,
+                                                    fit: BoxFit.cover,
+                                                    imageErrorBuilder: (context, error, stackTrace) {
+                                                      return Image.asset(
+                                                        'assets/ic_no_photo.png',
+                                                        width: 60,
+                                                        height: 60,
+                                                        fit: BoxFit.cover,
+                                                      );
+                                                    },
+                                                  ),
+                                                ):Container(
+                                                  width: 60,
+                                                  height: 60,
+                                                ),
+                                                Container(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        child: Row(
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                          children: [
+                                                            Container(
+                                                                margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 10),
+                                                                width: 200,
+                                                                child: Text(
+                                                                  state.babyProgressModel !=
+                                                                      null
+                                                                      ? state
+                                                                      .babyProgressModel!
+                                                                      .title!
+                                                                      : '',
+                                                                  style: TextStyle(
+                                                                      fontSize: 14,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                                  maxLines: 5,
+                                                                )),
+                                                            SizedBox(
+                                                              width: 20,
                                                             ),
-                                                          )
-                                                        : Container(
-                                                            width: 60,
-                                                            height: 60,
-                                                          ),
-                                                    Container(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Container(
-                                                            child: Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Container(
-                                                                    margin: EdgeInsets.only(
-                                                                        bottom:
-                                                                            10),
-                                                                    width: 200,
-                                                                    child: Text(
-                                                                      state.babyProgressModel !=
-                                                                              null
-                                                                          ? state
-                                                                              .babyProgressModel!
-                                                                              .title!
-                                                                          : '',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color: Colors
-                                                                              .white,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                      maxLines:
-                                                                          5,
-                                                                    )),
-                                                                SizedBox(
-                                                                  width: 20,
-                                                                ),
-                                                                Container(
-                                                                  child:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .arrow_forward_ios,
-                                                                    color: Colors
-                                                                        .white,
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                            Container(
+                                                              child: const Icon(
+                                                                Icons
+                                                                    .arrow_forward_ios,
+                                                                color: Colors.white,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      bottom:
-                                                                          10),
-                                                              width: 200,
-                                                              child: Text(
-                                                                state.babyProgressModel !=
-                                                                        null
-                                                                    ? state
-                                                                        .babyProgressModel!
-                                                                        .condition!
-                                                                    : '',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12,
-                                                                    color: Colors
-                                                                        .white),
-                                                                maxLines: 3,
-                                                              )),
-                                                          Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      bottom:
-                                                                          20),
-                                                              child: Text(
-                                                                state.weeks !=
-                                                                        null
-                                                                    ? "${state.weeks} Minggu ${state.days} Hari"
-                                                                    : '',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              )),
-                                                          Container(
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              6.0),
-                                                                  color: Colors
-                                                                      .white),
-                                                              child: Container(
-                                                                width: 210,
-                                                                height: 30,
-                                                                child: Center(
-                                                                  child:
-                                                                      Container(
-                                                                    child:
-                                                                        const Text(
-                                                                      "Ubah Profil Kehamilan ",
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              EpregnancyColors.primer),
-                                                                      maxLines:
-                                                                          3,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              )),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                      Container(
+                                                          margin: EdgeInsets.only(
+                                                              bottom: 10),
+                                                          width: 200,
+                                                          child: Text(
+                                                            state.babyProgressModel !=
+                                                                null
+                                                                ? state
+                                                                .babyProgressModel!
+                                                                .condition!
+                                                                : '',
+                                                            style: TextStyle(
+                                                                fontSize: 12,
+                                                                color:
+                                                                Colors.white),
+                                                            maxLines: 3,
+                                                          )),
+                                                      Container(
+                                                          margin: EdgeInsets.only(
+                                                              bottom: 20),
+                                                          child: Text(
+                                                            state.weeks !=
+                                                                null
+                                                                ? "${state.weeks} Minggu ${state.days} Hari"
+                                                                : '',
+                                                            style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors.white,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                          )),
+                                                      Container(
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  6.0),
+                                                              color: Colors.white),
+                                                          child: Container(
+                                                            width: 210,
+                                                            height: 30,
+                                                            child: Center(
+                                                              child: Container(
+                                                                child: const Text(
+                                                                  "Ubah Profil Kehamilan ",
+                                                                  style: TextStyle(
+                                                                      fontSize: 14,
+                                                                      color: EpregnancyColors
+                                                                          .primer),
+                                                                  maxLines: 3,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                        )
-                                      : Container(),
-                                ],
-                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    ): Container(),
+                                    ],
+                                  ),
                             ])),
                     Container(
                         // height: 200,

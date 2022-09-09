@@ -9,6 +9,8 @@ import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
+import 'package:PregnancyApp/pages/landing_page/bloc/landing_page_bloc.dart';
+import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
 import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
@@ -66,6 +68,8 @@ abstract class InjectorConfig {
   @Register.singleton(PoinBloc)
   @Register.singleton(PointHistoryBloc)
   @Register.singleton(GamesBloc)
+  @Register.singleton(OtpPageBloc)
+  @Register.singleton(LandingPageBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)

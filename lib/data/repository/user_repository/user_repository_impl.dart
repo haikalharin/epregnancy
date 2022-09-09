@@ -1,6 +1,7 @@
-import 'package:PregnancyApp/data/baby_model_api/baby_Model_api.dart';
+import 'package:PregnancyApp/data/model/login_model/login_model.dart';
+import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/signup_quest_request.dart';
-import 'package:PregnancyApp/data/model/user_model_api/user_model_api.dart';
+import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
 import 'package:PregnancyApp/data/model/point_model/point_history.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../../common/exceptions/network_connection_exception.dart';
 import '../../../common/network/network_info.dart';
 import '../../firebase/g_authentication.dart';
+import '../../model/baby_model_api/baby_Model_api.dart';
 import '../../model/response_model/response_model.dart';
 import '../../model/point_model/checkin_response.dart';
 import '../../model/user_example_model/user_example_model.dart';
@@ -33,21 +35,21 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<UserModelApi> fetchUser() async {
+  Future<UserModel> fetchUser() async {
     if (await networkInfo.isConnected) {
-      UserModelApi userModelApi =
+      UserModel userModel =
           await AppSharedPreference.getUserRegister();
-      if (userModelApi.email!.isNotEmpty) {
-        return userModelApi;
+      if (userModel.email!.isNotEmpty) {
+        return userModel;
       } else {
-        return UserModelApi.empty();
+        return userModel;
       }
     }
     throw NetworkConnectionException();
   }
 
   @override
-  Future<ResponseModel> register(UserModelApi user) async {
+  Future<ResponseModel> register(UserModel user) async {
     if (await networkInfo.isConnected) {
       ResponseModel responseModel = await remoteDatasource.register(user);
       return responseModel;
@@ -74,9 +76,27 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<ResponseModel> getBaby(UserModelApi user) async {
+  Future<ResponseModel> getBaby(UserModel user) async {
     if (await networkInfo.isConnected) {
       ResponseModel responseModel = await remoteDatasource.getBaby(user);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> requestOtp(OtpModel otpModel) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.requestOtp(otpModel);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> loginOtp(OtpModel otpModel) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.loginOtp(otpModel);
       return responseModel;
     }
     throw NetworkConnectionException();
@@ -104,11 +124,11 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future login(String userName, String password) async {
-    // if (await networkInfo.isConnected) {
-    return remoteDatasource.login(userName, password);
-    // }
-    // throw NetworkConnectionException();
+  Future<ResponseModel> login(LoginModel loginModel) async {
+    if (await networkInfo.isConnected) {
+    return remoteDatasource.login(loginModel);
+    }
+    throw NetworkConnectionException();
   }
 
   @override

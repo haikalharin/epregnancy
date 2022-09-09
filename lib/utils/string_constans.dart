@@ -25,6 +25,10 @@ class StringConstant {
   static const visitHospital = 'VISIT HOSPITAL';
   static const other = 'OTHER';
 
+  //event login
+  static const requestOtp = 'requestOtp';
+  static const submitLogin = 'submitLogin';
+
   //poin
   static const amap = 'sebanyak-banyaknya ';
   static const point = 'Poin';

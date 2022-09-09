@@ -32,7 +32,6 @@ var authService = AuthService();
 class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
-    Injector.resolve<LoginBloc>().add(LoginInitDataChanged());
     super.initState();
   }
 
@@ -63,31 +62,30 @@ class _LoginPageState extends State<LoginPage> {
                         LoginDispose());
                   } else if (state.submitStatus ==
                       FormzStatus.submissionSuccess) {
-                    if (state.userModelFirebase!.status ==
-                        StringConstant.active) {
-                      if (state.role!.role == 'MIDWIFE') {
-                        // Navigator.of(context).pushReplacementNamed(
-                        //     RouteName.navBar,
-                        //     arguments: state.role!.role);
-
-                        // todo handel login from API
-                        Navigator.of(context).pushReplacementNamed(
-                          RouteName.dashboardNakesPage,
-                          arguments: state.userModelFirebase?.name
-                        );
-                      } else {
-                        Navigator.of(context)
-                            .pushReplacementNamed(RouteName.navBar, arguments: {'role': state.role!.role, 'inital_index': 0});
-                      }
-                    } else {
+                    if(state.typeEvent == StringConstant.requestOtp){
                       Navigator.of(context)
-                          .pushReplacementNamed(RouteName.surveyPage);
-                    }
+                          .pushNamed(RouteName.otpPage);
+                      Injector.resolve<LoginBloc>().add(
+                          LoginDispose());
 
-                    // Navigator.of(context).pushNamedAndRemoveUntil(
-                    //                 RouteName.homeScreen,
-                    //                 ModalRoute.withName(RouteName.homeScreen),
-                    //               );
+                    } else if(state.typeEvent == StringConstant.submitLogin) {
+                      if(state.userModel?.isPatient == true){
+                        if(state.isActive == true){
+                          Injector.resolve<LoginBloc>().add(LoginRequestOtp());
+                          Injector.resolve<LoginBloc>().add(
+                              LoginDispose());
+                        } else{
+                          Navigator.of(context).pushNamed(RouteName.surveyPage);
+                          Injector.resolve<LoginBloc>().add(
+                              LoginDispose());
+                        }
+                      } else{
+                        Injector.resolve<LoginBloc>().add(LoginRequestOtp());
+                        Injector.resolve<LoginBloc>().add(
+                            LoginDispose());
+                      }
+
+                    }
                   }
                 },
                 child: Stack(
@@ -239,7 +237,6 @@ class _UsernameInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
         return TextField(
-          controller: _userNameController,
           key: const Key('loginForm_usernameInput_textField'),
           onChanged: (username) =>
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),

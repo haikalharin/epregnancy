@@ -2,7 +2,7 @@ part of 'signup_questionnaire_bloc.dart';
 
 class SignUpQuestionnaireState with FormzMixin {
   final UserModelFirebase? userModelFirebase;
-  final UserModelApi? userModelApi;
+  final UserModel? userModel;
   final MandatoryFieldValidator firstName;
   final MandatoryFieldValidator secondName;
   final PasswordValidator password;
@@ -18,14 +18,14 @@ class SignUpQuestionnaireState with FormzMixin {
       this.confirmPassword = const ConfirmPasswordValidator.pure(''),
       this.date = const MandatoryFieldValidator.pure(),
       this.userModelFirebase,
-        this.userModelApi,
+        this.userModel,
         this.submitStatus = FormzStatus.pure,
       this.errorMessage});
 
   SignUpQuestionnaireState copyWith(
       {FormzStatus? submitStatus,
       UserModelFirebase? userModelFirebase,
-      UserModelApi? userModelApi,
+      UserModel? userModel,
       MandatoryFieldValidator? firstName,
       MandatoryFieldValidator? secondName,
       PasswordValidator? password,
@@ -40,7 +40,7 @@ class SignUpQuestionnaireState with FormzMixin {
         confirmPassword: confirmPassword ?? this.confirmPassword,
         date: date ?? this.date,
         userModelFirebase: userModelFirebase ?? this.userModelFirebase,
-        userModelApi: userModelApi ?? this.userModelApi,
+        userModel: userModel ?? this.userModel,
         errorMessage: errorMessage);
   }
 

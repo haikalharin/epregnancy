@@ -26,6 +26,7 @@ import '../pages/chat_page/chat_room.dart';
 import '../pages/games_page/games_page.dart';
 import '../pages/landing_page/landing_page.dart';
 import '../pages/login_page/login_page.dart';
+import '../pages/signup_questionnaire_page/signup_questionnaire_page.dart';
 import '../utils/remote_utils.dart';
 
 class Routes {
@@ -91,6 +92,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => GamesPage());
       case RouteName.webViewPage:
         return MaterialPageRoute(builder: (_) => WebViewPage(url: getDataValue(settings.arguments)));
+
+  case RouteName.signUpQuestionnairePage:
+        return MaterialPageRoute(builder: (_) => const SignUpQuestionnairePage());
 
 
       // case RouteName.order:

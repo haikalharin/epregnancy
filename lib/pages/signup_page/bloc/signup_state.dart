@@ -6,7 +6,7 @@ class SignupState with FormzMixin {
   final PhoneValidator phoneNumber;
   final MandatoryFieldValidator userName;
   final EmailAddressUsername email;
-  final FormzStatus submitStatus;
+  final FormzStatus? submitStatus;
   final String? userId;
   final String? errorMessage;
   final bool? isExist;
@@ -33,7 +33,7 @@ class SignupState with FormzMixin {
     bool? isExist,
   }) {
     return SignupState(
-        submitStatus: submitStatus ?? this.submitStatus,
+        submitStatus: submitStatus,
         phoneNumber: phoneNumber ?? this.phoneNumber,
         userName: userName ?? this.userName,
         email: email ?? this.email,

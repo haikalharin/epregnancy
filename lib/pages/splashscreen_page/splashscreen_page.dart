@@ -33,10 +33,10 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
           if(state.role == 'MIDWIFE'){
             Navigator.of(context).pushReplacementNamed(
                 RouteName.dashboardNakesPage,
-                arguments: state.role?.role
+                arguments: state.role
             );
           } else {
-            Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: {'role': state.role!.role, 'inital_index': 0});
+            Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: {'role': state.role, 'inital_index': 0});
           }
         } else{
           Navigator.of(context).pushReplacementNamed(RouteName.login);

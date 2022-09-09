@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
+import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -30,13 +32,17 @@ class SplashscreenBloc extends Bloc<SplashscreenEvent, SplashscreenState> {
       SplashscreenState state,
       ) async* {
 
-    final userModelFirebase = await AppSharedPreference.getUserFirebase();
+    final  UserModel = await AppSharedPreference.getUser();
     final String? installDate = await AppSharedPreference.getString(AppConstants.installDateKey);
     installDate == null ? await AppSharedPreference.setString(AppConstants.installDateKey, DateFormatter.dateFormatForCheckinFilter.format(DateTime.now())): null;
     await Future.delayed(      const Duration(seconds: 2));
-      if(userModelFirebase.uid != ''){
-        final UserRolesModelFirebase role =
-        await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
+      if(UserModel.id != null){
+        String? role = '' ;
+        if(UserModel.isMidwife == true){
+          role = StringConstant.midwife;
+        } else{
+          role = StringConstant.patient;
+        }
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,
             isExist: true,

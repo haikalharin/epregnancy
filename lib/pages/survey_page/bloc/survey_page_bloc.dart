@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:PregnancyApp/data/baby_model_api/baby_Model_api.dart';
 import 'package:PregnancyApp/data/model/baby_model/baby_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/signup_quest_request.dart';
@@ -15,7 +14,8 @@ import 'package:meta/meta.dart';
 import '../../../common/exceptions/survey_error_exception.dart';
 import '../../../common/validators/mandatory_field_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
-import '../../../data/model/user_model_api/user_model_api.dart';
+import '../../../data/model/baby_model_api/baby_Model_api.dart';
+import '../../../data/model/user_model_api/user_model.dart';
 import '../../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
@@ -87,7 +87,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      UserModelApi user = await AppSharedPreference.getUser();
+      UserModel user = await AppSharedPreference.getUserRegister();
       ResponseModel response = await userRepository.updateQuestioner(
           SignupQuestRequest(
               id: user.id,
@@ -96,8 +96,11 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
               isHaveBaby: event.isHaveBaby));
 
       if (response.code == 200) {
+        UserModel userModel = response.data;
+        await AppSharedPreference.setUserRegister(response.data);
+        await AppSharedPreference.setString(AppSharedPreference.token,userModel.token??'');
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
-        UserModelApi user = await AppSharedPreference.setUser(response.data);
+
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
@@ -118,7 +121,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      UserModelApi user = await AppSharedPreference.getUser();
+      UserModel user = await AppSharedPreference.getUserRegister();
       ResponseModel response = await userRepository.saveQuestionerBaby(
           BabyModelApi(userId: user.id,name: state.name.value,lastMenstruationDate: state.date.value
         )

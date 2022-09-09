@@ -1,9 +1,9 @@
 part of 'home_page_bloc.dart';
 
 class HomePageState {
-  final UserModelApi? user;
-  final UserRolesModelFirebase? role;
-  final BabyModelApi? baby;
+  final UserModel? user;
+  final String? role;
+  final List<dynamic>? baby;
   final BabyProgressModel? babyProgressModel;
   final FormzStatus status;
   final String? tipe;
@@ -36,9 +36,9 @@ class HomePageState {
     this.errorMessage});
 
   HomePageState copyWith({FormzStatus? status,
-    UserModelApi? user,
-    UserRolesModelFirebase? role,
-    BabyModelApi? baby,
+    UserModel? user,
+    String? role,
+    List<dynamic>? baby,
     BabyProgressModel? babyProgressModel,
     List<ArticleModel>? listArticle,
     List<EventModel>? listEvent,
