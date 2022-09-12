@@ -2,6 +2,8 @@
 import 'package:PregnancyApp/common/services/auth_service.dart';
 import 'package:PregnancyApp/data/repository/article_repository/article_repository.dart';
 import 'package:PregnancyApp/data/repository/article_repository/article_repository_impl.dart';
+import 'package:PregnancyApp/data/repository/event_repository/event_repository.dart';
+import 'package:PregnancyApp/data/repository/event_repository/event_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository_impl.dart';
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
@@ -75,6 +77,7 @@ abstract class InjectorConfig {
   @Register.factory(UserRepository, from: UserRepositoryImpl)
   @Register.factory(HomeRepository, from: HomeRepositoryImpl)
   @Register.factory(ArticleRepository, from: ArticleRepositoryImpl)
+  @Register.factory(EventRepository, from: EventRepositoryImpl)
   void _configureRepositories();
 
   @Register.factory(RemoteDataSource)

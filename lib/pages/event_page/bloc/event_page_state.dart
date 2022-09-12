@@ -2,7 +2,7 @@ part of 'event_page_bloc.dart';
 
 class EventPageState with FormzMixin {
   final UserModelFirebase? userModelFirebase;
-  final UserRolesModelFirebase? role;
+  final String? role;
   final MandatoryFieldValidator consulType;
   final MandatoryFieldValidator scheduleName;
   final MandatoryFieldValidator description;
@@ -12,12 +12,12 @@ class EventPageState with FormzMixin {
   final MandatoryFieldValidator timeNotficationString;
   final MandatoryFieldValidator totalConsume;
   final MandatoryFieldValidator days;
-  final List<String> listScheduleTime;
+  final List<NotificationModel> listScheduleTime;
   final DateTime? dateStart;
   final DateTime? dateEnd;
   final TimeOfDay? time;
   final TimeOfDay? timeNotfication;
-  final FormzStatus submitStatus;
+  final FormzStatus? submitStatus;
   final String? errorMessage;
 
   EventPageState(
@@ -45,7 +45,7 @@ class EventPageState with FormzMixin {
       MandatoryFieldValidator? consulType,
       MandatoryFieldValidator? scheduleName,
       UserModelFirebase? userModelFirebase,
-      UserRolesModelFirebase? role,
+      String? role,
       MandatoryFieldValidator? description,
       MandatoryFieldValidator? dateStartString,
       MandatoryFieldValidator? dateEndString,
@@ -53,14 +53,14 @@ class EventPageState with FormzMixin {
       MandatoryFieldValidator? timeNotficationString,
       MandatoryFieldValidator? totalConsume,
       MandatoryFieldValidator? days,
-      List<String>? listScheduleTime,
+      List<NotificationModel>? listScheduleTime,
       DateTime? dateStart,
       DateTime? dateEnd,
       TimeOfDay? time,
       TimeOfDay? timeNotfication,
       String? errorMessage}) {
     return EventPageState(
-        submitStatus: submitStatus ?? this.submitStatus,
+        submitStatus: submitStatus,
         scheduleName: scheduleName ?? this.scheduleName,
         consulType: consulType ?? this.consulType,
         description: description ?? this.description,

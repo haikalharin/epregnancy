@@ -1,114 +1,124 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// To parse this JSON data, do
+//
+//     final eventModel = eventModelFromJson(jsonString);
 
-import '../base_model/base_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:convert';
 
-class EventModel implements BaseModel {
-  String? imageURL;
-  String? description;
-  String? entityid;
-  String? eventEndDate;
-  String? eventStartDate;
-  String? eventid;
-  String? createdDate;
-  String? title;
-  String? type;
-  String? consulType;
-  String? time;
-  String? totalConsume;
-  String? days;
-  String? userid;
-  List<String>? listScheduleTime;
+part 'event_model.freezed.dart';
 
+part 'event_model.g.dart';
 
-  EventModel({
-    this. imageURL,          
-    this. description,
-    this. entityid,          
-    this. eventEndDate,      
-    this. eventStartDate,    
-    this. eventid,           
-    this. createdDate,
-    this. title,             
-    this. type,                               
-    this. consulType,
-    this. time,
-    this.totalConsume,
-    this.days,
-    this. userid,
-    this. listScheduleTime,
-  });
+List<EventModel> eventModelFromJson(String str) =>
+    List<EventModel>.from(json.decode(str).map((x) => EventModel.fromJson(x)));
 
-  static EventModel fromJson(Map<String, dynamic> json) {
-    List<String> listScheduleTime = [];
-    if (json['ListScheduleTime'] != null) {
-      listScheduleTime = json['ListScheduleTime'].cast<String>();
-    }
-    return EventModel(
+String eventModelToJson(List<EventModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-      createdDate: json['CreatedDate'] != null
-          ? json['CreatedDate'] is String
-          ? json['CreatedDate']
-          : (json['CreatedDate'] as Timestamp).toDate().toIso8601String()
-          : '',
+@freezed
+abstract class EventModel with _$EventModel {
+  const factory EventModel({
+    @JsonKey(includeIfNull: true) @JsonKey(includeIfNull: true) String? id,
+    @JsonKey(name: 'user_id', includeIfNull: true) String? userId,
+    User? user,
+    @JsonKey(includeIfNull: true) String? type,
+    @JsonKey(includeIfNull: true) String? title,
+    @JsonKey(includeIfNull: true) String? description,
+    @JsonKey(includeIfNull: true) String? location,
+    @JsonKey(includeIfNull: true) String? date,
+    @JsonKey(includeIfNull: true) String? time,
+    @JsonKey(name: 'remind_before', includeIfNull: true) int? remindBefore,
+    @JsonKey(name: 'start_date', includeIfNull: true) String? startDate,
+    @JsonKey(name: 'end_date', includeIfNull: true) String? endDate,
+    @JsonKey(name: 'medicine_taken_times', includeIfNull: true) int? medicineTakenTimes,
+    @JsonKey(name: 'medicine_taken_days', includeIfNull: true) int? medicineTakenDays,
+    @JsonKey(name: 'medicine_unit', includeIfNull: true) String? medicineUnit,
+    @JsonKey(includeIfNull: true) String? status,
+    @JsonKey(name: 'notifications', includeIfNull: true)List<NotificationModel>? notifications,
+    @JsonKey(name: 'is_delete', includeIfNull: true)
+    @JsonKey(includeIfNull: true)
+        bool? isDelete,
+    @JsonKey(name: 'created_by', includeIfNull: true) String? createdBy,
+    @JsonKey(name: 'created_from', includeIfNull: true) String? createdFrom,
+    @JsonKey(name: 'created_date', includeIfNull: true) String? createdDate,
+    @JsonKey(name: 'modified_by', includeIfNull: true) String? modifiedBy,
+    @JsonKey(name: 'modified_from', includeIfNull: true) String? modifiedFrom,
+    @JsonKey(name: 'modified_date', includeIfNull: true) String? modifiedDate,
+  }) = _EventModel;
 
-      entityid: json['Entityid'] ?? '',
-      title: json['Title'] ?? '',
-      imageURL: json['ImageURL'] ?? '',
-      description: json['Description'] ?? '',
-      eventEndDate: json['EventEndDate'] ?? '',
-      eventStartDate: json['EventStartDate'] ?? '',
-      eventid: json['Eventid'] ?? 0,
-      type: json['Type'] ?? '',
-      consulType: json['ConsulType'] ?? '',
-      time: json['Time'] ?? '',
-      totalConsume: json['TotalConsume'] ?? '',
-      days: json['Days'] ?? '',
-      userid: json['Userid'] ?? '',
-      listScheduleTime: listScheduleTime,
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-    'CreatedDate': createdDate,
-    'Entityid': entityid,
-    'Title': title,
-    'ImageURL': imageURL,
-    'Description': description,
-    'EventEndDate': eventEndDate,
-    'EventStartDate': eventStartDate,
-    'Eventid': eventid,
-    'Type': type,
-    'ConsulType': consulType,
-    'Time': time,
-    'TotalConsume': totalConsume,
-    'Days': days,
-    'Userid': userid,
-    'ListScheduleTime': listScheduleTime,
-
-  };
-
-  @override
-  jsonToModel(Map<String, dynamic> json) {
-    return fromJson(json);
-  }
+  factory EventModel.fromJson(Map<String, dynamic> json) =>
+      _$EventModelFromJson(json);
 
   static EventModel empty() {
-    return EventModel(
-      createdDate: '',
-      entityid: '',
-      title: '',
-      imageURL: '',
-      description: '',
-      eventEndDate: '',
-      eventStartDate: '',
-      eventid: '',
-      type: '',
-      consulType: '',
-      time: '',
-      totalConsume: '',
-      days: '',
-      userid: '',
-      listScheduleTime: [],
-    );
-  }
+    return const EventModel(
+        id :'',
+        userId : '',
+        user : User(),
+    type : '',
+    title : '',
+    description : '',
+    location :'',
+    date : '',
+    time :'',
+    remindBefore : 0,
+    startDate : '',
+    endDate :'',
+    medicineTakenTimes : 0,
+    medicineTakenDays : 0,
+    medicineUnit :'',
+    status : '',
+    notifications : [],
+    isDelete : false,
+    createdBy : '',
+    createdFrom : '',
+    createdDate : '',
+    modifiedBy : '',
+    modifiedFrom : '',
+    modifiedDate : '',
+    );}
+}
+
+@freezed
+abstract class NotificationModel with _$NotificationModel {
+  const factory NotificationModel({
+    @JsonKey(includeIfNull: true) String? id,
+    @JsonKey(name: 'schedule_id', includeIfNull: true) String? scheduleId,
+    @JsonKey(includeIfNull: true) String? time,
+    @JsonKey(includeIfNull: true) String? status,
+  }) = _NotificationModel;
+
+  factory NotificationModel.fromJson(Map<String, dynamic> json) =>
+      _$NotificationModelFromJson(json);
+}
+
+@freezed
+abstract class User with _$User {
+  const factory User({
+    @JsonKey(includeIfNull: true) String? id,
+    @JsonKey(includeIfNull: true) String? name,
+    @JsonKey(includeIfNull: true) String? dob,
+    @JsonKey(includeIfNull: true) String? email,
+    @JsonKey(includeIfNull: true) String? mobile,
+    @JsonKey(includeIfNull: true) String? username,
+    @JsonKey(includeIfNull: true) String? status,
+    @JsonKey(name: 'is_patient', includeIfNull: true)
+    @JsonKey(includeIfNull: true)
+        bool? isPatient,
+    @JsonKey(name: 'is_midwife', includeIfNull: true)
+    @JsonKey(includeIfNull: true)
+        bool? isMidwife,
+    @JsonKey(name: 'is_admin', includeIfNull: true)
+    @JsonKey(includeIfNull: true)
+        bool? isAdmin,
+    @JsonKey(name: 'is_super_admin', includeIfNull: true)
+    @JsonKey(includeIfNull: true)
+        bool? isSuperAdmin,
+    @JsonKey(name: 'is_verified', includeIfNull: true)
+    @JsonKey(includeIfNull: true)
+        bool? isVerified,
+    @JsonKey(name: 'image_url', includeIfNull: true) String? imageUrl,
+    @JsonKey(name: 'cover_url', includeIfNull: true) String? coverUrl,
+  }) = _User;
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }

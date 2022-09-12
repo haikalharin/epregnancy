@@ -1,0 +1,33 @@
+import '../../../common/exceptions/network_connection_exception.dart';
+import '../../../common/network/network_info.dart';
+import '../../firebase/event/event_article.dart';
+import '../../model/event_model/event_model.dart';
+import '../../model/response_model/response_model.dart';
+import '../../remote_datasource/remote_datasource.dart';
+import 'event_repository.dart';
+
+class EventRepositoryImpl extends EventRepository {
+  final NetworkInfoImpl networkInfo;
+  final RemoteDataSource remoteDatasource;
+
+  EventRepositoryImpl(this.networkInfo, this.remoteDatasource);
+
+  @override
+  Future<ResponseModel<EventModel>> fetchEvent({String? userId}) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel<EventModel> listEvent = await remoteDatasource.fetchListEvent(userId: userId??'');
+      return listEvent;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> saveEvent(EventModel eventModel) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response= await remoteDatasource.saveScheduleEventPersonal(eventModel);
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
+
+}

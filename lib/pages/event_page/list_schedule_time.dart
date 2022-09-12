@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/data/model/article_model/article_model.dart';
+import 'package:PregnancyApp/data/model/event_model/event_model.dart';
 import 'package:PregnancyApp/data/model/person_model/person_model.dart';
 import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
 import 'package:PregnancyApp/utils/extension.dart';
@@ -11,7 +12,7 @@ import '../../utils/epragnancy_color.dart';
 import 'bloc/event_page_bloc.dart';
 
 class ListScheduleTime extends StatelessWidget {
-  List<String>? listScheduleTime = [];
+  List<NotificationModel>? listScheduleTime = [];
 
   ListScheduleTime({this.listScheduleTime});
 
@@ -32,7 +33,7 @@ class ListScheduleTime extends StatelessWidget {
                 ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    String s = listScheduleTime![index];
+                    String s = listScheduleTime![index].time??'';
                     TimeOfDay _time = TimeOfDay(hour: int.parse(s.split(
                         ":")[0]),
                         minute: int.parse(s.split(":")[1]));
@@ -62,7 +63,7 @@ class ListScheduleTime extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  listScheduleTime![index],
+                                  listScheduleTime![index].time??'',
                                   style: TextStyle(
                                       color: EpregnancyColors.white,
                                       fontSize: 12),

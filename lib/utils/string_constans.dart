@@ -21,9 +21,9 @@ class StringConstant {
   static const checkInDone = 'Check-in lagi besok untuk dapatkan 750 poin';
   static const titlePoin = 'Tukar poinmu sekarang';
   static const reedemPoin = 'Reedem Poin';
-  static const consumeMedicine = 'CONSUME MEDICINE';
-  static const visitHospital = 'VISIT HOSPITAL';
-  static const other = 'OTHER';
+  static const consumeMedicine = 'medicine';
+  static const visitHospital = 'appointment';
+  static const other = 'other';
 
   //event login
   static const requestOtp = 'requestOtp';

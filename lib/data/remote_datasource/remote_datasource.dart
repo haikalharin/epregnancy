@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:PregnancyApp/data/model/event_model/event_model.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -33,13 +36,10 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel> login(LoginModel loginModel) async {
-    final response =
-    await httpClient.post(ServiceUrl.login, loginModel);
+    final response = await httpClient.post(ServiceUrl.login, loginModel);
 
-    return ResponseModel<UserModel>.fromJson(
-        response, UserModel.fromJson);
+    return ResponseModel<UserModel>.fromJson(response, UserModel.fromJson);
   }
-
 
   Future<ResponseModel<UserExampleModel>> loginOnine(
       UserExampleModel userModel) async {
@@ -65,8 +65,7 @@ class RemoteDataSource {
 
   Future<ResponseModel> register(UserModel user) async {
     try {
-      final response =
-          await httpClient.post(ServiceUrl.register, user);
+      final response = await httpClient.post(ServiceUrl.register, user);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -75,26 +74,25 @@ class RemoteDataSource {
 
   Future<ResponseModel> updateUser(SignupQuestRequest user) async {
     try {
-      final response =
-      await httpClient.put(ServiceUrl.updateUser, user);
+      final response = await httpClient.put(ServiceUrl.updateUser, user);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
+
   Future<ResponseModel> saveBaby(BabyModelApi baby) async {
     try {
-      final response =
-      await httpClient.post(ServiceUrl.saveBaby, baby);
+      final response = await httpClient.post(ServiceUrl.saveBaby, baby);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
+
   Future<ResponseModel> updateBaby(BabyModelApi baby) async {
     try {
-      final response =
-      await httpClient.post(ServiceUrl.updateBaby, baby);
+      final response = await httpClient.post(ServiceUrl.updateBaby, baby);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -112,11 +110,9 @@ class RemoteDataSource {
 
   Future<ResponseModel> getBaby(UserModel UserModel) async {
     try {
-      Map<String, String> qParams = {
-        'user_id': '${UserModel.id}'
-      };
+      Map<String, String> qParams = {'user_id': '${UserModel.id}'};
       final response =
-      await httpClient.get(ServiceUrl.listBaby,queryParameters: qParams );
+          await httpClient.get(ServiceUrl.listBaby, queryParameters: qParams);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -125,8 +121,7 @@ class RemoteDataSource {
 
   Future<ResponseModel> requestOtp(OtpModel otpModel) async {
     try {
-      final response =
-      await httpClient.post(ServiceUrl.requestOtp ,otpModel);
+      final response = await httpClient.post(ServiceUrl.requestOtp, otpModel);
       return ResponseModel.fromJson(response, OtpModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -135,32 +130,39 @@ class RemoteDataSource {
 
   Future<ResponseModel> loginOtp(OtpModel otpModel) async {
     try {
-      final response =
-      await httpClient.post(ServiceUrl.loginOtp ,otpModel);
+      final response = await httpClient.post(ServiceUrl.loginOtp, otpModel);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
-/// ListEvent
+
+  /// Article
   Future<ResponseModel> fetchListArticle() async {
     try {
-      final response =
-      await httpClient.get(ServiceUrl.listArticle );
+      final response = await httpClient.get(ServiceUrl.listArticle);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
 
+  /// EventSchedule
+  Future<ResponseModel<EventModel>> fetchListEvent({String userId = ''}) async {
+    Map<String, String> qParams = {'user_id': userId};
+    final response =
+        await httpClient.get(ServiceUrl.listSchedule, queryParameters: qParams);
+    return ResponseModel.fromJson(response, EventModel.fromJson);
+  }
 
-
-
-
-
-
-
-
+  Future<ResponseModel> saveScheduleEventPersonal(EventModel eventModel) async {
+    try {
+      final response = await httpClient.post(ServiceUrl.saveSchedule, eventModel);
+      return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
 
   Future<ResponseModel> postUK(Map<String, dynamic> ujiKelayakan) async {
     final response = await httpClient.post(ServiceUrl.login, ujiKelayakan);
@@ -187,7 +189,8 @@ class RemoteDataSource {
     final response = await httpClient.post(ServiceUrl.checkIn + day, {});
 
 //    return null;
-    return ResponseModel<CheckinResponse>.fromJson(response, CheckinResponse.fromJson);
+    return ResponseModel<CheckinResponse>.fromJson(
+        response, CheckinResponse.fromJson);
   }
 
   Future<List<PointHistory>> fetchPointHistory() async {

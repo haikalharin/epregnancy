@@ -25,6 +25,7 @@ import '../../../data/model/baby_model/baby_model.dart';
 import '../../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../../data/model/baby_progress_model/baby_progress_model.dart';
 import '../../../data/model/user_info/user_info.dart';
+import '../../../data/repository/event_repository/event_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../data/firebase/event/event_article.dart';
 import '../../../utils/function_utils.dart';
@@ -34,10 +35,11 @@ part 'home_page_event.dart';
 part 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
-  HomePageBloc(this.homeRepository, this.userRepository) : super(HomePageInitial());
+  HomePageBloc(this.homeRepository, this.userRepository, this.eventRepository) : super(HomePageInitial());
 
   final HomeRepository homeRepository;
   final UserRepository userRepository;
+  final EventRepository eventRepository;
 
   @override
   Stream<HomePageState> mapEventToState(HomePageEvent event) async* {
@@ -71,14 +73,16 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     yield state.copyWith(status: FormzStatus.submissionInProgress,tipe: "listEvent");
     try {
       List<EventModel> listEventBeforeSort = [];
-      UserModelFirebase person = await AppSharedPreference.getUserFirebase();
+      ResponseModel<EventModel> responseModel = ResponseModel();
+      UserModel person = await AppSharedPreference.getUser();
+
       List<EventModel> listEvent = [];
       if (event.type == StringConstant.typePersonal) {
-        listEvent = await EventEvent.fetchCategoriEventPersonal(
-            type: event.type, userId: person.uid);
+        responseModel = await eventRepository.fetchEvent(userId: person.id);
+        listEvent = responseModel.data??[];
       } else {
-        listEvent = await EventEvent.fetchCategoriEvent(
-            type: event.type, userId: person.uid);
+        responseModel = await eventRepository.fetchEvent(userId: person.id);
+        listEvent = responseModel.data?? [];
       }
 
       if (listEvent.isNotEmpty) {

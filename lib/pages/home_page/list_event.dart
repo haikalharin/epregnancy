@@ -62,14 +62,7 @@ class _ListEventWidgetState extends State<ListEventWidget> {
                               itemBuilder: (context, index) {
                                 String outputDate = "";
                                 var outputFormat = DateFormat.yMMMMd('id');
-                                outputDate = outputFormat.format(DateTime.parse(
-                                    state.listEvent != null &&
-                                            state.listEvent![index]
-                                                    .eventStartDate !=
-                                                null
-                                        ? state
-                                            .listEvent![index].eventStartDate!
-                                        : ""));
+                                outputDate = outputFormat.format(widget.dateTime??DateTime.now());
                                 return Container(
                                   height: 180,
                                   padding: EdgeInsets.only(
@@ -166,10 +159,10 @@ class _ListEventWidgetState extends State<ListEventWidget> {
                                             Container(
                                               decoration: state
                                                               .listEvent![index]
-                                                              .imageURL !=
+                                                              .user?.coverUrl !=
                                                           null &&
                                                       state.listEvent![index]
-                                                              .imageURL !=
+                                                          .user?.coverUrl !=
                                                           ""
                                                   ? BoxDecoration(
                                                       image: DecorationImage(
@@ -177,7 +170,7 @@ class _ListEventWidgetState extends State<ListEventWidget> {
                                                             state
                                                                 .listEvent![
                                                                     index]
-                                                                .imageURL!),
+                                                                .user!.coverUrl!),
                                                         fit: BoxFit.cover,
                                                       ),
                                                       borderRadius:
