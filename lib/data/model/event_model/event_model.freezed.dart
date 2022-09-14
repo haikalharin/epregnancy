@@ -25,6 +25,7 @@ mixin _$EventModel {
   String? get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'user_id', includeIfNull: true)
   String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user', includeIfNull: true)
   User? get user => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
   String? get type => throw _privateConstructorUsedError;
@@ -56,8 +57,11 @@ mixin _$EventModel {
   List<NotificationModel>? get notifications =>
       throw _privateConstructorUsedError;
   @JsonKey(name: 'is_delete', includeIfNull: true)
-  @JsonKey(includeIfNull: true)
   bool? get isDelete => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_public', includeIfNull: true)
+  bool? get isPublic => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image_url', includeIfNull: true)
+  String? get imageUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_by', includeIfNull: true)
   String? get createdBy => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_from', includeIfNull: true)
@@ -88,7 +92,8 @@ abstract class $EventModelCopyWith<$Res> {
           String? id,
       @JsonKey(name: 'user_id', includeIfNull: true)
           String? userId,
-      User? user,
+      @JsonKey(name: 'user', includeIfNull: true)
+          User? user,
       @JsonKey(includeIfNull: true)
           String? type,
       @JsonKey(includeIfNull: true)
@@ -118,8 +123,11 @@ abstract class $EventModelCopyWith<$Res> {
       @JsonKey(name: 'notifications', includeIfNull: true)
           List<NotificationModel>? notifications,
       @JsonKey(name: 'is_delete', includeIfNull: true)
-      @JsonKey(includeIfNull: true)
           bool? isDelete,
+      @JsonKey(name: 'is_public', includeIfNull: true)
+          bool? isPublic,
+      @JsonKey(name: 'image_url', includeIfNull: true)
+          String? imageUrl,
       @JsonKey(name: 'created_by', includeIfNull: true)
           String? createdBy,
       @JsonKey(name: 'created_from', includeIfNull: true)
@@ -164,6 +172,8 @@ class _$EventModelCopyWithImpl<$Res> implements $EventModelCopyWith<$Res> {
     Object? status = freezed,
     Object? notifications = freezed,
     Object? isDelete = freezed,
+    Object? isPublic = freezed,
+    Object? imageUrl = freezed,
     Object? createdBy = freezed,
     Object? createdFrom = freezed,
     Object? createdDate = freezed,
@@ -244,6 +254,14 @@ class _$EventModelCopyWithImpl<$Res> implements $EventModelCopyWith<$Res> {
           ? _value.isDelete
           : isDelete // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isPublic: isPublic == freezed
+          ? _value.isPublic
+          : isPublic // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      imageUrl: imageUrl == freezed
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdBy: createdBy == freezed
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -296,7 +314,8 @@ abstract class _$$_EventModelCopyWith<$Res>
           String? id,
       @JsonKey(name: 'user_id', includeIfNull: true)
           String? userId,
-      User? user,
+      @JsonKey(name: 'user', includeIfNull: true)
+          User? user,
       @JsonKey(includeIfNull: true)
           String? type,
       @JsonKey(includeIfNull: true)
@@ -326,8 +345,11 @@ abstract class _$$_EventModelCopyWith<$Res>
       @JsonKey(name: 'notifications', includeIfNull: true)
           List<NotificationModel>? notifications,
       @JsonKey(name: 'is_delete', includeIfNull: true)
-      @JsonKey(includeIfNull: true)
           bool? isDelete,
+      @JsonKey(name: 'is_public', includeIfNull: true)
+          bool? isPublic,
+      @JsonKey(name: 'image_url', includeIfNull: true)
+          String? imageUrl,
       @JsonKey(name: 'created_by', includeIfNull: true)
           String? createdBy,
       @JsonKey(name: 'created_from', includeIfNull: true)
@@ -375,6 +397,8 @@ class __$$_EventModelCopyWithImpl<$Res> extends _$EventModelCopyWithImpl<$Res>
     Object? status = freezed,
     Object? notifications = freezed,
     Object? isDelete = freezed,
+    Object? isPublic = freezed,
+    Object? imageUrl = freezed,
     Object? createdBy = freezed,
     Object? createdFrom = freezed,
     Object? createdDate = freezed,
@@ -455,6 +479,14 @@ class __$$_EventModelCopyWithImpl<$Res> extends _$EventModelCopyWithImpl<$Res>
           ? _value.isDelete
           : isDelete // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isPublic: isPublic == freezed
+          ? _value.isPublic
+          : isPublic // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      imageUrl: imageUrl == freezed
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdBy: createdBy == freezed
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -492,7 +524,8 @@ class _$_EventModel implements _EventModel {
           this.id,
       @JsonKey(name: 'user_id', includeIfNull: true)
           this.userId,
-      this.user,
+      @JsonKey(name: 'user', includeIfNull: true)
+          this.user,
       @JsonKey(includeIfNull: true)
           this.type,
       @JsonKey(includeIfNull: true)
@@ -522,8 +555,11 @@ class _$_EventModel implements _EventModel {
       @JsonKey(name: 'notifications', includeIfNull: true)
           final List<NotificationModel>? notifications,
       @JsonKey(name: 'is_delete', includeIfNull: true)
-      @JsonKey(includeIfNull: true)
           this.isDelete,
+      @JsonKey(name: 'is_public', includeIfNull: true)
+          this.isPublic,
+      @JsonKey(name: 'image_url', includeIfNull: true)
+          this.imageUrl,
       @JsonKey(name: 'created_by', includeIfNull: true)
           this.createdBy,
       @JsonKey(name: 'created_from', includeIfNull: true)
@@ -549,6 +585,7 @@ class _$_EventModel implements _EventModel {
   @JsonKey(name: 'user_id', includeIfNull: true)
   final String? userId;
   @override
+  @JsonKey(name: 'user', includeIfNull: true)
   final User? user;
   @override
   @JsonKey(includeIfNull: true)
@@ -601,8 +638,13 @@ class _$_EventModel implements _EventModel {
 
   @override
   @JsonKey(name: 'is_delete', includeIfNull: true)
-  @JsonKey(includeIfNull: true)
   final bool? isDelete;
+  @override
+  @JsonKey(name: 'is_public', includeIfNull: true)
+  final bool? isPublic;
+  @override
+  @JsonKey(name: 'image_url', includeIfNull: true)
+  final String? imageUrl;
   @override
   @JsonKey(name: 'created_by', includeIfNull: true)
   final String? createdBy;
@@ -624,7 +666,7 @@ class _$_EventModel implements _EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, userId: $userId, user: $user, type: $type, title: $title, description: $description, location: $location, date: $date, time: $time, remindBefore: $remindBefore, startDate: $startDate, endDate: $endDate, medicineTakenTimes: $medicineTakenTimes, medicineTakenDays: $medicineTakenDays, medicineUnit: $medicineUnit, status: $status, notifications: $notifications, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
+    return 'EventModel(id: $id, userId: $userId, user: $user, type: $type, title: $title, description: $description, location: $location, date: $date, time: $time, remindBefore: $remindBefore, startDate: $startDate, endDate: $endDate, medicineTakenTimes: $medicineTakenTimes, medicineTakenDays: $medicineTakenDays, medicineUnit: $medicineUnit, status: $status, notifications: $notifications, isDelete: $isDelete, isPublic: $isPublic, imageUrl: $imageUrl, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
   }
 
   @override
@@ -656,6 +698,8 @@ class _$_EventModel implements _EventModel {
             const DeepCollectionEquality()
                 .equals(other._notifications, _notifications) &&
             const DeepCollectionEquality().equals(other.isDelete, isDelete) &&
+            const DeepCollectionEquality().equals(other.isPublic, isPublic) &&
+            const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
             const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
             const DeepCollectionEquality()
                 .equals(other.createdFrom, createdFrom) &&
@@ -691,6 +735,8 @@ class _$_EventModel implements _EventModel {
         const DeepCollectionEquality().hash(status),
         const DeepCollectionEquality().hash(_notifications),
         const DeepCollectionEquality().hash(isDelete),
+        const DeepCollectionEquality().hash(isPublic),
+        const DeepCollectionEquality().hash(imageUrl),
         const DeepCollectionEquality().hash(createdBy),
         const DeepCollectionEquality().hash(createdFrom),
         const DeepCollectionEquality().hash(createdDate),
@@ -717,7 +763,8 @@ abstract class _EventModel implements EventModel {
           final String? id,
       @JsonKey(name: 'user_id', includeIfNull: true)
           final String? userId,
-      final User? user,
+      @JsonKey(name: 'user', includeIfNull: true)
+          final User? user,
       @JsonKey(includeIfNull: true)
           final String? type,
       @JsonKey(includeIfNull: true)
@@ -747,8 +794,11 @@ abstract class _EventModel implements EventModel {
       @JsonKey(name: 'notifications', includeIfNull: true)
           final List<NotificationModel>? notifications,
       @JsonKey(name: 'is_delete', includeIfNull: true)
-      @JsonKey(includeIfNull: true)
           final bool? isDelete,
+      @JsonKey(name: 'is_public', includeIfNull: true)
+          final bool? isPublic,
+      @JsonKey(name: 'image_url', includeIfNull: true)
+          final String? imageUrl,
       @JsonKey(name: 'created_by', includeIfNull: true)
           final String? createdBy,
       @JsonKey(name: 'created_from', includeIfNull: true)
@@ -773,6 +823,7 @@ abstract class _EventModel implements EventModel {
   @JsonKey(name: 'user_id', includeIfNull: true)
   String? get userId => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'user', includeIfNull: true)
   User? get user => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
@@ -819,8 +870,13 @@ abstract class _EventModel implements EventModel {
       throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'is_delete', includeIfNull: true)
-  @JsonKey(includeIfNull: true)
   bool? get isDelete => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'is_public', includeIfNull: true)
+  bool? get isPublic => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'image_url', includeIfNull: true)
+  String? get imageUrl => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'created_by', includeIfNull: true)
   String? get createdBy => throw _privateConstructorUsedError;

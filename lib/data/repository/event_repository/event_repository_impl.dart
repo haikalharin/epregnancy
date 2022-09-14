@@ -13,9 +13,11 @@ class EventRepositoryImpl extends EventRepository {
   EventRepositoryImpl(this.networkInfo, this.remoteDatasource);
 
   @override
-  Future<ResponseModel<EventModel>> fetchEvent({String? userId}) async {
+  Future<ResponseModel<EventModel>> fetchEvent(
+      {String? userId, bool? isPublic}) async {
     if (await networkInfo.isConnected) {
-      ResponseModel<EventModel> listEvent = await remoteDatasource.fetchListEvent(userId: userId??'');
+      ResponseModel<EventModel> listEvent = await remoteDatasource
+          .fetchListEvent(userId: userId ?? '', isPublic: isPublic ?? false);
       return listEvent;
     }
     throw NetworkConnectionException();
@@ -24,10 +26,10 @@ class EventRepositoryImpl extends EventRepository {
   @override
   Future<ResponseModel> saveEvent(EventModel eventModel) async {
     if (await networkInfo.isConnected) {
-      ResponseModel response= await remoteDatasource.saveScheduleEventPersonal(eventModel);
+      ResponseModel response =
+          await remoteDatasource.saveScheduleEventPersonal(eventModel);
       return response;
     }
     throw NetworkConnectionException();
   }
-
 }

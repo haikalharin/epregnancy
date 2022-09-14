@@ -20,7 +20,7 @@ abstract class EventModel with _$EventModel {
   const factory EventModel({
     @JsonKey(includeIfNull: true) @JsonKey(includeIfNull: true) String? id,
     @JsonKey(name: 'user_id', includeIfNull: true) String? userId,
-    User? user,
+    @JsonKey(name: 'user', includeIfNull: true)User? user,
     @JsonKey(includeIfNull: true) String? type,
     @JsonKey(includeIfNull: true) String? title,
     @JsonKey(includeIfNull: true) String? description,
@@ -35,9 +35,9 @@ abstract class EventModel with _$EventModel {
     @JsonKey(name: 'medicine_unit', includeIfNull: true) String? medicineUnit,
     @JsonKey(includeIfNull: true) String? status,
     @JsonKey(name: 'notifications', includeIfNull: true)List<NotificationModel>? notifications,
-    @JsonKey(name: 'is_delete', includeIfNull: true)
-    @JsonKey(includeIfNull: true)
-        bool? isDelete,
+    @JsonKey(name: 'is_delete', includeIfNull: true) bool? isDelete,
+    @JsonKey(name: 'is_public', includeIfNull: true) bool? isPublic,
+    @JsonKey(name: 'image_url', includeIfNull: true) String? imageUrl,
     @JsonKey(name: 'created_by', includeIfNull: true) String? createdBy,
     @JsonKey(name: 'created_from', includeIfNull: true) String? createdFrom,
     @JsonKey(name: 'created_date', includeIfNull: true) String? createdDate,

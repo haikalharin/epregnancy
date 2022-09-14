@@ -21,6 +21,8 @@ class ListEventWidget extends StatefulWidget {
 }
 
 class _ListEventWidgetState extends State<ListEventWidget> {
+  bool isExpanded = false;
+
   @override
   void initState() {
     Injector.resolve<HomePageBloc>().add(EventFetchEvent(
@@ -62,11 +64,11 @@ class _ListEventWidgetState extends State<ListEventWidget> {
                               itemBuilder: (context, index) {
                                 String outputDate = "";
                                 var outputFormat = DateFormat.yMMMMd('id');
-                                outputDate = outputFormat.format(widget.dateTime??DateTime.now());
+                                outputDate = outputFormat
+                                    .format(widget.dateTime ?? DateTime.now());
                                 return Container(
-                                  height: 180,
                                   padding: EdgeInsets.only(
-                                      left: 20, right: 20, top: 10, bottom: 10),
+                                      left: 20, right: 20, top: 20, bottom: 5),
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: EpregnancyColors.primer,
@@ -78,118 +80,175 @@ class _ListEventWidgetState extends State<ListEventWidget> {
                                       left: 20, right: 20, bottom: 30),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.end,
                                     children: [
-                                      Container(
-                                        margin: EdgeInsets.only(bottom: 10),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                                // width: 62,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(bottom: 10),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Container(
+                                                    // width: 62,
 
-                                                child: Text(outputDate)),
-                                            Container(
-                                                // width: 62,
+                                                    child: Text(outputDate)),
+                                                Container(
+                                                    // width: 62,
 
-                                                child: Text(
-                                              widget.tipeAcara ?? '',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color:
-                                                      EpregnancyColors.primer),
-                                            )),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                      width: 230,
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 10),
-                                                      child: Text(
-                                                        state.listEvent !=
-                                                                    null &&
-                                                                state
-                                                                        .listEvent![
-                                                                            index]
-                                                                        .title !=
-                                                                    null
-                                                            ? state
-                                                                .listEvent![
-                                                                    index]
-                                                                .title!
-                                                            : "",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      )),
-                                                  Container(
-                                                      width: 230,
-                                                      margin: EdgeInsets.only(),
-                                                      child: Text(state
-                                                                      .listEvent !=
-                                                                  null &&
-                                                              state
+                                                    child: Text(
+                                                  widget.tipeAcara ?? '',
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color:
+                                                          EpregnancyColors.primer),
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Container(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                          width:
+                                                              MediaQuery.of(context)
+                                                                      .size
+                                                                      .width -
+                                                                  200,
+                                                          margin: EdgeInsets.only(
+                                                              bottom: 10),
+                                                          child: Text(
+                                                            state.listEvent !=
+                                                                        null &&
+                                                                    state
+                                                                            .listEvent![
+                                                                                index]
+                                                                            .title !=
+                                                                        null
+                                                                ? state
+                                                                    .listEvent![
+                                                                        index]
+                                                                    .title!
+                                                                : "",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          )),
+                                                      Container(
+                                                        width:
+                                                            MediaQuery.of(context)
+                                                                    .size
+                                                                    .width -
+                                                                200,
+                                                        child: ConstrainedBox(
+                                                            constraints: isExpanded
+                                                                ? new BoxConstraints()
+                                                                : new BoxConstraints(
+                                                                    maxHeight:
+                                                                        50.0),
+                                                            child: Text(
+                                                              state.listEvent !=
+                                                                          null &&
+                                                                      state
+                                                                              .listEvent![
+                                                                                  index]
+                                                                              .description !=
+                                                                          null
+                                                                  ? state
                                                                       .listEvent![
                                                                           index]
-                                                                      .description !=
-                                                                  null
-                                                          ? state
-                                                              .listEvent![index]
-                                                              .description!
-                                                          : "")),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              decoration: state
-                                                              .listEvent![index]
-                                                              .user?.coverUrl !=
-                                                          null &&
-                                                      state.listEvent![index]
-                                                          .user?.coverUrl !=
-                                                          ""
-                                                  ? BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            state
-                                                                .listEvent![
-                                                                    index]
-                                                                .user!.coverUrl!),
-                                                        fit: BoxFit.cover,
+                                                                      .description!
+                                                                  : "",
+
+                                                              softWrap: true,
+                                                              overflow:
+                                                                  TextOverflow.fade,
+
+                                                            )),
                                                       ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.0),
-                                                      color: EpregnancyColors
-                                                          .primer)
-                                                  : BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.0),
-                                                      color: EpregnancyColors
-                                                          .primer),
-                                              height: 80,
-                                              width: 80,
+
+                                                      // Container(
+                                                      //     width: MediaQuery.of(context).size.width -200,
+                                                      //     margin: EdgeInsets.only(),
+                                                      //     child: Text(state
+                                                      //                     .listEvent !=
+                                                      //                 null &&
+                                                      //             state
+                                                      //                     .listEvent![
+                                                      //                         index]
+                                                      //                     .description !=
+                                                      //                 null
+                                                      //         ? state
+                                                      //             .listEvent![index]
+                                                      //             .description!
+                                                      //         : "", overflow: TextOverflow.ellipsis,maxLines: 3,)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  decoration: state
+                                                                  .listEvent![index]
+                                                                  .imageUrl !=
+                                                              null &&
+                                                          state.listEvent![index]
+                                                                  .imageUrl !=
+                                                              ""
+                                                      ? BoxDecoration(
+                                                          image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                state
+                                                                    .listEvent![
+                                                                        index]
+                                                                    .imageUrl!),
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        )
+                                                      : BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  10.0),
+                                                          color: EpregnancyColors
+                                                              .primer),
+                                                  height: 80,
+                                                  width: 80,
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+
+                                        ],
                                       ),
+                                      isExpanded
+                                          ? FlatButton(
+                                          child:
+                                          const Text('Read less'),
+                                          onPressed: () =>
+                                              setState(() =>
+                                              isExpanded =
+                                              false))
+                                          : FlatButton(
+                                          child:
+                                          const Text('Read More'),
+                                          onPressed: () =>
+                                              setState(() =>
+                                              isExpanded =
+                                              true))
                                     ],
                                   ),
                                 );
@@ -225,11 +284,14 @@ class _ListEventWidgetState extends State<ListEventWidget> {
                                       text: '+',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.white, fontSize: 26)),
+                                          color: Colors.white,
+                                          fontSize: 26)),
                                   TextSpan(
-                                      text: '   Tambah Jadwal', style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.white, fontSize: 16)),
+                                      text: '   Tambah Jadwal',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.white,
+                                          fontSize: 16)),
                                 ],
                               ),
                             ),

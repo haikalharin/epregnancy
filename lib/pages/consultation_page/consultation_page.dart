@@ -57,6 +57,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey.shade200,
       body: Column(
         children: [
@@ -77,7 +78,8 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
                       Container(
-                        margin: EdgeInsets.only(bottom: 10,right:20, left: 20 ),
+                        margin:
+                            EdgeInsets.only(bottom: 10, right: 20, left: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -88,12 +90,14 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 ),
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
-                              child:  FlatButton(
-                                minWidth: MediaQuery.of(context).size.width/4,
-                                padding: EdgeInsets.only(top: 20, bottom: 20,right: 10,left: 10),
+                              child: FlatButton(
+                                minWidth: MediaQuery.of(context).size.width / 4,
+                                padding: EdgeInsets.only(
+                                    top: 20, bottom: 20, right: 10, left: 10),
                                 onPressed: () async {
                                   UserModelFirebase myData =
-                                      await AppSharedPreference.getUserFirebase();
+                                      await AppSharedPreference
+                                          .getUserFirebase();
                                   bool isSenderRoomExist = false;
                                   bool isSenderAchiveExist =
                                       await EventChatRoom.checkArchiveIsExist(
@@ -117,9 +121,9 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => ChatRoom(
-                                                  arguments: {
-                                                    'room': roomModel
-                                                  })));
+                                                      arguments: {
+                                                        'room': roomModel
+                                                      })));
                                     } else if (isSenderRoomExist &&
                                         isSenderAchiveExist) {
                                       Navigator.push(
@@ -141,7 +145,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                     Navigator.of(context)
                                         .pushNamed(RouteName.chatPage);
                                   }
-
                                 },
                                 child: Container(
                                   child: Row(
@@ -149,13 +152,21 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Image.asset('assets/icon-hubungi-profesional.png', height: 25),
+                                      Image.asset(
+                                          'assets/icon-hubungi-profesional.png',
+                                          height: 25),
                                       SizedBox(
                                         width: 10,
                                       ),
                                       rolesModel.role == "PATIENT"
-                                          ? Text("Hubungi profesional", style: TextStyle(fontSize: 12),)
-                                          : Text("Cek Konsultasi",style: TextStyle(fontSize: 12),),
+                                          ? Text(
+                                              "Hubungi profesional",
+                                              style: TextStyle(fontSize: 12),
+                                            )
+                                          : Text(
+                                              "Cek Konsultasi",
+                                              style: TextStyle(fontSize: 12),
+                                            ),
                                       SizedBox(
                                         width: 5,
                                       )
@@ -164,16 +175,15 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 ),
                               ),
                             ),
-                         Container(
+                            Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
                                   color: EpregnancyColors.primer),
                               child: FlatButton(
-                                minWidth: MediaQuery.of(context).size.width/5,
-                                padding: EdgeInsets.only(top: 20, bottom: 20,right: 20,left: 20),
-                                onPressed: () {
-
-                                },
+                                minWidth: MediaQuery.of(context).size.width / 5,
+                                padding: EdgeInsets.only(
+                                    top: 20, bottom: 20, right: 20, left: 20),
+                                onPressed: () {},
                                 child: Container(
                                   child: Row(
                                     children: [
@@ -217,30 +227,70 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              Container(
-                                width: 260,
-                                margin: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                child: TextField(
-                                  maxLines: 3,
-                                  minLines: 1,
-                                  decoration: const InputDecoration(
-                                    // prefixIcon: Image(image: image),
-                                    hintText: 'Tanya ke komunitas...',
-                                    border: InputBorder.none,
-                                    isDense: true,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    width: 260,
+                                    margin: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Container(
+                                        //     margin: EdgeInsets.only(
+                                        //         left: 0,
+                                        //         right: 0,
+                                        //         bottom: 10,
+                                        //         top: 10),
+                                        //     child: Image.asset(
+                                        //       'assets/photo_dummy.png',
+                                        //       height: 70,
+                                        //     )),
+                                        TextField(
+                                          maxLines: 5,
+                                          minLines: 1,
+                                          decoration: const InputDecoration(
+                                            // prefixIcon: Image(image: image),
+                                            hintText: 'Tanya ke komunitas...',
+                                            border: InputBorder.none,
+                                            isDense: true,
+                                          ),
+                                          onChanged: (value) {},
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  onChanged: (value) {},
-                                ),
+                                  Container(
+                                    width: 100,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        color: EpregnancyColors.primer),
+                                    child: FlatButton(
+                                      minWidth:
+                                          MediaQuery.of(context).size.width / 5,
+                                      onPressed: () {},
+                                      child: Container(
+                                        child: Text(
+                                          "Kirim",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                               InkWell(
-                                onTap: (){
+                                onTap: () {
                                   _showPicker(context);
                                 },
                                 child: Container(
@@ -259,6 +309,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
       ),
     );
   }
+
   void pickAndCropImageGallery() async {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
@@ -285,6 +336,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
     }
     getMyPerson();
   }
+
   void pickAndCropImageCamera() async {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
@@ -331,7 +383,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
                     title: Text('Camera'),
                     onTap: () async {
                       pickAndCropImageCamera();
-
                     },
                   ),
                 ],
@@ -340,5 +391,4 @@ class _ConsultationPageState extends State<ConsultationPage> {
           );
         });
   }
-
 }

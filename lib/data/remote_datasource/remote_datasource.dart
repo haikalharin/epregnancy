@@ -148,8 +148,8 @@ class RemoteDataSource {
   }
 
   /// EventSchedule
-  Future<ResponseModel<EventModel>> fetchListEvent({String userId = ''}) async {
-    Map<String, String> qParams = {'user_id': userId};
+  Future<ResponseModel<EventModel>> fetchListEvent({String userId = '', bool isPublic= false}) async {
+    Map<String, String> qParams = {'user_id': userId, 'is_public': isPublic.toString()};
     final response =
         await httpClient.get(ServiceUrl.listSchedule, queryParameters: qParams);
     return ResponseModel.fromJson(response, EventModel.fromJson);

@@ -30,6 +30,8 @@ _$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
           ?.map((e) => NotificationModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       isDelete: json['is_delete'] as bool?,
+      isPublic: json['is_public'] as bool?,
+      imageUrl: json['image_url'] as String?,
       createdBy: json['created_by'] as String?,
       createdFrom: json['created_from'] as String?,
       createdDate: json['created_date'] as String?,
@@ -58,6 +60,8 @@ Map<String, dynamic> _$$_EventModelToJson(_$_EventModel instance) =>
       'status': instance.status,
       'notifications': instance.notifications,
       'is_delete': instance.isDelete,
+      'is_public': instance.isPublic,
+      'image_url': instance.imageUrl,
       'created_by': instance.createdBy,
       'created_from': instance.createdFrom,
       'created_date': instance.createdDate,
