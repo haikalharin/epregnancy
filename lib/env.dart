@@ -1,5 +1,6 @@
 final Map<String, dynamic> environment = <String, dynamic>{
   'host': 'http://104.171.119.202:8080/',
+  'websockets': 'ws://104.171.119.202:8080/user/',
   'image_host': 'https://image.tmdb.org/t/p/',
   'http_client': 'http',
   'wpUrl': 'http://192.168.64.2/panjistore',

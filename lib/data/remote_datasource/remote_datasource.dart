@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -204,6 +205,24 @@ class RemoteDataSource {
     final data = <GamesResponse>[];
     getData(response).forEach((item) {
       data.add(GamesResponse.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<List<ChatResponse>> fetchLatestChat() async {
+    final response = await httpClient.get(ServiceUrl.latestChat);
+    final data = <ChatResponse>[];
+    getData(response).forEach((item) {
+      data.add(ChatResponse.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<List<ChatResponse>> fetchPersonalChatRoom(String id) async {
+    final response = await httpClient.get(ServiceUrl.personalChatRoom + id);
+    final data = <ChatResponse>[];
+    getData(response).forEach((item) {
+      data.add(ChatResponse.fromJson(item));
     });
     return data;
   }

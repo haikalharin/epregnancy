@@ -32,4 +32,9 @@ static String listArticle = '$article/list';
   static String game = 'game';
   static String gameList = '$game/list';
 
+  //chat
+  static String chat = 'chat';
+  static String latestChat =  '$chat/latest';
+  static String personalChatRoom =  '$chat/personal/';
+
 }

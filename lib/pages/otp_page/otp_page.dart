@@ -51,16 +51,15 @@ class _OtpPageState extends State<OtpPage> {
                     'role': state.userInfo?.isPatient == true
                         ? StringConstant.patient
                         : StringConstant.midwife,
-                    'initial_index': 0
+                    'initial_index': 0,
+                    'user_id':state.userInfo?.id ??''
                   },
                 );
               } else {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                   RouteName.dashboardNakesPage,
                   (Route<dynamic> route) => false,
-                    arguments:  state.userInfo?.isPatient == true
-                        ? StringConstant.patient
-                        : StringConstant.midwife,
+                    arguments:  state.userInfo?.name
                 );
               }
             }

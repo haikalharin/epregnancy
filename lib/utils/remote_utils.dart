@@ -5,6 +5,8 @@ dynamic getRoleArgument(dynamic result) => result['role'];
 
 dynamic getInitialIndex(dynamic result) => result['initial_index'];
 
+dynamic getUserId(dynamic result) => result['user_id'];
+
 dynamic getDataCondition(dynamic result) => result['Condition'];
 
 dynamic cekPersonInRoom(dynamic result) => result['inRoom'];

@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/utils/web_socket_chat_channel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +17,14 @@ class SplashscreenPage extends StatefulWidget {
 }
 
 class _SplashscreenPageState extends State<SplashscreenPage> {
+
+
   @override
   void initState() {
     Injector.resolve<SplashscreenBloc>().add(SplashscreenCheckUserExist());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<SplashscreenBloc, SplashscreenState>(
@@ -28,15 +32,15 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
       if (state.submitStatus == FormzStatus.submissionSuccess) {
         if(state.isExist){
           // Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: state.role!.role);
-
           // todo handel login from API
-          if(state.role == 'MIDWIFE'){
+
+          if(state.role == 'MIDWIFE' || state.userModel?.isPatient == true){
             Navigator.of(context).pushReplacementNamed(
                 RouteName.dashboardNakesPage,
-                arguments: state.role
+                arguments: state.userModel?.name
             );
           } else {
-            Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: {'role': state.role, 'inital_index': 0});
+            Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: {'role': state.role, 'inital_index': 0, 'user_id':state.userModel?.id ??''});
           }
         } else{
           Navigator.of(context).pushReplacementNamed(RouteName.login);

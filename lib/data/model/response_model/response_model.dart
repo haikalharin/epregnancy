@@ -3,6 +3,7 @@ ResponseModel<T> {
   int? code;
   String? status;
   String? message;
+  String? action;
   dynamic data;
 
   /// Pagination from Mas Aamiin
@@ -18,6 +19,7 @@ ResponseModel<T> {
     this.code,
     this.status,
     this.message,
+    this.action,
     this.data,
     this.total,
     this.perPage,
@@ -32,6 +34,7 @@ ResponseModel<T> {
     code = json['code'];
     status = json['status'];
     message = json['message'];
+    action = json['action'];
 
     if (json["data"] != null && fromJson != null) {
       if (json['data'].toString()[0] == "[") {
@@ -56,6 +59,7 @@ ResponseModel<T> {
     int? statusCode,
     String? statusMessage,
     String? errorMessage,
+    String? action,
     dynamic data,
     int? total,
     int? perPage,
@@ -69,6 +73,7 @@ ResponseModel<T> {
       code: statusCode ?? this.code,
       status: statusMessage ?? this.status,
       message: errorMessage ?? this.message,
+      action: action ?? this.action,
       data: data ?? this.data,
       total: total ?? this.total,
       perPage: perPage ?? this.perPage,
@@ -89,6 +94,7 @@ ResponseModel<T> {
      code: 0,
       status: '',
       message: '',
+      action: '',
       data: null,
     );
   }

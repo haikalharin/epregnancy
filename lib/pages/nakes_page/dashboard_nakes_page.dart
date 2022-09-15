@@ -106,7 +106,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: (){
-                        Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': state.role??'', 'initial_index': 0});
+                        Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': state.role??'', 'initial_index': 0, 'user_id':state.user?.id ??''});
                       },
                       child: Center(
                         child: Text(StringConstant.seeAllConsulation, style: TextStyle(color: EpregnancyColors.greyDarkFontColor),),

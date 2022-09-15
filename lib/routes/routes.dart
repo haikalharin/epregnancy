@@ -37,7 +37,7 @@ class Routes {
       case RouteName.login:
         return MaterialPageRoute(builder: (_) => LoginPage());
       case RouteName.homeScreen:
-        return MaterialPageRoute(builder: (_) => HomePage());
+        return MaterialPageRoute(builder: (_) => HomePage(userId: getDataValue(settings.arguments),));
       case RouteName.surveyPage:
         return MaterialPageRoute(builder: (_) => SurveyPage());
       case RouteName.surveyPageBaby:
@@ -51,6 +51,7 @@ class Routes {
             builder: (_) => NavbarPage(
                   role: getRoleArgument(settings.arguments),
                   initalIndex: getInitialIndex(settings.arguments),
+                  userId: getUserId(settings.arguments),
                 ));
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());
