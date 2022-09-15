@@ -58,31 +58,26 @@ class _LoginPageState extends State<LoginPage> {
                     const snackBar = SnackBar(
                         content: Text("failed"), backgroundColor: Colors.red);
                     Scaffold.of(context).showSnackBar(snackBar);
-                    Injector.resolve<LoginBloc>().add(
-                        LoginDispose());
+
                   } else if (state.submitStatus ==
                       FormzStatus.submissionSuccess) {
                     if(state.typeEvent == StringConstant.requestOtp){
                       Navigator.of(context)
                           .pushNamed(RouteName.otpPage);
-                      Injector.resolve<LoginBloc>().add(
-                          LoginDispose());
+
 
                     } else if(state.typeEvent == StringConstant.submitLogin) {
                       if(state.userModel?.isPatient == true){
                         if(state.isActive == true){
                           Injector.resolve<LoginBloc>().add(LoginRequestOtp());
-                          Injector.resolve<LoginBloc>().add(
-                              LoginDispose());
+
                         } else{
                           Navigator.of(context).pushNamed(RouteName.surveyPage);
-                          Injector.resolve<LoginBloc>().add(
-                              LoginDispose());
+
                         }
                       } else{
                         Injector.resolve<LoginBloc>().add(LoginRequestOtp());
-                        Injector.resolve<LoginBloc>().add(
-                            LoginDispose());
+
                       }
 
                     }

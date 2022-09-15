@@ -102,7 +102,7 @@ class EventEvent {
     try {
       FirebaseFirestore.instance
           .collection('EVENTS_PERSONAL')
-          .doc(eventModel.eventid)
+          .doc(eventModel.id)
           .set(eventModel.toJson())
           .then((value) => null)
           .catchError((onError) => print(onError));

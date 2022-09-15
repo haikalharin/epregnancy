@@ -32,12 +32,24 @@ import 'package:flutter/material.dart';
   }
 
   String toTimerNotif() {
-    final hour = this.hour.toString().padLeft(2, "0");
-    final min = this.minute.toString().padLeft(2, "0");
+    final hour = this.hour.toString().padLeft(2, '');
+    final min = this.minute.toString().padLeft(2,'');
     if(this.hour == 0) {
       return "$min menit";
     } else{
       return "$hour jam $min menit";
+    }
+  }
+
+  String toTimerAsMinute() {
+    final hour = this.hour.toString().padLeft(2, "0");
+    final min = this.minute.toString().padLeft(2, "0");
+    if(this.hour == 0) {
+      return min;
+    } else{
+      var hourToMinute = int.parse(hour) * 60;
+      var total = hourToMinute + int.parse(min);
+      return total.toString();
     }
   }
 

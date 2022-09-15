@@ -66,14 +66,7 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
                         itemBuilder: (context, index) {
                           String outputDate = "";
                           var outputFormat = DateFormat.yMMMMd('id');
-                          outputDate = outputFormat.format(DateTime.parse(
-                              state.listEventPersonal != null &&
-                                  state.listEventPersonal![index]
-                                      .eventStartDate !=
-                                      null
-                                  ? state
-                                  .listEventPersonal![index].eventStartDate!
-                                  : ""));
+                          outputDate = outputFormat.format(widget.dateTime??DateTime.now());
                           return Container(
 
                             padding: EdgeInsets.only(
@@ -104,7 +97,7 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
                                         // width: 62,
 
                                           child: Text(outputDate)),
-                                      state.listEventPersonal![index].consulType ==
+                                      state.listEventPersonal![index].type ==
                                           StringConstant.visitHospital ?
                                       Container(
                                         child: SvgPicture.asset(
@@ -114,7 +107,7 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
                                           // height: 60,
                                           // width: 60,
                                         ),
-                                      ) : state.listEventPersonal![index].consulType ==
+                                      ) : state.listEventPersonal![index].type ==
                                           StringConstant.consumeMedicine
                                           ? Container(
                                         child: SvgPicture.asset(

@@ -165,11 +165,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 userModel: response.data,
                 isActive: isActive);
           }
+        }else {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              typeEvent: StringConstant.submitLogin,
+              userModel: response.data, isActive: true);
         }
-        yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess,
-            typeEvent: StringConstant.submitLogin,
-            userModel: response.data, isActive: true);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }

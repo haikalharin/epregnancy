@@ -84,12 +84,12 @@ ResponseModel<T> {
     return;
   }
 
-  static ResponseModel dataEmpty() {
+  static ResponseModel dataEmpty({dynamic data}) {
     return ResponseModel(
      code: 0,
       status: '',
       message: '',
-      data: null,
+      data: data,
     );
   }
 }

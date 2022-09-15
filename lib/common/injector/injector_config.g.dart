@@ -13,14 +13,14 @@ class _$InjectorConfig extends InjectorConfig {
     container
       ..registerSingleton((c) => LoginExampleBloc(c<UserRepository>()))
       ..registerSingleton((c) => LoginBloc(c<UserRepository>()))
-      ..registerSingleton(
-          (c) => HomePageBloc(c<HomeRepository>(), c<UserRepository>()))
+      ..registerSingleton((c) => HomePageBloc(
+          c<HomeRepository>(), c<UserRepository>(), c<EventRepository>()))
       ..registerSingleton((c) => SurveyPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => ArticlePageBloc(c<UserRepository>()))
       ..registerSingleton((c) => SignupBloc(c<UserRepository>()))
       ..registerSingleton((c) => SignUpQuestionnaireBloc(c<UserRepository>()))
       ..registerSingleton((c) => SplashscreenBloc())
-      ..registerSingleton((c) => EventPageBloc())
+      ..registerSingleton((c) => EventPageBloc(c<EventRepository>()))
       ..registerSingleton((c) => PoinBloc(c<UserRepository>()))
       ..registerSingleton((c) => PointHistoryBloc(c<UserRepository>()))
       ..registerSingleton((c) => GamesBloc(c<HomeRepository>()))
@@ -37,7 +37,9 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerFactory<HomeRepository>((c) =>
           HomeRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<ArticleRepository>((c) =>
-          ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
+          ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
+      ..registerFactory<EventRepository>((c) =>
+          EventRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
   }
 
   @override

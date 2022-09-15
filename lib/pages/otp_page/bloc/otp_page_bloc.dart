@@ -44,7 +44,6 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
       bool isActive = false;
       ResponseModel response =
           await userRepository.loginOtp(OtpModel(otp: event.otp,email: userModel.email));
-      UserModel userInfo = response.data;
 
       if (response.code == 200) {
         if(otp == event.otp) {
