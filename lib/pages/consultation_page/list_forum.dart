@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/consultation_model/consultation_model.dart';
 import 'package:PregnancyApp/data/model/person_model/person_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,50 +7,51 @@ import 'package:flutter_svg/svg.dart';
 import '../../utils/epragnancy_color.dart';
 
 class ListForumWidget extends StatelessWidget {
-  ListForumWidget({Key? key, this.tipeAcara}) : super(key: key);
+  ListForumWidget({Key? key, this.tipeAcara, required this.listConsul}) : super(key: key);
   final String? tipeAcara;
-  List<PersonModel> listPrivilegesData = [
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        photo:
-            "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
-        phoneNumber: "22 Agu 2022, 15:32 WIB"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        photo:
-            "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
-        phoneNumber: "22 Agu 2022, 15:32 WIB"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        photo:
-            "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
-        phoneNumber: "22 Agu 2022, 15:32 WIB"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        photo:
-            "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
-        phoneNumber: "22 Agu 2022, 15:32 WIB"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        photo:
-            "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
-        phoneNumber: "22 Agu 2022, 15:32 WIB"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        photo:
-            "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
-        phoneNumber: "22 Agu 2022, 15:32 WIB"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        photo:
-            "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
-        phoneNumber: "22 Agu 2022, 15:32 WIB"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        photo:
-            "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
-        phoneNumber: "22 Agu 2022, 15:32 WIB"),
-  ];
+  List<ConsultationModel> listConsul = [];
+  // List<PersonModel> listPrivilegesData = [
+  //   PersonModel(
+  //       name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
+  //       photo:
+  //           "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
+  //       phoneNumber: "22 Agu 2022, 15:32 WIB"),
+  //   PersonModel(
+  //       name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
+  //       photo:
+  //           "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
+  //       phoneNumber: "22 Agu 2022, 15:32 WIB"),
+  //   PersonModel(
+  //       name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
+  //       photo:
+  //           "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
+  //       phoneNumber: "22 Agu 2022, 15:32 WIB"),
+  //   PersonModel(
+  //       name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
+  //       photo:
+  //           "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
+  //       phoneNumber: "22 Agu 2022, 15:32 WIB"),
+  //   PersonModel(
+  //       name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
+  //       photo:
+  //           "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
+  //       phoneNumber: "22 Agu 2022, 15:32 WIB"),
+  //   PersonModel(
+  //       name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
+  //       photo:
+  //           "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
+  //       phoneNumber: "22 Agu 2022, 15:32 WIB"),
+  //   PersonModel(
+  //       name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
+  //       photo:
+  //           "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
+  //       phoneNumber: "22 Agu 2022, 15:32 WIB"),
+  //   PersonModel(
+  //       name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
+  //       photo:
+  //           "https://cdn.hellosehat.com/wp-content/uploads/2017/02/ciri-orang-hamil.jpg",
+  //       phoneNumber: "22 Agu 2022, 15:32 WIB"),
+  // ];
 
   // final String nextMenu, content;
 
@@ -60,7 +62,7 @@ class ListForumWidget extends StatelessWidget {
     return Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         decoration: BoxDecoration(color: Colors.white),
-        child: listPrivilegesData.isEmpty
+        child: listConsul.isEmpty
             ? Stack(children: [
                 Container(margin: EdgeInsets.only(), child: Container())
               ])
@@ -147,9 +149,9 @@ class ListForumWidget extends StatelessWidget {
                                                           // width: 62,
 
                                                           child: Text(
-                                                        listPrivilegesData[
+                                                            listConsul[
                                                                     index]
-                                                                .phoneNumber ??
+                                                                .message??
                                                             '',
                                                         style: TextStyle(
                                                             fontSize: 12,
@@ -171,7 +173,7 @@ class ListForumWidget extends StatelessWidget {
                                       placeholder: AssetImage(
                                           'assets/ic_no_photo.png'),
                                       image: NetworkImage(
-                                          listPrivilegesData[index].photo ??
+                                          listConsul[index].imageUrl ??
                                               ''),
                                       fit: BoxFit.cover,
                                     ),
@@ -199,8 +201,8 @@ class ListForumWidget extends StatelessWidget {
                                                       top: 30, bottom: 30),
                                                   width: 300,
                                                   child: Text(
-                                                      listPrivilegesData[index]
-                                                          .name!)),
+                                                      listConsul[index]
+                                                          .user?.name??"")),
                                             ],
                                           ),
                                         ),
@@ -345,7 +347,7 @@ class ListForumWidget extends StatelessWidget {
                         ),
                       );
                     },
-                    itemCount: listPrivilegesData.length,
+                    itemCount: listConsul.length,
                   ),
                 ],
               ));

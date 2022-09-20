@@ -24,17 +24,19 @@ class ServiceUrl {
   static String listBaby = '$baby/list';
 
   //article
-static String article = 'article';
-static String listArticle = '$article/list';
+  static String article = 'article';
+  static String listArticle = '$article/list';
 
- //eventSchedule
+  //consultation
+  static String consultation = 'post';
+  static String listConsultation = '$consultation/list';
+
+  //eventSchedule
   static String schedule = 'schedule';
   static String listSchedule = '$schedule/list';
   static String saveSchedule = '$schedule/save';
 
-
   //game
   static String game = 'game';
   static String gameList = '$game/list';
-
 }

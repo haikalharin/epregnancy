@@ -13,6 +13,7 @@ import '../../common/network/http/http_client.dart';
 import '../../common/remote/url/service_url.dart';
 import '../../utils/remote_utils.dart';
 import '../model/baby_model_api/baby_Model_api.dart';
+import '../model/consultation_model/consultation_model.dart';
 import '../model/login_model/login_model.dart';
 import '../model/response_model/response_model.dart';
 import '../model/user_example_model/user_example_model.dart';
@@ -147,9 +148,21 @@ class RemoteDataSource {
     }
   }
 
+  /// Consultation
+  Future<ResponseModel<ConsultationModel>> fetchListConsultation() async {
+    final response = await httpClient.get(ServiceUrl.listConsultation);
+
+    return ResponseModel.fromJson(response, ConsultationModel.fromJson);
+    ;
+  }
+
   /// EventSchedule
-  Future<ResponseModel<EventModel>> fetchListEvent({String userId = '', bool isPublic= false}) async {
-    Map<String, String> qParams = {'user_id': userId, 'is_public': isPublic.toString()};
+  Future<ResponseModel<EventModel>> fetchListEvent(
+      {String userId = '', bool isPublic = false}) async {
+    Map<String, String> qParams = {
+      'user_id': userId,
+      'is_public': isPublic.toString()
+    };
     final response =
         await httpClient.get(ServiceUrl.listSchedule, queryParameters: qParams);
     return ResponseModel.fromJson(response, EventModel.fromJson);
@@ -157,7 +170,8 @@ class RemoteDataSource {
 
   Future<ResponseModel> saveScheduleEventPersonal(EventModel eventModel) async {
     try {
-      final response = await httpClient.post(ServiceUrl.saveSchedule, eventModel);
+      final response =
+          await httpClient.post(ServiceUrl.saveSchedule, eventModel);
       return ResponseModel.fromJson(response, EventModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();

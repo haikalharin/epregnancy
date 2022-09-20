@@ -1,0 +1,27 @@
+import 'package:PregnancyApp/data/model/consultation_model/consultation_model.dart';
+
+import '../../../common/exceptions/network_connection_exception.dart';
+import '../../../common/network/network_info.dart';
+import '../../model/response_model/response_model.dart';
+import '../../remote_datasource/remote_datasource.dart';
+import 'consultation_repository.dart';
+
+class ConsultationRepositoryImpl extends ConsultationRepository {
+  final NetworkInfoImpl networkInfo;
+  final RemoteDataSource remoteDatasource;
+
+  ConsultationRepositoryImpl(this.networkInfo, this.remoteDatasource);
+
+  @override
+  Future<ResponseModel<ConsultationModel>> fetchListConsultation() async {
+    if (await networkInfo.isConnected) {
+      ResponseModel<ConsultationModel> listConsultation = await remoteDatasource.fetchListConsultation();
+      return listConsultation;
+    }
+    throw NetworkConnectionException();
+  }
+
+
+
+
+}
