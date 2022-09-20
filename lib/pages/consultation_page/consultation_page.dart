@@ -1,6 +1,7 @@
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
+import 'package:PregnancyApp/pages/chat_page/event/patient_consultation_page.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -92,55 +93,62 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                 minWidth: MediaQuery.of(context).size.width/4,
                                 padding: EdgeInsets.only(top: 20, bottom: 20,right: 10,left: 10),
                                 onPressed: () async {
-                                  UserModelFirebase myData =
-                                      await AppSharedPreference.getUserFirebase();
-                                  bool isSenderRoomExist = false;
-                                  bool isSenderAchiveExist =
-                                      await EventChatRoom.checkArchiveIsExist(
-                                    myUid: myData.uid,
-                                  );
-                                  RoomModel roomModel =
-                                      await EventChatRoom.checkMessageNow(
-                                    myUid: myData.uid,
-                                  );
+                                  // UserModelFirebase myData =
+                                  //     await AppSharedPreference.getUserFirebase();
+                                  // bool isSenderRoomExist = false;
+                                  // bool isSenderAchiveExist =
+                                  //     await EventChatRoom.checkArchiveIsExist(
+                                  //   myUid: myData.uid,
+                                  // );
+                                  // RoomModel roomModel =
+                                  //     await EventChatRoom.checkMessageNow(
+                                  //   myUid: myData.uid,
+                                  // );
+                                  //
+                                  // if (roomModel.uid!.isNotEmpty) {
+                                  //   isSenderRoomExist =
+                                  //       await EventChatRoom.checkRoomIsExist(
+                                  //     isSender: true,
+                                  //     myUid: myData.uid,
+                                  //     personUid: roomModel.uid,
+                                  //   );
+                                  //   if (isSenderRoomExist &&
+                                  //       !isSenderAchiveExist) {
+                                  //     Navigator.push(
+                                  //         context,
+                                  //         MaterialPageRoute(
+                                  //             builder: (context) => ChatRoom(
+                                  //                 arguments: {
+                                  //                   'room': roomModel
+                                  //                 })));
+                                  //   } else if (isSenderRoomExist &&
+                                  //       isSenderAchiveExist) {
+                                  //     Navigator.push(
+                                  //         context,
+                                  //         MaterialPageRoute(
+                                  //             builder: (context) =>
+                                  //                 Dashboard()));
+                                  //   } else {
+                                  //     Navigator.of(context)
+                                  //         .pushNamed(RouteName.chatPage);
+                                  //   }
+                                  // } else if (!isSenderRoomExist &&
+                                  //     isSenderAchiveExist) {
+                                  //   Navigator.push(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //           builder: (context) => Dashboard()));
+                                  // } else {
+                                  //   Navigator.of(context)
+                                  //       .pushNamed(RouteName.chatPage);
+                                  // }
 
-                                  if (roomModel.uid!.isNotEmpty) {
-                                    isSenderRoomExist =
-                                        await EventChatRoom.checkRoomIsExist(
-                                      isSender: true,
-                                      myUid: myData.uid,
-                                      personUid: roomModel.uid,
-                                    );
-                                    if (isSenderRoomExist &&
-                                        !isSenderAchiveExist) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => ChatRoom(
-                                                  arguments: {
-                                                    'room': roomModel
-                                                  })));
-                                    } else if (isSenderRoomExist &&
-                                        isSenderAchiveExist) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Dashboard()));
-                                    } else {
-                                      Navigator.of(context)
-                                          .pushNamed(RouteName.chatPage);
-                                    }
-                                  } else if (!isSenderRoomExist &&
-                                      isSenderAchiveExist) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Dashboard()));
-                                  } else {
-                                    Navigator.of(context)
-                                        .pushNamed(RouteName.chatPage);
-                                  }
+                                  // new method for cek konsultasi
+                                  Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                     const PatientConsultationPage()));
 
                                 },
                                 child: Container(

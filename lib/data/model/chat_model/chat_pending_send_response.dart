@@ -1,0 +1,54 @@
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'chat_pending_send_response.freezed.dart';
+part 'chat_pending_send_response.g.dart';
+
+@freezed
+abstract class ChatPendingSendResponse with _$ChatPendingSendResponse {
+  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+  const factory ChatPendingSendResponse({
+    required String? id,
+    required String? fromId,
+    required String? toId,
+    required String? message,
+    required int? unreadCount,
+    required bool? isRead,
+    required From? from,
+    required From? to,
+    required bool? isDelete,
+    required String? createdBy,
+    required String? createdFrom,
+    required String? createdDate,
+    required String? modifiedBy,
+    required String? modifiedFrom,
+    required String? modifiedDate,
+  }) = _ChatPendingSendResponse;
+
+  factory ChatPendingSendResponse.fromJson(Map<String, dynamic> json) => _$ChatPendingSendResponseFromJson(json);
+}
+
+@freezed
+abstract class From with _$From {
+  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+  const factory From({
+    required String? id,
+    required String? name,
+    required String? dob,
+    required String? email,
+    required String? mobile,
+    required String? username,
+    required String? status,
+    required bool? isPatient,
+    required bool? isMidwife,
+    required bool? isAdmin,
+    required bool? isSuperAdmin,
+    required bool? isVerified,
+    required String? hospitalId,
+    required String? hospital,
+    required String? imageUrl,
+    required String? coverUrl,
+  }) = _From;
+
+  factory From.fromJson(Map<String, dynamic> json) => _$FromFromJson(json);
+}

@@ -95,11 +95,11 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: const ChatPlaceHolderWidget(),
+                    child: ChatPlaceHolderWidget( unread: false,),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: const ChatPlaceHolderWidget(),
+                    child: ChatPlaceHolderWidget(unread: true,),
                   ),
 
                   Padding(

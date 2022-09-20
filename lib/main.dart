@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
+import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
+import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
 import 'package:PregnancyApp/pages/email_verification_page/email_verification_page.dart';
 import 'package:PregnancyApp/pages/event_page/add_event_page.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
@@ -113,6 +115,8 @@ class MyApp extends StatelessWidget {
             create: (context) => Injector.container.resolve<OtpPageBloc>()),
         BlocProvider<LandingPageBloc>(
             create: (context) => Injector.container.resolve<LandingPageBloc>()),
+        BlocProvider<ChatBloc>(
+            create: (context) => Injector.container.resolve<ChatBloc>()),
       ];
 }
 

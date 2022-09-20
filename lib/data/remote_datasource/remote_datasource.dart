@@ -1,3 +1,6 @@
+import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
@@ -225,5 +228,21 @@ class RemoteDataSource {
       data.add(ChatResponse.fromJson(item));
     });
     return data;
+  }
+
+  Future<List<ChatPendingResponseList>> fetchChatPendingList() async {
+    final response = await httpClient.get(ServiceUrl.chatPendingList);
+    final data = <ChatPendingResponseList>[];
+    getData(response).forEach((item) {
+      data.add(ChatPendingResponseList.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<ResponseModel<ChatPendingSendResponse>> chatPendingSend(ChatPendingSendRequest _requestBody) async {
+    final response = await httpClient.post(ServiceUrl.chatPendingSend, _requestBody.toJson());
+
+//    return null;
+    return ResponseModel<ChatPendingSendResponse>.fromJson(response, ChatPendingSendResponse.fromJson);
   }
 }

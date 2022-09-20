@@ -6,7 +6,10 @@ import '../../../utils/epragnancy_color.dart';
 import '../../../utils/string_constans.dart';
 
 class ChatPlaceHolderWidget extends StatelessWidget {
-  const ChatPlaceHolderWidget({Key? key}) : super(key: key);
+  ChatPlaceHolderWidget({Key? key, this.name, this.message, required this.unread}) : super(key: key);
+  final String? name;
+  final String? message;
+  bool unread = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +24,14 @@ class ChatPlaceHolderWidget extends StatelessWidget {
             ),
             child: Image.asset('assets/dummies/dummy_avatar.png'),
           ),
-          title: Text('Celine Dion', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 12.sp),),
+          title: Text(name ?? 'Celine Dion', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 12.sp),),
           subtitle: Row(children: [
             SvgPicture.asset('assets/icMom.svg'),
             SizedBox(width: 10.w,),
-            Text('Ibu dengan anak', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.w500),)
-          ],),
-          trailing: Container(
+            Text(message ?? 'Ibu dengan anak', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.w500),)
+          ],
+          ),
+          trailing: unread ? Container(
             height: 16.h,
             width: 16.w,
             decoration: const BoxDecoration(
@@ -36,8 +40,8 @@ class ChatPlaceHolderWidget extends StatelessWidget {
             ),
             child: Center(
               child: Text('1', style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.w500),),
-            ),
-          ),
+            )
+          ) : const SizedBox.shrink(),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 8.0),

@@ -25,7 +25,8 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => PointHistoryBloc(c<UserRepository>()))
       ..registerSingleton((c) => GamesBloc(c<HomeRepository>()))
       ..registerSingleton((c) => OtpPageBloc(c<UserRepository>()))
-      ..registerSingleton((c) => LandingPageBloc(c<UserRepository>()));
+      ..registerSingleton((c) => LandingPageBloc(c<UserRepository>()))
+      ..registerSingleton((c) => ChatBloc(c<ChatRepository>()));
   }
 
   @override
@@ -37,7 +38,9 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerFactory<HomeRepository>((c) =>
           HomeRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<ArticleRepository>((c) =>
-          ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
+          ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
+      ..registerFactory<ChatRepository>((c) =>
+          ChatRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
   }
 
   @override

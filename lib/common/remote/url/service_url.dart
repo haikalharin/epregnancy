@@ -36,5 +36,8 @@ static String listArticle = '$article/list';
   static String chat = 'chat';
   static String latestChat =  '$chat/latest';
   static String personalChatRoom =  '$chat/personal/';
+  static String chatPending = 'chat-pending';
+  static String chatPendingList = '$chatPending/list';
+  static String chatPendingSend = '$chatPending/send';
 
 }
