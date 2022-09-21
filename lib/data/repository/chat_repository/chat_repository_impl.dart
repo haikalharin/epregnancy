@@ -1,7 +1,9 @@
+import 'package:PregnancyApp/data/model/chat_model/chat_list_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
+import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/repository/chat_repository/chat_repository.dart';
 
@@ -43,6 +45,22 @@ class ChatRepositoryImpl extends ChatRepository {
   Future<ResponseModel<ChatPendingSendResponse>> sendChatPending(ChatPendingSendRequest _request) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.chatPendingSend(_request);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<List<ChatListResponse>> fetchChatList(String fromId) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchChatListResponse(fromId);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<ChatPendingPatientResponse>> fetchChatPendingPatient(String fromId, String hospitalId) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchChatPendingPatient(fromId, hospitalId);
     }
     throw NetworkConnectionException();
   }

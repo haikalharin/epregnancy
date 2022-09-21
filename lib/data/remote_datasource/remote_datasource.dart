@@ -1,7 +1,9 @@
+import 'package:PregnancyApp/data/model/chat_model/chat_list_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
+import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -244,5 +246,21 @@ class RemoteDataSource {
 
 //    return null;
     return ResponseModel<ChatPendingSendResponse>.fromJson(response, ChatPendingSendResponse.fromJson);
+  }
+
+  Future<List<ChatListResponse>> fetchChatListResponse(String fromId) async {
+    final response = await httpClient.get(ServiceUrl.chatList, queryParameters: {'from_id': fromId});
+    final data = <ChatListResponse>[];
+    getData(response).forEach((item) {
+      data.add(ChatListResponse.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<ResponseModel<ChatPendingPatientResponse>> fetchChatPendingPatient(String fromId, String hospitalId) async {
+    final response = await httpClient.get(ServiceUrl.chatPendingPatient, queryParameters: {'from_id': fromId, 'hospital_id': hospitalId});
+
+//    return null;
+    return ResponseModel<ChatPendingPatientResponse>.fromJson(response, ChatPendingPatientResponse.fromJson);
   }
 }

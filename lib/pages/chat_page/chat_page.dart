@@ -42,14 +42,15 @@ class _ChatPageState extends State<ChatPage> {
           ),
           onTap: () {
             Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
       ),
       body: BlocListener<ChatBloc, ChatState>(
         listener: (blocContext, state) {
           print('state chat : ${state.type}');
-          if(state.type == 'send-pending'){
-            Navigator.of(context, rootNavigator: true).pop('newdata');
+          if(state.type == 'send-pending-success'){
+            // todo navigate to chat detail / chat room
           }
         },
         child: BlocBuilder<ChatBloc, ChatState>(

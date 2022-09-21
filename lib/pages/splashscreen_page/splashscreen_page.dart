@@ -33,8 +33,8 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
         if(state.isExist){
           // Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: state.role!.role);
           // todo handel login from API
-
-          if(state.role == 'MIDWIFE' || state.userModel?.isPatient == true){
+          print('role splash : ${state.role}');
+          if(state.role == 'MIDWIFE' || state.userModel?.isPatient == false){
             Navigator.of(context).pushReplacementNamed(
                 RouteName.dashboardNakesPage,
                 arguments: state.userModel?.name

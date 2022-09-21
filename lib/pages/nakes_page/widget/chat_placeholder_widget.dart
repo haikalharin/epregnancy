@@ -9,7 +9,7 @@ class ChatPlaceHolderWidget extends StatelessWidget {
   ChatPlaceHolderWidget({Key? key, this.name, this.message, required this.unread}) : super(key: key);
   final String? name;
   final String? message;
-  bool unread = false;
+  bool unread = true;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class ChatPlaceHolderWidget extends StatelessWidget {
             Text(message ?? 'Ibu dengan anak', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.w500),)
           ],
           ),
-          trailing: unread ? Container(
+          trailing: !unread ? Container(
             height: 16.h,
             width: 16.w,
             decoration: const BoxDecoration(

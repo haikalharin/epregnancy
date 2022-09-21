@@ -14,6 +14,19 @@ class FetchChatPendingEvent extends ChatEvent {
   List<Object> get props => [];
 }
 
+class FetchChatPendingPatientEvent extends ChatEvent {
+  const FetchChatPendingPatientEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class FetchChatOngoingEvent extends ChatEvent {
+  const FetchChatOngoingEvent();
+  @override
+  List<Object> get props => [];
+}
+
 class SendChatPendingEvent extends ChatEvent {
   final ChatPendingSendRequest chatPendingSendRequest;
   const SendChatPendingEvent(this.chatPendingSendRequest);

@@ -31,7 +31,7 @@ class _PatientConsultationPageState extends State<PatientConsultationPage> {
 
   final List<Widget> _listFragment = [
     ListChatRoomPatient(),
-    ListChatRoom(),
+    ListChatRoomPatient(),
     ListChatArchive(),
   ];
 

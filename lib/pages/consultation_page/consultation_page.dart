@@ -17,36 +17,23 @@ import '../../data/firebase/g_authentication.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
+import '../chat_page/chat_patient_page/initial_consultation_load_page.dart';
 import '../chat_page/chat_room.dart';
 import '../chat_page/event/event_chat_room.dart';
 import '../home_page/list_event.dart';
 import 'list_forum.dart';
 
 class ConsultationPage extends StatefulWidget {
-  const ConsultationPage({Key? key}) : super(key: key);
-
+  const ConsultationPage({Key? key, required this.role}) : super(key: key);
+  final String? role;
   @override
   State<ConsultationPage> createState() => _ConsultationPageState();
 }
 
 class _ConsultationPageState extends State<ConsultationPage> {
-  UserModelFirebase user = UserModelFirebase.empty();
-  UserRolesModelFirebase rolesModel = UserRolesModelFirebase.empty();
-
-  void getMyPerson() async {
-    UserModelFirebase userModelFirebase =
-        await AppSharedPreference.getUserFirebase();
-    UserRolesModelFirebase? userRolesModelFirebase =
-        await AppSharedPreference.getUserRoleFirebase();
-    setState(() {
-      user = userModelFirebase;
-      rolesModel = userRolesModelFirebase;
-    });
-  }
-
   @override
   void initState() {
-    getMyPerson();
+    print('role : ${widget.role}');
     super.initState();
   }
 
@@ -73,137 +60,145 @@ class _ConsultationPageState extends State<ConsultationPage> {
                       Container(
                         margin: EdgeInsets.only(
                             top: 40, left: 20, right: 20, bottom: 20),
-                        child: Text("Konsultasi",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Konsultasi",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                            SvgPicture.asset('assets/icArchive.svg')
+                          ],
+                        )
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 10,right:20, left: 20 ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: EpregnancyColors.primer,
-                                ),
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child:  FlatButton(
-                                minWidth: MediaQuery.of(context).size.width/4,
-                                padding: EdgeInsets.only(top: 20, bottom: 20,right: 10,left: 10),
-                                onPressed: () async {
-                                  // UserModelFirebase myData =
-                                  //     await AppSharedPreference.getUserFirebase();
-                                  // bool isSenderRoomExist = false;
-                                  // bool isSenderAchiveExist =
-                                  //     await EventChatRoom.checkArchiveIsExist(
-                                  //   myUid: myData.uid,
-                                  // );
-                                  // RoomModel roomModel =
-                                  //     await EventChatRoom.checkMessageNow(
-                                  //   myUid: myData.uid,
-                                  // );
-                                  //
-                                  // if (roomModel.uid!.isNotEmpty) {
-                                  //   isSenderRoomExist =
-                                  //       await EventChatRoom.checkRoomIsExist(
-                                  //     isSender: true,
-                                  //     myUid: myData.uid,
-                                  //     personUid: roomModel.uid,
-                                  //   );
-                                  //   if (isSenderRoomExist &&
-                                  //       !isSenderAchiveExist) {
-                                  //     Navigator.push(
-                                  //         context,
-                                  //         MaterialPageRoute(
-                                  //             builder: (context) => ChatRoom(
-                                  //                 arguments: {
-                                  //                   'room': roomModel
-                                  //                 })));
-                                  //   } else if (isSenderRoomExist &&
-                                  //       isSenderAchiveExist) {
-                                  //     Navigator.push(
-                                  //         context,
-                                  //         MaterialPageRoute(
-                                  //             builder: (context) =>
-                                  //                 Dashboard()));
-                                  //   } else {
-                                  //     Navigator.of(context)
-                                  //         .pushNamed(RouteName.chatPage);
-                                  //   }
-                                  // } else if (!isSenderRoomExist &&
-                                  //     isSenderAchiveExist) {
-                                  //   Navigator.push(
-                                  //       context,
-                                  //       MaterialPageRoute(
-                                  //           builder: (context) => Dashboard()));
-                                  // } else {
-                                  //   Navigator.of(context)
-                                  //       .pushNamed(RouteName.chatPage);
-                                  // }
-
-                                  // new method for cek konsultasi
-                                  Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                     const PatientConsultationPage()));
-
-                                },
-                                child: Container(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Image.asset('assets/icon-hubungi-profesional.png', height: 25),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      rolesModel.role == "PATIENT"
-                                          ? Text("Hubungi profesional", style: TextStyle(fontSize: 12),)
-                                          : Text("Cek Konsultasi",style: TextStyle(fontSize: 12),),
-                                      SizedBox(
-                                        width: 5,
-                                      )
-                                    ],
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: EpregnancyColors.primer,
                                   ),
-                                ),
-                              ),
-                            ),
-                         Container(
-                              decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  color: EpregnancyColors.primer),
-                              child: FlatButton(
-                                minWidth: MediaQuery.of(context).size.width/5,
-                                padding: EdgeInsets.only(top: 20, bottom: 20,right: 20,left: 20),
-                                onPressed: () {
+                                ),
+                                child:  FlatButton(
+                                  minWidth: MediaQuery.of(context).size.width/4,
+                                  padding: EdgeInsets.only(top: 20, bottom: 20,right: 10,left: 10),
+                                  onPressed: () async {
+                                    // UserModelFirebase myData =
+                                    //     await AppSharedPreference.getUserFirebase();
+                                    // bool isSenderRoomExist = false;
+                                    // bool isSenderAchiveExist =
+                                    //     await EventChatRoom.checkArchiveIsExist(
+                                    //   myUid: myData.uid,
+                                    // );
+                                    // RoomModel roomModel =
+                                    //     await EventChatRoom.checkMessageNow(
+                                    //   myUid: myData.uid,
+                                    // );
+                                    //
+                                    // if (roomModel.uid!.isNotEmpty) {
+                                    //   isSenderRoomExist =
+                                    //       await EventChatRoom.checkRoomIsExist(
+                                    //     isSender: true,
+                                    //     myUid: myData.uid,
+                                    //     personUid: roomModel.uid,
+                                    //   );
+                                    //   if (isSenderRoomExist &&
+                                    //       !isSenderAchiveExist) {
+                                    //     Navigator.push(
+                                    //         context,
+                                    //         MaterialPageRoute(
+                                    //             builder: (context) => ChatRoom(
+                                    //                 arguments: {
+                                    //                   'room': roomModel
+                                    //                 })));
+                                    //   } else if (isSenderRoomExist &&
+                                    //       isSenderAchiveExist) {
+                                    //     Navigator.push(
+                                    //         context,
+                                    //         MaterialPageRoute(
+                                    //             builder: (context) =>
+                                    //                 Dashboard()));
+                                    //   } else {
+                                    //     Navigator.of(context)
+                                    //         .pushNamed(RouteName.chatPage);
+                                    //   }
+                                    // } else if (!isSenderRoomExist &&
+                                    //     isSenderAchiveExist) {
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (context) => Dashboard()));
+                                    // } else {
+                                    //   Navigator.of(context)
+                                    //       .pushNamed(RouteName.chatPage);
+                                    // }
 
-                                },
-                                child: Container(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Image.asset('assets/icon-emergency.png'),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "Darurat",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      )
-                                    ],
+                                    // new method for hubungi profesional
+                                    Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                       const InitialConsultationLoadPage()));
+
+                                  },
+                                  child: Container(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Image.asset('assets/icon-hubungi-profesional.png', height: 25),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        widget.role == "PATIENT"
+                                            ? Text("Hubungi profesional", style: TextStyle(fontSize: 12),)
+                                            : Text("Cek Konsultasi",style: TextStyle(fontSize: 12),),
+                                        SizedBox(
+                                          width: 5,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
+                         // Container(
+                         //      decoration: BoxDecoration(
+                         //          borderRadius: BorderRadius.circular(15.0),
+                         //          color: EpregnancyColors.primer),
+                         //      child: FlatButton(
+                         //        minWidth: MediaQuery.of(context).size.width/5,
+                         //        padding: EdgeInsets.only(top: 20, bottom: 20,right: 20,left: 20),
+                         //        onPressed: () {
+                         //
+                         //        },
+                         //        child: Container(
+                         //          child: Row(
+                         //            children: [
+                         //              SizedBox(
+                         //                width: 5,
+                         //              ),
+                         //              Image.asset('assets/icon-emergency.png'),
+                         //              SizedBox(
+                         //                width: 10,
+                         //              ),
+                         //              Text(
+                         //                "Darurat",
+                         //                style: TextStyle(color: Colors.white),
+                         //              ),
+                         //              SizedBox(
+                         //                width: 5,
+                         //              )
+                         //            ],
+                         //          ),
+                         //        ),
+                         //      ),
+                         //    ),
                           ],
                         ),
                       ),
@@ -291,7 +286,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
       //   });
       // }
     }
-    getMyPerson();
   }
   void pickAndCropImageCamera() async {
     final pickedFile = await ImagePicker().getImage(
@@ -317,7 +311,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
       //   });
       // }
     }
-    getMyPerson();
   }
 
   void _showPicker(BuildContext context) {
