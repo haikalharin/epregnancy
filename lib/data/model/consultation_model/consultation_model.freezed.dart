@@ -36,10 +36,12 @@ mixin _$ConsultationModel {
   List<Like>? get likes => throw _privateConstructorUsedError;
   @JsonKey(name: 'comments_count', includeIfNull: true)
   int? get commentsCount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'like_count', includeIfNull: true)
+  @JsonKey(name: 'likes_count', includeIfNull: true)
   int? get likesCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_url', includeIfNull: true)
   String? get imageUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image_base64', includeIfNull: true)
+  String? get imageBase64 => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_delete', includeIfNull: true)
   bool? get isDelete => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_by', includeIfNull: true)
@@ -83,10 +85,12 @@ abstract class $ConsultationModelCopyWith<$Res> {
           List<Like>? likes,
       @JsonKey(name: 'comments_count', includeIfNull: true)
           int? commentsCount,
-      @JsonKey(name: 'like_count', includeIfNull: true)
+      @JsonKey(name: 'likes_count', includeIfNull: true)
           int? likesCount,
       @JsonKey(name: 'image_url', includeIfNull: true)
           String? imageUrl,
+      @JsonKey(name: 'image_base64', includeIfNull: true)
+          String? imageBase64,
       @JsonKey(name: 'is_delete', includeIfNull: true)
           bool? isDelete,
       @JsonKey(name: 'created_by', includeIfNull: true)
@@ -126,6 +130,7 @@ class _$ConsultationModelCopyWithImpl<$Res>
     Object? commentsCount = freezed,
     Object? likesCount = freezed,
     Object? imageUrl = freezed,
+    Object? imageBase64 = freezed,
     Object? isDelete = freezed,
     Object? createdBy = freezed,
     Object? createdFrom = freezed,
@@ -174,6 +179,10 @@ class _$ConsultationModelCopyWithImpl<$Res>
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      imageBase64: imageBase64 == freezed
+          ? _value.imageBase64
+          : imageBase64 // ignore: cast_nullable_to_non_nullable
               as String?,
       isDelete: isDelete == freezed
           ? _value.isDelete
@@ -242,10 +251,12 @@ abstract class _$$_ConsultationModelCopyWith<$Res>
           List<Like>? likes,
       @JsonKey(name: 'comments_count', includeIfNull: true)
           int? commentsCount,
-      @JsonKey(name: 'like_count', includeIfNull: true)
+      @JsonKey(name: 'likes_count', includeIfNull: true)
           int? likesCount,
       @JsonKey(name: 'image_url', includeIfNull: true)
           String? imageUrl,
+      @JsonKey(name: 'image_base64', includeIfNull: true)
+          String? imageBase64,
       @JsonKey(name: 'is_delete', includeIfNull: true)
           bool? isDelete,
       @JsonKey(name: 'created_by', includeIfNull: true)
@@ -288,6 +299,7 @@ class __$$_ConsultationModelCopyWithImpl<$Res>
     Object? commentsCount = freezed,
     Object? likesCount = freezed,
     Object? imageUrl = freezed,
+    Object? imageBase64 = freezed,
     Object? isDelete = freezed,
     Object? createdBy = freezed,
     Object? createdFrom = freezed,
@@ -337,6 +349,10 @@ class __$$_ConsultationModelCopyWithImpl<$Res>
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageBase64: imageBase64 == freezed
+          ? _value.imageBase64
+          : imageBase64 // ignore: cast_nullable_to_non_nullable
+              as String?,
       isDelete: isDelete == freezed
           ? _value.isDelete
           : isDelete // ignore: cast_nullable_to_non_nullable
@@ -381,8 +397,9 @@ class _$_ConsultationModel implements _ConsultationModel {
       @JsonKey(includeIfNull: true) final List<Comment>? comments,
       @JsonKey(includeIfNull: true) final List<Like>? likes,
       @JsonKey(name: 'comments_count', includeIfNull: true) this.commentsCount,
-      @JsonKey(name: 'like_count', includeIfNull: true) this.likesCount,
+      @JsonKey(name: 'likes_count', includeIfNull: true) this.likesCount,
       @JsonKey(name: 'image_url', includeIfNull: true) this.imageUrl,
+      @JsonKey(name: 'image_base64', includeIfNull: true) this.imageBase64,
       @JsonKey(name: 'is_delete', includeIfNull: true) this.isDelete,
       @JsonKey(name: 'created_by', includeIfNull: true) this.createdBy,
       @JsonKey(name: 'created_from', includeIfNull: true) this.createdFrom,
@@ -435,11 +452,14 @@ class _$_ConsultationModel implements _ConsultationModel {
   @JsonKey(name: 'comments_count', includeIfNull: true)
   final int? commentsCount;
   @override
-  @JsonKey(name: 'like_count', includeIfNull: true)
+  @JsonKey(name: 'likes_count', includeIfNull: true)
   final int? likesCount;
   @override
   @JsonKey(name: 'image_url', includeIfNull: true)
   final String? imageUrl;
+  @override
+  @JsonKey(name: 'image_base64', includeIfNull: true)
+  final String? imageBase64;
   @override
   @JsonKey(name: 'is_delete', includeIfNull: true)
   final bool? isDelete;
@@ -464,7 +484,7 @@ class _$_ConsultationModel implements _ConsultationModel {
 
   @override
   String toString() {
-    return 'ConsultationModel(id: $id, userId: $userId, message: $message, status: $status, user: $user, comments: $comments, likes: $likes, commentsCount: $commentsCount, likesCount: $likesCount, imageUrl: $imageUrl, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
+    return 'ConsultationModel(id: $id, userId: $userId, message: $message, status: $status, user: $user, comments: $comments, likes: $likes, commentsCount: $commentsCount, likesCount: $likesCount, imageUrl: $imageUrl, imageBase64: $imageBase64, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
   }
 
   @override
@@ -484,6 +504,8 @@ class _$_ConsultationModel implements _ConsultationModel {
             const DeepCollectionEquality()
                 .equals(other.likesCount, likesCount) &&
             const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
+            const DeepCollectionEquality()
+                .equals(other.imageBase64, imageBase64) &&
             const DeepCollectionEquality().equals(other.isDelete, isDelete) &&
             const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
             const DeepCollectionEquality()
@@ -512,6 +534,7 @@ class _$_ConsultationModel implements _ConsultationModel {
       const DeepCollectionEquality().hash(commentsCount),
       const DeepCollectionEquality().hash(likesCount),
       const DeepCollectionEquality().hash(imageUrl),
+      const DeepCollectionEquality().hash(imageBase64),
       const DeepCollectionEquality().hash(isDelete),
       const DeepCollectionEquality().hash(createdBy),
       const DeepCollectionEquality().hash(createdFrom),
@@ -550,10 +573,12 @@ abstract class _ConsultationModel implements ConsultationModel {
           final List<Like>? likes,
       @JsonKey(name: 'comments_count', includeIfNull: true)
           final int? commentsCount,
-      @JsonKey(name: 'like_count', includeIfNull: true)
+      @JsonKey(name: 'likes_count', includeIfNull: true)
           final int? likesCount,
       @JsonKey(name: 'image_url', includeIfNull: true)
           final String? imageUrl,
+      @JsonKey(name: 'image_base64', includeIfNull: true)
+          final String? imageBase64,
       @JsonKey(name: 'is_delete', includeIfNull: true)
           final bool? isDelete,
       @JsonKey(name: 'created_by', includeIfNull: true)
@@ -597,11 +622,14 @@ abstract class _ConsultationModel implements ConsultationModel {
   @JsonKey(name: 'comments_count', includeIfNull: true)
   int? get commentsCount => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'like_count', includeIfNull: true)
+  @JsonKey(name: 'likes_count', includeIfNull: true)
   int? get likesCount => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'image_url', includeIfNull: true)
   String? get imageUrl => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'image_base64', includeIfNull: true)
+  String? get imageBase64 => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'is_delete', includeIfNull: true)
   bool? get isDelete => throw _privateConstructorUsedError;

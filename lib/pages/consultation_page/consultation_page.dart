@@ -3,13 +3,16 @@ import 'dart:io';
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
+import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:formz/formz.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -31,30 +34,37 @@ class ConsultationPage extends StatefulWidget {
   State<ConsultationPage> createState() => _ConsultationPageState();
 }
 
+
 class _ConsultationPageState extends State<ConsultationPage> {
   UserModelFirebase user = UserModelFirebase.empty();
   UserRolesModelFirebase rolesModel = UserRolesModelFirebase.empty();
   String? imagePath = "";
+  final _controller = TextEditingController();
+  final PublishSubject<bool> _psLikesCount = PublishSubject();
 
-  void getMyPerson() async {
-    UserModelFirebase userModelFirebase =
-    await AppSharedPreference.getUserFirebase();
-    UserRolesModelFirebase? userRolesModelFirebase =
-    await AppSharedPreference.getUserRoleFirebase();
+  void onRefresh() async {
+    Injector.resolve<ConsultationPageBloc>()
+        .add(const ConsultationFetchEvent());
+    Injector.resolve<ConsultationPageBloc>()
+        .add(const ConsultationDisposeEvent());
     setState(() {
-      user = userModelFirebase;
-      rolesModel = userRolesModelFirebase;
+      imagePath = "";
+      clearText();
     });
+  }
+
+  void clearText() {
+    _controller.clear();
   }
 
   @override
   void initState() {
-    getMyPerson();
+    onRefresh();
     super.initState();
   }
 
-  @override
   void dispose() {
+    _psLikesCount.close();
     super.dispose();
   }
 
@@ -64,292 +74,307 @@ class _ConsultationPageState extends State<ConsultationPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey.shade200,
       body: BlocListener<ConsultationPageBloc, ConsultationPageState>(
-        listener: (context, state) {
-          // TODO: implement listener
+        listener: (context, state) async {
+          if (state.submitStatus == FormzStatus.submissionFailure) {
+            const snackBar = SnackBar(
+                content: Text("Gagal posting"), backgroundColor: Colors.red);
+            Scaffold.of(context).showSnackBar(snackBar);
+          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+            if(state.type == 'update') {
+              const snackBar = SnackBar(
+                  content: Text("Berhasil"),
+                  backgroundColor: EpregnancyColors.primer);
+              Scaffold.of(context).showSnackBar(snackBar);
+              await Future.delayed(const Duration(seconds: 1));
+              onRefresh();
+              FocusScope.of(context).requestFocus(FocusNode());
+            }
+          }
         },
         child: BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
           builder: (context, state) {
-            return Column(
+            return Stack(
               children: [
-                Container(
-                    padding: EdgeInsets.only(bottom: 0, top: 20),
-                    color: Colors.white,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                Column(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(bottom: 0, top: 20),
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: 40, left: 20, right: 20, bottom: 20),
-                              child: Text("Konsultasi",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            Container(
-                              margin:
-                              EdgeInsets.only(bottom: 10, right: 20, left: 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: EpregnancyColors.primer,
-                                      ),
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    child: FlatButton(
-                                      minWidth: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width / 4,
-                                      padding: EdgeInsets.only(
-                                          top: 20,
-                                          bottom: 20,
-                                          right: 10,
-                                          left: 10),
-                                      onPressed: () async {
-                                        UserModelFirebase myData =
-                                        await AppSharedPreference
-                                            .getUserFirebase();
-                                        bool isSenderRoomExist = false;
-                                        bool isSenderAchiveExist =
-                                        await EventChatRoom.checkArchiveIsExist(
-                                          myUid: myData.uid,
-                                        );
-                                        RoomModel roomModel =
-                                        await EventChatRoom.checkMessageNow(
-                                          myUid: myData.uid,
-                                        );
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: 40, left: 20, right: 20, bottom: 20),
+                                  child: Text("Konsultasi",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      bottom: 10, right: 20, left: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: EpregnancyColors.primer,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: FlatButton(
+                                          minWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              4,
+                                          padding: EdgeInsets.only(
+                                              top: 20,
+                                              bottom: 20,
+                                              right: 10,
+                                              left: 10),
+                                          onPressed: () async {
+                                            UserModelFirebase myData =
+                                                await AppSharedPreference
+                                                    .getUserFirebase();
+                                            bool isSenderRoomExist = false;
+                                            bool isSenderAchiveExist =
+                                                await EventChatRoom
+                                                    .checkArchiveIsExist(
+                                              myUid: myData.uid,
+                                            );
+                                            RoomModel roomModel =
+                                                await EventChatRoom
+                                                    .checkMessageNow(
+                                              myUid: myData.uid,
+                                            );
 
-                                        if (roomModel.uid!.isNotEmpty) {
-                                          isSenderRoomExist =
-                                          await EventChatRoom.checkRoomIsExist(
-                                            isSender: true,
-                                            myUid: myData.uid,
-                                            personUid: roomModel.uid,
-                                          );
-                                          if (isSenderRoomExist &&
-                                              !isSenderAchiveExist) {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ChatRoom(
-                                                            arguments: {
-                                                              'room': roomModel
-                                                            })));
-                                          } else if (isSenderRoomExist &&
-                                              isSenderAchiveExist) {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Dashboard()));
-                                          } else {
-                                            Navigator.of(context)
-                                                .pushNamed(RouteName.chatPage);
-                                          }
-                                        } else if (!isSenderRoomExist &&
-                                            isSenderAchiveExist) {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Dashboard()));
-                                        } else {
-                                          Navigator.of(context)
-                                              .pushNamed(RouteName.chatPage);
-                                        }
-                                      },
-                                      child: Container(
-                                        child: Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Image.asset(
-                                                'assets/icon-hubungi-profesional.png',
-                                                height: 25),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            rolesModel.role == "PATIENT"
-                                                ? Text(
-                                              "Hubungi profesional",
-                                              style: TextStyle(fontSize: 12),
-                                            )
-                                                : Text(
-                                              "Cek Konsultasi",
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            15.0),
-                                        color: EpregnancyColors.primer),
-                                    child: FlatButton(
-                                      minWidth: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width / 5,
-                                      padding: EdgeInsets.only(
-                                          top: 20,
-                                          bottom: 20,
-                                          right: 20,
-                                          left: 20),
-                                      onPressed: () {},
-                                      child: Container(
-                                        child: Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Image.asset(
-                                                'assets/icon-emergency.png'),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              "Darurat",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Divider(),
-                            Container(
-                                margin: EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 20, right: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceBetween,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(40),
-                                      child: const FadeInImage(
-                                        placeholder:
-                                        AssetImage('assets/photo_dummy.png'),
-                                        image: AssetImage(
-                                            'assets/photo_dummy.png'),
-                                        width: 40,
-                                        height: 40,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .end,
-                                      children: [
-                                        Container(
-                                          width: 260,
-                                          margin: EdgeInsets.all(4),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.shade200,
-                                            borderRadius: BorderRadius.circular(
-                                                12),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              InkWell(onLongPress: () {
-                                                _showPickerDelete(context);
-                                              },
-                                                child: Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 0,
-                                                        right: 0,
-                                                        bottom: 10,
-                                                        top: 10),
-                                                    child: imagePath != ""
-                                                        ? Image.file(
-                                                      File(imagePath ?? ""),
-                                                      height: 70,
-                                                    )
-                                                        : Container()),
-                                              ),
-                                              TextField(
-                                                maxLines: 5,
-                                                minLines: 1,
-                                                decoration: const InputDecoration(
-                                                  // prefixIcon: Image(image: image),
-                                                  hintText: 'Tanya ke komunitas...',
-                                                  border: InputBorder.none,
-                                                  isDense: true,
+                                            if (roomModel.uid!.isNotEmpty) {
+                                              isSenderRoomExist =
+                                                  await EventChatRoom
+                                                      .checkRoomIsExist(
+                                                isSender: true,
+                                                myUid: myData.uid,
+                                                personUid: roomModel.uid,
+                                              );
+                                              if (isSenderRoomExist &&
+                                                  !isSenderAchiveExist) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ChatRoom(
+                                                                arguments: {
+                                                                  'room':
+                                                                      roomModel
+                                                                })));
+                                              } else if (isSenderRoomExist &&
+                                                  isSenderAchiveExist) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Dashboard()));
+                                              } else {
+                                                Navigator.of(context).pushNamed(
+                                                    RouteName.chatPage);
+                                              }
+                                            } else if (!isSenderRoomExist &&
+                                                isSenderAchiveExist) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Dashboard()));
+                                            } else {
+                                              Navigator.of(context).pushNamed(
+                                                  RouteName.chatPage);
+                                            }
+                                          },
+                                          child: Container(
+                                            child: Row(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 5,
                                                 ),
-                                                onChanged: (value) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 100,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(10.0),
-                                              color: EpregnancyColors.primer),
-                                          child: FlatButton(
-                                            minWidth:
-                                            MediaQuery
-                                                .of(context)
-                                                .size
-                                                .width / 5,
-                                            onPressed: () {},
-                                            child: Container(
-                                              child: Text(
-                                                "Kirim",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
+                                                Image.asset(
+                                                    'assets/icon-hubungi-profesional.png',
+                                                    height: 25),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                rolesModel.role == "PATIENT"
+                                                    ? const Text(
+                                                        "Hubungi profesional",
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      )
+                                                    : const Text(
+                                                        "Cek Konsultasi",
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      ),
+                                                SizedBox(
+                                                  width: 5,
+                                                )
+                                              ],
                                             ),
                                           ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Divider(),
+                                Container(
+                                    margin: EdgeInsets.only(
+                                        top: 20,
+                                        bottom: 20,
+                                        left: 20,
+                                        right: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                          child: const FadeInImage(
+                                            placeholder: AssetImage(
+                                                'assets/photo_dummy.png'),
+                                            image: AssetImage(
+                                                'assets/photo_dummy.png'),
+                                            width: 40,
+                                            height: 40,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              width: 260,
+                                              margin: EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey.shade200,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 16,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  imagePath != ""
+                                                      ? InkWell(
+                                                          onLongPress: () {
+                                                            _showPickerDelete(
+                                                                context);
+                                                          },
+                                                          child: Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 0,
+                                                                      right: 0,
+                                                                      bottom:
+                                                                          10,
+                                                                      top: 10),
+                                                              child: Image.file(
+                                                                File(
+                                                                    imagePath ??
+                                                                        ""),
+                                                                height: 70,
+                                                              )),
+                                                        )
+                                                      : Container(),
+                                                  TextField(
+                                                    controller: _controller,
+                                                    maxLines: 5,
+                                                    minLines: 1,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      // prefixIcon: Image(image: image),
+                                                      hintText:
+                                                          'Tanya ke komunitas...',
+                                                      border: InputBorder.none,
+                                                      isDense: true,
+                                                    ),
+                                                    onChanged: (value) {
+                                                      Injector.resolve<
+                                                              ConsultationPageBloc>()
+                                                          .add(
+                                                              ConsultationDescriptionChanged(
+                                                                  value));
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 100,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  color:
+                                                      EpregnancyColors.primer),
+                                              child: FlatButton(
+                                                minWidth: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    5,
+                                                onPressed: () {
+                                                  Injector.resolve<
+                                                          ConsultationPageBloc>()
+                                                      .add(
+                                                          ConsultationSubmittedEvent());
+                                                },
+                                                child: Container(
+                                                  child: Text(
+                                                    "Kirim",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            _showPicker(context);
+                                          },
+                                          child: Container(
+                                              margin: EdgeInsets.only(),
+                                              child: Icon(Icons.image)),
                                         ),
                                       ],
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        _showPicker(context);
-                                      },
-                                      child: Container(
-                                          margin: EdgeInsets.only(),
-                                          child: Icon(Icons.image)),
-                                    ),
-                                  ],
-                                )),
-                            Divider(),
+                                    )),
+                                Divider(),
+                              ],
+                            ),
                           ],
-                        ),
-                      ],
-                    )),
-                Expanded(
-                    child: ListForumWidget(
-                      tipeAcara: 'Acara umum', listConsul:state.listConsultation??[])),
+                        )),
+                    Expanded(
+                        child: ListForumWidget(
+                            tipeAcara: 'Acara umum',
+                            listConsul:
+                                state.listConsultation?.reversed.toList() ??
+                                    [],psLikesCount: _psLikesCount,)),
+                  ],
+                ),
+                _Loading()
               ],
             );
           },
@@ -374,22 +399,13 @@ class _ConsultationPageState extends State<ConsultationPage> {
         CropAspectRatioPreset.ratio16x9,
       ]);
       if (croppedFile != null) {
+        Injector.resolve<ConsultationPageBloc>()
+            .add(ConsultationImageChanged(croppedFile.path));
         setState(() {
           imagePath = croppedFile.path;
         });
       }
-
-      // if (croppedFile != null) {
-      //   EventStorageExample.uploadMessageImageAndGetUrl(
-      //     filePhoto: File(croppedFile.path),
-      //     myUid: _myPerson!.uid,
-      //     personUid: widget.arguments["room"].uid,
-      //   ).then((imageUrl) {
-      //     sendMessage('image', imageUrl);
-      //   });
-      // }
     }
-    getMyPerson();
   }
 
   void pickAndCropImageCamera() async {
@@ -408,12 +424,13 @@ class _ConsultationPageState extends State<ConsultationPage> {
         CropAspectRatioPreset.ratio16x9,
       ]);
       if (croppedFile != null) {
+        Injector.resolve<ConsultationPageBloc>()
+            .add(ConsultationImageChanged(croppedFile.path));
         setState(() {
           imagePath = croppedFile.path;
         });
       }
     }
-    getMyPerson();
   }
 
   void _showPicker(BuildContext context) {
@@ -462,6 +479,8 @@ class _ConsultationPageState extends State<ConsultationPage> {
                         setState(() {
                           imagePath = "";
                         });
+                        Injector.resolve<ConsultationPageBloc>()
+                            .add(const ConsultationImageChanged(""));
                       }),
                 ],
               ),
@@ -469,4 +488,50 @@ class _ConsultationPageState extends State<ConsultationPage> {
           );
         });
   }
+
+
 }
+
+class _Loading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
+        builder: (context, state) {
+      if (state.submitStatus == FormzStatus.submissionInProgress &&
+          state.type == 'update') {
+        return Container(
+            color: Colors.white.withAlpha(90),
+            child: Center(child: CircularProgressIndicator()));
+      } else {
+        return Text("");
+      }
+    });
+  }
+}
+
+showAlertDialog(BuildContext context) {
+  Widget cancelButton = FlatButton(
+    child: Text("Batal"),
+    onPressed: () => Navigator.of(context).pop(false),
+  );
+  Widget continueButton = FlatButton(
+    child: Text("Lanjutkan"),
+    onPressed: () {
+      Navigator.of(context).pop(true);
+    },
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Anda ingin keluar dari halaman ini?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+

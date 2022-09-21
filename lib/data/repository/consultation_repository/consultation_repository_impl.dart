@@ -21,6 +21,29 @@ class ConsultationRepositoryImpl extends ConsultationRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel> postConsultation(ConsultationModel consultationModel) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.postConsultation(consultationModel);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> likeConsultation(String id, bool isLike) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = ResponseModel.dataEmpty();
+      if(isLike) {
+         responseModel = await remoteDatasource.likeConsultation(id);
+      } else{
+        responseModel = await remoteDatasource.unLikeConsultation(id);
+      }
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
 
 
 

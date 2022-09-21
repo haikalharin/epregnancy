@@ -30,6 +30,7 @@ class ServiceUrl {
   //consultation
   static String consultation = 'post';
   static String listConsultation = '$consultation/list';
+  static String postConsultation = '$consultation/create';
 
   //eventSchedule
   static String schedule = 'schedule';

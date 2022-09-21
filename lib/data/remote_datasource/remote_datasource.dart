@@ -153,7 +153,38 @@ class RemoteDataSource {
     final response = await httpClient.get(ServiceUrl.listConsultation);
 
     return ResponseModel.fromJson(response, ConsultationModel.fromJson);
-    ;
+  }
+
+  Future<ResponseModel> postConsultation(ConsultationModel consultationModel) async {
+    Map<String, String> data;
+    if(consultationModel.imageBase64 !=null){
+      data =  {
+        'message': consultationModel.message!,
+        'image_base64':consultationModel.imageBase64!
+      };
+    } else{
+      data =  {
+        'message': consultationModel.message!,
+      };
+    }
+
+    final response = await httpClient.post(ServiceUrl.postConsultation,data);
+
+    return ResponseModel.fromJson(response, ConsultationModel.fromJson);
+  }
+
+  Future<ResponseModel> likeConsultation(String id,) async {
+
+    final response = await httpClient.post(ServiceUrl.consultation +"/$id"+"/like", null);
+
+    return ResponseModel.fromJson(response, ConsultationModel.fromJson);
+  }
+
+  Future<ResponseModel> unLikeConsultation(String id,) async {
+
+    final response = await httpClient.post(ServiceUrl.consultation +"/$id"+"/unlike", null);
+
+    return ResponseModel.fromJson(response, ConsultationModel.fromJson);
   }
 
   /// EventSchedule
