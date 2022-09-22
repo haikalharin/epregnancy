@@ -27,7 +27,7 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => OtpPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => LandingPageBloc(c<UserRepository>()))
       ..registerSingleton(
-          (c) => ConsultationPageBloc(c<ConsultationRepository>()));
+          (c) => ConsultationPageBloc(c<ConsultationRepository>()))
       ..registerSingleton((c) => LandingPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => ChatBloc(c<ChatRepository>()));
   }
@@ -42,9 +42,7 @@ class _$InjectorConfig extends InjectorConfig {
           HomeRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<ArticleRepository>((c) =>
           ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
-      ..registerFactory<ChatRepository>((c) =>
-          ChatRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
-          ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
+      ..registerFactory<ChatRepository>((c) => ChatRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<EventRepository>((c) =>
           EventRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<ConsultationRepository>((c) =>
