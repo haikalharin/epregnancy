@@ -8,6 +8,8 @@ import 'package:PregnancyApp/data/repository/event_repository/event_repository.d
 import 'package:PregnancyApp/data/repository/event_repository/event_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository_impl.dart';
+import 'package:PregnancyApp/data/repository/hospital_repository/hospital_repository.dart';
+import 'package:PregnancyApp/data/repository/hospital_repository/hospital_repository_impl.dart';
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
@@ -15,6 +17,7 @@ import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_pag
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/bloc/landing_page_bloc.dart';
+import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
 import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
@@ -80,6 +83,7 @@ abstract class InjectorConfig {
   @Register.singleton(LandingPageBloc)
   @Register.singleton(ConsultationPageBloc)
   @Register.singleton(ChatBloc)
+  @Register.singleton(HospitalBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)
@@ -88,6 +92,7 @@ abstract class InjectorConfig {
   @Register.factory(ChatRepository, from: ChatRepositoryImpl)
   @Register.factory(EventRepository, from: EventRepositoryImpl)
   @Register.factory(ConsultationRepository, from: ConsultationRepositoryImpl)
+  @Register.factory(HospitalRepository, from: HospitalRepositoryImpl)
   void _configureRepositories();
 
   @Register.factory(RemoteDataSource)

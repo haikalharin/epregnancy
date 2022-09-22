@@ -7,6 +7,10 @@ import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -310,5 +314,14 @@ class RemoteDataSource {
 
 //    return null;
     return ResponseModel<ChatPendingPatientResponse>.fromJson(response, ChatPendingPatientResponse.fromJson);
+  }
+
+  Future<List<HospitalModel>> fetchHospitals(String name) async {
+    final response = await httpClient.get(ServiceUrl.hospitalList, queryParameters: {'name': name});
+    final data = <HospitalModel>[];
+    getData(response).forEach((item) {
+      data.add(HospitalModel.fromJson(item));
+    });
+    return data;
   }
 }

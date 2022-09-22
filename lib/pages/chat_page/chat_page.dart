@@ -54,6 +54,7 @@ class _ChatPageState extends State<ChatPage> {
           if(state.type == 'send-pending-success' && state.chatPendingSendResponse != null){
             Navigator.push(context, MaterialPageRoute(builder: (context) => const NewChatRoom())).then((value) {
               if(value != null){
+                print('back with data');
                 Navigator.pop(context, "back");
               }
             });

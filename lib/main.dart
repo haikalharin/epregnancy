@@ -14,6 +14,8 @@ import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/bloc/landing_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/landing_page.dart';
+import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
+import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
@@ -118,8 +120,12 @@ class MyApp extends StatelessWidget {
             create: (context) => Injector.container.resolve<LandingPageBloc>()),
         BlocProvider<ChatBloc>(
             create: (context) => Injector.container.resolve<ChatBloc>()),
-    BlocProvider<ConsultationPageBloc>(
-        create: (context) => Injector.container.resolve<ConsultationPageBloc>()),
+        BlocProvider<ConsultationPageBloc>(
+            create: (context) =>
+                Injector.container.resolve<ConsultationPageBloc>()),
+        BlocProvider<HospitalBloc>(
+            create: (context) =>
+                Injector.container.resolve<HospitalBloc>()),
       ];
 }
 

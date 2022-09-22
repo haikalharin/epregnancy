@@ -59,6 +59,10 @@ dependencies:
   rxdart: ^0.27.5
   flutter_alarm_clock: ^0.0.2
   flutter_inappwebview: ^5.0.5+2
+  gugor_emoji: ^0.0.4
+  toast: any
+  font_awesome_flutter: ^10.2.1
+  animate_do: any
 
 
 

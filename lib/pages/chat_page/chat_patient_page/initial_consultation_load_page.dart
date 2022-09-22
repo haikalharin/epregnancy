@@ -34,7 +34,12 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
             }
           });
         } else if (state.type == 'fetch-active-chat-failed' && state.status != FormzStatus.submissionInProgress) {
-          Navigator.pushNamed(context, RouteName.chatPage);
+          Navigator.pushNamed(context, RouteName.chatPage).then((value) {
+            print('with data from chat page');
+            if(value != null){
+              Navigator.pop(context);
+            }
+          });
         }
       },
       child: Scaffold(

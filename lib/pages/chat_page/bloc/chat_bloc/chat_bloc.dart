@@ -119,7 +119,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       final UserModel user = await AppSharedPreference.getUser();
       final List<ChatListResponse> listChatOngoing = await chatRepository.fetchChatList(user.id ?? '');
       final ResponseModel<ChatPendingPatientResponse> _response = await chatRepository.fetchChatPendingPatient(user.id ?? '', "452245cb-9f61-41eb-98af-5b8fea270201");
-      if (_response.code == 200 || listChatOngoing.isNotEmpty) {
+      ChatPendingPatientResponse _chatPendingPatientResponse = _response.data;
+      if (_chatPendingPatientResponse.content?.length != 0 || listChatOngoing.isNotEmpty) {
         yield state.copyWith(
             chatPendingPatientResponse: _response.data, listChatOngoing: listChatOngoing, status: FormzStatus.submissionSuccess, type: 'fetch-active-chat-success');
       } else {

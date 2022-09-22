@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/home_page/game_card_section.dart';
@@ -44,6 +45,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   String dateTimeString = "";
   TabController? _tabController;
   late WebSocket _webSocket;
+  HospitalModel? _hospitalModel;
+
+  void getHospitalFromLocal() async {
+    HospitalModel _hospital = await AppSharedPreference.getHospital();
+    if(_hospital != null && mounted){
+      setState(() {
+        _hospitalModel = _hospital;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -53,6 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
     _tabController = TabController(length: 2, vsync: this);
     _initWebSocket();
+    getHospitalFromLocal();
     super.initState();
   }
 
@@ -121,25 +133,34 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                     fontWeight: FontWeight.bold,
                                                     color: EpregnancyColors.primer)),
                                           ),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: InkWell(
-                                                onTap: (){
-                                                  Navigator.pushNamed(context, RouteName.locationSelect);
-                                                },
-                                                child: Container(
-                                                  margin: EdgeInsets.only(
-                                                      left: 0.w, right: 10.w, bottom: 20),
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset('assets/icLocation.svg'),
-                                                      SizedBox(width: 10.w,),
-                                                      Text('Pilih Puskesmas', style: TextStyle(color: Colors.black),)
-                                                    ],
+                                        Expanded(
+                                            // alignment: Alignment.centerRight,
+                                            child: InkWell(
+                                                  onTap: (){
+                                                    Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                                      if(value != null){
+                                                        setState(() {
+                                                          _hospitalModel = value as HospitalModel?;
+                                                        });
+                                                      }
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 0.w, right: 10.w, bottom: 20),
+                                                    child: Row(
+                                                      children: [
+                                                        SvgPicture.asset('assets/icLocation.svg'),
+                                                        SizedBox(width: 10.w,),
+                                                        Expanded(
+                                                          child: Text(_hospitalModel?.name ?? 'Pilih Puskesmas', style: TextStyle(color: Colors.black),
+                                                          overflow: TextOverflow.visible,),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                            ),
-                                        )
+                                              ),
+                                          ),
                                       ],
                                     ),
                                   ),

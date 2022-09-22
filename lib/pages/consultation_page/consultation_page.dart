@@ -13,6 +13,7 @@ import 'package:formz/formz.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:toast/toast.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -117,61 +118,68 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                       Text("Konsultasi",
                                           style: TextStyle(
                                               fontSize: 18, fontWeight: FontWeight.bold)),
-                                      SvgPicture.asset('assets/icArchive.svg')
+                                      InkWell(
+                                        onTap: (){
+                                          Toast.show('Archive Consultation Under Construction..');
+                                        },
+                                          child: SvgPicture.asset('assets/icArchive.svg'))
                                     ],
                                   )
                                 ),
                                 Container(
+                                  width: MediaQuery.of(context).size.width,
                                   margin: EdgeInsets.only(
                                       bottom: 10, right: 20, left: 20),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: EpregnancyColors.primer,
+                                      Expanded(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: EpregnancyColors.primer,
+                                            ),
+                                            borderRadius:
+                                            BorderRadius.circular(15.0),
                                           ),
-                                          borderRadius:
-                                          BorderRadius.circular(15.0),
-                                        ),
-                                        child: FlatButton(
-                                          minWidth: MediaQuery.of(context)
-                                              .size
-                                              .width /
-                                              4,
-                                          padding: EdgeInsets.only(
-                                              top: 20,
-                                              bottom: 20,
-                                              right: 10,
-                                              left: 10),
-                                          onPressed: () async {
-                                            // new method for hubungi profesional
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                    const InitialConsultationLoadPage()));
-                                          },
-                                          child: Container(
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Image.asset('assets/icon-hubungi-profesional.png', height: 25),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                widget.role == "PATIENT"
-                                                    ? Text("Hubungi profesional", style: TextStyle(fontSize: 12),)
-                                                    : Text("Cek Konsultasi",style: TextStyle(fontSize: 12),),
-                                                SizedBox(
-                                                  width: 5,
-                                                )
-                                              ],
+                                          child: FlatButton(
+                                            minWidth: MediaQuery.of(context)
+                                                .size
+                                                .width /
+                                                4,
+                                            padding: EdgeInsets.only(
+                                                top: 20,
+                                                bottom: 20,
+                                                right: 10,
+                                                left: 10),
+                                            onPressed: () async {
+                                              // new method for hubungi profesional
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                      const InitialConsultationLoadPage()));
+                                            },
+                                            child: Container(
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Image.asset('assets/icon-hubungi-profesional.png', height: 25),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  widget.role == "PATIENT"
+                                                      ? Text("Hubungi profesional", style: TextStyle(fontSize: 12),)
+                                                      : Text("Cek Konsultasi",style: TextStyle(fontSize: 12),),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -443,6 +451,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
 class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
         builder: (context, state) {
           if (state.submitStatus == FormzStatus.submissionInProgress &&

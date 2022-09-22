@@ -51,4 +51,8 @@ class ServiceUrl {
   static String chatPendingList = '$chatPending/list';
   static String chatPendingSend = '$chatPending/send';
 
+  //hospital
+  static String hospital = 'hospital';
+  static String hospitalList = '$hospital/list';
+
 }
