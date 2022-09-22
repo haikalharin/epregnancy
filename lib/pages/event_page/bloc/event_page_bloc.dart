@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
+import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/utils/extension.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:bloc/bloc.dart';
@@ -17,6 +19,7 @@ import '../../../common/validators/phone_validator.dart';
 import '../../../data/firebase/event/event_event.dart';
 import '../../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
+import '../../../data/repository/event_repository/event_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../example_dashboard_chat_page/login_example_page/model/password.dart';
 
@@ -25,7 +28,9 @@ part 'event_page_event.dart';
 part 'event_page_state.dart';
 
 class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
-  EventPageBloc() : super(EventPageInitial());
+  EventPageBloc(this.eventRepository) : super(EventPageInitial());
+
+  final EventRepository eventRepository;
 
   @override
   Stream<EventPageState> mapEventToState(EventPageEvent event) async* {
@@ -74,24 +79,22 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
     EventPageState state,
   ) {
     int data = 0;
-    List<String>? listScheduleTime = [];
+    List<NotificationModel>? listScheduleTime = [];
     TimeOfDay time = TimeOfDay(hour: 09, minute: 00);
     if (event.totalConsume != null && event.totalConsume != "") {
       data = int.parse(event.totalConsume);
     }
     for (var i = 0; i < data; i++) {
-
       if (i > 0) {
-        time =TimeOfDay(hour:  time.hour + 4, minute: 00);
-        if(time.hour > 24){
-          time =TimeOfDay(hour:  time.hour%24, minute: 00);
-        } else{
+        time = TimeOfDay(hour: time.hour + 4, minute: 00);
+        if (time.hour > 24) {
+          time = TimeOfDay(hour: time.hour % 24, minute: 00);
+        } else {
           time = time;
         }
-
       }
       var timeFix = time.to24hours();
-      listScheduleTime.add(timeFix);
+      listScheduleTime.add(NotificationModel(time: "$timeFix:00"));
     }
     final totalconsume = MandatoryFieldValidator.dirty(event.totalConsume);
     return state.copyWith(
@@ -110,9 +113,9 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
     EventlistScheduleTimeChanged event,
     EventPageState state,
   ) {
-    List<String>? listScheduleTime = [];
+    List<NotificationModel>? listScheduleTime = [];
     listScheduleTime = state.listScheduleTime;
-    listScheduleTime[event.index] = event.time;
+    // listScheduleTime[event.index] = event.time;
     return state.copyWith(listScheduleTime: listScheduleTime);
   }
 
@@ -183,49 +186,49 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
     if (state.status.isValidated) {
       yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
       try {
-        UserModelFirebase person = await AppSharedPreference.getUserFirebase();
-        UserRolesModelFirebase role = await AppSharedPreference.getUserRoleFirebase();
-        final df = DateFormat('yyyyMMdd');
+        UserModel person = await AppSharedPreference.getUser();
+        final df = DateFormat('yyyy-MM-dd');
         var dateStart = df.format(state.dateStart ?? DateTime.now());
         var dateEnd = df.format(state.dateEnd ?? DateTime.now());
-        const _chars =
-            'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-        Random _rnd = Random();
 
-        String getRandomString(int length) =>
-            String.fromCharCodes(Iterable.generate(
-                length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+        ResponseModel response = ResponseModel();
+        if (state.consulType.value == StringConstant.consumeMedicine) {
+          response = await eventRepository.saveEvent(EventModel(
+              userId: person.id,
+              type: state.consulType.value,
+              title: state.scheduleName.value,
+              startDate: dateStart,
+              endDate: dateEnd,
+              medicineTakenDays: int.parse(state.days.value),
+              medicineTakenTimes: int.parse(state.totalConsume.value),
+          medicineUnit: "tablet",
+          remindBefore: 5,
+          status: "active",
+            notifications:state.listScheduleTime,
+          ));
+        } else {
 
-        String random = getRandomString(20);
-        bool response = false;
-        if(state.consulType.value == StringConstant.consumeMedicine){
-          response = await EventEvent.addEvent(EventModel(
-              title: state.scheduleName.value,
-              userid: person.uid,
-              eventStartDate: dateStart,
-              eventEndDate: dateEnd,
-              totalConsume: state.totalConsume.value,
-              days: state.days.value,
-              listScheduleTime: state.listScheduleTime,
-              eventid: random,
-              consulType: state.consulType.value,
-              type: StringConstant.typePersonal,
-              createdDate: DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now())));
-        }else {
-          response = await EventEvent.addEvent(EventModel(
-              title: state.scheduleName.value,
-              description: state.description.value,
-              userid: person.uid,
-              eventStartDate: dateStart,
-              eventEndDate: dateStart,
-              time: state.timeString.value,
-              eventid: random,
-              consulType: state.consulType.value,
-              type: StringConstant.typePersonal,
-              createdDate: DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now())));
+            var hourToMinute = state.timeNotfication!.hour  * 60;
+            int remindBefore = state.timeNotfication!.minute + hourToMinute;
+          response = await eventRepository.saveEvent(EventModel(
+            userId: person.id,
+            type: state.consulType.value,
+            title: state.scheduleName.value,
+            description: state.description.value,
+            time: "${state.timeString.value}:00",
+            startDate: dateStart,
+            endDate: dateStart,
+            date: dateStart,
+            remindBefore: remindBefore,
+            status: "active",
+          ));
+
         }
-        if (response) {
-          yield state.copyWith(submitStatus: FormzStatus.submissionSuccess,userModelFirebase:person, role: role);
+        if (response.code == 200) {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess, role: person.isPatient == true
+              ? StringConstant.patient
+              : StringConstant.midwife,);
         } else {
           yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
         }

@@ -13,18 +13,21 @@ class _$InjectorConfig extends InjectorConfig {
     container
       ..registerSingleton((c) => LoginExampleBloc(c<UserRepository>()))
       ..registerSingleton((c) => LoginBloc(c<UserRepository>()))
-      ..registerSingleton(
-          (c) => HomePageBloc(c<HomeRepository>(), c<UserRepository>()))
+      ..registerSingleton((c) => HomePageBloc(
+          c<HomeRepository>(), c<UserRepository>(), c<EventRepository>()))
       ..registerSingleton((c) => SurveyPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => ArticlePageBloc(c<UserRepository>()))
       ..registerSingleton((c) => SignupBloc(c<UserRepository>()))
       ..registerSingleton((c) => SignUpQuestionnaireBloc(c<UserRepository>()))
       ..registerSingleton((c) => SplashscreenBloc())
-      ..registerSingleton((c) => EventPageBloc())
+      ..registerSingleton((c) => EventPageBloc(c<EventRepository>()))
       ..registerSingleton((c) => PoinBloc(c<UserRepository>()))
       ..registerSingleton((c) => PointHistoryBloc(c<UserRepository>()))
       ..registerSingleton((c) => GamesBloc(c<HomeRepository>()))
       ..registerSingleton((c) => OtpPageBloc(c<UserRepository>()))
+      ..registerSingleton((c) => LandingPageBloc(c<UserRepository>()))
+      ..registerSingleton(
+          (c) => ConsultationPageBloc(c<ConsultationRepository>()));
       ..registerSingleton((c) => LandingPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => ChatBloc(c<ChatRepository>()));
   }
@@ -41,6 +44,12 @@ class _$InjectorConfig extends InjectorConfig {
           ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<ChatRepository>((c) =>
           ChatRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
+          ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
+      ..registerFactory<EventRepository>((c) =>
+          EventRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
+      ..registerFactory<ConsultationRepository>((c) =>
+          ConsultationRepositoryImpl(
+              c<NetworkInfoImpl>(), c<RemoteDataSource>()));
   }
 
   @override

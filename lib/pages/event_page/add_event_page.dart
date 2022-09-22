@@ -91,7 +91,7 @@ class _AddEventPageState extends State<AddEventPage> {
           await Future.delayed(const Duration(seconds: 1));
 
           Navigator.of(context).pushNamedAndRemoveUntil(
-              RouteName.navBar, (Route<dynamic> route) => false, arguments: state.role!.role);
+              RouteName.navBar, (Route<dynamic> route) => false, arguments: {'role': state.role, 'initial_index': 0});
 
         }
       }, child: BlocBuilder<EventPageBloc, EventPageState>(

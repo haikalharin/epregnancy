@@ -44,32 +44,39 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         isChangeIndex = false;
       });
     }
-    return Stack(children: [
-      widget.role == StringConstant.midwife
-          ? Scaffold(
-        resizeToAvoidBottomInset: false,
-          body: _buildWidgetBodyMidwife()) :
-      Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: _buildWidgetBody(),
-        bottomNavigationBar: _bottomNavigatorBar(),
-      )
-      ,
-      // Positioned.fill(
-      //     bottom: 20,
-      //     child: Align(
-      //       alignment: Alignment.bottomCenter,
-      //       child: FloatingActionButton(
-      //           onPressed: () {
-      //             Navigator.push(context, MaterialPageRoute(
-      //               builder: (context) {
-      //                 return SettingPage();
-      //               },
-      //             ));
-      //           },
-      //           child: Image.asset('res/graphics/ic_order_40px.png')),
-      //     ))
-    ]
+    return WillPopScope(
+      onWillPop:() async {
+        bool? result= await _showMyDialog(context);
+        result ??= false;
+        return result;
+      },
+      child: Stack(children: [
+        widget.role == StringConstant.midwife
+            ? Scaffold(
+          resizeToAvoidBottomInset: false,
+            body: _buildWidgetBodyMidwife()) :
+        Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: _buildWidgetBody(),
+          bottomNavigationBar: _bottomNavigatorBar(),
+        )
+        ,
+        // Positioned.fill(
+        //     bottom: 20,
+        //     child: Align(
+        //       alignment: Alignment.bottomCenter,
+        //       child: FloatingActionButton(
+        //           onPressed: () {
+        //             Navigator.push(context, MaterialPageRoute(
+        //               builder: (context) {
+        //                 return SettingPage();
+        //               },
+        //             ));
+        //           },
+        //           child: Image.asset('res/graphics/ic_order_40px.png')),
+        //     ))
+      ]
+      ),
     );
   }
 
@@ -286,5 +293,28 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
       default:
         return Container();
     }
+  }
+
+  Future<bool?> _showMyDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Konfirmasi'),
+          content: Text('Apakah Anda Yakin Ingin Keluar?'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('Tidak'),
+            ),
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Ya'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

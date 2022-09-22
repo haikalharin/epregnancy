@@ -1,15 +1,20 @@
+import 'dart:io';
+
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/chat_page/event/patient_consultation_page.dart';
 import 'package:PregnancyApp/pages/chat_page/new_chat_room.dart';
+import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:formz/formz.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -22,6 +27,7 @@ import '../chat_page/chat_patient_page/initial_consultation_load_page.dart';
 import '../chat_page/chat_room.dart';
 import '../chat_page/event/event_chat_room.dart';
 import '../home_page/list_event.dart';
+import 'bloc/consultation_page_bloc.dart';
 import 'list_forum.dart';
 
 class ConsultationPage extends StatefulWidget {
@@ -31,21 +37,45 @@ class ConsultationPage extends StatefulWidget {
   State<ConsultationPage> createState() => _ConsultationPageState();
 }
 
+
 class _ConsultationPageState extends State<ConsultationPage> {
-  @override
-  void initState() {
-    print('role : ${widget.role}');
-    super.initState();
+  UserModelFirebase user = UserModelFirebase.empty();
+  UserRolesModelFirebase rolesModel = UserRolesModelFirebase.empty();
+  String? imagePath = "";
+  final _controller = TextEditingController();
+  final PublishSubject<bool> _psLikesCount = PublishSubject();
+
+  void onRefresh() async {
+    Injector.resolve<ConsultationPageBloc>()
+        .add(const ConsultationFetchEvent());
+    Injector.resolve<ConsultationPageBloc>()
+        .add(const ConsultationDisposeEvent());
+    setState(() {
+      imagePath = "";
+      clearText();
+    });
+  }
+
+  void clearText() {
+    _controller.clear();
   }
 
   @override
+  void initState() {
+    print('role : ${widget.role}');
+    onRefresh();
+    super.initState();
+  }
+
   void dispose() {
+    _psLikesCount.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey.shade200,
       body: Column(
         children: [
@@ -136,6 +166,87 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                     //   Navigator.of(context)
                                     //       .pushNamed(RouteName.chatPage);
                                     // }
+      body: BlocListener<ConsultationPageBloc, ConsultationPageState>(
+        listener: (context, state) async {
+          if (state.submitStatus == FormzStatus.submissionFailure) {
+            const snackBar = SnackBar(
+                content: Text("Gagal posting"), backgroundColor: Colors.red);
+            Scaffold.of(context).showSnackBar(snackBar);
+          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+            if(state.type == 'update') {
+              const snackBar = SnackBar(
+                  content: Text("Berhasil"),
+                  backgroundColor: EpregnancyColors.primer);
+              Scaffold.of(context).showSnackBar(snackBar);
+              await Future.delayed(const Duration(seconds: 1));
+              onRefresh();
+              FocusScope.of(context).requestFocus(FocusNode());
+            }
+          }
+        },
+        child: BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                Column(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(bottom: 0, top: 20),
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: 40, left: 20, right: 20, bottom: 20),
+                                  child: Text("Konsultasi",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      bottom: 10, right: 20, left: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: EpregnancyColors.primer,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: FlatButton(
+                                          minWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              4,
+                                          padding: EdgeInsets.only(
+                                              top: 20,
+                                              bottom: 20,
+                                              right: 10,
+                                              left: 10),
+                                          onPressed: () async {
+                                            UserModelFirebase myData =
+                                                await AppSharedPreference
+                                                    .getUserFirebase();
+                                            bool isSenderRoomExist = false;
+                                            bool isSenderAchiveExist =
+                                                await EventChatRoom
+                                                    .checkArchiveIsExist(
+                                              myUid: myData.uid,
+                                            );
+                                            RoomModel roomModel =
+                                                await EventChatRoom
+                                                    .checkMessageNow(
+                                              myUid: myData.uid,
+                                            );
 
                                     // new method for hubungi profesional
                                     Navigator.push(
@@ -263,11 +374,13 @@ class _ConsultationPageState extends State<ConsultationPage> {
       ),
     );
   }
+
   void pickAndCropImageGallery() async {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );
+
     if (pickedFile != null) {
       CroppedFile? croppedFile = await ImageCropper.platform
           .cropImage(sourcePath: pickedFile.path, aspectRatioPresets: [
@@ -277,22 +390,22 @@ class _ConsultationPageState extends State<ConsultationPage> {
         CropAspectRatioPreset.ratio4x3,
         CropAspectRatioPreset.ratio16x9,
       ]);
-      // if (croppedFile != null) {
-      //   EventStorageExample.uploadMessageImageAndGetUrl(
-      //     filePhoto: File(croppedFile.path),
-      //     myUid: _myPerson!.uid,
-      //     personUid: widget.arguments["room"].uid,
-      //   ).then((imageUrl) {
-      //     sendMessage('image', imageUrl);
-      //   });
-      // }
+      if (croppedFile != null) {
+        Injector.resolve<ConsultationPageBloc>()
+            .add(ConsultationImageChanged(croppedFile.path));
+        setState(() {
+          imagePath = croppedFile.path;
+        });
+      }
     }
   }
+
   void pickAndCropImageCamera() async {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
       imageQuality: 25,
     );
+
     if (pickedFile != null) {
       CroppedFile? croppedFile = await ImageCropper.platform
           .cropImage(sourcePath: pickedFile.path, aspectRatioPresets: [
@@ -302,15 +415,13 @@ class _ConsultationPageState extends State<ConsultationPage> {
         CropAspectRatioPreset.ratio4x3,
         CropAspectRatioPreset.ratio16x9,
       ]);
-      // if (croppedFile != null) {
-      //   EventStorageExample.uploadMessageImageAndGetUrl(
-      //     filePhoto: File(croppedFile.path),
-      //     myUid: _myPerson!.uid,
-      //     personUid: widget.arguments["room"].uid,
-      //   ).then((imageUrl) {
-      //     sendMessage('image', imageUrl);
-      //   });
-      // }
+      if (croppedFile != null) {
+        Injector.resolve<ConsultationPageBloc>()
+            .add(ConsultationImageChanged(croppedFile.path));
+        setState(() {
+          imagePath = croppedFile.path;
+        });
+      }
     }
   }
 
@@ -326,14 +437,15 @@ class _ConsultationPageState extends State<ConsultationPage> {
                       leading: Icon(Icons.photo_library),
                       title: Text('Photo Library'),
                       onTap: () async {
+                        Navigator.pop(context);
                         pickAndCropImageGallery();
                       }),
                   ListTile(
                     leading: Icon(Icons.photo_camera),
                     title: Text('Camera'),
                     onTap: () async {
+                      Navigator.pop(context);
                       pickAndCropImageCamera();
-
                     },
                   ),
                 ],
@@ -343,4 +455,75 @@ class _ConsultationPageState extends State<ConsultationPage> {
         });
   }
 
+  void _showPickerDelete(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: [
+                  ListTile(
+                      leading: const Icon(Icons.delete),
+                      title: const Text('Delete'),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        setState(() {
+                          imagePath = "";
+                        });
+                        Injector.resolve<ConsultationPageBloc>()
+                            .add(const ConsultationImageChanged(""));
+                      }),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+
 }
+
+class _Loading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
+        builder: (context, state) {
+      if (state.submitStatus == FormzStatus.submissionInProgress &&
+          state.type == 'update') {
+        return Container(
+            color: Colors.white.withAlpha(90),
+            child: Center(child: CircularProgressIndicator()));
+      } else {
+        return Text("");
+      }
+    });
+  }
+}
+
+showAlertDialog(BuildContext context) {
+  Widget cancelButton = FlatButton(
+    child: Text("Batal"),
+    onPressed: () => Navigator.of(context).pop(false),
+  );
+  Widget continueButton = FlatButton(
+    child: Text("Lanjutkan"),
+    onPressed: () {
+      Navigator.of(context).pop(true);
+    },
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Anda ingin keluar dari halaman ini?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+

@@ -7,13 +7,13 @@ class FunctionUtils {
     DateTime? date
   }) async {
     List<EventModel> listEventFix = [];
-    var outputFormat = DateFormat('yyyyMMdd');
+    var outputFormat = DateFormat('yyyy-MM-dd');
     var dateCurent = outputFormat.format(date?? DateTime.now());
     try{
       listEvent.forEach((element) async {
         var isContain = await FunctionUtils.checkDate(
-            startDate: element.eventStartDate,
-            lastDate: element.eventEndDate,
+            startDate: element.startDate,
+            lastDate: element.endDate,
             dateCurrent: dateCurent);
 
         if (isContain) {
