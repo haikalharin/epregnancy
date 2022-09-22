@@ -133,7 +133,7 @@ class _LocationListPageState extends State<LocationListPage> {
               padding: EdgeInsets.only(bottom: 10.h),
               child: ListView.separated(
                   shrinkWrap: true,
-                  itemCount: widget.currentHospital != null ? (state.hospitals?.length ?? 0 + 1) : (state.hospitals?.length ?? 0),
+                  itemCount: widget.currentHospital != null ? (state.hospitals?.length ?? 0) + 1 : (state.hospitals?.length ?? 0),
                   itemBuilder: (context, index) {
                     print('current index : $index');
                     if (widget.currentHospital != null) {

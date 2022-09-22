@@ -19,6 +19,7 @@ import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../data/firebase/event/event_user.dart';
 import '../../data/firebase/g_authentication.dart';
+import '../../data/model/hospital_model/hospital_model.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
@@ -37,13 +38,13 @@ class ConsultationPage extends StatefulWidget {
   State<ConsultationPage> createState() => _ConsultationPageState();
 }
 
-
 class _ConsultationPageState extends State<ConsultationPage> {
   UserModelFirebase user = UserModelFirebase.empty();
   UserRolesModelFirebase rolesModel = UserRolesModelFirebase.empty();
   String? imagePath = "";
   final _controller = TextEditingController();
   final PublishSubject<bool> _psLikesCount = PublishSubject();
+  HospitalModel? _hospitalModel;
 
   void onRefresh() async {
     Injector.resolve<ConsultationPageBloc>()
@@ -60,9 +61,19 @@ class _ConsultationPageState extends State<ConsultationPage> {
     _controller.clear();
   }
 
+  void getHospitalFromLocal() async {
+    HospitalModel _hospital = await AppSharedPreference.getHospital();
+    if (_hospital != null && mounted) {
+      setState(() {
+        _hospitalModel = _hospital;
+      });
+    }
+  }
+
   @override
   void initState() {
     onRefresh();
+    getHospitalFromLocal();
     super.initState();
   }
 
@@ -83,7 +94,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                 content: Text("Gagal posting"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            if(state.type == 'update') {
+            if (state.type == 'update') {
               const snackBar = SnackBar(
                   content: Text("Berhasil"),
                   backgroundColor: EpregnancyColors.primer);
@@ -110,29 +121,34 @@ class _ConsultationPageState extends State<ConsultationPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(
-                                      top: 40, left: 20, right: 20, bottom: 20),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Konsultasi",
-                                          style: TextStyle(
-                                              fontSize: 18, fontWeight: FontWeight.bold)),
-                                      InkWell(
-                                        onTap: (){
-                                          Toast.show('Archive Consultation Under Construction..');
-                                        },
-                                          child: SvgPicture.asset('assets/icArchive.svg'))
-                                    ],
-                                  )
-                                ),
+                                    margin: EdgeInsets.only(
+                                        top: 40,
+                                        left: 20,
+                                        right: 20,
+                                        bottom: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Konsultasi",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold)),
+                                        InkWell(
+                                            onTap: () {
+                                              Toast.show(
+                                                  'Archive Consultation Under Construction..');
+                                            },
+                                            child: SvgPicture.asset(
+                                                'assets/icArchive.svg'))
+                                      ],
+                                    )),
                                 Container(
                                   width: MediaQuery.of(context).size.width,
                                   margin: EdgeInsets.only(
                                       bottom: 10, right: 20, left: 20),
                                   child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Expanded(
                                         child: Container(
@@ -141,12 +157,12 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                               color: EpregnancyColors.primer,
                                             ),
                                             borderRadius:
-                                            BorderRadius.circular(15.0),
+                                                BorderRadius.circular(15.0),
                                           ),
                                           child: FlatButton(
                                             minWidth: MediaQuery.of(context)
-                                                .size
-                                                .width /
+                                                    .size
+                                                    .width /
                                                 4,
                                             padding: EdgeInsets.only(
                                                 top: 20,
@@ -155,26 +171,47 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                                 left: 10),
                                             onPressed: () async {
                                               // new method for hubungi profesional
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                      const InitialConsultationLoadPage()));
+                                              if(_hospitalModel == null){
+                                                Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                                  if(value != null){
+                                                    setState(() {
+                                                      _hospitalModel = value as HospitalModel?;
+                                                    });
+                                                  }
+                                                });
+                                              } else {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                        const InitialConsultationLoadPage()));
+                                              }
                                             },
                                             child: Container(
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   SizedBox(
                                                     width: 5,
                                                   ),
-                                                  Image.asset('assets/icon-hubungi-profesional.png', height: 25),
+                                                  Image.asset(
+                                                      'assets/icon-hubungi-profesional.png',
+                                                      height: 25),
                                                   SizedBox(
                                                     width: 10,
                                                   ),
                                                   widget.role == "PATIENT"
-                                                      ? Text("Hubungi profesional", style: TextStyle(fontSize: 12),)
-                                                      : Text("Cek Konsultasi",style: TextStyle(fontSize: 12),),
+                                                      ? Text(
+                                                          "Hubungi profesional",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        )
+                                                      : Text(
+                                                          "Cek Konsultasi",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        ),
                                                   SizedBox(
                                                     width: 5,
                                                   )
@@ -196,11 +233,11 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                         right: 20),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         ClipRRect(
                                           borderRadius:
-                                          BorderRadius.circular(40),
+                                              BorderRadius.circular(40),
                                           child: const FadeInImage(
                                             placeholder: AssetImage(
                                                 'assets/photo_dummy.png'),
@@ -213,7 +250,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                              CrossAxisAlignment.end,
                                           children: [
                                             Container(
                                               width: 260,
@@ -221,56 +258,56 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                               decoration: BoxDecoration(
                                                 color: Colors.grey.shade200,
                                                 borderRadius:
-                                                BorderRadius.circular(12),
+                                                    BorderRadius.circular(12),
                                               ),
                                               padding: EdgeInsets.symmetric(
                                                 horizontal: 16,
                                               ),
                                               child: Column(
                                                 crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   imagePath != ""
                                                       ? InkWell(
-                                                    onLongPress: () {
-                                                      _showPickerDelete(
-                                                          context);
-                                                    },
-                                                    child: Container(
-                                                        margin:
-                                                        const EdgeInsets
-                                                            .only(
-                                                            left: 0,
-                                                            right: 0,
-                                                            bottom:
-                                                            10,
-                                                            top: 10),
-                                                        child: Image.file(
-                                                          File(
-                                                              imagePath ??
-                                                                  ""),
-                                                          height: 70,
-                                                        )),
-                                                  )
+                                                          onLongPress: () {
+                                                            _showPickerDelete(
+                                                                context);
+                                                          },
+                                                          child: Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 0,
+                                                                      right: 0,
+                                                                      bottom:
+                                                                          10,
+                                                                      top: 10),
+                                                              child: Image.file(
+                                                                File(
+                                                                    imagePath ??
+                                                                        ""),
+                                                                height: 70,
+                                                              )),
+                                                        )
                                                       : Container(),
                                                   TextField(
                                                     controller: _controller,
                                                     maxLines: 5,
                                                     minLines: 1,
                                                     decoration:
-                                                    const InputDecoration(
+                                                        const InputDecoration(
                                                       // prefixIcon: Image(image: image),
                                                       hintText:
-                                                      'Tanya ke komunitas...',
+                                                          'Tanya ke komunitas...',
                                                       border: InputBorder.none,
                                                       isDense: true,
                                                     ),
                                                     onChanged: (value) {
                                                       Injector.resolve<
-                                                          ConsultationPageBloc>()
+                                                              ConsultationPageBloc>()
                                                           .add(
-                                                          ConsultationDescriptionChanged(
-                                                              value));
+                                                              ConsultationDescriptionChanged(
+                                                                  value));
                                                     },
                                                   ),
                                                 ],
@@ -281,20 +318,20 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                               height: 30,
                                               decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.0),
+                                                      BorderRadius.circular(
+                                                          10.0),
                                                   color:
-                                                  EpregnancyColors.primer),
+                                                      EpregnancyColors.primer),
                                               child: FlatButton(
                                                 minWidth: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
+                                                        .size
+                                                        .width /
                                                     5,
                                                 onPressed: () {
                                                   Injector.resolve<
-                                                      ConsultationPageBloc>()
+                                                          ConsultationPageBloc>()
                                                       .add(
-                                                      ConsultationSubmittedEvent());
+                                                          ConsultationSubmittedEvent());
                                                 },
                                                 child: Container(
                                                   child: Text(
@@ -324,10 +361,11 @@ class _ConsultationPageState extends State<ConsultationPage> {
                         )),
                     Expanded(
                         child: ListForumWidget(
-                          tipeAcara: 'Acara umum',
-                          listConsul:
-                          state.listConsultation?.reversed.toList() ??
-                              [],psLikesCount: _psLikesCount,)),
+                      tipeAcara: 'Acara umum',
+                      listConsul:
+                          state.listConsultation?.reversed.toList() ?? [],
+                      psLikesCount: _psLikesCount,
+                    )),
                   ],
                 ),
                 _Loading()
@@ -444,8 +482,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
           );
         });
   }
-
-
 }
 
 class _Loading extends StatelessWidget {
@@ -454,15 +490,15 @@ class _Loading extends StatelessWidget {
     ToastContext().init(context);
     return BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
         builder: (context, state) {
-          if (state.submitStatus == FormzStatus.submissionInProgress &&
-              state.type == 'update') {
-            return Container(
-                color: Colors.white.withAlpha(90),
-                child: Center(child: CircularProgressIndicator()));
-          } else {
-            return Text("");
-          }
-        });
+      if (state.submitStatus == FormzStatus.submissionInProgress &&
+          state.type == 'update') {
+        return Container(
+            color: Colors.white.withAlpha(90),
+            child: Center(child: CircularProgressIndicator()));
+      } else {
+        return Text("");
+      }
+    });
   }
 }
 

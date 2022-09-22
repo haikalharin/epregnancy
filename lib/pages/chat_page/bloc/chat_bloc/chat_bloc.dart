@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 import '../../../../common/exceptions/survey_error_exception.dart';
+import '../../../../data/model/hospital_model/hospital_model.dart';
 import '../../../../data/model/user_model_api/user_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
@@ -117,8 +118,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetch-active-chat');
     try {
       final UserModel user = await AppSharedPreference.getUser();
+      final HospitalModel _hospital = await AppSharedPreference.getHospital();
       final List<ChatListResponse> listChatOngoing = await chatRepository.fetchChatList(user.id ?? '');
-      final ResponseModel<ChatPendingPatientResponse> _response = await chatRepository.fetchChatPendingPatient(user.id ?? '', "452245cb-9f61-41eb-98af-5b8fea270201");
+      final ResponseModel<ChatPendingPatientResponse> _response = await chatRepository.fetchChatPendingPatient(user.id ?? '', _hospital.id ?? '');
       ChatPendingPatientResponse _chatPendingPatientResponse = _response.data;
       if (_chatPendingPatientResponse.content?.length != 0 || listChatOngoing.isNotEmpty) {
         yield state.copyWith(

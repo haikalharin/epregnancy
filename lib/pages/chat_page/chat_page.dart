@@ -9,6 +9,7 @@ import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../data/firebase/event/event_user.dart';
+import '../../data/model/hospital_model/hospital_model.dart';
 import '../../data/model/room_model/room_model.dart';
 import '../../data/model/user_model_api/user_model.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
@@ -317,9 +318,10 @@ class _ChatPageState extends State<ChatPage> {
 
                               // send pending chat with API
                               final UserModel userModel = await AppSharedPreference.getUser();
+                              final HospitalModel _hospital = await AppSharedPreference.getHospital();
 
                               ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(
-                                  fromId: userModel.id, hospitalId: "452245cb-9f61-41eb-98af-5b8fea270201", message: "Pantangan, saran atau mitos tentang kehamilan");
+                                  fromId: userModel.id, hospitalId: _hospital.id, message: "Pantangan, saran atau mitos tentang kehamilan");
 
                               Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest));
                             },
