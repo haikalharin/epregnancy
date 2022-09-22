@@ -1,6 +1,7 @@
 import 'package:PregnancyApp/common/injector/injector.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dart';
 import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
+import 'package:PregnancyApp/pages/chat_page/new_chat_room.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,8 +52,7 @@ class _ChatPageState extends State<ChatPage> {
         listener: (blocContext, state) {
           print('state chat : ${state.type}');
           if(state.type == 'send-pending-success' && state.chatPendingSendResponse != null){
-            // todo navigate to chat detail / chat room
-            print('todo navigate to chat room / detail');
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewChatRoom()));
           }
         },
         child: BlocBuilder<ChatBloc, ChatState>(
