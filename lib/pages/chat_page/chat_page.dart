@@ -9,6 +9,7 @@ import 'package:formz/formz.dart';
 import '../../common/constants/router_constants.dart';
 import '../../data/firebase/event/event_user.dart';
 import '../../data/model/room_model/room_model.dart';
+import '../../data/model/user_model_api/user_model.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
@@ -49,13 +50,14 @@ class _ChatPageState extends State<ChatPage> {
       body: BlocListener<ChatBloc, ChatState>(
         listener: (blocContext, state) {
           print('state chat : ${state.type}');
-          if(state.type == 'send-pending-success'){
+          if(state.type == 'send-pending-success' && state.chatPendingSendResponse != null){
             // todo navigate to chat detail / chat room
+            print('todo navigate to chat room / detail');
           }
         },
         child: BlocBuilder<ChatBloc, ChatState>(
           builder: (blocContext, state) {
-            if(state.status == FormzStatus.submissionInProgress) {
+            if(state.status == FormzStatus.submissionInProgress && state.type == 'send-pending-loading' ) {
               return Center(
                 child: CircularProgressIndicator(),
               );
@@ -309,8 +311,11 @@ class _ChatPageState extends State<ChatPage> {
                               // }
 
                               // send pending chat with API
-                              ChatPendingSendRequest _chatPendingSendRequest = const ChatPendingSendRequest(
-                                  fromId: "ef081878-c2b2-492b-ace9-36977c14d44f", hospitalId: "452245cb-9f61-41eb-98af-5b8fea270201", message: "test dari app lagi");
+                              final UserModel userModel = await AppSharedPreference.getUser();
+
+                              ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(
+                                  fromId: userModel.id, hospitalId: "452245cb-9f61-41eb-98af-5b8fea270201", message: "Pantangan, saran atau mitos tentang kehamilan");
+
                               Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest));
                             },
                           ),

@@ -2,6 +2,7 @@ import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/chat_page/event/patient_consultation_page.dart';
+import 'package:PregnancyApp/pages/chat_page/new_chat_room.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,9 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                       const InitialConsultationLoadPage()));
+                                                    // todo change
+                                                       // const InitialConsultationLoadPage()));
+                                                       const NewChatRoom()));
 
                                   },
                                   child: Container(

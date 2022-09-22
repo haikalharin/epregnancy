@@ -8,6 +8,13 @@ abstract class ChatEvent extends Equatable{
   List<Object> get props => [];
 }
 
+class DisposeChatBlocEvent extends ChatEvent {
+  const DisposeChatBlocEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class FetchChatPendingEvent extends ChatEvent {
   const FetchChatPendingEvent();
   @override

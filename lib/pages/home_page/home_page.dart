@@ -109,12 +109,39 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(
-                                        left: 50, right: 50, bottom: 20),
-                                    child: Text("Halo, $name",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: EpregnancyColors.primer)),
+                                    width : MediaQuery.of(context).size.width,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                            margin: EdgeInsets.only(
+                                                left: 16.w, right: 50, bottom: 20),
+                                            child: Text("Halo, $name",
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: EpregnancyColors.primer)),
+                                          ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: InkWell(
+                                                onTap: (){
+                                                  Navigator.pushNamed(context, RouteName.locationSelect);
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 0.w, right: 10.w, bottom: 20),
+                                                  child: Row(
+                                                    children: [
+                                                      SvgPicture.asset('assets/icLocation.svg'),
+                                                      SizedBox(width: 10.w,),
+                                                      Text('Pilih Puskesmas', style: TextStyle(color: Colors.black),)
+                                                    ],
+                                                  ),
+                                                ),
+                                            ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                   state.user != null &&
                                           state.user!.isPregnant == true

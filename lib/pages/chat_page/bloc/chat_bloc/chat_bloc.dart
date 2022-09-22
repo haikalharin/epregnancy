@@ -32,6 +32,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       yield* _mapFetchChatOngoingEventToState(event, state);
     } else if (event is FetchChatPendingPatientEvent) {
       yield* _mapFetchChatPendingPatient(event, state);
+    } else if (event is DisposeChatBlocEvent) {
+      yield ChatState().copyWith(
+        type: 'dispose',
+        status: FormzStatus.submissionCanceled,
+        errorMessage: '',
+        chatPendingPatientResponse: null,
+        chatPendingSendResponse: null,
+        listChatOngoing: null,
+        listChatPending: null,
+      );
     }
   }
 
@@ -61,7 +71,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       FetchChatOngoingEvent event,
       ChatState state,
       ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'list-ongoing');
+    yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
       final UserModel user = await AppSharedPreference.getUser();
       final List<ChatListResponse> listChatOngoing = await chatRepository.fetchChatList(user.id ?? '');
@@ -84,7 +94,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       SendChatPendingEvent event,
       ChatState state,
       ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type:  'send-pending-loading');
     try {
       final ResponseModel<ChatPendingSendResponse> _response = await chatRepository.sendChatPending(event.chatPendingSendRequest);
       if (_response.code == 200) {
@@ -104,13 +114,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       FetchChatPendingPatientEvent event,
       ChatState state,
       ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetch-active-chat');
     try {
       final UserModel user = await AppSharedPreference.getUser();
+      final List<ChatListResponse> listChatOngoing = await chatRepository.fetchChatList(user.id ?? '');
       final ResponseModel<ChatPendingPatientResponse> _response = await chatRepository.fetchChatPendingPatient(user.id ?? '', "452245cb-9f61-41eb-98af-5b8fea270201");
-      if (_response.code == 200) {
+      if (_response.code == 200 || listChatOngoing.isNotEmpty) {
         yield state.copyWith(
-            chatPendingPatientResponse: _response.data, status: FormzStatus.submissionSuccess, type: 'patient-pending');
+            chatPendingPatientResponse: _response.data, listChatOngoing: listChatOngoing, status: FormzStatus.submissionSuccess, type: 'fetch-active-chat-success');
+      } else {
+        yield state.copyWith(type: 'fetch-active-chat-failed', status: FormzStatus.submissionFailure);
       }
     } on SurveyErrorException catch (e) {
       print(e);

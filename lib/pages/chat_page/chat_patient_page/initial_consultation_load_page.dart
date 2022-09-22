@@ -1,9 +1,11 @@
 import 'package:PregnancyApp/common/constants/router_constants.dart';
 import 'package:PregnancyApp/common/injector/injector.dart';
 import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
+import 'package:PregnancyApp/pages/chat_page/new_chat_room.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:formz/formz.dart';
 
 import '../../../utils/epragnancy_color.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
@@ -24,12 +26,14 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) {
         // todo listener chat patient
-        print('state progress : ${state.status}');
-        if(state.chatPendingPatientResponse != null && state.type == 'patient-pending'){
-          print('todo redirect to chat room / chat detail pending chat');
-        } else if(state.listChatOngoing != null && state.type == 'list-ongoing-success') {
-          print('todo redirect to chat room / chat detail ongoing chat');
-        } else {
+        print('state type : ${state.type}');
+        if(state.type == 'fetch-active-chat-success'){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const NewChatRoom())).then((value) {
+            if(value != null){
+              Navigator.pop(context);
+            }
+          });
+        } else if (state.type == 'fetch-active-chat-failed' && state.status != FormzStatus.submissionInProgress) {
           Navigator.pushNamed(context, RouteName.chatPage);
         }
       },
@@ -78,12 +82,14 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
   @override
   void initState() {
     Injector.resolve<ChatBloc>().add(const FetchChatPendingPatientEvent());
-    Injector.resolve<ChatBloc>().add(const FetchChatOngoingEvent());
+    // Injector.resolve<ChatBloc>().add(const FetchChatOngoingEvent());
     super.initState();
   }
 
   @override
   void dispose() {
+    print('disponse');
+    Injector.resolve<ChatBloc>().add(const DisposeChatBlocEvent());
     super.dispose();
   }
 }
