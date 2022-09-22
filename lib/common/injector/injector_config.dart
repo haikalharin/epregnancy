@@ -19,8 +19,11 @@ import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../data/remote_datasource/remote_datasource.dart';
+import '../../data/repository/consultation_repository/consultation_repository.dart';
+import '../../data/repository/consultation_repository/consultation_repository_impl.dart';
 import '../../data/repository/user_repository/user_repository.dart';
 import '../../data/repository/user_repository/user_repository_impl.dart';
+import '../../pages/consultation_page/bloc/consultation_page_bloc.dart';
 import '../../pages/login_page/bloc/login_bloc.dart';
 import '../../pages/signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import '../../pages/splashscreen_page/bloc/splash_screen_bloc.dart';
@@ -72,12 +75,14 @@ abstract class InjectorConfig {
   @Register.singleton(GamesBloc)
   @Register.singleton(OtpPageBloc)
   @Register.singleton(LandingPageBloc)
+  @Register.singleton(ConsultationPageBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)
   @Register.factory(HomeRepository, from: HomeRepositoryImpl)
   @Register.factory(ArticleRepository, from: ArticleRepositoryImpl)
   @Register.factory(EventRepository, from: EventRepositoryImpl)
+  @Register.factory(ConsultationRepository, from: ConsultationRepositoryImpl)
   void _configureRepositories();
 
   @Register.factory(RemoteDataSource)
