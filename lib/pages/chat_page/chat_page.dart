@@ -52,7 +52,11 @@ class _ChatPageState extends State<ChatPage> {
         listener: (blocContext, state) {
           print('state chat : ${state.type}');
           if(state.type == 'send-pending-success' && state.chatPendingSendResponse != null){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewChatRoom()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewChatRoom())).then((value) {
+              if(value != null){
+                Navigator.pop(context, "back");
+              }
+            });
           }
         },
         child: BlocBuilder<ChatBloc, ChatState>(
