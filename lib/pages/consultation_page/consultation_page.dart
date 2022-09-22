@@ -142,9 +142,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                    // todo change
-                                                       // const InitialConsultationLoadPage()));
-                                                       const NewChatRoom()));
+                                                       const InitialConsultationLoadPage()));
 
                                   },
                                   child: Container(
