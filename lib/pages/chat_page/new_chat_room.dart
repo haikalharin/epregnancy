@@ -38,6 +38,14 @@ class _NewChatRoomState extends State<NewChatRoom> {
   ];
   var boolList = [true, false, true, false];
 
+  void _scrollDown() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
@@ -229,6 +237,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                           list.add(val);
                           boolList.add(true);
                           _messageEditingController.clear();
+                          _scrollDown();
                           print('pressed with data : $val');
                         });
                       },

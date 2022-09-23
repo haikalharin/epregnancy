@@ -141,12 +141,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      ResponseModel response = await userRepository.login(LoginModel(
+      // temporary
+      ResponseModel response = await userRepository.loginNonOtp(LoginModel(
           username: state.username.value, password: state.password.value));
       UserModel userModel = response.data ?? const UserModel() ;
 
       if (response.code == 200) {
-        await AppSharedPreference.setUserRegister(response.data);
+        await AppSharedPreference.setUser(response.data);
+        await AppSharedPreference.setString(AppSharedPreference.token,userModel.token??'');
+        // await AppSharedPreference.setUserRegister(response.data);
         bool isActive = false;
         if (userModel.isPatient == true) {
           if (userModel.isHaveBaby != false ||

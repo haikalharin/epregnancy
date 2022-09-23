@@ -61,25 +61,48 @@ class _LoginPageState extends State<LoginPage> {
 
                   } else if (state.submitStatus ==
                       FormzStatus.submissionSuccess) {
-                    if(state.typeEvent == StringConstant.requestOtp){
-                      Navigator.of(context)
-                          .pushNamed(RouteName.otpPage);
 
+                    // login with otp
+                    // if(state.typeEvent == StringConstant.requestOtp){
+                    //   Navigator.of(context)
+                    //       .pushNamed(RouteName.otpPage);
+                    //
+                    //
+                    // } else if(state.typeEvent == StringConstant.submitLogin) {
+                    //   if(state.userModel?.isPatient == true){
+                    //     if(state.isActive == true){
+                    //       Injector.resolve<LoginBloc>().add(LoginRequestOtp());
+                    //
+                    //     } else{
+                    //       Navigator.of(context).pushNamed(RouteName.surveyPage);
+                    //
+                    //     }
+                    //   } else{
+                    //     Injector.resolve<LoginBloc>().add(LoginRequestOtp());
+                    //
+                    //   }
+                    //
+                    // }
 
-                    } else if(state.typeEvent == StringConstant.submitLogin) {
-                      if(state.userModel?.isPatient == true){
-                        if(state.isActive == true){
-                          Injector.resolve<LoginBloc>().add(LoginRequestOtp());
-
-                        } else{
-                          Navigator.of(context).pushNamed(RouteName.surveyPage);
-
-                        }
-                      } else{
-                        Injector.resolve<LoginBloc>().add(LoginRequestOtp());
-
-                      }
-
+                    //login without otp temp
+                    print('isPatient : ${state.userModel?.isPatient}');
+                    if (state.userModel?.isPatient == true || state.userModel?.isMidwife == false) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        RouteName.navBar,
+                            (Route<dynamic> route) => false,
+                        arguments: {
+                          'role': state.userModel?.isMidwife == true
+                              ? StringConstant.midwife :StringConstant.patient,
+                          'initial_index': 0,
+                          'user_id':state.userModel?.id ??''
+                        },
+                      );
+                    } else {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          RouteName.dashboardNakesPage,
+                              (Route<dynamic> route) => false,
+                          arguments:  state.userModel?.name
+                      );
                     }
                   }
                 },

@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   Container(
                                     width : MediaQuery.of(context).size.width,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Container(
                                             margin: EdgeInsets.only(
@@ -133,34 +133,45 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                     fontWeight: FontWeight.bold,
                                                     color: EpregnancyColors.primer)),
                                           ),
-                                        Expanded(
+                                        Container(
+                                          width: MediaQuery.of(context).size.width / 2,
                                             // alignment: Alignment.centerRight,
-                                            child: InkWell(
-                                                  onTap: (){
-                                                    Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                                      if(value != null){
-                                                        setState(() {
-                                                          _hospitalModel = value as HospitalModel?;
-                                                        });
-                                                      }
-                                                    });
-                                                  },
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 0.w, right: 10.w, bottom: 20),
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset('assets/icLocation.svg'),
-                                                        SizedBox(width: 10.w,),
-                                                        Expanded(
-                                                          child: Text(_hospitalModel?.name ?? 'Pilih Puskesmas', style: TextStyle(color: Colors.black),
-                                                          overflow: TextOverflow.visible,),
-                                                        )
-                                                      ],
+                                            child: Align(
+                                              alignment: Alignment.centerRight,
+                                              child: InkWell(
+                                                    onTap: (){
+                                                      Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                                        if(value != null){
+                                                          setState(() {
+                                                            _hospitalModel = value as HospitalModel?;
+                                                          });
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Container(
+                                                          margin: EdgeInsets.only(
+                                                              left: 0.w, right: 10.w, bottom: 20),
+                                                          child:  Row(
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                                              mainAxisAlignment: MainAxisAlignment.end,
+                                                              children: [
+                                                                SvgPicture.asset('assets/icLocation.svg'),
+                                                                SizedBox(width: 10.w,),
+                                                                Expanded(
+                                                                  child: Text(_hospitalModel?.name ?? 'Pilih Puskesmas', style: TextStyle(color: Colors.black),
+                                                                    // textAlign: TextAlign.right,
+                                                                    overflow: TextOverflow.visible,),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
                                                     ),
+                                                      ),
+                                            ),
                                                   ),
-                                              ),
-                                          ),
                                       ],
                                     ),
                                   ),
