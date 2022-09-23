@@ -7,9 +7,11 @@ class Configurations {
   static String _wpUrl = DefaultConfig.wpUrl;
   static String _consumerKey = DefaultConfig.consumerKey;
   static String _consumerSecret = DefaultConfig.consumerSecret;
+  static String _mode = DefaultConfig.mode;
 
   Future<void> setConfigurationValues(Map<String, dynamic> value) async {
     _host = value['host'] ?? DefaultConfig.host;
+    _mode = value['mode'] ?? DefaultConfig.mode;
     _imageHost = value['image_host'] ?? DefaultConfig.imageHost;
     _httpClientType =
         value['client_type'] ?? DefaultConfig.httpClientType.toString();
@@ -20,6 +22,8 @@ class Configurations {
   }
 
   static String get host => _host;
+
+  static String get mode => _mode;
 
   static String get imageHost => _imageHost;
 

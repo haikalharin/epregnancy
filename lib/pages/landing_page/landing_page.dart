@@ -11,6 +11,7 @@ import 'package:formz/formz.dart';
 import '../../common/injector/injector.dart';
 import '../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
+import '../../utils/string_constans.dart';
 import '../login_page/login_page.dart';
 import '../navbar_page/bottom_nav.dart';
 import 'bloc/landing_page_bloc.dart';
@@ -57,9 +58,7 @@ class _LandingPageState extends State<LandingPage> {
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus ==
               FormzStatus.submissionSuccess) {
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(
-                RouteName.otpPage, (Route<dynamic> route) => false);
+
 
           }
         },
@@ -126,7 +125,14 @@ class _LandingPageState extends State<LandingPage> {
                         onPressed: () async {
                           if (currentIndex == slides.length - 1) {
                             // Navigate to next screen
-                            Injector.resolve<LandingPageBloc>().add(LoginRequestOtp());
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              RouteName.navBar,
+                                  (Route<dynamic> route) => false,
+                              arguments: {
+                                'role':  StringConstant.patient,
+                                'initial_index': 0
+                              },
+                            );
                           }
                           _controller.nextPage(
                               duration: Duration(milliseconds: 100),

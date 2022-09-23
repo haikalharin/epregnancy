@@ -67,17 +67,25 @@ class _LoginPageState extends State<LoginPage> {
 
 
                     } else if(state.typeEvent == StringConstant.submitLogin) {
-                      if(state.userModel?.isPatient == true){
-                        if(state.isActive == true){
-                          Injector.resolve<LoginBloc>().add(LoginRequestOtp());
-
-                        } else{
-                          Navigator.of(context).pushNamed(RouteName.surveyPage);
-
-                        }
-                      } else{
-                        Injector.resolve<LoginBloc>().add(LoginRequestOtp());
-
+                      if (state.userModel?.isPatient == true) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          RouteName.navBar,
+                              (Route<dynamic> route) => false,
+                          arguments: {
+                            'role': state.userModel?.isPatient == true
+                                ? StringConstant.patient
+                                : StringConstant.midwife,
+                            'initial_index': 0
+                          },
+                        );
+                      } else {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          RouteName.dashboardNakesPage,
+                              (Route<dynamic> route) => false,
+                          arguments:  state.userModel?.isPatient == true
+                              ? StringConstant.patient
+                              : StringConstant.midwife,
+                        );
                       }
 
                     }

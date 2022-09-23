@@ -57,3 +57,7 @@ class SignupSubmittedWithNumberPhone extends SignupEvent {
   final BuildContext context;
   final TextEditingController codeController;
 }
+
+class RequestOtp extends SignupEvent {
+  const RequestOtp();
+}

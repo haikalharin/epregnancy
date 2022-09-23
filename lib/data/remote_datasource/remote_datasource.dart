@@ -138,6 +138,16 @@ class RemoteDataSource {
     }
   }
 
+  Future<ResponseModel<UserModel>> checkUserExist(String user) async {
+    try {
+      Map<String, String> data = {'username': user};
+      final response = await httpClient.post(ServiceUrl.checkUserExist, data);
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel(data: const UserModel());
+    }
+  }
+
   /// Article
   Future<ResponseModel> fetchListArticle() async {
     try {

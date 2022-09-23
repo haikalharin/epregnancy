@@ -242,17 +242,37 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(40),
-                                          child: const FadeInImage(
-                                            placeholder: AssetImage(
-                                                'assets/photo_dummy.png'),
-                                            image: AssetImage(
-                                                'assets/photo_dummy.png'),
-                                            width: 40,
-                                            height: 40,
-                                            fit: BoxFit.cover,
+                                        state.userModel?.imageUrl != null?  Container(
+                                          // width: 62,
+
+                                          child: ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(40),
+                                            child: FadeInImage(
+                                              placeholder: const AssetImage(
+                                                  'assets/ic_no_photo.png'),
+                                              image: NetworkImage(state.userModel?.imageUrl??
+                                                  ""),
+                                              width: 40,
+                                              height: 40,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ):Container(
+                                          // width: 62,
+
+                                          child: ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(40),
+                                            child: const FadeInImage(
+                                              placeholder: AssetImage(
+                                                  'assets/ic_no_photo.png'),
+                                              image: AssetImage(
+                                                  'assets/ic_no_photo.png'),
+                                              width: 40,
+                                              height: 40,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                         Column(

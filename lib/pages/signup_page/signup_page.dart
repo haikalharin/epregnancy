@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/common/configurations/configurations.dart';
 import 'package:PregnancyApp/common/constants/regex_constants.dart';
 import 'package:PregnancyApp/main.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
@@ -62,7 +63,28 @@ class _SignUpPageState extends State<SignUpPage> {
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.submitStatus ==
                     FormzStatus.submissionSuccess) {
-                  Navigator.of(context).pushNamed(RouteName.signUpQuestionnairePage);}
+                  if (state.isExist == true) {
+                    if (state.isSurvey == true) {
+                      var snackBar = SnackBar(
+                          content: Text("Akun Telah Terdaftar"),
+                          backgroundColor: Colors.red);
+                      Injector.resolve<SignupBloc>().add(SignupInitEvent());
+                      Scaffold.of(context).showSnackBar(snackBar);
+                    } else {
+                      Navigator.of(context).pushNamed(RouteName.surveyPage);
+                    }
+                  } else {
+                    if (Configurations.mode == StringConstant.prod) {
+                      if (state.userId!.contains('@')) {
+                        Injector.resolve<SignupBloc>().add(const RequestOtp());
+                      } else {
+                        Injector.resolve<SignupBloc>().add(const RequestOtp());
+                      }
+                    } else {
+                      Navigator.of(context).pushNamed(RouteName.otpPage);
+                    }
+                  }
+                }
               },
               child: Stack(
                 children: [

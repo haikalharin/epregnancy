@@ -33,7 +33,7 @@ abstract class UserRepository {
 
   Future<ResponseModel<CheckinResponse>> hitCheckIn(String day);
   Future<List<PointHistory>> fetchPointHistory();
-
+  Future<ResponseModel<UserModel>> checkUserExist(String user);
 
   logout();
 }
