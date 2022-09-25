@@ -20,6 +20,7 @@ import '../../common/injector/injector.dart';
 import '../../data/firebase/event/event_user.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/hospital_model/hospital_model.dart';
+import '../../data/model/user_model_api/user_model.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
@@ -45,6 +46,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
   final _controller = TextEditingController();
   final PublishSubject<bool> _psLikesCount = PublishSubject();
   HospitalModel? _hospitalModel;
+  String? _userId;
 
   void onRefresh() async {
     Injector.resolve<ConsultationPageBloc>()
@@ -70,10 +72,20 @@ class _ConsultationPageState extends State<ConsultationPage> {
     }
   }
 
+  void getUserId() async {
+    UserModel _userModel = await AppSharedPreference.getUser();
+    if (_userModel != null && mounted) {
+      setState(() {
+        _userId = _userModel.id;
+      });
+    }
+  }
+
   @override
   void initState() {
     onRefresh();
     getHospitalFromLocal();
+    getUserId();
     super.initState();
   }
 
@@ -184,7 +196,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                        const InitialConsultationLoadPage()));
+                                                         InitialConsultationLoadPage(userId: _userId??'',)));
                                               }
                                             },
                                             child: Container(

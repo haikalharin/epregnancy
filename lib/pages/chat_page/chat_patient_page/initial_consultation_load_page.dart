@@ -7,11 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 
+import '../../../data/entity/chat_message_entity.dart';
 import '../../../utils/epragnancy_color.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 
 class InitialConsultationLoadPage extends StatefulWidget {
-  const InitialConsultationLoadPage({Key? key}) : super(key: key);
+  const InitialConsultationLoadPage({Key? key, required this.userId}) : super(key: key);
+  final String userId;
 
   @override
   State<InitialConsultationLoadPage> createState() => _InitialConsultationLoadPageState();
@@ -28,7 +30,24 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
         // todo listener chat patient
         print('state type : ${state.type}');
         if(state.type == 'fetch-active-chat-success'){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const NewChatRoom())).then((value) {
+          List<ChatMessageEntity> chatMessageList = [];
+          state.chatPendingPatientResponse?.content?.forEach((element) {
+            chatMessageList.add(
+              ChatMessageEntity(
+                name: element.fromId,
+                message: element.message,
+                dateTime: element.createdDate,
+                mine: element.fromId == widget.userId ? true: false
+              )
+            );
+          });
+          print('chat lenght : ${chatMessageList.length}');
+          print('toname : ${state.chatPendingPatientResponse?.content?[0].hospital?.name}');
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
+            chatMessageList: chatMessageList,
+            toName: state.chatPendingPatientResponse?.content?[0].hospital?.name,
+            pendingChat: true,
+          ))).then((value) {
             if(value != null){
               Navigator.pop(context);
             }
