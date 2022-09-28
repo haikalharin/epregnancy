@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
+import '../../data/entity/chat_message_entity.dart';
 import '../../data/firebase/event/event_user.dart';
 import '../../data/model/hospital_model/hospital_model.dart';
 import '../../data/model/room_model/room_model.dart';
@@ -18,7 +19,8 @@ import '../../utils/epragnancy_color.dart';
 import 'chat_room.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  const ChatPage({Key? key, required this.userId}) : super(key: key);
+  final String userId;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -28,6 +30,23 @@ class _ChatPageState extends State<ChatPage> {
   bool isChoice1 = false;
   bool isChoice2 = false;
   int type = 0;
+  HospitalModel? hospitalModel;
+
+  void getHospital() async {
+    HospitalModel _hospitalModel = await AppSharedPreference.getHospital();
+    if(_hospitalModel != null && mounted){
+      setState(() {
+        hospitalModel = _hospitalModel;
+      });
+    }
+  }
+
+
+  @override
+  void initState() {
+    getHospital();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +72,23 @@ class _ChatPageState extends State<ChatPage> {
         listener: (blocContext, state) {
           print('state chat : ${state.type}');
           if(state.type == 'send-pending-success' && state.chatPendingSendResponse != null){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewChatRoom())).then((value) {
+            List<ChatMessageEntity> chatMessageList = [];
+            chatMessageList.add(
+                ChatMessageEntity(
+                    name: state.chatPendingSendResponse?.from?.hospital,
+                    message: state.chatPendingSendResponse?.message,
+                    dateTime: state.chatPendingSendResponse?.createdDate,
+                    mine: state.chatPendingSendResponse?.fromId == widget.userId ? true: false
+                )
+            );
+            Navigator.push(context, MaterialPageRoute(builder: (context) => NewChatRoom(
+              fromId: state.chatPendingSendResponse?.fromId,
+              toImageUrl: state.chatPendingSendResponse?.to?.imageUrl,
+              toId: state.chatPendingSendResponse?.toId,
+              chatMessageList: chatMessageList,
+              toName: state.chatPendingSendResponse?.to?.name ?? hospitalModel?.name ,
+              pendingChat: true,
+            ))).then((value) {
               if(value != null){
                 print('back with data');
                 Navigator.pop(context, "back");

@@ -3,6 +3,7 @@ import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.da
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
 import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
 import 'dart:math';
 
@@ -298,6 +299,13 @@ class RemoteDataSource {
 
 //    return null;
     return ResponseModel<ChatPendingSendResponse>.fromJson(response, ChatPendingSendResponse.fromJson);
+  }
+
+  Future<ResponseModel<ChatResponse>> chatSend(ChatSendRequest _requestBody) async {
+    final response = await httpClient.post(ServiceUrl.sendChat, _requestBody.toJson());
+
+//    return null;
+    return ResponseModel<ChatResponse>.fromJson(response, ChatResponse.fromJson);
   }
 
   Future<List<ChatListResponse>> fetchChatListResponse(String fromId) async {

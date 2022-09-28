@@ -41,3 +41,11 @@ class SendChatPendingEvent extends ChatEvent {
   @override
   List<Object> get props => [];
 }
+
+class SendChatEvent extends ChatEvent {
+  final ChatSendRequest chatPendingSendRequest;
+  const SendChatEvent(this.chatPendingSendRequest);
+
+  @override
+  List<Object> get props => [];
+}

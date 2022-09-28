@@ -1,12 +1,17 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
 import 'package:PregnancyApp/data/entity/chat_message_entity.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
+import 'package:PregnancyApp/data/remote_datasource/remote_datasource.dart';
 import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
+import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,14 +20,20 @@ import 'package:gugor_emoji/emoji_picker_flutter.dart';
 import 'package:toast/toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../common/injector/injector.dart';
+import '../../data/model/chat_model/chat_pending_send_request.dart';
 import '../../env.dart';
+import 'bloc/chat_bloc/chat_bloc.dart';
 
 class NewChatRoom extends StatefulWidget {
-  const NewChatRoom({Key? key, this.chatMessageList, this.pendingChat = false, this.toName})
+  const NewChatRoom({Key? key, this.chatMessageList, this.pendingChat = false, this.toName, required this.fromId, required this.toId, required this.toImageUrl})
       : super(key: key);
   final List<ChatMessageEntity>? chatMessageList;
+  final String? fromId;
+  final String? toId;
   final bool? pendingChat;
   final String? toName;
+  final String? toImageUrl;
 
   @override
   State<NewChatRoom> createState() => _NewChatRoomState();
@@ -37,15 +48,16 @@ class _NewChatRoomState extends State<NewChatRoom> {
 
   bool mine = true;
   bool showEmoji = false;
+  bool isPendingChat = false;
   late WebSocket _webSocket;
 
   List<ChatMessageEntity>? chatMessageList = [];
-
 
   @override
   void initState() {
     setState(() {
       chatMessageList = widget.chatMessageList;
+      isPendingChat = widget.pendingChat ?? false;
     });
     _initWebSocket();
     super.initState();
@@ -76,9 +88,27 @@ class _NewChatRoomState extends State<NewChatRoom> {
       print('websocket ready state: ' + _webSocket.readyState.toString());
 
       _webSocket.listen((d) {
-        print('mentah : $d');
+        // TODO HANDLE CHAT WEBSOCKET TO ADD TO BUBLE
         Map<String, dynamic> socketResponse = json.decode(d);
         print('action listener : ${socketResponse["action"]}');
+        if(socketResponse['action'] == StringConstant.updateLatestChat){
+          String fromIdPayload = socketResponse['data']['from_id'];
+          String toIdPayload = socketResponse['data']['to_id'];
+          if(fromIdPayload == widget.toId && toIdPayload == widget.fromId){
+            setState(() {
+              chatMessageList?.add(
+                  ChatMessageEntity(
+                    name: socketResponse['data']['id'],
+                    message: socketResponse['data']['message'],
+                    dateTime: socketResponse['data']['created_date'],
+                    mine: socketResponse['data']['from_id'] == widget.fromId ? true : false,
+                    profileImage: socketResponse['data']['from_id'] == widget.fromId ? socketResponse['data']['from']['image_url'] : socketResponse['data']['to']['image_url'],
+                  )
+              );
+            });
+          }
+        }
+        log('websocket payload mentah : $d');
       }, onError: (e) {
         print("error");
         print(e);
@@ -92,6 +122,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
     ToastContext().init(context);
     print('chat lenght : ${chatMessageList?.length}');
     return Scaffold(
+      backgroundColor: Colors.white,
         // resizeToAvoidBottomInset: true,
         extendBody: true,
         appBar: AppBar(
@@ -103,7 +134,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                 height: 30.h,
                 width: 30.w,
                 decoration: BoxDecoration(shape: BoxShape.circle),
-                child: Image.asset('assets/dummies/dummy_avatar.png'),
+                child: widget.toImageUrl == null ?  Image.asset('assets/dummies/dummy_avatar.png') : Image.network(widget.toImageUrl!),
               ),
               SizedBox(
                 width: 10.w,
@@ -137,7 +168,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                   controller: _scrollController,
                   itemCount: chatMessageList?.length,
                   shrinkWrap: true,
-                  padding: EdgeInsets.only(top: 10, bottom: 100),
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
                   // physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     // widget for sender
@@ -207,8 +238,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                               height: 20.h,
                               width: 20.w,
                               decoration: BoxDecoration(shape: BoxShape.circle),
-                              child: Image.asset(
-                                  'assets/dummies/dummy_avatar.png'),
+                              child: chatMessageList![index].profileImage != null ? Image.network(chatMessageList![index].profileImage!) : Image.asset('assets/dummies/dummy_avatar.png')
                             ),
                           ],
                         ),
@@ -223,7 +253,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                             width: 20.w,
                             decoration: BoxDecoration(shape: BoxShape.circle),
                             child:
-                                Image.asset('assets/dummies/dummy_avatar.png'),
+                                Image.network(chatMessageList![index].profileImage!),
                           ),
                           Expanded(
                             child: Container(
@@ -325,7 +355,10 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                   );
                                   _messageEditingController.clear();
                                   _scrollDown();
-                                  print('pressed with data : $val');
+                                  ChatSendRequest _chatSendRequest = ChatSendRequest(
+                                      fromId: widget.fromId, toId: widget.toId, message: val);
+
+                                  Injector.resolve<ChatBloc>().add(SendChatEvent(_chatSendRequest));
                                 });
                               } else {
                                 Toast.show('Mohon tunggu respon Nakes sebelum membuat chat baru', duration: 3, gravity: 1);

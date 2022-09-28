@@ -63,5 +63,8 @@ class StringConstant {
   static const playGameDescCon = 'ketika bermain';
   static const playNow = 'Mainkan Sekarang';
 
+  //websocket
+  static const updateLatestChat = 'update-latest-chat';
+
 
 }

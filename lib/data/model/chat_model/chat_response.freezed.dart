@@ -516,11 +516,11 @@ mixin _$From {
   String? get mobile => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
-  String? get isPatient => throw _privateConstructorUsedError;
-  String? get isMidwife => throw _privateConstructorUsedError;
-  String? get isAdmin => throw _privateConstructorUsedError;
-  String? get isSuperAdmin => throw _privateConstructorUsedError;
-  String? get isVerified => throw _privateConstructorUsedError;
+  bool? get isPatient => throw _privateConstructorUsedError;
+  bool? get isMidwife => throw _privateConstructorUsedError;
+  bool? get isAdmin => throw _privateConstructorUsedError;
+  bool? get isSuperAdmin => throw _privateConstructorUsedError;
+  bool? get isVerified => throw _privateConstructorUsedError;
   dynamic get hospitalId => throw _privateConstructorUsedError;
   dynamic get hospital => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
@@ -543,11 +543,11 @@ abstract class $FromCopyWith<$Res> {
       String? mobile,
       String? username,
       String? status,
-      String? isPatient,
-      String? isMidwife,
-      String? isAdmin,
-      String? isSuperAdmin,
-      String? isVerified,
+      bool? isPatient,
+      bool? isMidwife,
+      bool? isAdmin,
+      bool? isSuperAdmin,
+      bool? isVerified,
       dynamic hospitalId,
       dynamic hospital,
       String? imageUrl,
@@ -613,23 +613,23 @@ class _$FromCopyWithImpl<$Res> implements $FromCopyWith<$Res> {
       isPatient: isPatient == freezed
           ? _value.isPatient
           : isPatient // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       isMidwife: isMidwife == freezed
           ? _value.isMidwife
           : isMidwife // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       isAdmin: isAdmin == freezed
           ? _value.isAdmin
           : isAdmin // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       isSuperAdmin: isSuperAdmin == freezed
           ? _value.isSuperAdmin
           : isSuperAdmin // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       isVerified: isVerified == freezed
           ? _value.isVerified
           : isVerified // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       hospitalId: hospitalId == freezed
           ? _value.hospitalId
           : hospitalId // ignore: cast_nullable_to_non_nullable
@@ -663,11 +663,11 @@ abstract class _$$_FromCopyWith<$Res> implements $FromCopyWith<$Res> {
       String? mobile,
       String? username,
       String? status,
-      String? isPatient,
-      String? isMidwife,
-      String? isAdmin,
-      String? isSuperAdmin,
-      String? isVerified,
+      bool? isPatient,
+      bool? isMidwife,
+      bool? isAdmin,
+      bool? isSuperAdmin,
+      bool? isVerified,
       dynamic hospitalId,
       dynamic hospital,
       String? imageUrl,
@@ -734,23 +734,23 @@ class __$$_FromCopyWithImpl<$Res> extends _$FromCopyWithImpl<$Res>
       isPatient: isPatient == freezed
           ? _value.isPatient
           : isPatient // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       isMidwife: isMidwife == freezed
           ? _value.isMidwife
           : isMidwife // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       isAdmin: isAdmin == freezed
           ? _value.isAdmin
           : isAdmin // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       isSuperAdmin: isSuperAdmin == freezed
           ? _value.isSuperAdmin
           : isSuperAdmin // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       isVerified: isVerified == freezed
           ? _value.isVerified
           : isVerified // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       hospitalId: hospitalId == freezed
           ? _value.hospitalId
           : hospitalId // ignore: cast_nullable_to_non_nullable
@@ -810,15 +810,15 @@ class _$_From with DiagnosticableTreeMixin implements _From {
   @override
   final String? status;
   @override
-  final String? isPatient;
+  final bool? isPatient;
   @override
-  final String? isMidwife;
+  final bool? isMidwife;
   @override
-  final String? isAdmin;
+  final bool? isAdmin;
   @override
-  final String? isSuperAdmin;
+  final bool? isSuperAdmin;
   @override
-  final String? isVerified;
+  final bool? isVerified;
   @override
   final dynamic hospitalId;
   @override
@@ -923,11 +923,11 @@ abstract class _From implements From {
       required final String? mobile,
       required final String? username,
       required final String? status,
-      required final String? isPatient,
-      required final String? isMidwife,
-      required final String? isAdmin,
-      required final String? isSuperAdmin,
-      required final String? isVerified,
+      required final bool? isPatient,
+      required final bool? isMidwife,
+      required final bool? isAdmin,
+      required final bool? isSuperAdmin,
+      required final bool? isVerified,
       final dynamic hospitalId,
       final dynamic hospital,
       required final String? imageUrl,
@@ -950,15 +950,15 @@ abstract class _From implements From {
   @override
   String? get status => throw _privateConstructorUsedError;
   @override
-  String? get isPatient => throw _privateConstructorUsedError;
+  bool? get isPatient => throw _privateConstructorUsedError;
   @override
-  String? get isMidwife => throw _privateConstructorUsedError;
+  bool? get isMidwife => throw _privateConstructorUsedError;
   @override
-  String? get isAdmin => throw _privateConstructorUsedError;
+  bool? get isAdmin => throw _privateConstructorUsedError;
   @override
-  String? get isSuperAdmin => throw _privateConstructorUsedError;
+  bool? get isSuperAdmin => throw _privateConstructorUsedError;
   @override
-  String? get isVerified => throw _privateConstructorUsedError;
+  bool? get isVerified => throw _privateConstructorUsedError;
   @override
   dynamic get hospitalId => throw _privateConstructorUsedError;
   @override

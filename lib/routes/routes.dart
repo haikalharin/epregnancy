@@ -46,7 +46,9 @@ class Routes {
       case RouteName.articleDetailPage:
         return MaterialPageRoute(builder: (_) => ArticleDetailPage());
       case RouteName.chatPage:
-        return MaterialPageRoute(builder: (_) => ChatPage());
+        return MaterialPageRoute(builder: (_) => ChatPage(
+          userId: getDataValue(settings.arguments),
+        ));
       case RouteName.navBar:
         return MaterialPageRoute(
             builder: (_) => NavbarPage(

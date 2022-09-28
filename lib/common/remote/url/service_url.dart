@@ -43,6 +43,7 @@ class ServiceUrl {
 
   //chat
   static String chat = 'chat';
+  static String sendChat = '$chat/send';
   static String latestChat =  '$chat/latest';
   static String chatList =  '$chat/list';
   static String personalChatRoom =  '$chat/personal/';

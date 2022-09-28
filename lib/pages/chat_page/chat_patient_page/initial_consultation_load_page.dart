@@ -31,29 +31,59 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
         print('state type : ${state.type}');
         if(state.type == 'fetch-active-chat-success'){
           List<ChatMessageEntity> chatMessageList = [];
-          state.chatPendingPatientResponse?.content?.forEach((element) {
-            chatMessageList.add(
-              ChatMessageEntity(
-                name: element.fromId,
-                message: element.message,
-                dateTime: element.createdDate,
-                mine: element.fromId == widget.userId ? true: false
-              )
-            );
-          });
-          print('chat lenght : ${chatMessageList.length}');
-          print('toname : ${state.chatPendingPatientResponse?.content?[0].hospital?.name}');
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
-            chatMessageList: chatMessageList,
-            toName: state.chatPendingPatientResponse?.content?[0].hospital?.name,
-            pendingChat: true,
-          ))).then((value) {
-            if(value != null){
-              Navigator.pop(context);
-            }
-          });
+          if(state.chatPendingPatientResponse?.content?.isNotEmpty ?? false){
+            state.chatPendingPatientResponse?.content?.forEach((element) {
+              chatMessageList.add(
+                  ChatMessageEntity(
+                      name: element.fromId,
+                      message: element.message,
+                      dateTime: element.createdDate,
+                      profileImage: element.fromId == widget.userId ? element.from?.imageUrl : element.hospital?.imageUrl,
+                      mine: element.fromId == widget.userId ? true: false
+                  )
+              );
+            });
+            print('pending chat length : ${chatMessageList.length}');
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
+              fromId: state.chatPendingPatientResponse?.content?[0].fromId,
+              toId: state.chatPendingPatientResponse?.content?[0].hospital?.id,
+              toImageUrl: state.chatPendingPatientResponse?.content?[0].hospital?.imageUrl,
+              chatMessageList: chatMessageList,
+              toName: state.chatPendingPatientResponse?.content?[0].hospital?.name,
+              pendingChat:  true,
+            ))).then((value) {
+              if(value != null){
+                Navigator.pop(context, 'back');
+              }
+            });
+          } else {
+            state.listPersonalChatRoom?.forEach((element) {
+              chatMessageList.add(
+                  ChatMessageEntity(
+                      name: element.fromId,
+                      message: element.message,
+                      dateTime: element.createdDate,
+                      profileImage: element.fromId == widget.userId ? element.from?.imageUrl : element.to?.imageUrl,
+                      mine: element.fromId == widget.userId ? true: false
+                  )
+              );
+            });
+            print('ongoing chat length : ${chatMessageList.length}');
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
+              fromId: state.listChatOngoing?[0].fromId,
+              toId: state.listChatOngoing?[0].toId,
+              toImageUrl: state.listChatOngoing?[0].to?.imageUrl,
+              chatMessageList: chatMessageList,
+              toName: state.listChatOngoing?[0].to?.name,
+              pendingChat:  false,
+            ))).then((value) {
+              if(value != null){
+                Navigator.pop(context, 'back');
+              }
+            });
+          }
         } else if (state.type == 'fetch-active-chat-failed' && state.status != FormzStatus.submissionInProgress) {
-          Navigator.pushNamed(context, RouteName.chatPage).then((value) {
+          Navigator.pushNamed(context, RouteName.chatPage, arguments: widget.userId).then((value) {
             print('with data from chat page');
             if(value != null){
               Navigator.pop(context);
