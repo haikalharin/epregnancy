@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:flutter/foundation.dart';
@@ -26,6 +27,8 @@ class AppSharedPreference {
   static const String otp = "otp";
   static const String bmSignature = "bm_signature";
   static const String checkIn = "checkin";
+  static const String hospital = "hospital";
+  static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
 
   static clear() async {
@@ -48,12 +51,35 @@ class AppSharedPreference {
     prefs.setString(key, value);
   }
 
+  static Future<bool?> getBool(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(key);
+  }
+
+  static setBool(String key, bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
+
 
 
   static setUserInfo(UserInfo data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(checkIn, json);
+  }
+
+  static setHospital(HospitalModel data) async {
+    String json = jsonEncode(data.toJson());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(hospital, json);
+  }
+
+  static Future<HospitalModel> getHospital() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(hospital);
+    Map<String, dynamic> map = jsonDecode(json!);
+    return HospitalModel.fromJson(map);
   }
 
   static Future<UserInfo> getUserInfo() async {

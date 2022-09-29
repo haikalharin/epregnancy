@@ -13,14 +13,18 @@ import 'package:formz/formz.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:toast/toast.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../data/firebase/event/event_user.dart';
 import '../../data/firebase/g_authentication.dart';
+import '../../data/model/hospital_model/hospital_model.dart';
+import '../../data/model/user_model_api/user_model.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
+import '../chat_page/chat_patient_page/initial_consultation_load_page.dart';
 import '../chat_page/chat_room.dart';
 import '../chat_page/event/event_chat_room.dart';
 import '../home_page/list_event.dart';
@@ -28,12 +32,12 @@ import 'bloc/consultation_page_bloc.dart';
 import 'list_forum.dart';
 
 class ConsultationPage extends StatefulWidget {
-  const ConsultationPage({Key? key}) : super(key: key);
+  const ConsultationPage({Key? key, this.role}) : super(key: key);
+  final String? role;
 
   @override
   State<ConsultationPage> createState() => _ConsultationPageState();
 }
-
 
 class _ConsultationPageState extends State<ConsultationPage> {
   UserModelFirebase user = UserModelFirebase.empty();
@@ -41,6 +45,8 @@ class _ConsultationPageState extends State<ConsultationPage> {
   String? imagePath = "";
   final _controller = TextEditingController();
   final PublishSubject<bool> _psLikesCount = PublishSubject();
+  HospitalModel? _hospitalModel;
+  String? _userId;
 
   void onRefresh() async {
     Injector.resolve<ConsultationPageBloc>()
@@ -57,9 +63,29 @@ class _ConsultationPageState extends State<ConsultationPage> {
     _controller.clear();
   }
 
+  void getHospitalFromLocal() async {
+    HospitalModel _hospital = await AppSharedPreference.getHospital();
+    if (_hospital != null && mounted) {
+      setState(() {
+        _hospitalModel = _hospital;
+      });
+    }
+  }
+
+  void getUserId() async {
+    UserModel _userModel = await AppSharedPreference.getUser();
+    if (_userModel != null && mounted) {
+      setState(() {
+        _userId = _userModel.id;
+      });
+    }
+  }
+
   @override
   void initState() {
     onRefresh();
+    getHospitalFromLocal();
+    getUserId();
     super.initState();
   }
 
@@ -80,7 +106,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                 content: Text("Gagal posting"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            if(state.type == 'update') {
+            if (state.type == 'update') {
               const snackBar = SnackBar(
                   content: Text("Berhasil"),
                   backgroundColor: EpregnancyColors.primer);
@@ -107,123 +133,102 @@ class _ConsultationPageState extends State<ConsultationPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(
-                                      top: 40, left: 20, right: 20, bottom: 20),
-                                  child: Text("Konsultasi",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                ),
+                                    margin: EdgeInsets.only(
+                                        top: 40,
+                                        left: 20,
+                                        right: 20,
+                                        bottom: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Konsultasi",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold)),
+                                        InkWell(
+                                            onTap: () {
+                                              Toast.show(
+                                                  'Archive Consultation Under Construction..');
+                                            },
+                                            child: SvgPicture.asset(
+                                                'assets/icArchive.svg'))
+                                      ],
+                                    )),
                                 Container(
+                                  width: MediaQuery.of(context).size.width,
                                   margin: EdgeInsets.only(
                                       bottom: 10, right: 20, left: 20),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: EpregnancyColors.primer,
+                                      Expanded(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: EpregnancyColors.primer,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                        child: FlatButton(
-                                          minWidth: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              4,
-                                          padding: EdgeInsets.only(
-                                              top: 20,
-                                              bottom: 20,
-                                              right: 10,
-                                              left: 10),
-                                          onPressed: () async {
-                                            UserModelFirebase myData =
-                                                await AppSharedPreference
-                                                    .getUserFirebase();
-                                            bool isSenderRoomExist = false;
-                                            bool isSenderAchiveExist =
-                                                await EventChatRoom
-                                                    .checkArchiveIsExist(
-                                              myUid: myData.uid,
-                                            );
-                                            RoomModel roomModel =
-                                                await EventChatRoom
-                                                    .checkMessageNow(
-                                              myUid: myData.uid,
-                                            );
-
-                                            if (roomModel.uid!.isNotEmpty) {
-                                              isSenderRoomExist =
-                                                  await EventChatRoom
-                                                      .checkRoomIsExist(
-                                                isSender: true,
-                                                myUid: myData.uid,
-                                                personUid: roomModel.uid,
-                                              );
-                                              if (isSenderRoomExist &&
-                                                  !isSenderAchiveExist) {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ChatRoom(
-                                                                arguments: {
-                                                                  'room':
-                                                                      roomModel
-                                                                })));
-                                              } else if (isSenderRoomExist &&
-                                                  isSenderAchiveExist) {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Dashboard()));
+                                          child: FlatButton(
+                                            minWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                4,
+                                            padding: EdgeInsets.only(
+                                                top: 20,
+                                                bottom: 20,
+                                                right: 10,
+                                                left: 10),
+                                            onPressed: () async {
+                                              // new method for hubungi profesional
+                                              if(_hospitalModel == null){
+                                                Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                                  if(value != null){
+                                                    setState(() {
+                                                      _hospitalModel = value as HospitalModel?;
+                                                    });
+                                                  }
+                                                });
                                               } else {
-                                                Navigator.of(context).pushNamed(
-                                                    RouteName.chatPage);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                         InitialConsultationLoadPage(userId: _userId??'',)));
                                               }
-                                            } else if (!isSenderRoomExist &&
-                                                isSenderAchiveExist) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Dashboard()));
-                                            } else {
-                                              Navigator.of(context).pushNamed(
-                                                  RouteName.chatPage);
-                                            }
-                                          },
-                                          child: Container(
-                                            child: Row(
-                                              children: [
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Image.asset(
-                                                    'assets/icon-hubungi-profesional.png',
-                                                    height: 25),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                rolesModel.role == "PATIENT"
-                                                    ? const Text(
-                                                        "Hubungi profesional",
-                                                        style: TextStyle(
-                                                            fontSize: 12),
-                                                      )
-                                                    : const Text(
-                                                        "Cek Konsultasi",
-                                                        style: TextStyle(
-                                                            fontSize: 12),
-                                                      ),
-                                                SizedBox(
-                                                  width: 5,
-                                                )
-                                              ],
+                                            },
+                                            child: Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Image.asset(
+                                                      'assets/icon-hubungi-profesional.png',
+                                                      height: 25),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  widget.role == "PATIENT"
+                                                      ? Text(
+                                                          "Hubungi profesional",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        )
+                                                      : Text(
+                                                          "Cek Konsultasi",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -388,10 +393,11 @@ class _ConsultationPageState extends State<ConsultationPage> {
                         )),
                     Expanded(
                         child: ListForumWidget(
-                            tipeAcara: 'Acara umum',
-                            listConsul:
-                                state.listConsultation?.reversed.toList() ??
-                                    [],psLikesCount: _psLikesCount,)),
+                      tipeAcara: 'Acara umum',
+                      listConsul:
+                          state.listConsultation?.reversed.toList() ?? [],
+                      psLikesCount: _psLikesCount,
+                    )),
                   ],
                 ),
                 _Loading()
@@ -508,13 +514,12 @@ class _ConsultationPageState extends State<ConsultationPage> {
           );
         });
   }
-
-
 }
 
 class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
         builder: (context, state) {
       if (state.submitStatus == FormzStatus.submissionInProgress &&
@@ -554,4 +559,3 @@ showAlertDialog(BuildContext context) {
     },
   );
 }
-

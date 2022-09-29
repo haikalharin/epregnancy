@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/consultation_page_bloc.dart';
+import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
+import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
 import 'package:PregnancyApp/pages/email_verification_page/email_verification_page.dart';
 import 'package:PregnancyApp/pages/event_page/add_event_page.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
@@ -12,6 +14,8 @@ import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/bloc/landing_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/landing_page.dart';
+import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
+import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
@@ -114,8 +118,14 @@ class MyApp extends StatelessWidget {
             create: (context) => Injector.container.resolve<OtpPageBloc>()),
         BlocProvider<LandingPageBloc>(
             create: (context) => Injector.container.resolve<LandingPageBloc>()),
-    BlocProvider<ConsultationPageBloc>(
-        create: (context) => Injector.container.resolve<ConsultationPageBloc>()),
+        BlocProvider<ChatBloc>(
+            create: (context) => Injector.container.resolve<ChatBloc>()),
+        BlocProvider<ConsultationPageBloc>(
+            create: (context) =>
+                Injector.container.resolve<ConsultationPageBloc>()),
+        BlocProvider<HospitalBloc>(
+            create: (context) =>
+                Injector.container.resolve<HospitalBloc>()),
       ];
 }
 

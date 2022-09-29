@@ -141,7 +141,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      ResponseModel response = await userRepository.login(LoginModel(
+      // temporary
+      ResponseModel response = await userRepository.loginNonOtp(LoginModel(
           username: state.username.value, password: state.password.value));
       UserModel userModel = response.data ?? const UserModel() ;
 

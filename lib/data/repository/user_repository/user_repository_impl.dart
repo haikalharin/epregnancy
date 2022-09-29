@@ -162,4 +162,13 @@ class UserRepositoryImpl extends UserRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel> loginNonOtp(LoginModel loginModel) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.login(loginModel);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
 }
