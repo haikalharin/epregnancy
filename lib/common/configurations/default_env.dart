@@ -6,6 +6,7 @@ class DefaultConfig {
   static const consumerKey = '';
   static const consumerSecret = '';
   static const wpUrl = '';
+  static const mode = 'prod';
 }
 
 enum HttpClientEnum { http, dio, retrofit }

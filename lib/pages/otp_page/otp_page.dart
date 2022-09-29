@@ -43,25 +43,9 @@ class _OtpPageState extends State<OtpPage> {
                   content: Text("failed"), backgroundColor: Colors.red);
               Scaffold.of(context).showSnackBar(snackBar);
             } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-              print('isPatient : ${state.userInfo?.isPatient}');
-              if (state.userInfo?.isPatient == true || state.userInfo?.isMidwife == false) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  RouteName.navBar,
-                  (Route<dynamic> route) => false,
-                  arguments: {
-                    'role': state.userInfo?.isMidwife == true
-                        ? StringConstant.midwife :StringConstant.patient,
-                    'initial_index': 0,
-                    'user_id':state.userInfo?.id ??''
-                  },
-                );
-              } else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  RouteName.dashboardNakesPage,
-                  (Route<dynamic> route) => false,
-                    arguments:  state.userInfo?.name
-                );
-              }
+                Navigator.of(context)
+                    .pushNamed(RouteName.signUpQuestionnairePage);
+
             }
           },
           child: SafeArea(

@@ -154,6 +154,13 @@ class UserRepositoryImpl extends UserRepository {
     }
     throw NetworkConnectionException();
   }
+  @override
+  Future<ResponseModel<UserModel>> checkUserExist(String user) async {
+    if(await networkInfo.isConnected){
+      return remoteDatasource.checkUserExist(user);
+    }
+    throw NetworkConnectionException();
+  }
 
   @override
   Future<ResponseModel> loginNonOtp(LoginModel loginModel) async {
