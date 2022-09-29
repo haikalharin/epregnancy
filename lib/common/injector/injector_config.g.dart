@@ -29,6 +29,9 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton(
           (c) => ConsultationPageBloc(c<ConsultationRepository>()))
       ..registerSingleton((c) => ChangePasswordBloc(c<UserRepository>()));
+          (c) => ConsultationPageBloc(c<ConsultationRepository>()))
+      ..registerSingleton((c) => ChatBloc(c<ChatRepository>()))
+      ..registerSingleton((c) => HospitalBloc(c<HospitalRepository>()));
   }
 
   @override
@@ -41,11 +44,15 @@ class _$InjectorConfig extends InjectorConfig {
           HomeRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<ArticleRepository>((c) =>
           ArticleRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
+      ..registerFactory<ChatRepository>((c) =>
+          ChatRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<EventRepository>((c) =>
           EventRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<ConsultationRepository>((c) =>
           ConsultationRepositoryImpl(
-              c<NetworkInfoImpl>(), c<RemoteDataSource>()));
+              c<NetworkInfoImpl>(), c<RemoteDataSource>()))
+      ..registerFactory<HospitalRepository>((c) =>
+          HospitalRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
   }
 
   @override

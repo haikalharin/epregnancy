@@ -36,12 +36,18 @@ class StringConstant {
   static const point = 'Poin';
   static const claimPoint = 'Klaim Poin';
 
+
+  //chat
   static const baru = 'Baru';
+  static const pending = 'Pending';
+  static const archive = 'Arsip';
   static const onGoing = 'Sedang Berlangsung';
   static const consultation = 'Konsultasi';
   static const newestIncomingMessage = 'Chat yang baru masuk';
   static const seeAllConsulation = 'Lihat Semua Konsulatasi';
   static const topic = 'Topik';
+
+  //article
   static const publishedArticle = 'Artikel yang diterbitkan';
   static const otherArticle = 'Artikel lainnya';
   static const noConsultationYet = 'Belum ada perminataan\nkonsultasi';
@@ -59,6 +65,9 @@ class StringConstant {
   static const playGamesDesc = 'Mainkan game dan kumpulkan';
   static const playGameDescCon = 'ketika bermain';
   static const playNow = 'Mainkan Sekarang';
+
+  //websocket
+  static const updateLatestChat = 'update-latest-chat';
 
 
 }

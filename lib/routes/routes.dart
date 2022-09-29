@@ -6,6 +6,7 @@ import 'package:PregnancyApp/pages/chat_page/dashboard_midwife.dart';
 import 'package:PregnancyApp/pages/event_page/add_event_page.dart';
 import 'package:PregnancyApp/pages/event_page/choose_type_event_page.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
+import 'package:PregnancyApp/pages/location_select_page/location_select_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/dashboard_nakes_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
@@ -39,7 +40,7 @@ class Routes {
       case RouteName.login:
         return MaterialPageRoute(builder: (_) => LoginPage());
       case RouteName.homeScreen:
-        return MaterialPageRoute(builder: (_) => HomePage());
+        return MaterialPageRoute(builder: (_) => HomePage(userId: getDataValue(settings.arguments),));
       case RouteName.surveyPage:
         return MaterialPageRoute(builder: (_) => SurveyPage());
       case RouteName.surveyPageBaby:
@@ -47,15 +48,20 @@ class Routes {
       case RouteName.articleDetailPage:
         return MaterialPageRoute(builder: (_) => ArticleDetailPage());
       case RouteName.chatPage:
-        return MaterialPageRoute(builder: (_) => ChatPage());
+        return MaterialPageRoute(builder: (_) => ChatPage(
+          userId: getDataValue(settings.arguments),
+        ));
       case RouteName.navBar:
         return MaterialPageRoute(
             builder: (_) => NavbarPage(
                   role: getRoleArgument(settings.arguments),
                   initalIndex: getInitialIndex(settings.arguments),
+                  userId: getUserId(settings.arguments),
                 ));
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());
+      case RouteName.locationSelect:
+        return MaterialPageRoute(builder: (_) => LocationSelectPage());
       case RouteName.dashboardMidwife:
         return MaterialPageRoute(builder: (_) => DashboardMidwife());
       case RouteName.dashboardArticle:

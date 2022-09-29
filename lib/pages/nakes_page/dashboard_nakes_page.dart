@@ -95,18 +95,18 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: const ChatPlaceHolderWidget(),
+                    child: ChatPlaceHolderWidget( unread: false,),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: const ChatPlaceHolderWidget(),
+                    child: ChatPlaceHolderWidget(unread: true,),
                   ),
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: (){
-                        Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': state.role??'', 'initial_index': 0});
+                        Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': state.role??'', 'initial_index': 0, 'user_id':state.user?.id ??''});
                       },
                       child: Center(
                         child: Text(StringConstant.seeAllConsulation, style: TextStyle(color: EpregnancyColors.greyDarkFontColor),),

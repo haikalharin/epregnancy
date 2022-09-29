@@ -1,6 +1,17 @@
+import 'package:PregnancyApp/data/model/chat_model/chat_list_response.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_response.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
+import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
+import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -274,5 +285,71 @@ class RemoteDataSource {
     final response = await httpClient.post(ServiceUrl.changePassword, data);
 
     return ResponseModel.fromJson(response, ConsultationModel.fromJson);
+  }
+
+  Future<List<ChatResponse>> fetchLatestChat() async {
+    final response = await httpClient.get(ServiceUrl.latestChat);
+    final data = <ChatResponse>[];
+    getData(response).forEach((item) {
+      data.add(ChatResponse.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<List<ChatResponse>> fetchPersonalChatRoom(String id) async {
+    final response = await httpClient.get(ServiceUrl.personalChatRoom + id);
+    final data = <ChatResponse>[];
+    getData(response).forEach((item) {
+      data.add(ChatResponse.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<List<ChatPendingResponseList>> fetchChatPendingList() async {
+    final response = await httpClient.get(ServiceUrl.chatPendingList);
+    final data = <ChatPendingResponseList>[];
+    getData(response).forEach((item) {
+      data.add(ChatPendingResponseList.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<ResponseModel<ChatPendingSendResponse>> chatPendingSend(ChatPendingSendRequest _requestBody) async {
+    final response = await httpClient.post(ServiceUrl.chatPendingSend, _requestBody.toJson());
+
+//    return null;
+    return ResponseModel<ChatPendingSendResponse>.fromJson(response, ChatPendingSendResponse.fromJson);
+  }
+
+  Future<ResponseModel<ChatResponse>> chatSend(ChatSendRequest _requestBody) async {
+    final response = await httpClient.post(ServiceUrl.sendChat, _requestBody.toJson());
+
+//    return null;
+    return ResponseModel<ChatResponse>.fromJson(response, ChatResponse.fromJson);
+  }
+
+  Future<List<ChatListResponse>> fetchChatListResponse(String fromId) async {
+    final response = await httpClient.get(ServiceUrl.chatList, queryParameters: {'from_id': fromId});
+    final data = <ChatListResponse>[];
+    getData(response).forEach((item) {
+      data.add(ChatListResponse.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<ResponseModel<ChatPendingPatientResponse>> fetchChatPendingPatient(String fromId, String hospitalId) async {
+    final response = await httpClient.get(ServiceUrl.chatPendingPatient, queryParameters: {'from_id': fromId, 'hospital_id': hospitalId});
+
+//    return null;
+    return ResponseModel<ChatPendingPatientResponse>.fromJson(response, ChatPendingPatientResponse.fromJson);
+  }
+
+  Future<List<HospitalModel>> fetchHospitals(String name) async {
+    final response = await httpClient.get(ServiceUrl.hospitalList, queryParameters: {'name': name});
+    final data = <HospitalModel>[];
+    getData(response).forEach((item) {
+      data.add(HospitalModel.fromJson(item));
+    });
+    return data;
   }
 }

@@ -23,6 +23,7 @@ class ConsultationContainer extends StatelessWidget {
       child: InkWell(
         onTap: (){
           if(consultationEnum == ConsultationEnum.newest) {
+            // todo handle web socket for chat
             Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': role, 'initial_index': 0});
           } else {
             Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': role, 'initial_index': 1});

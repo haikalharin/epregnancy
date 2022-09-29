@@ -32,18 +32,19 @@ class SplashscreenBloc extends Bloc<SplashscreenEvent, SplashscreenState> {
       SplashscreenState state,
       ) async* {
 
-    final  UserModel = await AppSharedPreference.getUser();
+    final  UserModel userModel = await AppSharedPreference.getUser();
     final String? installDate = await AppSharedPreference.getString(AppConstants.installDateKey);
     installDate == null ? await AppSharedPreference.setString(AppConstants.installDateKey, DateFormatter.dateFormatForCheckinFilter.format(DateTime.now())): null;
     await Future.delayed(      const Duration(seconds: 2));
-      if(UserModel.id != null){
+      if(userModel.id != null){
         String? role = '' ;
-        if(UserModel.isMidwife == true){
+        if(userModel.isMidwife == true){
           role = StringConstant.midwife;
         } else{
           role = StringConstant.patient;
         }
         yield state.copyWith(
+            userModel: userModel,
             submitStatus: FormzStatus.submissionSuccess,
             isExist: true,
             role: role);

@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard_midwife.dart';
 import 'package:PregnancyApp/pages/consultation_page/consultation_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
@@ -22,7 +23,8 @@ bool isChangeIndex = false;
 class NavbarPage extends StatefulWidget {
   String? role = StringConstant.patient;
   final int? initalIndex;
-  NavbarPage({Key? key, this.role, this.initalIndex}) : super(key: key);
+  final String? userId;
+  NavbarPage({Key? key, this.role, this.initalIndex, this.userId}) : super(key: key);
 
   // final UserModel bottomUserModelData;
 
@@ -34,11 +36,9 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
   TabController? controller;
   int indexSelected = 0;
 
-
-
-
   @override
   Widget build(BuildContext context) {
+    print('role nav bar : ${widget.role}');
     if (indexSelected != indexBottomNavSelected && isChangeIndex) {
       setState(() {
         indexSelected = indexBottomNavSelected;
@@ -201,10 +201,10 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
   Widget _buildWidgetBody() {
     switch (indexSelected) {
       case 0:
-        return HomePage();
+        return HomePage(userId: widget.userId);
       case 1:
         // return AddEventPage();
-        return ConsultationPage();
+        return ConsultationPage(role: widget.role,);
 
       case 2:
         return ProfileUserPage();

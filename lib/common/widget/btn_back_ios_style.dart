@@ -8,7 +8,7 @@ class BtnBackIosStyle extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.arrow_back_ios, color: Colors.black,),
       onPressed: (){
-        Navigator.pop(context);
+        Navigator.pop(context, 'back');
       },
     );
   }

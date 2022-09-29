@@ -42,4 +42,20 @@ class ServiceUrl {
   //game
   static String game = 'game';
   static String gameList = '$game/list';
+
+  //chat
+  static String chat = 'chat';
+  static String sendChat = '$chat/send';
+  static String latestChat =  '$chat/latest';
+  static String chatList =  '$chat/list';
+  static String personalChatRoom =  '$chat/personal/';
+  static String chatPending = 'chat-pending';
+  static String chatPendingPatient = '$chatPending/page/1';
+  static String chatPendingList = '$chatPending/list';
+  static String chatPendingSend = '$chatPending/send';
+
+  //hospital
+  static String hospital = 'hospital';
+  static String hospitalList = '$hospital/list';
+
 }

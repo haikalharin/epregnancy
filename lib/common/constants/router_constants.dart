@@ -34,4 +34,5 @@ class RouteName {
   static const gamesPage = '/gamesPage';
   static const webViewPage = '/webViewPage';
   static const changePasswordPage = '/changePasswordPage';
+  static const locationSelect = '/locationSelect';
 }
