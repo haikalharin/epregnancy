@@ -30,6 +30,8 @@ class RouteName {
   static const signUpQuestionnairePage = '/signUpQuestionnairePage';
   static const dashboardNakesPage = '/dashboardNakesPage';
   static const profileNakesPage = '/profileNakesPage';
+  static const profileUserPage = '/profileUserPage';
   static const gamesPage = '/gamesPage';
   static const webViewPage = '/webViewPage';
+  static const changePasswordPage = '/changePasswordPage';
 }

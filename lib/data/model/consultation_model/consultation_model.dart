@@ -75,13 +75,36 @@ abstract class User with _$User {
     @JsonKey(name: 'is_super_admin',includeIfNull: true) bool? isSuperAdmin,
     @JsonKey(name: 'is_verified',includeIfNull: true) bool? isVerified,
     @JsonKey(name: 'hospital_id',includeIfNull: true) String? hospitalId,
-    @JsonKey(includeIfNull: true) String? hospital,
+    @JsonKey(includeIfNull: true) Hospital? hospital,
     @JsonKey(name: 'image_url',includeIfNull: true) String? imageUrl,
     dynamic coverUrl,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
+
+@freezed
+abstract class Hospital with _$Hospital {
+  const factory Hospital({
+    @JsonKey(includeIfNull: true) String? id,
+    @JsonKey(includeIfNull: true)String? alias,
+    @JsonKey(includeIfNull: true)String?name,
+    @JsonKey(includeIfNull: true)String? address,
+    @JsonKey(includeIfNull: true)String? city,
+    @JsonKey(includeIfNull: true)String? country,
+    @JsonKey(name: 'postal_code',includeIfNull: true)String? postalCode,
+    @JsonKey(includeIfNull: true)String? phone,
+    @JsonKey(includeIfNull: true)String? email,
+    @JsonKey(includeIfNull: true)double? latitude,
+    @JsonKey(includeIfNull: true)double? longitude,
+    @JsonKey(includeIfNull: true)String? status,
+    @JsonKey(name: 'image_url',includeIfNull: true)String? imageUrl,
+    @JsonKey(name: 'cover_url',includeIfNull: true) String? coverUrl,
+  }) = _Hospital;
+
+  factory Hospital.fromJson(Map<String, dynamic> json) => _$HospitalFromJson(json);
+}
+
 
 @freezed
 abstract class Like with _$Like {

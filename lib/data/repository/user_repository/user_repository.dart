@@ -24,6 +24,7 @@ abstract class UserRepository {
   Future <ResponseModel>getBaby(UserModel UserModel);
   Future <ResponseModel>requestOtp(OtpModel otpModel);
   Future <ResponseModel>loginOtp(OtpModel otpModel);
+  Future <ResponseModel>changePassword(String currentPassword, String newPassword);
 
 
   Future loginWithGoogle();

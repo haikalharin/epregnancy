@@ -265,4 +265,14 @@ class RemoteDataSource {
     });
     return data;
   }
+
+  Future<ResponseModel> changePassword(String currentPassword, String newPassword) async {
+    Map<String, String> data =  {
+      'old_password': currentPassword,
+      'new_password': newPassword
+    };
+    final response = await httpClient.post(ServiceUrl.changePassword, data);
+
+    return ResponseModel.fromJson(response, ConsultationModel.fromJson);
+  }
 }
