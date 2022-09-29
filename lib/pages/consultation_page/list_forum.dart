@@ -99,7 +99,12 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.start,
                                       children: [
-                                        Container(
+                                        widget
+                                            .listConsul[
+                                        index]
+                                            .user
+                                            ?.imageUrl !=
+                                            null?  Container(
                                           // width: 62,
 
                                           child: ClipRRect(
@@ -107,12 +112,28 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                             BorderRadius.circular(40),
                                             child: FadeInImage(
                                               placeholder: AssetImage(
-                                                  'assets/photo_dummy.png'),
+                                                  'assets/ic_no_photo.png'),
                                               image: NetworkImage(widget
                                                   .listConsul[index]
                                                   .user
                                                   ?.imageUrl ??
                                                   ""),
+                                              width: 40,
+                                              height: 40,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ):Container(
+                                          // width: 62,
+
+                                          child: ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(40),
+                                            child: const FadeInImage(
+                                              placeholder: AssetImage(
+                                                  'assets/ic_no_photo.png'),
+                                              image: AssetImage(
+                                                  'assets/ic_no_photo.png'),
                                               width: 40,
                                               height: 40,
                                               fit: BoxFit.cover,
@@ -166,7 +187,7 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                 ],
                               ),
                             ),
-                            widget.listConsul[index].imageUrl != null
+                            widget.listConsul[index].imageUrl != null &&  widget.listConsul[index].imageUrl != ""
                                 ? ClipRRect(
                               child: FadeInImage(
                                 placeholder: AssetImage(
