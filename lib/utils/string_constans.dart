@@ -44,7 +44,7 @@ class StringConstant {
   static const onGoing = 'Sedang Berlangsung';
   static const consultation = 'Konsultasi';
   static const newestIncomingMessage = 'Chat yang baru masuk';
-  static const seeAllConsulation = 'Lihat Semua Konsulatasi';
+  static const seeAllConsulation = 'Lihat Semua Konsultasi';
   static const topic = 'Topik';
 
   //article
@@ -67,6 +67,7 @@ class StringConstant {
 
   //websocket
   static const updateLatestChat = 'update-latest-chat';
+  static const newChat = 'new-chat';
 
 
 }

@@ -82,9 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                           RouteName.dashboardNakesPage,
                               (Route<dynamic> route) => false,
-                          arguments:  state.userModel?.isPatient == true
-                              ? StringConstant.patient
-                              : StringConstant.midwife,
+                          arguments:  {'name': state.userModel?.name, 'hospital_id': state.userModel?.hospitalId}
                         );
                       }
 

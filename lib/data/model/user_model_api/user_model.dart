@@ -2,6 +2,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
 
+import '../hospital_model/hospital_model.dart';
+
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
@@ -38,6 +40,9 @@ abstract class UserModel with _$UserModel {
     int? totalpointsRedeemed,
     @JsonKey(name:'image_url',includeIfNull: true)
     String? imageUrl,
+    @JsonKey(name: 'hospital_id', includeIfNull: false)
+    String? hospitalId,
+    HospitalModel? hospitalModel,
     @JsonKey(name:'cover_url',includeIfNull: true)
     dynamic coverUrl,
     @JsonKey(name:'is_verified',includeIfNull: true)

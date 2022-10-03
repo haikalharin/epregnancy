@@ -41,6 +41,7 @@ class ConsultationContainer extends StatelessWidget {
             children: [
               Expanded(child: Text(consultationEnum == ConsultationEnum.newest ? StringConstant.baru : StringConstant.onGoing, style: TextStyle(color: EpregnancyColors.blackBack, fontWeight: FontWeight.w500, fontSize: 10.sp, height: 1.5),)),
               Expanded(child: Container(
+                margin: EdgeInsets.only(left: 20.w),
                 height: 32.h,
                 width: 32.w,
                 decoration: consultationEnum == ConsultationEnum.newest ? const BoxDecoration(

@@ -37,7 +37,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
           if(state.role == 'MIDWIFE' || state.userModel?.isPatient == false){
             Navigator.of(context).pushReplacementNamed(
                 RouteName.dashboardNakesPage,
-                arguments: state.userModel?.name
+                arguments: {'name': state.userModel?.name, 'hospital_id': state.userModel?.hospitalId}
             );
           } else {
             Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: {'role': state.role, 'inital_index': 0, 'user_id':state.userModel?.id ??''});

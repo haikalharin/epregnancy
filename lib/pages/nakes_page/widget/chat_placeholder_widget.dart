@@ -24,11 +24,11 @@ class ChatPlaceHolderWidget extends StatelessWidget {
             ),
             child: Image.asset('assets/dummies/dummy_avatar.png'),
           ),
-          title: Text(name ?? 'Celine Dion', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 12.sp),),
+          title: Text(name ?? '', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 12.sp),),
           subtitle: Row(children: [
             SvgPicture.asset('assets/icMom.svg'),
             SizedBox(width: 10.w,),
-            Text(message ?? 'Ibu dengan anak', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.w500),)
+            Text('Ibu Hamil', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.w500),)
           ],
           ),
           trailing: !unread ? Container(
@@ -52,7 +52,7 @@ class ChatPlaceHolderWidget extends StatelessWidget {
                   child: Text(StringConstant.topic, style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.w500),)),
               Expanded(
                   flex: 6,
-                  child: Text('Pantangan, saran, atau mitos tentang kehamilan', style: TextStyle(color: EpregnancyColors.primer, fontSize: 10.sp, fontWeight: FontWeight.w500),)),
+                  child: Text(message ?? 'Pantangan, saran, atau mitos tentang kehamilan', style: TextStyle(color: EpregnancyColors.primer, fontSize: 10.sp, fontWeight: FontWeight.w500),)),
 
             ],
           ),

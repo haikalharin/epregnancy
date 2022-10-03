@@ -73,4 +73,20 @@ class ChatRepositoryImpl extends ChatRepository {
     }
     throw NetworkConnectionException();
   }
+
+  @override
+  Future<List<ChatPendingResponseList>> fetchChatPendingListByHospitalId(String hospitalId) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchChatPendingByHospitalId(hospitalId);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<List<ChatResponse>> nakesRespondPendingChat(String fromId, String hospitalId) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.nakesResponseChatPending(fromId, hospitalId);
+    }
+    throw NetworkConnectionException();
+  }
 }

@@ -37,7 +37,6 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    print('role nav bar : ${widget.role}');
     if (indexSelected != indexBottomNavSelected && isChangeIndex) {
       setState(() {
         indexSelected = indexBottomNavSelected;

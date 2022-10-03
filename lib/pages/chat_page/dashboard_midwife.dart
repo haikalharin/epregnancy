@@ -5,6 +5,7 @@ import 'package:PregnancyApp/data/firebase/event/event_user.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/chat_page/empty_chat_list_page.dart';
 import 'package:PregnancyApp/pages/chat_page/list_chat_archive.dart';
+import 'package:PregnancyApp/pages/nakes_page/pending_chat_page.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import '../../data/firebase/g_authentication.dart';
 import '../../data/model/person_model/person_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/string_constans.dart';
+import '../nakes_page/ongoing_list_page.dart';
 import 'list_chat_room.dart';
 
 class DashboardMidwife extends StatefulWidget {
@@ -33,8 +35,8 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
   var _controllerPassword = TextEditingController();
 
   final List<Widget> _listFragment = [
-    const EmptyChatListPage(),
-    ListChatRoom(),
+    PendingChatTabPage(),
+    OngoingListPage(),
     ListChatArchive(),
   ];
 
