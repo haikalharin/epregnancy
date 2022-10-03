@@ -163,7 +163,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
         } else {
           // toId = toId;
           isPendingChat = false;
-          Toast.show('harap tekan kembali untuk merefresh percakapan');
+          // Toast.show('harap tekan kembali untuk merefresh percakapan');
         }
         print('ispending chat : $isPendingChat');
         log('websocket payload mentah : $d');
