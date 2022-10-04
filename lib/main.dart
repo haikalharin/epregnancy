@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
+import 'package:PregnancyApp/pages/change_password_page/bloc/change_password_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/consultation_page_bloc.dart';
 import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
 import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
@@ -120,6 +121,10 @@ class MyApp extends StatelessWidget {
             create: (context) => Injector.container.resolve<OtpPageBloc>()),
         BlocProvider<LandingPageBloc>(
             create: (context) => Injector.container.resolve<LandingPageBloc>()),
+    BlocProvider<ConsultationPageBloc>(
+        create: (context) => Injector.container.resolve<ConsultationPageBloc>()),
+    BlocProvider<ChangePasswordBloc>(
+        create: (context) => Injector.container.resolve<ChangePasswordBloc>()),
         BlocProvider<ChatBloc>(
             create: (context) => Injector.container.resolve<ChatBloc>()),
         BlocProvider<ConsultationPageBloc>(

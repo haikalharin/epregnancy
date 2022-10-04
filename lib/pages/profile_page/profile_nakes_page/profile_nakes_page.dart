@@ -63,8 +63,8 @@ class ProfileNakesPage extends StatelessWidget {
                 //
                 await GAuthentication.signOut(context: context);
                 await AppSharedPreference.clear();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    RouteName.login, (Route<dynamic> route) => false);
+                _showMyDialog(context);
+
               },
               child: Row(children: [
                 SvgPicture.asset('assets/icLogoutNakes.svg'),
@@ -77,4 +77,28 @@ class ProfileNakesPage extends StatelessWidget {
       ),
     );
   }
+  Future<bool?> _showMyDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Konfirmasi'),
+          content: Text('Apakah Anda Yakin Ingin Keluar?'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('Tidak'),
+            ),
+            FlatButton(
+              onPressed: () =>  Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteName.login, (Route<dynamic> route) => false),
+              child: Text('Ya'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

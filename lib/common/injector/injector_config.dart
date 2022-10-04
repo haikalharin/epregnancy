@@ -30,6 +30,7 @@ import '../../data/repository/consultation_repository/consultation_repository.da
 import '../../data/repository/consultation_repository/consultation_repository_impl.dart';
 import '../../data/repository/user_repository/user_repository.dart';
 import '../../data/repository/user_repository/user_repository_impl.dart';
+import '../../pages/change_password_page/bloc/change_password_bloc.dart';
 import '../../pages/consultation_page/bloc/consultation_page_bloc.dart';
 import '../../pages/login_page/bloc/login_bloc.dart';
 import '../../pages/signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
@@ -83,6 +84,7 @@ abstract class InjectorConfig {
   @Register.singleton(OtpPageBloc)
   @Register.singleton(LandingPageBloc)
   @Register.singleton(ConsultationPageBloc)
+  @Register.singleton(ChangePasswordBloc)
   @Register.singleton(ChatBloc)
   @Register.singleton(HospitalBloc)
   @Register.singleton(ChatPendingBloc)
