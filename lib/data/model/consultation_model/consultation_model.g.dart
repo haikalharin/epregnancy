@@ -94,7 +94,9 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       isSuperAdmin: json['is_super_admin'] as bool?,
       isVerified: json['is_verified'] as bool?,
       hospitalId: json['hospital_id'] as String?,
-      hospital: json['hospital'] as String?,
+      hospital: json['hospital'] == null
+          ? null
+          : Hospital.fromJson(json['hospital'] as Map<String, dynamic>),
       imageUrl: json['image_url'] as String?,
       coverUrl: json['coverUrl'],
     );
@@ -116,6 +118,41 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'hospital': instance.hospital,
       'image_url': instance.imageUrl,
       'coverUrl': instance.coverUrl,
+    };
+
+_$_Hospital _$$_HospitalFromJson(Map<String, dynamic> json) => _$_Hospital(
+      id: json['id'] as String?,
+      alias: json['alias'] as String?,
+      name: json['name'] as String?,
+      address: json['address'] as String?,
+      city: json['city'] as String?,
+      country: json['country'] as String?,
+      postalCode: json['postal_code'] as String?,
+      phone: json['phone'] as String?,
+      email: json['email'] as String?,
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
+      status: json['status'] as String?,
+      imageUrl: json['image_url'] as String?,
+      coverUrl: json['cover_url'] as String?,
+    );
+
+Map<String, dynamic> _$$_HospitalToJson(_$_Hospital instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'alias': instance.alias,
+      'name': instance.name,
+      'address': instance.address,
+      'city': instance.city,
+      'country': instance.country,
+      'postal_code': instance.postalCode,
+      'phone': instance.phone,
+      'email': instance.email,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'status': instance.status,
+      'image_url': instance.imageUrl,
+      'cover_url': instance.coverUrl,
     };
 
 _$_Like _$$_LikeFromJson(Map<String, dynamic> json) => _$_Like(

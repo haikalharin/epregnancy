@@ -163,6 +163,14 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
+  Future<ResponseModel> changePassword(String currentPassword, String newPassword) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.getUserInfo();
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
   Future<ResponseModel> loginNonOtp(LoginModel loginModel) async {
     if (await networkInfo.isConnected) {
       ResponseModel responseModel = await remoteDatasource.login(loginModel);

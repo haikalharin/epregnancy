@@ -14,6 +14,7 @@ import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/string_constans.dart';
 import '../event_page/add_event_page.dart';
 import '../home_page/logout_page.dart';
+import '../profile_page/profile_user_page/profile_user_page.dart';
 import '../survey_page/survey_page.dart';
 
 int indexBottomNavSelected = 0;
@@ -206,7 +207,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         return ConsultationPage(role: widget.role,);
 
       case 2:
-        return LogoutPage();
+        return ProfileUserPage();
       default:
         return Container();
     }

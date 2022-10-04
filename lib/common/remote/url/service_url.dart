@@ -17,6 +17,7 @@ class ServiceUrl {
   static String loginOtp = '$user/login-otp';
   static String requestOtp = '$user/request-otp';
   static String checkUserExist = '$user/check-availability/username';
+  static String changePassword = '$user/change-password';
 
   //baby
   static String baby = 'user-baby';

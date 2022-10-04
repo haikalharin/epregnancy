@@ -55,6 +55,7 @@ class StringConstant {
 
   //profile
   static const profileChange = 'Ganti Profil';
+  static const profilePregnantChange = 'Ganti Profil Kehamilan';
   static const passwordChange = 'Ganti Kata Sandi';
   static const logout = 'Keluar';
 

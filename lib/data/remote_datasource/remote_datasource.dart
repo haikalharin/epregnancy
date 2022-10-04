@@ -277,6 +277,16 @@ class RemoteDataSource {
     return data;
   }
 
+  Future<ResponseModel> changePassword(String currentPassword, String newPassword) async {
+    Map<String, String> data =  {
+      'old_password': currentPassword,
+      'new_password': newPassword
+    };
+    final response = await httpClient.post(ServiceUrl.changePassword, data);
+
+    return ResponseModel.fromJson(response, ConsultationModel.fromJson);
+  }
+
   Future<List<ChatResponse>> fetchLatestChat() async {
     final response = await httpClient.get(ServiceUrl.latestChat);
     final data = <ChatResponse>[];
