@@ -23,6 +23,7 @@ mixin _$ChatSendRequest {
   String? get fromId => throw _privateConstructorUsedError;
   String? get toId => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
+  String? get imageBase64 => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,8 @@ abstract class $ChatSendRequestCopyWith<$Res> {
   factory $ChatSendRequestCopyWith(
           ChatSendRequest value, $Res Function(ChatSendRequest) then) =
       _$ChatSendRequestCopyWithImpl<$Res>;
-  $Res call({String? fromId, String? toId, String? message});
+  $Res call(
+      {String? fromId, String? toId, String? message, String? imageBase64});
 }
 
 /// @nodoc
@@ -52,6 +54,7 @@ class _$ChatSendRequestCopyWithImpl<$Res>
     Object? fromId = freezed,
     Object? toId = freezed,
     Object? message = freezed,
+    Object? imageBase64 = freezed,
   }) {
     return _then(_value.copyWith(
       fromId: fromId == freezed
@@ -66,6 +69,10 @@ class _$ChatSendRequestCopyWithImpl<$Res>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageBase64: imageBase64 == freezed
+          ? _value.imageBase64
+          : imageBase64 // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -77,7 +84,8 @@ abstract class _$$_ChatSendRequestCopyWith<$Res>
           _$_ChatSendRequest value, $Res Function(_$_ChatSendRequest) then) =
       __$$_ChatSendRequestCopyWithImpl<$Res>;
   @override
-  $Res call({String? fromId, String? toId, String? message});
+  $Res call(
+      {String? fromId, String? toId, String? message, String? imageBase64});
 }
 
 /// @nodoc
@@ -96,6 +104,7 @@ class __$$_ChatSendRequestCopyWithImpl<$Res>
     Object? fromId = freezed,
     Object? toId = freezed,
     Object? message = freezed,
+    Object? imageBase64 = freezed,
   }) {
     return _then(_$_ChatSendRequest(
       fromId: fromId == freezed
@@ -110,6 +119,10 @@ class __$$_ChatSendRequestCopyWithImpl<$Res>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageBase64: imageBase64 == freezed
+          ? _value.imageBase64
+          : imageBase64 // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -121,7 +134,10 @@ class _$_ChatSendRequest
     with DiagnosticableTreeMixin
     implements _ChatSendRequest {
   const _$_ChatSendRequest(
-      {required this.fromId, required this.toId, required this.message});
+      {required this.fromId,
+      required this.toId,
+      required this.message,
+      this.imageBase64});
 
   factory _$_ChatSendRequest.fromJson(Map<String, dynamic> json) =>
       _$$_ChatSendRequestFromJson(json);
@@ -132,10 +148,12 @@ class _$_ChatSendRequest
   final String? toId;
   @override
   final String? message;
+  @override
+  final String? imageBase64;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ChatSendRequest(fromId: $fromId, toId: $toId, message: $message)';
+    return 'ChatSendRequest(fromId: $fromId, toId: $toId, message: $message, imageBase64: $imageBase64)';
   }
 
   @override
@@ -145,7 +163,8 @@ class _$_ChatSendRequest
       ..add(DiagnosticsProperty('type', 'ChatSendRequest'))
       ..add(DiagnosticsProperty('fromId', fromId))
       ..add(DiagnosticsProperty('toId', toId))
-      ..add(DiagnosticsProperty('message', message));
+      ..add(DiagnosticsProperty('message', message))
+      ..add(DiagnosticsProperty('imageBase64', imageBase64));
   }
 
   @override
@@ -155,7 +174,9 @@ class _$_ChatSendRequest
             other is _$_ChatSendRequest &&
             const DeepCollectionEquality().equals(other.fromId, fromId) &&
             const DeepCollectionEquality().equals(other.toId, toId) &&
-            const DeepCollectionEquality().equals(other.message, message));
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality()
+                .equals(other.imageBase64, imageBase64));
   }
 
   @JsonKey(ignore: true)
@@ -164,7 +185,8 @@ class _$_ChatSendRequest
       runtimeType,
       const DeepCollectionEquality().hash(fromId),
       const DeepCollectionEquality().hash(toId),
-      const DeepCollectionEquality().hash(message));
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(imageBase64));
 
   @JsonKey(ignore: true)
   @override
@@ -181,7 +203,8 @@ abstract class _ChatSendRequest implements ChatSendRequest {
   const factory _ChatSendRequest(
       {required final String? fromId,
       required final String? toId,
-      required final String? message}) = _$_ChatSendRequest;
+      required final String? message,
+      final String? imageBase64}) = _$_ChatSendRequest;
 
   factory _ChatSendRequest.fromJson(Map<String, dynamic> json) =
       _$_ChatSendRequest.fromJson;
@@ -192,6 +215,8 @@ abstract class _ChatSendRequest implements ChatSendRequest {
   String? get toId => throw _privateConstructorUsedError;
   @override
   String? get message => throw _privateConstructorUsedError;
+  @override
+  String? get imageBase64 => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ChatSendRequestCopyWith<_$_ChatSendRequest> get copyWith =>

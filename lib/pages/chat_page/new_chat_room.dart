@@ -18,12 +18,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gugor_emoji/emoji_picker_flutter.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../common/injector/injector.dart';
 import '../../data/model/chat_model/chat_pending_send_request.dart';
 import '../../env.dart';
+import '../../utils/function_utils.dart';
 import 'bloc/chat_bloc/chat_bloc.dart';
 
 class NewChatRoom extends StatefulWidget {
@@ -47,6 +50,9 @@ class _NewChatRoomState extends State<NewChatRoom> {
   FocusNode keyboardFocusNode = FocusNode();
   final TextEditingController _messageEditingController = TextEditingController();
 
+  String? imagePath;
+  String? imageBase64;
+
   bool mine = true;
   bool showEmoji = false;
   bool isPendingChat = false;
@@ -55,6 +61,121 @@ class _NewChatRoomState extends State<NewChatRoom> {
   late WebSocket _webSocket;
 
   List<ChatMessageEntity>? chatMessageList = [];
+
+  void _showPicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: [
+                  ListTile(
+                      leading: Icon(Icons.photo_library),
+                      title: Text('Photo Library'),
+                      onTap: () async {
+                        pickAndCropImageGallery();
+                        Navigator.pop(context);
+                      }),
+                  ListTile(
+                    leading: Icon(Icons.photo_camera),
+                    title: Text('Camera'),
+                    onTap: () async {
+                      pickAndCropImageCamera();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void pickAndCropImageGallery() async {
+    final pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      imageQuality: 25,
+    );
+    if (pickedFile != null) {
+      CroppedFile? croppedFile = await ImageCropper.platform
+          .cropImage(sourcePath: pickedFile.path, aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9,
+      ]);
+      if (croppedFile != null) {
+
+        // todo convert to base 64
+        print('cropped file : ${croppedFile.path}');
+        setState(() {
+          imagePath = croppedFile.path;
+          imageBase64 = convertImageToBase64(croppedFile.path);
+        });
+
+        chatMessageList?.add(
+            ChatMessageEntity(
+                mine: true,
+                dateTime: DateTime.now().toString(),
+                message: _messageEditingController.text,
+                name: 'sender',
+                imagePath: imagePath
+            )
+        );
+        _messageEditingController.clear();
+        _scrollDown();
+        ChatSendRequest _chatSendRequest = ChatSendRequest(
+            fromId: widget.fromId, toId: toId, message: _messageEditingController.text,
+        imageBase64: imageBase64);
+
+        Injector.resolve<ChatBloc>().add(SendChatEvent(_chatSendRequest));
+      }
+    }
+  }
+
+  void pickAndCropImageCamera() async {
+    final pickedFile = await ImagePicker().getImage(
+      source: ImageSource.camera,
+      imageQuality: 25,
+    );
+    if (pickedFile != null) {
+      CroppedFile? croppedFile = await ImageCropper.platform
+          .cropImage(sourcePath: pickedFile.path, aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9,
+      ]);
+      if (croppedFile != null) {
+        // todo convert to base64
+        print('cropped file : ${croppedFile.path}');
+        setState(() {
+          imagePath = croppedFile.path;
+          imageBase64 = convertImageToBase64(croppedFile.path);
+        });
+
+        chatMessageList?.add(
+            ChatMessageEntity(
+                mine: true,
+                dateTime: DateTime.now().toString(),
+                message: _messageEditingController.text,
+                name: 'sender',
+                imagePath: imagePath
+            )
+        );
+        _messageEditingController.clear();
+        _scrollDown();
+        ChatSendRequest _chatSendRequest = ChatSendRequest(
+            fromId: widget.fromId, toId: toId, message: _messageEditingController.text,
+            imageBase64: imageBase64);
+
+        Injector.resolve<ChatBloc>().add(SendChatEvent(_chatSendRequest));
+      }
+    }
+  }
 
   void archiveChatRoom(String personUid) async {
     var value = await showDialog(
@@ -233,11 +354,129 @@ class _NewChatRoomState extends State<NewChatRoom> {
                   itemBuilder: (context, index) {
                     // widget for sender
                     if (chatMessageList![index].mine!) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                      if(chatMessageList![index].imagePath != null || chatMessageList![index].imageUrl != null){
+                        if (chatMessageList![index].imagePath != null) {
+                          return Align(
+                            alignment: (chatMessageList![index].mine!
+                                ? Alignment.topRight
+                                : Alignment.topLeft),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(File(chatMessageList![index].imagePath!), height: 150.h, width: 150.w,)));
+                        } else {
+                          return Align(
+                              alignment: (chatMessageList![index].mine!
+                                  ? Alignment.topRight
+                                  : Alignment.topLeft),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(chatMessageList![index].imageUrl!, height: 150.h, width: 150.w,)));
+                        }
+                      } else {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  color: Colors.white,
+                                  padding: EdgeInsets.only(
+                                      left: 14, right: 14, top: 10, bottom: 10),
+                                  child: Align(
+                                    alignment: (chatMessageList![index].mine!
+                                        ? Alignment.topRight
+                                        : Alignment.topLeft),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                              bottomLeft: chatMessageList![index].mine! != true
+                                                  ? Radius.circular(0)
+                                                  : Radius.circular(20),
+                                              bottomRight: chatMessageList![index].mine! != true
+                                                  ? Radius.circular(20)
+                                                  : Radius.circular(0)),
+                                          color: (chatMessageList![index].mine! != true
+                                              ? EpregnancyColors.greyChatBubble
+                                              : EpregnancyColors.primer),
+                                        ),
+                                        padding: EdgeInsets.all(16),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              chatMessageList![index].message!,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: chatMessageList![index].mine! != true
+                                                      ? Colors.black
+                                                      : Colors.white,
+                                                  overflow: TextOverflow.visible),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Text(DateFormatter.hourOnly.format(DateTime.parse(chatMessageList![index].dateTime!)),
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: chatMessageList![index].mine! != true
+                                                      ? Colors.grey
+                                                      : Colors.white,
+                                                ),
+                                                textAlign: TextAlign.end,),
+                                            )
+                                          ],
+                                        )
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  margin: EdgeInsets.only(top: 20.h),
+                                  height: 20.h,
+                                  width: 20.w,
+                                  decoration: BoxDecoration(shape: BoxShape.circle),
+                                  child: chatMessageList![index].profileImage != null ? CircleAvatar(
+                                    backgroundImage: NetworkImage(chatMessageList![index].profileImage!, scale: 1.0),
+                                  ) : Image.asset('assets/dummies/dummy_avatar.png')
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    } else {
+                      // widget for other
+                      if(chatMessageList![index].imagePath != null || chatMessageList![index].imageUrl != null){
+                        if (chatMessageList![index].imagePath != null) {
+                          return Align(
+                              alignment: (chatMessageList![index].mine!
+                                  ? Alignment.topRight
+                                  : Alignment.topLeft),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(File(chatMessageList![index].imagePath!), height: 150.h, width: 150.w,)));
+                        } else {
+                          return Align(
+                              alignment: (chatMessageList![index].mine!
+                                  ? Alignment.topRight
+                                  : Alignment.topLeft),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(chatMessageList![index].imageUrl!, height: 150.h, width: 150.w,)));
+                        }
+                      } else {
+                        return Row(
                           children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 20.h),
+                              height: 20.h,
+                              width: 20.w,
+                              decoration: BoxDecoration(shape: BoxShape.circle),
+                              child:
+                              Image.network(chatMessageList![index].profileImage!),
+                            ),
                             Expanded(
                               child: Container(
                                 color: Colors.white,
@@ -248,132 +487,54 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                       ? Alignment.topRight
                                       : Alignment.topLeft),
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                          bottomLeft: chatMessageList![index].mine! != true
-                                              ? Radius.circular(0)
-                                              : Radius.circular(20),
-                                          bottomRight: chatMessageList![index].mine! != true
-                                              ? Radius.circular(20)
-                                              : Radius.circular(0)),
-                                      color: (chatMessageList![index].mine! != true
-                                          ? EpregnancyColors.greyChatBubble
-                                          : EpregnancyColors.primer),
-                                    ),
-                                    padding: EdgeInsets.all(16),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          chatMessageList![index].message!,
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: chatMessageList![index].mine! != true
-                                                  ? Colors.black
-                                                  : Colors.white,
-                                              overflow: TextOverflow.visible),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(DateFormatter.hourOnly.format(DateTime.parse(chatMessageList![index].dateTime!)),
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: chatMessageList![index].mine! != true
-                                                ? Colors.grey
-                                                : Colors.white,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                            bottomLeft: chatMessageList![index].mine! != true
+                                                ? Radius.circular(0)
+                                                : Radius.circular(20),
+                                            bottomRight: chatMessageList![index].mine! != true
+                                                ? Radius.circular(20)
+                                                : Radius.circular(0)),
+                                        color: (chatMessageList![index].mine! != true
+                                            ? EpregnancyColors.greyChatBubble
+                                            : EpregnancyColors.primer),
+                                      ),
+                                      padding: EdgeInsets.all(16),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            chatMessageList![index].message!,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: chatMessageList![index].mine! != true
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                                overflow: TextOverflow.visible),
                                           ),
-                                          textAlign: TextAlign.end,),
-                                        )
-                                      ],
-                                    )
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(DateFormatter.hourOnly.format(DateTime.parse(chatMessageList![index].dateTime!)),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: chatMessageList![index].mine! != true
+                                                    ? Colors.grey
+                                                    : Colors.white,
+                                              ),
+                                              textAlign: TextAlign.end,),
+                                          )
+                                        ],
+                                      )
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 20.h),
-                              height: 20.h,
-                              width: 20.w,
-                              decoration: BoxDecoration(shape: BoxShape.circle),
-                              child: chatMessageList![index].profileImage != null ? CircleAvatar(
-                                backgroundImage: NetworkImage(chatMessageList![index].profileImage!, scale: 1.0),
-                              ) : Image.asset('assets/dummies/dummy_avatar.png')
                             ),
                           ],
-                        ),
-                      );
-                    } else {
-                      // widget for other
-                      return Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 20.h),
-                            height: 20.h,
-                            width: 20.w,
-                            decoration: BoxDecoration(shape: BoxShape.circle),
-                            child:
-                                Image.network(chatMessageList![index].profileImage!),
-                          ),
-                          Expanded(
-                            child: Container(
-                              color: Colors.white,
-                              padding: EdgeInsets.only(
-                                  left: 14, right: 14, top: 10, bottom: 10),
-                              child: Align(
-                                alignment: (chatMessageList![index].mine!
-                                    ? Alignment.topRight
-                                    : Alignment.topLeft),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                        bottomLeft: chatMessageList![index].mine! != true
-                                            ? Radius.circular(0)
-                                            : Radius.circular(20),
-                                        bottomRight: chatMessageList![index].mine! != true
-                                            ? Radius.circular(20)
-                                            : Radius.circular(0)),
-                                    color: (chatMessageList![index].mine! != true
-                                        ? EpregnancyColors.greyChatBubble
-                                        : EpregnancyColors.primer),
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        chatMessageList![index].message!,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: chatMessageList![index].mine! != true
-                                                ? Colors.black
-                                                : Colors.white,
-                                            overflow: TextOverflow.visible),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Text(DateFormatter.hourOnly.format(DateTime.parse(chatMessageList![index].dateTime!)),
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: chatMessageList![index].mine! != true
-                                                ? Colors.grey
-                                                : Colors.white,
-                                          ),
-                                          textAlign: TextAlign.end,),
-                                      )
-                                    ],
-                                  )
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
+                        );
+                      }
                     }
                   },
                 ),
@@ -445,7 +606,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                       ),
                       InkWell(
                         onTap: (){
-                          Toast.show('attachment is under construction');
+                          _showPicker(context);
                         },
                         child: Container(
                           padding: EdgeInsets.only(top: 12.h),
