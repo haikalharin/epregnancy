@@ -7,6 +7,7 @@ import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
+import 'package:PregnancyApp/data/repository/article_repository/article_repository.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
@@ -35,11 +36,12 @@ part 'home_page_event.dart';
 part 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
-  HomePageBloc(this.homeRepository, this.userRepository, this.eventRepository) : super(HomePageInitial());
+  HomePageBloc(this.homeRepository, this.userRepository, this.eventRepository, this.articleRepository) : super(HomePageInitial());
 
   final HomeRepository homeRepository;
   final UserRepository userRepository;
   final EventRepository eventRepository;
+  final ArticleRepository articleRepository;
 
   @override
   Stream<HomePageState> mapEventToState(HomePageEvent event) async* {
@@ -160,9 +162,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         submitStatus: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
       List<ArticleModel> lisArticleFix = [];
-      final List<ArticleModel> lisArticle = await EventArticle.fetchAllArticle();
+      final List<ArticleModel> lisArticle = await articleRepository.fetchArticle();
       if (lisArticle.isNotEmpty) {
-        for (var i = 0; i < 3; i++) {
+        var length = lisArticle.length <3? lisArticle.length: 3;
+        for (var i = 0; i < length; i++) {
           lisArticleFix.add(lisArticle[i]);
         }
         yield state.copyWith(

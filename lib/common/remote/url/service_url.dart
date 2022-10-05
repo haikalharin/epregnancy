@@ -33,6 +33,7 @@ class ServiceUrl {
   //article
   static String article = 'article';
   static String listArticle = '$article/list';
+  static String readArticle = '$article/read';
 
   //consultation
   static String consultation = 'post';
@@ -65,5 +66,7 @@ class ServiceUrl {
   //hospital
   static String hospital = 'hospital';
   static String hospitalList = '$hospital/list';
+
+
 
 }

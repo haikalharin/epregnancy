@@ -78,7 +78,7 @@ class _PoinActivityPageState extends State<PoinActivityPage> {
                               return  ListTile(
                                 leading: _buildLeadingIcon(context, state.pointHistories![index].description!),
                                 title: Text(state.pointHistories![index].description ?? '', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-                                subtitle: Text(DateFormatter.dateFormatHistory.format(DateTime.parse(state.pointHistories![index].createdDate!)), style: const TextStyle(color: EpregnancyColors.greyText),),
+                                subtitle: Text(DateFormatter.dateFormatHistory.format(DateTime.parse(state.pointHistories?[index].createdDate??"0000-00-00")), style: const TextStyle(color: EpregnancyColors.greyText),),
                                 trailing: state.pointHistories![index].type == 'earn' ? Text('+${state.pointHistories![index].points}', style: const TextStyle(color: EpregnancyColors.blueDark, fontWeight: FontWeight.w700)) : Text('+${state.pointHistories![index].points}', style: const TextStyle(color: EpregnancyColors.redText, fontWeight: FontWeight.w700)),
                               );
                             },

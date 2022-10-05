@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/data/model/article_model/article_model.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 
@@ -16,14 +17,21 @@ class ArticleRepositoryImpl extends ArticleRepository {
   ArticleRepositoryImpl(this.networkInfo, this.remoteDatasource);
 
   @override
-  Future<List<ArticleModel>> fetchArticle() async {
+  Future<List<ArticleModel>> fetchArticle({bool isSearch = false, String keyword = ""}) async {
     if (await networkInfo.isConnected) {
-      List<ArticleModel> listArticle = await EventArticle.fetchAllArticle();
-      if (listArticle.isNotEmpty) {
-        return listArticle;
+      if(isSearch){
+        return remoteDatasource.searchArticle(isSearch, keyword);
       } else {
-        return listArticle;
+        return remoteDatasource.fetchArticle();
       }
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> readArticle(String id) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.readArticle(id);
     }
     throw NetworkConnectionException();
   }

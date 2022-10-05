@@ -10,8 +10,10 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../common/injector/injector.dart';
 import '../../data/firebase/event/event_storage_example.dart';
 import '../../utils/epragnancy_color.dart';
+import '../article_page/bloc/article_bloc.dart';
 
 class ListArticle extends StatelessWidget {
   List<ArticleModel>? listArticle = [];
@@ -36,26 +38,31 @@ class ListArticle extends StatelessWidget {
                       String outputDate = "";
                       var outputFormat = DateFormat.yMMMMd('id');
                       outputDate = outputFormat.format(
-                          DateTime.parse(listArticle![index].createdDate!));
+                          DateTime.parse(listArticle?[index].createdDate?? "0000-00-00"));
                       // 12/3
                       return InkWell(
                         onTap: () {
+                          Injector.resolve<ArticlePageBloc>().add(
+                              ArticleReadEvent(
+                                  listArticle?[index].id ??
+                                      ""));
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ArticleDetailPage(
-                                      article: listArticle![index])));
+                                      article: listArticle?[index])));
                         },
                         child: Container(
                           height: 150,
                           margin:
                           EdgeInsets.only(left: 10, right: 10, top: 10),
-                          decoration: listArticle![index].cardImgURL != null &&
-                                  listArticle![index].cardImgURL != ""
+                          decoration: listArticle![index].imageUrl != null &&
+                                  listArticle![index].imageUrl != ""
                               ? BoxDecoration(
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                        listArticle![index].cardImgURL!),
+                                        listArticle![index].imageUrl!),
                                     fit: BoxFit.cover,
                                   ),
                                   borderRadius: BorderRadius.circular(10.0),

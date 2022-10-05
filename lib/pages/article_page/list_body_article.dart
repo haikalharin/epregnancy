@@ -3,14 +3,15 @@ import 'package:PregnancyApp/data/model/person_model/person_model.dart';
 import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 
 import '../../utils/epragnancy_color.dart';
 
 class ListBodyArticle extends StatelessWidget {
-  List<String>? listBodyArticle = [];
+  String? longDesc = "";
 
-  ListBodyArticle({this.listBodyArticle});
+  ListBodyArticle({this.longDesc});
 
   List<PersonModel> listPrivilegesData = [
     PersonModel(
@@ -52,28 +53,6 @@ class ListBodyArticle extends StatelessWidget {
         // height: 125,
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         decoration: BoxDecoration(color: Colors.white),
-        child: listBodyArticle!.isEmpty
-            ? Stack(children: [
-                Container(margin: EdgeInsets.only(), child: Container())
-              ])
-            : ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        index != 0 ? SizedBox(height: 10) : Container(),
-                        Container(
-                          child: Text(listBodyArticle![index]),
-                        ),
-                        index == listBodyArticle!.length-1 ? SizedBox(height: 20) : Container()
-                      ],
-                    ),
-                  );
-                },
-                itemCount: listBodyArticle!.length,
-              ));
+        child:  Html(data:longDesc),);
   }
 }
