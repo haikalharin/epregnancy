@@ -16,7 +16,7 @@ class ArchiveNakesPage extends StatefulWidget {
   State<ArchiveNakesPage> createState() => _ArchiveNakesPageState();
 }
 
-class _ArchiveNakesPageState extends State<ArchiveNakesPage> {
+class _ArchiveNakesPageState extends State<ArchiveNakesPage> with AutomaticKeepAliveClientMixin {
 
 
   @override
@@ -24,6 +24,9 @@ class _ArchiveNakesPageState extends State<ArchiveNakesPage> {
     Injector.resolve<ChatBloc>().add(const FetchArchiveChatEvent());
     super.initState();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -46,22 +49,46 @@ class _ArchiveNakesPageState extends State<ArchiveNakesPage> {
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: ChatPlaceHolderWidget(
                         unread: true,
-                        name: state.listChatOngoing![index].from?.name,
-                        message: state.listChatOngoing![index].message),
+                        name: state.listArchiveChat![index].to?.name,
+                        message: state.listArchiveChat![index].message),
+                  );
+                },
+              );
+            } else {
+              if(state.listArchiveChat?.length != 0) {
+                return ListView.builder(
+                  itemCount: state.listArchiveChat?.length ?? 0,
+                  itemBuilder: (context, index){
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: ChatPlaceHolderWidget(
+                          unread: true,
+                          name: state.listArchiveChat![index].to?.name,
+                          message: state.listArchiveChat![index].message),
+                    );
+                  },
+                );
+              } else {
+                return const EmptyChatListPage();
+              }
+            }
+          } else {
+            if(state.listArchiveChat?.length != 0) {
+              return ListView.builder(
+                itemCount: state.listArchiveChat?.length ?? 0,
+                itemBuilder: (context, index){
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: ChatPlaceHolderWidget(
+                        unread: true,
+                        name: state.listArchiveChat![index].to?.name,
+                        message: state.listArchiveChat![index].message),
                   );
                 },
               );
             } else {
               return const EmptyChatListPage();
             }
-          } else {
-            return Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: const Center(
-                child: Text('Internal Server Error!', style: TextStyle(color: Colors.black),),
-              ),
-            );
           }
         },
       ),
