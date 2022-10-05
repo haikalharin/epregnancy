@@ -50,13 +50,16 @@ class ServiceUrl {
 
   //chat
   static String chat = 'chat';
+  static String chatEnd = '$chat/end/';
   static String sendChat = '$chat/send';
   static String latestChat =  '$chat/latest';
   static String chatList =  '$chat/list';
   static String personalChatRoom =  '$chat/personal/';
   static String chatPending = 'chat-pending';
+  static String chatPendingResponse = '$chatPending/response';
   static String chatPendingPatient = '$chatPending/page/1';
   static String chatPendingList = '$chatPending/list';
+  static String chatPendingListForNakes = '$chatPending/latest/';
   static String chatPendingSend = '$chatPending/send';
 
   //hospital

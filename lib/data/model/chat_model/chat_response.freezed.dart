@@ -24,6 +24,7 @@ mixin _$ChatResponse {
   String? get fromId => throw _privateConstructorUsedError;
   String? get toId => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
   int? get unreadCount => throw _privateConstructorUsedError;
   bool? get isRead => throw _privateConstructorUsedError;
   From? get from => throw _privateConstructorUsedError;
@@ -52,6 +53,7 @@ abstract class $ChatResponseCopyWith<$Res> {
       String? fromId,
       String? toId,
       String? message,
+      String? imageUrl,
       int? unreadCount,
       bool? isRead,
       From? from,
@@ -82,6 +84,7 @@ class _$ChatResponseCopyWithImpl<$Res> implements $ChatResponseCopyWith<$Res> {
     Object? fromId = freezed,
     Object? toId = freezed,
     Object? message = freezed,
+    Object? imageUrl = freezed,
     Object? unreadCount = freezed,
     Object? isRead = freezed,
     Object? from = freezed,
@@ -110,6 +113,10 @@ class _$ChatResponseCopyWithImpl<$Res> implements $ChatResponseCopyWith<$Res> {
       message: message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+      imageUrl: imageUrl == freezed
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
       unreadCount: unreadCount == freezed
           ? _value.unreadCount
@@ -193,6 +200,7 @@ abstract class _$$_ChatResponseCopyWith<$Res>
       String? fromId,
       String? toId,
       String? message,
+      String? imageUrl,
       int? unreadCount,
       bool? isRead,
       From? from,
@@ -228,6 +236,7 @@ class __$$_ChatResponseCopyWithImpl<$Res>
     Object? fromId = freezed,
     Object? toId = freezed,
     Object? message = freezed,
+    Object? imageUrl = freezed,
     Object? unreadCount = freezed,
     Object? isRead = freezed,
     Object? from = freezed,
@@ -256,6 +265,10 @@ class __$$_ChatResponseCopyWithImpl<$Res>
       message: message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+      imageUrl: imageUrl == freezed
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
       unreadCount: unreadCount == freezed
           ? _value.unreadCount
@@ -314,6 +327,7 @@ class _$_ChatResponse with DiagnosticableTreeMixin implements _ChatResponse {
       required this.fromId,
       required this.toId,
       required this.message,
+      required this.imageUrl,
       required this.unreadCount,
       required this.isRead,
       required this.from,
@@ -337,6 +351,8 @@ class _$_ChatResponse with DiagnosticableTreeMixin implements _ChatResponse {
   final String? toId;
   @override
   final String? message;
+  @override
+  final String? imageUrl;
   @override
   final int? unreadCount;
   @override
@@ -362,7 +378,7 @@ class _$_ChatResponse with DiagnosticableTreeMixin implements _ChatResponse {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ChatResponse(id: $id, fromId: $fromId, toId: $toId, message: $message, unreadCount: $unreadCount, isRead: $isRead, from: $from, to: $to, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
+    return 'ChatResponse(id: $id, fromId: $fromId, toId: $toId, message: $message, imageUrl: $imageUrl, unreadCount: $unreadCount, isRead: $isRead, from: $from, to: $to, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
   }
 
   @override
@@ -374,6 +390,7 @@ class _$_ChatResponse with DiagnosticableTreeMixin implements _ChatResponse {
       ..add(DiagnosticsProperty('fromId', fromId))
       ..add(DiagnosticsProperty('toId', toId))
       ..add(DiagnosticsProperty('message', message))
+      ..add(DiagnosticsProperty('imageUrl', imageUrl))
       ..add(DiagnosticsProperty('unreadCount', unreadCount))
       ..add(DiagnosticsProperty('isRead', isRead))
       ..add(DiagnosticsProperty('from', from))
@@ -396,6 +413,7 @@ class _$_ChatResponse with DiagnosticableTreeMixin implements _ChatResponse {
             const DeepCollectionEquality().equals(other.fromId, fromId) &&
             const DeepCollectionEquality().equals(other.toId, toId) &&
             const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
             const DeepCollectionEquality()
                 .equals(other.unreadCount, unreadCount) &&
             const DeepCollectionEquality().equals(other.isRead, isRead) &&
@@ -423,6 +441,7 @@ class _$_ChatResponse with DiagnosticableTreeMixin implements _ChatResponse {
       const DeepCollectionEquality().hash(fromId),
       const DeepCollectionEquality().hash(toId),
       const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(imageUrl),
       const DeepCollectionEquality().hash(unreadCount),
       const DeepCollectionEquality().hash(isRead),
       const DeepCollectionEquality().hash(from),
@@ -452,6 +471,7 @@ abstract class _ChatResponse implements ChatResponse {
       required final String? fromId,
       required final String? toId,
       required final String? message,
+      required final String? imageUrl,
       required final int? unreadCount,
       required final bool? isRead,
       required final From? from,
@@ -475,6 +495,8 @@ abstract class _ChatResponse implements ChatResponse {
   String? get toId => throw _privateConstructorUsedError;
   @override
   String? get message => throw _privateConstructorUsedError;
+  @override
+  String? get imageUrl => throw _privateConstructorUsedError;
   @override
   int? get unreadCount => throw _privateConstructorUsedError;
   @override

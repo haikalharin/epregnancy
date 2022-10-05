@@ -46,6 +46,9 @@ mixin _$UserModel {
   int? get totalpointsRedeemed => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_url', includeIfNull: true)
   String? get imageUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hospital_id', includeIfNull: false)
+  String? get hospitalId => throw _privateConstructorUsedError;
+  HospitalModel? get hospitalModel => throw _privateConstructorUsedError;
   @JsonKey(name: 'cover_url', includeIfNull: true)
   dynamic get coverUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -108,6 +111,9 @@ abstract class $UserModelCopyWith<$Res> {
           int? totalpointsRedeemed,
       @JsonKey(name: 'image_url', includeIfNull: true)
           String? imageUrl,
+      @JsonKey(name: 'hospital_id', includeIfNull: false)
+          String? hospitalId,
+      HospitalModel? hospitalModel,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           dynamic coverUrl,
       @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -131,6 +137,7 @@ abstract class $UserModelCopyWith<$Res> {
       @JsonKey(includeIfNull: true)
           List<Baby>? babies});
 
+  $HospitalModelCopyWith<$Res>? get hospitalModel;
   $LastItemRedeemedCopyWith<$Res>? get lastItemRedeemed;
 }
 
@@ -157,6 +164,8 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? totalpointsEarned = freezed,
     Object? totalpointsRedeemed = freezed,
     Object? imageUrl = freezed,
+    Object? hospitalId = freezed,
+    Object? hospitalModel = freezed,
     Object? coverUrl = freezed,
     Object? isVerified = freezed,
     Object? isPregnant = freezed,
@@ -222,6 +231,14 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      hospitalId: hospitalId == freezed
+          ? _value.hospitalId
+          : hospitalId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hospitalModel: hospitalModel == freezed
+          ? _value.hospitalModel
+          : hospitalModel // ignore: cast_nullable_to_non_nullable
+              as HospitalModel?,
       coverUrl: coverUrl == freezed
           ? _value.coverUrl
           : coverUrl // ignore: cast_nullable_to_non_nullable
@@ -270,6 +287,17 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
   }
 
   @override
+  $HospitalModelCopyWith<$Res>? get hospitalModel {
+    if (_value.hospitalModel == null) {
+      return null;
+    }
+
+    return $HospitalModelCopyWith<$Res>(_value.hospitalModel!, (value) {
+      return _then(_value.copyWith(hospitalModel: value));
+    });
+  }
+
+  @override
   $LastItemRedeemedCopyWith<$Res>? get lastItemRedeemed {
     if (_value.lastItemRedeemed == null) {
       return null;
@@ -314,6 +342,9 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
           int? totalpointsRedeemed,
       @JsonKey(name: 'image_url', includeIfNull: true)
           String? imageUrl,
+      @JsonKey(name: 'hospital_id', includeIfNull: false)
+          String? hospitalId,
+      HospitalModel? hospitalModel,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           dynamic coverUrl,
       @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -337,6 +368,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       @JsonKey(includeIfNull: true)
           List<Baby>? babies});
 
+  @override
+  $HospitalModelCopyWith<$Res>? get hospitalModel;
   @override
   $LastItemRedeemedCopyWith<$Res>? get lastItemRedeemed;
 }
@@ -366,6 +399,8 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? totalpointsEarned = freezed,
     Object? totalpointsRedeemed = freezed,
     Object? imageUrl = freezed,
+    Object? hospitalId = freezed,
+    Object? hospitalModel = freezed,
     Object? coverUrl = freezed,
     Object? isVerified = freezed,
     Object? isPregnant = freezed,
@@ -431,6 +466,14 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      hospitalId: hospitalId == freezed
+          ? _value.hospitalId
+          : hospitalId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hospitalModel: hospitalModel == freezed
+          ? _value.hospitalModel
+          : hospitalModel // ignore: cast_nullable_to_non_nullable
+              as HospitalModel?,
       coverUrl: coverUrl == freezed
           ? _value.coverUrl
           : coverUrl // ignore: cast_nullable_to_non_nullable
@@ -509,6 +552,9 @@ class _$_UserModel implements _UserModel {
           this.totalpointsRedeemed,
       @JsonKey(name: 'image_url', includeIfNull: true)
           this.imageUrl,
+      @JsonKey(name: 'hospital_id', includeIfNull: false)
+          this.hospitalId,
+      this.hospitalModel,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           this.coverUrl,
       @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -579,6 +625,11 @@ class _$_UserModel implements _UserModel {
   @JsonKey(name: 'image_url', includeIfNull: true)
   final String? imageUrl;
   @override
+  @JsonKey(name: 'hospital_id', includeIfNull: false)
+  final String? hospitalId;
+  @override
+  final HospitalModel? hospitalModel;
+  @override
   @JsonKey(name: 'cover_url', includeIfNull: true)
   final dynamic coverUrl;
   @override
@@ -641,7 +692,7 @@ class _$_UserModel implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies)';
+    return 'UserModel(id: $id, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospitalModel: $hospitalModel, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies)';
   }
 
   @override
@@ -664,6 +715,10 @@ class _$_UserModel implements _UserModel {
             const DeepCollectionEquality()
                 .equals(other.totalpointsRedeemed, totalpointsRedeemed) &&
             const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
+            const DeepCollectionEquality()
+                .equals(other.hospitalId, hospitalId) &&
+            const DeepCollectionEquality()
+                .equals(other.hospitalModel, hospitalModel) &&
             const DeepCollectionEquality().equals(other.coverUrl, coverUrl) &&
             const DeepCollectionEquality()
                 .equals(other.isVerified, isVerified) &&
@@ -701,6 +756,8 @@ class _$_UserModel implements _UserModel {
         const DeepCollectionEquality().hash(totalpointsEarned),
         const DeepCollectionEquality().hash(totalpointsRedeemed),
         const DeepCollectionEquality().hash(imageUrl),
+        const DeepCollectionEquality().hash(hospitalId),
+        const DeepCollectionEquality().hash(hospitalModel),
         const DeepCollectionEquality().hash(coverUrl),
         const DeepCollectionEquality().hash(isVerified),
         const DeepCollectionEquality().hash(isPregnant),
@@ -753,6 +810,9 @@ abstract class _UserModel implements UserModel {
           final int? totalpointsRedeemed,
       @JsonKey(name: 'image_url', includeIfNull: true)
           final String? imageUrl,
+      @JsonKey(name: 'hospital_id', includeIfNull: false)
+          final String? hospitalId,
+      final HospitalModel? hospitalModel,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           final dynamic coverUrl,
       @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -818,6 +878,11 @@ abstract class _UserModel implements UserModel {
   @override
   @JsonKey(name: 'image_url', includeIfNull: true)
   String? get imageUrl => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'hospital_id', includeIfNull: false)
+  String? get hospitalId => throw _privateConstructorUsedError;
+  @override
+  HospitalModel? get hospitalModel => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'cover_url', includeIfNull: true)
   dynamic get coverUrl => throw _privateConstructorUsedError;

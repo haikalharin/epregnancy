@@ -20,6 +20,11 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       totalpointsEarned: json['total_points_earned'] as int?,
       totalpointsRedeemed: json['total_points_redeemed'] as int?,
       imageUrl: json['image_url'] as String?,
+      hospitalId: json['hospital_id'] as String?,
+      hospitalModel: json['hospitalModel'] == null
+          ? null
+          : HospitalModel.fromJson(
+              json['hospitalModel'] as Map<String, dynamic>),
       coverUrl: json['cover_url'],
       isVerified: json['is_verified'] as bool?,
       isPregnant: json['is_pregnant'] as bool?,
@@ -44,33 +49,44 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
           .toList(),
     );
 
-Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'password': instance.password,
-      'is_patient': instance.isPatient,
-      'is_midwife': instance.isMidwife,
-      'name': instance.name,
-      'dob': instance.dob,
-      'username': instance.username,
-      'email': instance.email,
-      'mobile': instance.mobile,
-      'token': instance.token,
-      'total_points_earned': instance.totalpointsEarned,
-      'total_points_redeemed': instance.totalpointsRedeemed,
-      'image_url': instance.imageUrl,
-      'cover_url': instance.coverUrl,
-      'is_verified': instance.isVerified,
-      'is_pregnant': instance.isPregnant,
-      'is_planning_pregnancy': instance.isPlanningPregnancy,
-      'is_have_baby': instance.isHaveBaby,
-      'status': instance.status,
-      'gamificationpoints': instance.gamificationpoints,
-      'redeemHistory': instance.redeemHistory,
-      'lastItemRedeemed': instance.lastItemRedeemed,
-      'checkins': instance.checkins,
-      'babies': instance.babies,
-    };
+Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'password': instance.password,
+    'is_patient': instance.isPatient,
+    'is_midwife': instance.isMidwife,
+    'name': instance.name,
+    'dob': instance.dob,
+    'username': instance.username,
+    'email': instance.email,
+    'mobile': instance.mobile,
+    'token': instance.token,
+    'total_points_earned': instance.totalpointsEarned,
+    'total_points_redeemed': instance.totalpointsRedeemed,
+    'image_url': instance.imageUrl,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('hospital_id', instance.hospitalId);
+  val['hospitalModel'] = instance.hospitalModel;
+  val['cover_url'] = instance.coverUrl;
+  val['is_verified'] = instance.isVerified;
+  val['is_pregnant'] = instance.isPregnant;
+  val['is_planning_pregnancy'] = instance.isPlanningPregnancy;
+  val['is_have_baby'] = instance.isHaveBaby;
+  val['status'] = instance.status;
+  val['gamificationpoints'] = instance.gamificationpoints;
+  val['redeemHistory'] = instance.redeemHistory;
+  val['lastItemRedeemed'] = instance.lastItemRedeemed;
+  val['checkins'] = instance.checkins;
+  val['babies'] = instance.babies;
+  return val;
+}
 
 _$_Baby _$$_BabyFromJson(Map<String, dynamic> json) => _$_Baby(
       name: json['name'] as String?,

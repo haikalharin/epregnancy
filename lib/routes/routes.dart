@@ -82,7 +82,9 @@ class Routes {
       case RouteName.dashboardNakesPage:
         return MaterialPageRoute(
             builder: (_) =>
-                DashBoardNakesPage(userName: getDataValue(settings.arguments)));
+                DashBoardNakesPage(userName: getName(settings.arguments),
+                  hospitalId: getHospitalId(settings.arguments),
+                ));
       case RouteName.addEventPage:
         return MaterialPageRoute(
             builder: (_) =>

@@ -7,6 +7,10 @@ dynamic getInitialIndex(dynamic result) => result['initial_index'];
 
 dynamic getUserId(dynamic result) => result['user_id'];
 
+dynamic getName(dynamic result) => result['name'];
+
+dynamic getHospitalId(dynamic result) => result['hospital_id'];
+
 dynamic getDataCondition(dynamic result) => result['Condition'];
 
 dynamic cekPersonInRoom(dynamic result) => result['inRoom'];
