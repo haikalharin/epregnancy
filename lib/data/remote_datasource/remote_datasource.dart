@@ -377,4 +377,17 @@ class RemoteDataSource {
     });
     return data;
   }
+
+  Future<ResponseModel> updatePhotoProfile(String userId, String imgProfile) async {
+    try {
+      Map<String, String> data =  {
+        'id': userId,
+        'image_base64': imgProfile
+      };
+      final response = await httpClient.put(ServiceUrl.updateUser, data);
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
 }

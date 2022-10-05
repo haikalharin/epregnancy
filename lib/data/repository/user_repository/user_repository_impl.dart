@@ -180,6 +180,14 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
+  Future<ResponseModel> changePhotoProfile(String userId, String imgProfile) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.updatePhotoProfile(userId,imgProfile);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
   Future<ResponseModel> loginNonOtp(LoginModel loginModel) async {
     if (await networkInfo.isConnected) {
       ResponseModel responseModel = await remoteDatasource.login(loginModel);

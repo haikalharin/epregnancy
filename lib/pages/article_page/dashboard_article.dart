@@ -28,26 +28,32 @@ class _DashboardArticleState extends State<DashboardArticle> {
       child: Scaffold(
         appBar: AppBar(
             titleSpacing: 0,
-            title: Container(child: BlocBuilder<ArticlePageBloc, ArticlePageState>(
-              builder: (context, state) {
-                return  Container(
-                  margin: EdgeInsets.only(right: 20, top: 12, bottom: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius:  BorderRadius.circular(12),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintStyle: TextStyle(fontSize:  12),
-                      hintText: 'Cari artikel...',
-                      prefixIcon: Icon(Icons.search),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(top: 10,left: 20,right: 20,bottom: 10),
-                    ),
-                  ),
-                );
-              },
-            ),),
+            title:  const Align(
+              alignment: Alignment(-0.2,0),
+              child: Text("Halaman", style: TextStyle( color: Colors.black, fontWeight: FontWeight.normal,fontSize: 24),
+              // Container(child: BlocBuilder<ArticlePageBloc, ArticlePageState>(
+              //   builder: (context, state) {
+              //     return  Container(
+              //       margin: EdgeInsets.only(right: 20, top: 12, bottom: 5),
+              //       decoration: BoxDecoration(
+              //         color: Colors.grey.shade200,
+              //         borderRadius:  BorderRadius.circular(12),
+              //       ),
+              //       child: const TextField(
+              //         keyboardType: TextInputType.text,
+              //         decoration: InputDecoration(
+              //           hintStyle: TextStyle(fontSize:  12),
+              //           hintText: 'Cari artikel...',
+              //           prefixIcon: Icon(Icons.search),
+              //           border: InputBorder.none,
+              //           contentPadding: EdgeInsets.only(top: 10,left: 20,right: 20,bottom: 10),
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
+              ),
+            ),
             elevation: 0.0,
             backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: Colors.black),

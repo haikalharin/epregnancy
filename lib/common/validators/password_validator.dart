@@ -1,6 +1,8 @@
 import 'package:formz/formz.dart';
 
-enum PasswordValidationError { empty }
+import '../constants/regex_constants.dart';
+
+enum PasswordValidationError { empty, invalid }
 
 class PasswordValidator extends FormzInput<String, PasswordValidationError> {
   const PasswordValidator.pure() : super.pure('');
@@ -9,7 +11,14 @@ class PasswordValidator extends FormzInput<String, PasswordValidationError> {
 
   @override
   PasswordValidationError? validator(String value) {
-    return value.length >= 8 ? null : PasswordValidationError.empty;
+    if (value == null) {
+      return PasswordValidationError.empty;
+    }
+
+    if (!RegExp(RegexConstants.validPasswordlRegex).hasMatch(value)) {
+      return PasswordValidationError.invalid;
+    }
+    return null;
   }
 
   final String invalidPassword = "Password harus 8 digit";

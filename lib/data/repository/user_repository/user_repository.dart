@@ -26,6 +26,7 @@ abstract class UserRepository {
   Future <ResponseModel>requestOtp(OtpModel otpModel);
   Future <ResponseModel>verifyOtp(OtpModel otpModel);
   Future <ResponseModel>changePassword(String currentPassword, String newPassword);
+  Future <ResponseModel>changePhotoProfile(String userId, String imgProfile);
 
 
   Future loginWithGoogle();
