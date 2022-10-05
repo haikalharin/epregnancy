@@ -12,6 +12,7 @@ abstract class ChatResponse with _$ChatResponse {
     required String? fromId,
     required String? toId,
     required String? message,
+    required String? imageUrl,
     required int? unreadCount,
     required bool? isRead,
     required From? from,

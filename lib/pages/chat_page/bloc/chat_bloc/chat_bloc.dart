@@ -37,6 +37,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       yield* _mapFetchChatOngoingEventToState(event, state);
     } else if (event is FetchChatPendingPatientEvent) {
       yield* _mapFetchChatPendingPatient(event, state);
+    } else if (event is FetchPersonalChatRoom) {
+      yield* _mapFetchPersonalChatRoom(event, state);
     } else if (event is DisposeChatBlocEvent) {
       yield ChatState().copyWith(
         type: 'dispose',
@@ -80,11 +82,42 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     try {
       final UserModel user = await AppSharedPreference.getUser();
       final List<ChatListResponse> listChatOngoing = await chatRepository.fetchChatList(user.id ?? '');
-      if (listChatOngoing.isNotEmpty) {
+      List<ChatListResponse> listChatOngoingAfterFilter = [];
+      for (var element in listChatOngoing) {
+        String? _fromId = element.fromId;
+        if (listChatOngoingAfterFilter.map((item) => item.fromId).contains(_fromId)) {
+
+          print('Already exists!');
+        } else {
+          listChatOngoingAfterFilter.add(element);
+        }
+      }
+      if (listChatOngoingAfterFilter.isNotEmpty) {
+        listChatOngoingAfterFilter.reversed;
         yield state.copyWith(
-            listChatOngoing: listChatOngoing, status: FormzStatus.submissionSuccess, type: 'list-ongoing-success');
+            listChatOngoing: listChatOngoingAfterFilter, status: FormzStatus.submissionSuccess, type: 'list-ongoing-success');
       } else {
         yield state.copyWith(status: FormzStatus.submissionSuccess);
+      }
+    } on SurveyErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    }
+  }
+
+  Stream<ChatState> _mapFetchPersonalChatRoom(
+      FetchPersonalChatRoom event,
+      ChatState state,
+      ) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type:  'chat-room-loading');
+    try {
+      final List<ChatResponse> _response = await chatRepository.fetchPersonalChatRoom(event.toId!);
+      if (_response.isNotEmpty) {
+        yield state.copyWith(
+            listPersonalChatRoom: _response, status: FormzStatus.submissionSuccess, type: 'chat-room-success');
       }
     } on SurveyErrorException catch (e) {
       print(e);
@@ -148,7 +181,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       final ResponseModel<ChatPendingPatientResponse> _response = await chatRepository.fetchChatPendingPatient(user.id ?? '', _hospital.id ?? '');
       ChatPendingPatientResponse _chatPendingPatientResponse = _response.data;
       if(listChatOngoing.isNotEmpty) {
-        personalChatRoomList = await chatRepository.fetchPersonalChatRoom(listChatOngoing[0].toId ?? '');
+        String? toId;
+        if(listChatOngoing[0].fromId == user.id){
+          toId = listChatOngoing[0].toId;
+        } else {
+          toId = listChatOngoing[0].fromId;
+        }
+        personalChatRoomList = await chatRepository.fetchPersonalChatRoom(toId!);
       }
 
       if (_chatPendingPatientResponse.content?.length != 0 || listChatOngoing.isNotEmpty) {

@@ -150,6 +150,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await AppSharedPreference.setUserRegister(response.data);
         await AppSharedPreference.setString(
             AppSharedPreference.token, userModel.token ?? '');
+        if(userModel.isMidwife == true && userModel.hospitalModel != null) {
+          await AppSharedPreference.setHospital(userModel.hospitalModel!);
+        }
+
         bool isActive = false;
         if (userModel.isPatient == true) {
           if (userModel.isHaveBaby != false ||

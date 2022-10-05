@@ -12,6 +12,7 @@ _$_ChatResponse _$$_ChatResponseFromJson(Map<String, dynamic> json) =>
       fromId: json['from_id'] as String?,
       toId: json['to_id'] as String?,
       message: json['message'] as String?,
+      imageUrl: json['image_url'] as String?,
       unreadCount: json['unread_count'] as int?,
       isRead: json['is_read'] as bool?,
       from: json['from'] == null
@@ -35,6 +36,7 @@ Map<String, dynamic> _$$_ChatResponseToJson(_$_ChatResponse instance) =>
       'from_id': instance.fromId,
       'to_id': instance.toId,
       'message': instance.message,
+      'image_url': instance.imageUrl,
       'unread_count': instance.unreadCount,
       'is_read': instance.isRead,
       'from': instance.from?.toJson(),

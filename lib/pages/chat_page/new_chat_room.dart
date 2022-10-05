@@ -6,6 +6,7 @@ import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
 import 'package:PregnancyApp/data/entity/chat_message_entity.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/data/remote_datasource/remote_datasource.dart';
 import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
@@ -49,17 +50,54 @@ class _NewChatRoomState extends State<NewChatRoom> {
   bool mine = true;
   bool showEmoji = false;
   bool isPendingChat = false;
+  String? toName;
+  String? toId;
   late WebSocket _webSocket;
 
   List<ChatMessageEntity>? chatMessageList = [];
+
+  void archiveChatRoom(String personUid) async {
+    var value = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return SimpleDialog(
+          children: [
+            ListTile(
+              onTap: () => Navigator.pop(context, 'delete'),
+              title: Text('Akhiri percakapan'),
+            ),
+            ListTile(
+              onTap: () => Navigator.pop(context),
+              title: Text(''
+                  'kembali'),
+            ),
+          ],
+        );
+      },
+    );
+    if (value == 'delete') {
+      // final response = await EventChatRoom.archiveRoomChat(
+      //     myUid: _myPerson!.uid, personUid: personUid);
+      // if (response) {
+      //   EventChatRoom.deleteChatRoom(
+      //       myUid: _myPerson!.uid, personUid: personUid);
+      // }
+    }
+  }
 
   @override
   void initState() {
     setState(() {
       chatMessageList = widget.chatMessageList;
+      toName = widget.toName;
+      toId = widget.toId;
       isPendingChat = widget.pendingChat ?? false;
     });
     _initWebSocket();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _scrollDown();
+    });
     super.initState();
   }
 
@@ -88,13 +126,25 @@ class _NewChatRoomState extends State<NewChatRoom> {
       print('websocket ready state: ' + _webSocket.readyState.toString());
 
       _webSocket.listen((d) {
+        if(widget.toId == null){
+          Navigator.pop(context);
+        }
         // TODO HANDLE CHAT WEBSOCKET TO ADD TO BUBLE
-        Map<String, dynamic> socketResponse = json.decode(d);
-        print('action listener : ${socketResponse["action"]}');
+        // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        _scrollDown();
+        String _response = d as String;
+        Map<String, dynamic> socketResponse = jsonDecode(_response);
+        // ResponseModel<ChatResponse> _chatResponse = ResponseModel.fromJson(d, ChatResponse.fromJson);
+        // String? newToName = _chatResponse.data?.to.name;
+        String fromIdPayload = socketResponse['data']['from_id'];
+        String _toId = socketResponse['data']['to_id'];
+
+        // setState(() {
+        //   toId = socketResponse['data']['to_id'];
+        // });
+        print('ispending chat : $isPendingChat');
         if(socketResponse['action'] == StringConstant.updateLatestChat){
-          String fromIdPayload = socketResponse['data']['from_id'];
-          String toIdPayload = socketResponse['data']['to_id'];
-          if(fromIdPayload == widget.toId && toIdPayload == widget.fromId){
+          if(fromIdPayload == widget.toId && _toId == widget.fromId){
             setState(() {
               chatMessageList?.add(
                   ChatMessageEntity(
@@ -105,9 +155,17 @@ class _NewChatRoomState extends State<NewChatRoom> {
                     profileImage: socketResponse['data']['from_id'] == widget.fromId ? socketResponse['data']['from']['image_url'] : socketResponse['data']['to']['image_url'],
                   )
               );
+              // toId = toId;
+              isPendingChat = false;
+              _scrollDown();
             });
           }
+        } else {
+          // toId = toId;
+          isPendingChat = false;
+          // Toast.show('harap tekan kembali untuk merefresh percakapan');
         }
+        print('ispending chat : $isPendingChat');
         log('websocket payload mentah : $d');
       }, onError: (e) {
         print("error");
@@ -134,13 +192,15 @@ class _NewChatRoomState extends State<NewChatRoom> {
                 height: 30.h,
                 width: 30.w,
                 decoration: BoxDecoration(shape: BoxShape.circle),
-                child: widget.toImageUrl == null ?  Image.asset('assets/dummies/dummy_avatar.png') : Image.network(widget.toImageUrl!),
+                child: widget.toImageUrl == null ?  Image.asset('assets/dummies/dummy_avatar.png') : ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                    child: Image.network(widget.toImageUrl!)),
               ),
               SizedBox(
                 width: 10.w,
               ),
               Text(
-                widget.toName ?? '',
+                toName ?? '',
                 style: TextStyle(color: Colors.black, fontSize: 14),
               )
             ],
@@ -148,7 +208,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Toast.show('still in progress');
+                  archiveChatRoom("personUid");
                 },
                 icon: Icon(
                   Icons.more_vert,
@@ -238,7 +298,9 @@ class _NewChatRoomState extends State<NewChatRoom> {
                               height: 20.h,
                               width: 20.w,
                               decoration: BoxDecoration(shape: BoxShape.circle),
-                              child: chatMessageList![index].profileImage != null ? Image.network(chatMessageList![index].profileImage!) : Image.asset('assets/dummies/dummy_avatar.png')
+                              child: chatMessageList![index].profileImage != null ? CircleAvatar(
+                                backgroundImage: NetworkImage(chatMessageList![index].profileImage!, scale: 1.0),
+                              ) : Image.asset('assets/dummies/dummy_avatar.png')
                             ),
                           ],
                         ),
@@ -343,7 +405,8 @@ class _NewChatRoomState extends State<NewChatRoom> {
                           textInputAction: TextInputAction.send,
                           onFieldSubmitted: (val){
                             if(val.isNotEmpty){
-                              if (widget.pendingChat == false) {
+                              if (isPendingChat == false) {
+                                print('to_id: $toId');
                                 setState(() {
                                   chatMessageList?.add(
                                       ChatMessageEntity(
@@ -356,7 +419,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                   _messageEditingController.clear();
                                   _scrollDown();
                                   ChatSendRequest _chatSendRequest = ChatSendRequest(
-                                      fromId: widget.fromId, toId: widget.toId, message: val);
+                                      fromId: widget.fromId, toId: toId, message: val);
 
                                   Injector.resolve<ChatBloc>().add(SendChatEvent(_chatSendRequest));
                                 });

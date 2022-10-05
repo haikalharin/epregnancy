@@ -64,7 +64,9 @@ _$_FromChatListResponse _$$_FromChatListResponseFromJson(
       isSuperAdmin: json['isSuperAdmin'] as bool?,
       isVerified: json['isVerified'] as bool?,
       hospitalId: json['hospitalId'] as String?,
-      hospital: json['hospital'] as String?,
+      hospital: json['hospital'] == null
+          ? null
+          : HospitalModel.fromJson(json['hospital'] as Map<String, dynamic>),
       imageUrl: json['imageUrl'] as String?,
       coverUrl: json['coverUrl'] as String?,
     );

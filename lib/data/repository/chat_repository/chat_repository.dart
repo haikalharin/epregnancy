@@ -13,8 +13,10 @@ abstract class ChatRepository {
   Future<List<ChatResponse>> fetchLatestChat();
   Future<List<ChatListResponse>> fetchChatList(String fromId);
   Future<List<ChatResponse>> fetchPersonalChatRoom(String toId);
+  Future<List<ChatResponse>> nakesRespondPendingChat(String fromId, String hospitalId);
 
   Future<List<ChatPendingResponseList>> fetchChatPendingList();
+  Future<List<ChatPendingResponseList>> fetchChatPendingListByHospitalId(String hospitalId);
   Future<ResponseModel<ChatPendingSendResponse>> sendChatPending(ChatPendingSendRequest _request);
   Future<ResponseModel<ChatResponse>> sendChat(ChatSendRequest _request);
   Future<ResponseModel<ChatPendingPatientResponse>> fetchChatPendingPatient(String fromId, String hospitalId);

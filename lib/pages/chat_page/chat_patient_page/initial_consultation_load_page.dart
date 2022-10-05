@@ -69,12 +69,21 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
               );
             });
             print('ongoing chat length : ${chatMessageList.length}');
+            String? toId;
+            String? toName;
+            // if(state.listPersonalChatRoom?[0].fromId == widget.userId){
+            //   toId = state.listPersonalChatRoom?[0].toId;
+            //   toName = state.listPersonalChatRoom?[0].to?.name;
+            // } else {
+            //   toId = state.listPersonalChatRoom?[0].fromId;
+            //   toName = state.listPersonalChatRoom?[0].from?.name;
+            // }
             Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
-              fromId: state.listChatOngoing?[0].fromId,
-              toId: state.listChatOngoing?[0].toId,
-              toImageUrl: state.listChatOngoing?[0].to?.imageUrl,
+              fromId: widget.userId,
+              toId: state.listPersonalChatRoom?[0].toId,
+              toImageUrl: state.listPersonalChatRoom?[0].to?.imageUrl,
               chatMessageList: chatMessageList,
-              toName: state.listChatOngoing?[0].to?.name,
+              toName: state.listPersonalChatRoom?[0].to?.name,
               pendingChat:  false,
             ))).then((value) {
               if(value != null){
