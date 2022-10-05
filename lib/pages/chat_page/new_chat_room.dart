@@ -113,6 +113,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
         setState(() {
           imagePath = croppedFile.path;
           imageBase64 = convertImageToBase64(croppedFile.path);
+          log('imagebase64: $imageBase64');
         });
 
         chatMessageList?.add(
@@ -125,12 +126,12 @@ class _NewChatRoomState extends State<NewChatRoom> {
             )
         );
         _messageEditingController.clear();
-        _scrollDown();
         ChatSendRequest _chatSendRequest = ChatSendRequest(
             fromId: widget.fromId, toId: toId, message: _messageEditingController.text,
-        imageBase64: imageBase64);
+        imageBase64: StringConstant.base64tag+imageBase64!);
 
         Injector.resolve<ChatBloc>().add(SendChatEvent(_chatSendRequest));
+        _scrollDown();
       }
     }
   }
@@ -167,12 +168,12 @@ class _NewChatRoomState extends State<NewChatRoom> {
             )
         );
         _messageEditingController.clear();
-        _scrollDown();
         ChatSendRequest _chatSendRequest = ChatSendRequest(
             fromId: widget.fromId, toId: toId, message: _messageEditingController.text,
-            imageBase64: imageBase64);
+            imageBase64: StringConstant.base64tag + imageBase64!);
 
         Injector.resolve<ChatBloc>().add(SendChatEvent(_chatSendRequest));
+        _scrollDown();
       }
     }
   }
@@ -553,12 +554,16 @@ class _NewChatRoomState extends State<NewChatRoom> {
                         padding: EdgeInsets.only(top: 3.h),
                         child: IconButton(
                             onPressed: () {
-                              keyboardFocusNode.unfocus();
                               setState(() {
                                 isOpenBottomSheet = !isOpenBottomSheet;
+                                if(isOpenBottomSheet){
+                                  keyboardFocusNode.unfocus();
+                                } else {
+                                  keyboardFocusNode.requestFocus();
+                                }
                               });
                             },
-                            icon: FaIcon(FontAwesomeIcons.faceSmile)),
+                            icon: !isOpenBottomSheet?  FaIcon(FontAwesomeIcons.faceSmile) : FaIcon(FontAwesomeIcons.keyboard)),
                       ),
                       Expanded(
                         child: TextFormField(

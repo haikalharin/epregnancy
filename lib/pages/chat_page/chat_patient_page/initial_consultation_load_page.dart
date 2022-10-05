@@ -63,6 +63,7 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
                       name: element.fromId,
                       message: element.message,
                       dateTime: element.createdDate,
+                      imageUrl: element.imageUrl,
                       profileImage: element.fromId == widget.userId ? element.from?.imageUrl : element.to?.imageUrl,
                       mine: element.fromId == widget.userId ? true: false
                   )

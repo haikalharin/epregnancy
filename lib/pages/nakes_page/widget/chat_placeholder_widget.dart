@@ -6,9 +6,10 @@ import '../../../utils/epragnancy_color.dart';
 import '../../../utils/string_constans.dart';
 
 class ChatPlaceHolderWidget extends StatelessWidget {
-  ChatPlaceHolderWidget({Key? key, this.name, this.message, required this.unread}) : super(key: key);
+  ChatPlaceHolderWidget({Key? key, this.name, this.message, required this.unread, this.imageUrl}) : super(key: key);
   final String? name;
   final String? message;
+  final String? imageUrl;
   bool unread = true;
 
   @override
@@ -22,7 +23,13 @@ class ChatPlaceHolderWidget extends StatelessWidget {
             decoration: BoxDecoration(
                 shape: BoxShape.circle
             ),
-            child: Image.asset('assets/dummies/dummy_avatar.png'),
+            child: imageUrl == null ? ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image.asset('assets/dummies/dummy_avatar.png'),
+            ) : ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image.network(imageUrl!),
+            )
           ),
           title: Text(name ?? '', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 12.sp),),
           subtitle: Row(children: [

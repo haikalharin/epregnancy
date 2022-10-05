@@ -41,6 +41,7 @@ class _OngoingListPageState extends State<OngoingListPage> {
                     message: element.message,
                     dateTime: element.createdDate,
                     profileImage: element.from?.imageUrl,
+                    imageUrl:  element.imageUrl,
                     mine: element.fromId == _userId ? true : false
                 )
             );

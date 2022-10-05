@@ -39,6 +39,7 @@ class StringConstant {
 
   //chat
   static const baru = 'Baru';
+  static const startConsultation = "Mulai Konsultasi";
   static const pending = 'Pending';
   static const archive = 'Arsip';
   static const onGoing = 'Sedang Berlangsung';
@@ -69,6 +70,8 @@ class StringConstant {
   //websocket
   static const updateLatestChat = 'update-latest-chat';
   static const newChat = 'new-chat';
+  static const base64tag = 'data:image/png;base64,';
+
 
 
 }

@@ -19,6 +19,7 @@ import '../../data/firebase/g_authentication.dart';
 import '../../data/model/person_model/person_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/string_constans.dart';
+import '../nakes_page/archive_nakes_page.dart';
 import '../nakes_page/ongoing_list_page.dart';
 import 'list_chat_room.dart';
 
@@ -37,7 +38,7 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
   final List<Widget> _listFragment = [
     PendingChatTabPage(),
     OngoingListPage(),
-    ListChatArchive(),
+    ArchiveNakesPage()
   ];
 
   void getMyPerson() async {
