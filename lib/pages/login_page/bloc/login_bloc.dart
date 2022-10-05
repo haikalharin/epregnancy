@@ -192,18 +192,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      ResponseModel response = await userRepository
-          .requestOtp(OtpModel(email: state.userModel?.email));
-      OtpModel otpModel = response.data;
-      if (response.code == 200) {
-        await AppSharedPreference.setString(
-            AppSharedPreference.otp, otpModel.otp ?? '');
-        yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess,
-            typeEvent: StringConstant.requestOtp);
-      } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
-      }
+      // ResponseModel response = await userRepository
+      //     .requestOtp(OtpModel(email: state.userModel?.email));
+      // OtpModel otpModel = response.data;
+      // if (response.code == 200) {
+      //   await AppSharedPreference.setString(
+      //       AppSharedPreference.otp, otpModel.otp ?? '');
+      //   yield state.copyWith(
+      //       submitStatus: FormzStatus.submissionSuccess,
+      //       typeEvent: StringConstant.requestOtp);
+      // } else {
+      //   yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      // }
     } on LoginErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

@@ -14,10 +14,15 @@ class ServiceUrl {
   static String register = '$user/register';
   static String updateUser = '$user/update';
   static String updateQuestioner = '$user/update';
-  static String loginOtp = '$user/login-otp';
-  static String requestOtp = '$user/request-otp';
+
   static String checkUserExist = '$user/check-availability/username';
   static String changePassword = '$user/change-password';
+
+  //otp
+  static String otp = 'otp';
+  static String requestOtp = '$otp/request';
+  static String verifyOtp = '$otp/verify';
+
 
   //baby
   static String baby = 'user-baby';

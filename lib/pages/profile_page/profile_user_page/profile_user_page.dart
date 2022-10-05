@@ -7,8 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../common/constants/router_constants.dart';
+import '../../../common/injector/injector.dart';
 import '../../../data/firebase/g_authentication.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../survey_page/bloc/survey_page_bloc.dart';
 
 class ProfileUserPage extends StatelessWidget {
   const ProfileUserPage({Key? key, this.name}) : super(key: key);
@@ -143,17 +145,22 @@ class ProfileUserPage extends StatelessWidget {
                 ],
               ),
             ),
-            ListTile(
-              leading: Text(
-                StringConstant.profilePregnantChange,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500),
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios,
-                color: EpregnancyColors.greyText,
+            InkWell(
+              onTap: (){
+                Navigator.of(context).pushNamed(RouteName.surveyPage,arguments: true);
+              },
+              child: ListTile(
+                leading: Text(
+                  StringConstant.profilePregnantChange,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: EpregnancyColors.greyText,
+                ),
               ),
             ),
             Padding(
@@ -244,8 +251,11 @@ class ProfileUserPage extends StatelessWidget {
               child: Text('Tidak'),
             ),
             FlatButton(
-              onPressed: () =>  Navigator.of(context).pushNamedAndRemoveUntil(
-                  RouteName.login, (Route<dynamic> route) => false),
+              onPressed: () {
+                Injector.resolve<SurveyPageBloc>().add(const SurveyDisposeEvent());
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteName.login, (Route<dynamic> route) => false);
+                },
               child: Text('Ya'),
             ),
           ],

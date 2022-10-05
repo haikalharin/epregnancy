@@ -172,7 +172,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                             ),
                             Row(
                               children: [
-                                state.status ==
+                                state.submitStatus ==
                                     FormzStatus
                                         .submissionInProgress &&
                                     state.tipe == 'listArticle'

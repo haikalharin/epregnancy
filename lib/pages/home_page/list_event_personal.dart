@@ -241,7 +241,7 @@ class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
-      if (state.status == FormzStatus.submissionInProgress &&
+      if (state.submitStatus == FormzStatus.submissionInProgress &&
           state.tipe == 'listEvent') {
         return Container(
             height: 1000,

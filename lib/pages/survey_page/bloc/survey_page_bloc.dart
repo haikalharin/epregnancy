@@ -42,14 +42,49 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
       yield _mapSurveyBabysNameChangedToState(event, state);
     } else if (event is SurveyPageChanged) {
       yield _mapSurveyPageChangedToState(event, state);
+    } else if (event is SurveyChoice) {
+      yield _mapSurveySurveyChoiceToState(event, state);
     } else if (event is SurveyInitEvent) {
-      yield _mapSurveyInitEventToState(event, state);
+      yield* _mapSurveyInitEventToState(event, state);
+    } else if (event is SurveyDisposeEvent) {
+      yield _mapSurveyDisposeEventToState(event, state);
     }
   }
-
-  SurveyPageState _mapSurveyInitEventToState(
-      SurveyInitEvent event, SurveyPageState state) {
+  SurveyPageState _mapSurveyDisposeEventToState(
+      SurveyDisposeEvent event,
+      SurveyPageState state,
+      ) {
     return SurveyPageState();
+  }
+
+  Stream<SurveyPageState> _mapSurveyInitEventToState(
+      SurveyInitEvent event, SurveyPageState state) async*{
+    var user = await AppSharedPreference.getUserRegister();
+     List<dynamic> myBaby= [];
+    var choice = 0;
+    if(event.isUpdate) {
+    user = await AppSharedPreference.getUser();
+      ResponseModel response = await userRepository.getBaby(user);
+     myBaby = response.data;
+
+      if (user.isPregnant == true) {
+        choice = 1;
+      } else if (user.isPlanningPregnancy == true) {
+        choice = 2;
+      } else if (user.isHaveBaby == true) {
+        choice = 3;
+      }
+    }
+    yield SurveyPageState(user: user, dataBaby: myBaby.isNotEmpty? myBaby.last:BabyModelApi.empty(), choice: choice);
+  }
+
+  SurveyPageState _mapSurveySurveyChoiceToState(
+      SurveyChoice event,
+      SurveyPageState state,
+      ) {
+    return state.copyWith(
+      choice: event.choice,
+    );
   }
 
   SurveyPageState _mapSurveyPageChangedToState(
@@ -88,9 +123,12 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       UserModel user = await AppSharedPreference.getUserRegister();
+      if(event.isUpdate){
+       user = await AppSharedPreference.getUser();
+      }
       ResponseModel response = await userRepository.updateQuestioner(
           SignupQuestRequest(
-              id: user.id,
+              id: user.id?? state.user?.id,
               isPregnant: event.isPregnant,
               isPlanningPregnancy: event.isPlanningPregnancy,
               isHaveBaby: event.isHaveBaby));
@@ -98,8 +136,11 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
       if (response.code == 200) {
         UserModel userModel = response.data;
         await AppSharedPreference.setUserRegister(response.data);
+        if(event.isUpdate){
+          await AppSharedPreference.setUser(response.data);
+        }
         await AppSharedPreference.setString(AppSharedPreference.token,userModel.token??'');
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: 'submit');
 
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
@@ -122,10 +163,20 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       UserModel user = await AppSharedPreference.getUserRegister();
-      ResponseModel response = await userRepository.saveQuestionerBaby(
-          BabyModelApi(userId: user.id,name: state.name.value,lastMenstruationDate: state.date.value
-        )
+      ResponseModel response = ResponseModel.dataEmpty();
+      if(state.dataBaby?.id != ""){
+        response =  await userRepository.updateQuestionerBaby(
+            BabyModelApi(id: state.dataBaby?.id,name: state.name.value,lastMenstruationDate: state.date.value
+            )
         );
+      } else{
+        response =  await userRepository.saveQuestionerBaby(
+            BabyModelApi(userId: user.id??state.user?.id,name: state.name.value,lastMenstruationDate: state.date.value
+            )
+        );
+      }
+
+
 
       if (response.code == 200) {
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);

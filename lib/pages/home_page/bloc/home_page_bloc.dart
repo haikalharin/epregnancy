@@ -70,7 +70,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     EventFetchEvent event,
     HomePageState state,
   ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress,tipe: "listEvent");
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress,tipe: "listEvent");
     try {
       List<EventModel> listEventBeforeSort = [];
       ResponseModel<EventModel> responseModel = ResponseModel();
@@ -98,18 +98,18 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
                 eventDateString: dateTimeString,
                 eventDate: event.date,
                 listEvent: listEventFix,
-                status: FormzStatus.submissionSuccess);
+                submitStatus: FormzStatus.submissionSuccess);
           } else {
             yield state.copyWith(
                 eventDateString: dateTimeString,
                 eventDate: event.date,
                 listEventPersonal: listEventFix,
-                status: FormzStatus.submissionSuccess);
+                submitStatus: FormzStatus.submissionSuccess);
           }
         } else {
           yield state.copyWith(
               eventDateString: dateTimeString,
-              status: FormzStatus.submissionFailure);
+              submitStatus: FormzStatus.submissionFailure);
         }
       } else {
         var outputFormat = DateFormat.yMMMMd('id');
@@ -118,14 +118,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
             eventDateString: dateTimeString,
             eventDate: event.date,
             listEventPersonal: listEventBeforeSort,
-            status: FormzStatus.submissionSuccess);
+            submitStatus: FormzStatus.submissionSuccess);
       }
     } on HomeErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 
@@ -134,21 +134,21 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     HomePageState state,
   ) async* {
     yield state.copyWith(
-        status: FormzStatus.submissionInProgress, tipe: "fetchtotalPoint");
+        submitStatus: FormzStatus.submissionInProgress, tipe: "fetchtotalPoint");
     try {
       final ResponseModel<UserInfo> userInfo = await userRepository.getUserInfo();
       await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if(userInfo.code == 200) {
         await AppSharedPreference.setUserInfo(userInfo.data);
         yield state.copyWith(
-            status: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.data.totalPointsEarned);
+            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.data.totalPointsEarned);
       }
     } on HomeErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: e.message);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.toString());
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString());
     }
   }
 
@@ -157,7 +157,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       HomePageState state,
       ) async* {
     yield state.copyWith(
-        status: FormzStatus.submissionInProgress, tipe: "listArticle");
+        submitStatus: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
       List<ArticleModel> lisArticleFix = [];
       final List<ArticleModel> lisArticle = await EventArticle.fetchAllArticle();
@@ -166,14 +166,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           lisArticleFix.add(lisArticle[i]);
         }
         yield state.copyWith(
-            listArticle: lisArticleFix, status: FormzStatus.submissionSuccess);
+            listArticle: lisArticleFix, submitStatus: FormzStatus.submissionSuccess);
       }
     } on HomeErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 
@@ -187,7 +187,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     HomePageState state,
   ) async* {
     yield state.copyWith(
-        status: FormzStatus.submissionInProgress);
+        submitStatus: FormzStatus.submissionInProgress);
     try {
       var days = 0;
       var weeks = 0;
@@ -219,7 +219,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           await AppSharedPreference.getUserRoleFirebase();
       if (response.code == 200) {
         yield state.copyWith(
-          status: FormzStatus.submissionSuccess,
+          submitStatus: FormzStatus.submissionSuccess,
           baby: myBaby,
           days: days.toString(),
           weeks: weeks.toString(),
@@ -230,14 +230,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
               : StringConstant.midwife,
         );
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure);
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     } on HomeErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 //

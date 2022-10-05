@@ -67,6 +67,15 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
+  Future<ResponseModel> updateQuestionerBaby(BabyModelApi baby) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.updateBaby(baby);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
   Future<ResponseModel> saveQuestionerBaby(BabyModelApi baby) async {
     if (await networkInfo.isConnected) {
       ResponseModel responseModel = await remoteDatasource.saveBaby(baby);
@@ -94,9 +103,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<ResponseModel> loginOtp(OtpModel otpModel) async {
+  Future<ResponseModel> verifyOtp(OtpModel otpModel) async {
     if (await networkInfo.isConnected) {
-      ResponseModel responseModel = await remoteDatasource.loginOtp(otpModel);
+      ResponseModel responseModel = await remoteDatasource.verifyOtp(otpModel);
       return responseModel;
     }
     throw NetworkConnectionException();

@@ -36,7 +36,7 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
                   if(state.userModelFirebase!.status == StringConstant.active){
                     // Navigator.of(context).pushNamed(RouteName.navBar,arguments: 0);
                   } else {
-                    Navigator.of(context).pushNamed(RouteName.surveyPage);
+                    Navigator.of(context).pushNamed(RouteName.surveyPage,arguments: false);
                   }
                   // Navigator.of(context).pushNamedAndRemoveUntil(
                   //                 RouteName.homeScreen,

@@ -37,7 +37,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                 SnackBar(content: Text(message), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            Navigator.of(context).pushNamed(RouteName.surveyPage);
+            Navigator.of(context).pushNamed(RouteName.surveyPage,arguments: false);
           }
         },
         child: BlocBuilder<SignUpQuestionnaireBloc, SignUpQuestionnaireState>(

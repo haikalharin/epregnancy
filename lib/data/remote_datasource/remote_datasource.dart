@@ -104,12 +104,19 @@ class RemoteDataSource {
 
   Future<ResponseModel> updateBaby(BabyModelApi baby) async {
     try {
-      final response = await httpClient.post(ServiceUrl.updateBaby, baby);
+      Map<String, String> data =  {
+        'id': baby.id??"",
+        'name': baby.name??"",
+        'last_menstruation_date': baby.lastMenstruationDate??"",
+
+      };
+      final response = await httpClient.put(ServiceUrl.updateBaby, data);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
+
 
   Future<ResponseModel> updateQuestioner(UserModel user) async {
     try {
@@ -140,9 +147,9 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel> loginOtp(OtpModel otpModel) async {
+  Future<ResponseModel> verifyOtp(OtpModel otpModel) async {
     try {
-      final response = await httpClient.post(ServiceUrl.loginOtp, otpModel);
+      final response = await httpClient.post(ServiceUrl.verifyOtp, otpModel);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
