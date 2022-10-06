@@ -33,18 +33,18 @@ class LandingPageBloc extends Bloc<LandingPageEvent, LandingPageState> {
       ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      UserModel user = await AppSharedPreference.getUserRegister();
-      ResponseModel response = await userRepository
-          .requestOtp(OtpModel(email:user.email));
-      OtpModel otpModel = response.data;
-      if (response.code == 200) {
-        await AppSharedPreference.setString(
-            AppSharedPreference.otp, otpModel.otp ?? '');
-        yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess);
-      } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
-      }
+      // UserModel user = await AppSharedPreference.getUserRegister();
+      // ResponseModel response = await userRepository
+      //     .requestOtp(OtpModel(email:user.email));
+      // OtpModel otpModel = response.data;
+      // if (response.code == 200) {
+      //   await AppSharedPreference.setString(
+      //       AppSharedPreference.otp, otpModel.otp ?? '');
+      //   yield state.copyWith(
+      //       submitStatus: FormzStatus.submissionSuccess);
+      // } else {
+      //   yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      // }
     } on LoginErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

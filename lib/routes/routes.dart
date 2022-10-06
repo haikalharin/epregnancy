@@ -42,9 +42,9 @@ class Routes {
       case RouteName.homeScreen:
         return MaterialPageRoute(builder: (_) => HomePage(userId: getDataValue(settings.arguments),));
       case RouteName.surveyPage:
-        return MaterialPageRoute(builder: (_) => SurveyPage());
+        return MaterialPageRoute(builder: (_) => SurveyPage(isEdit:  getDataValue(settings.arguments)));
       case RouteName.surveyPageBaby:
-        return MaterialPageRoute(builder: (_) => SurveyPageBaby());
+        return MaterialPageRoute(builder: (_) => SurveyPageBaby(isEdit:  getDataValue(settings.arguments)));
       case RouteName.articleDetailPage:
         return MaterialPageRoute(builder: (_) => ArticleDetailPage());
       case RouteName.chatPage:

@@ -120,7 +120,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
                 userId: data,
-                isExist: false);
+                isExist: false,
+                type: 'toRequestOtp');
           }
         } else {
           yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
@@ -145,15 +146,19 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
+      var type = '';
+      if(state.userId!.contains('@')){
+        type = 'email';
+      } else {
+        type = 'mobile';
+      }
       ResponseModel response = await userRepository
-          .requestOtp(OtpModel(email: state.userModel?.email));
+          .requestOtp(OtpModel(value: state.userId, type: type));
       OtpModel otpModel = response.data;
       if (response.code == 200) {
-        await AppSharedPreference.setString(
-            AppSharedPreference.otp, otpModel.otp ?? '');
+        await AppSharedPreference.setOtp(otpModel);
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess,
-            type: StringConstant.requestOtp);
+            submitStatus: FormzStatus.submissionSuccess);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }

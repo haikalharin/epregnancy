@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         backgroundColor: Colors.grey.shade200,
         body: BlocListener<HomePageBloc, HomePageState>(
           listener: (context, state) {
-            if (state.status == FormzStatus.submissionSuccess) {}
+            if (state.submitStatus == FormzStatus.submissionSuccess) {}
           },
           child: BlocBuilder<HomePageBloc, HomePageState>(
             builder: (context, state) {
@@ -221,8 +221,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         margin: EdgeInsets.only(
                                                             bottom: 10),
                                                         child: Text(
-                                                          state.baby!.first
-                                                              .name!,
+                                                         state.baby!.length != 0? state.baby!.first
+                                                              .name!: "",
                                                           style: TextStyle(
                                                               fontSize: 16,
                                                               color:
@@ -462,7 +462,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                               Row(
                                 children: [
-                                  state.status ==
+                                  state.submitStatus ==
                                               FormzStatus
                                                   .submissionInProgress &&
                                           state.tipe == 'listArticle'

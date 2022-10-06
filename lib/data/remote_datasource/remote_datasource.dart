@@ -23,6 +23,7 @@ import 'package:PregnancyApp/data/model/user_info/user_info.dart';
 import '../../common/network/http/http_client.dart';
 import '../../common/remote/url/service_url.dart';
 import '../../utils/remote_utils.dart';
+import '../model/article_model/article_model.dart';
 import '../model/baby_model_api/baby_Model_api.dart';
 import '../model/consultation_model/consultation_model.dart';
 import '../model/login_model/login_model.dart';
@@ -104,12 +105,19 @@ class RemoteDataSource {
 
   Future<ResponseModel> updateBaby(BabyModelApi baby) async {
     try {
-      final response = await httpClient.post(ServiceUrl.updateBaby, baby);
+      Map<String, String> data =  {
+        'id': baby.id??"",
+        'name': baby.name??"",
+        'last_menstruation_date': baby.lastMenstruationDate??"",
+
+      };
+      final response = await httpClient.put(ServiceUrl.updateBaby, data);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
+
 
   Future<ResponseModel> updateQuestioner(UserModel user) async {
     try {
@@ -140,9 +148,9 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel> loginOtp(OtpModel otpModel) async {
+  Future<ResponseModel> verifyOtp(OtpModel otpModel) async {
     try {
-      final response = await httpClient.post(ServiceUrl.loginOtp, otpModel);
+      final response = await httpClient.post(ServiceUrl.verifyOtp, otpModel);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -387,5 +395,47 @@ class RemoteDataSource {
       data.add(ChatPendingResponseList.fromJson(item));
     });
     return data;
+  }
+
+  Future<ResponseModel> updatePhotoProfile(String userId, String imgProfile) async {
+    try {
+      Map<String, String> data =  {
+        'id': userId,
+        'image_base64': imgProfile
+      };
+      final response = await httpClient.put(ServiceUrl.updateUser, data);
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<List<ArticleModel>> fetchArticle() async {
+    final response = await httpClient.get(ServiceUrl.listArticle);
+    final data = <ArticleModel>[];
+    getData(response).forEach((item) {
+      data.add(ArticleModel.fromJson(item));
+    });
+    return data;
+  }
+  Future<List<ArticleModel>> searchArticle(bool isSearch, String keyword) async {
+      Map<String, String> param =  {
+        'title': keyword,
+      };
+      final  response =  await httpClient.get(ServiceUrl.listArticle,queryParameters:param );
+    final data = <ArticleModel>[];
+    getData(response).forEach((item) {
+      data.add(ArticleModel.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<ResponseModel> readArticle(String id) async {
+    try {
+      final response = await httpClient.get(ServiceUrl.readArticle + "/$id");
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
   }
 }

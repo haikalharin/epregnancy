@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:flutter/foundation.dart';
@@ -61,8 +62,6 @@ class AppSharedPreference {
     prefs.setBool(key, value);
   }
 
-
-
   static setUserInfo(UserInfo data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -78,8 +77,33 @@ class AppSharedPreference {
   static Future<HospitalModel> getHospital() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString(hospital);
-    Map<String, dynamic> map = jsonDecode(json!);
-    return HospitalModel.fromJson(map);
+    if (json != null) {
+      Map<String, dynamic> map = jsonDecode(json);
+      return HospitalModel.fromJson(map);
+    } else {
+      return const HospitalModel(
+          id: "",
+          alias: "",
+          name: "",
+          address: "",
+          city: "",
+          country: "",
+          postalCode: "",
+          phone: "",
+          email: "",
+          latitude: 0,
+          longitude: 0,
+          status: "",
+          imageUrl: "",
+          coverUrl: "",
+          isDelete: false,
+          createdBy: "",
+          createdFrom: "",
+          createdDate: "",
+          modifiedBy: "",
+          modifiedFrom: "",
+          modifiedDate: "");
+    }
   }
 
   static Future<UserInfo> getUserInfo() async {
@@ -88,8 +112,6 @@ class AppSharedPreference {
     Map<String, dynamic> map = jsonDecode(json!);
     return UserInfo.fromJson(map);
   }
-
-
 
   static Future<String> getUsernameRegisterUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -131,12 +153,12 @@ class AppSharedPreference {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString(_userRegister);
     if (json != null) {
-    Map<String, dynamic> map = jsonDecode(json);
-    return UserModel.fromJson(map);
-  } else{
+      Map<String, dynamic> map = jsonDecode(json);
+      return UserModel.fromJson(map);
+    } else {
       return const UserModel();
     }
-    }
+  }
 
   static setUserRegister(UserModel data) async {
     String json = jsonEncode(data.toJson());
@@ -153,7 +175,6 @@ class AppSharedPreference {
     } else {
       return const UserModel();
     }
-
   }
 
   static setUser(UserModel data) async {
@@ -231,5 +252,22 @@ class AppSharedPreference {
   static Future<void> setPerson(PersonModel person) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('person', json.encode(person.toJson()));
+  }
+
+  static setOtp(OtpModel data) async {
+    String json = jsonEncode(data.toJson());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(otp, json);
+  }
+
+  static Future<OtpModel> getOtp() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(otp);
+    if (json != null) {
+      Map<String, dynamic> map = jsonDecode(json);
+      return OtpModel.fromJson(map);
+    } else {
+      return OtpModel.empty();
+    }
   }
 }

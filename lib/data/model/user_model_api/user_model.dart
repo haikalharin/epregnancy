@@ -16,6 +16,8 @@ abstract class UserModel with _$UserModel {
   const factory UserModel({
     @JsonKey(includeIfNull: true)
     String? id,
+    @JsonKey(includeIfNull: true, name:'referral_code')
+    String? referralCode,
     @JsonKey(includeIfNull: true)
     String? password,
     @JsonKey(name:'is_patient',includeIfNull: true)

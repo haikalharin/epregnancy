@@ -30,6 +30,7 @@ final _userNameController = TextEditingController();
 var authService = AuthService();
 
 class _LoginPageState extends State<LoginPage> {
+  bool _isHiddenPassword = true;
   @override
   void initState() {
     super.initState();
@@ -251,8 +252,15 @@ class _UsernameInput extends StatelessWidget {
   }
 }
 
-class _PasswordInput extends StatelessWidget {
-  const _PasswordInput();
+class _PasswordInput extends StatefulWidget {
+   _PasswordInput();
+
+  @override
+  State<_PasswordInput> createState() => _PasswordInputState();
+}
+
+class _PasswordInputState extends State<_PasswordInput> {
+  bool _isHiddenPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -263,10 +271,23 @@ class _PasswordInput extends StatelessWidget {
           key: const Key('loginForm_passwordInput_textField'),
           onChanged: (password) =>
               Injector.resolve<LoginBloc>().add(LoginPasswordChanged(password)),
-          obscureText: true,
+          obscureText: _isHiddenPassword,
           decoration: InputDecoration(
             labelText: 'Kata Sandi',
             errorText: state.password.invalid ? 'Kata Sandi salah' : null,
+            suffixIcon: GestureDetector(
+              onTap: () {
+                var  _isHiddenTap = _isHiddenPassword == true ? false : true;
+
+                setState(() {
+                  _isHiddenPassword =_isHiddenTap;
+                });
+              },
+              child: Icon(
+                _isHiddenPassword == true ? Icons.visibility_off : Icons.visibility,
+                color: _isHiddenPassword == true ? Colors.grey : EpregnancyColors.black,
+              ),
+            ),
           ),
         );
       },

@@ -1,32 +1,44 @@
 part of 'article_bloc.dart';
 
-class ArticlePageState {
+class ArticlePageState with FormzMixin {
   final List<ArticleModel>? listArticle;
   final ArticleModel? articleModel;
-  final FormzStatus status;
+  final FormzStatus submitStatus;
   final String? errorMessage;
+  final String? type;
+  final bool? isSearch;
 
   ArticlePageState(
       {
         this.articleModel,
         this.listArticle,
-        this.status = FormzStatus.pure,
+        this.type,
+        this.isSearch = false,
+        this.submitStatus = FormzStatus.pure,
         this.errorMessage});
 
   ArticlePageState copyWith(
-      {FormzStatus? status,
+      {FormzStatus? submitStatus,
         ArticleModel? articleModel,
         List<ArticleModel>? listArticle,
+        bool? isSearch,
+        String? type,
         String? errorMessage}) {
     return ArticlePageState(
-        status: status ?? this.status,
+        submitStatus: submitStatus ?? this.submitStatus,
         articleModel: articleModel ?? this.articleModel,
         listArticle: listArticle ?? this.listArticle,
+        isSearch: isSearch ?? this.isSearch,
+        type: type ?? this.type,
         errorMessage: errorMessage);
   }
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => [];
+
+  @override
+  // TODO: implement inputs
+  List<FormzInput> get inputs => throw UnimplementedError();
 }
 
 class ArticlePageInitial extends ArticlePageState {}

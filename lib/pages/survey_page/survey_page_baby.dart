@@ -11,12 +11,15 @@ import 'package:intl/intl.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../utils/epragnancy_color.dart';
 
+import '../../utils/string_constans.dart';
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPageBaby extends StatefulWidget {
-  const SurveyPageBaby({Key? key}) : super(key: key);
+  const SurveyPageBaby({Key? key, this.isEdit = false}) : super(key: key);
+  final bool? isEdit;
 
   @override
   State<SurveyPageBaby> createState() => _SurveyPageBabyState();
@@ -31,12 +34,6 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
   int val2 = -1;
 
   @override
-  void initState() {
-    Injector.resolve<SurveyPageBloc>().add(const SurveyInitEvent());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocListener<SurveyPageBloc, SurveyPageState>(
       listener: (context, state) {
@@ -45,7 +42,15 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
               SnackBar(content: Text("failed"), backgroundColor: Colors.red);
           Scaffold.of(context).showSnackBar(snackBar);
         } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-          Navigator.of(context).pushNamed(RouteName.landingPage);
+          if (widget.isEdit == true) {
+            Navigator.of(context).pushNamed(RouteName.navBar, arguments: {
+              'role': StringConstant.patient,
+              'initial_index': 2
+
+            });
+          } else {
+            Navigator.of(context).pushNamed(RouteName.landingPage);
+          }
           // Navigator.of(context).pushNamedAndRemoveUntil(
           //                 RouteName.homeScreen,
           //                 ModalRoute.withName(RouteName.homeScreen),
@@ -63,6 +68,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                 Navigator.pop(context);
                 return Future.value(true);
               } else {
+                Navigator.of(context).pushNamed(RouteName.signup);
                 return Future.value(false);
               }
             },
@@ -92,8 +98,13 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                 child: Stack(
                   children: [
                     state.page == 3
-                        ? const LastMenstruation()
-                        : const BabyName(),
+                        ? LastMenstruation(
+                            isEdit: widget.isEdit,
+                            baby: state.dataBaby ?? BabyModelApi.empty(),
+                          )
+                        : BabyName(
+                            isEdit: widget.isEdit,
+                            baby: state.dataBaby ?? BabyModelApi.empty()),
                     Container(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -125,7 +136,11 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                 child: Padding(
                                   padding: EdgeInsets.zero,
                                   child: Text(
-                                    "Mulai Konsultasi",
+                                    state.page == 4
+                                        ? widget.isEdit == true
+                                            ? "simpan"
+                                            : "Mulai Konsultasi"
+                                        : "Selanjutnya",
                                     style: TextStyle(
                                         fontSize: 16, color: Colors.white),
                                   ),
@@ -139,9 +154,11 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                   if (state.page == 3 && state.date.valid) {
                                     Injector.resolve<SurveyPageBloc>()
                                         .add(SurveyPageChanged(4));
-                                  } else if (state.page == 4 && state.name.valid) {
-                                    Injector.resolve<SurveyPageBloc>()
-                                        .add(SurveyAddDataBabyEvent());
+                                  } else if (state.page == 4 &&
+                                      state.name.valid) {
+                                    Injector.resolve<SurveyPageBloc>().add(
+                                        SurveyAddDataBabyEvent(
+                                            isUpdate: widget.isEdit!));
                                   }
                                 },
                               ),
@@ -165,9 +182,9 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
 class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginExampleBloc, LoginExampleState>(
+    return BlocBuilder<SurveyPageBloc, SurveyPageState>(
         builder: (context, state) {
-      if (state.status == FormzStatus.submissionInProgress) {
+      if (state.submitStatus == FormzStatus.submissionInProgress) {
         return Container(
             color: Colors.white.withAlpha(90),
             child: Center(child: CircularProgressIndicator()));

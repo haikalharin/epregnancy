@@ -21,10 +21,12 @@ abstract class UserRepository {
   Future <ResponseModel>register(UserModel UserModel);
   Future <ResponseModel>updateQuestioner(SignupQuestRequest UserModel);
   Future <ResponseModel>saveQuestionerBaby(BabyModelApi babyModelApi);
+  Future <ResponseModel>updateQuestionerBaby(BabyModelApi babyModelApi);
   Future <ResponseModel>getBaby(UserModel UserModel);
   Future <ResponseModel>requestOtp(OtpModel otpModel);
-  Future <ResponseModel>loginOtp(OtpModel otpModel);
+  Future <ResponseModel>verifyOtp(OtpModel otpModel);
   Future <ResponseModel>changePassword(String currentPassword, String newPassword);
+  Future <ResponseModel>changePhotoProfile(String userId, String imgProfile);
 
 
   Future loginWithGoogle();

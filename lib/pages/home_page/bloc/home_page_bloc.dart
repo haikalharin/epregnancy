@@ -7,6 +7,7 @@ import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
+import 'package:PregnancyApp/data/repository/article_repository/article_repository.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
@@ -35,11 +36,12 @@ part 'home_page_event.dart';
 part 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
-  HomePageBloc(this.homeRepository, this.userRepository, this.eventRepository) : super(HomePageInitial());
+  HomePageBloc(this.homeRepository, this.userRepository, this.eventRepository, this.articleRepository) : super(HomePageInitial());
 
   final HomeRepository homeRepository;
   final UserRepository userRepository;
   final EventRepository eventRepository;
+  final ArticleRepository articleRepository;
 
   @override
   Stream<HomePageState> mapEventToState(HomePageEvent event) async* {
@@ -70,7 +72,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     EventFetchEvent event,
     HomePageState state,
   ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress,tipe: "listEvent");
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress,tipe: "listEvent");
     try {
       List<EventModel> listEventBeforeSort = [];
       ResponseModel<EventModel> responseModel = ResponseModel();
@@ -98,18 +100,18 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
                 eventDateString: dateTimeString,
                 eventDate: event.date,
                 listEvent: listEventFix,
-                status: FormzStatus.submissionSuccess);
+                submitStatus: FormzStatus.submissionSuccess);
           } else {
             yield state.copyWith(
                 eventDateString: dateTimeString,
                 eventDate: event.date,
                 listEventPersonal: listEventFix,
-                status: FormzStatus.submissionSuccess);
+                submitStatus: FormzStatus.submissionSuccess);
           }
         } else {
           yield state.copyWith(
               eventDateString: dateTimeString,
-              status: FormzStatus.submissionFailure);
+              submitStatus: FormzStatus.submissionFailure);
         }
       } else {
         var outputFormat = DateFormat.yMMMMd('id');
@@ -118,14 +120,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
             eventDateString: dateTimeString,
             eventDate: event.date,
             listEventPersonal: listEventBeforeSort,
-            status: FormzStatus.submissionSuccess);
+            submitStatus: FormzStatus.submissionSuccess);
       }
     } on HomeErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 
@@ -134,21 +136,21 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     HomePageState state,
   ) async* {
     yield state.copyWith(
-        status: FormzStatus.submissionInProgress, tipe: "fetchtotalPoint");
+        submitStatus: FormzStatus.submissionInProgress, tipe: "fetchtotalPoint");
     try {
       final ResponseModel<UserInfo> userInfo = await userRepository.getUserInfo();
       await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if(userInfo.code == 200) {
         await AppSharedPreference.setUserInfo(userInfo.data);
         yield state.copyWith(
-            status: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.data.totalPointsEarned);
+            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.data.totalPointsEarned);
       }
     } on HomeErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: e.message);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.toString());
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString());
     }
   }
 
@@ -157,23 +159,24 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       HomePageState state,
       ) async* {
     yield state.copyWith(
-        status: FormzStatus.submissionInProgress, tipe: "listArticle");
+        submitStatus: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
       List<ArticleModel> lisArticleFix = [];
-      final List<ArticleModel> lisArticle = await EventArticle.fetchAllArticle();
+      final List<ArticleModel> lisArticle = await articleRepository.fetchArticle();
       if (lisArticle.isNotEmpty) {
-        for (var i = 0; i < 3; i++) {
+        var length = lisArticle.length <3? lisArticle.length: 3;
+        for (var i = 0; i < length; i++) {
           lisArticleFix.add(lisArticle[i]);
         }
         yield state.copyWith(
-            listArticle: lisArticleFix, status: FormzStatus.submissionSuccess);
+            listArticle: lisArticleFix, submitStatus: FormzStatus.submissionSuccess);
       }
     } on HomeErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 
@@ -187,7 +190,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     HomePageState state,
   ) async* {
     yield state.copyWith(
-        status: FormzStatus.submissionInProgress);
+        submitStatus: FormzStatus.submissionInProgress);
     try {
       var days = 0;
       var weeks = 0;
@@ -219,7 +222,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           await AppSharedPreference.getUserRoleFirebase();
       if (response.code == 200) {
         yield state.copyWith(
-          status: FormzStatus.submissionSuccess,
+          submitStatus: FormzStatus.submissionSuccess,
           baby: myBaby,
           days: days.toString(),
           weeks: weeks.toString(),
@@ -230,14 +233,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
               : StringConstant.midwife,
         );
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure);
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     } on HomeErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 //

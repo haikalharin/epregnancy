@@ -59,5 +59,6 @@ class SignupSubmittedWithNumberPhone extends SignupEvent {
 }
 
 class RequestOtp extends SignupEvent {
-  const RequestOtp();
+  const RequestOtp(this.isEmail);
+  final bool isEmail;
 }

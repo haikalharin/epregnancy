@@ -1,11 +1,11 @@
 part of 'home_page_bloc.dart';
 
-class HomePageState {
+class HomePageState with FormzMixin {
   final UserModel? user;
   final String? role;
   final List<dynamic>? baby;
   final BabyProgressModel? babyProgressModel;
-  final FormzStatus status;
+  final FormzStatus? submitStatus;
   final String? tipe;
   final String? days;
   final String? weeks;
@@ -22,7 +22,7 @@ class HomePageState {
     this.role,
     this.baby,
     this.babyProgressModel,
-    this.status = FormzStatus.pure,
+    this.submitStatus = FormzStatus.pure,
     this.listArticle,
     this.listEvent,
     this.listEventPersonal,
@@ -35,7 +35,7 @@ class HomePageState {
     this.totalPointsEarned,
     this.errorMessage});
 
-  HomePageState copyWith({FormzStatus? status,
+  HomePageState copyWith({FormzStatus? submitStatus,
     UserModel? user,
     String? role,
     List<dynamic>? baby,
@@ -52,7 +52,7 @@ class HomePageState {
     int? totalPointsEarned,
     String? errorMessage}) {
     return HomePageState(
-        status: status ?? this.status,
+        submitStatus: submitStatus,
         user: user ?? this.user,
         role: role ?? this.role,
         baby: baby ?? this.baby,
@@ -71,7 +71,11 @@ class HomePageState {
   }
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => [];
+
+  @override
+  // TODO: implement inputs
+  List<FormzInput> get inputs => throw UnimplementedError();
 }
 
 class HomePageInitial extends HomePageState {}

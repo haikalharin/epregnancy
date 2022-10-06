@@ -3,12 +3,15 @@ import 'dart:math';
 
 import 'package:PregnancyApp/data/model/article_model/article_model.dart';
 import 'package:PregnancyApp/data/firebase/event/event_article.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
+import 'package:PregnancyApp/data/repository/article_repository/article_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
+import '../../../common/exceptions/article_error_exception.dart';
 import '../../../common/exceptions/survey_error_exception.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/user_model_firebase/user_model_firebase.dart';
@@ -20,35 +23,70 @@ part 'article_event.dart';
 part 'article_state.dart';
 
 class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
-  ArticlePageBloc(this.userRepository) : super(ArticlePageInitial());
+  ArticlePageBloc(this.articleRepository) : super(ArticlePageInitial());
 
-  final UserRepository userRepository;
+  final ArticleRepository articleRepository;
 
   @override
   Stream<ArticlePageState> mapEventToState(ArticlePageEvent event) async* {
     if (event is ArticleFetchEvent) {
       yield* _mapArticleFetchEventToState(event, state);
+    } else if (event is ArticleReadEvent) {
+      yield* _mapArticleReadEventToState(event, state);
+    } else if (event is ArticleBackEvent) {
+      yield _mapArticleBackEventToState(event, state);
     }
   }
 
+  ArticlePageState _mapArticleBackEventToState(
+      ArticleBackEvent event,
+      ArticlePageState state,
+      ) {
+    return state.copyWith(
+      isSearch: false,
+    );
+  }
+
   Stream<ArticlePageState> _mapArticleFetchEventToState(
-    ArticleFetchEvent event,
-    ArticlePageState state,
-  ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress);
+      ArticleFetchEvent event,
+      ArticlePageState state,
+      ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      final List<ArticleModel> lisArticle =
-          await EventArticle.fetchCategoriArticle(condition: event.condition);
-      if (lisArticle.isNotEmpty) {
+      final  List<ArticleModel> listArticle = await articleRepository.fetchArticle(isSearch: event.isSearch,keyword: event.keyword);
+      if (listArticle.isNotEmpty) {
         yield state.copyWith(
-            listArticle: lisArticle, status: FormzStatus.submissionSuccess);
+            listArticle: listArticle, submitStatus: FormzStatus.submissionSuccess, isSearch: event.isSearch);
+      } else{
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, listArticle: [],isSearch: event.isSearch);
       }
-    } on SurveyErrorException catch (e) {
+    } on ArticleErrorException catch (e) {
       print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    }
+  }
+
+  Stream<ArticlePageState> _mapArticleReadEventToState(
+      ArticleReadEvent event,
+    ArticlePageState state,
+  ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    try {
+      final  ResponseModel response = await articleRepository.readArticle(event.id);
+      if (response.code == 200 ) {
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
+      } else{
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
+    } on ArticleErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 //
