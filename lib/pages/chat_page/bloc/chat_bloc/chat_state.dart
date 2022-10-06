@@ -3,6 +3,7 @@ part of 'chat_bloc.dart';
 class ChatState {
   final List<ChatPendingResponseList>? listChatPending;
   final List<ChatListResponse>? listChatOngoing;
+  final List<ChatListResponse>? listArchiveChat;
   final List<ChatResponse>? listPersonalChatRoom;
   final ChatResponse? sendChatResponse;
   final ChatPendingSendResponse? chatPendingSendResponse;
@@ -15,6 +16,7 @@ class ChatState {
       {
         this.listChatPending,
         this.listChatOngoing,
+        this.listArchiveChat,
         this.sendChatResponse,
         this.listPersonalChatRoom,
         this.chatPendingSendResponse,
@@ -27,6 +29,7 @@ class ChatState {
       {FormzStatus? status,
         List<ChatPendingResponseList>? listChatPending,
         List<ChatListResponse>? listChatOngoing,
+        List<ChatListResponse>? listArchiveChat,
         List<ChatResponse>? listPersonalChatRoom,
         ChatResponse? sendChatResponse,
         ChatPendingSendResponse? chatPendingSendResponse,
@@ -38,6 +41,7 @@ class ChatState {
         status: status ?? this.status,
         listChatPending: listChatPending ?? this.listChatPending,
         listChatOngoing: listChatOngoing ?? this.listChatOngoing,
+        listArchiveChat: listArchiveChat ?? this.listArchiveChat,
         listPersonalChatRoom: listPersonalChatRoom ?? this.listPersonalChatRoom,
         chatPendingSendResponse: chatPendingSendResponse ?? this.chatPendingSendResponse,
         sendChatResponse: sendChatResponse ?? this.sendChatResponse,

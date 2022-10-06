@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
 import 'package:intl/intl.dart';
 
@@ -73,4 +76,11 @@ class FunctionUtils {
       return listEvent;
     }
   }
+}
+
+String convertImageToBase64(String filePath) {
+  File file = File(filePath);
+  List<int> imageBytes = file.readAsBytesSync();
+  String base64Image = base64Encode(imageBytes);
+  return base64Image;
 }

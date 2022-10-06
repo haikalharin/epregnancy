@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
+import 'package:PregnancyApp/pages/consultation_page/archive_page/archive_consultation_patient_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -148,8 +149,9 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                                 fontWeight: FontWeight.bold)),
                                         InkWell(
                                             onTap: () {
-                                              Toast.show(
-                                                  'Archive Consultation Under Construction..');
+                                              // todo manage routes
+                                              Navigator.push(context, MaterialPageRoute
+                                                (builder: (context) => ArchiveConsultationPatientPage(userId: _userId!,)));
                                             },
                                             child: SvgPicture.asset(
                                                 'assets/icArchive.svg'))

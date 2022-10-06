@@ -89,4 +89,20 @@ class ChatRepositoryImpl extends ChatRepository {
     }
     throw NetworkConnectionException();
   }
+
+  @override
+  Future<List<ChatListResponse>> fetchArchiveChatByFromIdList(String fromId) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchArchiveChatListByFromIdResponse(fromId);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<List<ChatListResponse>> fetchArchiveChatByToIdList(String toId) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchArchiveChatListByToIdResponse(toId);
+    }
+    throw NetworkConnectionException();
+  }
 }

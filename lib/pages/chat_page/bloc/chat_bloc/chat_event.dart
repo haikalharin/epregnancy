@@ -34,6 +34,12 @@ class FetchChatOngoingEvent extends ChatEvent {
   List<Object> get props => [];
 }
 
+class FetchArchiveChatEvent extends ChatEvent {
+  const FetchArchiveChatEvent();
+  @override
+  List<Object> get props => [];
+}
+
 class FetchPersonalChatRoom extends ChatEvent {
   const FetchPersonalChatRoom(this.toId);
   final String? toId;

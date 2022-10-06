@@ -345,6 +345,24 @@ class RemoteDataSource {
     return data;
   }
 
+  Future<List<ChatListResponse>> fetchArchiveChatListByFromIdResponse(String fromId) async {
+    final response = await httpClient.get(ServiceUrl.chatArchiveList, queryParameters: {'from_id': fromId});
+    final data = <ChatListResponse>[];
+    getData(response).forEach((item) {
+      data.add(ChatListResponse.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<List<ChatListResponse>> fetchArchiveChatListByToIdResponse(String toId) async {
+    final response = await httpClient.get(ServiceUrl.chatArchiveList, queryParameters: {'to_id': toId});
+    final data = <ChatListResponse>[];
+    getData(response).forEach((item) {
+      data.add(ChatListResponse.fromJson(item));
+    });
+    return data;
+  }
+
   Future<ResponseModel<ChatPendingPatientResponse>> fetchChatPendingPatient(String fromId, String hospitalId) async {
     final response = await httpClient.get(ServiceUrl.chatPendingPatient, queryParameters: {'from_id': fromId, 'hospital_id': hospitalId});
 

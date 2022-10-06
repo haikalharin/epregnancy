@@ -51,10 +51,12 @@ class ServiceUrl {
 
   //chat
   static String chat = 'chat';
+  static String chatArchive = 'chat-archive';
   static String chatEnd = '$chat/end/';
   static String sendChat = '$chat/send';
   static String latestChat =  '$chat/latest';
   static String chatList =  '$chat/list';
+  static String chatArchiveList =  '$chatArchive/list';
   static String personalChatRoom =  '$chat/personal/';
   static String chatPending = 'chat-pending';
   static String chatPendingResponse = '$chatPending/response';

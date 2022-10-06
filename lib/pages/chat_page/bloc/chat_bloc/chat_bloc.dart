@@ -18,6 +18,7 @@ import '../../../../data/model/user_model_api/user_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
 part 'chat_event.dart';
+
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -35,6 +36,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       yield* _mapSendChatEvent(event, state);
     } else if (event is FetchChatOngoingEvent) {
       yield* _mapFetchChatOngoingEventToState(event, state);
+    } else if (event is FetchArchiveChatEvent) {
+      yield* _mapFetchArchiveChat(event, state);
     } else if (event is FetchChatPendingPatientEvent) {
       yield* _mapFetchChatPendingPatient(event, state);
     } else if (event is FetchPersonalChatRoom) {
@@ -53,15 +56,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Stream<ChatState> _mapFetchPendingChatEventToState(
-      FetchChatPendingEvent event,
-      ChatState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'list-pending');
+    FetchChatPendingEvent event,
+    ChatState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, type: 'list-pending');
     try {
-      final List<ChatPendingResponseList> listPendingChat = await chatRepository.fetchChatPendingList();
+      final List<ChatPendingResponseList> listPendingChat =
+          await chatRepository.fetchChatPendingList();
       if (listPendingChat.isNotEmpty) {
         yield state.copyWith(
-            listChatPending: listPendingChat, status: FormzStatus.submissionSuccess, type: 'list-pending');
+            listChatPending: listPendingChat,
+            status: FormzStatus.submissionSuccess,
+            type: 'list-pending');
       } else {
         yield state.copyWith(status: FormzStatus.submissionSuccess);
       }
@@ -75,18 +82,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Stream<ChatState> _mapFetchChatOngoingEventToState(
-      FetchChatOngoingEvent event,
-      ChatState state,
-      ) async* {
+    FetchChatOngoingEvent event,
+    ChatState state,
+  ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress);
     try {
       final UserModel user = await AppSharedPreference.getUser();
-      final List<ChatListResponse> listChatOngoing = await chatRepository.fetchChatList(user.id ?? '');
+      final List<ChatListResponse> listChatOngoing =
+          await chatRepository.fetchChatList(user.id ?? '');
       List<ChatListResponse> listChatOngoingAfterFilter = [];
       for (var element in listChatOngoing) {
         String? _fromId = element.fromId;
-        if (listChatOngoingAfterFilter.map((item) => item.fromId).contains(_fromId)) {
-
+        if (listChatOngoingAfterFilter
+            .map((item) => item.fromId)
+            .contains(_fromId)) {
           print('Already exists!');
         } else {
           listChatOngoingAfterFilter.add(element);
@@ -95,7 +104,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (listChatOngoingAfterFilter.isNotEmpty) {
         listChatOngoingAfterFilter.reversed;
         yield state.copyWith(
-            listChatOngoing: listChatOngoingAfterFilter, status: FormzStatus.submissionSuccess, type: 'list-ongoing-success');
+            listChatOngoing: listChatOngoingAfterFilter,
+            status: FormzStatus.submissionSuccess,
+            type: 'list-ongoing-success');
       } else {
         yield state.copyWith(status: FormzStatus.submissionSuccess);
       }
@@ -109,15 +120,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Stream<ChatState> _mapFetchPersonalChatRoom(
-      FetchPersonalChatRoom event,
-      ChatState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type:  'chat-room-loading');
+    FetchPersonalChatRoom event,
+    ChatState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, type: 'chat-room-loading');
     try {
-      final List<ChatResponse> _response = await chatRepository.fetchPersonalChatRoom(event.toId!);
+      final List<ChatResponse> _response =
+          await chatRepository.fetchPersonalChatRoom(event.toId!);
       if (_response.isNotEmpty) {
         yield state.copyWith(
-            listPersonalChatRoom: _response, status: FormzStatus.submissionSuccess, type: 'chat-room-success');
+            listPersonalChatRoom: _response,
+            status: FormzStatus.submissionSuccess,
+            type: 'chat-room-success');
       }
     } on SurveyErrorException catch (e) {
       print(e);
@@ -129,15 +144,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Stream<ChatState> _mapSendChatEvent(
-      SendChatEvent event,
-      ChatState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type:  'send-chat-loading');
+    SendChatEvent event,
+    ChatState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, type: 'send-chat-loading');
     try {
-      final ResponseModel<ChatResponse> _response = await chatRepository.sendChat(event.chatPendingSendRequest);
+      final ResponseModel<ChatResponse> _response =
+          await chatRepository.sendChat(event.chatPendingSendRequest);
       if (_response.code == 200) {
         yield state.copyWith(
-            sendChatResponse: _response.data, status: FormzStatus.submissionSuccess, type: 'send-chat-success');
+            sendChatResponse: _response.data,
+            status: FormzStatus.submissionSuccess,
+            type: 'send-chat-success');
       }
     } on SurveyErrorException catch (e) {
       print(e);
@@ -149,15 +168,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Stream<ChatState> _mapSendChatPendingEvent(
-      SendChatPendingEvent event,
-      ChatState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type:  'send-pending-loading');
+    SendChatPendingEvent event,
+    ChatState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, type: 'send-pending-loading');
     try {
-      final ResponseModel<ChatPendingSendResponse> _response = await chatRepository.sendChatPending(event.chatPendingSendRequest);
+      final ResponseModel<ChatPendingSendResponse> _response =
+          await chatRepository.sendChatPending(event.chatPendingSendRequest);
       if (_response.code == 200) {
         yield state.copyWith(
-            chatPendingSendResponse: _response.data, status: FormzStatus.submissionSuccess, type: 'send-pending-success');
+            chatPendingSendResponse: _response.data,
+            status: FormzStatus.submissionSuccess,
+            type: 'send-pending-success');
       }
     } on SurveyErrorException catch (e) {
       print(e);
@@ -169,32 +192,103 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Stream<ChatState> _mapFetchChatPendingPatient(
-      FetchChatPendingPatientEvent event,
-      ChatState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetch-active-chat');
+    FetchChatPendingPatientEvent event,
+    ChatState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, type: 'fetch-active-chat');
     try {
       List<ChatResponse>? personalChatRoomList = [];
       final UserModel user = await AppSharedPreference.getUser();
       final HospitalModel _hospital = await AppSharedPreference.getHospital();
-      final List<ChatListResponse> listChatOngoing = await chatRepository.fetchChatList(user.id ?? '');
-      final ResponseModel<ChatPendingPatientResponse> _response = await chatRepository.fetchChatPendingPatient(user.id ?? '', _hospital.id ?? '');
+      final List<ChatListResponse> listChatOngoing =
+          await chatRepository.fetchChatList(user.id ?? '');
+      final ResponseModel<ChatPendingPatientResponse> _response =
+          await chatRepository.fetchChatPendingPatient(
+              user.id ?? '', _hospital.id ?? '');
       ChatPendingPatientResponse _chatPendingPatientResponse = _response.data;
-      if(listChatOngoing.isNotEmpty) {
+      if (listChatOngoing.isNotEmpty) {
         String? toId;
-        if(listChatOngoing[0].fromId == user.id){
+        if (listChatOngoing[0].fromId == user.id) {
           toId = listChatOngoing[0].toId;
         } else {
           toId = listChatOngoing[0].fromId;
         }
-        personalChatRoomList = await chatRepository.fetchPersonalChatRoom(toId!);
+        personalChatRoomList =
+            await chatRepository.fetchPersonalChatRoom(toId!);
       }
 
-      if (_chatPendingPatientResponse.content?.length != 0 || listChatOngoing.isNotEmpty) {
+      if (_chatPendingPatientResponse.content?.length != 0 ||
+          listChatOngoing.isNotEmpty) {
         yield state.copyWith(
-            chatPendingPatientResponse: _response.data, listChatOngoing: listChatOngoing, listPersonalChatRoom: personalChatRoomList, status: FormzStatus.submissionSuccess, type: 'fetch-active-chat-success');
+            chatPendingPatientResponse: _response.data,
+            listChatOngoing: listChatOngoing,
+            listPersonalChatRoom: personalChatRoomList,
+            status: FormzStatus.submissionSuccess,
+            type: 'fetch-active-chat-success');
       } else {
-        yield state.copyWith(type: 'fetch-active-chat-failed', status: FormzStatus.submissionFailure);
+        yield state.copyWith(
+            type: 'fetch-active-chat-failed',
+            status: FormzStatus.submissionFailure);
+      }
+    } on SurveyErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    }
+  }
+
+  Stream<ChatState> _mapFetchArchiveChat(
+    FetchArchiveChatEvent event,
+    ChatState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, type: 'archive-chat-loading');
+    try {
+      final UserModel user = await AppSharedPreference.getUser();
+      List<ChatListResponse> _combinedList = [];
+      final List<ChatListResponse> listArchiveChatByFromId =
+          await chatRepository.fetchArchiveChatByFromIdList(user.id ?? '');
+      final List<ChatListResponse> listArchiveChatByToId =
+          await chatRepository.fetchArchiveChatByToIdList(user.id ?? '');
+
+      if (listArchiveChatByFromId.length != 0){
+        for (var element in listArchiveChatByFromId) {
+          String? _fromId = user.id == element.fromId ? element.fromId : element.toId;
+          if (_combinedList
+              .map((item) => item.fromId)
+              .contains(_fromId)) {
+            print('Already exists!');
+          } else {
+            _combinedList.add(element);
+          }
+        }
+      }
+
+      if (listArchiveChatByToId.length != 0){
+        for (var element in listArchiveChatByToId) {
+          String? _toId = user.id == element.toId ? element.toId : element.fromId;
+          if (_combinedList
+              .map((item) => item.toId)
+              .contains(_toId)) {
+            print('Already exists!');
+          } else {
+            _combinedList.add(element);
+          }
+        }
+      }
+
+      if (_combinedList.isNotEmpty) {
+        yield state.copyWith(
+            listArchiveChat: _combinedList,
+            status: FormzStatus.submissionSuccess,
+            type: 'archive-chat-success');
+      } else {
+        yield state.copyWith(
+            type: 'archive-chat--failed',
+            status: FormzStatus.submissionFailure);
       }
     } on SurveyErrorException catch (e) {
       print(e);

@@ -11,6 +11,7 @@ abstract class ChatSendRequest with _$ChatSendRequest {
     required String? fromId,
     required String? toId,
     required String? message,
+    String? imageBase64,
   }) = _ChatSendRequest;
 
   factory ChatSendRequest.fromJson(Map<String, dynamic> json) => _$ChatSendRequestFromJson(json);
