@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
+import '../../utils/string_constans.dart';
 import '../signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import 'bloc/change_password_bloc.dart';
 
@@ -121,7 +122,6 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                errorText: state.currentPassword.invalid ? state.currentPassword.invalidPassword : null,
                                 suffixIcon: GestureDetector(
                                   onTap: () {
                                    var  _isHiddenTap = _isHiddenCurrentPassword == true ? false : true;
@@ -147,36 +147,51 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                                   fontSize: 16),
                             ),
                             SizedBox(height: 10),
-                            TextField(
-                              onChanged: (value) {
-                                Injector.resolve<ChangePasswordBloc>()
-                                    .add(ChangeNewPasswordChanged(value));
-                              },
-                              obscureText: _isHiddenNewPassword,
-                              decoration: InputDecoration(
-                                hintStyle: TextStyle(color: Colors.grey[500]),
-                                hintText: 'Masukan kata sandi',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                errorText: state.newPassword.invalid ? state.newPassword.invalidPassword : null,
-
-                                suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    var  _isHiddenTap = _isHiddenNewPassword== true ? false : true;
-
-                                    setState(() {
-                                      _isHiddenNewPassword =_isHiddenTap;
-                                    });
+                            Column(
+                              children: [
+                                TextField(
+                                  onChanged: (value) {
+                                    Injector.resolve<ChangePasswordBloc>()
+                                        .add(ChangeNewPasswordChanged(value));
                                   },
-                                  child: Icon(
-                                    _isHiddenNewPassword == true ? Icons.visibility_off : Icons.visibility,
-                                    color: _isHiddenNewPassword == true ? Colors.grey : EpregnancyColors.black,
+                                  obscureText: _isHiddenNewPassword,
+                                  decoration: InputDecoration(
+                                    hintStyle: TextStyle(color: Colors.grey[500]),
+                                    hintText: 'Masukan kata sandi',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    errorText: state.newPassword.invalid ? "" : null,
+
+                                    suffixIcon: GestureDetector(
+                                      onTap: () {
+                                        var  _isHiddenTap = _isHiddenNewPassword== true ? false : true;
+
+                                        setState(() {
+                                          _isHiddenNewPassword =_isHiddenTap;
+                                        });
+                                      },
+                                      child: Icon(
+                                        _isHiddenNewPassword == true ? Icons.visibility_off : Icons.visibility,
+                                        color: _isHiddenNewPassword == true ? Colors.grey : EpregnancyColors.black,
+                                      ),
+                                    ),
+
+
                                   ),
                                 ),
-
-
-                              ),
+                                state.newPassword.invalid
+                                    ?  Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: const [
+                                      Text(StringConstant.alertPassword1,style: TextStyle(color: Colors.red),),
+                                      Text(StringConstant.alertPassword2,style: TextStyle(color: Colors.red)),
+                                      Text(StringConstant.alertPassword3,style: TextStyle(color: Colors.red))
+                                    ],
+                                  ),
+                                ): Container()
+                              ],
                             ),
                             SizedBox(height: 20),
                             Text(

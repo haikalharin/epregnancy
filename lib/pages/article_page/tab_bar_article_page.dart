@@ -14,39 +14,7 @@ import 'list_article_vertical.dart';
 class TabBarArticlePage extends StatefulWidget {
   // static List<ContentPointHistory> listHistory;
   List<ArticleModel>? listArticle = [];
-  static List<PersonModel> listHistory = [
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
-    PersonModel(
-        name: "10 Tips Mudah Menjaga Kesehatan Janin Dalam Kandungan",
-        phoneNumber: "085939249774"),
 
-  ];
   static bool? isEndOfPage;
   static bool? reloadExpiry;
    String? type;
@@ -66,14 +34,13 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
     _tabController = TabController(
         length: 3, vsync: this, initialIndex: widget.type == 'expiry' ? 1 : 0);
     TabBarArticlePage.reloadExpiry = true;
-    TabBarArticlePage.listHistory = [];
     super.initState();
   }
 
   @override
   void dispose() {
     TabBarArticlePage.reloadExpiry = true;
-    TabBarArticlePage.listHistory = [];
+
     super.dispose();
   }
 

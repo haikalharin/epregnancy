@@ -24,6 +24,8 @@ class HttpUtil {
         return _getSuccessResponse(response);
       case 400:
         return _getSuccessResponse(response);
+      case 403:
+        return _getSuccessResponse(response);
       case 404:
         return _getSuccessResponse(response);
       case 402:

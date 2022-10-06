@@ -1,35 +1,50 @@
 part of 'survey_page_bloc.dart';
 
 class SurveyPageState with FormzMixin {
-  final UserModelFirebase? user;
+  final UserModel? user;
+  final BabyModelApi? dataBaby;
   final int page;
+  final int choice;
   final MandatoryFieldValidator name;
   final MandatoryFieldValidator date;
-  final FormzStatus submitStatus;
+  final FormzStatus? submitStatus;
   final String? errorMessage;
+  final String? type;
 
   SurveyPageState(
       {this.user,
+        this.dataBaby,
         this.page = 3,
+        this.choice = 0,
         this.name = const MandatoryFieldValidator.pure(),
         this.date = const MandatoryFieldValidator.pure(),
         this.submitStatus = FormzStatus.pure,
-        this.errorMessage});
+        this.type,
+        this.errorMessage
+      });
 
   SurveyPageState copyWith(
       {FormzStatus? submitStatus,
         MandatoryFieldValidator? name,
         MandatoryFieldValidator? date,
-        UserModelFirebase? user,
+        UserModel? user,
+        BabyModelApi? dataBaby,
         int? page,
-        String? errorMessage}) {
+        int? choice,
+        String? type,
+        String? errorMessage,
+      }) {
     return SurveyPageState(
-        submitStatus: submitStatus ??this.submitStatus,
+        submitStatus: submitStatus,
         name: name ?? this.name,
         date: date ?? this.date,
         user: user ?? this.user,
+        dataBaby: dataBaby ?? this.dataBaby,
         page: page ?? this.page,
-        errorMessage: errorMessage);
+        choice: choice ?? this.choice,
+        type: type,
+        errorMessage: errorMessage,
+    );
   }
 
 

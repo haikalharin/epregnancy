@@ -7,15 +7,44 @@ import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/injector/injector.dart';
+import '../../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../../utils/epragnancy_color.dart';
 import '../bloc/survey_page_bloc.dart';
 
-class BabyName extends StatelessWidget {
-  const BabyName({Key? key}) : super(key: key);
+class BabyName extends StatefulWidget {
+   BabyName({Key? key, this.isEdit = false, this.baby}) : super(key: key);
+   bool? isEdit;
+
+  final BabyModelApi? baby;
+
+  @override
+  State<BabyName> createState() => _BabyNameState();
+}
+
+class _BabyNameState extends State<BabyName> {
+  final _value = TextEditingController();
+  bool isEdit = false;
+
+  @override
+  void initState() {
+    isEdit = widget.isEdit!;
+    if(isEdit == true){
+      _value.text = widget.baby!.name!;
+      Injector.resolve<SurveyPageBloc>()
+          .add(SurveyBabysNameChanged(widget.baby!.name!));
+      setState(() {
+        isEdit =false;
+      });
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+
     return BlocBuilder<SurveyPageBloc, SurveyPageState>(
+      buildWhen: (previous, current) => previous.name.value != current.name.value,
   builder: (context, state) {
     return ListView(
       children: [
@@ -94,7 +123,11 @@ class BabyName extends StatelessWidget {
                             margin: const EdgeInsets.only(
                                 left: 30, right: 30),
                             child:  TextField(
+                              controller: _value,
                               onChanged: (value) {
+                                setState(() {
+                                  isEdit =false;
+                                });
                                 Injector.resolve<SurveyPageBloc>()
                                     .add(SurveyBabysNameChanged(value));
                               },

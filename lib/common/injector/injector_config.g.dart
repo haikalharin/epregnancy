@@ -13,10 +13,10 @@ class _$InjectorConfig extends InjectorConfig {
     container
       ..registerSingleton((c) => LoginExampleBloc(c<UserRepository>()))
       ..registerSingleton((c) => LoginBloc(c<UserRepository>()))
-      ..registerSingleton((c) => HomePageBloc(
-          c<HomeRepository>(), c<UserRepository>(), c<EventRepository>()))
+      ..registerSingleton((c) => HomePageBloc(c<HomeRepository>(),
+          c<UserRepository>(), c<EventRepository>(), c<ArticleRepository>()))
       ..registerSingleton((c) => SurveyPageBloc(c<UserRepository>()))
-      ..registerSingleton((c) => ArticlePageBloc(c<UserRepository>()))
+      ..registerSingleton((c) => ArticlePageBloc(c<ArticleRepository>()))
       ..registerSingleton((c) => SignupBloc(c<UserRepository>()))
       ..registerSingleton((c) => SignUpQuestionnaireBloc(c<UserRepository>()))
       ..registerSingleton((c) => SplashscreenBloc())
@@ -31,7 +31,8 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => ChangePasswordBloc(c<UserRepository>()))
       ..registerSingleton((c) => ChatBloc(c<ChatRepository>()))
       ..registerSingleton((c) => HospitalBloc(c<HospitalRepository>()))
-      ..registerSingleton((c) => ChatPendingBloc(c<ChatRepository>()));
+      ..registerSingleton((c) => ChatPendingBloc(c<ChatRepository>()))
+      ..registerSingleton((c) => ProfilePageBloc(c<UserRepository>()));
   }
 
   @override

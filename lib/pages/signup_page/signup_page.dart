@@ -71,14 +71,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       Injector.resolve<SignupBloc>().add(SignupInitEvent());
                       Scaffold.of(context).showSnackBar(snackBar);
                     } else {
-                      Navigator.of(context).pushNamed(RouteName.surveyPage);
+                      Navigator.of(context).pushNamed(RouteName.surveyPage,arguments: false);
                     }
                   } else {
-                    if (Configurations.mode == StringConstant.prod) {
+                    if (Configurations.mode == StringConstant.prod && state.type == 'toRequestOtp' ) {
                       if (state.userId!.contains('@')) {
-                        Injector.resolve<SignupBloc>().add(const RequestOtp());
+                        Injector.resolve<SignupBloc>().add(const RequestOtp(true));
                       } else {
-                        Injector.resolve<SignupBloc>().add(const RequestOtp());
+                        Injector.resolve<SignupBloc>().add(const RequestOtp(false));
                       }
                     } else {
                       Navigator.of(context).pushNamed(RouteName.otpPage);

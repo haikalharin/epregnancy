@@ -1,28 +1,27 @@
 import 'package:PregnancyApp/data/model/base_model/base_model.dart';
 
-class OtpModel implements BaseModel{
+class OtpModel implements BaseModel {
   String? otp;
-  String? email;
+  String? type;
+  String? value;
 
-  OtpModel({this.otp, this.email});
-
-
+  OtpModel({this.otp, this.type, this.value});
 
   static OtpModel fromJson(Map<String, dynamic> json) {
     return OtpModel(
-        otp: json['otp'],
-        email: json['email'],
-
-    );}
+      otp: json['otp'],
+      type: json['type'],
+      value: json['value'],
+    );
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['otp'] = this.otp;
-    data['email'] = this.email;
+    data['type'] = this.type;
+    data['value'] = this.value;
     return data;
   }
-
-
 
   @override
   jsonToModel(Map<String, dynamic> json) {
@@ -31,7 +30,9 @@ class OtpModel implements BaseModel{
 
   static OtpModel empty() {
     return OtpModel(
-        otp: '',
-        email: '',
-    );}
+      otp: '',
+      type: '',
+      value: '',
+    );
+  }
 }

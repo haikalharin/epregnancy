@@ -9,10 +9,12 @@ import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../utils/epragnancy_color.dart';
 
+import '../../utils/string_constans.dart';
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPage extends StatefulWidget {
-  const SurveyPage({Key? key}) : super(key: key);
+  const SurveyPage({Key? key, this.isEdit = false}) : super(key: key);
+  final bool? isEdit;
 
   @override
   State<SurveyPage> createState() => _SurveyPageState();
@@ -21,7 +23,7 @@ class SurveyPage extends StatefulWidget {
 class _SurveyPageState extends State<SurveyPage> {
   bool isPage1 = true;
   bool isPage2 = false;
-  int isChoice = 0;
+
   Color color1 = Colors.black;
   Color color2 = Colors.black;
   bool _value = false;
@@ -31,10 +33,19 @@ class _SurveyPageState extends State<SurveyPage> {
   bool isHaveBaby = false;
   int val = -1;
   int val2 = -1;
+  bool isEdit = false;
+
+  @override
+  void initState() {
+    Injector.resolve<SurveyPageBloc>()
+        .add(SurveyInitEvent(isUpdate: widget.isEdit ?? false));
+    isEdit = widget.isEdit!;
+    super.initState();
+  }
 
   @override
   void dispose() {
-    Injector.resolve<SurveyPageBloc>().add(const SurveyInitEvent());
+    // Injector.resolve<SurveyPageBloc>().add(const SurveyDisposeEvent());
     super.dispose();
   }
 
@@ -80,11 +91,28 @@ class _SurveyPageState extends State<SurveyPage> {
                 SnackBar(content: Text("failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            if (isChoice == 1) {
-              Navigator.of(context).pushNamed(RouteName.surveyPageBaby);
-            } else {
-              Navigator.of(context).pushNamed(RouteName.login);
-            }
+              if (state.choice == 1) {
+                if (widget.isEdit == true) {
+                  Navigator.of(context).pushReplacementNamed(
+                      RouteName.surveyPageBaby,
+                      arguments: widget.isEdit);
+                } else{
+                  Navigator.of(context).pushNamed(
+                      RouteName.surveyPageBaby,
+                      arguments: widget.isEdit);
+                }
+              } else {
+                if (widget.isEdit == true) {
+                  Injector.resolve<SurveyPageBloc>()
+                      .add(const SurveyDisposeEvent());
+                  Navigator.of(context).pushNamed(RouteName.navBar, arguments: {
+                    'role': StringConstant.patient,
+                    'initial_index': 2
+                  });
+                } else {
+                  Navigator.of(context).pushNamed(RouteName.login);
+                }
+              }
             // Navigator.of(context).pushNamedAndRemoveUntil(
             //                 RouteName.homeScreen,
             //                 ModalRoute.withName(RouteName.homeScreen),
@@ -178,13 +206,21 @@ class _SurveyPageState extends State<SurveyPage> {
                                             children: [
                                               InkWell(
                                                 onTap: () {
-                                                  setState(() {
-                                                    isChoice = 1;
+
+                                                    Injector.resolve<
+                                                            SurveyPageBloc>()
+                                                        .add(const SurveyChoice(
+                                                            1));
                                                     isPregnant = true;
-                                                  });
+                                                    isEdit = false;
+
                                                 },
                                                 child: Container(
-                                                    decoration: isChoice == 1
+                                                    decoration: (isEdit &&
+                                                                state.user
+                                                                        ?.isPregnant ==
+                                                                    true) ||
+                                                            state.choice == 1
                                                         ? BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
@@ -226,8 +262,11 @@ class _SurveyPageState extends State<SurveyPage> {
                                                             child: Text(
                                                               "Ya ",
                                                               style: TextStyle(
-                                                                  color: isChoice ==
-                                                                          1
+                                                                  color: (isEdit &&
+                                                                              state.user?.isPregnant ==
+                                                                                  true) ||
+                                                                          state.choice ==
+                                                                              1
                                                                       ? Colors
                                                                           .white
                                                                       : Colors
@@ -242,13 +281,21 @@ class _SurveyPageState extends State<SurveyPage> {
                                               ),
                                               InkWell(
                                                 onTap: () {
-                                                  setState(() {
-                                                    isChoice = 2;
+
+                                                    Injector.resolve<
+                                                            SurveyPageBloc>()
+                                                        .add(const SurveyChoice(
+                                                            2));
                                                     isPlanningPregnancy = true;
-                                                  });
+                                                    isEdit = false;
+
                                                 },
                                                 child: Container(
-                                                    decoration: isChoice == 2
+                                                    decoration: (isEdit &&
+                                                                state.user
+                                                                        ?.isPlanningPregnancy ==
+                                                                    true) ||
+                                                            state.choice == 2
                                                         ? BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
@@ -298,8 +345,9 @@ class _SurveyPageState extends State<SurveyPage> {
                                                                     TextAlign
                                                                         .center,
                                                                 style: TextStyle(
-                                                                    color: isChoice ==
-                                                                            2
+                                                                    color: (isEdit && state.user?.isPlanningPregnancy == true) ||
+                                                                            state.choice ==
+                                                                                2
                                                                         ? Colors
                                                                             .white
                                                                         : Colors
@@ -316,13 +364,21 @@ class _SurveyPageState extends State<SurveyPage> {
                                               ),
                                               InkWell(
                                                 onTap: () {
-                                                  setState(() {
-                                                    isChoice = 3;
+
+                                                    Injector.resolve<
+                                                            SurveyPageBloc>()
+                                                        .add(const SurveyChoice(
+                                                            3));
                                                     isHaveBaby = true;
-                                                  });
+                                                    isEdit = false;
+
                                                 },
                                                 child: Container(
-                                                    decoration: isChoice == 3
+                                                    decoration: (isEdit &&
+                                                                state.user
+                                                                        ?.isHaveBaby ==
+                                                                    true) ||
+                                                            state.choice == 3
                                                         ? BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
@@ -367,8 +423,11 @@ class _SurveyPageState extends State<SurveyPage> {
                                                             child: Text(
                                                               "Saya sudah punya bayi ",
                                                               style: TextStyle(
-                                                                  color: isChoice ==
-                                                                          3
+                                                                  color: (isEdit &&
+                                                                              state.user?.isHaveBaby ==
+                                                                                  true) ||
+                                                                          state.choice ==
+                                                                              3
                                                                       ? Colors
                                                                           .white
                                                                       : Colors
@@ -412,13 +471,17 @@ class _SurveyPageState extends State<SurveyPage> {
                             width: MediaQuery.of(context).size.width - 40,
                             height: 50,
                             child: RaisedButton(
-                              color: isChoice != 0
+                              color: (state.user?.isPregnant != false &&
+                                          state.user?.isPregnant != false &&
+                                          state.user?.isPregnant != false) ||
+                                      state.choice != 0
                                   ? EpregnancyColors.primer
                                   : Colors.grey.shade200,
                               child: Padding(
                                 padding: EdgeInsets.zero,
                                 child: Text(
-                                  "Selanjutnya",
+                                  state.choice != 1 ?widget.isEdit == true
+                                      ? "Simpan" : "Selanjutnya": "Selanjutnya",
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.white),
                                 ),
@@ -429,11 +492,26 @@ class _SurveyPageState extends State<SurveyPage> {
                                     BorderRadius.all(Radius.circular(7)),
                               ),
                               onPressed: () async {
-                                if (isChoice != 0) {
+                                if (isEdit) {
                                   Injector.resolve<SurveyPageBloc>().add(
-                                      SurveyAddDataEvent(isPregnant,
-                                          isPlanningPregnancy, isHaveBaby));
+                                      SurveyAddDataEvent(
+                                          state.user!.isPregnant!,
+                                          state.user!.isHaveBaby!,
+                                          state.user!.isPlanningPregnancy!,
+                                          widget.isEdit!));
+                                } else if (state.choice != 0) {
+                                  Injector.resolve<SurveyPageBloc>().add(
+                                      SurveyAddDataEvent(
+                                          isPregnant,
+                                          isPlanningPregnancy,
+                                          isHaveBaby,
+                                          widget.isEdit!));
                                 }
+
+                                  isPregnant = false;
+                                  isHaveBaby = false;
+                                  isPlanningPregnancy =false;
+
                               },
                             ),
                           ),
