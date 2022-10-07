@@ -139,7 +139,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                     state.page == 4
                                         ? widget.isEdit == true
                                             ? "simpan"
-                                            : "Mulai Konsultasi"
+                                            : "Selanjutnya"
                                         : "Selanjutnya",
                                     style: TextStyle(
                                         fontSize: 16, color: Colors.white),

@@ -17,8 +17,8 @@ import 'bloc/change_password_bloc.dart';
 const _horizontalPadding = 30.0;
 
 class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({Key? key, this.title}) : super(key: key);
-  final String? title;
+  const ChangePasswordPage({Key? key}) : super(key: key);
+
 
   @override
   _ChangePasswordPage createState() => _ChangePasswordPage();
@@ -214,7 +214,9 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                errorText: state.confirmPassword.invalid ? 'Password tidak sama' : null,
+                                errorText: state.confirmPassword.invalid ||
+                                    state.newPassword.value !=
+                                        state.confirmPassword.value ? 'Password tidak sama' : null,
 
                                 suffixIcon: GestureDetector(
                                   onTap: () {

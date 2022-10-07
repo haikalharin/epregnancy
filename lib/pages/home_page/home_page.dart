@@ -251,9 +251,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                               image: NetworkImage(state
                                                                   .babyProgressModel!
                                                                   .iconUrl!),
-                                                              width: 60,
-                                                              height: 60,
-                                                              fit: BoxFit.cover,
+                                                              width: MediaQuery.of(context).size.width/7,
+                                                              height: MediaQuery.of(context).size.width/7,
+                                                              fit: BoxFit.fill,
                                                               imageErrorBuilder:
                                                                   (context,
                                                                       error,
@@ -261,8 +261,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                 return Image
                                                                     .asset(
                                                                   'assets/ic_no_photo.png',
-                                                                  width: 60,
-                                                                  height: 60,
+                                                                  width: MediaQuery.of(context).size.width/7,
+                                                                  height: MediaQuery.of(context).size.width/7,
                                                                   fit: BoxFit
                                                                       .cover,
                                                                 );
@@ -270,8 +270,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                             ),
                                                           )
                                                         : Container(
-                                                            width: 60,
-                                                            height: 60,
+                                                      width: MediaQuery.of(context).size.width/7,
+                                                      height: MediaQuery.of(context).size.width/7,
                                                           ),
                                                     Container(
                                                       child: Column(
@@ -292,7 +292,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                     margin: EdgeInsets.only(
                                                                         bottom:
                                                                             10),
-                                                                    width: 200,
+                                                                    width: MediaQuery.of(context).size.width/2,
                                                                     child: Text(
                                                                       state.babyProgressModel !=
                                                                               null

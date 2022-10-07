@@ -11,12 +11,12 @@ import 'package:meta/meta.dart';
 
 import '../../../../common/validators/phone_validator.dart';
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../common/validators/email_address_username_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/otp_model/otp_model.dart';
 import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../utils/string_constans.dart';
-import '../../Signup_page/model/email_address.dart';
 
 part 'signup_event.dart';
 
@@ -46,17 +46,18 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
   SignupState _mapSignupInitEventToState(
       SignupInitEvent event, SignupState state) {
-    return state.copyWith(submitStatus: FormzStatus.pure);
+    return state.copyWith(
+        submitStatus: FormzStatus.pure,
+        userName: const MandatoryFieldValidator.pure(),
+        phoneNumber: const PhoneValidator.pure(),
+        email: const EmailAddressUsernameValidator.pure());
   }
 
   SignupState _mapSignupPhoneNumberChangedToState(
     SignupPhoneNumberChanged event,
     SignupState state,
   ) {
-    var phone = event.phoneNumber.contains('0', 0)
-        ? event.phoneNumber
-        : "0${event.phoneNumber}";
-    final phoneNumber = PhoneValidator.dirty(phone);
+    final phoneNumber = PhoneValidator.dirty(event.phoneNumber);
 
     return state.copyWith(
         phoneNumber: phoneNumber,
@@ -67,7 +68,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     SignupUsernameChanged event,
     SignupState state,
   ) {
-    final email = EmailAddressUsername.dirty(event.email);
+    final email = EmailAddressUsernameValidator.dirty(event.email);
     return state.copyWith(
       email: email,
       userName: MandatoryFieldValidator.dirty(email.value),
@@ -102,8 +103,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
                   userModel: userModel,
                   userId: data,
                   isExist: true,
-              isSurvey: true);
-
+                  isSurvey: true);
             } else {
               await AppSharedPreference.setUserRegister(userModel);
               await AppSharedPreference.setUsernameRegisterUser(data);
@@ -112,8 +112,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
                   userModel: userModel,
                   userId: data,
                   isExist: true,
-              isSurvey: false);
-
+                  isSurvey: false);
             }
           } else {
             await AppSharedPreference.setUsernameRegisterUser(data);
@@ -141,13 +140,13 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   }
 
   Stream<SignupState> _mapRequestOtpToState(
-      RequestOtp event,
-      SignupState state,
-      ) async* {
+    RequestOtp event,
+    SignupState state,
+  ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       var type = '';
-      if(state.userId!.contains('@')){
+      if (state.userId!.contains('@')) {
         type = 'email';
       } else {
         type = 'mobile';
@@ -157,8 +156,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       OtpModel otpModel = response.data;
       if (response.code == 200) {
         await AppSharedPreference.setOtp(otpModel);
-        yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess);
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }

@@ -167,35 +167,51 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    errorText: state.password.invalid
-                                        ? ""
-                                        : null,
+                                    errorText:
+                                        state.password.invalid ? "" : null,
                                     suffixIcon: GestureDetector(
                                       onTap: () {
-                                        var  _isHiddenTap = _isHiddenNewPassword == true ? false : true;
+                                        var _isHiddenTap =
+                                            _isHiddenNewPassword == true
+                                                ? false
+                                                : true;
 
                                         setState(() {
-                                          _isHiddenNewPassword =_isHiddenTap;
+                                          _isHiddenNewPassword = _isHiddenTap;
                                         });
                                       },
                                       child: Icon(
-                                        _isHiddenNewPassword == true ? Icons.visibility_off : Icons.visibility,
-                                        color: _isHiddenNewPassword == true ? Colors.grey : EpregnancyColors.black,
+                                        _isHiddenNewPassword == true
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
+                                        color: _isHiddenNewPassword == true
+                                            ? Colors.grey
+                                            : EpregnancyColors.black,
                                       ),
                                     ),
                                   ),
                                 ),
                                 state.password.invalid
-                                    ?  Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: const [
-                                     Text(StringConstant.alertPassword1,style: TextStyle(color: Colors.red),),
-                                      Text(StringConstant.alertPassword2,style: TextStyle(color: Colors.red)),
-                                      Text(StringConstant.alertPassword3,style: TextStyle(color: Colors.red))
-                                    ],
-                                  ),
-                                ): Container()
+                                    ? Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: const [
+                                            Text(
+                                              StringConstant.alertPassword1,
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                            Text(StringConstant.alertPassword2,
+                                                style: TextStyle(
+                                                    color: Colors.red)),
+                                            Text(StringConstant.alertPassword3,
+                                                style: TextStyle(
+                                                    color: Colors.red))
+                                          ],
+                                        ),
+                                      )
+                                    : Container()
                               ],
                             ),
                             SizedBox(height: 20),
@@ -219,20 +235,30 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                errorText: state.confirmPassword.invalid
+                                errorText: state.confirmPassword.invalid ||
+                                        state.password.value !=
+                                            state.confirmPassword.value
                                     ? 'Password tidak sama'
                                     : null,
                                 suffixIcon: GestureDetector(
                                   onTap: () {
-                                    var  _isHiddenTap = _isHiddenConfirmNewPassword == true ? false : true;
+                                    var _isHiddenTap =
+                                        _isHiddenConfirmNewPassword == true
+                                            ? false
+                                            : true;
 
                                     setState(() {
-                                      _isHiddenConfirmNewPassword =_isHiddenTap;
+                                      _isHiddenConfirmNewPassword =
+                                          _isHiddenTap;
                                     });
                                   },
                                   child: Icon(
-                                    _isHiddenConfirmNewPassword == true ? Icons.visibility_off : Icons.visibility,
-                                    color: _isHiddenConfirmNewPassword == true ? Colors.grey : EpregnancyColors.black,
+                                    _isHiddenConfirmNewPassword == true
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: _isHiddenConfirmNewPassword == true
+                                        ? Colors.grey
+                                        : EpregnancyColors.black,
                                   ),
                                 ),
                               ),

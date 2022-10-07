@@ -32,7 +32,8 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => ChatBloc(c<ChatRepository>()))
       ..registerSingleton((c) => HospitalBloc(c<HospitalRepository>()))
       ..registerSingleton((c) => ChatPendingBloc(c<ChatRepository>()))
-      ..registerSingleton((c) => ProfilePageBloc(c<UserRepository>()));
+      ..registerSingleton((c) => ProfilePageBloc(c<UserRepository>()))
+      ..registerSingleton((c) => ForgotPasswordPageBloc(c<UserRepository>()));
   }
 
   @override

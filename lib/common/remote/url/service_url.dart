@@ -14,6 +14,7 @@ class ServiceUrl {
   static String register = '$user/register';
   static String updateUser = '$user/update';
   static String updateQuestioner = '$user/update';
+  static String forgotPassword = '$user/forgot-password';
 
   static String checkUserExist = '$user/check-availability/username';
   static String changePassword = '$user/change-password';

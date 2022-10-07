@@ -14,6 +14,8 @@ import 'package:otp_text_field/style.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
+import '../../common/validators/email_address_username_validator.dart';
+import '../../common/validators/phone_validator.dart';
 import '../../utils/string_constans.dart';
 import 'bloc/signup_bloc.dart';
 
@@ -32,11 +34,15 @@ final _codeController = TextEditingController();
 var authService = AuthService();
 
 class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController _controller = TextEditingController();
+
+   final TextEditingController _controllerEmail = TextEditingController() ;
+   final TextEditingController _controllerPhone = TextEditingController() ;
+  bool isEdit = false;
 
   @override
   void initState() {
     Injector.resolve<SignupBloc>().add(SignupInitEvent());
+
     super.initState();
   }
 
@@ -48,6 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
@@ -91,6 +98,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   Center(
                     child: BlocBuilder<SignupBloc, SignupState>(
                       builder: (context, state) {
+                        if(isEdit){
+                          _controllerEmail.text = "";
+                          _controllerPhone.text = "";
+                          isEdit =false;
+                        }
+
                         return ListView(
                           physics: const ClampingScrollPhysics(),
                           padding: const EdgeInsets.symmetric(
@@ -114,7 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                             SizedBox(height: 10),
-                            state.email.value.length < 1
+                            state.email.value.length < 1|| state.email == EmailAddressUsernameValidator.pure()
                                 ? Column(
                                     children: [
                                       Text(
@@ -126,6 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       ),
                                       SizedBox(height: 20),
                                       IntlPhoneField(
+                                        controller: _controllerPhone,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp(RegexConstants
@@ -148,7 +162,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         onChanged: (phone) {
                                           Injector.resolve<SignupBloc>().add(
                                               SignupPhoneNumberChanged(
-                                                  phone.number));
+                                                  "0${phone.number}"));
                                         },
                                       ),
                                       Text(
@@ -164,11 +178,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                   )
                                 : Container(),
 
-                            state.phoneNumber.value.length <= 1
+                            state.phoneNumber.value.length <= 1 || state.email == PhoneValidator.pure()
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: const [
+                                    children:  [
                                       SizedBox(height: 30),
                                       Text(
                                         "Atau daftar dengan akun email",
@@ -186,7 +200,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             fontSize: 16),
                                       ),
                                       SizedBox(height: 10),
-                                      _EmailInput(),
+                                      _EmailInput(_controllerEmail),
                                       SizedBox(height: 50),
                                     ],
                                   )
@@ -196,6 +210,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               onPressed: () async {
                                 Injector.resolve<SignupBloc>()
                                     .add(SignupSubmitted());
+                                isEdit = true;
                                 //
                                 // Navigator.pushReplacement(
                                 //   context,
@@ -241,7 +256,8 @@ class _Loading extends StatelessWidget {
 }
 
 class _EmailInput extends StatelessWidget {
-  const _EmailInput();
+   const _EmailInput(this._controllerEmail);
+  final TextEditingController _controllerEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -249,6 +265,7 @@ class _EmailInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
+          controller: _controllerEmail,
           key: const Key('SignupForm_emailInput_textField'),
           onChanged: (username) => Injector.resolve<SignupBloc>()
               .add(SignupUsernameChanged(username)),

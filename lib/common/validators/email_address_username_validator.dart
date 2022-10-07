@@ -4,9 +4,9 @@ import '../../../common/constants/regex_constants.dart';
 
 enum UsernameValidationError { empty, invalid }
 
-class EmailAddressUsername extends FormzInput<String, UsernameValidationError> {
-  const EmailAddressUsername.pure() : super.pure('');
-  const EmailAddressUsername.dirty([String value = '']) : super.dirty(value);
+class EmailAddressUsernameValidator extends FormzInput<String, UsernameValidationError> {
+  const EmailAddressUsernameValidator.pure() : super.pure('');
+  const EmailAddressUsernameValidator.dirty([String value = '']) : super.dirty(value);
 
   @override
   UsernameValidationError? validator(String value) {
