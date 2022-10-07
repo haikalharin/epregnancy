@@ -297,7 +297,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
       case 0:
         return DashboardMidwife(initialIndex: widget.initalIndex ?? 0);
       case 1:
-        return LogoutPage();
+        return DashboardMidwife(initialIndex: widget.initalIndex ?? 0);
       default:
         return Container();
     }
