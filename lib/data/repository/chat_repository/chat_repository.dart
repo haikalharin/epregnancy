@@ -12,6 +12,7 @@ import '../../model/chat_model/chat_list_response.dart';
 abstract class ChatRepository {
   Future<List<ChatResponse>> fetchLatestChat();
   Future<List<ChatListResponse>> fetchChatList(String fromId);
+  Future<List<ChatListResponse>> fetchChatListByToId(String toId);
   Future<List<ChatListResponse>> fetchArchiveChatByFromIdList(String fromId);
   Future<List<ChatListResponse>> fetchArchiveChatByToIdList(String toId);
   Future<List<ChatResponse>> fetchPersonalChatRoom(String toId);

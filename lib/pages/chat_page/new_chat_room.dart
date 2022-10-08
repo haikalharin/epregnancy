@@ -248,25 +248,17 @@ class _NewChatRoomState extends State<NewChatRoom> {
       print('websocket ready state: ' + _webSocket.readyState.toString());
 
       _webSocket.listen((d) {
-        if(widget.toId == null){
-          Navigator.pop(context);
-        }
-        // TODO HANDLE CHAT WEBSOCKET TO ADD TO BUBLE
         // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-        _scrollDown();
-        String _response = d as String;
-        Map<String, dynamic> socketResponse = jsonDecode(_response);
-        // ResponseModel<ChatResponse> _chatResponse = ResponseModel.fromJson(d, ChatResponse.fromJson);
-        // String? newToName = _chatResponse.data?.to.name;
-        String fromIdPayload = socketResponse['data']['from_id'];
-        String _toId = socketResponse['data']['to_id'];
+        // _scrollDown();
+        Map<String, dynamic> socketResponse = jsonDecode(d);
+        print('action websocket : ${socketResponse['action']}');
+        log('websocket payload mentah : $d');
 
-        // setState(() {
-        //   toId = socketResponse['data']['to_id'];
-        // });
         print('ispending chat : $isPendingChat');
         if(socketResponse['action'] == StringConstant.updateLatestChat){
-          if(fromIdPayload == widget.toId && _toId == widget.fromId){
+          String fromIdPayload = socketResponse['data']['from_id'];
+          String _toId = socketResponse['data']['to_id'];
+          if(fromIdPayload == toId && _toId == widget.fromId){
             setState(() {
               chatMessageList?.add(
                   ChatMessageEntity(
@@ -274,23 +266,27 @@ class _NewChatRoomState extends State<NewChatRoom> {
                     message: socketResponse['data']['message'],
                     dateTime: socketResponse['data']['created_date'],
                     mine: socketResponse['data']['from_id'] == widget.fromId ? true : false,
+                    imageUrl: socketResponse['data']['image_url'],
                     profileImage: socketResponse['data']['from_id'] == widget.fromId ? socketResponse['data']['from']['image_url'] : socketResponse['data']['to']['image_url'],
                   )
               );
-              // toId = toId;
               isPendingChat = false;
               _scrollDown();
             });
           }
-        } else {
-          // toId = toId;
-          isPendingChat = false;
-          // Toast.show('harap tekan kembali untuk merefresh percakapan');
+        } else if (isPendingChat == true && socketResponse['action'] == 'new-chat') {
+          setState(() {
+            isPendingChat = false;
+            toId = socketResponse['data']['to_id'];
+            toName = socketResponse['data']['to']['name'];
+          });
+          Toast.show("$toName Telah Merespon Konsultasi Anda, Silahkan Jelaskan Kondisi Anda Lebih Lanjut", gravity: Toast.center);
         }
-        print('ispending chat : $isPendingChat');
-        log('websocket payload mentah : $d');
+        // print('ispending chat : $isPendingChat');
+        // print('toId : $toId');
+        // print('toName : $toName');
       }, onError: (e) {
-        print("error");
+        print("error websocket: ${e.toString()}");
         print(e);
       }, onDone: () => print("done"));
     });
@@ -300,7 +296,6 @@ class _NewChatRoomState extends State<NewChatRoom> {
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
-    print('chat lenght : ${chatMessageList?.length}');
     return Scaffold(
       backgroundColor: Colors.white,
         // resizeToAvoidBottomInset: true,

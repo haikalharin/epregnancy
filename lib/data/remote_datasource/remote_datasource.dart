@@ -330,14 +330,38 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<ChatResponse>> chatSend(ChatSendRequest _requestBody) async {
-    final response = await httpClient.post(ServiceUrl.sendChat, _requestBody.toJson());
+    var _request;
+    if(_requestBody.imageBase64 == null){
+      _request = {
+        "from_id": _requestBody.fromId,
+        "to_id": _requestBody.toId,
+        "message": _requestBody.message,
+      };
+    } else {
+      _request = {
+        "from_id": _requestBody.fromId,
+        "to_id": _requestBody.toId,
+        "message": _requestBody.message,
+        "image_base64": _requestBody.imageBase64
+      };
+    }
+    final response = await httpClient.post(ServiceUrl.sendChat, _request);
 
 //    return null;
     return ResponseModel<ChatResponse>.fromJson(response, ChatResponse.fromJson);
   }
 
   Future<List<ChatListResponse>> fetchChatListResponse(String fromId) async {
-    final response = await httpClient.get(ServiceUrl.chatList, queryParameters: {'to_id': fromId});
+    final response = await httpClient.get(ServiceUrl.chatList, queryParameters: {'from_id': fromId});
+    final data = <ChatListResponse>[];
+    getData(response).forEach((item) {
+      data.add(ChatListResponse.fromJson(item));
+    });
+    return data;
+  }
+
+  Future<List<ChatListResponse>> fetchChatListByToIdResponse(String toId) async {
+    final response = await httpClient.get(ServiceUrl.chatList, queryParameters: {'to_id': toId});
     final data = <ChatListResponse>[];
     getData(response).forEach((item) {
       data.add(ChatListResponse.fromJson(item));

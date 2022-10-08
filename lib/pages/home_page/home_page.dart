@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               textAlign: TextAlign.start),
                                             ),
                                         ),
-                                        _hospitalModel?.name != null ? Expanded(
+                                        _hospitalModel?.name != null || _hospitalModel?.name != '' ? Expanded(
                                           child: SizedBox(
                                             width: MediaQuery.of(context).size.width / 2.5,
                                             // alignment: Alignment.centerRight,
@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                       SvgPicture.asset('assets/icLocation.svg'),
                                                       SizedBox(width: 10.w,),
                                                       Expanded(
-                                                        child: Text(_hospitalModel?.name ?? 'Pilih Puskesmas', style: TextStyle(color: Colors.black),
+                                                        child: Text('Pilih Puskesmas', style: TextStyle(color: Colors.black),
                                                           // textAlign: TextAlign.right,
                                                           overflow: TextOverflow.visible,),
                                                       ),

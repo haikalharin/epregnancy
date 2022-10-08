@@ -41,8 +41,9 @@ class _StartConsulationDialogState extends State<StartConsulationDialog> {
             );
           });
           print('ongoing chat length : ${chatMessageList.length}');
+          print('fromid : ${state.chatPendingResponseList?[0].fromId}');
+          print('toId : ${state.chatPendingResponseList?[0].toId}');
           Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
-            // reversed karna dari sisi midwife
             fromId: state.chatPendingResponseList?[0].toId,
             toId: state.chatPendingResponseList?[0].fromId,
             toImageUrl: state.chatPendingResponseList?[0].to?.imageUrl,
@@ -58,7 +59,7 @@ class _StartConsulationDialogState extends State<StartConsulationDialog> {
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-        height: 148.h,
+        height: MediaQuery.of(context).size.height / 5.5,
         child: Column(
           children: [
             Text(

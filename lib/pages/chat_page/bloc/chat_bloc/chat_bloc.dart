@@ -89,7 +89,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     try {
       final UserModel user = await AppSharedPreference.getUser();
       final List<ChatListResponse> listChatOngoing =
-          await chatRepository.fetchChatList(user.id ?? '');
+          await chatRepository.fetchChatListByToId(user.id ?? '');
       List<ChatListResponse> listChatOngoingAfterFilter = [];
       for (var element in listChatOngoing) {
         String? _fromId = element.fromId;
