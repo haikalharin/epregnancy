@@ -462,4 +462,16 @@ class RemoteDataSource {
       return ResponseModel.dataEmpty();
     }
   }
+
+  Future<int> endChat(String toId) async {
+    try {
+      int responseCode = 500;
+      final response = await httpClient.get(ServiceUrl.endChat + toId);
+      responseCode = response['code'] ?? 500;
+      return responseCode;
+    } catch (e) {
+      print('error end chat ${e.toString()}');
+      return 500;
+    }
+  }
 }

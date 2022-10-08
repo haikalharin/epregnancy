@@ -113,4 +113,12 @@ class ChatRepositoryImpl extends ChatRepository {
     }
     throw NetworkConnectionException();
   }
+
+  @override
+  Future<int> endChat(String toId) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.endChat(toId);
+    }
+    throw NetworkConnectionException();
+  }
 }

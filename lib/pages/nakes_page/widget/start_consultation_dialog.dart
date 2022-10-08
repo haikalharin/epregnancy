@@ -44,6 +44,7 @@ class _StartConsulationDialogState extends State<StartConsulationDialog> {
           print('fromid : ${state.chatPendingResponseList?[0].fromId}');
           print('toId : ${state.chatPendingResponseList?[0].toId}');
           Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
+            isNakes: true,
             fromId: state.chatPendingResponseList?[0].toId,
             toId: state.chatPendingResponseList?[0].fromId,
             toImageUrl: state.chatPendingResponseList?[0].to?.imageUrl,

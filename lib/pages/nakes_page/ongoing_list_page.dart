@@ -49,6 +49,7 @@ class _OngoingListPageState extends State<OngoingListPage> {
           print('ongoing chat length : ${chatMessageList.length}');
           Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
             // reversed karna dari sisi midwife
+            isNakes: true,
             fromId: state.listPersonalChatRoom?[0].toId,
             toId: state.listPersonalChatRoom?[0].fromId,
             toImageUrl: state.listPersonalChatRoom?[0].to?.imageUrl,
