@@ -12,6 +12,7 @@ import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../utils/epragnancy_color.dart';
 import 'bloc/home_page_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListEventPersonalWidget extends StatefulWidget {
   ListEventPersonalWidget({Key? key, this.tipeAcara, this.dateTime})
@@ -54,10 +55,16 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
                       ? Stack(children: [
                     Container(
                         margin: EdgeInsets.only(),
-                        child: Center(
-                            child: Container(
-                              child: Text("Belum ada acara"),
-                            ))),
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Belum ada jadwal hari ini', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp),),
+                            SizedBox(height: 10.h,),
+                            SvgPicture.asset('assets/icCalendarIlustration.svg'),
+                          ],
+                        )),
                   ])
                       : Stack(
                     children: [
@@ -178,57 +185,57 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
                       ),
                     ],
                   )),
-              widget.tipeAcara == StringConstant.typeEventJadwalPribadi
-                  ? Align(
-                alignment: Alignment(0.9, 1),
-                child: Container(
-                  margin: EdgeInsets.only(top: 10, bottom: 10),
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 2,
-                  height: 50,
-                  child: RaisedButton(
-                    color: EpregnancyColors.primer,
-                    child: Padding(
-                      padding: EdgeInsets.zero,
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: const TextSpan(
-                          // Note: Styles for TextSpans must be explicitly defined.
-                          // Child text spans will inherit styles from parent
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: '+',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                    fontSize: 26)),
-                            TextSpan(
-                                text: '   Tambah Jadwal',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.white,
-                                    fontSize: 16)),
-                          ],
-                        ),
-                      ),
-                    ),
-                    elevation: 8,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(7)),
-                    ),
-                    onPressed: () async {
-                      Navigator.of(context).pushNamed(RouteName.chooseTypeEvent);
-                    },
-                  ),
-                ),
-              )
-                  : Container(),
+              // widget.tipeAcara == StringConstant.typeEventJadwalPribadi
+              //     ? Align(
+              //   alignment: Alignment(0.9, 1),
+              //   child: Container(
+              //     margin: EdgeInsets.only(top: 10, bottom: 10),
+              //     width: MediaQuery
+              //         .of(context)
+              //         .size
+              //         .width / 2,
+              //     height: 50,
+              //     child: RaisedButton(
+              //       color: EpregnancyColors.primer,
+              //       child: Padding(
+              //         padding: EdgeInsets.zero,
+              //         child: RichText(
+              //           textAlign: TextAlign.center,
+              //           text: const TextSpan(
+              //             // Note: Styles for TextSpans must be explicitly defined.
+              //             // Child text spans will inherit styles from parent
+              //             style: TextStyle(
+              //               fontSize: 14.0,
+              //               color: Colors.black,
+              //             ),
+              //             children: <TextSpan>[
+              //               TextSpan(
+              //                   text: '+',
+              //                   style: TextStyle(
+              //                       fontWeight: FontWeight.w600,
+              //                       color: Colors.white,
+              //                       fontSize: 26)),
+              //               TextSpan(
+              //                   text: '   Tambah Jadwal',
+              //                   style: TextStyle(
+              //                       fontWeight: FontWeight.normal,
+              //                       color: Colors.white,
+              //                       fontSize: 16)),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //       elevation: 8,
+              //       shape: const RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.all(Radius.circular(7)),
+              //       ),
+              //       onPressed: () async {
+              //         Navigator.of(context).pushNamed(RouteName.chooseTypeEvent);
+              //       },
+              //     ),
+              //   ),
+              // )
+              //     : Container(),
             ],
           );
         },

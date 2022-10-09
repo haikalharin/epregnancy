@@ -31,6 +31,7 @@ class AppSharedPreference {
   static const String hospital = "hospital";
   static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
+  static const String newInstall = "new_install";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

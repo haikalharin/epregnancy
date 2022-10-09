@@ -9,6 +9,7 @@ import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/location_select_page/location_select_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/dashboard_nakes_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
+import 'package:PregnancyApp/pages/onboarding_page/onboarding_page.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/otp_page/verifikasi_page.dart';
 import 'package:PregnancyApp/pages/poin_page/poin_activity_page.dart';
@@ -37,6 +38,8 @@ class Routes {
     switch (settings.name) {
       case RouteName.signup:
         return MaterialPageRoute(builder: (_) => SignUpPage());
+      case RouteName.onboarding:
+        return MaterialPageRoute(builder: (_) => OnboardingPage());
       case RouteName.login:
         return MaterialPageRoute(builder: (_) => LoginPage());
       case RouteName.homeScreen:
