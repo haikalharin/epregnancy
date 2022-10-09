@@ -93,7 +93,7 @@ class Routes {
         return MaterialPageRoute(builder: (_) => ChooseTypeEventPage());
         return MaterialPageRoute(builder: (_) => VerifikasiPage(userId: getDataValue(settings.arguments)));
       case RouteName.profileNakesPage:
-        return MaterialPageRoute(builder: (_) => ProfileNakesPage());
+        return MaterialPageRoute(builder: (_) => ProfileNakesPage(name: getDataValue(settings.arguments),));
       case RouteName.profileUserPage:
         return MaterialPageRoute(builder: (_) => ProfileUserPage());
       case RouteName.poinPage:

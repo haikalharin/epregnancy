@@ -20,6 +20,7 @@ class ProfileNakesPage extends StatelessWidget {
         leading: const BtnBackIosStyle(),
         elevation: 0,
         backgroundColor: Colors.white,
+        centerTitle: false,
         title: Text(name ?? 'Faisal Bahlil', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 24.sp),),
         actions: [Container(
           height: 40.h,
@@ -42,9 +43,15 @@ class ProfileNakesPage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
             ),
             Padding(padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),child: Divider(color: Colors.grey, height: 1.h,),),
-            ListTile(
-              leading: Text(StringConstant.passwordChange, style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
-              trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(RouteName.changePasswordPage);
+              },
+              child: ListTile(
+                leading: Text(StringConstant.passwordChange, style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
+                trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
+              ),
             ),
           ],
         ),

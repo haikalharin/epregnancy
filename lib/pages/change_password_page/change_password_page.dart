@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
+import 'package:toast/toast.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
@@ -17,8 +18,9 @@ import 'bloc/change_password_bloc.dart';
 const _horizontalPadding = 30.0;
 
 class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({Key? key, this.title}) : super(key: key);
+  const ChangePasswordPage({Key? key, this.title, this.isNakes = false}) : super(key: key);
   final String? title;
+  final bool? isNakes;
 
   @override
   _ChangePasswordPage createState() => _ChangePasswordPage();
@@ -49,7 +51,7 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
             final snackBar =
             SnackBar(content: Text(message), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
-          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+          } else if (state.submitStatus == FormzStatus.submissionSuccess && state.type == 'change-password-success') {
             final snackBar =
             SnackBar(content: Text("Berhasil"), backgroundColor: Colors.blue);
             Scaffold.of(context).showSnackBar(snackBar);
@@ -242,8 +244,20 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                         width: 350,
                         child: ElevatedButton(
                           onPressed: () async {
-                            Injector.resolve<ChangePasswordBloc>()
-                                .add(ChangePasswordSubmitted());
+                            print('button clicked');
+                            print('current password : ${state.currentPassword}');
+                            print('new password : ${state.newPassword}');
+                            if(state.currentPassword == state.newPassword){
+                              Toast.show('Password tidak boleh sama dengan password sebelumnya!');
+                            } else if (state.currentPassword != null && state.confirmPassword != null && state.newPassword != null){
+                              Injector.resolve<ChangePasswordBloc>()
+                                  .add(ChangePasswordSubmitted());
+                            } else if(state.newPassword != state.confirmPassword) {
+                              Toast.show("Konfirmasi password tidak sama!");
+                            } else {
+                              Toast.show("Form harus diisi semua");
+                            }
+
                           },
                           child: Text("Konfirmasi Kata Sandi"),
                           style: ElevatedButton.styleFrom(
@@ -273,6 +287,7 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
 class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
         builder: (context, state) {
           if (state.submitStatus == FormzStatus.submissionInProgress) {

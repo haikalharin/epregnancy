@@ -83,7 +83,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                             InkWell(
                                 onTap: () {
                                   Navigator.pushNamed(
-                                      context, RouteName.profileNakesPage);
+                                      context, RouteName.profileNakesPage, arguments: widget.userName);
                                 },
                                 child: Text(
                                   'Halo, ${widget.userName} ',
