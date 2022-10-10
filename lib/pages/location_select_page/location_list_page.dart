@@ -20,9 +20,7 @@ class LocationListPage extends StatefulWidget {
 
 class _LocationListPageState extends State<LocationListPage> {
   HospitalModel? _selectedHospital;
-
   final _searchTextController = TextEditingController();
-
 
   @override
   void initState() {
