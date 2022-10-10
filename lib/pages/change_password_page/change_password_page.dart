@@ -216,7 +216,9 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                errorText: state.confirmPassword.invalid ? 'Password tidak sama' : null,
+                                errorText: state.confirmPassword.invalid ||
+                                    state.newPassword.value !=
+                                        state.confirmPassword.value ? 'Password tidak sama' : null,
 
                                 suffixIcon: GestureDetector(
                                   onTap: () {
@@ -244,9 +246,6 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                         width: 350,
                         child: ElevatedButton(
                           onPressed: () async {
-                            print('button clicked');
-                            print('current password : ${state.currentPassword}');
-                            print('new password : ${state.newPassword}');
                             if(state.currentPassword == state.newPassword){
                               Toast.show('Password tidak boleh sama dengan password sebelumnya!');
                             } else if (state.currentPassword != null && state.confirmPassword != null && state.newPassword != null){

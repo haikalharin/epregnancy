@@ -62,7 +62,18 @@ class ArticleDetailPage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     color: Colors.white,
                     child: Container(
-                      margin: EdgeInsets.only(left: 20, right: 20),
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      decoration: BoxDecoration(
+                        // borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 1.0), //(x,y)
+                            blurRadius: 6.0,
+                          ),
+                        ],
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -154,7 +165,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final Widget _widget;
 
   @override
-  double get minExtent => 100;
+  double get minExtent => 120;
 
   @override
   double get maxExtent => 120;

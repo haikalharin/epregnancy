@@ -27,7 +27,6 @@ import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.
 import '../../../utils/string_constans.dart';
 import '../../example_dashboard_chat_page/login_example_page/model/username.dart';
 import '../model/password.dart';
-import '../model/email_address.dart';
 
 part 'login_event.dart';
 
@@ -66,7 +65,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginDispose event,
     LoginState state,
   ) {
-    return state.copyWith(submitStatus: FormzStatus.pure, typeEvent: '');
+    return LoginState();
   }
 
   Stream<LoginState> _mapLoginInitDataChangedToState(

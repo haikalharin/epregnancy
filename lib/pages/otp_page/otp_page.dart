@@ -33,103 +33,110 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: true,
-        body: BlocListener<OtpPageBloc, OtpPageState>(
-          listener: (context, state) {
-            if (state.submitStatus == FormzStatus.submissionFailure) {
-              const snackBar = SnackBar(
-                  content: Text("failed"), backgroundColor: Colors.red);
-              Scaffold.of(context).showSnackBar(snackBar);
-            } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+    return WillPopScope(
+      onWillPop: () {
+        Injector.resolve<SignupBloc>().add(SignupInitEvent());
+        return Future.value(true);
+      },
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          resizeToAvoidBottomInset: true,
+          body: BlocListener<OtpPageBloc, OtpPageState>(
+            listener: (context, state) {
+              if (state.submitStatus == FormzStatus.submissionFailure) {
+                const snackBar = SnackBar(
+                    content: Text("failed"), backgroundColor: Colors.red);
+                Scaffold.of(context).showSnackBar(snackBar);
+              } else if (state.submitStatus == FormzStatus.submissionSuccess) {
                 Navigator.of(context)
                     .pushNamed(RouteName.signUpQuestionnairePage);
-
-            }
-          },
-          child: SafeArea(
-            child: Stack(
-              children: [
-                ListView(
-                  physics: const ClampingScrollPhysics(),
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(RouteName.signup);
-                      },
-                      child: Image.asset(
-                        'assets/back.png',
-                        fit: BoxFit.cover,
+              }
+            },
+            child: SafeArea(
+              child: Stack(
+                children: [
+                  ListView(
+                    physics: const ClampingScrollPhysics(),
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          Injector.resolve<SignupBloc>().add(SignupInitEvent());
+                        },
+                        child: Image.asset(
+                          'assets/back.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SizedBox(height: 100),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.center,
-                                child: Image.asset(
-                                  "assets/otp_icon.png",
-                                  height: 200,
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(height: 100),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Image.asset(
+                                    "assets/otp_icon.png",
+                                    height: 200,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "Masukan Kode OTP",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 35,
+                              ],
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Ketik kode 6 digit yang telah kami kirimkan ke",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14),
-                          ),
-                          Text(
-                            widget.userId ?? "",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
+                            Text(
+                              "Masukan Kode OTP",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14),
-                          ),
-                          SizedBox(height: 20),
-                          OTPTextField(
-                              controller: otpController,
-                              length: 6,
-                              width: MediaQuery.of(context).size.width,
-                              textFieldAlignment: MainAxisAlignment.spaceAround,
-                              fieldWidth: 45,
-                              fieldStyle: FieldStyle.box,
-                              outlineBorderRadius: 10,
-                              style: TextStyle(fontSize: 25),
-                              onChanged: (pin) {
-                                print("Changed: " + pin);
-                              },
-                              onCompleted: (pin) {
-                                print("Completed: " + pin);
-                                Injector.resolve<OtpPageBloc>()
-                                    .add(OtpNumberChanged(pin));
-                              }),
-                        ]),
-                  ],
-                ),
-              ],
+                                fontSize: 35,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "Ketik kode 6 digit yang telah kami kirimkan ke",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14),
+                            ),
+                            Text(
+                              widget.userId ?? "",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14),
+                            ),
+                            SizedBox(height: 20),
+                            OTPTextField(
+                                controller: otpController,
+                                length: 6,
+                                width: MediaQuery.of(context).size.width,
+                                textFieldAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                fieldWidth: 45,
+                                fieldStyle: FieldStyle.box,
+                                outlineBorderRadius: 10,
+                                style: TextStyle(fontSize: 25),
+                                onChanged: (pin) {
+                                  print("Changed: " + pin);
+                                },
+                                onCompleted: (pin) {
+                                  print("Completed: " + pin);
+                                  Injector.resolve<OtpPageBloc>()
+                                      .add(OtpNumberChanged(pin));
+                                }),
+                          ]),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 }

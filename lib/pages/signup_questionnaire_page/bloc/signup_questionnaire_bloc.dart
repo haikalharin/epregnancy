@@ -17,10 +17,6 @@ import '../../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 
-
-
-
-
 part 'signup_questionnaire_event.dart';
 
 part 'signup_questionnaire_state.dart';
@@ -118,20 +114,22 @@ class SignUpQuestionnaireBloc
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      String email = "";
-      String phoneNumber = "";
-      var userid = await AppSharedPreference.getUsernameRegisterUser();
-      if (userid.contains('@')){
-        email = userid;
-      } else{
-        phoneNumber = userid;
-      }
-      UserModelFirebase userModelFirebase = UserModelFirebase.empty();
       if (state.status.isValidated) {
-        final UserModelFirebase userExist =
-            await EventUser.checkUserExist(userid);
-        final df = DateFormat('yyyy-MM-dd');
-        String dateNow = df.format(new DateTime.now());
+        if (state.password.value == state.confirmPassword.value) {
+          String email = "";
+          String phoneNumber = "";
+          var userid = await AppSharedPreference.getUsernameRegisterUser();
+          if (userid.contains('@')) {
+            email = userid;
+          } else {
+            phoneNumber = userid;
+          }
+          UserModelFirebase userModelFirebase = UserModelFirebase.empty();
+
+          final UserModelFirebase userExist =
+              await EventUser.checkUserExist(userid);
+          final df = DateFormat('yyyy-MM-dd');
+          String dateNow = df.format(new DateTime.now());
           const _chars =
               'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
           Random _rnd = Random();
@@ -143,27 +141,37 @@ class SignUpQuestionnaireBloc
           String random = getRandomString(28);
 
           ResponseModel response = await userRepository.register(UserModel(
-            name: "${state.firstName.value} ${state.secondName.value}",
-            username: userid,
-            mobile: phoneNumber,
-            email: email,
-            dob: state.date.value,
-            password: state.password.value,
-            isPatient: true
-          ));
+              name: "${state.firstName.value} ${state.secondName.value}",
+              username: userid,
+              mobile: phoneNumber,
+              email: email,
+              dob: state.date.value,
+              password: state.password.value,
+              isPatient: true));
 
-          if(response.code == 200){
+          if (response.code == 200) {
             UserModel userModel = response.data;
             await AppSharedPreference.setUserRegister(userModel);
-            await AppSharedPreference.setString(AppSharedPreference.token,userModel.token??'');
+            await AppSharedPreference.setString(
+                AppSharedPreference.token, userModel.token ?? '');
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
                 userModel: response.data);
-          } else{
+          } else {
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionFailure,
-            errorMessage: response.message);
+                errorMessage: response.message);
           }
+        } else {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionFailure,
+              firstName: state.firstName,
+              secondName: state.secondName,
+              password: state.password,
+              confirmPassword: state.confirmPassword,
+              date: state.date,
+          errorMessage: 'Silahkan cek kembali data anda');
+        }
       } else {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,
@@ -171,7 +179,7 @@ class SignUpQuestionnaireBloc
             secondName: state.secondName,
             password: state.password,
             confirmPassword: state.confirmPassword,
-            date: state.date);
+            date: state.date, errorMessage: 'Silahkan cek kembali data anda');
       }
     } on LoginErrorException catch (e) {
       print(e);

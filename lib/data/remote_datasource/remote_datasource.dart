@@ -54,6 +54,22 @@ class RemoteDataSource {
     return ResponseModel<UserModel>.fromJson(response, UserModel.fromJson);
   }
 
+  Future<ResponseModel> forgotPassword(String userName) async {
+    Map<String, String> data = {};
+    if (userName.contains('@')) {
+      data = {
+        'email': userName,
+      };
+    } else {
+      data = {
+        'mobile': userName,
+      };
+    }
+    final response = await httpClient.post(ServiceUrl.forgotPassword, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
   Future<ResponseModel<UserExampleModel>> loginOnine(
       UserExampleModel userModel) async {
     final response =
@@ -105,11 +121,10 @@ class RemoteDataSource {
 
   Future<ResponseModel> updateBaby(BabyModelApi baby) async {
     try {
-      Map<String, String> data =  {
-        'id': baby.id??"",
-        'name': baby.name??"",
-        'last_menstruation_date': baby.lastMenstruationDate??"",
-
+      Map<String, String> data = {
+        'id': baby.id ?? "",
+        'name': baby.name ?? "",
+        'last_menstruation_date': baby.lastMenstruationDate ?? "",
       };
       final response = await httpClient.put(ServiceUrl.updateBaby, data);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
@@ -117,7 +132,6 @@ class RemoteDataSource {
       return ResponseModel.dataEmpty();
     }
   }
-
 
   Future<ResponseModel> updateQuestioner(UserModel user) async {
     try {
@@ -184,34 +198,39 @@ class RemoteDataSource {
     return ResponseModel.fromJson(response, ConsultationModel.fromJson);
   }
 
-  Future<ResponseModel> postConsultation(ConsultationModel consultationModel) async {
+  Future<ResponseModel> postConsultation(
+      ConsultationModel consultationModel) async {
     Map<String, String> data;
-    if(consultationModel.imageBase64 !=null){
-      data =  {
+    if (consultationModel.imageBase64 != null) {
+      data = {
         'message': consultationModel.message!,
-        'image_base64':consultationModel.imageBase64!
+        'image_base64': consultationModel.imageBase64!
       };
-    } else{
-      data =  {
+    } else {
+      data = {
         'message': consultationModel.message!,
       };
     }
 
-    final response = await httpClient.post(ServiceUrl.postConsultation,data);
+    final response = await httpClient.post(ServiceUrl.postConsultation, data);
 
     return ResponseModel.fromJson(response, ConsultationModel.fromJson);
   }
 
-  Future<ResponseModel> likeConsultation(String id,) async {
-
-    final response = await httpClient.post(ServiceUrl.consultation +"/$id"+"/like", null);
+  Future<ResponseModel> likeConsultation(
+    String id,
+  ) async {
+    final response =
+        await httpClient.post(ServiceUrl.consultation + "/$id" + "/like", null);
 
     return ResponseModel.fromJson(response, ConsultationModel.fromJson);
   }
 
-  Future<ResponseModel> unLikeConsultation(String id,) async {
-
-    final response = await httpClient.post(ServiceUrl.consultation +"/$id"+"/unlike", null);
+  Future<ResponseModel> unLikeConsultation(
+    String id,
+  ) async {
+    final response = await httpClient.post(
+        ServiceUrl.consultation + "/$id" + "/unlike", null);
 
     return ResponseModel.fromJson(response, ConsultationModel.fromJson);
   }
@@ -285,8 +304,9 @@ class RemoteDataSource {
     return data;
   }
 
-  Future<ResponseModel> changePassword(String currentPassword, String newPassword) async {
-    Map<String, String> data =  {
+  Future<ResponseModel> changePassword(
+      String currentPassword, String newPassword) async {
+    Map<String, String> data = {
       'old_password': currentPassword,
       'new_password': newPassword
     };
@@ -421,12 +441,10 @@ class RemoteDataSource {
     return data;
   }
 
-  Future<ResponseModel> updatePhotoProfile(String userId, String imgProfile) async {
+  Future<ResponseModel> updatePhotoProfile(
+      String userId, String imgProfile) async {
     try {
-      Map<String, String> data =  {
-        'id': userId,
-        'image_base64': imgProfile
-      };
+      Map<String, String> data = {'id': userId, 'image_base64': imgProfile};
       final response = await httpClient.put(ServiceUrl.updateUser, data);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
@@ -442,11 +460,14 @@ class RemoteDataSource {
     });
     return data;
   }
-  Future<List<ArticleModel>> searchArticle(bool isSearch, String keyword) async {
-      Map<String, String> param =  {
-        'title': keyword,
-      };
-      final  response =  await httpClient.get(ServiceUrl.listArticle,queryParameters:param );
+
+  Future<List<ArticleModel>> searchArticle(
+      bool isSearch, String keyword) async {
+    Map<String, String> param = {
+      'title': keyword,
+    };
+    final response =
+        await httpClient.get(ServiceUrl.listArticle, queryParameters: param);
     final data = <ArticleModel>[];
     getData(response).forEach((item) {
       data.add(ArticleModel.fromJson(item));

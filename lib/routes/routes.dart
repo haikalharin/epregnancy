@@ -26,6 +26,7 @@ import 'package:http/http.dart';
 import '../common/constants/router_constants.dart';
 import '../pages/chat_page/chat_page.dart';
 import '../pages/chat_page/chat_room.dart';
+import '../pages/forgot_password_page/forgot_password_page.dart';
 import '../pages/games_page/games_page.dart';
 import '../pages/landing_page/landing_page.dart';
 import '../pages/login_page/login_page.dart';
@@ -43,17 +44,25 @@ class Routes {
       case RouteName.login:
         return MaterialPageRoute(builder: (_) => LoginPage());
       case RouteName.homeScreen:
-        return MaterialPageRoute(builder: (_) => HomePage(userId: getDataValue(settings.arguments),));
+        return MaterialPageRoute(
+            builder: (_) => HomePage(
+                  userId: getDataValue(settings.arguments),
+                ));
       case RouteName.surveyPage:
-        return MaterialPageRoute(builder: (_) => SurveyPage(isEdit:  getDataValue(settings.arguments)));
+        return MaterialPageRoute(
+            builder: (_) =>
+                SurveyPage(isEdit: getDataValue(settings.arguments)));
       case RouteName.surveyPageBaby:
-        return MaterialPageRoute(builder: (_) => SurveyPageBaby(isEdit:  getDataValue(settings.arguments)));
+        return MaterialPageRoute(
+            builder: (_) =>
+                SurveyPageBaby(isEdit: getDataValue(settings.arguments)));
       case RouteName.articleDetailPage:
         return MaterialPageRoute(builder: (_) => ArticleDetailPage());
       case RouteName.chatPage:
-        return MaterialPageRoute(builder: (_) => ChatPage(
-          userId: getDataValue(settings.arguments),
-        ));
+        return MaterialPageRoute(
+            builder: (_) => ChatPage(
+                  userId: getDataValue(settings.arguments),
+                ));
       case RouteName.navBar:
         return MaterialPageRoute(
             builder: (_) => NavbarPage(
@@ -84,8 +93,8 @@ class Routes {
                 VerifikasiPage(userId: getDataValue(settings.arguments)));
       case RouteName.dashboardNakesPage:
         return MaterialPageRoute(
-            builder: (_) =>
-                DashBoardNakesPage(userName: getName(settings.arguments),
+            builder: (_) => DashBoardNakesPage(
+                  userName: getName(settings.arguments),
                   hospitalId: getHospitalId(settings.arguments),
                 ));
       case RouteName.addEventPage:
@@ -94,26 +103,35 @@ class Routes {
                 AddEventPage(consulType: getDataValue(settings.arguments)));
       case RouteName.chooseTypeEvent:
         return MaterialPageRoute(builder: (_) => ChooseTypeEventPage());
-        return MaterialPageRoute(builder: (_) => VerifikasiPage(userId: getDataValue(settings.arguments)));
+        return MaterialPageRoute(
+            builder: (_) =>
+                VerifikasiPage(userId: getDataValue(settings.arguments)));
       case RouteName.profileNakesPage:
         return MaterialPageRoute(builder: (_) => ProfileNakesPage(name: getDataValue(settings.arguments),));
       case RouteName.profileUserPage:
         return MaterialPageRoute(builder: (_) => ProfileUserPage());
       case RouteName.poinPage:
-        return MaterialPageRoute(builder: (_) => PoinPage(point: getDataValue(settings.arguments)));
+        return MaterialPageRoute(
+            builder: (_) => PoinPage(point: getDataValue(settings.arguments)));
       case RouteName.poinActivityPage:
-        return MaterialPageRoute(builder: (_) => PoinActivityPage(point: getDataValue(settings.arguments),));
+        return MaterialPageRoute(
+            builder: (_) => PoinActivityPage(
+                  point: getDataValue(settings.arguments),
+                ));
       case RouteName.gamesPage:
         return MaterialPageRoute(builder: (_) => GamesPage());
       case RouteName.webViewPage:
-        return MaterialPageRoute(builder: (_) => WebViewPage(url: getDataValue(settings.arguments)));
+        return MaterialPageRoute(
+            builder: (_) => WebViewPage(url: getDataValue(settings.arguments)));
 
-  case RouteName.signUpQuestionnairePage:
-        return MaterialPageRoute(builder: (_) => const SignUpQuestionnairePage());
+      case RouteName.signUpQuestionnairePage:
+        return MaterialPageRoute(
+            builder: (_) => const SignUpQuestionnairePage());
 
       case RouteName.changePasswordPage:
         return MaterialPageRoute(builder: (_) => const ChangePasswordPage());
-
+      case RouteName.forgotPassword:
+        return MaterialPageRoute(builder: (_) => const ForgotPasswordPage());
 
       // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());

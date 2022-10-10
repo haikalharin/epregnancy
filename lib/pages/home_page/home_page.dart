@@ -53,7 +53,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       setState(() {
         _hospitalModel = _hospital;
       });
-      print('hospital model : ${_hospitalModel?.toJson()}');
     }
   }
 
