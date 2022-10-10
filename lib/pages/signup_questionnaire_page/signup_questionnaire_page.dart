@@ -224,6 +224,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                             ),
                             SizedBox(height: 10),
                             TextField(
+                              enabled: state.password.valid,
                               onChanged: (value) {
                                 Injector.resolve<SignUpQuestionnaireBloc>()
                                     .add(SignupConfirmPasswordChanged(value));
@@ -274,6 +275,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                             SizedBox(height: 10),
                             DateTimeFormField(
                               dateFormat: DateFormat('dd/MM/yyyy'),
+                              lastDate: DateTime.now(),
                               mode: DateTimeFieldPickerMode.date,
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(color: Colors.black45),

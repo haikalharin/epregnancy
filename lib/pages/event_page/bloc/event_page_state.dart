@@ -19,6 +19,7 @@ class EventPageState with FormzMixin {
   final TimeOfDay? timeNotfication;
   final FormzStatus? submitStatus;
   final String? errorMessage;
+  final String? type;
 
   EventPageState(
       {this.scheduleName = const MandatoryFieldValidator.pure(),
@@ -38,7 +39,9 @@ class EventPageState with FormzMixin {
       this.userModelFirebase,
       this.role,
       this.submitStatus = FormzStatus.pure,
-      this.errorMessage});
+      this.errorMessage,
+      this.type
+      });
 
   EventPageState copyWith(
       {FormzStatus? submitStatus,
@@ -58,9 +61,11 @@ class EventPageState with FormzMixin {
       DateTime? dateEnd,
       TimeOfDay? time,
       TimeOfDay? timeNotfication,
-      String? errorMessage}) {
+      String? errorMessage,
+      String? type}) {
     return EventPageState(
         submitStatus: submitStatus,
+        type: type,
         scheduleName: scheduleName ?? this.scheduleName,
         consulType: consulType ?? this.consulType,
         description: description ?? this.description,

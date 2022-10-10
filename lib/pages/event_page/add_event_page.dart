@@ -37,10 +37,15 @@ final _userNameController = TextEditingController();
 var authService = AuthService();
 
 class _AddEventPageState extends State<AddEventPage> {
-  @override
-  void initState() {
+
+  void onRefresh() async {
     Injector.resolve<EventPageBloc>()
         .add(EventInitEvent(widget.consulType ?? ""));
+  }
+
+  @override
+  void initState() {
+   onRefresh();
     super.initState();
   }
 
@@ -83,16 +88,20 @@ class _AddEventPageState extends State<AddEventPage> {
               listener: (context, state) async {
         if (state.submitStatus == FormzStatus.submissionFailure) {
         } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-          const snackBar = SnackBar(
-              content: Text("Berhasil"),
-              backgroundColor: EpregnancyColors.primer);
-          Scaffold.of(context).showSnackBar(snackBar);
+          if(state.type == "delete"){
+            onRefresh();
+          }else {
+            const snackBar = SnackBar(
+                content: Text("Berhasil"),
+                backgroundColor: EpregnancyColors.primer);
+            Scaffold.of(context).showSnackBar(snackBar);
 
-          await Future.delayed(const Duration(seconds: 1));
+            await Future.delayed(const Duration(seconds: 1));
 
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              RouteName.navBar, (Route<dynamic> route) => false, arguments: {'role': state.role, 'initial_index': 0});
-
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                RouteName.navBar, (Route<dynamic> route) => false,
+                arguments: {'role': state.role, 'initial_index': 0});
+          }
         }
       }, child: BlocBuilder<EventPageBloc, EventPageState>(
         builder: (context, state) {
@@ -347,6 +356,12 @@ class _Notification extends StatelessWidget {
                             context: context,
                             initialTime: initialTime,
                             initialEntryMode: TimePickerEntryMode.input,
+                            builder: (context, child) {
+                              return MediaQuery(
+                                data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                                child: child ?? Container(),
+                              );
+                            },
                           );
 
                           Injector.resolve<EventPageBloc>().add(

@@ -184,39 +184,39 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                 )
                               ],
                             ),
-                            Container(
-                              margin: EdgeInsets.only(right: 20),
-                              width: MediaQuery.of(context).size.width - 100,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  color: EpregnancyColors.primerSoft2),
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    left: 20, right: 20, top: 10, bottom: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      child:  Text(
-                                        state.user?.referralCode??"",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: EpregnancyColors.white),
-                                        maxLines: 3,
-                                      ),
-                                    ),
-                                    InkWell(onTap: (){
-                                      FlutterClipboard.copy(state.user?.referralCode??"").then(( value ) {
-                                        const snackBar = SnackBar(
-                                            content: Text("Berhasil dicopy"),
-                                            backgroundColor: EpregnancyColors.primer);
-                                        Scaffold.of(context).showSnackBar(snackBar);
-                                      });
-                                    },child: Icon(Icons.copy))
-                                  ],
-                                ),
-                              ),
-                            ),
+                            // Container(
+                            //   margin: EdgeInsets.only(right: 20),
+                            //   width: MediaQuery.of(context).size.width - 100,
+                            //   decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(8.0),
+                            //       color: EpregnancyColors.primerSoft2),
+                            //   child: Container(
+                            //     padding: EdgeInsets.only(
+                            //         left: 20, right: 20, top: 10, bottom: 10),
+                            //     child: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Container(
+                            //           child:  Text(
+                            //             state.user?.referralCode??"",
+                            //             style: TextStyle(
+                            //                 fontSize: 14,
+                            //                 color: EpregnancyColors.white),
+                            //             maxLines: 3,
+                            //           ),
+                            //         ),
+                            //         InkWell(onTap: (){
+                            //           FlutterClipboard.copy(state.user?.referralCode??"").then(( value ) {
+                            //             const snackBar = SnackBar(
+                            //                 content: Text("Berhasil dicopy"),
+                            //                 backgroundColor: EpregnancyColors.primer);
+                            //             Scaffold.of(context).showSnackBar(snackBar);
+                            //           });
+                            //         },child: Icon(Icons.copy))
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),

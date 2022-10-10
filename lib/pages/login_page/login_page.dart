@@ -46,150 +46,150 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Navigator.of(context).pushReplacementNamed(RouteName.signup);
-        return Future.value(true);
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-            child: BlocListener<LoginBloc, LoginState>(
-                listener: (context, state) async {
-                  if (state.submitStatus == FormzStatus.submissionFailure) {
-                    var snackBar = SnackBar(
-                        content:  RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            // Note: Styles for TextSpans must be explicitly defined.
-                            // Child text spans will inherit styles from parent
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.black,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: "Maaf, ",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                              const TextSpan(text: ' Tidak dapat masuk. Informasi login anda tidak sesuai'),
-                            ],
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+          child: BlocListener<LoginBloc, LoginState>(
+              listener: (context, state) async {
+                if (state.submitStatus == FormzStatus.submissionFailure) {
+                  var snackBar = SnackBar(
+                      content: RichText(
+                        textAlign: TextAlign.center,
+                        text: const TextSpan(
+                          // Note: Styles for TextSpans must be explicitly defined.
+                          // Child text spans will inherit styles from parent
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.black,
                           ),
-                        ), backgroundColor: Colors.red);
-                    Scaffold.of(context).showSnackBar(snackBar);
-                  } else if (state.submitStatus ==
-                      FormzStatus.submissionSuccess) {
-                    if (state.typeEvent == StringConstant.requestOtp) {
-                      Navigator.of(context).pushNamed(RouteName.otpPage);
-                    } else if (state.typeEvent == StringConstant.submitLogin) {
-                      if (state.userModel?.isPatient == true) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          RouteName.navBar,
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: "Maaf, ",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold)),
+                            TextSpan(
+                                text:
+                                    ' Tidak dapat masuk. Informasi login anda tidak sesuai'),
+                          ],
+                        ),
+                      ),
+                      backgroundColor: Colors.red);
+                  Scaffold.of(context).showSnackBar(snackBar);
+                } else if (state.submitStatus ==
+                    FormzStatus.submissionSuccess) {
+                  if (state.typeEvent == StringConstant.requestOtp) {
+                    Navigator.of(context).pushNamed(RouteName.otpPage);
+                  } else if (state.typeEvent == StringConstant.submitLogin) {
+                    if (state.userModel?.isPatient == true &&
+                        state.userModel?.isPregnant != null &&
+                        state.userModel?.isPlanningPregnancy != null &&
+                        state.userModel?.isHaveBaby != null) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        RouteName.navBar,
+                        (Route<dynamic> route) => false,
+                        arguments: {
+                          'role': state.userModel?.isPatient == true
+                              ? StringConstant.patient
+                              : StringConstant.midwife,
+                          'initial_index': 0
+                        },
+                      );
+                    } else {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          RouteName.dashboardNakesPage,
                           (Route<dynamic> route) => false,
                           arguments: {
-                            'role': state.userModel?.isPatient == true
-                                ? StringConstant.patient
-                                : StringConstant.midwife,
-                            'initial_index': 0
-                          },
-                        );
-                      } else {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            RouteName.dashboardNakesPage,
-                            (Route<dynamic> route) => false,
-                            arguments: {
-                              'name': state.userModel?.name,
-                              'hospital_id': state.userModel?.hospitalId
-                            });
-                      }
+                            'name': state.userModel?.name,
+                            'hospital_id': state.userModel?.hospitalId
+                          });
                     }
                   }
-                },
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Image.asset(
-                        "assets/ePregnancy_login_logo.png",
-                        fit: BoxFit.fitWidth,
-                        alignment: Alignment.bottomLeft,
-                      ),
+                }
+              },
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Image.asset(
+                      "assets/ePregnancy_login_logo.png",
+                      fit: BoxFit.fitWidth,
+                      alignment: Alignment.bottomLeft,
                     ),
-                    Center(
-                      child: BlocBuilder<LoginBloc, LoginState>(
-                        builder: (context, state) {
-                          return ListView(
-                            physics: const ClampingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: _horizontalPadding,
+                  ),
+                  Center(
+                    child: BlocBuilder<LoginBloc, LoginState>(
+                      builder: (context, state) {
+                        return ListView(
+                          physics: const ClampingScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: _horizontalPadding,
+                          ),
+                          children: [
+                            SizedBox(height: 60),
+                            // SizedBox(height: 120),
+                            //_HeadingText(),
+                            Text(
+                              "Masuk dengan email",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 40,
+                              ),
                             ),
-                            children: [
-                              SizedBox(height: 60),
-                              // SizedBox(height: 120),
-                              //_HeadingText(),
-                              Text(
-                                "Masuk dengan email",
-                                style: TextStyle(
+                            Text(
+                              "Masuk dengan akun email/nomor handphone yang terdaftar",
+                              style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 40,
-                                ),
-                              ),
-                              Text(
-                                "Masuk dengan akun email/nomor handphone yang terdaftar",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15),
-                              ),
-                              SizedBox(height: 20),
-                              _UsernameInput(),
-                              SizedBox(height: 12),
-                              _PasswordInput(),
-                              _ForgotPasswordButton(),
-                              SizedBox(height: 20),
-                              Container(
-                                  height: 50,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: ElevatedButton(
-                                    child: const Text('Login'),
-                                    onPressed: () {
-                                      Injector.resolve<LoginBloc>()
-                                          .add(LoginSubmitted());
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary: EpregnancyColors.primer),
-                                  )),
-                              SizedBox(height: 10),
-                              Container(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15),
+                            ),
+                            SizedBox(height: 20),
+                            _UsernameInput(),
+                            SizedBox(height: 12),
+                            _PasswordInput(),
+                            _ForgotPasswordButton(),
+                            SizedBox(height: 20),
+                            Container(
                                 height: 50,
                                 padding:
                                     const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: ElevatedButton(
-                                    onPressed: () async {
-                                      // GAuthentication.signOut(context: context);
-                                      // GAuthentication.signInWithGoogle();
-                                      Injector.resolve<LoginBloc>()
-                                          .add(LoginWithGoogleSubmitted());
-                                    },
-                                    child: Text("Lanjut dengan Google"),
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
-                                        onPrimary: Colors.black)),
-                              ),
-                              SizedBox(height: 12),
-                              _RegisterButton()
-                              // _PasswordTextField(),
-                            ],
-                          );
-                        },
-                      ),
+                                  child: const Text('Login'),
+                                  onPressed: () {
+                                    Injector.resolve<LoginBloc>()
+                                        .add(LoginSubmitted());
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      primary: EpregnancyColors.primer),
+                                )),
+                            SizedBox(height: 10),
+                            Container(
+                              height: 50,
+                              padding:
+                                  const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: ElevatedButton(
+                                  onPressed: () async {
+                                    // GAuthentication.signOut(context: context);
+                                    // GAuthentication.signInWithGoogle();
+                                    Injector.resolve<LoginBloc>()
+                                        .add(LoginWithGoogleSubmitted());
+                                  },
+                                  child: Text("Lanjut dengan Google"),
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.white,
+                                      onPrimary: Colors.black)),
+                            ),
+                            SizedBox(height: 12),
+                            _RegisterButton()
+                            // _PasswordTextField(),
+                          ],
+                        );
+                      },
                     ),
-                    _Loading(),
-                  ],
-                ))),
-      ),
+                  ),
+                  _Loading(),
+                ],
+              ))),
     );
   }
 }
@@ -260,9 +260,7 @@ class _UsernameInput extends StatelessWidget {
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
             labelText: 'E-mail/Nomor handphone',
-            errorText: state.username.invalid
-                ? 'Silahkan isi username'
-                : null,
+            errorText: state.username.invalid ? 'Silahkan isi username' : null,
           ),
         );
       },
