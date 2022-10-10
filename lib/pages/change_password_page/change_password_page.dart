@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
@@ -43,6 +44,11 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: const BtnBackIosStyle(),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       body: BlocListener<ChangePasswordBloc, ChangePasswordState>(
@@ -68,16 +74,6 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                 children: [
                   Column(
                     children: [
-                      SizedBox(height: 30),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Image.asset(
-                          'assets/back.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
                       Image.asset("assets/signup_questionnaire_icon.png",
                           height: 220, fit: BoxFit.fitWidth),
                       Container(
