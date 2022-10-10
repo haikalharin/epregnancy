@@ -52,139 +52,133 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
                   decoration: BoxDecoration(color: Colors.white),
                   child: state.listEventPersonal == null ||
                       (state.listEventPersonal != null && state.listEventPersonal!.isEmpty)
-                      ? Stack(children: [
-                    Container(
-                        margin: EdgeInsets.only(),
-                        width: MediaQuery.of(context).size.width,
+                      ? Container(
+                      margin: EdgeInsets.only(),
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('Belum ada jadwal hari ini', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp),),
+                          SizedBox(height: 10.h,),
+                          SvgPicture.asset('assets/icCalendarIlustration.svg'),
+                        ],
+                      ))
+                      : ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      String outputDate = "";
+                      var outputFormat = DateFormat.yMMMMd('id');
+                      outputDate = outputFormat.format(widget.dateTime??DateTime.now());
+                      return Container(
+
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: EpregnancyColors.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        // color: Colors.greenAccent,
+                        margin: EdgeInsets.only(
+                            left: 20, right: 20, bottom: 30),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
                           children: [
-                            Text('Belum ada jadwal hari ini', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp),),
-                            SizedBox(height: 10.h,),
-                            SvgPicture.asset('assets/icCalendarIlustration.svg'),
-                          ],
-                        )),
-                  ])
-                      : Stack(
-                    children: [
-                      ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          String outputDate = "";
-                          var outputFormat = DateFormat.yMMMMd('id');
-                          outputDate = outputFormat.format(widget.dateTime??DateTime.now());
-                          return Container(
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 10, top: 10),
+                              child: Row(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    // width: 62,
 
-                            padding: EdgeInsets.only(
-                                left: 20, right: 20, top: 10, bottom: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: EpregnancyColors.grey,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            // color: Colors.greenAccent,
-                            margin: EdgeInsets.only(
-                                left: 20, right: 20, bottom: 30),
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      bottom: 10, top: 10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        // width: 62,
-
-                                          child: Text(outputDate)),
-                                      state.listEventPersonal![index].type ==
-                                          StringConstant.visitHospital ?
-                                      Container(
-                                        child: SvgPicture.asset(
-                                          'assets/ic_health.svg',
-                                          fit: BoxFit.fitHeight,
-                                          // height: 200,
-                                          // height: 60,
-                                          // width: 60,
-                                        ),
-                                      ) : state.listEventPersonal![index].type ==
-                                          StringConstant.consumeMedicine
-                                          ? Container(
-                                        child: SvgPicture.asset(
-                                          'assets/ic_pills_unselected.svg',
-                                          fit: BoxFit.fitHeight,
-                                          // height: 200,
-                                          // height: 60,
-                                          // width: 60,
-                                        ),
-                                      ):  Container(
-                                        child: SvgPicture.asset(
-                                          'assets/ic_notes.svg',
-                                          fit: BoxFit.fitHeight,
-                                          // height: 200,
-                                          // height: 60,
-                                          // width: 60,
-                                        ),
-                                      ),
-                                    ],
+                                      child: Text(outputDate)),
+                                  state.listEventPersonal![index].type ==
+                                      StringConstant.visitHospital ?
+                                  Container(
+                                    child: SvgPicture.asset(
+                                      'assets/ic_health.svg',
+                                      fit: BoxFit.fitHeight,
+                                      // height: 200,
+                                      // height: 60,
+                                      // width: 60,
+                                    ),
+                                  ) : state.listEventPersonal![index].type ==
+                                      StringConstant.consumeMedicine
+                                      ? Container(
+                                    child: SvgPicture.asset(
+                                      'assets/ic_pills_unselected.svg',
+                                      fit: BoxFit.fitHeight,
+                                      // height: 200,
+                                      // height: 60,
+                                      // width: 60,
+                                    ),
+                                  ):  Container(
+                                    child: SvgPicture.asset(
+                                      'assets/ic_notes.svg',
+                                      fit: BoxFit.fitHeight,
+                                      // height: 200,
+                                      // height: 60,
+                                      // width: 60,
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                                width: 230,
-                                                margin: EdgeInsets.only(
-                                                    bottom: 10),
-                                                child: Text(
-                                                  state.listEventPersonal !=
-                                                      null &&
-                                                      state
-                                                          .listEventPersonal![
-                                                      index]
-                                                          .title !=
-                                                          null
-                                                      ? state
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                            width: 230,
+                                            margin: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                              state.listEventPersonal !=
+                                                  null &&
+                                                  state
                                                       .listEventPersonal![
                                                   index]
-                                                      .title!
-                                                      : "",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .bold),
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                                      .title !=
+                                                      null
+                                                  ? state
+                                                  .listEventPersonal![
+                                              index]
+                                                  .title!
+                                                  : "",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .bold),
+                                            )),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          );
-                        },
-                        itemCount: state.listEventPersonal != null
-                            ? state.listEventPersonal!.length
-                            : 0,
-                      ),
-                    ],
-                  )),
+                          ],
+                        ),
+                      );
+                    },
+                    itemCount: state.listEventPersonal != null
+                        ? state.listEventPersonal!.length
+                        : 0,
+                  ),),
               // widget.tipeAcara == StringConstant.typeEventJadwalPribadi
               //     ? Align(
               //   alignment: Alignment(0.9, 1),

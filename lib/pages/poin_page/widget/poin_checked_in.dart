@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PointCheckedIn extends StatelessWidget {
   const PointCheckedIn({Key? key}) : super(key: key);
@@ -12,8 +13,8 @@ class PointCheckedIn extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             color: EpregnancyColors.blueDark
         ),
-        child: const Center(
-          child: Icon(Icons.check_circle_rounded, color: Colors.white, size: 27,),
+        child: Center(
+          child: Icon(Icons.check_circle_rounded, color: Colors.white, size: 19.w,),
         )
     );
   }

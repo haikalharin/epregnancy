@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   void getHospitalFromLocal() async {
     HospitalModel _hospital = await AppSharedPreference.getHospital();
-    if(_hospital != null && mounted){
+    if (_hospital != null && mounted) {
       setState(() {
         _hospitalModel = _hospital;
       });
@@ -58,7 +58,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   bool isExpanded = false;
   final ScrollController _scrollControler = ScrollController();
-
 
   @override
   void initState() {
@@ -74,7 +73,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         print('scrolling');
       });
       _scrollControler.position.isScrollingNotifier.addListener(() {
-        if(_scrollControler.position.pixels == _scrollControler.position.maxScrollExtent) {
+        if (_scrollControler.position.pixels ==
+            _scrollControler.position.maxScrollExtent) {
           setState(() {
             isExpanded = true;
           });
@@ -87,7 +87,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -106,7 +105,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             Navigator.of(context).pushNamed(RouteName.chooseTypeEvent);
           },
           icon: isExpanded ? FaIcon(FontAwesomeIcons.plus) : null,
-          label: isExpanded ? Text("Tambah Jadwal") : FaIcon(FontAwesomeIcons.plus),
+          label: isExpanded
+              ? Text("Tambah Jadwal")
+              : FaIcon(FontAwesomeIcons.plus),
         ),
         body: BlocListener<HomePageBloc, HomePageState>(
           listener: (context, state) {
@@ -118,496 +119,563 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
               return Container(
                 child: ListView(
-                    controller: _scrollControler,
-                    children: [
-                      Container(
-                          padding: EdgeInsets.only(bottom: 0, top: 20),
-                          color: Colors.white,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width : MediaQuery.of(context).size.width,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Expanded(
-                                            child: Container(
-                                                margin: EdgeInsets.only(
-                                                    left: 16.w, right: 50, bottom: 20),
-                                                child: Text("Halo, $name",
-                                                    style: const TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        color: EpregnancyColors.primer),
+                  controller: _scrollControler,
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(bottom: 0, top: 20),
+                        color: Colors.white,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                                left: 16.w,
+                                                right: 50,
+                                                bottom: 20),
+                                            child: Text("Halo, $name",
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: EpregnancyColors
+                                                        .primer),
                                                 textAlign: TextAlign.start),
-                                              ),
                                           ),
-                                          _hospitalModel?.name != ""  ? Expanded(
-                                            child: SizedBox(
-                                              width: MediaQuery.of(context).size.width / 2.5,
-                                              // alignment: Alignment.centerRight,
-                                              child: Align(
-                                                alignment: Alignment.centerRight,
-                                                child: InkWell(
-                                                  onTap: (){
-                                                    Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                                      if(value != null){
-                                                        setState(() {
-                                                          _hospitalModel = value as HospitalModel?;
-                                                        });
-                                                      }
-                                                    });
-                                                  },
+                                        ),
+                                        _hospitalModel?.name != ""
+                                            ? Expanded(
+                                                child: SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2.5,
+                                                  // alignment: Alignment.centerRight,
                                                   child: Align(
-                                                    alignment: Alignment.centerRight,
-                                                    child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 0.w, right: 10.w, bottom: 20),
-                                                      child:  Row(
-                                                        mainAxisSize: MainAxisSize.max,
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: [
-                                                          SvgPicture.asset('assets/icLocation.svg'),
-                                                          SizedBox(width: 10.w,),
-                                                          Expanded(
-                                                            child: Text(_hospitalModel?.name ?? 'Pilih Puskesmas', style: TextStyle(color: Colors.black),
-                                                              // textAlign: TextAlign.right,
-                                                              overflow: TextOverflow.visible,),
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Navigator.pushNamed(
+                                                                context,
+                                                                RouteName
+                                                                    .locationSelect)
+                                                            .then((value) {
+                                                          if (value != null) {
+                                                            setState(() {
+                                                              _hospitalModel = value
+                                                                  as HospitalModel?;
+                                                            });
+                                                          }
+                                                        });
+                                                      },
+                                                      child: Align(
+                                                        alignment: Alignment
+                                                            .centerRight,
+                                                        child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  left: 0.w,
+                                                                  right: 10.w,
+                                                                  bottom: 20),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  'assets/icLocation.svg'),
+                                                              SizedBox(
+                                                                width: 10.w,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  _hospitalModel
+                                                                          ?.name ??
+                                                                      'Pilih Puskesmas',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black),
+                                                                  // textAlign: TextAlign.right,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .visible,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                          ) : SizedBox(
-                                            width: MediaQuery.of(context).size.width / 2.5,
-                                            // alignment: Alignment.centerRight,
-                                            child: Align(
-                                              alignment: Alignment.centerRight,
-                                              child: InkWell(
-                                                onTap: (){
-                                                  Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                                    if(value != null){
-                                                      setState(() {
-                                                        _hospitalModel = value as HospitalModel?;
-                                                      });
-                                                    }
-                                                  });
-                                                },
+                                              )
+                                            : SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2.5,
+                                                // alignment: Alignment.centerRight,
                                                 child: Align(
-                                                  alignment: Alignment.centerRight,
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 0.w, right: 10.w, bottom: 20),
-                                                    child:  Row(
-                                                      mainAxisSize: MainAxisSize.max,
-                                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                                      mainAxisAlignment: MainAxisAlignment.end,
-                                                      children: [
-                                                        SvgPicture.asset('assets/icLocation.svg'),
-                                                        SizedBox(width: 10.w,),
-                                                        Expanded(
-                                                          child: Text('Pilih Puskesmas', style: TextStyle(color: Colors.black),
-                                                            // textAlign: TextAlign.right,
-                                                            overflow: TextOverflow.visible,),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    state.user != null &&
-                                            state.user!.isPregnant == true
-                                        ? Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15.0),
-                                                color: EpregnancyColors.primer),
-                                            margin: EdgeInsets.only(
-                                                left: 20, right: 20),
-                                            child: Container(
-                                              margin: EdgeInsets.only(
-                                                  left: 30, right: 30),
-                                              padding: EdgeInsets.only(
-                                                  top: 20, bottom: 20),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  state.baby != null
-                                                      ? Container(
-                                                          margin: EdgeInsets.only(
-                                                              bottom: 10),
-                                                          child: Text(
-                                                           state.baby!.length != 0? state.baby!.first
-                                                                .name!: "",
-                                                            style: TextStyle(
-                                                                fontSize: 16,
-                                                                color:
-                                                                    Colors.white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                            maxLines: 3,
-                                                          ))
-                                                      : Container(),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      state.babyProgressModel !=
-                                                              null
-                                                          ? Container(
-                                                              // margin: EdgeInsets.only(left: 50, right: 50),
-                                                              child: FadeInImage(
-                                                                placeholder:
-                                                                    AssetImage(
-                                                                        'assets/ic_no_photo.png'),
-                                                                image: NetworkImage(state
-                                                                    .babyProgressModel!
-                                                                    .iconUrl!),
-                                                                width: 60,
-                                                                height: 60,
-                                                                fit: BoxFit.cover,
-                                                                imageErrorBuilder:
-                                                                    (context,
-                                                                        error,
-                                                                        stackTrace) {
-                                                                  return Image
-                                                                      .asset(
-                                                                    'assets/ic_no_photo.png',
-                                                                    width: 60,
-                                                                    height: 60,
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                  );
-                                                                },
-                                                              ),
-                                                            )
-                                                          : Container(
-                                                              width: 60,
-                                                              height: 60,
-                                                            ),
-                                                      Container(
-                                                        child: Column(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.pushNamed(
+                                                              context,
+                                                              RouteName
+                                                                  .locationSelect)
+                                                          .then((value) {
+                                                        if (value != null) {
+                                                          setState(() {
+                                                            _hospitalModel = value
+                                                                as HospitalModel?;
+                                                          });
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 0.w,
+                                                            right: 10.w,
+                                                            bottom: 20),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
-                                                                  .start,
+                                                                  .end,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
                                                           children: [
-                                                            Container(
-                                                              child: Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          bottom:
-                                                                              10),
-                                                                      width: 200,
-                                                                      child: Text(
-                                                                        state.babyProgressModel !=
-                                                                                null
-                                                                            ? state
-                                                                                .babyProgressModel!
-                                                                                .title!
-                                                                            : '',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                14,
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontWeight:
-                                                                                FontWeight.bold),
-                                                                        maxLines:
-                                                                            5,
-                                                                      )),
-                                                                  SizedBox(
-                                                                    width: 20,
-                                                                  ),
-                                                                  Container(
-                                                                    child:
-                                                                        const Icon(
-                                                                      Icons
-                                                                          .arrow_forward_ios,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                  ),
-                                                                ],
+                                                            SvgPicture.asset(
+                                                                'assets/icLocation.svg'),
+                                                            SizedBox(
+                                                              width: 10.w,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                'Pilih Puskesmas',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black),
+                                                                // textAlign: TextAlign.right,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .visible,
                                                               ),
                                                             ),
-                                                            Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        bottom:
-                                                                            10),
-                                                                width: 200,
-                                                                child: Text(
-                                                                  state.babyProgressModel !=
-                                                                          null
-                                                                      ? state
-                                                                          .babyProgressModel!
-                                                                          .condition!
-                                                                      : '',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          12,
-                                                                      color: Colors
-                                                                          .white),
-                                                                  maxLines: 3,
-                                                                )),
-                                                            Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        bottom:
-                                                                            20),
-                                                                child: Text(
-                                                                  state.weeks !=
-                                                                          null
-                                                                      ? "${state.weeks} Minggu ${state.days} Hari"
-                                                                      : '',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          12,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                                )),
-                                                            Container(
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                6.0),
-                                                                    color: Colors
-                                                                        .white),
-                                                                child: Container(
-                                                                  width: 210,
-                                                                  height: 30,
-                                                                  child: Center(
-                                                                    child:
-                                                                        Container(
-                                                                      child:
-                                                                          const Text(
-                                                                        "Ubah Profil Kehamilan ",
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                14,
-                                                                            color:
-                                                                                EpregnancyColors.primer),
-                                                                        maxLines:
-                                                                            3,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                )),
                                                           ],
                                                         ),
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        : Container(),
-                                  ],
-                                ),
-                              ])),
-                      Container(
-                          // height: 200,
-                          color: Colors.white,
-                          child: Container(
-                            padding: EdgeInsets.only(top: 10, bottom: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(
-                                      left: 20, right: 20, bottom: 20),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                          child: const Text(
-                                        "Artikel Untuk Anda",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700),
-                                      )),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                              RouteName.dashboardArticle);
-                                        },
-                                        child: Container(
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                  margin:
-                                                      EdgeInsets.only(right: 5),
-                                                  child: Text(
-                                                    "Artikel lainnya",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.grey),
-                                                  )),
-                                              Container(
-                                                child: const Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  size: 20,
-                                                  color: Colors.grey,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                              )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    state.submitStatus ==
-                                                FormzStatus
-                                                    .submissionInProgress &&
-                                            state.tipe == 'listArticle'
-                                        ? Expanded(child: ListShimmer())
-                                        : Expanded(
-                                            child: ListArticle(
-                                            listArticle: state.listArticle ?? [],
-                                          ))
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )),
-                      PoinCardSection(point: state.totalPointsEarned ?? 0),
-                      // Games Section
-                      const GameCardSection(),
-
-                      Container(
-                          color: Colors.white,
+                                  state.user != null &&
+                                          state.user!.isPregnant == true
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                              color: EpregnancyColors.primer),
+                                          margin: EdgeInsets.only(
+                                              left: 20, right: 20),
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                                left: 30, right: 30),
+                                            padding: EdgeInsets.only(
+                                                top: 20, bottom: 20),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                state.baby != null
+                                                    ? Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 10),
+                                                        child: Text(
+                                                          state.baby!.length !=
+                                                                  0
+                                                              ? state.baby!
+                                                                  .first.name!
+                                                              : "",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                          maxLines: 3,
+                                                        ))
+                                                    : Container(),
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    state.babyProgressModel !=
+                                                            null
+                                                        ? Container(
+                                                            // margin: EdgeInsets.only(left: 50, right: 50),
+                                                            child: FadeInImage(
+                                                              placeholder:
+                                                                  AssetImage(
+                                                                      'assets/ic_no_photo.png'),
+                                                              image: NetworkImage(state
+                                                                  .babyProgressModel!
+                                                                  .iconUrl!),
+                                                              width: 60.w,
+                                                              height: 60.h,
+                                                              fit: BoxFit.cover,
+                                                              imageErrorBuilder:
+                                                                  (context,
+                                                                      error,
+                                                                      stackTrace) {
+                                                                return Image
+                                                                    .asset(
+                                                                  'assets/ic_no_photo.png',
+                                                                  width: 60,
+                                                                  height: 60,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                );
+                                                              },
+                                                            ),
+                                                          )
+                                                        : Container(
+                                                            width: 60,
+                                                            height: 60,
+                                                          ),
+                                                    Container(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                            child: Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        bottom:
+                                                                            10),
+                                                                    width: 150.w,
+                                                                    child: Text(
+                                                                      state.babyProgressModel !=
+                                                                              null
+                                                                          ? state
+                                                                              .babyProgressModel!
+                                                                              .title!
+                                                                          : '',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                      maxLines:
+                                                                          5,
+                                                                    )),
+                                                                SizedBox(
+                                                                  width: 10.w,
+                                                                ),
+                                                                Container(
+                                                                  child:
+                                                                      const Icon(
+                                                                    Icons
+                                                                        .arrow_forward_ios,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          10),
+                                                              width: 200,
+                                                              child: Text(
+                                                                state.babyProgressModel !=
+                                                                        null
+                                                                    ? state
+                                                                        .babyProgressModel!
+                                                                        .condition!
+                                                                    : '',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .white),
+                                                                maxLines: 3,
+                                                              )),
+                                                          Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          20),
+                                                              child: Text(
+                                                                state.weeks !=
+                                                                        null
+                                                                    ? "${state.weeks} Minggu ${state.days} Hari"
+                                                                    : '',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )),
+                                                          Container(
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              6.0),
+                                                                  color: Colors
+                                                                      .white),
+                                                              child: Container(
+                                                                width: 210,
+                                                                height: 30,
+                                                                child: Center(
+                                                                  child:
+                                                                      Container(
+                                                                    child:
+                                                                        const Text(
+                                                                      "Ubah Profil Kehamilan ",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              EpregnancyColors.primer),
+                                                                      maxLines:
+                                                                          3,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
+                                ],
+                              ),
+                            ])),
+                    Container(
+                        // height: 200,
+                        color: Colors.white,
+                        child: Container(
+                          padding: EdgeInsets.only(top: 10, bottom: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                margin: EdgeInsets.only(
-                                    left: 20, right: 20, bottom: 20, top: 20),
+                                padding: EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 20),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                         child: const Text(
-                                      "Kalender Saya",
+                                      "Artikel Untuk Anda",
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700),
                                     )),
                                     InkWell(
-                                      onTap: () async {
-                                        dateTime = await DatePickerUtils.getDate(
-                                                context,
-                                                state.eventDate ??
-                                                    DateTime.now()) ??
-                                            DateTime.now();
-                                        Injector.resolve<HomePageBloc>().add(
-                                            EventFetchEvent(
-                                                _tabController!.index == 0
-                                                    ? StringConstant.typePublic
-                                                    : StringConstant.typePersonal,
-                                                dateTime));
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(
+                                            RouteName.dashboardArticle);
                                       },
                                       child: Container(
-                                          child: Icon(
-                                              Icons.calendar_today_outlined)),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                margin:
+                                                    EdgeInsets.only(right: 5),
+                                                child: Text(
+                                                  "Artikel lainnya",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.grey),
+                                                )),
+                                            Container(
+                                              child: const Icon(
+                                                Icons.arrow_forward_ios,
+                                                size: 20,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: 20, right: 20, bottom: 10, top: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        var date = state.eventDate
-                                            ?.add(Duration(days: -1));
-                                        Injector.resolve<HomePageBloc>().add(
-                                            EventFetchEvent(
-                                                _tabController!.index == 0
-                                                    ? StringConstant.typePublic
-                                                    : StringConstant.typePersonal,
-                                                date ?? DateTime.now()));
-                                      },
-                                      child: Container(
-                                          height: 20,
-                                          width: 20,
-                                          child: Icon(Icons.arrow_back_ios)),
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      state.eventDateString ?? "",
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700),
-                                    )),
-                                    InkWell(
-                                      onTap: () async {
-                                        var date = state.eventDate
-                                            ?.add(Duration(days: 1));
-                                        Injector.resolve<HomePageBloc>().add(
-                                            EventFetchEvent(
-                                                _tabController!.index == 0
-                                                    ? StringConstant.typePublic
-                                                    : StringConstant.typePersonal,
-                                                date ?? DateTime.now()));
-                                      },
-                                      child: Container(
-                                          height: 20,
-                                          width: 20,
-                                          child: Icon(Icons.arrow_forward_ios)),
-                                    ),
-                                  ],
-                                ),
+                              Row(
+                                children: [
+                                  state.submitStatus ==
+                                              FormzStatus
+                                                  .submissionInProgress &&
+                                          state.tipe == 'listArticle'
+                                      ? Expanded(child: ListShimmer())
+                                      : Expanded(
+                                          child: ListArticle(
+                                          listArticle: state.listArticle ?? [],
+                                        ))
+                                ],
                               ),
-                              Container(
-                                  height: MediaQuery.of(context).size.height - 200,
-                                  child: TabBarEventPage(
-                                    tabController: _tabController,
-                                    dateTime: state.eventDate,
-                                  )),
                             ],
-                          )),
-                    ],
+                          ),
+                        )),
+                    PoinCardSection(point: state.totalPointsEarned ?? 0),
+                    // Games Section
+                    const GameCardSection(),
+
+                    Container(
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 20, top: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      child: const Text(
+                                    "Kalender Saya",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  )),
+                                  InkWell(
+                                    onTap: () async {
+                                      dateTime = await DatePickerUtils.getDate(
+                                              context,
+                                              state.eventDate ??
+                                                  DateTime.now()) ??
+                                          DateTime.now();
+                                      Injector.resolve<HomePageBloc>().add(
+                                          EventFetchEvent(
+                                              _tabController!.index == 0
+                                                  ? StringConstant.typePublic
+                                                  : StringConstant.typePersonal,
+                                              dateTime));
+                                    },
+                                    child: Container(
+                                        child: Icon(
+                                            Icons.calendar_today_outlined)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 10, top: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () async {
+                                      var date = state.eventDate
+                                          ?.add(Duration(days: -1));
+                                      Injector.resolve<HomePageBloc>().add(
+                                          EventFetchEvent(
+                                              _tabController!.index == 0
+                                                  ? StringConstant.typePublic
+                                                  : StringConstant.typePersonal,
+                                              date ?? DateTime.now()));
+                                    },
+                                    child: Container(
+                                        height: 20,
+                                        width: 20,
+                                        child: Icon(Icons.arrow_back_ios)),
+                                  ),
+                                  Container(
+                                      child: Text(
+                                    state.eventDateString ?? "",
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  )),
+                                  InkWell(
+                                    onTap: () async {
+                                      var date = state.eventDate
+                                          ?.add(Duration(days: 1));
+                                      Injector.resolve<HomePageBloc>().add(
+                                          EventFetchEvent(
+                                              _tabController!.index == 0
+                                                  ? StringConstant.typePublic
+                                                  : StringConstant.typePersonal,
+                                              date ?? DateTime.now()));
+                                    },
+                                    child: Container(
+                                        height: 20,
+                                        width: 20,
+                                        child: Icon(Icons.arrow_forward_ios)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                height:
+                                    MediaQuery.of(context).size.height - 200,
+                                child: TabBarEventPage(
+                                  tabController: _tabController,
+                                  dateTime: state.eventDate,
+                                )),
+                          ],
+                        )),
+                  ],
                 ),
               );
             },

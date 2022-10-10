@@ -14,6 +14,7 @@ import '../../common/services/auth_service.dart';
 import '../../utils/string_constans.dart';
 import '../signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import 'bloc/change_password_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const _horizontalPadding = 30.0;
 
@@ -241,33 +242,6 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                           ],
                         ),
                       ),
-                      Container(
-                       height: 60,
-                        width: 350,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if(state.currentPassword == state.newPassword){
-                              Toast.show('Password tidak boleh sama dengan password sebelumnya!');
-                            } else if (state.currentPassword != null && state.confirmPassword != null && state.newPassword != null){
-                              Injector.resolve<ChangePasswordBloc>()
-                                  .add(ChangePasswordSubmitted());
-                            } else if(state.newPassword != state.confirmPassword) {
-                              Toast.show("Konfirmasi password tidak sama!");
-                            } else {
-                              Toast.show("Form harus diisi semua");
-                            }
-
-                          },
-                          child: Text("Konfirmasi Kata Sandi"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            onPrimary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 20),
                     ],
                   ),
@@ -278,6 +252,38 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
           },
         ),
       ),
+      bottomSheet: BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
+        builder: (context, state) {
+          return Container(
+            height: 60,
+            margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.h),
+            width: MediaQuery.of(context).size.width,
+            child: ElevatedButton(
+              onPressed: () async {
+                if(state.currentPassword == state.newPassword){
+                  Toast.show('Password tidak boleh sama dengan password sebelumnya!');
+                } else if (state.currentPassword != null && state.confirmPassword != null && state.newPassword != null){
+                  Injector.resolve<ChangePasswordBloc>()
+                      .add(ChangePasswordSubmitted());
+                } else if(state.newPassword != state.confirmPassword) {
+                  Toast.show("Konfirmasi password tidak sama!");
+                } else {
+                  Toast.show("Form harus diisi semua");
+                }
+
+              },
+              child: Text("Konfirmasi Kata Sandi"),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+          );
+        }
+      )
     );
   }
 

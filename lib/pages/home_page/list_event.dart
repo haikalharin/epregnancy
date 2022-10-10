@@ -47,226 +47,209 @@ class _ListEventWidgetState extends State<ListEventWidget> {
           return Stack(
             children: [
               Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  decoration: BoxDecoration(color: Colors.white),
-                  child: state.listEvent == null ||
-                          (state.listEvent != null && state.listEvent!.isEmpty)
-                      ? Stack(children: [
-                          Container(
-                              margin: EdgeInsets.only(),
-                              width: MediaQuery.of(context).size.width,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text('Belum ada jadwal hari ini', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp),),
-                                  SizedBox(height: 10.h,),
-                                  SvgPicture.asset('assets/icCalendarIlustration.svg'),
-                                ],
-                              )),
-                        ])
-                      : Stack(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                decoration: BoxDecoration(color: Colors.white),
+                child: state.listEvent == null ||
+                        (state.listEvent != null && state.listEvent!.isEmpty)
+                    ? Container(
+                        margin: EdgeInsets.only(),
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (context, index) {
-                                String outputDate = "";
-                                var outputFormat = DateFormat.yMMMMd('id');
-                                outputDate = outputFormat
-                                    .format(widget.dateTime ?? DateTime.now());
-                                return Container(
-                                  padding: EdgeInsets.only(
-                                      left: 20, right: 20, top: 20, bottom: 5),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: EpregnancyColors.primer,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  // color: Colors.greenAccent,
-                                  margin: EdgeInsets.only(
-                                      left: 20, right: 20, bottom: 30),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.end,
-                                    children: [
-                                      Column(
+                            Text(
+                              'Belum ada jadwal hari ini',
+                              style: TextStyle(
+                                  color: EpregnancyColors.blueDark,
+                                  fontSize: 12.sp),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            SvgPicture.asset(
+                                'assets/icCalendarIlustration.svg'),
+                          ],
+                        ))
+                    : ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          String outputDate = "";
+                          var outputFormat = DateFormat.yMMMMd('id');
+                          outputDate = outputFormat
+                              .format(widget.dateTime ?? DateTime.now());
+                          return Container(
+                            padding: EdgeInsets.only(
+                                left: 20, right: 20, top: 20, bottom: 5),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: EpregnancyColors.primer,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            // color: Colors.greenAccent,
+                            margin: EdgeInsets.only(
+                                left: 20, right: 20, bottom: 30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(bottom: 10),
+                                      child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            margin: EdgeInsets.only(bottom: 10),
-                                            child: Row(
+                                              // width: 62,
+
+                                              child: Text(outputDate)),
+                                          Container(
+                                              // width: 62,
+
+                                              child: Text(
+                                            widget.tipeAcara ?? '',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: EpregnancyColors.primer),
+                                          )),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Container(
-                                                    // width: 62,
-
-                                                    child: Text(outputDate)),
-                                                Container(
-                                                    // width: 62,
-
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width -
+                                                            200,
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 10),
                                                     child: Text(
-                                                  widget.tipeAcara ?? '',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color:
-                                                          EpregnancyColors.primer),
-                                                )),
+                                                      state.listEvent != null &&
+                                                              state
+                                                                      .listEvent![
+                                                                          index]
+                                                                      .title !=
+                                                                  null
+                                                          ? state
+                                                              .listEvent![index]
+                                                              .title!
+                                                          : "",
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )),
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      200,
+                                                  child: ConstrainedBox(
+                                                      constraints: isExpanded
+                                                          ? new BoxConstraints()
+                                                          : new BoxConstraints(
+                                                              maxHeight: 50.0),
+                                                      child: Text(
+                                                        state.listEvent !=
+                                                                    null &&
+                                                                state
+                                                                        .listEvent![
+                                                                            index]
+                                                                        .description !=
+                                                                    null
+                                                            ? state
+                                                                .listEvent![
+                                                                    index]
+                                                                .description!
+                                                            : "",
+                                                        softWrap: true,
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                      )),
+                                                ),
+
+                                                // Container(
+                                                //     width: MediaQuery.of(context).size.width -200,
+                                                //     margin: EdgeInsets.only(),
+                                                //     child: Text(state
+                                                //                     .listEvent !=
+                                                //                 null &&
+                                                //             state
+                                                //                     .listEvent![
+                                                //                         index]
+                                                //                     .description !=
+                                                //                 null
+                                                //         ? state
+                                                //             .listEvent![index]
+                                                //             .description!
+                                                //         : "", overflow: TextOverflow.ellipsis,maxLines: 3,)),
                                               ],
                                             ),
                                           ),
                                           Container(
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Container(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                    children: [
-                                                      Container(
-                                                          width:
-                                                              MediaQuery.of(context)
-                                                                      .size
-                                                                      .width -
-                                                                  200,
-                                                          margin: EdgeInsets.only(
-                                                              bottom: 10),
-                                                          child: Text(
-                                                            state.listEvent !=
-                                                                        null &&
-                                                                    state
-                                                                            .listEvent![
-                                                                                index]
-                                                                            .title !=
-                                                                        null
-                                                                ? state
-                                                                    .listEvent![
-                                                                        index]
-                                                                    .title!
-                                                                : "",
-                                                            style: TextStyle(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )),
-                                                      Container(
-                                                        width:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .width -
-                                                                200,
-                                                        child: ConstrainedBox(
-                                                            constraints: isExpanded
-                                                                ? new BoxConstraints()
-                                                                : new BoxConstraints(
-                                                                    maxHeight:
-                                                                        50.0),
-                                                            child: Text(
-                                                              state.listEvent !=
-                                                                          null &&
-                                                                      state
-                                                                              .listEvent![
-                                                                                  index]
-                                                                              .description !=
-                                                                          null
-                                                                  ? state
-                                                                      .listEvent![
-                                                                          index]
-                                                                      .description!
-                                                                  : "",
-
-                                                              softWrap: true,
-                                                              overflow:
-                                                                  TextOverflow.fade,
-
-                                                            )),
-                                                      ),
-
-                                                      // Container(
-                                                      //     width: MediaQuery.of(context).size.width -200,
-                                                      //     margin: EdgeInsets.only(),
-                                                      //     child: Text(state
-                                                      //                     .listEvent !=
-                                                      //                 null &&
-                                                      //             state
-                                                      //                     .listEvent![
-                                                      //                         index]
-                                                      //                     .description !=
-                                                      //                 null
-                                                      //         ? state
-                                                      //             .listEvent![index]
-                                                      //             .description!
-                                                      //         : "", overflow: TextOverflow.ellipsis,maxLines: 3,)),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Container(
-                                                  decoration: state
-                                                                  .listEvent![index]
-                                                                  .imageUrl !=
-                                                              null &&
-                                                          state.listEvent![index]
-                                                                  .imageUrl !=
-                                                              ""
-                                                      ? BoxDecoration(
-                                                          image: DecorationImage(
-                                                            image: NetworkImage(
-                                                                state
-                                                                    .listEvent![
-                                                                        index]
-                                                                    .imageUrl!),
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        )
-                                                      : BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  10.0),
-                                                          color: EpregnancyColors
-                                                              .primer),
-                                                  height: 80,
-                                                  width: 80,
-                                                ),
-                                              ],
-                                            ),
+                                            decoration: state.listEvent![index]
+                                                            .imageUrl !=
+                                                        null &&
+                                                    state.listEvent![index]
+                                                            .imageUrl !=
+                                                        ""
+                                                ? BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(state
+                                                          .listEvent![index]
+                                                          .imageUrl!),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  )
+                                                : BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                    color: EpregnancyColors
+                                                        .primer),
+                                            height: 80,
+                                            width: 80,
                                           ),
-
                                         ],
                                       ),
-                                      isExpanded
-                                          ? FlatButton(
-                                          child:
-                                          const Text('Read less'),
-                                          onPressed: () =>
-                                              setState(() =>
-                                              isExpanded =
-                                              false))
-                                          : FlatButton(
-                                          child:
-                                          const Text('Read More'),
-                                          onPressed: () =>
-                                              setState(() =>
-                                              isExpanded =
-                                              true))
-                                    ],
-                                  ),
-                                );
-                              },
-                              itemCount: state.listEvent != null
-                                  ? state.listEvent!.length
-                                  : 0,
+                                    ),
+                                  ],
+                                ),
+                                isExpanded
+                                    ? FlatButton(
+                                        child: const Text('Read less'),
+                                        onPressed: () =>
+                                            setState(() => isExpanded = false))
+                                    : FlatButton(
+                                        child: const Text('Read More'),
+                                        onPressed: () =>
+                                            setState(() => isExpanded = true))
+                              ],
                             ),
-                          ],
-                        )),
+                          );
+                        },
+                        itemCount: state.listEvent != null
+                            ? state.listEvent!.length
+                            : 0,
+                      ),
+              ),
               widget.tipeAcara == StringConstant.typeEventJadwalPribadi
                   ? Align(
                       alignment: Alignment(0.9, 1),

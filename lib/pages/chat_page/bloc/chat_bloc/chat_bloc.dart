@@ -135,6 +135,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             listPersonalChatRoom: _response,
             status: FormzStatus.submissionSuccess,
             type: 'chat-room-success');
+      } else {
+        yield state.copyWith(
+            listPersonalChatRoom: _response,
+            status: FormzStatus.submissionSuccess,
+            type: 'chat-room-empty');
       }
     } on SurveyErrorException catch (e) {
       print(e);
