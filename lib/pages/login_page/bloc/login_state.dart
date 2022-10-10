@@ -53,7 +53,7 @@ class LoginState with FormzMixin {
 
   @override
   // TODO: implement inputs
-  List<FormzInput> get inputs => [];
+  List<FormzInput> get inputs => [username, password];
 }
 
 class LoginInitial extends LoginState {}

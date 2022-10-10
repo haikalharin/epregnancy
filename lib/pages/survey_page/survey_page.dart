@@ -110,7 +110,7 @@ class _SurveyPageState extends State<SurveyPage> {
                     'initial_index': 2
                   });
                 } else {
-                  Navigator.of(context).pushNamed(RouteName.login);
+                  Navigator.of(context).pushNamed(RouteName.landingPage);
                 }
               }
             // Navigator.of(context).pushNamedAndRemoveUntil(

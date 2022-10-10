@@ -196,4 +196,13 @@ class UserRepositoryImpl extends UserRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel> forgotPassword (String userName) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.forgotPassword(userName);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
 }

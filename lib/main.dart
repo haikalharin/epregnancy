@@ -10,6 +10,7 @@ import 'package:PregnancyApp/pages/event_page/add_event_page.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
+import 'package:PregnancyApp/pages/forgot_password_page/bloc/forgot_password_page_bloc.dart';
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
@@ -137,6 +138,9 @@ class MyApp extends StatelessWidget {
             create: (context) => Injector.container.resolve<ChatPendingBloc>()),
     BlocProvider<ProfilePageBloc>(
         create: (context) => Injector.container.resolve<ProfilePageBloc>()),
+
+    BlocProvider<ForgotPasswordPageBloc>(
+        create: (context) => Injector.container.resolve<ForgotPasswordPageBloc>()),
       ];
 }
 

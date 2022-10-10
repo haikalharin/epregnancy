@@ -5,7 +5,7 @@ class SignupState with FormzMixin {
   final UserRolesModelFirebase? role;
   final PhoneValidator phoneNumber;
   final MandatoryFieldValidator userName;
-  final EmailAddressUsername email;
+  final EmailAddressUsernameValidator email;
   final FormzStatus? submitStatus;
   final String? userId;
   final String? errorMessage;
@@ -15,7 +15,7 @@ class SignupState with FormzMixin {
 
   SignupState(
       {this.phoneNumber = const PhoneValidator.pure(),
-      this.email = const EmailAddressUsername.pure(),
+      this.email = const EmailAddressUsernameValidator.pure(),
       this.userName = const MandatoryFieldValidator.pure(),
       this.userModel,
       this.role,
@@ -31,7 +31,7 @@ class SignupState with FormzMixin {
     PhoneValidator? phoneNumber,
     UserModel? userModel,
     UserRolesModelFirebase? role,
-    EmailAddressUsername? email,
+    EmailAddressUsernameValidator? email,
     MandatoryFieldValidator? userName,
     String? userId,
     String? errorMessage,

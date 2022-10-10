@@ -2,6 +2,7 @@ import 'package:PregnancyApp/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
@@ -31,6 +32,7 @@ var authService = AuthService();
 
 class _LoginPageState extends State<LoginPage> {
   bool _isHiddenPassword = true;
+
   @override
   void initState() {
     super.initState();
@@ -56,22 +58,35 @@ class _LoginPageState extends State<LoginPage> {
             child: BlocListener<LoginBloc, LoginState>(
                 listener: (context, state) async {
                   if (state.submitStatus == FormzStatus.submissionFailure) {
-                    const snackBar = SnackBar(
-                        content: Text("failed"), backgroundColor: Colors.red);
+                    var snackBar = SnackBar(
+                        content:  RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            // Note: Styles for TextSpans must be explicitly defined.
+                            // Child text spans will inherit styles from parent
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: "Maaf, ",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                              const TextSpan(text: ' Tidak dapat masuk. Informasi login anda tidak sesuai'),
+                            ],
+                          ),
+                        ), backgroundColor: Colors.red);
                     Scaffold.of(context).showSnackBar(snackBar);
-
                   } else if (state.submitStatus ==
                       FormzStatus.submissionSuccess) {
-                    if(state.typeEvent == StringConstant.requestOtp){
-                      Navigator.of(context)
-                          .pushNamed(RouteName.otpPage);
-
-
-                    } else if(state.typeEvent == StringConstant.submitLogin) {
+                    if (state.typeEvent == StringConstant.requestOtp) {
+                      Navigator.of(context).pushNamed(RouteName.otpPage);
+                    } else if (state.typeEvent == StringConstant.submitLogin) {
                       if (state.userModel?.isPatient == true) {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                           RouteName.navBar,
-                              (Route<dynamic> route) => false,
+                          (Route<dynamic> route) => false,
                           arguments: {
                             'role': state.userModel?.isPatient == true
                                 ? StringConstant.patient
@@ -81,12 +96,13 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       } else {
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                          RouteName.dashboardNakesPage,
-                              (Route<dynamic> route) => false,
-                          arguments:  {'name': state.userModel?.name, 'hospital_id': state.userModel?.hospitalId}
-                        );
+                            RouteName.dashboardNakesPage,
+                            (Route<dynamic> route) => false,
+                            arguments: {
+                              'name': state.userModel?.name,
+                              'hospital_id': state.userModel?.hospitalId
+                            });
                       }
-
                     }
                   }
                 },
@@ -244,7 +260,9 @@ class _UsernameInput extends StatelessWidget {
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
             labelText: 'E-mail/Nomor handphone',
-            errorText: state.username.invalid ? 'Format e-mail salah' : null,
+            errorText: state.username.invalid
+                ? 'Silahkan isi username'
+                : null,
           ),
         );
       },
@@ -253,7 +271,7 @@ class _UsernameInput extends StatelessWidget {
 }
 
 class _PasswordInput extends StatefulWidget {
-   _PasswordInput();
+  _PasswordInput();
 
   @override
   State<_PasswordInput> createState() => _PasswordInputState();
@@ -277,15 +295,19 @@ class _PasswordInputState extends State<_PasswordInput> {
             errorText: state.password.invalid ? 'Kata Sandi salah' : null,
             suffixIcon: GestureDetector(
               onTap: () {
-                var  _isHiddenTap = _isHiddenPassword == true ? false : true;
+                var _isHiddenTap = _isHiddenPassword == true ? false : true;
 
                 setState(() {
-                  _isHiddenPassword =_isHiddenTap;
+                  _isHiddenPassword = _isHiddenTap;
                 });
               },
               child: Icon(
-                _isHiddenPassword == true ? Icons.visibility_off : Icons.visibility,
-                color: _isHiddenPassword == true ? Colors.grey : EpregnancyColors.black,
+                _isHiddenPassword == true
+                    ? Icons.visibility_off
+                    : Icons.visibility,
+                color: _isHiddenPassword == true
+                    ? Colors.grey
+                    : EpregnancyColors.black,
               ),
             ),
           ),
@@ -313,7 +335,7 @@ class _ForgotPasswordButton extends StatelessWidget {
                     style: TextStyle(color: EpregnancyColors.primer),
                   ),
                   onPressed: () {
-                    print('Pressed');
+                    Navigator.of(context).pushNamed(RouteName.forgotPassword);
                   },
                 ),
               ],
@@ -339,7 +361,7 @@ class _RegisterButton extends StatelessWidget {
               children: <Widget>[
                 RichText(
                   textAlign: TextAlign.center,
-                  text:  TextSpan(
+                  text: TextSpan(
                     // Note: Styles for TextSpans must be explicitly defined.
                     // Child text spans will inherit styles from parent
                     style: const TextStyle(
@@ -350,9 +372,8 @@ class _RegisterButton extends StatelessWidget {
                       TextSpan(text: 'Belum punya akun? '),
                       WidgetSpan(
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
                             Navigator.of(context).pushNamed(RouteName.signup);
-
                           },
                           child: const Text("Register",
                               style: TextStyle(
