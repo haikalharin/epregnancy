@@ -4,12 +4,14 @@ import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 
 import '../../common/injector/injector.dart';
 import '../../utils/epragnancy_color.dart';
 import 'bloc/home_page_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListEventWidget extends StatefulWidget {
   ListEventWidget({Key? key, this.tipeAcara, this.dateTime}) : super(key: key);
@@ -52,10 +54,16 @@ class _ListEventWidgetState extends State<ListEventWidget> {
                       ? Stack(children: [
                           Container(
                               margin: EdgeInsets.only(),
-                              child: Center(
-                                  child: Container(
-                                child: Text("Belum ada acara"),
-                              ))),
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text('Belum ada jadwal hari ini', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp),),
+                                  SizedBox(height: 10.h,),
+                                  SvgPicture.asset('assets/icCalendarIlustration.svg'),
+                                ],
+                              )),
                         ])
                       : Stack(
                           children: [

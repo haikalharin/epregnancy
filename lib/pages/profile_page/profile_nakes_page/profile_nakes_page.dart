@@ -4,6 +4,7 @@ import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:toast/toast.dart';
 
 import '../../../common/constants/router_constants.dart';
 import '../../../data/firebase/g_authentication.dart';
@@ -15,12 +16,14 @@ class ProfileNakesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return Scaffold(
       appBar: AppBar(
         leading: const BtnBackIosStyle(),
         elevation: 0,
         backgroundColor: Colors.white,
-        title: Text(name ?? 'Faisal Bahlil', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 24.sp),),
+        centerTitle: false,
+        title: Text(name ?? '', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 24.sp),),
         actions: [Container(
           height: 40.h,
           width: 40.w,
@@ -37,14 +40,25 @@ class ProfileNakesPage extends StatelessWidget {
         padding: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
         child: Column(
           children: [
-            ListTile(
-              leading: Text(StringConstant.profileChange, style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
-              trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
+            InkWell(
+              onTap: (){
+                Toast.show('Cooming Soon!');
+              },
+              child: ListTile(
+                leading: Text(StringConstant.profileChange, style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
+                trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
+              ),
             ),
             Padding(padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),child: Divider(color: Colors.grey, height: 1.h,),),
-            ListTile(
-              leading: Text(StringConstant.passwordChange, style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
-              trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(RouteName.changePasswordPage);
+              },
+              child: ListTile(
+                leading: Text(StringConstant.passwordChange, style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
+                trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
+              ),
             ),
           ],
         ),

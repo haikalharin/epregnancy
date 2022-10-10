@@ -6,6 +6,7 @@ import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
+import 'package:PregnancyApp/utils/secure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,6 +32,7 @@ class AppSharedPreference {
   static const String hospital = "hospital";
   static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
+  static const String newInstall = "new_install";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -65,7 +67,8 @@ class AppSharedPreference {
   static setUserInfo(UserInfo data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(checkIn, json);
+    String encryptedJson = encrypt(json);
+    prefs.setString(checkIn, encryptedJson);
   }
 
   static setHospital(HospitalModel data) async {
@@ -109,7 +112,8 @@ class AppSharedPreference {
   static Future<UserInfo> getUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString(checkIn);
-    Map<String, dynamic> map = jsonDecode(json!);
+    String decryptedJson = decrypty(json!);
+    Map<String, dynamic> map = jsonDecode(decryptedJson);
     return UserInfo.fromJson(map);
   }
 

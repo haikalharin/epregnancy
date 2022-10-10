@@ -12,6 +12,7 @@ import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../utils/epragnancy_color.dart';
 import 'bloc/home_page_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListEventPersonalWidget extends StatefulWidget {
   ListEventPersonalWidget({Key? key, this.tipeAcara, this.dateTime})
@@ -61,13 +62,19 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
                           (state.listEventPersonal != null &&
                               state.listEventPersonal!.isEmpty)
                       ? Stack(children: [
-                          Container(
-                              margin: EdgeInsets.only(),
-                              child: Center(
-                                  child: Container(
-                                child: Text("Belum ada acara"),
-                              ))),
-                        ])
+                    Container(
+                        margin: EdgeInsets.only(),
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Belum ada jadwal hari ini', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp),),
+                            SizedBox(height: 10.h,),
+                            SvgPicture.asset('assets/icCalendarIlustration.svg'),
+                          ],
+                        )),
+                  ])
                       : Stack(
                           children: [
                             ListView.builder(

@@ -80,7 +80,7 @@ class ChangePasswordBloc
       ResponseModel response = await userRepository.changePassword(state.currentPassword.value,state.newPassword.value);
 
       if(response.code == 200){
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: 'change-password-success');
       } else{
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
