@@ -63,3 +63,11 @@ class SendChatEvent extends ChatEvent {
   @override
   List<Object> get props => [];
 }
+
+class EndChatEvent extends ChatEvent {
+  final String? toId;
+  const EndChatEvent(this.toId);
+
+  @override
+  List<Object> get props => [];
+}

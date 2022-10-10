@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
 import 'package:PregnancyApp/utils/web_socket_chat_channel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,18 @@ class SplashscreenPage extends StatefulWidget {
 }
 
 class _SplashscreenPageState extends State<SplashscreenPage> {
+  bool? skipOnboarding = false;
 
+  void getFirstInstall() async{
+    bool? _skipOnboarding = await AppSharedPreference.getBool(AppSharedPreference.newInstall);
+    setState(() {
+      skipOnboarding = _skipOnboarding;
+    });
+  }
 
   @override
   void initState() {
+    getFirstInstall();
     Injector.resolve<SplashscreenBloc>().add(SplashscreenCheckUserExist());
     super.initState();
   }
@@ -43,8 +52,11 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
             Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: {'role': state.role, 'inital_index': 0, 'user_id':state.userModel?.id ??''});
           }
         } else{
-          Navigator.of(context).pushReplacementNamed(RouteName.login);
-
+          if(skipOnboarding == false || skipOnboarding == null){
+            Navigator.of(context).pushReplacementNamed(RouteName.onboarding);
+          } else {
+            Navigator.of(context).pushReplacementNamed(RouteName.login);
+          }
         }
       }
       },

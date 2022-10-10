@@ -34,6 +34,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       yield* _mapSendChatPendingEvent(event, state);
     } else if (event is SendChatEvent) {
       yield* _mapSendChatEvent(event, state);
+    } else if (event is EndChatEvent) {
+      yield* _mapEndChatEvent(event, state);
     } else if (event is FetchChatOngoingEvent) {
       yield* _mapFetchChatOngoingEventToState(event, state);
     } else if (event is FetchArchiveChatEvent) {
@@ -89,7 +91,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     try {
       final UserModel user = await AppSharedPreference.getUser();
       final List<ChatListResponse> listChatOngoing =
-          await chatRepository.fetchChatList(user.id ?? '');
+          await chatRepository.fetchChatListByToId(user.id ?? '');
       List<ChatListResponse> listChatOngoingAfterFilter = [];
       for (var element in listChatOngoing) {
         String? _fromId = element.fromId;
@@ -157,6 +159,32 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             sendChatResponse: _response.data,
             status: FormzStatus.submissionSuccess,
             type: 'send-chat-success');
+      }
+    } on SurveyErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    }
+  }
+
+  Stream<ChatState> _mapEndChatEvent(
+      EndChatEvent event,
+      ChatState state,
+      ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, type: 'end-chat-loading');
+    try {
+      final int _response = await chatRepository.endChat(event.toId!);
+      if (_response == 200) {
+        yield state.copyWith(
+            status: FormzStatus.submissionSuccess,
+            type: 'end-chat-success');
+      } else {
+        yield state.copyWith(
+            status: FormzStatus.submissionSuccess,
+            type: 'end-chat-failed');
       }
     } on SurveyErrorException catch (e) {
       print(e);

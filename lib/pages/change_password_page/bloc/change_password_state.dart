@@ -7,6 +7,7 @@ class ChangePasswordState with FormzMixin {
   final ConfirmPasswordValidator confirmPassword;
   final FormzStatus submitStatus;
   final String? errorMessage;
+  final String? type;
 
   ChangePasswordState(
       {this.currentPassword = const PasswordValidator.pure(),
@@ -14,7 +15,8 @@ class ChangePasswordState with FormzMixin {
       this.confirmPassword = const ConfirmPasswordValidator.pure(''),
       this.userModel,
       this.submitStatus = FormzStatus.pure,
-      this.errorMessage});
+      this.errorMessage,
+      this.type});
 
   ChangePasswordState copyWith(
       {FormzStatus? submitStatus,
@@ -22,14 +24,16 @@ class ChangePasswordState with FormzMixin {
       PasswordValidator? currentPassword,
       PasswordValidator? newPassword,
       ConfirmPasswordValidator? confirmPassword,
-      String? errorMessage}) {
+      String? errorMessage,
+      String? type}) {
     return ChangePasswordState(
         submitStatus: submitStatus ?? this.submitStatus,
         currentPassword: currentPassword ?? this.currentPassword,
         newPassword: newPassword ?? this.newPassword,
         confirmPassword: confirmPassword ?? this.confirmPassword,
         userModel: userModel ?? this.userModel,
-        errorMessage: errorMessage);
+        errorMessage: errorMessage,
+        type: type ?? this.type);
   }
 
   @override

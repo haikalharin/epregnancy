@@ -46,6 +46,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: Colors.white,
         body: DefaultTabController(
           length: 2,
           child: Column(
@@ -64,7 +65,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                       fontSize: 16,
                       fontWeight: FontWeight.w700),
                   labelColor: Colors.black,
-                  labelPadding: EdgeInsets.only(top: 20, bottom: 18),
+                  labelPadding: EdgeInsets.only(top: 20, bottom: 0),
                   indicator: const UnderlineTabIndicator(
                     borderSide: BorderSide(
                         width: 3.0,
@@ -73,9 +74,9 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                   ),
                   tabs: const [
                     Tab(
-                      text: "Acara Umum",
+                      text: "Jadwal Umum",
                     ),
-                    Tab(text: "Acara Saya"),
+                    Tab(text: "Jadwal Pribadi"),
                   ],
                 ),
               ),
