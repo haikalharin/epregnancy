@@ -94,6 +94,30 @@ class HttpClient {
     return HttpUtil.getResponse(response);
   }
 
+  dynamic delete(String path, dynamic data,
+      {Map<String, String>? overrideHeader}) async {
+    final Map<String, String>? requestHeader = overrideHeader ?? header;
+
+    debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
+    debugPrint('>>>>>>> [HEADER] ${header.toString()}');
+    debugPrint('>>>>>>> [DATA] ${ json.encode(data).toString()}');
+
+    String? token = await getToken();
+
+    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    // TODO REMOVE THIS JUST FOR DEV PURPOSE
+    // header![HttpHeaders.authorizationHeader] = AppConstants.token;
+
+    final response = await _client!.delete(
+      _getParsedUrl(path),
+      body: HttpUtil.encodeRequestBody(
+          json.encode(data), requestHeader![HttpConstants.contentType]!),
+      headers: requestHeader,
+    );
+
+    return HttpUtil.getResponse(response);
+  }
+
   dynamic put(String path, dynamic data,
       {Map<String, String>? overrideHeader}) async {
     final Map<String, String>? requestHeader = overrideHeader ?? header;

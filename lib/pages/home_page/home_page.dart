@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         backgroundColor: Colors.grey.shade200,
         body: BlocListener<HomePageBloc, HomePageState>(
           listener: (context, state) {
-            if (state.submitStatus == FormzStatus.submissionSuccess) {}
+
           },
           child: BlocBuilder<HomePageBloc, HomePageState>(
             builder: (context, state) {
@@ -274,6 +274,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                       height: MediaQuery.of(context).size.width/7,
                                                           ),
                                                     Container(
+                                                      margin: EdgeInsets.only(left: 6),
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
@@ -292,7 +293,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                     margin: EdgeInsets.only(
                                                                         bottom:
                                                                             10),
-                                                                    width: MediaQuery.of(context).size.width/2,
+                                                                    width: MediaQuery.of(context).size.width/2.3,
                                                                     child: Text(
                                                                       state.babyProgressModel !=
                                                                               null
@@ -364,34 +365,40 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                         FontWeight
                                                                             .bold),
                                                               )),
-                                                          Container(
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              6.0),
-                                                                  color: Colors
-                                                                      .white),
-                                                              child: Container(
-                                                                width: 210,
-                                                                height: 30,
-                                                                child: Center(
-                                                                  child:
-                                                                      Container(
+                                                          InkWell(
+                                                            onTap: (){
+                                                              Navigator.of(context)
+                                                                  .pushNamed(RouteName.surveyPage, arguments: true);
+                                                            },
+                                                            child: Container(
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                6.0),
+                                                                    color: Colors
+                                                                        .white),
+                                                                child: Container(
+                                                                  width: 210,
+                                                                  height: 30,
+                                                                  child: Center(
                                                                     child:
-                                                                        const Text(
-                                                                      "Ubah Profil Kehamilan ",
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              EpregnancyColors.primer),
-                                                                      maxLines:
-                                                                          3,
+                                                                        Container(
+                                                                      child:
+                                                                          const Text(
+                                                                        "Ubah Profil Kehamilan ",
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                14,
+                                                                            color:
+                                                                                EpregnancyColors.primer),
+                                                                        maxLines:
+                                                                            3,
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              )),
+                                                                )),
+                                                          ),
                                                         ],
                                                       ),
                                                     ),

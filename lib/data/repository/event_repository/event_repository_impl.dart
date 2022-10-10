@@ -32,4 +32,14 @@ class EventRepositoryImpl extends EventRepository {
     }
     throw NetworkConnectionException();
   }
+
+  @override
+  Future<ResponseModel> deleteEvent(String id) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response =
+      await remoteDatasource.deleteScheduleEventPersonal(id);
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
 }
