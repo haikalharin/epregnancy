@@ -389,7 +389,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                     margin: EdgeInsets.only(
                                                                         bottom:
                                                                             10),
-                                                                    width: 150.w,
+                                                                    width:
+                                                                        150.w,
                                                                     child: Text(
                                                                       state.babyProgressModel !=
                                                                               null
