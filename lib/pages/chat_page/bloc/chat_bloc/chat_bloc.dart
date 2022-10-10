@@ -135,6 +135,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             listPersonalChatRoom: _response,
             status: FormzStatus.submissionSuccess,
             type: 'chat-room-success');
+      } else {
+        yield state.copyWith(
+            listPersonalChatRoom: _response,
+            status: FormzStatus.submissionSuccess,
+            type: 'chat-room-empty');
       }
     } on SurveyErrorException catch (e) {
       print(e);
@@ -279,8 +284,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       List<ChatListResponse> _combinedList = [];
       final List<ChatListResponse> listArchiveChatByFromId =
           await chatRepository.fetchArchiveChatByFromIdList(user.id ?? '');
-      final List<ChatListResponse> listArchiveChatByToId =
-          await chatRepository.fetchArchiveChatByToIdList(user.id ?? '');
+      // final List<ChatListResponse> listArchiveChatByToId =
+      //     await chatRepository.fetchArchiveChatByToIdList(user.id ?? '');
 
       if (listArchiveChatByFromId.length != 0){
         for (var element in listArchiveChatByFromId) {
@@ -295,18 +300,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         }
       }
 
-      if (listArchiveChatByToId.length != 0){
-        for (var element in listArchiveChatByToId) {
-          String? _toId = user.id == element.toId ? element.toId : element.fromId;
-          if (_combinedList
-              .map((item) => item.toId)
-              .contains(_toId)) {
-            print('Already exists!');
-          } else {
-            _combinedList.add(element);
-          }
-        }
-      }
+      // if (listArchiveChatByToId.length != 0){
+      //   for (var element in listArchiveChatByToId) {
+      //     String? _toId = user.id == element.toId ? element.toId : element.fromId;
+      //     if (_combinedList
+      //         .map((item) => item.toId)
+      //         .contains(_toId)) {
+      //       print('Already exists!');
+      //     } else {
+      //       _combinedList.add(element);
+      //     }
+      //   }
+      // }
 
       if (_combinedList.isNotEmpty) {
         yield state.copyWith(

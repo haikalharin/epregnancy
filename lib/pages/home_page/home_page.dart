@@ -110,7 +110,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               : FaIcon(FontAwesomeIcons.plus),
         ),
         body: BlocListener<HomePageBloc, HomePageState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state.submitStatus == FormzStatus.submissionSuccess) {}
+          },
           child: BlocBuilder<HomePageBloc, HomePageState>(
             builder: (context, state) {
               String? name = state.user != null ? state.user!.name : "";
@@ -346,16 +348,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                               image: NetworkImage(state
                                                                   .babyProgressModel!
                                                                   .iconUrl!),
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  7,
-                                                              height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  7,
+                                                              width: 60.w,
+                                                              height: 60.h,
                                                               fit: BoxFit.cover,
                                                               imageErrorBuilder:
                                                                   (context,
@@ -364,16 +358,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                 return Image
                                                                     .asset(
                                                                   'assets/ic_no_photo.png',
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width /
-                                                                      7,
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width /
-                                                                      7,
+                                                                  width: 60,
+                                                                  height: 60,
                                                                   fit: BoxFit
                                                                       .cover,
                                                                 );
@@ -381,20 +367,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                             ),
                                                           )
                                                         : Container(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                7,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                7,
+                                                            width: 60,
+                                                            height: 60,
                                                           ),
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 6),
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
@@ -413,10 +389,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                     margin: EdgeInsets.only(
                                                                         bottom:
                                                                             10),
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width /
-                                                                        2.3,
+                                                                    width:
+                                                                        150.w,
                                                                     child: Text(
                                                                       state.babyProgressModel !=
                                                                               null
@@ -435,7 +409,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                           5,
                                                                     )),
                                                                 SizedBox(
-                                                                  width: 20,
+                                                                  width: 10.w,
                                                                 ),
                                                                 Container(
                                                                   child:
@@ -488,45 +462,34 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                         FontWeight
                                                                             .bold),
                                                               )),
-                                                          InkWell(
-                                                            onTap: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pushNamed(
-                                                                      RouteName
-                                                                          .surveyPage,
-                                                                      arguments:
-                                                                          true);
-                                                            },
-                                                            child: Container(
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            6.0),
-                                                                    color: Colors
-                                                                        .white),
-                                                                child:
-                                                                    Container(
-                                                                  width: 210,
-                                                                  height: 30,
-                                                                  child: Center(
+                                                          Container(
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              6.0),
+                                                                  color: Colors
+                                                                      .white),
+                                                              child: Container(
+                                                                width: 210,
+                                                                height: 30,
+                                                                child: Center(
+                                                                  child:
+                                                                      Container(
                                                                     child:
-                                                                        Container(
-                                                                      child:
-                                                                          const Text(
-                                                                        "Ubah Profil Kehamilan ",
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                14,
-                                                                            color:
-                                                                                EpregnancyColors.primer),
-                                                                        maxLines:
-                                                                            3,
-                                                                      ),
+                                                                        const Text(
+                                                                      "Ubah Profil Kehamilan ",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              EpregnancyColors.primer),
+                                                                      maxLines:
+                                                                          3,
                                                                     ),
                                                                   ),
-                                                                )),
-                                                          ),
+                                                                ),
+                                                              )),
                                                         ],
                                                       ),
                                                     ),

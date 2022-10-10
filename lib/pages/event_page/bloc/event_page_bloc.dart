@@ -56,8 +56,6 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       yield _mapEventInitEvent(event, state);
     } else if (event is EventAddSubmitted) {
       yield* _mapEventAddSubmittedToState(event, state);
-    } else if (event is EventDeleteSchedule) {
-      yield* _mapEventEventDeleteScheduleToState(event, state);
     }
   }
 
@@ -181,33 +179,6 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         timeNotficationString: timeNotficationString);
   }
 
-  Stream<EventPageState> _mapEventEventDeleteScheduleToState(
-      EventDeleteSchedule event,
-      EventPageState state,
-      ) async* {
-      yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
-      try {
-
-       final response = await eventRepository.deleteEvent(event.id);
-
-       if (response.code == 200){
-         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "delete");
-       } else{
-         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
-       }
-
-
-
-      } on EventErrorException catch (e) {
-        print(e);
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
-      } on Exception catch (a) {
-        print(a);
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
-      }
-
-  }
-
   Stream<EventPageState> _mapEventAddSubmittedToState(
     EventAddSubmitted event,
     EventPageState state,
@@ -272,6 +243,4 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
-
-
 }

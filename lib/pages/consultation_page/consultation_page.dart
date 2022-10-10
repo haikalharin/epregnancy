@@ -15,6 +15,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -238,7 +239,9 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                     ],
                                   ),
                                 ),
-                                Divider(),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 16.w, top: 20.h),
+                                    child: Text('Tanya ke komunitas untuk dapatkan 200 Poin',style: TextStyle(color: EpregnancyColors.primer, fontWeight: FontWeight.w700, fontSize: 12.sp),)),
                                 Container(
                                     margin: EdgeInsets.only(
                                         top: 20,
@@ -336,6 +339,13 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                                       border: InputBorder.none,
                                                       isDense: true,
                                                     ),
+                                                    textInputAction: TextInputAction.send,
+                                                    onSubmitted: (val){
+                                                      Injector.resolve<
+                                                                    ConsultationPageBloc>()
+                                                                .add(
+                                                                    ConsultationSubmittedEvent());
+                                                    },
                                                     onChanged: (value) {
                                                       Injector.resolve<
                                                               ConsultationPageBloc>()
@@ -347,35 +357,35 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                                 ],
                                               ),
                                             ),
-                                            Container(
-                                              width: 100,
-                                              height: 30,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
-                                                  color:
-                                                      EpregnancyColors.primer),
-                                              child: FlatButton(
-                                                minWidth: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    5,
-                                                onPressed: () {
-                                                  Injector.resolve<
-                                                          ConsultationPageBloc>()
-                                                      .add(
-                                                          ConsultationSubmittedEvent());
-                                                },
-                                                child: Container(
-                                                  child: Text(
-                                                    "Kirim",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            // Container(
+                                            //   width: 100,
+                                            //   height: 30,
+                                            //   decoration: BoxDecoration(
+                                            //       borderRadius:
+                                            //           BorderRadius.circular(
+                                            //               10.0),
+                                            //       color:
+                                            //           EpregnancyColors.primer),
+                                            //   child: FlatButton(
+                                            //     minWidth: MediaQuery.of(context)
+                                            //             .size
+                                            //             .width /
+                                            //         5,
+                                            //     onPressed: () {
+                                            //       Injector.resolve<
+                                            //               ConsultationPageBloc>()
+                                            //           .add(
+                                            //               ConsultationSubmittedEvent());
+                                            //     },
+                                            //     child: Container(
+                                            //       child: Text(
+                                            //         "Kirim",
+                                            //         style: TextStyle(
+                                            //             color: Colors.white),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                         InkWell(
@@ -384,7 +394,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                           },
                                           child: Container(
                                               margin: EdgeInsets.only(),
-                                              child: Icon(Icons.image)),
+                                              child: Image.asset('assets/icPictureColor.png')),
                                         ),
                                       ],
                                     )),

@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
@@ -14,6 +15,7 @@ import '../../common/services/auth_service.dart';
 import '../../utils/string_constans.dart';
 import '../signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import 'bloc/change_password_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const _horizontalPadding = 30.0;
 
@@ -42,6 +44,11 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: const BtnBackIosStyle(),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       body: BlocListener<ChangePasswordBloc, ChangePasswordState>(
@@ -67,16 +74,6 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                 children: [
                   Column(
                     children: [
-                      SizedBox(height: 30),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Image.asset(
-                          'assets/back.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
                       Image.asset("assets/signup_questionnaire_icon.png",
                           height: 220, fit: BoxFit.fitWidth),
                       Container(
@@ -241,33 +238,6 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                           ],
                         ),
                       ),
-                      Container(
-                       height: 60,
-                        width: 350,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if(state.currentPassword == state.newPassword){
-                              Toast.show('Password tidak boleh sama dengan password sebelumnya!');
-                            } else if (state.currentPassword != null && state.confirmPassword != null && state.newPassword != null){
-                              Injector.resolve<ChangePasswordBloc>()
-                                  .add(ChangePasswordSubmitted());
-                            } else if(state.newPassword != state.confirmPassword) {
-                              Toast.show("Konfirmasi password tidak sama!");
-                            } else {
-                              Toast.show("Form harus diisi semua");
-                            }
-
-                          },
-                          child: Text("Konfirmasi Kata Sandi"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            onPrimary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 20),
                     ],
                   ),
@@ -278,6 +248,38 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
           },
         ),
       ),
+      bottomSheet: BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
+        builder: (context, state) {
+          return Container(
+            height: 60,
+            margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.h),
+            width: MediaQuery.of(context).size.width,
+            child: ElevatedButton(
+              onPressed: () async {
+                if(state.currentPassword == state.newPassword){
+                  Toast.show('Password tidak boleh sama dengan password sebelumnya!');
+                } else if (state.currentPassword != null && state.confirmPassword != null && state.newPassword != null){
+                  Injector.resolve<ChangePasswordBloc>()
+                      .add(ChangePasswordSubmitted());
+                } else if(state.newPassword != state.confirmPassword) {
+                  Toast.show("Konfirmasi password tidak sama!");
+                } else {
+                  Toast.show("Form harus diisi semua");
+                }
+
+              },
+              child: Text("Konfirmasi Kata Sandi"),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+          );
+        }
+      )
     );
   }
 

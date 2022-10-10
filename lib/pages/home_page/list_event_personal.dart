@@ -28,16 +28,12 @@ class ListEventPersonalWidget extends StatefulWidget {
 class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
   @override
   void initState() {
-    onRefresh();
-    super.initState();
-  }
-
-  void onRefresh() async {
     Injector.resolve<HomePageBloc>().add(EventFetchEvent(
         widget.tipeAcara == StringConstant.typeEventJadwalUmum
             ? StringConstant.typePublic
             : StringConstant.typePersonal,
         widget.dateTime ?? DateTime.now()));
+    super.initState();
   }
 
   // final String nextMenu, content;
@@ -45,11 +41,7 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
   Widget build(BuildContext context) {
     return BlocListener<HomePageBloc, HomePageState>(
       listener: (context, state) {
-        if (state.submitStatus == FormzStatus.submissionSuccess) {
-          if (state.tipe == "deleteSchedule") {
-            onRefresh();
-          }
-        }
+        // TODO: implement listener
       },
       child: BlocBuilder<HomePageBloc, HomePageState>(
         builder: (context, state) {
@@ -59,266 +51,189 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   decoration: BoxDecoration(color: Colors.white),
                   child: state.listEventPersonal == null ||
-                          (state.listEventPersonal != null &&
-                              state.listEventPersonal!.isEmpty)
-                      ? Stack(children: [
-                    Container(
-                        margin: EdgeInsets.only(),
-                        width: MediaQuery.of(context).size.width,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text('Belum ada jadwal hari ini', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp),),
-                            SizedBox(height: 10.h,),
-                            SvgPicture.asset('assets/icCalendarIlustration.svg'),
-                          ],
-                        )),
-                  ])
-                      : Stack(
-                          children: [
-                            ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (context, index) {
-                                String outputDate = "";
-                                var outputFormat = DateFormat.yMMMMd('id');
-                                outputDate = outputFormat
-                                    .format(widget.dateTime ?? DateTime.now());
-                                return InkWell(
-                                  onTap: () {
-                                    _showMyDialog(context,
-                                        state.listEventPersonal![index].id!);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                        left: 20,
-                                        right: 20,
-                                        top: 10,
-                                        bottom: 10),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: EpregnancyColors.grey,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    // color: Colors.greenAccent,
-                                    margin: EdgeInsets.only(
-                                        left: 20, right: 20, bottom: 30),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              bottom: 10, top: 10),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                  // width: 62,
+                      (state.listEventPersonal != null && state.listEventPersonal!.isEmpty)
+                      ? Container(
+                      margin: EdgeInsets.only(),
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('Belum ada jadwal hari ini', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp),),
+                          SizedBox(height: 10.h,),
+                          SvgPicture.asset('assets/icCalendarIlustration.svg'),
+                        ],
+                      ))
+                      : ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      String outputDate = "";
+                      var outputFormat = DateFormat.yMMMMd('id');
+                      outputDate = outputFormat.format(widget.dateTime??DateTime.now());
+                      return Container(
 
-                                                  child: Text(outputDate)),
-                                              state.listEventPersonal![index]
-                                                          .type ==
-                                                      StringConstant
-                                                          .visitHospital
-                                                  ? Container(
-                                                      child: SvgPicture.asset(
-                                                        'assets/ic_health.svg',
-                                                        fit: BoxFit.fitHeight,
-                                                        // height: 200,
-                                                        // height: 60,
-                                                        // width: 60,
-                                                      ),
-                                                    )
-                                                  : state
-                                                              .listEventPersonal![
-                                                                  index]
-                                                              .type ==
-                                                          StringConstant
-                                                              .consumeMedicine
-                                                      ? Container(
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            'assets/ic_pills_unselected.svg',
-                                                            fit: BoxFit
-                                                                .fitHeight,
-                                                            // height: 200,
-                                                            // height: 60,
-                                                            // width: 60,
-                                                          ),
-                                                        )
-                                                      : Container(
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            'assets/ic_notes.svg',
-                                                            fit: BoxFit
-                                                                .fitHeight,
-                                                            // height: 200,
-                                                            // height: 60,
-                                                            // width: 60,
-                                                          ),
-                                                        ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                        width: 230,
-                                                        margin: EdgeInsets.only(
-                                                            bottom: 10),
-                                                        child: Text(
-                                                          state.listEventPersonal !=
-                                                                      null &&
-                                                                  state
-                                                                          .listEventPersonal![
-                                                                              index]
-                                                                          .title !=
-                                                                      null
-                                                              ? state
-                                                                  .listEventPersonal![
-                                                                      index]
-                                                                  .title!
-                                                              : "",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        )),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: EpregnancyColors.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        // color: Colors.greenAccent,
+                        margin: EdgeInsets.only(
+                            left: 20, right: 20, bottom: 30),
+                        child: Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 10, top: 10),
+                              child: Row(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    // width: 62,
+
+                                      child: Text(outputDate)),
+                                  state.listEventPersonal![index].type ==
+                                      StringConstant.visitHospital ?
+                                  Container(
+                                    child: SvgPicture.asset(
+                                      'assets/ic_health.svg',
+                                      fit: BoxFit.fitHeight,
+                                      // height: 200,
+                                      // height: 60,
+                                      // width: 60,
+                                    ),
+                                  ) : state.listEventPersonal![index].type ==
+                                      StringConstant.consumeMedicine
+                                      ? Container(
+                                    child: SvgPicture.asset(
+                                      'assets/ic_pills_unselected.svg',
+                                      fit: BoxFit.fitHeight,
+                                      // height: 200,
+                                      // height: 60,
+                                      // width: 60,
+                                    ),
+                                  ):  Container(
+                                    child: SvgPicture.asset(
+                                      'assets/ic_notes.svg',
+                                      fit: BoxFit.fitHeight,
+                                      // height: 200,
+                                      // height: 60,
+                                      // width: 60,
                                     ),
                                   ),
-                                );
-                              },
-                              itemCount: state.listEventPersonal != null
-                                  ? state.listEventPersonal!.length
-                                  : 0,
-                            ),
-                          ],
-                        )),
-              widget.tipeAcara == StringConstant.typeEventJadwalPribadi
-                  ? Align(
-                      alignment: Alignment(0.9, 1),
-                      child: Container(
-                        margin: EdgeInsets.only(top: 10, bottom: 10),
-                        width: MediaQuery.of(context).size.width / 2,
-                        height: 50,
-                        child: RaisedButton(
-                          color: EpregnancyColors.primer,
-                          child: Padding(
-                            padding: EdgeInsets.zero,
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: const TextSpan(
-                                // Note: Styles for TextSpans must be explicitly defined.
-                                // Child text spans will inherit styles from parent
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.black,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: '+',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 26)),
-                                  TextSpan(
-                                      text: '   Tambah Jadwal',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.white,
-                                          fontSize: 16)),
                                 ],
                               ),
                             ),
-                          ),
-                          elevation: 8,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          onPressed: () async {
-                            Navigator.of(context)
-                                .pushNamed(RouteName.chooseTypeEvent);
-                          },
+                            Container(
+                              child: Row(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                            width: 230,
+                                            margin: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                              state.listEventPersonal !=
+                                                  null &&
+                                                  state
+                                                      .listEventPersonal![
+                                                  index]
+                                                      .title !=
+                                                      null
+                                                  ? state
+                                                  .listEventPersonal![
+                                              index]
+                                                  .title!
+                                                  : "",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .bold),
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    )
-                  : Container(),
+                      );
+                    },
+                    itemCount: state.listEventPersonal != null
+                        ? state.listEventPersonal!.length
+                        : 0,
+                  ),),
+              // widget.tipeAcara == StringConstant.typeEventJadwalPribadi
+              //     ? Align(
+              //   alignment: Alignment(0.9, 1),
+              //   child: Container(
+              //     margin: EdgeInsets.only(top: 10, bottom: 10),
+              //     width: MediaQuery
+              //         .of(context)
+              //         .size
+              //         .width / 2,
+              //     height: 50,
+              //     child: RaisedButton(
+              //       color: EpregnancyColors.primer,
+              //       child: Padding(
+              //         padding: EdgeInsets.zero,
+              //         child: RichText(
+              //           textAlign: TextAlign.center,
+              //           text: const TextSpan(
+              //             // Note: Styles for TextSpans must be explicitly defined.
+              //             // Child text spans will inherit styles from parent
+              //             style: TextStyle(
+              //               fontSize: 14.0,
+              //               color: Colors.black,
+              //             ),
+              //             children: <TextSpan>[
+              //               TextSpan(
+              //                   text: '+',
+              //                   style: TextStyle(
+              //                       fontWeight: FontWeight.w600,
+              //                       color: Colors.white,
+              //                       fontSize: 26)),
+              //               TextSpan(
+              //                   text: '   Tambah Jadwal',
+              //                   style: TextStyle(
+              //                       fontWeight: FontWeight.normal,
+              //                       color: Colors.white,
+              //                       fontSize: 16)),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //       elevation: 8,
+              //       shape: const RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.all(Radius.circular(7)),
+              //       ),
+              //       onPressed: () async {
+              //         Navigator.of(context).pushNamed(RouteName.chooseTypeEvent);
+              //       },
+              //     ),
+              //   ),
+              // )
+              //     : Container(),
             ],
           );
         },
       ),
-    );
-  }
-
-  void _showPicker(BuildContext context, String id) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: Wrap(
-                children: [
-                  ListTile(
-                      leading: Icon(Icons.photo_library),
-                      title: Text('Hapus'),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        Injector.resolve<HomePageBloc>()
-                            .add(HomeEventDeleteSchedule(id));
-                      }),
-
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-  Future<bool?> _showMyDialog(BuildContext context, String id) async {
-    return showDialog<bool>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Konfirmasi'),
-          content: Text('Apakah Anda Yakin Ingin menghapus ?'),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: () {
-                Injector.resolve<HomePageBloc>()
-                    .add(HomeEventDeleteSchedule(id));
-                Navigator.of(context).pop(true);
-              },
-              child: Text('Ya'),
-            ),
-            FlatButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Tidak'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

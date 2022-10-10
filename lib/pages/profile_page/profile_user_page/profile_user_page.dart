@@ -125,99 +125,102 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                   padding: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
                   child: Column(
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width - 40,
+                      Visibility(
+                        visible: false,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 40,
 
-                        padding:
-                            EdgeInsets.only(left: 20, right: 0, top: 20, bottom: 5),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey.shade200,
+                          padding:
+                              EdgeInsets.only(left: 20, right: 0, top: 20, bottom: 5),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey.shade200,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        // color: Colors.greenAccent,
-                        margin: EdgeInsets.only(left: 20, right: 20, bottom: 30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  // margin: EdgeInsets.only(left: 50, right: 50),
-                                  child: SvgPicture.asset(
-                                    'assets/ic_invitation.svg',
-                                    // height: 200,
+                          // color: Colors.greenAccent,
+                          margin: EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    // margin: EdgeInsets.only(left: 50, right: 50),
+                                    child: SvgPicture.asset(
+                                      'assets/ic_invitation.svg',
+                                      // height: 200,
+                                    ),
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width - 200,
+                                        margin: const EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        child: const Text(
+                                          "Undang team anda untuk mendapatkan poin !",
+                                          textAlign: TextAlign.left,
+                                          maxLines: 5,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width - 200,
+                                        margin: const EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        child: const Text(
+                                          "Bagikan kode dengan teman Anda dan dapatkan 300 poin",
+                                          textAlign: TextAlign.left,
+                                          maxLines: 5,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.normal),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(right: 20),
+                                width: MediaQuery.of(context).size.width - 100,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    color: EpregnancyColors.primerSoft2),
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 20, right: 20, top: 10, bottom: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        child:  Text(
+                                          state.user?.referralCode??"",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: EpregnancyColors.white),
+                                          maxLines: 3,
+                                        ),
+                                      ),
+                                      InkWell(onTap: (){
+                                        FlutterClipboard.copy(state.user?.referralCode??"").then(( value ) {
+                                          const snackBar = SnackBar(
+                                              content: Text("Berhasil dicopy"),
+                                              backgroundColor: EpregnancyColors.primer);
+                                          Scaffold.of(context).showSnackBar(snackBar);
+                                        });
+                                      },child: Icon(Icons.copy))
+                                    ],
                                   ),
                                 ),
-                                Column(
-                                  children: [
-                                    Container(
-                                      width:
-                                          MediaQuery.of(context).size.width - 200,
-                                      margin: const EdgeInsets.only(
-                                          left: 10, right: 10),
-                                      child: const Text(
-                                        "Undang team anda untuk mendapatkan poin !",
-                                        textAlign: TextAlign.left,
-                                        maxLines: 5,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Container(
-                                      width:
-                                          MediaQuery.of(context).size.width - 200,
-                                      margin: const EdgeInsets.only(
-                                          left: 10, right: 10),
-                                      child: const Text(
-                                        "Bagikan kode dengan teman Anda dan dapatkan 300 poin",
-                                        textAlign: TextAlign.left,
-                                        maxLines: 5,
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            // Container(
-                            //   margin: EdgeInsets.only(right: 20),
-                            //   width: MediaQuery.of(context).size.width - 100,
-                            //   decoration: BoxDecoration(
-                            //       borderRadius: BorderRadius.circular(8.0),
-                            //       color: EpregnancyColors.primerSoft2),
-                            //   child: Container(
-                            //     padding: EdgeInsets.only(
-                            //         left: 20, right: 20, top: 10, bottom: 10),
-                            //     child: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         Container(
-                            //           child:  Text(
-                            //             state.user?.referralCode??"",
-                            //             style: TextStyle(
-                            //                 fontSize: 14,
-                            //                 color: EpregnancyColors.white),
-                            //             maxLines: 3,
-                            //           ),
-                            //         ),
-                            //         InkWell(onTap: (){
-                            //           FlutterClipboard.copy(state.user?.referralCode??"").then(( value ) {
-                            //             const snackBar = SnackBar(
-                            //                 content: Text("Berhasil dicopy"),
-                            //                 backgroundColor: EpregnancyColors.primer);
-                            //             Scaffold.of(context).showSnackBar(snackBar);
-                            //           });
-                            //         },child: Icon(Icons.copy))
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       InkWell(

@@ -33,7 +33,7 @@ import 'bloc/chat_bloc/chat_bloc.dart';
 
 class NewChatRoom extends StatefulWidget {
   const NewChatRoom({Key? key, this.chatMessageList,
-    this.isNakes = false,
+    this.isNakes = false, this.isArchive = false,
     this.pendingChat = false, this.toName, required this.fromId, required this.toId, required this.toImageUrl})
       : super(key: key);
   final List<ChatMessageEntity>? chatMessageList;
@@ -43,6 +43,7 @@ class NewChatRoom extends StatefulWidget {
   final String? toName;
   final String? toImageUrl;
   final bool? isNakes;
+  final bool? isArchive;
 
   @override
   State<NewChatRoom> createState() => _NewChatRoomState();
@@ -286,6 +287,9 @@ class _NewChatRoomState extends State<NewChatRoom> {
             toName = socketResponse['data']['to']['name'];
           });
           Toast.show("$toName Telah Merespon Konsultasi Anda, Silahkan Jelaskan Kondisi Anda Lebih Lanjut", gravity: Toast.center);
+        } else if (socketResponse['action'] == 'end-chat') {
+          Toast.show("$toName Konsultasi anda telah seleasi, Terima Kasih!", gravity: Toast.center);
+          Navigator.pop(context, "end");
         }
         // print('ispending chat : $isPendingChat');
         // print('toId : $toId');
@@ -577,131 +581,134 @@ class _NewChatRoomState extends State<NewChatRoom> {
                   ),
                 ),
               ),
-              Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50.h,
-                    padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.h),
-                    color: Colors.white,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 3.h),
-                          child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isOpenBottomSheet = !isOpenBottomSheet;
-                                  if(isOpenBottomSheet){
-                                    keyboardFocusNode.unfocus();
-                                  } else {
-                                    keyboardFocusNode.requestFocus();
-                                  }
-                                });
-                              },
-                              icon: !isOpenBottomSheet?  FaIcon(FontAwesomeIcons.faceSmile) : FaIcon(FontAwesomeIcons.keyboard)),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: _messageEditingController,
-                            textInputAction: TextInputAction.send,
-                            onFieldSubmitted: (val){
-                              if(val.isNotEmpty){
-                                if (isPendingChat == false) {
-                                  print('to_id: $toId');
+              Visibility(
+                visible: widget.isArchive == true ? false : true,
+                child: Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50.h,
+                      padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.h),
+                      color: Colors.white,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 3.h),
+                            child: IconButton(
+                                onPressed: () {
                                   setState(() {
-                                    chatMessageList?.add(
-                                        ChatMessageEntity(
-                                            mine: true,
-                                            dateTime: DateTime.now().toString(),
-                                            message: val,
-                                            name: 'sender'
-                                        )
-                                    );
-                                    _messageEditingController.clear();
-                                    _scrollDown();
-                                    ChatSendRequest _chatSendRequest = ChatSendRequest(
-                                        fromId: widget.fromId, toId: toId, message: val);
-
-                                    Injector.resolve<ChatBloc>().add(SendChatEvent(_chatSendRequest));
+                                    isOpenBottomSheet = !isOpenBottomSheet;
+                                    if(isOpenBottomSheet){
+                                      keyboardFocusNode.unfocus();
+                                    } else {
+                                      keyboardFocusNode.requestFocus();
+                                    }
                                   });
-                                } else {
-                                  Toast.show('Mohon tunggu respon Nakes sebelum membuat chat baru', duration: 3, gravity: 1);
+                                },
+                                icon: !isOpenBottomSheet?  FaIcon(FontAwesomeIcons.faceSmile) : FaIcon(FontAwesomeIcons.keyboard)),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: _messageEditingController,
+                              textInputAction: TextInputAction.send,
+                              onFieldSubmitted: (val){
+                                if(val.isNotEmpty){
+                                  if (isPendingChat == false) {
+                                    print('to_id: $toId');
+                                    setState(() {
+                                      chatMessageList?.add(
+                                          ChatMessageEntity(
+                                              mine: true,
+                                              dateTime: DateTime.now().toString(),
+                                              message: val,
+                                              name: 'sender'
+                                          )
+                                      );
+                                      _messageEditingController.clear();
+                                      _scrollDown();
+                                      ChatSendRequest _chatSendRequest = ChatSendRequest(
+                                          fromId: widget.fromId, toId: toId, message: val);
+
+                                      Injector.resolve<ChatBloc>().add(SendChatEvent(_chatSendRequest));
+                                    });
+                                  } else {
+                                    Toast.show('Mohon tunggu respon Nakes sebelum membuat chat baru', duration: 3, gravity: 1);
+                                  }
                                 }
-                              }
-                            },
-                            focusNode: keyboardFocusNode,
+                              },
+                              focusNode: keyboardFocusNode,
+                              onTap: (){
+                                if(isOpenBottomSheet){
+                                  setState(() {
+                                    isOpenBottomSheet = false;
+                                  });
+                                }
+                              },
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(top: 0.5),
+                                  border: InputBorder.none,
+                                  hintText: 'Tulis pesan...',
+                                  hintStyle: TextStyle(color: Colors.grey)),
+                            ),
+                          ),
+                          InkWell(
                             onTap: (){
-                              if(isOpenBottomSheet){
-                                setState(() {
-                                  isOpenBottomSheet = false;
-                                });
-                              }
+                              _showPicker(context);
                             },
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(top: 0.5),
-                                border: InputBorder.none,
-                                hintText: 'Tulis pesan...',
-                                hintStyle: TextStyle(color: Colors.grey)),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: (){
-                            _showPicker(context);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(top: 12.h),
-                            child:SvgPicture.asset('assets/icAttachment.svg')
-                            ,
-                          ),
-                        )
-                      ],
+                            child: Container(
+                              padding: EdgeInsets.only(top: 12.h),
+                              child:SvgPicture.asset('assets/icAttachment.svg')
+                              ,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  if (isOpenBottomSheet)
-                    FadeInUp(
-                        duration: Duration(milliseconds: 500),
-                        child: Container(
-                          padding: MediaQuery.of(context).viewInsets,
-                          height: 250.h,
-                          child: EmojiPicker(
-                            onEmojiSelected: (category, emoji) {
-                              // Do something when emoji is tapped
-                              String? _currentText = _messageEditingController.text;
-                              _messageEditingController.text = _currentText + emoji.emoji;
-                            },
-                            // onBackspacePressed: () {
-                            //   if (_messageEditingController.text != null && _messageEditingController.text.length > 0) {
-                            //     _messageEditingController.text = _messageEditingController.text.substring(0, _messageEditingController.text.length - 1);
-                            //   }
-                            // },
-                            config: Config(
-                                columns: 7,
-                                emojiSizeMax: 22 * (Platform.isIOS ? 1.30 : 1.0),
-                                // Issue: https://github.com/flutter/flutter/issues/28894
-                                verticalSpacing: 0,
-                                horizontalSpacing: 0,
-                                initCategory: Category.RECENT,
-                                bgColor: Color(0xFFF2F2F2),
-                                indicatorColor: Colors.blue,
-                                iconColor: Colors.grey,
-                                iconColorSelected: Colors.blue,
-                                progressIndicatorColor: Colors.blue,
-                                backspaceColor: Colors.blue,
-                                skinToneDialogBgColor: Colors.white,
-                                skinToneIndicatorColor: Colors.grey,
-                                enableSkinTones: true,
-                                showRecentsTab: true,
-                                recentsLimit: 28,
-                                noRecentsText: "No Recents",
-                                noRecentsStyle:
-                                const TextStyle(fontSize: 20, color: Colors.black26),
-                                tabIndicatorAnimDuration: kTabScrollDuration,
-                                categoryIcons: const CategoryIcons(),
-                                buttonMode: ButtonMode.MATERIAL),
-                          ),
-                        ))
-                ],
+                    if (isOpenBottomSheet)
+                      FadeInUp(
+                          duration: Duration(milliseconds: 500),
+                          child: Container(
+                            padding: MediaQuery.of(context).viewInsets,
+                            height: 250.h,
+                            child: EmojiPicker(
+                              onEmojiSelected: (category, emoji) {
+                                // Do something when emoji is tapped
+                                String? _currentText = _messageEditingController.text;
+                                _messageEditingController.text = _currentText + emoji.emoji;
+                              },
+                              // onBackspacePressed: () {
+                              //   if (_messageEditingController.text != null && _messageEditingController.text.length > 0) {
+                              //     _messageEditingController.text = _messageEditingController.text.substring(0, _messageEditingController.text.length - 1);
+                              //   }
+                              // },
+                              config: Config(
+                                  columns: 7,
+                                  emojiSizeMax: 22 * (Platform.isIOS ? 1.30 : 1.0),
+                                  // Issue: https://github.com/flutter/flutter/issues/28894
+                                  verticalSpacing: 0,
+                                  horizontalSpacing: 0,
+                                  initCategory: Category.RECENT,
+                                  bgColor: Color(0xFFF2F2F2),
+                                  indicatorColor: Colors.blue,
+                                  iconColor: Colors.grey,
+                                  iconColorSelected: Colors.blue,
+                                  progressIndicatorColor: Colors.blue,
+                                  backspaceColor: Colors.blue,
+                                  skinToneDialogBgColor: Colors.white,
+                                  skinToneIndicatorColor: Colors.grey,
+                                  enableSkinTones: true,
+                                  showRecentsTab: true,
+                                  recentsLimit: 28,
+                                  noRecentsText: "No Recents",
+                                  noRecentsStyle:
+                                  const TextStyle(fontSize: 20, color: Colors.black26),
+                                  tabIndicatorAnimDuration: kTabScrollDuration,
+                                  categoryIcons: const CategoryIcons(),
+                                  buttonMode: ButtonMode.MATERIAL),
+                            ),
+                          ))
+                  ],
+                ),
               )
             ],
           ),

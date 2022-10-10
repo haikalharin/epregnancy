@@ -90,7 +90,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                     // ),
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: EdgeInsets.only(top: 0),
                         child: TabBarView(
                             controller:  widget.tabController,
                             physics: NeverScrollableScrollPhysics(),

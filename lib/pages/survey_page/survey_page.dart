@@ -456,14 +456,14 @@ class _SurveyPageState extends State<SurveyPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                      widget.isEdit == false? Text(
+                        Text(
                           "2 dari 4",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.normal,
                               fontSize: 12),
-                        ): Container(),
+                        ),
                         Align(
                           alignment: Alignment(0, 1),
                           child: Container(

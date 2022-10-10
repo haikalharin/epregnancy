@@ -85,12 +85,6 @@ class EventAddSubmitted extends EventPageEvent {
   const EventAddSubmitted();
 }
 
-class EventDeleteSchedule extends EventPageEvent {
-  const EventDeleteSchedule(this.id);
-
-  final String id;
-}
-
 class EventDisposeEvent extends EventPageEvent {
   const EventDisposeEvent();
 }

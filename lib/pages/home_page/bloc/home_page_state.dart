@@ -61,7 +61,7 @@ class HomePageState with FormzMixin {
         listEvent: listEvent ?? this.listEvent,
         listEventPersonal: listEventPersonal ?? this.listEventPersonal,
         articleModel: articleModel ?? this.articleModel,
-        tipe: tipe,
+        tipe: tipe ?? this.tipe,
         days: days ?? this.days,
         weeks: weeks ?? this.weeks,
         eventDateString: eventDateString ?? this.eventDateString,

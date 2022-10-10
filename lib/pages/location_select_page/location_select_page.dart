@@ -131,7 +131,7 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        _hospitalModel?.name ?? 'Pilih Puskesmas',
+                        _hospitalModel?.name == '' ? 'Pilih Puskesmas': _hospitalModel!.name!,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.sp,

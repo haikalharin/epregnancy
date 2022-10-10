@@ -109,14 +109,14 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          widget.isEdit == false? Text(
+                          Text(
                             "${state.page} dari 4",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.normal,
                                 fontSize: 12),
-                          ): Container(),
+                          ),
                           Align(
                             alignment: Alignment(0, 1),
                             child: Container(
