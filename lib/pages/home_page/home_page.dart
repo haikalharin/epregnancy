@@ -462,34 +462,45 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                         FontWeight
                                                                             .bold),
                                                               )),
-                                                          Container(
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              6.0),
-                                                                  color: Colors
-                                                                      .white),
-                                                              child: Container(
-                                                                width: 210,
-                                                                height: 30,
-                                                                child: Center(
-                                                                  child:
-                                                                      Container(
+                                                          InkWell(
+                                                            onTap: (){
+                                                              Navigator.of(
+                                                                  context)
+                                                                  .pushNamed(
+                                                                  RouteName
+                                                                      .surveyPage,
+                                                                  arguments:
+                                                                  true);
+                                                            },
+                                                            child: Container(
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                6.0),
+                                                                    color: Colors
+                                                                        .white),
+                                                                child: Container(
+                                                                  width: 210,
+                                                                  height: 30,
+                                                                  child: Center(
                                                                     child:
-                                                                        const Text(
-                                                                      "Ubah Profil Kehamilan ",
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              EpregnancyColors.primer),
-                                                                      maxLines:
-                                                                          3,
+                                                                        Container(
+                                                                      child:
+                                                                          const Text(
+                                                                        "Ubah Profil Kehamilan ",
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                14,
+                                                                            color:
+                                                                                EpregnancyColors.primer),
+                                                                        maxLines:
+                                                                            3,
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              )),
+                                                                )),
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
