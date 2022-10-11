@@ -29,6 +29,9 @@ abstract class HospitalModel with _$HospitalModel {
     required String? modifiedBy,
     required String? modifiedFrom,
     required String? modifiedDate,
+    required int? pin,
+    required String? pinValidStart,
+    required String? pinValidEnd,
   }) = _HospitalModel;
 
   factory HospitalModel.fromJson(Map<String, dynamic> json) => _$HospitalModelFromJson(json);

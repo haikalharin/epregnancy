@@ -449,6 +449,16 @@ class RemoteDataSource {
     return data;
   }
 
+  Future<List<HospitalModel>> fetchHospitalsById(String id) async {
+    final response = await httpClient
+        .get(ServiceUrl.hospitalList, queryParameters: {'id': id});
+    final data = <HospitalModel>[];
+    getData(response).forEach((item) {
+      data.add(HospitalModel.fromJson(item));
+    });
+    return data;
+  }
+
   Future<List<ChatResponse>> nakesResponseChatPending(
       String fromId, String hospitalId) async {
     final response = await httpClient.post(ServiceUrl.chatPendingResponse,

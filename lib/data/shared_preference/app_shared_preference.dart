@@ -86,6 +86,9 @@ class AppSharedPreference {
     } else {
       return const HospitalModel(
           id: "",
+          pin: 0,
+          pinValidEnd: "",
+          pinValidStart: "",
           alias: "",
           name: "",
           address: "",

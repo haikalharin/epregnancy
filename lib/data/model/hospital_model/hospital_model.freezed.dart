@@ -41,6 +41,9 @@ mixin _$HospitalModel {
   String? get modifiedBy => throw _privateConstructorUsedError;
   String? get modifiedFrom => throw _privateConstructorUsedError;
   String? get modifiedDate => throw _privateConstructorUsedError;
+  int? get pin => throw _privateConstructorUsedError;
+  String? get pinValidStart => throw _privateConstructorUsedError;
+  String? get pinValidEnd => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -74,7 +77,10 @@ abstract class $HospitalModelCopyWith<$Res> {
       String? createdDate,
       String? modifiedBy,
       String? modifiedFrom,
-      String? modifiedDate});
+      String? modifiedDate,
+      int? pin,
+      String? pinValidStart,
+      String? pinValidEnd});
 }
 
 /// @nodoc
@@ -109,6 +115,9 @@ class _$HospitalModelCopyWithImpl<$Res>
     Object? modifiedBy = freezed,
     Object? modifiedFrom = freezed,
     Object? modifiedDate = freezed,
+    Object? pin = freezed,
+    Object? pinValidStart = freezed,
+    Object? pinValidEnd = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -195,6 +204,18 @@ class _$HospitalModelCopyWithImpl<$Res>
           ? _value.modifiedDate
           : modifiedDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      pin: pin == freezed
+          ? _value.pin
+          : pin // ignore: cast_nullable_to_non_nullable
+              as int?,
+      pinValidStart: pinValidStart == freezed
+          ? _value.pinValidStart
+          : pinValidStart // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pinValidEnd: pinValidEnd == freezed
+          ? _value.pinValidEnd
+          : pinValidEnd // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -227,7 +248,10 @@ abstract class _$$_HospitalModelCopyWith<$Res>
       String? createdDate,
       String? modifiedBy,
       String? modifiedFrom,
-      String? modifiedDate});
+      String? modifiedDate,
+      int? pin,
+      String? pinValidStart,
+      String? pinValidEnd});
 }
 
 /// @nodoc
@@ -264,6 +288,9 @@ class __$$_HospitalModelCopyWithImpl<$Res>
     Object? modifiedBy = freezed,
     Object? modifiedFrom = freezed,
     Object? modifiedDate = freezed,
+    Object? pin = freezed,
+    Object? pinValidStart = freezed,
+    Object? pinValidEnd = freezed,
   }) {
     return _then(_$_HospitalModel(
       id: id == freezed
@@ -350,6 +377,18 @@ class __$$_HospitalModelCopyWithImpl<$Res>
           ? _value.modifiedDate
           : modifiedDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      pin: pin == freezed
+          ? _value.pin
+          : pin // ignore: cast_nullable_to_non_nullable
+              as int?,
+      pinValidStart: pinValidStart == freezed
+          ? _value.pinValidStart
+          : pinValidStart // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pinValidEnd: pinValidEnd == freezed
+          ? _value.pinValidEnd
+          : pinValidEnd // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -379,7 +418,10 @@ class _$_HospitalModel with DiagnosticableTreeMixin implements _HospitalModel {
       required this.createdDate,
       required this.modifiedBy,
       required this.modifiedFrom,
-      required this.modifiedDate});
+      required this.modifiedDate,
+      required this.pin,
+      required this.pinValidStart,
+      required this.pinValidEnd});
 
   factory _$_HospitalModel.fromJson(Map<String, dynamic> json) =>
       _$$_HospitalModelFromJson(json);
@@ -426,10 +468,16 @@ class _$_HospitalModel with DiagnosticableTreeMixin implements _HospitalModel {
   final String? modifiedFrom;
   @override
   final String? modifiedDate;
+  @override
+  final int? pin;
+  @override
+  final String? pinValidStart;
+  @override
+  final String? pinValidEnd;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HospitalModel(id: $id, alias: $alias, name: $name, address: $address, city: $city, country: $country, postalCode: $postalCode, phone: $phone, email: $email, latitude: $latitude, longitude: $longitude, status: $status, imageUrl: $imageUrl, coverUrl: $coverUrl, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
+    return 'HospitalModel(id: $id, alias: $alias, name: $name, address: $address, city: $city, country: $country, postalCode: $postalCode, phone: $phone, email: $email, latitude: $latitude, longitude: $longitude, status: $status, imageUrl: $imageUrl, coverUrl: $coverUrl, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate, pin: $pin, pinValidStart: $pinValidStart, pinValidEnd: $pinValidEnd)';
   }
 
   @override
@@ -457,7 +505,10 @@ class _$_HospitalModel with DiagnosticableTreeMixin implements _HospitalModel {
       ..add(DiagnosticsProperty('createdDate', createdDate))
       ..add(DiagnosticsProperty('modifiedBy', modifiedBy))
       ..add(DiagnosticsProperty('modifiedFrom', modifiedFrom))
-      ..add(DiagnosticsProperty('modifiedDate', modifiedDate));
+      ..add(DiagnosticsProperty('modifiedDate', modifiedDate))
+      ..add(DiagnosticsProperty('pin', pin))
+      ..add(DiagnosticsProperty('pinValidStart', pinValidStart))
+      ..add(DiagnosticsProperty('pinValidEnd', pinValidEnd));
   }
 
   @override
@@ -491,7 +542,12 @@ class _$_HospitalModel with DiagnosticableTreeMixin implements _HospitalModel {
             const DeepCollectionEquality()
                 .equals(other.modifiedFrom, modifiedFrom) &&
             const DeepCollectionEquality()
-                .equals(other.modifiedDate, modifiedDate));
+                .equals(other.modifiedDate, modifiedDate) &&
+            const DeepCollectionEquality().equals(other.pin, pin) &&
+            const DeepCollectionEquality()
+                .equals(other.pinValidStart, pinValidStart) &&
+            const DeepCollectionEquality()
+                .equals(other.pinValidEnd, pinValidEnd));
   }
 
   @JsonKey(ignore: true)
@@ -518,7 +574,10 @@ class _$_HospitalModel with DiagnosticableTreeMixin implements _HospitalModel {
         const DeepCollectionEquality().hash(createdDate),
         const DeepCollectionEquality().hash(modifiedBy),
         const DeepCollectionEquality().hash(modifiedFrom),
-        const DeepCollectionEquality().hash(modifiedDate)
+        const DeepCollectionEquality().hash(modifiedDate),
+        const DeepCollectionEquality().hash(pin),
+        const DeepCollectionEquality().hash(pinValidStart),
+        const DeepCollectionEquality().hash(pinValidEnd)
       ]);
 
   @JsonKey(ignore: true)
@@ -554,7 +613,10 @@ abstract class _HospitalModel implements HospitalModel {
       required final String? createdDate,
       required final String? modifiedBy,
       required final String? modifiedFrom,
-      required final String? modifiedDate}) = _$_HospitalModel;
+      required final String? modifiedDate,
+      required final int? pin,
+      required final String? pinValidStart,
+      required final String? pinValidEnd}) = _$_HospitalModel;
 
   factory _HospitalModel.fromJson(Map<String, dynamic> json) =
       _$_HospitalModel.fromJson;
@@ -601,6 +663,12 @@ abstract class _HospitalModel implements HospitalModel {
   String? get modifiedFrom => throw _privateConstructorUsedError;
   @override
   String? get modifiedDate => throw _privateConstructorUsedError;
+  @override
+  int? get pin => throw _privateConstructorUsedError;
+  @override
+  String? get pinValidStart => throw _privateConstructorUsedError;
+  @override
+  String? get pinValidEnd => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_HospitalModelCopyWith<_$_HospitalModel> get copyWith =>

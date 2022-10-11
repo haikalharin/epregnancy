@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
+import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/chat_placeholder_widget.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/consultation_container.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
@@ -17,6 +18,7 @@ import '../article_page/list_shimmer_verticle.dart';
 import '../chat_page/bloc/chat_bloc/chat_bloc.dart';
 import '../home_page/list_article.dart';
 import 'bloc/chat_pending_bloc.dart';
+import 'package:flutter_countdown_timer/index.dart';
 
 class DashBoardNakesPage extends StatefulWidget {
   const DashBoardNakesPage({Key? key, required this.userName, this.hospitalId})
@@ -29,13 +31,15 @@ class DashBoardNakesPage extends StatefulWidget {
 }
 
 class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
+  DateTime dt2 = DateTime.parse("2022-10-12 02:50:00");
+
   @override
   void initState() {
     // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-    Injector.resolve<ChatPendingBloc>()
-        .add(FetchChatPendingByHospitalId(widget.hospitalId));
+    Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
+    Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
     super.initState();
   }
 
@@ -68,9 +72,11 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
             child: Container(
               color: Colors.white,
               height: MediaQuery.of(context).size.height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // DASHBOARD HEADER
                   Padding(
@@ -211,7 +217,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                       onTap: () {
                         Navigator.of(context).pushNamed(RouteName.navBar,
                             arguments: {
-                              'role': state.role ?? '',
+                              'role': 'MIDWIFE',
                               'initial_index': 0,
                               'user_id': state.user?.id ?? ''
                             });
@@ -295,6 +301,41 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                           ],
                         ),
                       )),
+                  BlocBuilder<HospitalBloc, HospitalState>(
+                    builder: (context, state) {
+                      if(state.type == 'fetch-hospital-success'){
+                        return Container(
+                          // height: 200.h,
+                            margin: EdgeInsets.only(left: 16.w, top: 10.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Pin Check-in Pasien", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),),
+                                SizedBox(height: 20.h,),
+                                Center(
+                                  child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
+                                ),
+                                SizedBox(height: 20.h,),
+                                Center(
+                                  child: CountdownTimer(
+                                    endTime: DateTime.parse(state.hospitals?[0].pinValidEnd ?? DateTime.now().toString()).millisecondsSinceEpoch,
+                                    widgetBuilder: (context, time){
+                                      return Text("Akan Expired Pada ${time?.min} : ${time?.sec}",
+                                        style: TextStyle(fontWeight: FontWeight.bold),);
+                                    },
+                                    onEnd: (){
+                                      Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
+                                    },
+                                  ),
+                                )
+                              ],
+                            )
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  )
                 ],
               ),
             ),

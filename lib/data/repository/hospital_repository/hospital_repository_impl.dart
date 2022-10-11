@@ -20,4 +20,12 @@ class HospitalRepositoryImpl extends HospitalRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<List<HospitalModel>> fetchHospitalsById(String id) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchHospitalsById(id);
+    }
+    throw NetworkConnectionException();
+  }
+
 }
