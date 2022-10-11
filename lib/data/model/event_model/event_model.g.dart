@@ -19,7 +19,7 @@ _$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
       location: json['location'] as String?,
       date: json['date'] as String?,
       time: json['time'] as String?,
-      remindBefore: json['remind_before'] as int?,
+      remindBefore: json['remind_before'] as String?,
       startDate: json['start_date'] as String?,
       endDate: json['end_date'] as String?,
       medicineTakenTimes: json['medicine_taken_times'] as int?,

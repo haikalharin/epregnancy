@@ -202,7 +202,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
               medicineTakenDays: int.parse(state.days.value),
               medicineTakenTimes: int.parse(state.totalConsume.value),
           medicineUnit: "tablet",
-          remindBefore: 5,
+          remindBefore: "00:05:00",
           status: "active",
             notifications:state.listScheduleTime,
           ));
@@ -210,6 +210,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
 
             var hourToMinute = state.timeNotfication!.hour  * 60;
             int remindBefore = state.timeNotfication!.minute + hourToMinute;
+            print('remind before : $remindBefore');
           response = await eventRepository.saveEvent(EventModel(
             userId: person.id,
             type: state.consulType.value,
@@ -219,7 +220,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
             startDate: dateStart,
             endDate: dateStart,
             date: dateStart,
-            remindBefore: remindBefore,
+            remindBefore: remindBefore.toString(),
             status: "active",
           ));
 

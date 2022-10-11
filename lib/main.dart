@@ -23,6 +23,8 @@ import 'package:PregnancyApp/pages/nakes_page/bloc/chat_pending_bloc.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
 import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
+import 'package:PregnancyApp/pages/pin_checkin/bloc/pin_checkin_bloc.dart';
+import 'package:PregnancyApp/pages/pin_checkin/bloc/pin_checkin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
@@ -141,6 +143,8 @@ class MyApp extends StatelessWidget {
 
     BlocProvider<ForgotPasswordPageBloc>(
         create: (context) => Injector.container.resolve<ForgotPasswordPageBloc>()),
+    BlocProvider<PinCheckInBloc>(
+        create: (context) => Injector.container.resolve<PinCheckInBloc>()),
       ];
 }
 

@@ -205,4 +205,13 @@ class UserRepositoryImpl extends UserRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel> checkInWithPin(String hospitalId, String pin) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.pinSubmitCheckIn(hospitalId, pin);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
 }

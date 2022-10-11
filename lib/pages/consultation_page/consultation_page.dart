@@ -6,10 +6,12 @@ import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/consultation_page/archive_page/archive_consultation_patient_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
+import 'package:PregnancyApp/pages/pin_checkin/pin_checkin_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:formz/formz.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -100,6 +102,27 @@ class _ConsultationPageState extends State<ConsultationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            if(_hospitalModel?.name == ''){
+              Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                if(value != null){
+                  setState(() {
+                    _hospitalModel = value as HospitalModel?;
+                  });
+                }
+              });
+            } else {
+              showModalBottomSheet(context: context,
+                  isScrollControlled: false,
+                  builder: (context){
+                return PinCheckInPage();
+              });
+            }
+          },
+          icon: FaIcon(FontAwesomeIcons.calendarCheck),
+          label: Text("CheckIn Kunjungan")
+      ),
       backgroundColor: Colors.grey.shade200,
       body: BlocListener<ConsultationPageBloc, ConsultationPageState>(
         listener: (context, state) async {
@@ -186,7 +209,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                                 left: 10),
                                             onPressed: () async {
                                               // new method for hubungi profesional
-                                              if(_hospitalModel == null){
+                                              if(_hospitalModel?.name == ''){
                                                 Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
                                                   if(value != null){
                                                     setState(() {

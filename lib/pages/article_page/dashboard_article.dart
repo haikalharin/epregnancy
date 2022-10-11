@@ -64,7 +64,7 @@ class _DashboardArticleState extends State<DashboardArticle> {
                               hintText: 'Cari artikel...',
                               prefixIcon: Icon(Icons.search),
                               border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 10,left: 20,right: 20,bottom: 10),
+                              contentPadding: EdgeInsets.only(top: 12,left: 20,right: 20,bottom: 10),
                             ),
                           ),
                         ),

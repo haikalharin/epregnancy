@@ -118,6 +118,7 @@ class ArticleDetailPage extends StatelessWidget {
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),
+                                      overflow: TextOverflow.visible,
                                     ),
                                   ),
                                 ],
@@ -125,7 +126,7 @@ class ArticleDetailPage extends StatelessWidget {
                             ),
                           ),
                           Container(
-                              margin: EdgeInsets.only(top: 10, bottom: 10),
+                              margin: EdgeInsets.only(top: 15, bottom: 10),
                               child: Row(
                                 children: [
                                   Container(

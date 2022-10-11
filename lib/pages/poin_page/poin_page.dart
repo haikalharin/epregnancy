@@ -234,7 +234,7 @@ class _PoinPageState extends State<PoinPage> {
                     ),
                     child: InkWell(
                       onTap: (){
-                        Toast.show("Nantikan Hadiah-hadiah menearik untuk direedem!");
+                        Toast.show("Nantikan hadiah-hadiah menarik untuk direedem!");
                       },
                         child: Text("Lihat Semua Hadiahnya", style: TextStyle(color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w700),)),
                   ),
