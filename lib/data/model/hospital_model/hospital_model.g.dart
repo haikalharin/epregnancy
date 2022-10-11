@@ -29,6 +29,9 @@ _$_HospitalModel _$$_HospitalModelFromJson(Map<String, dynamic> json) =>
       modifiedBy: json['modified_by'] as String?,
       modifiedFrom: json['modified_from'] as String?,
       modifiedDate: json['modified_date'] as String?,
+      pin: json['pin'] as int?,
+      pinValidStart: json['pin_valid_start'] as String?,
+      pinValidEnd: json['pin_valid_end'] as String?,
     );
 
 Map<String, dynamic> _$$_HospitalModelToJson(_$_HospitalModel instance) =>
@@ -54,4 +57,7 @@ Map<String, dynamic> _$$_HospitalModelToJson(_$_HospitalModel instance) =>
       'modified_by': instance.modifiedBy,
       'modified_from': instance.modifiedFrom,
       'modified_date': instance.modifiedDate,
+      'pin': instance.pin,
+      'pin_valid_start': instance.pinValidStart,
+      'pin_valid_end': instance.pinValidEnd,
     };

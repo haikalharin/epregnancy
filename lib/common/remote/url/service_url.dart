@@ -69,6 +69,7 @@ class ServiceUrl {
 
   //hospital
   static String hospital = 'hospital';
+  static String hospitalVisit = '$hospital/visit/';
   static String hospitalList = '$hospital/list';
 
 

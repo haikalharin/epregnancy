@@ -15,6 +15,8 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
   Stream<HospitalState> mapEventToState(HospitalEvent event) async* {
     if(event is FetchHospitalsEvent) {
       yield* _mapFetchHospitalEvent(event, state);
+    } else if (event is FetchHospitalsByIdEvent) {
+      yield* _mapFetchHospitalByIdEvent(event, state);
     }
   }
 
@@ -25,6 +27,23 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
     yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-hospital', hospitals: []);
     try {
       List<HospitalModel> hospitalList = await hospitalRepository.fetchHospitals(event.name ?? '');
+      if(hospitalList.isNotEmpty) {
+        yield state.copyWith(type: 'fetch-hospital-success', status: FormzStatus.submissionSuccess, hospitals: hospitalList);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-hospital-failed', hospitals: []);
+      }
+    } catch(e) {
+      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+    }
+  }
+
+  Stream<HospitalState> _mapFetchHospitalByIdEvent(
+      FetchHospitalsByIdEvent event,
+      HospitalState state,
+      ) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-hospital', hospitals: []);
+    try {
+      List<HospitalModel> hospitalList = await hospitalRepository.fetchHospitalsById(event.id ?? '');
       if(hospitalList.isNotEmpty) {
         yield state.copyWith(type: 'fetch-hospital-success', status: FormzStatus.submissionSuccess, hospitals: hospitalList);
       } else {

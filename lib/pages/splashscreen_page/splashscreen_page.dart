@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
+import 'package:intl/intl.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import 'bloc/splash_screen_bloc.dart';
+import 'package:intl/intl_standalone.dart';
 
 class SplashscreenPage extends StatefulWidget {
   const SplashscreenPage({Key? key}) : super(key: key);

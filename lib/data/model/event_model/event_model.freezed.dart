@@ -40,7 +40,7 @@ mixin _$EventModel {
   @JsonKey(includeIfNull: true)
   String? get time => throw _privateConstructorUsedError;
   @JsonKey(name: 'remind_before', includeIfNull: true)
-  int? get remindBefore => throw _privateConstructorUsedError;
+  String? get remindBefore => throw _privateConstructorUsedError;
   @JsonKey(name: 'start_date', includeIfNull: true)
   String? get startDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'end_date', includeIfNull: true)
@@ -107,7 +107,7 @@ abstract class $EventModelCopyWith<$Res> {
       @JsonKey(includeIfNull: true)
           String? time,
       @JsonKey(name: 'remind_before', includeIfNull: true)
-          int? remindBefore,
+          String? remindBefore,
       @JsonKey(name: 'start_date', includeIfNull: true)
           String? startDate,
       @JsonKey(name: 'end_date', includeIfNull: true)
@@ -221,7 +221,7 @@ class _$EventModelCopyWithImpl<$Res> implements $EventModelCopyWith<$Res> {
       remindBefore: remindBefore == freezed
           ? _value.remindBefore
           : remindBefore // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       startDate: startDate == freezed
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
@@ -329,7 +329,7 @@ abstract class _$$_EventModelCopyWith<$Res>
       @JsonKey(includeIfNull: true)
           String? time,
       @JsonKey(name: 'remind_before', includeIfNull: true)
-          int? remindBefore,
+          String? remindBefore,
       @JsonKey(name: 'start_date', includeIfNull: true)
           String? startDate,
       @JsonKey(name: 'end_date', includeIfNull: true)
@@ -446,7 +446,7 @@ class __$$_EventModelCopyWithImpl<$Res> extends _$EventModelCopyWithImpl<$Res>
       remindBefore: remindBefore == freezed
           ? _value.remindBefore
           : remindBefore // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       startDate: startDate == freezed
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
@@ -607,7 +607,7 @@ class _$_EventModel implements _EventModel {
   final String? time;
   @override
   @JsonKey(name: 'remind_before', includeIfNull: true)
-  final int? remindBefore;
+  final String? remindBefore;
   @override
   @JsonKey(name: 'start_date', includeIfNull: true)
   final String? startDate;
@@ -778,7 +778,7 @@ abstract class _EventModel implements EventModel {
       @JsonKey(includeIfNull: true)
           final String? time,
       @JsonKey(name: 'remind_before', includeIfNull: true)
-          final int? remindBefore,
+          final String? remindBefore,
       @JsonKey(name: 'start_date', includeIfNull: true)
           final String? startDate,
       @JsonKey(name: 'end_date', includeIfNull: true)
@@ -845,7 +845,7 @@ abstract class _EventModel implements EventModel {
   String? get time => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'remind_before', includeIfNull: true)
-  int? get remindBefore => throw _privateConstructorUsedError;
+  String? get remindBefore => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'start_date', includeIfNull: true)
   String? get startDate => throw _privateConstructorUsedError;

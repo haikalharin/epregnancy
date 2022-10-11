@@ -74,6 +74,7 @@ class _PoinActivityPageState extends State<PoinActivityPage> {
                         child: state.status == FormzStatus.submissionInProgress ? const Center(
                           child: CircularProgressIndicator()): ListView.separated(
                             shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return  ListTile(
                                 leading: _buildLeadingIcon(context, state.pointHistories![index].description!),
