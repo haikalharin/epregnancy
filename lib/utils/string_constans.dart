@@ -75,7 +75,7 @@ class StringConstant {
 
   //password
   static const alertPassword1 = '• Minimal 8 karakter dan maksimal 128';
-  static const alertPassword2 = '• Setidaknya memiliki 1 huruf besar, 1 huruf kecil, dan 1 angka';
+  static const alertPassword2 = '• Setidaknya memiliki 1 huruf besar, 1 huruf kecil, 1 angka, dan 1 simbol (contoh !,@,#,% )';
   static const alertPassword3 = '• Tidak ada huruf yang berulang atau berurutan ( contoh: AAA, ababab, katakata )';
 
 
