@@ -24,11 +24,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../data/model/chat_model/chat_pending_send_request.dart';
+import '../../data/model/hospital_model/hospital_model.dart';
+import '../../data/model/user_info/user_info.dart';
 import '../../env.dart';
 import '../../utils/basic_loading_dialog.dart';
 import '../../utils/function_utils.dart';
+import '../location_select_page/bloc/hospital_bloc.dart';
+import '../nakes_page/bloc/chat_pending_bloc.dart';
 import 'bloc/chat_bloc/chat_bloc.dart';
 
 class NewChatRoom extends StatefulWidget {
@@ -213,6 +218,25 @@ class _NewChatRoomState extends State<NewChatRoom> {
       // }
     }
   }
+  HospitalModel? _hospitalModel;
+  void getHospitalFromLocal() async {
+    HospitalModel _hospital = await AppSharedPreference.getHospital();
+    if (_hospital != null && mounted) {
+      setState(() {
+        _hospitalModel = _hospital;
+      });
+    }
+  }
+
+  UserModel? userModel;
+  void getUserModel() async {
+    UserModel _userInfo = await AppSharedPreference.getUser();
+    if (_userInfo != null && mounted) {
+      setState(() {
+        userModel = _userInfo;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -223,6 +247,8 @@ class _NewChatRoomState extends State<NewChatRoom> {
       isPendingChat = widget.pendingChat ?? false;
     });
     _initWebSocket();
+    getHospitalFromLocal();
+    getUserModel();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _scrollDown();
     });
@@ -349,8 +375,8 @@ class _NewChatRoomState extends State<NewChatRoom> {
                   onPressed: () {
                     basicLoadinDialog(context);
                     Injector.resolve<ChatBloc>().add(EndChatEvent(toId));
-
-                    Future.delayed(Duration(seconds: 2), (){
+                    Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+                    Future.delayed(Duration(seconds: 1), (){
                       Navigator.pop(context);
                     });
                   },
@@ -378,7 +404,10 @@ class _NewChatRoomState extends State<NewChatRoom> {
             print('state chat : ${state.type}');
             if(state.type == 'end-chat-success'){
               Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-              Navigator.pop(context, "endchat");
+              Navigator.of(context).pushReplacementNamed(
+                  RouteName.dashboardNakesPage,
+                  arguments: {'name': userModel?.name, 'hospital_id': _hospitalModel?.id}
+              );
             } else if (state.type == 'end-chat-failed'){
               // Navigator.pop(context);
               Toast.show('Terjadi Kesalahan Saat Mengakhiri sesi');

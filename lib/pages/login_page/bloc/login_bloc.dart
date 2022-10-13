@@ -151,6 +151,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             AppSharedPreference.token, userModel.token ?? '');
         await AppSharedPreference.setUser(userModel);
         if(userModel.isMidwife == true && userModel.hospitalModel != null) {
+          print('hospital model : ${userModel.hospitalModel?.name}');
           await AppSharedPreference.setHospital(userModel.hospitalModel!);
         }
 

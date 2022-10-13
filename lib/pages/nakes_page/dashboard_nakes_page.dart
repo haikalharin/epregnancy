@@ -40,6 +40,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
     Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
     Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
+
     super.initState();
   }
 
