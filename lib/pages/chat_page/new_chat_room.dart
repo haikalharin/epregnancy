@@ -288,7 +288,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
             toName = socketResponse['data']['to']['name'];
           });
           Toast.show("$toName Telah Merespon Konsultasi Anda, Silahkan Jelaskan Kondisi Anda Lebih Lanjut", gravity: Toast.center);
-        } else if (socketResponse['data'] == 'End Chat Successfully' && widget.isNakes == false) {
+        } else if (socketResponse['data'] == 'end-chat' && widget.isNakes == false) {
           Toast.show("$toName Konsultasi anda telah seleasi, Terima Kasih!", gravity: Toast.center);
           Navigator.pop(context, "end");
         }
@@ -659,7 +659,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                           ),
                           InkWell(
                             onTap: (){
-                              if(isPendingChat == false){
+                              if(isPendingChat == false) {
                                 _showPicker(context);
                               } else {
                                 Toast.show('Mohon tunggu respon Nakes sebelum membuat chat baru', duration: 3, gravity: 1);
