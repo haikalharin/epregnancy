@@ -245,6 +245,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   }
 
   _initWebSocket() async {
+    print('nakes bool : ${widget.isNakes}');
     UserModel userModel = await AppSharedPreference.getUser();
     print('initwebsocket run url : ${environment['websockets']}${userModel.id}');
     Future<WebSocket> futureWebSocket = WebSocket.connect(
@@ -287,7 +288,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
             toName = socketResponse['data']['to']['name'];
           });
           Toast.show("$toName Telah Merespon Konsultasi Anda, Silahkan Jelaskan Kondisi Anda Lebih Lanjut", gravity: Toast.center);
-        } else if (socketResponse['action'] == 'end-chat') {
+        } else if (socketResponse['data'] == 'End Chat Successfully' && widget.isNakes == false) {
           Toast.show("$toName Konsultasi anda telah seleasi, Terima Kasih!", gravity: Toast.center);
           Navigator.pop(context, "end");
         }
@@ -347,7 +348,11 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                   color: EpregnancyColors.blueDark)))),
                   onPressed: () {
                     basicLoadinDialog(context);
-                    Injector.resolve<ChatBloc>()..add(EndChatEvent(toId));
+                    Injector.resolve<ChatBloc>().add(EndChatEvent(toId));
+
+                    Future.delayed(Duration(seconds: 2), (){
+                      Navigator.pop(context);
+                    });
                   },
                   child: Center(
                     child: Text(
@@ -370,11 +375,12 @@ class _NewChatRoomState extends State<NewChatRoom> {
         ),
         body: BlocListener<ChatBloc, ChatState>(
           listener: (context, state) {
+            print('state chat : ${state.type}');
             if(state.type == 'end-chat-success'){
               Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-              Navigator.pop(context);
+              Navigator.pop(context, "endchat");
             } else if (state.type == 'end-chat-failed'){
-              Navigator.pop(context);
+              // Navigator.pop(context);
               Toast.show('Terjadi Kesalahan Saat Mengakhiri sesi');
             }
           },

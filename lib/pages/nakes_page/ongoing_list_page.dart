@@ -57,9 +57,9 @@ class _OngoingListPageState extends State<OngoingListPage> {
             toName: state.listPersonalChatRoom?[0].from?.name,
             pendingChat:  false,
           ))).then((value) {
-            // if(value != null){
-            //   Navigator.pop(context, 'back');
-            // }
+            if(value != null){
+              Navigator.pop(context, 'back');
+            }
           });
         }
       },
