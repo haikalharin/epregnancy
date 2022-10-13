@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:PregnancyApp/common/constants/app_constants.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
+import 'package:PregnancyApp/env.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,8 @@ class HttpClient {
 
   Uri _getParsedUrl(String path, {Map<String, String>? queryParameters}) {
     String h = host!;
+    String _subHost = environment["sub_host"];
+    String finalPath = _subHost + path;
     if (h.contains("//")) {
       h = h.split("//")[1];
     }
@@ -37,9 +40,11 @@ class HttpClient {
     if (h.contains("/")) {
       h = h.replaceAll("/", "");
     }
+    print('host : $h');
+    print('subhost : $_subHost');
 
     // return Uri.http(h, path, queryParameters);
-    return Uri.http(h, path, queryParameters);
+    return Uri.https(h, finalPath, queryParameters);
   }
 
   dynamic get(String path, {Map<String, String>? queryParameters}) async {

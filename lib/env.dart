@@ -1,11 +1,26 @@
+// env menyohost
+// final Map<String, dynamic> environment = <String, dynamic>{
+//   'host': 'http://104.171.119.202:8080/',
+//   'websockets': 'ws://104.171.119.202:8080/user/',
+//   'image_host': 'https://image.tmdb.org/t/p/',
+//   'http_client': 'http',
+//   'wpUrl': 'http://192.168.64.2/panjistore',
+// 'consumerKey': 'ck_015ecefc9ecedf3fb4208d7945173ff6bf498728',
+// 'consumerSecret': 'cs_51a47e2d054bfe8df212b12048cd6f65c6463529',
+//   'berita':'  http://ds-onlineadvertising.com/syariah/info.php',
+//   'mode': 'dev', //dev or prod
+// };
+
+// env dev allianz
 final Map<String, dynamic> environment = <String, dynamic>{
-  'host': 'http://104.171.119.202:8080/',
-  'websockets': 'ws://104.171.119.202:8080/user/',
+  'host': 'https://igbeyewo.allianz.co.id/',
+  'sub_host': '/di/epregnancy/api',
+  'websockets': 'ws://igbeyewo.allianz.co.id/di/epregnancy/api/user/',
   'image_host': 'https://image.tmdb.org/t/p/',
-  'http_client': 'http',
+  'http_client': 'https',
   'wpUrl': 'http://192.168.64.2/panjistore',
-'consumerKey': 'ck_015ecefc9ecedf3fb4208d7945173ff6bf498728',
-'consumerSecret': 'cs_51a47e2d054bfe8df212b12048cd6f65c6463529',
+  'consumerKey': 'ck_015ecefc9ecedf3fb4208d7945173ff6bf498728',
+  'consumerSecret': 'cs_51a47e2d054bfe8df212b12048cd6f65c6463529',
   'berita':'  http://ds-onlineadvertising.com/syariah/info.php',
   'mode': 'dev', //dev or prod
 };

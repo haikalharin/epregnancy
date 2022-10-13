@@ -14,7 +14,7 @@ class Configurations {
     _mode = value['mode'] ?? DefaultConfig.mode;
     _imageHost = value['image_host'] ?? DefaultConfig.imageHost;
     _httpClientType =
-        value['client_type'] ?? DefaultConfig.httpClientType.toString();
+        value['http_client'] ?? DefaultConfig.httpClientType.toString();
     _wpUrl = value['wpUrl'] ?? DefaultConfig.wpUrl.toString();
     _consumerKey = value['consumerKey'] ?? DefaultConfig.consumerKey.toString();
     _consumerSecret =

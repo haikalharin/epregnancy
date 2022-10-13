@@ -162,7 +162,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                             child: Icon(Icons.arrow_back_ios)),
                       ),
                       Container(
-                          padding: EdgeInsets.only(top: 0.h),
+                          padding: EdgeInsets.only(top: 5.h),
                           child: Text(
                             state.eventDateString ?? "",
                             style: const TextStyle(

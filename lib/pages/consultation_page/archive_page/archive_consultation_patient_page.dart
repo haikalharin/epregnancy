@@ -164,7 +164,7 @@ class _ArchiveConsultationPatientPageState extends State<ArchiveConsultationPati
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: const Center(
-                  child: Text('Belum Ada Konsulatsi Yang Telah Selesai!', style: TextStyle(color: Colors.black),),
+                  child: Text('Belum Ada Konsultasi Yang Telah Selesai!', style: TextStyle(color: Colors.black),),
                 ),
               );
             }
