@@ -151,7 +151,7 @@ class _ChooseTypeEventPageState extends State<ChooseTypeEventPage> {
                                                     Container(
                                                       // margin: EdgeInsets.only(left: 20),
                                                       child: Text(
-                                                        "Kunjungan Rumah Sakit",
+                                                        "Kunjungan Puskesmas",
                                                         style: TextStyle(
                                                             color: isChoice == 1
                                                                 ? Colors.white

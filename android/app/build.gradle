@@ -51,7 +51,7 @@ android {
         applicationId "com.example.pregnancyapp"
         minSdkVersion 19   //Copy this
         multiDexEnabled true
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
