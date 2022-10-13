@@ -155,8 +155,12 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                                   Container(
                                                       margin: EdgeInsets.only(
                                                           bottom: 10),
-                                                      child: const Text(
-                                                        "Mariah",
+                                                      child:  Text(
+                                                        widget
+                                                            .listConsul[
+                                                        index]
+                                                            .user
+                                                            ?.name??"",
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             fontWeight:

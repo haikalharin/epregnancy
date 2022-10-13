@@ -101,10 +101,11 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                               horizontal: 0.0, vertical: 0),
                         ),
                         tabs: const [
+                          Tab(text: "Jadwal Pribadi"),
                           Tab(
                             text: "Jadwal Umum",
                           ),
-                          Tab(text: "Jadwal Pribadi"),
+
                         ],
                       ),
                     ),
@@ -202,14 +203,15 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                           controller: _tabController,
                           physics: NeverScrollableScrollPhysics(),
                           children: [
-                            ListEventWidget(
-                              tipeAcara: StringConstant.typeEventJadwalUmum,
-                              dateTime: widget.dateTime,
-                            ),
                             ListEventPersonalWidget(
                               tipeAcara: StringConstant.typeEventJadwalPribadi,
                               dateTime: widget.dateTime,
                             ),
+                            ListEventWidget(
+                              tipeAcara: StringConstant.typeEventJadwalUmum,
+                              dateTime: widget.dateTime,
+                            ),
+
                             // AcaraUmumPage(),
                           ]),
                     ),
