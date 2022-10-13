@@ -659,7 +659,11 @@ class _NewChatRoomState extends State<NewChatRoom> {
                           ),
                           InkWell(
                             onTap: (){
-                              _showPicker(context);
+                              if(isPendingChat == false){
+                                _showPicker(context);
+                              } else {
+                                Toast.show('Mohon tunggu respon Nakes sebelum membuat chat baru', duration: 3, gravity: 1);
+                              }
                             },
                             child: Container(
                               padding: EdgeInsets.only(top: 12.h),
