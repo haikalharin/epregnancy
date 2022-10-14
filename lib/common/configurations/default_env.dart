@@ -8,6 +8,7 @@ class DefaultConfig {
   static const consumerSecret = '';
   static const wpUrl = '';
   static const mode = 'prod';
+  static const isShowChucker = false;
 }
 
 enum HttpClientEnum { http, dio, retrofit }

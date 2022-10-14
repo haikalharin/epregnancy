@@ -61,7 +61,7 @@ class HttpClient {
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
     late Response response;
-    if (Configurations.mode == StringConstant.dev) {
+    if  (Configurations.isShowChucker == true) {
       response = await _client!
           .get(
             _getParsedUrl(path, queryParameters: queryParameters),
@@ -82,7 +82,7 @@ class HttpClient {
 
   Future<Response?> downloadFile(String path) async {
     late Response response;
-    if (Configurations.mode == StringConstant.dev) {
+    if  (Configurations.isShowChucker == true) {
       response = await _client!
           .get(
             _getParsedUrl(path),
@@ -112,7 +112,7 @@ class HttpClient {
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     late Response response;
-    if (Configurations.mode == StringConstant.dev) {
+    if  (Configurations.isShowChucker == true) {
       response = await _client!
           .post(
         _getParsedUrl(path),
@@ -148,7 +148,7 @@ class HttpClient {
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     late Response response;
-    if (Configurations.mode == StringConstant.dev) {
+    if  (Configurations.isShowChucker == true) {
       response = await _client!
           .delete(
         _getParsedUrl(path),
@@ -181,7 +181,7 @@ class HttpClient {
 
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
     late Response response;
-    if (Configurations.mode == StringConstant.dev) {
+    if (Configurations.isShowChucker == true) {
       response = await _client!
           .put(
         _getParsedUrl(path),
