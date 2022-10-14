@@ -44,6 +44,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'common/configurations/configurations.dart';
 import 'common/injector/injector.dart';
 import 'common/injector/injector_config.dart';
@@ -51,6 +52,7 @@ import 'env.dart' as config;
 import 'pages/login_page/bloc/login_bloc.dart';
 import 'pages/login_page/login_page.dart';
 import 'utils/simple_bloc_observer.dart';
+import 'package:flutter_alice/alice.dart';
 
 // void main() => runApp(MyApp());
 
@@ -68,9 +70,24 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+final Alice alice = Alice(
+    showNotification: true,
+    darkTheme: true);
+
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
     return ScreenUtilInit(
         designSize: const Size(360, 690),
         minTextAdapt: true,
@@ -78,16 +95,19 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MultiBlocProvider(
               providers: _getProviders(),
-              child: const MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'Epregnancy App',
-                home: SplashscreenPage(),
-                onGenerateRoute: Routes.generateRoute,
-                localizationsDelegates: [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
+              child:  OverlaySupport.global(
+                child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  navigatorKey: alice.getNavigatorKey(),
+                  title: 'Epregnancy App',
+                  home: SplashscreenPage(),
+                  onGenerateRoute: Routes.generateRoute,
+                  localizationsDelegates: const [
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                ),
               ));
         });
   }

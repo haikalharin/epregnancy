@@ -69,6 +69,10 @@ dependencies:
   dots_indicator: ^2.1.0
   encrypt: ^5.0.1
   pin_code_fields: ^7.4.0
+  flutter_alice: ^1.0.1
+  overlay_support: ^1.2.1
+  quiver: ^3.1.0
+
 
 
 

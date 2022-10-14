@@ -196,18 +196,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      // ResponseModel response = await userRepository
-      //     .requestOtp(OtpModel(email: state.userModel?.email));
-      // OtpModel otpModel = response.data;
-      // if (response.code == 200) {
-      //   await AppSharedPreference.setString(
-      //       AppSharedPreference.otp, otpModel.otp ?? '');
-      //   yield state.copyWith(
-      //       submitStatus: FormzStatus.submissionSuccess,
-      //       typeEvent: StringConstant.requestOtp);
-      // } else {
-      //   yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
-      // }
+      var type = '';
+      if (state.userId!.contains('@')) {
+        type = 'email';
+      } else {
+        type = 'mobile';
+      }
+      ResponseModel response = await userRepository
+          .requestOtp(OtpModel(value: state.userId, type: type));
+      OtpModel otpModel = response.data;
+      if (response.code == 200) {
+        await AppSharedPreference.setOtp(otpModel);
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
     } on LoginErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
@@ -226,42 +229,59 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await FirebaseAuth.instance.signOut();
       final User? user = await GAuthentication.signInWithGoogle();
       if (user != null) {
-        UserModelFirebase? userModelFirebase;
-        final UserModelFirebase userExist =
-            await EventUser.checkUserExist(user.email!);
-        if (userExist.email!.isEmpty) {
-          userModelFirebase = UserModelFirebase(
-              email: user.email,
-              name: user.displayName,
-              status: StringConstant.inActive,
-              uid: user.uid,
-              userid: user.email);
-          await AppSharedPreference.setUserFirebase(userModelFirebase);
-          EventUser.addUser(userModelFirebase);
+        var data = user.email??"";
+        final response = await userRepository.checkUserExist(data);
+        UserModel userModel = response.data;
+        if (response.code == 200) {
+          if (response.message == StringConstant.active) {
+            if (userModel.isPregnant == true ||
+                userModel.isHaveBaby == true ||
+                userModel.isPlanningPregnancy == true) {
+              await AppSharedPreference.setUsernameRegisterUser(data);
+              await AppSharedPreference.setUserRegister(userModel);
+              yield state.copyWith(
+                  submitStatus: FormzStatus.submissionSuccess,
+                  userModel: userModel,
+                  typeEvent: StringConstant.signUpGoogle,
+                  userId: data,
+                  isExist: true,
+                  isSurvey: true);
+            } else {
+              await AppSharedPreference.setUserRegister(userModel);
+              await AppSharedPreference.setUsernameRegisterUser(data);
+              yield state.copyWith(
+                  submitStatus: FormzStatus.submissionSuccess,
+                  typeEvent: StringConstant.signUpGoogle,
+                  userModel: userModel,
+                  userId: data,
+                  isExist: true,
+                  isSurvey: false);
+            }
+          } else {
+            await AppSharedPreference.setUsernameRegisterUser(data);
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionSuccess,
+                typeEvent: StringConstant.signUpGoogle,
+                userId: data,
+                isExist: false,
+                type: 'toRequestOtp');
+          }
         } else {
-          userModelFirebase = UserModelFirebase(
-              email: userExist.email,
-              name: userExist.name,
-              status: userExist.status,
-              uid: userExist.uid,
-              userid: userExist.email);
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure,                  typeEvent: StringConstant.signUpGoogle,
+          );
         }
-        final UserRolesModelFirebase role =
-            await EventUser.checkRoleExist(userModelFirebase.uid ?? "");
-        await AppSharedPreference.setUserFirebase(userModelFirebase);
-        yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess,
-            userModelFirebase: userModelFirebase,
-            role: role);
       } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure,                  typeEvent: StringConstant.signUpGoogle,
+        );
       }
     } on LoginErrorException catch (e) {
       print(e);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure,                  typeEvent: StringConstant.signUpGoogle,
+      );
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure,                  typeEvent: StringConstant.signUpGoogle,
+      );
     }
   }
 }

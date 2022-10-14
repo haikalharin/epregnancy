@@ -11,6 +11,11 @@ class LoginState with FormzMixin {
   final String? errorMessage;
   final String? typeEvent;
   final bool? isActive;
+  final bool? isExist;
+  final bool? isSurvey;
+  final String? userId;
+  final String? type;
+  final String? subType;
 
   LoginState(
       {this.phoneNumber = const PhoneValidator.pure(),
@@ -22,6 +27,11 @@ class LoginState with FormzMixin {
         this.submitStatus = FormzStatus.pure,
         this.errorMessage,
         this.userModel,
+        this.userId,
+        this.type,
+        this.subType,
+  this.isExist = false,
+  this.isSurvey = false,
       this.typeEvent});
 
   LoginState copyWith(
@@ -32,20 +42,30 @@ class LoginState with FormzMixin {
         MandatoryFieldValidator? username,
         UserRolesModelFirebase? role,
         Password? password,
+        String? userId,
         bool? isActive,
         String? errorMessage,
         String? typeEvent,
+        bool? isExist,
+        bool? isSurvey,
+        String? type,
+        String? subType,
       }) {
     return LoginState(
         submitStatus: submitStatus,
+        type: type,
+        subType: subType,
         phoneNumber: phoneNumber ?? this.phoneNumber,
         username: username ?? this.username,
         password: password ?? this.password,
         role: role ?? this.role,
         userModelFirebase: userModelFirebase?? this.userModelFirebase,
         userModel: userModel?? this.userModel,
-        typeEvent: typeEvent ?? this.typeEvent,
+        typeEvent: typeEvent,
         isActive: isActive ?? this.isActive,
+        userId: userId ?? this.userId,
+        isExist: isExist ?? this.isExist,
+        isSurvey: isSurvey ?? this.isSurvey,
         errorMessage: errorMessage);
   }
 

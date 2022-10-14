@@ -29,6 +29,7 @@ class StringConstant {
 
   //event login
   static const requestOtp = 'requestOtp';
+  static const signUpGoogle = 'signUpGoogle';
   static const submitLogin = 'submitLogin';
 
   //poin

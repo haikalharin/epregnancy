@@ -63,7 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
               listener: (context, state) async {
                 if (state.submitStatus == FormzStatus.submissionFailure) {
                   var snackBar = SnackBar(
-                      content: Text(state.errorMessage!.isNotEmpty
+                      content: Text(state.errorMessage != null
                           ? state.errorMessage!
                           : 'failed'),
                       backgroundColor: Colors.red);

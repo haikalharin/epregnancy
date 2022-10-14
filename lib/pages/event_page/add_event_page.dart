@@ -37,10 +37,14 @@ final _userNameController = TextEditingController();
 var authService = AuthService();
 
 class _AddEventPageState extends State<AddEventPage> {
-  @override
-  void initState() {
+  void onRefresh() async {
     Injector.resolve<EventPageBloc>()
         .add(EventInitEvent(widget.consulType ?? ""));
+  }
+
+  @override
+  void initState() {
+    onRefresh();
     super.initState();
   }
 
@@ -91,8 +95,8 @@ class _AddEventPageState extends State<AddEventPage> {
           await Future.delayed(const Duration(seconds: 1));
 
           Navigator.of(context).pushNamedAndRemoveUntil(
-              RouteName.navBar, (Route<dynamic> route) => false, arguments: {'role': state.role, 'initial_index': 0});
-
+              RouteName.navBar, (Route<dynamic> route) => false,
+              arguments: {'role': state.role, 'initial_index': 0});
         }
       }, child: BlocBuilder<EventPageBloc, EventPageState>(
         builder: (context, state) {
@@ -347,6 +351,13 @@ class _Notification extends StatelessWidget {
                             context: context,
                             initialTime: initialTime,
                             initialEntryMode: TimePickerEntryMode.input,
+                            builder: (context, child) {
+                              return MediaQuery(
+                                data: MediaQuery.of(context)
+                                    .copyWith(alwaysUse24HourFormat: true),
+                                child: child ?? Container(),
+                              );
+                            },
                           );
 
                           Injector.resolve<EventPageBloc>().add(
@@ -671,9 +682,7 @@ class _ScheduleNameInput extends StatelessWidget {
                 // or whatever
                 height: 1,
                 fontSize: 16,
-                fontWeight: FontWeight
-                    .w700
-                ),
+                fontWeight: FontWeight.w700),
             prefixIcon: consulType == StringConstant.visitHospital
                 ? state.scheduleName.valid
                     ? Container(
@@ -735,17 +744,17 @@ class _DescInput extends StatelessWidget {
                 ),
             prefixIcon: state.description.valid
                 ? Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: SvgPicture.asset(
-                  'assets/ic_desc.svg',
-                  fit: BoxFit.fitHeight,
-                ))
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: SvgPicture.asset(
+                      'assets/ic_desc.svg',
+                      fit: BoxFit.fitHeight,
+                    ))
                 : Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: SvgPicture.asset(
-                  'assets/ic_desc_unselected.svg',
-                  fit: BoxFit.fitHeight,
-                )),
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: SvgPicture.asset(
+                      'assets/ic_desc_unselected.svg',
+                      fit: BoxFit.fitHeight,
+                    )),
             hintText: 'Deskripsi',
             errorText: state.description.invalid ? 'Tidak boleh kososng' : null,
           ),

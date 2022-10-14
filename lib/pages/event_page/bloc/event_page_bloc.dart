@@ -9,6 +9,7 @@ import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -191,26 +192,43 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         var dateStart = df.format(state.dateStart ?? DateTime.now());
         var dateEnd = df.format(state.dateEnd ?? DateTime.now());
 
+        var hour = state.timeNotfication!.hour.toString().length == 1
+            ? "0${state.timeNotfication!.hour}"
+            : state.timeNotfication!.hour.toString();
+        var minute = state.timeNotfication!.minute.toString().length == 1
+            ? "0${state.timeNotfication!.hour}"
+            : state.timeNotfication!.minute.toString();
+
+        var hourToMinute = state.timeNotfication!.hour * 60;
+        int total = state.timeNotfication!.minute + hourToMinute;
+        String time = "${state.timeString.value}:00";
+        String fullDate = "$dateStart $time";
+        DateTime tempDate =
+        new DateFormat("yyyy-MM-dd hh:mm:ss").parse(fullDate);
+
+        DateTime fixDate = DateTime(tempDate.year, tempDate.month,
+            tempDate.day, tempDate.hour, tempDate.minute - total);
+
+
         ResponseModel response = ResponseModel();
         if (state.consulType.value == StringConstant.consumeMedicine) {
           response = await eventRepository.saveEvent(EventModel(
-              userId: person.id,
-              type: state.consulType.value,
-              title: state.scheduleName.value,
-              startDate: dateStart,
-              endDate: dateEnd,
-              medicineTakenDays: int.parse(state.days.value),
-              medicineTakenTimes: int.parse(state.totalConsume.value),
-          medicineUnit: "tablet",
-          remindBefore: "00:05:00",
-          status: "active",
-            notifications:state.listScheduleTime,
+            userId: person.id,
+            type: state.consulType.value,
+            title: state.scheduleName.value,
+            startDate: dateStart,
+            endDate: dateEnd,
+            medicineTakenDays: int.parse(state.days.value),
+            medicineTakenTimes: int.parse(state.totalConsume.value),
+            medicineUnit: "tablet",
+            remindBefore: "00:05:00",
+            status: "active",
+            notifications: state.listScheduleTime,
           ));
         } else {
 
-            var hourToMinute = state.timeNotfication!.hour  * 60;
-            int remindBefore = state.timeNotfication!.minute + hourToMinute;
-            print('remind before : $remindBefore');
+          String remindBefore = "$hour:$minute:00";
+          print('remind before : $remindBefore');
           response = await eventRepository.saveEvent(EventModel(
             userId: person.id,
             type: state.consulType.value,
@@ -223,13 +241,35 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
             remindBefore: remindBefore.toString(),
             status: "active",
           ));
-
         }
         if (response.code == 200) {
+          var scheduledNotificationDateTime =
+              DateTime.now().millisecondsSinceEpoch - 120 * 1000;
+          var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+            'your other channel id',
+            'your other channel name',
+          );
+          var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+          NotificationDetails platformChannelSpecifics =
+              new NotificationDetails(
+                  android: androidPlatformChannelSpecifics,
+                  iOS: iOSPlatformChannelSpecifics);
+          final FlutterLocalNotificationsPlugin
+              flutterLocalNotificationsPlugin =
+              FlutterLocalNotificationsPlugin();
+          await flutterLocalNotificationsPlugin.schedule(
+              0,
+              state.scheduleName.value,
+              state.description.value,
+              fixDate,
+              platformChannelSpecifics);
+
           yield state.copyWith(
-              submitStatus: FormzStatus.submissionSuccess, role: person.isPatient == true
-              ? StringConstant.patient
-              : StringConstant.midwife,);
+            submitStatus: FormzStatus.submissionSuccess,
+            role: person.isPatient == true
+                ? StringConstant.patient
+                : StringConstant.midwife,
+          );
         } else {
           yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
         }

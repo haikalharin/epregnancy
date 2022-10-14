@@ -18,6 +18,7 @@ import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
+import '../../../common/exceptions/event_error_exception.dart';
 import '../../../common/exceptions/home_error_exception.dart';
 import '../../../common/exceptions/login_error_exception.dart';
 import '../../../data/firebase/event/event_user.dart';
@@ -57,6 +58,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapEventFetchEventToState(event, state);
     } else if (event is PointFetchEvent) {
       yield* _mapPointFetchEventToState(event, state);
+    }  else if (event is HomeEventDeleteSchedule) {
+      yield* _mapHomeEventDeleteScheduleToState(event, state);
     }
   }
 
@@ -244,5 +247,32 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
   }
 //
+
+  Stream<HomePageState> _mapHomeEventDeleteScheduleToState(
+      HomeEventDeleteSchedule event,
+      HomePageState state,
+      ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    try {
+
+      final response = await eventRepository.deleteEvent(event.id);
+
+      if (response.code == 200){
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, tipe: "deleteSchedule");
+      } else{
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
+
+
+
+    } on EventErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    }
+
+  }
 
 }

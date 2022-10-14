@@ -2,6 +2,7 @@ import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
 import 'package:PregnancyApp/utils/web_socket_chat_channel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alice/alice.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
@@ -21,11 +22,15 @@ class SplashscreenPage extends StatefulWidget {
 
 class _SplashscreenPageState extends State<SplashscreenPage> {
   bool? skipOnboarding = false;
+  // final Alice _alice = Alice(
+  //     showNotification: true,
+  //     darkTheme: false);
 
   void getFirstInstall() async{
     bool? _skipOnboarding = await AppSharedPreference.getBool(AppSharedPreference.newInstall);
     setState(() {
       skipOnboarding = _skipOnboarding;
+      // _alice.showInspector();
     });
   }
 
