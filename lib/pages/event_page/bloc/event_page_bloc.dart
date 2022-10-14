@@ -243,26 +243,6 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
           ));
         }
         if (response.code == 200) {
-          var scheduledNotificationDateTime =
-              DateTime.now().millisecondsSinceEpoch - 120 * 1000;
-          var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-            'your other channel id',
-            'your other channel name',
-          );
-          var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-          NotificationDetails platformChannelSpecifics =
-              new NotificationDetails(
-                  android: androidPlatformChannelSpecifics,
-                  iOS: iOSPlatformChannelSpecifics);
-          final FlutterLocalNotificationsPlugin
-              flutterLocalNotificationsPlugin =
-              FlutterLocalNotificationsPlugin();
-          await flutterLocalNotificationsPlugin.schedule(
-              0,
-              state.scheduleName.value,
-              state.description.value,
-              fixDate,
-              platformChannelSpecifics);
 
           yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,
