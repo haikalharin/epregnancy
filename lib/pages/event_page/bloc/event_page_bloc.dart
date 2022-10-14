@@ -191,24 +191,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         final df = DateFormat('yyyy-MM-dd');
         var dateStart = df.format(state.dateStart ?? DateTime.now());
         var dateEnd = df.format(state.dateEnd ?? DateTime.now());
-
-        var hour = state.timeNotfication!.hour.toString().length == 1
-            ? "0${state.timeNotfication!.hour}"
-            : state.timeNotfication!.hour.toString();
-        var minute = state.timeNotfication!.minute.toString().length == 1
-            ? "0${state.timeNotfication!.hour}"
-            : state.timeNotfication!.minute.toString();
-
-        var hourToMinute = state.timeNotfication!.hour * 60;
-        int total = state.timeNotfication!.minute + hourToMinute;
-        String time = "${state.timeString.value}:00";
-        String fullDate = "$dateStart $time";
-        DateTime tempDate =
-        new DateFormat("yyyy-MM-dd hh:mm:ss").parse(fullDate);
-
-        DateTime fixDate = DateTime(tempDate.year, tempDate.month,
-            tempDate.day, tempDate.hour, tempDate.minute - total);
-
+        DateTime fixDate = DateTime.now();
 
         ResponseModel response = ResponseModel();
         if (state.consulType.value == StringConstant.consumeMedicine) {
@@ -226,6 +209,23 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
             notifications: state.listScheduleTime,
           ));
         } else {
+          var hour = state.timeNotfication!.hour.toString().length == 1
+              ? "0${state.timeNotfication!.hour}"
+              : state.timeNotfication!.hour.toString();
+          var minute = state.timeNotfication!.minute.toString().length == 1
+              ? "0${state.timeNotfication!.hour}"
+              : state.timeNotfication!.minute.toString();
+
+          var hourToMinute = state.timeNotfication!.hour * 60;
+          int total = state.timeNotfication!.minute + hourToMinute;
+          String time = "${state.timeString.value}:00";
+          String fullDate = "$dateStart $time";
+          DateTime tempDate =
+          new DateFormat("yyyy-MM-dd hh:mm:ss").parse(fullDate);
+
+           fixDate = DateTime(tempDate.year, tempDate.month,
+              tempDate.day, tempDate.hour, tempDate.minute - total);
+
 
           String remindBefore = "$hour:$minute:00";
           print('remind before : $remindBefore');
