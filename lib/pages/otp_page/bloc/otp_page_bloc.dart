@@ -43,6 +43,7 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
     try {
       UserModel? userModel = await AppSharedPreference.getUserRegister();
       OtpModel? otpModel = await AppSharedPreference.getOtp();
+      otpModel.otp = event.otp;
       if(Configurations.mode == StringConstant.prod) {
         bool isActive = false;
         ResponseModel response =
@@ -51,12 +52,11 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
 
         if (response.code == 200) {
 
-            await AppSharedPreference.setUser(response.data);
-            await AppSharedPreference.setString(
-                AppSharedPreference.token, userModel.token ?? '');
+            // await AppSharedPreference.setUser(response.data);
+            // await AppSharedPreference.setString(
+            //     AppSharedPreference.token, userModel.token ?? '');
             yield state.copyWith(
-                submitStatus: FormzStatus.submissionSuccess,
-                userInfo: response.data,);
+                submitStatus: FormzStatus.submissionSuccess);
         } else {
           yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
         }
