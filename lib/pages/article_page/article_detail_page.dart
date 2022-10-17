@@ -25,6 +25,7 @@ class ArticleDetailPage extends StatelessWidget {
         return Future.value(true);
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: NestedScrollView(
             headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
@@ -152,8 +153,19 @@ class ArticleDetailPage extends StatelessWidget {
                 ),
               ];
             },
-            body: ListBodyArticle(
-              longDesc: article!.longDescription ?? "",
+            body: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      child: ListBodyArticle(
+                        longDesc: article!.longDescription ?? "",
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             )),
       ),
     );

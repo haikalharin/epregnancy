@@ -199,27 +199,27 @@ class _LoginPageState extends State<LoginPage> {
                                     style: ElevatedButton.styleFrom(
                                         primary: EpregnancyColors.primer),
                                   )),
-                              SizedBox(height: 10),
-                              Container(
-                                height: 50,
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                child: ElevatedButton(
-                                    onPressed: () async {
-                                      // GAuthentication.signOut(context: context);
-                                      // GAuthentication.signInWithGoogle();
-                                      // alice.showInspector();
-                                      final GoogleSignIn _googleSignIn = new GoogleSignIn();
-
-                                      await _googleSignIn.signOut();
-                                      Injector.resolve<LoginBloc>()
-                                          .add(LoginWithGoogleSubmitted());
-                                    },
-                                    child: Text("Lanjut dengan Google"),
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
-                                        onPrimary: Colors.black)),
-                              ),
+                              // SizedBox(height: 10),
+                              // Container(
+                              //   height: 50,
+                              //   padding:
+                              //       const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              //   child: ElevatedButton(
+                              //       onPressed: () async {
+                              //         // GAuthentication.signOut(context: context);
+                              //         // GAuthentication.signInWithGoogle();
+                              //         // alice.showInspector();
+                              //         final GoogleSignIn _googleSignIn = new GoogleSignIn();
+                              //
+                              //         await _googleSignIn.signOut();
+                              //         Injector.resolve<LoginBloc>()
+                              //             .add(LoginWithGoogleSubmitted());
+                              //       },
+                              //       child: Text("Lanjut dengan Google"),
+                              //       style: ElevatedButton.styleFrom(
+                              //           primary: Colors.white,
+                              //           onPrimary: Colors.black)),
+                              // ),
                               SizedBox(height: 12),
                               _RegisterButton()
                               // _PasswordTextField(),

@@ -49,10 +49,6 @@ class ListBodyArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        // height: 125,
-        padding: EdgeInsets.fromLTRB(10, 20, 0, 10),
-        decoration: BoxDecoration(color: Colors.white),
-        child:  Html(data:longDesc),);
+    return Html(data:longDesc);
   }
 }

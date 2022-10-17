@@ -116,7 +116,9 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
   ) {
     List<NotificationModel>? listScheduleTime = [];
     listScheduleTime = state.listScheduleTime;
-    // listScheduleTime[event.index] = event.time;
+    NotificationModel newScheduleTime = NotificationModel(time: "${event.time}:00");
+    listScheduleTime.removeAt(event.index);
+    listScheduleTime.insert(event.index, newScheduleTime);
     return state.copyWith(listScheduleTime: listScheduleTime);
   }
 
