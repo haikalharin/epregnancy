@@ -8,10 +8,12 @@ class Configurations {
   static String _consumerKey = DefaultConfig.consumerKey;
   static String _consumerSecret = DefaultConfig.consumerSecret;
   static String _mode = DefaultConfig.mode;
+  static bool _isShowChucker = DefaultConfig.isShowChucker;
 
   Future<void> setConfigurationValues(Map<String, dynamic> value) async {
     _host = value['host'] ?? DefaultConfig.host;
     _mode = value['mode'] ?? DefaultConfig.mode;
+    _isShowChucker = value['isShowChucker'] ?? DefaultConfig.isShowChucker;
     _imageHost = value['image_host'] ?? DefaultConfig.imageHost;
     _httpClientType =
         value['http_client'] ?? DefaultConfig.httpClientType.toString();
@@ -24,6 +26,8 @@ class Configurations {
   static String get host => _host;
 
   static String get mode => _mode;
+
+  static bool get isShowChucker => _isShowChucker;
 
   static String get imageHost => _imageHost;
 

@@ -45,6 +45,7 @@ class ServiceUrl {
   static String schedule = 'schedule';
   static String listSchedule = '$schedule/list';
   static String saveSchedule = '$schedule/save';
+  static String deleteSchedule = '$schedule/delete';
 
   //game
   static String game = 'game';

@@ -1,11 +1,13 @@
 import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:quiver/async.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -24,10 +26,33 @@ class OtpPage extends StatefulWidget {
 
 class _OtpPageState extends State<OtpPage> {
   OtpFieldController otpController = OtpFieldController();
+  bool isResend = false;
+  int _start = 60;
+  int _current = 60;
+
+  void startTimer() {
+    CountdownTimer countDownTimer = new CountdownTimer(
+      new Duration(seconds: _start),
+      new Duration(seconds: 1),
+    );
+
+    var sub = countDownTimer.listen(null);
+    sub.onData((duration) {
+      setState(() {
+        _current = _start - duration.elapsed.inSeconds;
+      });
+    });
+
+    sub.onDone(() {
+      isResend = true;
+      sub.cancel();
+    });
+  }
 
   @override
   void initState() {
     Injector.resolve<SignupBloc>().add(SignupInitEvent());
+    startTimer();
     super.initState();
   }
 
@@ -45,7 +70,7 @@ class _OtpPageState extends State<OtpPage> {
             listener: (context, state) {
               if (state.submitStatus == FormzStatus.submissionFailure) {
                 const snackBar = SnackBar(
-                    content: Text("failed"), backgroundColor: Colors.red);
+                    content: Text("OTP Salah"), backgroundColor: Colors.red);
                 Scaffold.of(context).showSnackBar(snackBar);
               } else if (state.submitStatus == FormzStatus.submissionSuccess) {
                 Navigator.of(context)
@@ -130,6 +155,25 @@ class _OtpPageState extends State<OtpPage> {
                                   Injector.resolve<OtpPageBloc>()
                                       .add(OtpNumberChanged(pin));
                                 }),
+                            SizedBox(height: 20),
+                            isResend?Container(): Text("$_current detik"),
+                            SizedBox(height: 20),
+                            isResend
+                                ? InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        isResend = true;
+                                      });
+                                      Injector.resolve<SignupBloc>()
+                                          .add(const RequestOtp(true));
+                                      startTimer();
+                                    },
+                                    child: Text("kirim ulang OTP",style: TextStyle(
+                                      color: EpregnancyColors.primer)))
+                                : Text("kirim ulang OTP",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ))
                           ]),
                     ],
                   ),

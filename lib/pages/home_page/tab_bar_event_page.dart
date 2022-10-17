@@ -120,8 +120,8 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                             Injector.resolve<HomePageBloc>().add(
                                 EventFetchEvent(
                                     _tabController!.index == 0
-                                        ? StringConstant.typePublic
-                                        : StringConstant.typePersonal,
+                                        ? StringConstant.typePersonal
+                                        :StringConstant.typePublic ,
                                     dateTime));
                           },
                           child: Container(
@@ -153,8 +153,8 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                           var date = state.eventDate?.add(Duration(days: -1));
                           Injector.resolve<HomePageBloc>().add(EventFetchEvent(
                               _tabController!.index == 0
-                                  ? StringConstant.typePublic
-                                  : StringConstant.typePersonal,
+                                  ? StringConstant.typePersonal
+                                  : StringConstant.typePublic,
                               date ?? DateTime.now()));
                         },
                         child: Container(
@@ -174,8 +174,8 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                           var date = state.eventDate?.add(Duration(days: 1));
                           Injector.resolve<HomePageBloc>().add(EventFetchEvent(
                               _tabController!.index == 0
-                                  ? StringConstant.typePublic
-                                  : StringConstant.typePersonal,
+                                  ? StringConstant.typePersonal
+                                  : StringConstant.typePublic,
                               date ?? DateTime.now()));
                         },
                         child: Container(

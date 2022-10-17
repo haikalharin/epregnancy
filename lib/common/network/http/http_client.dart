@@ -5,11 +5,14 @@ import 'package:PregnancyApp/common/constants/app_constants.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/env.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alice/core/alice_http_extensions.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/user_example_model/user_example_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../main.dart';
+import '../../../utils/string_constans.dart';
 import '../../configurations/configurations.dart';
 import '../../remote/url/service_url.dart';
 import '../http_constants.dart';
@@ -20,7 +23,7 @@ class HttpClient {
   String? host = Configurations.host;
   Map<String, String>? header;
 
-   HttpClient() {
+  HttpClient() {
     _client = Client();
     // todo delete hardcoded token
     header = {
@@ -31,7 +34,7 @@ class HttpClient {
 
   Uri _getParsedUrl(String path, {Map<String, String>? queryParameters}) {
     String h = host!;
-    String _subHost = environment["sub_host"]+ "/";
+    String _subHost = environment["sub_host"] + "/";
     String finalPath = _subHost + path;
     if (h.contains("//")) {
       h = h.split("//")[1];
@@ -57,21 +60,41 @@ class HttpClient {
     // TODO DO NOT USE THIS STATIC TOKEN FOR PROD
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
-    final response = await _client
-        !.get(
-      _getParsedUrl(path, queryParameters: queryParameters),
-      headers: header,
-    )
-        .timeout(Duration(minutes: 2));
-
+    late Response response;
+    if  (Configurations.isShowChucker == true) {
+      response = await _client!
+          .get(
+            _getParsedUrl(path, queryParameters: queryParameters),
+            headers: header,
+          )
+          .timeout(Duration(minutes: 2))
+          .interceptWithAlice(alice);
+    } else {
+      response = await _client!
+          .get(
+            _getParsedUrl(path, queryParameters: queryParameters),
+            headers: header,
+          )
+          .timeout(Duration(minutes: 2));
+    }
     return HttpUtil.getResponse(response);
   }
 
   Future<Response?> downloadFile(String path) async {
-    final response = await _client!.get(
-      _getParsedUrl(path),
-      headers: header,
-    );
+    late Response response;
+    if  (Configurations.isShowChucker == true) {
+      response = await _client!
+          .get(
+            _getParsedUrl(path),
+            headers: header,
+          )
+          .interceptWithAlice(alice, body: path);
+    } else {
+      response = await _client!.get(
+        _getParsedUrl(path),
+        headers: header,
+      );
+    }
     return response.statusCode == 201 ? response : null;
   }
 
@@ -81,21 +104,68 @@ class HttpClient {
 
     debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
     debugPrint('>>>>>>> [HEADER] ${header.toString()}');
-    debugPrint('>>>>>>> [DATA] ${ json.encode(data).toString()}');
+    debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
 
     String? token = await getToken();
 
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
+    late Response response;
+    if  (Configurations.isShowChucker == true) {
+      response = await _client!
+          .post(
+        _getParsedUrl(path),
+        body: HttpUtil.encodeRequestBody(
+            json.encode(data), requestHeader![HttpConstants.contentType]!),
+        headers: requestHeader,
+      )
+          .interceptWithAlice(alice, body: data);
+    } else{
+      response = await _client!
+          .post(
+        _getParsedUrl(path),
+        body: HttpUtil.encodeRequestBody(
+            json.encode(data), requestHeader![HttpConstants.contentType]!),
+        headers: requestHeader,
+      );
+    }
 
-    final response = await _client!.post(
-      _getParsedUrl(path),
-      body: HttpUtil.encodeRequestBody(
-          json.encode(data), requestHeader![HttpConstants.contentType]!),
-      headers: requestHeader,
-    );
+    return HttpUtil.getResponse(response);
+  }
 
+  dynamic delete(String path, dynamic data,
+      {Map<String, String>? overrideHeader}) async {
+    final Map<String, String>? requestHeader = overrideHeader ?? header;
+
+    debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
+    debugPrint('>>>>>>> [HEADER] ${header.toString()}');
+    debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
+
+    String? token = await getToken();
+
+    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    // TODO REMOVE THIS JUST FOR DEV PURPOSE
+    // header![HttpHeaders.authorizationHeader] = AppConstants.token;
+    late Response response;
+    if  (Configurations.isShowChucker == true) {
+      response = await _client!
+          .delete(
+        _getParsedUrl(path),
+        body: HttpUtil.encodeRequestBody(
+            json.encode(data), requestHeader![HttpConstants.contentType]!),
+        headers: requestHeader,
+      )
+          .interceptWithAlice(alice, body: data);
+    }else{
+      response = await _client!
+          .delete(
+        _getParsedUrl(path),
+        body: HttpUtil.encodeRequestBody(
+            json.encode(data), requestHeader![HttpConstants.contentType]!),
+        headers: requestHeader,
+      );
+    }
     return HttpUtil.getResponse(response);
   }
 
@@ -110,13 +180,25 @@ class HttpClient {
     String? token = await getToken();
 
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
-
-    final response = await _client!.put(
-      _getParsedUrl(path),
-      body: HttpUtil.encodeRequestBody(
-          json.encode(data), requestHeader![HttpConstants.contentType]!),
-      headers: requestHeader,
-    );
+    late Response response;
+    if (Configurations.isShowChucker == true) {
+      response = await _client!
+          .put(
+        _getParsedUrl(path),
+        body: HttpUtil.encodeRequestBody(
+            json.encode(data), requestHeader![HttpConstants.contentType]!),
+        headers: requestHeader,
+      )
+          .interceptWithAlice(alice, body: data);
+    } else{
+      response = await _client!
+          .put(
+        _getParsedUrl(path),
+        body: HttpUtil.encodeRequestBody(
+            json.encode(data), requestHeader![HttpConstants.contentType]!),
+        headers: requestHeader,
+      );
+    }
 
     return HttpUtil.getResponse(response);
   }

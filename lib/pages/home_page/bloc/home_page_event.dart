@@ -63,4 +63,10 @@ class HomeEventDateChanged extends HomePageEvent {
   List<Object> get props => [];
 }
 
+class HomeEventDeleteSchedule extends HomePageEvent {
+  const HomeEventDeleteSchedule(this.id);
+
+  final String id;
+}
+
 

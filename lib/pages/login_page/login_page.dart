@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
+import '../../common/configurations/configurations.dart';
 import '../../common/services/auth_service.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
@@ -15,6 +17,7 @@ import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/string_constans.dart';
 import '../home_page/home_page.dart';
+import '../signup_page/bloc/signup_bloc.dart';
 import 'bloc/login_bloc.dart';
 
 const _horizontalPadding = 24.0;
@@ -58,30 +61,65 @@ class _LoginPageState extends State<LoginPage> {
             child: BlocListener<LoginBloc, LoginState>(
                 listener: (context, state) async {
                   if (state.submitStatus == FormzStatus.submissionFailure) {
-                    var snackBar = SnackBar(
-                        content:  RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            // Note: Styles for TextSpans must be explicitly defined.
-                            // Child text spans will inherit styles from parent
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.black,
+                    if (state.typeEvent == StringConstant.signUpGoogle) {
+                      var snackBar = SnackBar(
+                          content: Text(state.errorMessage != null
+                              ? state.errorMessage!
+                              : 'Gagal mendaftar'),
+                          backgroundColor: Colors.red);
+                      Scaffold.of(context).showSnackBar(snackBar);
+                    } else {
+                      var snackBar = SnackBar(
+                          content: RichText(
+                            textAlign: TextAlign.center,
+                            text: const TextSpan(
+                              // Note: Styles for TextSpans must be explicitly defined.
+                              // Child text spans will inherit styles from parent
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: "Maaf, ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text:
+                                        ' Tidak dapat masuk. Informasi login anda tidak sesuai'),
+                              ],
                             ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: "Maaf, ",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                              const TextSpan(text: ' Tidak dapat masuk. Informasi login anda tidak sesuai'),
-                            ],
                           ),
-                        ), backgroundColor: Colors.red);
-                    Scaffold.of(context).showSnackBar(snackBar);
+                          backgroundColor: Colors.red);
+                      Scaffold.of(context).showSnackBar(snackBar);
+                    }
                   } else if (state.submitStatus ==
                       FormzStatus.submissionSuccess) {
-                    if (state.typeEvent == StringConstant.requestOtp) {
-                      Navigator.of(context).pushNamed(RouteName.otpPage);
+                    if (state.typeEvent == StringConstant.signUpGoogle) {
+                      if (state.isExist == true) {
+                        if (state.isSurvey == true) {
+                          var snackBar = SnackBar(
+                              content: Text("Akun Telah Terdaftar"),
+                              backgroundColor: Colors.red);
+                          Scaffold.of(context).showSnackBar(snackBar);
+                        } else {
+                          Navigator.of(context).pushNamed(RouteName.surveyPage,
+                              arguments: false);
+                        }
+                      } else {
+                        if (Configurations.mode == StringConstant.prod &&
+                            state.type == 'toRequestOtp') {
+                          if (state.userId!.contains('@')) {
+                            Injector.resolve<LoginBloc>()
+                                .add(const LoginRequestOtp());
+                          } else {
+                            Injector.resolve<LoginBloc>()
+                                .add(const LoginRequestOtp());
+                          }
+                        } else {
+                          Navigator.of(context).pushNamed(RouteName.otpPage);
+                        }
+                      }
                     } else if (state.typeEvent == StringConstant.submitLogin) {
                       if (state.userModel?.isPatient == true) {
                         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -170,6 +208,10 @@ class _LoginPageState extends State<LoginPage> {
                                     onPressed: () async {
                                       // GAuthentication.signOut(context: context);
                                       // GAuthentication.signInWithGoogle();
+                                      // alice.showInspector();
+                                      final GoogleSignIn _googleSignIn = new GoogleSignIn();
+
+                                      await _googleSignIn.signOut();
                                       Injector.resolve<LoginBloc>()
                                           .add(LoginWithGoogleSubmitted());
                                     },
@@ -260,9 +302,7 @@ class _UsernameInput extends StatelessWidget {
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
             labelText: 'E-mail/Nomor handphone',
-            errorText: state.username.invalid
-                ? 'Silahkan isi username'
-                : null,
+            errorText: state.username.invalid ? 'Silahkan isi username' : null,
           ),
         );
       },
