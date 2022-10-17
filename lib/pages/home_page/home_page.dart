@@ -350,7 +350,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                   .iconUrl!),
                                                               width: 60.w,
                                                               height: 60.h,
-                                                              fit: BoxFit.cover,
+                                                              fit: BoxFit.fill,
                                                               imageErrorBuilder:
                                                                   (context,
                                                                       error,

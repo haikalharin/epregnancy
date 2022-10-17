@@ -47,11 +47,10 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
         bool isActive = false;
         ResponseModel response =
         await userRepository.verifyOtp(
-            otpModel);
+            OtpModel(otp: event.otp, type: otpModel.type,value: otpModel.value));
 
         if (response.code == 200) {
 
-            await AppSharedPreference.setUser(response.data);
             await AppSharedPreference.setString(
                 AppSharedPreference.token, userModel.token ?? '');
             yield state.copyWith(
