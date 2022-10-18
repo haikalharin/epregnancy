@@ -31,6 +31,7 @@ abstract class ConsultationModel with _$ConsultationModel {
     @JsonKey(name: 'image_url',includeIfNull: true) String? imageUrl,
     @JsonKey(name: 'image_base64',includeIfNull: true) String? imageBase64,
     @JsonKey(name: 'is_delete',includeIfNull: true) bool? isDelete,
+    @JsonKey(name: 'is_liked',includeIfNull: true) bool? isLiked,
     @JsonKey(name: 'created_by',includeIfNull: true) String? createdBy,
     @JsonKey(name: 'created_from',includeIfNull: true) String? createdFrom,
     @JsonKey(name: 'created_date',includeIfNull: true) String? createdDate,

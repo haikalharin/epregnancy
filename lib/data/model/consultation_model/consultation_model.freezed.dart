@@ -44,6 +44,8 @@ mixin _$ConsultationModel {
   String? get imageBase64 => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_delete', includeIfNull: true)
   bool? get isDelete => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_liked', includeIfNull: true)
+  bool? get isLiked => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_by', includeIfNull: true)
   String? get createdBy => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_from', includeIfNull: true)
@@ -93,6 +95,8 @@ abstract class $ConsultationModelCopyWith<$Res> {
           String? imageBase64,
       @JsonKey(name: 'is_delete', includeIfNull: true)
           bool? isDelete,
+      @JsonKey(name: 'is_liked', includeIfNull: true)
+          bool? isLiked,
       @JsonKey(name: 'created_by', includeIfNull: true)
           String? createdBy,
       @JsonKey(name: 'created_from', includeIfNull: true)
@@ -132,6 +136,7 @@ class _$ConsultationModelCopyWithImpl<$Res>
     Object? imageUrl = freezed,
     Object? imageBase64 = freezed,
     Object? isDelete = freezed,
+    Object? isLiked = freezed,
     Object? createdBy = freezed,
     Object? createdFrom = freezed,
     Object? createdDate = freezed,
@@ -187,6 +192,10 @@ class _$ConsultationModelCopyWithImpl<$Res>
       isDelete: isDelete == freezed
           ? _value.isDelete
           : isDelete // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isLiked: isLiked == freezed
+          ? _value.isLiked
+          : isLiked // ignore: cast_nullable_to_non_nullable
               as bool?,
       createdBy: createdBy == freezed
           ? _value.createdBy
@@ -259,6 +268,8 @@ abstract class _$$_ConsultationModelCopyWith<$Res>
           String? imageBase64,
       @JsonKey(name: 'is_delete', includeIfNull: true)
           bool? isDelete,
+      @JsonKey(name: 'is_liked', includeIfNull: true)
+          bool? isLiked,
       @JsonKey(name: 'created_by', includeIfNull: true)
           String? createdBy,
       @JsonKey(name: 'created_from', includeIfNull: true)
@@ -301,6 +312,7 @@ class __$$_ConsultationModelCopyWithImpl<$Res>
     Object? imageUrl = freezed,
     Object? imageBase64 = freezed,
     Object? isDelete = freezed,
+    Object? isLiked = freezed,
     Object? createdBy = freezed,
     Object? createdFrom = freezed,
     Object? createdDate = freezed,
@@ -357,6 +369,10 @@ class __$$_ConsultationModelCopyWithImpl<$Res>
           ? _value.isDelete
           : isDelete // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isLiked: isLiked == freezed
+          ? _value.isLiked
+          : isLiked // ignore: cast_nullable_to_non_nullable
+              as bool?,
       createdBy: createdBy == freezed
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -401,6 +417,7 @@ class _$_ConsultationModel implements _ConsultationModel {
       @JsonKey(name: 'image_url', includeIfNull: true) this.imageUrl,
       @JsonKey(name: 'image_base64', includeIfNull: true) this.imageBase64,
       @JsonKey(name: 'is_delete', includeIfNull: true) this.isDelete,
+      @JsonKey(name: 'is_liked', includeIfNull: true) this.isLiked,
       @JsonKey(name: 'created_by', includeIfNull: true) this.createdBy,
       @JsonKey(name: 'created_from', includeIfNull: true) this.createdFrom,
       @JsonKey(name: 'created_date', includeIfNull: true) this.createdDate,
@@ -464,6 +481,9 @@ class _$_ConsultationModel implements _ConsultationModel {
   @JsonKey(name: 'is_delete', includeIfNull: true)
   final bool? isDelete;
   @override
+  @JsonKey(name: 'is_liked', includeIfNull: true)
+  final bool? isLiked;
+  @override
   @JsonKey(name: 'created_by', includeIfNull: true)
   final String? createdBy;
   @override
@@ -484,7 +504,7 @@ class _$_ConsultationModel implements _ConsultationModel {
 
   @override
   String toString() {
-    return 'ConsultationModel(id: $id, userId: $userId, message: $message, status: $status, user: $user, comments: $comments, likes: $likes, commentsCount: $commentsCount, likesCount: $likesCount, imageUrl: $imageUrl, imageBase64: $imageBase64, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
+    return 'ConsultationModel(id: $id, userId: $userId, message: $message, status: $status, user: $user, comments: $comments, likes: $likes, commentsCount: $commentsCount, likesCount: $likesCount, imageUrl: $imageUrl, imageBase64: $imageBase64, isDelete: $isDelete, isLiked: $isLiked, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
   }
 
   @override
@@ -507,6 +527,7 @@ class _$_ConsultationModel implements _ConsultationModel {
             const DeepCollectionEquality()
                 .equals(other.imageBase64, imageBase64) &&
             const DeepCollectionEquality().equals(other.isDelete, isDelete) &&
+            const DeepCollectionEquality().equals(other.isLiked, isLiked) &&
             const DeepCollectionEquality().equals(other.createdBy, createdBy) &&
             const DeepCollectionEquality()
                 .equals(other.createdFrom, createdFrom) &&
@@ -522,26 +543,28 @@ class _$_ConsultationModel implements _ConsultationModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(userId),
-      const DeepCollectionEquality().hash(message),
-      const DeepCollectionEquality().hash(status),
-      const DeepCollectionEquality().hash(user),
-      const DeepCollectionEquality().hash(_comments),
-      const DeepCollectionEquality().hash(_likes),
-      const DeepCollectionEquality().hash(commentsCount),
-      const DeepCollectionEquality().hash(likesCount),
-      const DeepCollectionEquality().hash(imageUrl),
-      const DeepCollectionEquality().hash(imageBase64),
-      const DeepCollectionEquality().hash(isDelete),
-      const DeepCollectionEquality().hash(createdBy),
-      const DeepCollectionEquality().hash(createdFrom),
-      const DeepCollectionEquality().hash(createdDate),
-      const DeepCollectionEquality().hash(modifiedBy),
-      const DeepCollectionEquality().hash(modifiedFrom),
-      const DeepCollectionEquality().hash(modifiedDate));
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(userId),
+        const DeepCollectionEquality().hash(message),
+        const DeepCollectionEquality().hash(status),
+        const DeepCollectionEquality().hash(user),
+        const DeepCollectionEquality().hash(_comments),
+        const DeepCollectionEquality().hash(_likes),
+        const DeepCollectionEquality().hash(commentsCount),
+        const DeepCollectionEquality().hash(likesCount),
+        const DeepCollectionEquality().hash(imageUrl),
+        const DeepCollectionEquality().hash(imageBase64),
+        const DeepCollectionEquality().hash(isDelete),
+        const DeepCollectionEquality().hash(isLiked),
+        const DeepCollectionEquality().hash(createdBy),
+        const DeepCollectionEquality().hash(createdFrom),
+        const DeepCollectionEquality().hash(createdDate),
+        const DeepCollectionEquality().hash(modifiedBy),
+        const DeepCollectionEquality().hash(modifiedFrom),
+        const DeepCollectionEquality().hash(modifiedDate)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -581,6 +604,8 @@ abstract class _ConsultationModel implements ConsultationModel {
           final String? imageBase64,
       @JsonKey(name: 'is_delete', includeIfNull: true)
           final bool? isDelete,
+      @JsonKey(name: 'is_liked', includeIfNull: true)
+          final bool? isLiked,
       @JsonKey(name: 'created_by', includeIfNull: true)
           final String? createdBy,
       @JsonKey(name: 'created_from', includeIfNull: true)
@@ -633,6 +658,9 @@ abstract class _ConsultationModel implements ConsultationModel {
   @override
   @JsonKey(name: 'is_delete', includeIfNull: true)
   bool? get isDelete => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'is_liked', includeIfNull: true)
+  bool? get isLiked => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'created_by', includeIfNull: true)
   String? get createdBy => throw _privateConstructorUsedError;

@@ -46,7 +46,7 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                   ListView.builder(
                     itemBuilder: (context, index) {
                       bool isChange = false;
-                      bool isLike = false;
+                      bool isLike = widget.listConsul[index].isLiked ?? false;
                       bool isLocal = false;
                       String likesCount = "";
                       var like = 0;
@@ -60,13 +60,11 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                       }
 
                       var f = NumberFormat("###.###", "en_US");
-                      var commentsCount =
-                          f.format(widget.listConsul[index].commentsCount);
+                      var commentsCount = f.format(widget.listConsul[index].commentsCount);
                       if (!isLocal) {
                         likesCount =
                             f.format(widget.listConsul[index].likesCount);
                       }
-
                       return Container(
                         padding: EdgeInsets.only(top: 10, bottom: 10),
                         decoration: BoxDecoration(
@@ -85,8 +83,7 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    margin:
-                                        EdgeInsets.only(left: 20, right: 20),
+                                    margin: EdgeInsets.only(left: 20, right: 20),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -101,12 +98,10 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              widget.listConsul[index].user
-                                                          ?.imageUrl !=
-                                                      null
+                                              // widget image profile komentar
+                                              widget.listConsul[index].user?.imageUrl != null
                                                   ? Container(
                                                       // width: 62,
-
                                                       child: ClipRRect(
                                                         borderRadius:
                                                             BorderRadius
@@ -148,6 +143,7 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                               SizedBox(
                                                 width: 20,
                                               ),
+
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -155,12 +151,8 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                                   Container(
                                                       margin: EdgeInsets.only(
                                                           bottom: 10),
-                                                      child:  Text(
-                                                        widget
-                                                            .listConsul[
-                                                        index]
-                                                            .user
-                                                            ?.name??"",
+                                                      child: Text(
+                                                        widget.listConsul[index].user?.name ?? "",
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             fontWeight:
@@ -367,6 +359,7 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                                     ),
                                                   ),
                                                 ),
+                                          // komentar
                                           Container(
                                             width: 230,
                                             margin: EdgeInsets.all(4),
@@ -393,90 +386,104 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                               onChanged: (value) {},
                                             ),
                                           ),
-                                          Container(
-                                            // width: 62,
 
-                                            child: InkWell(
-                                              onTap: () async {
-                                                // if (isLike == false) {
-                                                //   like = widget.listConsul[index]
-                                                //       .likesCount! +
-                                                //       1;
-                                                //   likesCount = f.format(like);
-                                                //   isLike = true;
-                                                //   isLocal = true;
-                                                //   await onLike();
-                                                //   isChange = true;
-                                                //   // Injector.resolve<ConsultationPageBloc>()
-                                                //   //     .add( ConsultationLikeSubmitted(widget.listConsul[index].id??"", true));
-                                                //
-                                                // } else {
-                                                //   like = like - 1;
-                                                //   likesCount = f.format(like);
-                                                //   isLike = false;
-                                                //   isLocal = true;
-                                                //   await onLike();
-                                                //   isChange = true;
-                                                //   // Injector.resolve<ConsultationPageBloc>()
-                                                //   //     .add( ConsultationLikeSubmitted(widget.listConsul[index].id??"", false));
-                                                //
-                                                // }
-                                              },
-                                              child: StreamBuilder<bool>(
-                                                  stream: widget
-                                                      .psLikesCount.stream
-                                                      .cast(),
-                                                  builder: (context, snapshot) {
-                                                    if (isChange == true) {
-                                                      if (snapshot.data ==
-                                                          true) {
-                                                        Injector.resolve<
-                                                                ConsultationPageBloc>()
-                                                            .add(ConsultationLikeSubmitted(
-                                                                widget
-                                                                        .listConsul[
-                                                                            index]
-                                                                        .id ??
-                                                                    "",
-                                                                true));
-                                                        isChange = false;
-                                                      } else {
-                                                        Injector.resolve<
-                                                                ConsultationPageBloc>()
-                                                            .add(ConsultationLikeSubmitted(
-                                                                widget
-                                                                        .listConsul[
-                                                                            index]
-                                                                        .id ??
-                                                                    "",
-                                                                false));
-                                                        isChange = false;
-                                                      }
-                                                    }
-                                                    return Container(
-                                                      margin: EdgeInsets.only(
-                                                          right: 10),
-                                                      child: isLike
-                                                          ? SvgPicture.asset(
-                                                              'assets/ic_like_fill.svg',
-                                                              fit: BoxFit
-                                                                  .fitHeight,
-                                                              // height: 200,
-                                                              // height: 60,
-                                                              // width: 60,
-                                                            )
-                                                          : SvgPicture.asset(
-                                                              'assets/like_logo.svg',
-                                                              fit: BoxFit
-                                                                  .fitHeight,
-                                                              // height: 200,
-                                                              // height: 60,
-                                                              // width: 60,
-                                                            ),
-                                                    );
-                                                  }),
-                                            ),
-                                          ),
+                                          // like widget
+                                          // Container(
+                                          //   // width: 62,
+                                          //
+                                          //   child: InkWell(
+                                          //     onTap: () async {
+                                          //       if (isLike == false) {
+                                          //         like = widget.listConsul[index]
+                                          //             .likesCount! +
+                                          //             1;
+                                          //         likesCount = f.format(like);
+                                          //         setState(() {
+                                          //           isLike = true;
+                                          //         });
+                                          //         isLocal = true;
+                                          //         await onLike();
+                                          //         isChange = true;
+                                          //         // Injector.resolve<ConsultationPageBloc>()
+                                          //         //     .add( ConsultationLikeSubmitted(widget.listConsul[index].id??"", true));
+                                          //
+                                          //       } else {
+                                          //         like = like - 1;
+                                          //         likesCount = f.format(like);
+                                          //         isLike = false;
+                                          //         isLocal = true;
+                                          //         await onLike();
+                                          //         isChange = true;
+                                          //         // Injector.resolve<ConsultationPageBloc>()
+                                          //         //     .add( ConsultationLikeSubmitted(widget.listConsul[index].id??"", false));
+                                          //
+                                          //       }
+                                          //     },
+                                          //     child: StreamBuilder<bool>(
+                                          //         stream: widget
+                                          //             .psLikesCount.stream
+                                          //             .cast(),
+                                          //         builder: (context, snapshot) {
+                                          //           if (isChange == true) {
+                                          //             if (snapshot.data == true) {
+                                          //               Injector.resolve<ConsultationPageBloc>()
+                                          //                   .add(ConsultationLikeSubmitted(widget.listConsul[index].id ?? "", true));
+                                          //               isChange = false;
+                                          //             } else {
+                                          //               Injector.resolve<
+                                          //                       ConsultationPageBloc>()
+                                          //                   .add(ConsultationLikeSubmitted(
+                                          //                       widget
+                                          //                               .listConsul[
+                                          //                                   index]
+                                          //                               .id ??
+                                          //                           "",
+                                          //                       false));
+                                          //               isChange = false;
+                                          //             }
+                                          //           }
+                                          //           return Container(
+                                          //             margin: EdgeInsets.only(
+                                          //                 right: 10),
+                                          //             child: isLike
+                                          //                 ? SvgPicture.asset(
+                                          //                     'assets/ic_like_fill.svg',
+                                          //                     fit: BoxFit
+                                          //                         .fitHeight,
+                                          //                     // height: 200,
+                                          //                     // height: 60,
+                                          //                     // width: 60,
+                                          //                   )
+                                          //                 : SvgPicture.asset(
+                                          //                     'assets/like_logo.svg',
+                                          //                     fit: BoxFit
+                                          //                         .fitHeight,
+                                          //                     // height: 200,
+                                          //                     // height: 60,
+                                          //                     // width: 60,
+                                          //                   ),
+                                          //           );
+                                          //         }),
+                                          //   ),
+                                          // ),
+                                          Container(
+                                            child: isLike ? SvgPicture.asset(
+                                                          'assets/ic_like_fill.svg',
+                                                          fit: BoxFit
+                                                              .fitHeight,
+                                                          // height: 200,
+                                                          // height: 60,
+                                                          // width: 60,
+                                                        )
+                                                      : SvgPicture.asset(
+                                                          'assets/like_logo.svg',
+                                                          fit: BoxFit
+                                                              .fitHeight,
+                                                          // height: 200,
+                                                          // height: 60,
+                                                          // width: 60,
+                                                        ),
+                                          )
                                         ],
                                       ));
                                     },

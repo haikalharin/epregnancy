@@ -43,9 +43,6 @@ class HttpClient {
     if (h.contains("/")) {
       h = h.replaceAll("/", "");
     }
-    print('host : $h');
-    print('subhost : $_subHost');
-
     // return Uri.http(h, path, queryParameters);
     return Uri.https(h, finalPath, queryParameters);
   }
