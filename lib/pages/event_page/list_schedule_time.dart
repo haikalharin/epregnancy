@@ -11,11 +11,16 @@ import '../../common/injector/injector.dart';
 import '../../utils/epragnancy_color.dart';
 import 'bloc/event_page_bloc.dart';
 
-class ListScheduleTime extends StatelessWidget {
+class ListScheduleTime extends StatefulWidget {
   List<NotificationModel>? listScheduleTime = [];
 
   ListScheduleTime({this.listScheduleTime});
 
+  @override
+  State<ListScheduleTime> createState() => _ListScheduleTimeState();
+}
+
+class _ListScheduleTimeState extends State<ListScheduleTime> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EventPageBloc, EventPageState>(
@@ -24,7 +29,7 @@ class ListScheduleTime extends StatelessWidget {
             height: 25,
             margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
             decoration: BoxDecoration(color: Colors.white),
-            child: listScheduleTime!.isEmpty
+            child: state.listScheduleTime.isEmpty
                 ? Stack(children: [
               Container(margin: EdgeInsets.only(), child: Container())
             ])
@@ -33,7 +38,7 @@ class ListScheduleTime extends StatelessWidget {
                 ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    String s = listScheduleTime![index].time??'';
+                    String s = state.listScheduleTime[index].time??'';
                     TimeOfDay _time = TimeOfDay(hour: int.parse(s.split(
                         ":")[0]),
                         minute: int.parse(s.split(":")[1]));
@@ -70,7 +75,7 @@ class ListScheduleTime extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  listScheduleTime![index].time??'',
+                                  state.listScheduleTime[index].time??'',
                                   style: TextStyle(
                                       color: EpregnancyColors.white,
                                       fontSize: 12),
@@ -90,7 +95,7 @@ class ListScheduleTime extends StatelessWidget {
                       ],
                     );
                   },
-                  itemCount: listScheduleTime!.length,
+                  itemCount: state.listScheduleTime.length,
                 ),
               ],
             ));
