@@ -330,7 +330,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
           });
           Toast.show("$toName Telah Merespon Konsultasi Anda, Silahkan Jelaskan Kondisi Anda Lebih Lanjut", gravity: Toast.center);
         } else if (socketResponse['action'] == 'end-chat') {
-          Toast.show("$toName Konsultasi anda telah seleasi, Terima Kasih!", gravity: Toast.center);
+          Toast.show("$toName Konsultasi anda telah selesai, Terima Kasih!", gravity: Toast.center);
           // Navigator.pop(context, "end");
           setState(() {
             chatHasEnded = true;
