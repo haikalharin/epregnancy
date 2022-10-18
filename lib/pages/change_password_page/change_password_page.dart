@@ -206,6 +206,7 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                                 Injector.resolve<ChangePasswordBloc>()
                                     .add(ChangeConfirmNewPasswordChanged(value));
                               },
+                              enabled: state.newPassword.valid,
                               obscureText: _isHiddenConfirmNewPassword,
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(color: Colors.grey[500]),

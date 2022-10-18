@@ -43,12 +43,11 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
     try {
       UserModel? userModel = await AppSharedPreference.getUserRegister();
       OtpModel? otpModel = await AppSharedPreference.getOtp();
-      otpModel.otp = event.otp;
       if(Configurations.mode == StringConstant.prod) {
         bool isActive = false;
         ResponseModel response =
         await userRepository.verifyOtp(
-            otpModel);
+            OtpModel(otp: event.otp, type: otpModel.type,value: otpModel.value));
 
         if (response.code == 200) {
 
