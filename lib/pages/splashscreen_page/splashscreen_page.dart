@@ -32,6 +32,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
       skipOnboarding = _skipOnboarding;
       // _alice.showInspector();
     });
+    print('skip onboarding : $skipOnboarding');
   }
 
   @override

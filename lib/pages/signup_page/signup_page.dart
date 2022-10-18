@@ -140,6 +140,14 @@ class _SignUpPageState extends State<SignUpPage> {
                                       SizedBox(height: 20),
                                       IntlPhoneField(
                                         controller: _controllerPhone,
+                                        validator: (_val){
+                                          // if(_val?.completeNumber[0] != "8"){
+                                          //   print("_val : ${_val?.completeNumber}");
+                                          //   return "Format Nomor Salah";
+                                          // } else {
+                                          //   return null;
+                                          // }
+                                        },
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp(RegexConstants

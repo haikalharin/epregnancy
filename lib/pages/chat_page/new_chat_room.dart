@@ -377,7 +377,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
             ],
           ),
           actions: [
-            chatHasEnded ? Container(): Container(
+            chatHasEnded || isPendingChat == true ? Container(): Container(
               margin: EdgeInsets.only(right: 10, top: 10.h, bottom: 10.h),
               child: ElevatedButton(
                   style: ButtonStyle(
