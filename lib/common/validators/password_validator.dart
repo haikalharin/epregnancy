@@ -15,10 +15,16 @@ class PasswordValidator extends FormzInput<String, PasswordValidationError> {
       return PasswordValidationError.empty;
     }
 
-    if (!RegExp(RegexConstants.validPasswordlRegex).hasMatch(value)) {
+    if (RegExp(RegexConstants.validPasswordlRegex).hasMatch(value)) {
+      if (!RegExp(RegexConstants.validPasswordSameWordRegex).hasMatch(value)) {
+        return null;
+      } else{
+        return PasswordValidationError.invalid;
+      }
+    }else{
       return PasswordValidationError.invalid;
     }
-    return null;
+
   }
 
   final String invalidPassword = "Password harus 8 digit";

@@ -15,6 +15,7 @@ class RegexConstants {
       r' '; //Phone number should be in range 3 to 15 chars
 
   static const String validPasswordlRegex =r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,128}$';
+  static const String validPasswordSameWordRegex =r'([A-Za-z0-9?=.*?[!@#\$&*~])\1{2,}';
   static const String validEmailRegex =
       r'^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'; // I got Regex pattern from this https://stackoverflow.com/a/50663835
 

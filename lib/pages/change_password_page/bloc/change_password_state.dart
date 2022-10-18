@@ -5,7 +5,7 @@ class ChangePasswordState with FormzMixin {
   final PasswordValidator currentPassword;
   final PasswordValidator newPassword;
   final ConfirmPasswordValidator confirmPassword;
-  final FormzStatus submitStatus;
+  final FormzStatus? submitStatus;
   final String? errorMessage;
   final String? type;
 
@@ -27,7 +27,7 @@ class ChangePasswordState with FormzMixin {
       String? errorMessage,
       String? type}) {
     return ChangePasswordState(
-        submitStatus: submitStatus ?? this.submitStatus,
+        submitStatus: submitStatus,
         currentPassword: currentPassword ?? this.currentPassword,
         newPassword: newPassword ?? this.newPassword,
         confirmPassword: confirmPassword ?? this.confirmPassword,

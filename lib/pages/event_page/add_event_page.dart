@@ -713,7 +713,7 @@ class _ScheduleNameInput extends StatelessWidget {
                             ))
                     : Icon(Icons.add),
             hintText: 'Nama Jadwal',
-            errorText: state.description.invalid ? 'Tidak boleh kososng' : null,
+            errorText: state.scheduleName.invalid ? 'Tidak boleh kososng' : null,
           ),
         );
       },
@@ -780,6 +780,7 @@ class _AddDateStartInput extends StatelessWidget {
           onTap: () async {
             var dateTime = await DatePickerUtils.getDate(
                     context, state.dateStart ?? DateTime.now(),
+                    fieldLabelText: "Date",
                     endDate: state.dateEnd) ??
                 DateTime.now();
             Injector.resolve<EventPageBloc>()

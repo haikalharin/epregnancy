@@ -5,7 +5,7 @@ import '../main.dart';
 
 class DatePickerUtils {
   static Future<DateTime?> getDate(BuildContext context, DateTime dateTime,
-      {DateTime? firstDate, DateTime? endDate}) {
+      {DateTime? firstDate, DateTime? endDate, String? fieldLabelText }) {
     return showDatePicker(
       context: context,
       initialEntryMode: DatePickerEntryMode.calendar,
@@ -14,7 +14,7 @@ class DatePickerUtils {
       lastDate: endDate ?? DateTime(2100),
       errorFormatText: 'Enter valid date',
       errorInvalidText: 'Enter date in valid range',
-      fieldLabelText: 'Date of Birth',
+      fieldLabelText: fieldLabelText ?? 'Date of Birth',
       fieldHintText: 'Month/Date/Year',
       builder: (BuildContext? context, Widget? child) {
         return Theme(

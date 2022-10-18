@@ -97,7 +97,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Ganti Kata Sandi",
+                              "Lupa Kata Sandi ?",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Colors.black,
@@ -107,7 +107,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                             ),
                             SizedBox(height: 10),
                             const Text(
-                              "Kata Sandi harus terdiri dari angka, huruf Besar dan kecil, dan karakter spesial",
+                              "Silahkan isi email untuk mendapatkan tautan verifikasi dan masukan OTP",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   color: Colors.black,
