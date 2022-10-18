@@ -73,7 +73,7 @@ class ConsultationPageBloc
     ConsultationFetchEvent event,
     ConsultationPageState state,
   ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, listConsultation: []);
     UserModel userModel = await AppSharedPreference.getUser();
     try {
 

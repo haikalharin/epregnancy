@@ -24,11 +24,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../data/model/chat_model/chat_pending_send_request.dart';
+import '../../data/model/hospital_model/hospital_model.dart';
+import '../../data/model/user_info/user_info.dart';
 import '../../env.dart';
 import '../../utils/basic_loading_dialog.dart';
 import '../../utils/function_utils.dart';
+import '../location_select_page/bloc/hospital_bloc.dart';
+import '../nakes_page/bloc/chat_pending_bloc.dart';
 import 'bloc/chat_bloc/chat_bloc.dart';
 
 class NewChatRoom extends StatefulWidget {
@@ -59,12 +64,16 @@ class _NewChatRoomState extends State<NewChatRoom> {
   String? imagePath;
   String? imageBase64;
 
+  String? myImageProfile;
+
   bool mine = true;
   bool showEmoji = false;
   bool isPendingChat = false;
   String? toName;
   String? toId;
   late WebSocket _webSocket;
+  String message = '';
+  bool chatHasEnded = false;
 
   List<ChatMessageEntity>? chatMessageList = [];
 
@@ -213,6 +222,25 @@ class _NewChatRoomState extends State<NewChatRoom> {
       // }
     }
   }
+  HospitalModel? _hospitalModel;
+  void getHospitalFromLocal() async {
+    HospitalModel _hospital = await AppSharedPreference.getHospital();
+    if (_hospital != null && mounted) {
+      setState(() {
+        _hospitalModel = _hospital;
+      });
+    }
+  }
+
+  UserModel? userModel;
+  void getUserModel() async {
+    UserModel _userInfo = await AppSharedPreference.getUser();
+    if (_userInfo != null && mounted) {
+      setState(() {
+        userModel = _userInfo;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -221,8 +249,16 @@ class _NewChatRoomState extends State<NewChatRoom> {
       toName = widget.toName;
       toId = widget.toId;
       isPendingChat = widget.pendingChat ?? false;
+      chatMessageList?.forEach((element) {
+        if(element.mine == true){
+          myImageProfile = element.profileImage;
+          print('my image profile : $myImageProfile');
+        }
+      });
     });
     _initWebSocket();
+    getHospitalFromLocal();
+    getUserModel();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _scrollDown();
     });
@@ -237,6 +273,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   }
 
   void _scrollDown() {
+    print('scrol to bottom');
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: const Duration(seconds: 1),
@@ -254,8 +291,12 @@ class _NewChatRoomState extends State<NewChatRoom> {
       print('websocket ready state: ' + _webSocket.readyState.toString());
 
       _webSocket.listen((d) {
-        // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-        // _scrollDown();
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(seconds: 1),
+          curve: Curves.fastOutSlowIn,
+        );
+
         Map<String, dynamic> socketResponse = jsonDecode(d);
         print('action websocket : ${socketResponse['action']}');
         log('websocket payload mentah : $d');
@@ -273,11 +314,12 @@ class _NewChatRoomState extends State<NewChatRoom> {
                     dateTime: socketResponse['data']['created_date'],
                     mine: socketResponse['data']['from_id'] == widget.fromId ? true : false,
                     imageUrl: socketResponse['data']['image_url'],
-                    profileImage: socketResponse['data']['from_id'] == widget.fromId ? socketResponse['data']['from']['image_url'] : socketResponse['data']['to']['image_url'],
+                    profileImage: socketResponse['data']['from_id'] == widget.fromId ? socketResponse['data']['to']['image_url'] : socketResponse['data']['from']['image_url'],
                   )
               );
               isPendingChat = false;
               _scrollDown();
+              _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
             });
           }
         } else if (isPendingChat == true && socketResponse['action'] == 'new-chat') {
@@ -288,8 +330,11 @@ class _NewChatRoomState extends State<NewChatRoom> {
           });
           Toast.show("$toName Telah Merespon Konsultasi Anda, Silahkan Jelaskan Kondisi Anda Lebih Lanjut", gravity: Toast.center);
         } else if (socketResponse['action'] == 'end-chat') {
-          Toast.show("$toName Konsultasi anda telah seleasi, Terima Kasih!", gravity: Toast.center);
-          Navigator.pop(context, "end");
+          Toast.show("$toName Konsultasi anda telah selesai, Terima Kasih!", gravity: Toast.center);
+          // Navigator.pop(context, "end");
+          setState(() {
+            chatHasEnded = true;
+          });
         }
         // print('ispending chat : $isPendingChat');
         // print('toId : $toId');
@@ -332,8 +377,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
             ],
           ),
           actions: [
-            if(widget.isNakes!)
-            Container(
+            chatHasEnded || isPendingChat == true ? Container(): Container(
               margin: EdgeInsets.only(right: 10, top: 10.h, bottom: 10.h),
               child: ElevatedButton(
                   style: ButtonStyle(
@@ -347,7 +391,17 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                   color: EpregnancyColors.blueDark)))),
                   onPressed: () {
                     basicLoadinDialog(context);
-                    Injector.resolve<ChatBloc>()..add(EndChatEvent(toId));
+                    if(widget.isNakes!){
+                      Injector.resolve<ChatBloc>().add(EndChatEvent(toId));
+                      // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+                    } else {
+                      Injector.resolve<ChatBloc>().add(EndChatEvent(toId));
+                      // Navigator.pop(context, 'endchat');
+                    }
+
+                    Future.delayed(Duration(seconds: 1), (){
+                      Navigator.pop(context);
+                    });
                   },
                   child: Center(
                     child: Text(
@@ -370,11 +424,22 @@ class _NewChatRoomState extends State<NewChatRoom> {
         ),
         body: BlocListener<ChatBloc, ChatState>(
           listener: (context, state) {
+            print('state chat : ${state.type}');
             if(state.type == 'end-chat-success'){
-              Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-              Navigator.pop(context);
+              setState(() {
+                chatHasEnded = true;
+              });
+              // if(widget.isNakes!){
+              //   // Navigator.of(context).pushReplacementNamed(
+              //   //     RouteName.dashboardNakesPage,
+              //   //     arguments: {'name': userModel?.name, 'hospital_id': _hospitalModel?.id}
+              //   // );
+              //   Navigator.pop(context, "endchat");
+              // } else {
+              //   Navigator.pop(context, "endchat");
+              // }
             } else if (state.type == 'end-chat-failed'){
-              Navigator.pop(context);
+              // Navigator.pop(context);
               Toast.show('Terjadi Kesalahan Saat Mengakhiri sesi');
             }
           },
@@ -474,14 +539,17 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                    margin: EdgeInsets.only(top: 20.h),
-                                    height: 20.h,
-                                    width: 20.w,
-                                    decoration: BoxDecoration(shape: BoxShape.circle),
-                                    child: chatMessageList![index].profileImage != null ? CircleAvatar(
-                                      backgroundImage: NetworkImage(chatMessageList![index].profileImage!, scale: 1.0),
-                                    ) : Image.asset('assets/dummies/dummy_avatar.png')
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                      margin: EdgeInsets.only(top: 20.h),
+                                      height: 20.h,
+                                      width: 20.w,
+                                      decoration: BoxDecoration(shape: BoxShape.circle),
+                                      child: chatMessageList![index].profileImage != null ? CircleAvatar(
+                                        backgroundImage: NetworkImage(chatMessageList![index].profileImage!, scale: 1.0),
+                                      ) : Image.asset('assets/dummies/dummy_avatar.png')
+                                  ),
                                 ),
                               ],
                             ),
@@ -511,12 +579,13 @@ class _NewChatRoomState extends State<NewChatRoom> {
                           return Row(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(bottom: 20.h),
-                                height: 20.h,
-                                width: 20.w,
-                                decoration: BoxDecoration(shape: BoxShape.circle),
-                                child:
-                                Image.network(chatMessageList![index].profileImage!),
+                                  margin: EdgeInsets.only(top: 20.h),
+                                  height: 20.h,
+                                  width: 20.w,
+                                  decoration: BoxDecoration(shape: BoxShape.circle),
+                                  child: chatMessageList![index].profileImage != null ? CircleAvatar(
+                                    backgroundImage: NetworkImage(chatMessageList![index].profileImage!, scale: 1.0),
+                                  ) : Image.asset('assets/dummies/dummy_avatar.png')
                               ),
                               Expanded(
                                 child: Container(
@@ -590,7 +659,11 @@ class _NewChatRoomState extends State<NewChatRoom> {
                       height: 50.h,
                       padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.h),
                       color: Colors.white,
-                      child: Row(
+                      child: chatHasEnded ? Center(
+                        child: Text("Konsultasi Telah Berakhir", style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold
+                        ),)
+                      ) : Row(
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 3.h),
@@ -619,6 +692,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                       chatMessageList?.add(
                                           ChatMessageEntity(
                                               mine: true,
+                                              profileImage: myImageProfile,
                                               dateTime: DateTime.now().toString(),
                                               message: val,
                                               name: 'sender'
@@ -645,7 +719,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                 }
                               },
                               decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(top: 0.5),
+                                  contentPadding: EdgeInsets.only(top: 5.h),
                                   border: InputBorder.none,
                                   hintText: 'Tulis pesan...',
                                   hintStyle: TextStyle(color: Colors.grey)),
@@ -653,11 +727,48 @@ class _NewChatRoomState extends State<NewChatRoom> {
                           ),
                           InkWell(
                             onTap: (){
-                              _showPicker(context);
+                              if(isPendingChat == false) {
+                                _showPicker(context);
+                              } else {
+                                Toast.show('Mohon tunggu respon Nakes sebelum membuat chat baru', duration: 3, gravity: 1);
+                              }
                             },
                             child: Container(
-                              padding: EdgeInsets.only(top: 12.h),
+                              padding: EdgeInsets.only(top: 5.h),
                               child:SvgPicture.asset('assets/icAttachment.svg')
+                              ,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: (){
+                              if(_messageEditingController.text.isNotEmpty){
+                                if (isPendingChat == false) {
+                                  print('to_id: $toId');
+                                  setState(() {
+                                    chatMessageList?.add(
+                                        ChatMessageEntity(
+                                            mine: true,
+                                            profileImage: myImageProfile,
+                                            dateTime: DateTime.now().toString(),
+                                            message: _messageEditingController.text,
+                                            name: 'sender'
+                                        )
+                                    );
+                                    _scrollDown();
+                                    ChatSendRequest _chatSendRequest = ChatSendRequest(
+                                        fromId: widget.fromId, toId: toId, message: _messageEditingController.text);
+
+                                    Injector.resolve<ChatBloc>().add(SendChatEvent(_chatSendRequest));
+                                    _messageEditingController.clear();
+                                  });
+                                } else {
+                                  Toast.show('Mohon tunggu respon Nakes sebelum membuat chat baru', duration: 3, gravity: 1);
+                                }
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(top: 5.h, right: 10.w, left: 10.w),
+                              child:Icon(Icons.send, color: EpregnancyColors.primer,)
                               ,
                             ),
                           )

@@ -58,8 +58,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         result ??= false;
         return result;
       },
-      child: Stack(children: [
-        widget.role == StringConstant.midwife
+      child: widget.role == StringConstant.midwife
             ? Scaffold(
           resizeToAvoidBottomInset: false,
             body: _buildWidgetBodyMidwife()) :
@@ -83,8 +82,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         //           },
         //           child: Image.asset('res/graphics/ic_order_40px.png')),
         //     ))
-      ]
-      ),
+
     );
   }
 

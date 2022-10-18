@@ -16,7 +16,6 @@ class LoginRequestOtp extends OtpPageEvent {
 
 class OtpNumberChanged extends OtpPageEvent {
   const OtpNumberChanged(this.otp);
-
   final String otp;
 
   @override

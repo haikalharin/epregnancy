@@ -101,13 +101,13 @@ class _ArchiveConsultationPatientPageState extends State<ArchiveConsultationPati
                 child: Center(child: CircularProgressIndicator()),
               );
             } else if (state.type == 'archive-chat-success' || state.type == 'chat-room-empty'){
-              if(state.listArchiveChat?.length != 0) {
+              if(state.listArchiveChatByFrom?.length != 0) {
                 return ListView.builder(
-                  itemCount: state.listArchiveChat?.length ?? 0,
+                  itemCount: state.listArchiveChatByFrom?.length ?? 0,
                   itemBuilder: (context, index){
                     return InkWell(
                       onTap: (){
-                        Injector.resolve<ChatBloc>().add(FetchPersonalChatRoom(state.listArchiveChat?[index].fromId));
+                        Injector.resolve<ChatBloc>().add(FetchPersonalChatRoom(state.listArchiveChatByFrom?[index]?.fromId));
                         showDialog(
                             context: context,
                             builder: (context) => Dialog(
@@ -141,10 +141,10 @@ class _ArchiveConsultationPatientPageState extends State<ArchiveConsultationPati
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle
                             ),
-                            child: state.listArchiveChat?[index].from?.imageUrl != null ? Image.network(state.listArchiveChat![index].from!.imageUrl!) : Image.asset('assets/dummies/dummy_avatar.png'),
+                            child: state.listArchiveChatByFrom?[index]!.to?.imageUrl != null ? Image.network(state.listArchiveChatByFrom![index]!.from!.imageUrl!) : Image.asset('assets/dummies/dummy_avatar.png'),
                           ),
-                          title: Text(state.listArchiveChat?[index].from?.name ?? '', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp, fontWeight: FontWeight.w500),),
-                          subtitle: Text(state.listArchiveChat?[index].message?? '', style: TextStyle(color: EpregnancyColors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
+                          title: Text(state.listArchiveChatByFrom?[index]!.to?.name ?? '', style: TextStyle(color: EpregnancyColors.blueDark, fontSize: 12.sp, fontWeight: FontWeight.w500),),
+                          subtitle: Text(state.listArchiveChatByFrom?[index]!.message?? '', style: TextStyle(color: EpregnancyColors.black, fontSize: 12.sp, fontWeight: FontWeight.w500),),
                         ),
                       ),
                     );

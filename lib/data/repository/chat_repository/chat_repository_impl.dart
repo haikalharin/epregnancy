@@ -83,7 +83,7 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatResponse>> nakesRespondPendingChat(String fromId, String hospitalId) async {
+  Future<ResponseModel<ChatResponse>> nakesRespondPendingChat(String fromId, String hospitalId) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.nakesResponseChatPending(fromId, hospitalId);
     }

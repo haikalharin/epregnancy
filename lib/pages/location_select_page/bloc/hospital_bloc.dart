@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
+import '../../../data/shared_preference/app_shared_preference.dart';
+
 part 'hospital_event.dart';
 part 'hospital_state.dart';
 
@@ -45,6 +47,7 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
     try {
       List<HospitalModel> hospitalList = await hospitalRepository.fetchHospitalsById(event.id ?? '');
       if(hospitalList.isNotEmpty) {
+        await AppSharedPreference.setHospital(hospitalList[0]);
         yield state.copyWith(type: 'fetch-hospital-success', status: FormzStatus.submissionSuccess, hospitals: hospitalList);
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-hospital-failed', hospitals: []);

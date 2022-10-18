@@ -411,15 +411,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                 SizedBox(
                                                                   width: 10.w,
                                                                 ),
-                                                                Container(
-                                                                  child:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .arrow_forward_ios,
-                                                                    color: Colors
-                                                                        .white,
-                                                                  ),
-                                                                ),
+                                                                // Container(
+                                                                //   child:
+                                                                //       const Icon(
+                                                                //     Icons
+                                                                //         .arrow_forward_ios,
+                                                                //     color: Colors
+                                                                //         .white,
+                                                                //   ),
+                                                                // ),
                                                               ],
                                                             ),
                                                           ),

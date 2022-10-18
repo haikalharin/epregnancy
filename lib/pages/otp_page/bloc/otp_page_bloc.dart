@@ -51,11 +51,11 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
 
         if (response.code == 200) {
 
-            await AppSharedPreference.setString(
-                AppSharedPreference.token, userModel.token ?? '');
+            // await AppSharedPreference.setUser(response.data);
+            // await AppSharedPreference.setString(
+            //     AppSharedPreference.token, userModel.token ?? '');
             yield state.copyWith(
-                submitStatus: FormzStatus.submissionSuccess,
-                userInfo: response.data,);
+                submitStatus: FormzStatus.submissionSuccess);
         } else {
           yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
         }

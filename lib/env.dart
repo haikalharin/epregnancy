@@ -15,7 +15,7 @@
 final Map<String, dynamic> environment = <String, dynamic>{
   'host': 'https://igbeyewo.allianz.co.id/',
   'sub_host': '/di/epregnancy/api',
-  'websockets': 'ws://igbeyewo.allianz.co.id/di/epregnancy/api/user/',
+  'websockets': 'wss://igbeyewo.allianz.co.id/di/epregnancy/api/user/',
   'image_host': 'https://image.tmdb.org/t/p/',
   'http_client': 'https',
   'wpUrl': 'http://192.168.64.2/panjistore',
