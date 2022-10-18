@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/repository/chat_repository/chat_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -45,9 +46,10 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
       ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'responding-pending-chat-loading', chatPendingResponseList: []);
     try {
-      List<ChatResponse> _chatList = await chatRepository.nakesRespondPendingChat(event.fromId!, event.hospitalId!);
-      if(_chatList.isNotEmpty) {
-        yield state.copyWith(type: 'responding-pending-chat-success', status: FormzStatus.submissionSuccess, chatPendingResponseList: _chatList);
+      ResponseModel<ChatResponse> _chatList = await chatRepository.nakesRespondPendingChat(event.fromId!, event.hospitalId!);
+      if(_chatList.code == 200) {
+        List<ChatResponse> chatList = await chatRepository.fetchPersonalChatRoom(_chatList.data.toId!);
+        yield state.copyWith(type: 'responding-pending-chat-success', status: FormzStatus.submissionSuccess, chatPendingResponseList: chatList);
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure, type: 'responding-pending-chat-failed', chatPendingResponseList: []);
       }

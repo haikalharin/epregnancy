@@ -52,12 +52,13 @@ class _OngoingListPageState extends State<OngoingListPage> {
             isNakes: true,
             fromId: state.listPersonalChatRoom?[0].toId,
             toId: state.listPersonalChatRoom?[0].fromId,
-            toImageUrl: state.listPersonalChatRoom?[0].to?.imageUrl,
+            toImageUrl: state.listPersonalChatRoom?[0].from?.imageUrl,
             chatMessageList: chatMessageList,
             toName: state.listPersonalChatRoom?[0].from?.name,
             pendingChat:  false,
           ))).then((value) {
             if(value != null){
+              // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
               Navigator.pop(context, 'back');
             }
           });

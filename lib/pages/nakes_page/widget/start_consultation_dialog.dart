@@ -47,7 +47,7 @@ class _StartConsulationDialogState extends State<StartConsulationDialog> {
             isNakes: true,
             fromId: state.chatPendingResponseList?[0].toId,
             toId: state.chatPendingResponseList?[0].fromId,
-            toImageUrl: state.chatPendingResponseList?[0].to?.imageUrl,
+            toImageUrl: state.chatPendingResponseList?[0].from?.imageUrl,
             chatMessageList: chatMessageList,
             toName: state.chatPendingResponseList?[0].from?.name,
             pendingChat:  false,

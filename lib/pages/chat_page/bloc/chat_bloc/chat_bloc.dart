@@ -87,7 +87,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     FetchChatOngoingEvent event,
     ChatState state,
   ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress);
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetch-ongoing-loading');
     try {
       final UserModel user = await AppSharedPreference.getUser();
       final List<ChatListResponse> listChatOngoing =
@@ -110,7 +110,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             status: FormzStatus.submissionSuccess,
             type: 'list-ongoing-success');
       } else {
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
+        yield state.copyWith(status: FormzStatus.submissionSuccess, type: 'list-ongoing-empty', listChatOngoing: []);
       }
     } on SurveyErrorException catch (e) {
       print(e);
@@ -281,46 +281,60 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         status: FormzStatus.submissionInProgress, type: 'archive-chat-loading');
     try {
       final UserModel user = await AppSharedPreference.getUser();
-      List<ChatListResponse> _combinedList = [];
+      List<ChatListResponse?> _archiveByFrom = [];
+      List<ChatListResponse?> _archiveByTo = [];
       final List<ChatListResponse> listArchiveChatByFromId =
           await chatRepository.fetchArchiveChatByFromIdList(user.id ?? '');
-      // final List<ChatListResponse> listArchiveChatByToId =
-      //     await chatRepository.fetchArchiveChatByToIdList(user.id ?? '');
+      final List<ChatListResponse> listArchiveChatByToId =
+          await chatRepository.fetchArchiveChatByToIdList(user.id ?? '');
 
       if (listArchiveChatByFromId.length != 0){
+        String? toId;
         for (var element in listArchiveChatByFromId) {
           String? _fromId = user.id == element.fromId ? element.fromId : element.toId;
-          if (_combinedList
-              .map((item) => item.fromId)
-              .contains(_fromId)) {
+          if(toId != element.toId){
+            toId = element.toId;
+          }
+
+          if ((_archiveByFrom.singleWhere((it) => it?.fromId == _fromId && it?.toId == toId,
+              orElse: () => null)) != null) {
             print('Already exists!');
           } else {
-            _combinedList.add(element);
+            _archiveByFrom.add(element);
           }
         }
       }
 
-      // if (listArchiveChatByToId.length != 0){
-      //   for (var element in listArchiveChatByToId) {
-      //     String? _toId = user.id == element.toId ? element.toId : element.fromId;
-      //     if (_combinedList
-      //         .map((item) => item.toId)
-      //         .contains(_toId)) {
-      //       print('Already exists!');
-      //     } else {
-      //       _combinedList.add(element);
-      //     }
-      //   }
-      // }
+      if (listArchiveChatByToId.length != 0){
+        String? fromId;
+        for (var element in listArchiveChatByToId) {
+          String? _toId = user.id == element.toId ? element.toId : element.fromId;
+          if(fromId != element.fromId){
+            fromId = element.toId;
+          }
+          if ((_archiveByTo.singleWhere((it) => it?.fromId == _toId && it?.toId == fromId,
+              orElse: () => null)) != null) {
+            print('Already exists!');
+          } else {
+            _archiveByTo.add(element);
+          }
+        }
+      }
 
-      if (_combinedList.isNotEmpty) {
+      print('byto lenght : ${_archiveByTo.length}');
+      print('byfrom lenght : ${_archiveByFrom.length}');
+
+      if (_archiveByTo.isNotEmpty || _archiveByFrom.isNotEmpty) {
         yield state.copyWith(
-            listArchiveChat: _combinedList,
+            listArchiveChatByFrom: _archiveByFrom,
+            listArchiveChatByTo: _archiveByTo,
             status: FormzStatus.submissionSuccess,
             type: 'archive-chat-success');
       } else {
         yield state.copyWith(
             type: 'archive-chat--failed',
+            listArchiveChatByFrom: [],
+            listArchiveChatByTo: [],
             status: FormzStatus.submissionFailure);
       }
     } on SurveyErrorException catch (e) {
