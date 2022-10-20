@@ -33,9 +33,10 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     try {
       ResponseModel<PlayGameResponse> responseGame = await homeRepository.getPointFromGame(event.gameId ?? '');
       if(responseGame.code == 200) {
-        yield state.copyWith(type: 'play-game-success', status: FormzStatus.submissionSuccess, gamesResponse: responseGame.data);
+        yield state.copyWith(type: 'play-game-success', status: FormzStatus.submissionSuccess, playGameResponse: responseGame.data);
       }
     } catch(e) {
+      print('error play game : $e');
       yield state.copyWith(status: FormzStatus.submissionFailure, type: 'play-game-failed', errorMessage: e.toString());
     }
   }

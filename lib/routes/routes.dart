@@ -122,7 +122,7 @@ class Routes {
         return MaterialPageRoute(builder: (_) => GamesPage());
       case RouteName.webViewPage:
         return MaterialPageRoute(
-            builder: (_) => WebViewPage(url: getDataValue(settings.arguments)));
+            builder: (_) => WebViewPage(url: getGameUrl(settings.arguments), title: getGameName(settings.arguments)));
 
       case RouteName.signUpQuestionnairePage:
         return MaterialPageRoute(

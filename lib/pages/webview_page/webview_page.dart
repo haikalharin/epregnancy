@@ -5,7 +5,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class WebViewPage extends StatefulWidget {
   final String? url;
-   const WebViewPage({Key? key, required this.url}) : super(key: key);
+  final String? title;
+   const WebViewPage({Key? key, required this.url, required this.title}) : super(key: key);
 
   @override
   State<WebViewPage> createState() => _WebViewPageState();
@@ -21,9 +22,28 @@ class _WebViewPageState extends State<WebViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('url : ${widget.url}');
-    return InAppWebView(
-      initialUrlRequest: URLRequest(url: Uri.parse(widget.url!)),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.pop(context);
+          }, icon: const Icon(Icons.close), color: Colors.black,)
+        ],
+        title: Text(widget.title!, style: const TextStyle(color: Colors.black),),
+        leading: const SizedBox.shrink(),
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: InAppWebView(
+          onLoadResource: (_controller, resource){
+
+          },
+          initialUrlRequest: URLRequest(url: Uri.parse(widget.url!)),
+        ),
+      ),
     );
   }
 }

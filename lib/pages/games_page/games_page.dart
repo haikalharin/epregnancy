@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
+import 'package:toast/toast.dart';
 
 class GamesPage extends StatefulWidget {
   const GamesPage({Key? key}) : super(key: key);
@@ -29,6 +30,7 @@ class _GamesPageState extends State<GamesPage> {
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -39,14 +41,18 @@ class _GamesPageState extends State<GamesPage> {
       ),
       body: BlocListener<GamesBloc, GamesState>(
         listener: (context, state) {
+          print('state game is : ${state.type}');
           if(state.type == 'play-game-success'){
             Navigator.pop(context);
-            Navigator.pushNamed(context, RouteName.webViewPage, arguments: state.playGameResponse?.url);
+            Navigator.pushNamed(context, RouteName.webViewPage, arguments: {'game_url': state.playGameResponse?.url, 'game_name': state.playGameResponse?.name});
+          } else if (state.type == 'play-game-failed'){
+            Navigator.pop(context);
+            Toast.show("Game Gagal Dibuka, Mohon Coba Lagi!");
           }
         },
         child: BlocBuilder<GamesBloc, GamesState>(
           builder: (context, state) {
-            if(state.status == FormzStatus.submissionSuccess) {
+            if(state.type == 'Load Data Success' || state.type == 'play-game-success' || state.type == 'play-game-failed') {
               return Container(
                   color: Colors.white,
                   height: MediaQuery.of(context).size.height,
