@@ -41,7 +41,8 @@ class FetchArchiveChatEvent extends ChatEvent {
 }
 
 class FetchPersonalChatRoom extends ChatEvent {
-  const FetchPersonalChatRoom(this.toId);
+  const FetchPersonalChatRoom(this.toId, this.isArchive);
+  final bool? isArchive;
   final String? toId;
 
   @override

@@ -48,7 +48,7 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
     try {
       ResponseModel<ChatResponse> _chatList = await chatRepository.nakesRespondPendingChat(event.fromId!, event.hospitalId!);
       if(_chatList.code == 200) {
-        List<ChatResponse> chatList = await chatRepository.fetchPersonalChatRoom(_chatList.data.toId!);
+        List<ChatResponse> chatList = await chatRepository.fetchPersonalChatRoom(_chatList.data.toId!, false);
         yield state.copyWith(type: 'responding-pending-chat-success', status: FormzStatus.submissionSuccess, chatPendingResponseList: chatList);
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure, type: 'responding-pending-chat-failed', chatPendingResponseList: []);

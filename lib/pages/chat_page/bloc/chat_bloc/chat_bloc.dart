@@ -129,7 +129,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         status: FormzStatus.submissionInProgress, type: 'chat-room-loading');
     try {
       final List<ChatResponse> _response =
-          await chatRepository.fetchPersonalChatRoom(event.toId!);
+          await chatRepository.fetchPersonalChatRoom(event.toId!, event.isArchive!);
       if (_response.isNotEmpty) {
         yield state.copyWith(
             listPersonalChatRoom: _response,
@@ -248,7 +248,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           toId = listChatOngoing[0].fromId;
         }
         personalChatRoomList =
-            await chatRepository.fetchPersonalChatRoom(toId!);
+            await chatRepository.fetchPersonalChatRoom(toId!, false);
       }
 
       if (_chatPendingPatientResponse.content?.length != 0 ||
@@ -285,8 +285,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       List<ChatListResponse?> _archiveByTo = [];
       final List<ChatListResponse> listArchiveChatByFromId =
           await chatRepository.fetchArchiveChatByFromIdList(user.id ?? '');
-      final List<ChatListResponse> listArchiveChatByToId =
-          await chatRepository.fetchArchiveChatByToIdList(user.id ?? '');
+      // final List<ChatListResponse> listArchiveChatByToId =
+      //     await chatRepository.fetchArchiveChatByToIdList(user.id ?? '');
 
       if (listArchiveChatByFromId.length != 0){
         String? toId;
@@ -305,24 +305,21 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         }
       }
 
-      if (listArchiveChatByToId.length != 0){
-        String? fromId;
-        for (var element in listArchiveChatByToId) {
-          String? _toId = user.id == element.toId ? element.toId : element.fromId;
-          if(fromId != element.fromId){
-            fromId = element.toId;
-          }
-          if ((_archiveByTo.singleWhere((it) => it?.fromId == _toId && it?.toId == fromId,
-              orElse: () => null)) != null) {
-            print('Already exists!');
-          } else {
-            _archiveByTo.add(element);
-          }
-        }
-      }
-
-      print('byto lenght : ${_archiveByTo.length}');
-      print('byfrom lenght : ${_archiveByFrom.length}');
+      // if (listArchiveChatByToId.length != 0){
+      //   String? fromId;
+      //   for (var element in listArchiveChatByToId) {
+      //     String? _toId = user.id == element.toId ? element.toId : element.fromId;
+      //     if(fromId != element.fromId){
+      //       fromId = element.toId;
+      //     }
+      //     if ((_archiveByTo.singleWhere((it) => it?.fromId == _toId && it?.toId == fromId,
+      //         orElse: () => null)) != null) {
+      //       print('Already exists!');
+      //     } else {
+      //       _archiveByTo.add(element);
+      //     }
+      //   }
+      // }
 
       if (_archiveByTo.isNotEmpty || _archiveByFrom.isNotEmpty) {
         yield state.copyWith(

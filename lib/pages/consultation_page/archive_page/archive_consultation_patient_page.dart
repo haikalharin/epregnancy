@@ -107,7 +107,7 @@ class _ArchiveConsultationPatientPageState extends State<ArchiveConsultationPati
                   itemBuilder: (context, index){
                     return InkWell(
                       onTap: (){
-                        Injector.resolve<ChatBloc>().add(FetchPersonalChatRoom(state.listArchiveChatByFrom?[index]?.fromId));
+                        Injector.resolve<ChatBloc>().add(FetchPersonalChatRoom(state.listArchiveChatByFrom?[index]?.toId, true));
                         showDialog(
                             context: context,
                             builder: (context) => Dialog(

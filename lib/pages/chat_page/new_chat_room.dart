@@ -73,7 +73,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   String? toId;
   late WebSocket _webSocket;
   String message = '';
-  bool chatHasEnded = false;
+  late bool chatHasEnded = widget.isArchive == true ? true : false;
 
   List<ChatMessageEntity>? chatMessageList = [];
 
@@ -656,7 +656,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                   ),
                 ),
                 Visibility(
-                  visible: widget.isArchive == true ? false : true,
+                  visible: chatHasEnded,
                   child: Column(
                     children: [
                       Container(

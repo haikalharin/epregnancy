@@ -61,6 +61,7 @@ class ServiceUrl {
   static String chatList =  '$chat/list';
   static String chatArchiveList =  '$chatArchive/list';
   static String personalChatRoom =  '$chat/personal/';
+  static String archivePersonalChatRoom =  '$chatArchive/personal/';
   static String personalChatArchive =  '$chatArchive/personal/';
   static String chatPending = 'chat-pending';
   static String chatPendingResponse = '$chatPending/response';

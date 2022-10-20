@@ -78,7 +78,7 @@ class _OngoingListPageState extends State<OngoingListPage> {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    Injector.resolve<ChatBloc>().add(FetchPersonalChatRoom(state.listChatOngoing?[index].fromId));
+                    Injector.resolve<ChatBloc>().add(FetchPersonalChatRoom(state.listChatOngoing?[index].fromId, false));
                     showDialog(
                         context: context,
                         builder: (context) => Dialog(

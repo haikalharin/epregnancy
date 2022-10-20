@@ -348,8 +348,16 @@ class RemoteDataSource {
     return data;
   }
 
-  Future<List<ChatResponse>> fetchPersonalChatRoom(String id) async {
-    final response = await httpClient.get(ServiceUrl.personalChatRoom + id);
+  Future<List<ChatResponse>> fetchPersonalChatRoom(String id, bool archive) async {
+    String url = '';
+
+    if(archive){
+      url = ServiceUrl.archivePersonalChatRoom;
+    } else {
+      url = ServiceUrl.personalChatRoom;
+    }
+
+    final response = await httpClient.get(url + id);
     final data = <ChatResponse>[];
     getData(response).forEach((item) {
       data.add(ChatResponse.fromJson(item));

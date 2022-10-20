@@ -15,7 +15,7 @@ abstract class ChatRepository {
   Future<List<ChatListResponse>> fetchChatListByToId(String toId);
   Future<List<ChatListResponse>> fetchArchiveChatByFromIdList(String fromId);
   Future<List<ChatListResponse>> fetchArchiveChatByToIdList(String toId);
-  Future<List<ChatResponse>> fetchPersonalChatRoom(String toId);
+  Future<List<ChatResponse>> fetchPersonalChatRoom(String toId, bool isArchive);
   Future<ResponseModel<ChatResponse>> nakesRespondPendingChat(String fromId, String hospitalId);
 
   Future<List<ChatPendingResponseList>> fetchChatPendingList();
