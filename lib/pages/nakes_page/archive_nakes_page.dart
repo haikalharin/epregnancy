@@ -111,20 +111,20 @@ class _ArchiveNakesPageState extends State<ArchiveNakesPage> with AutomaticKeepA
                       );
                     },
                   ),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: state.listArchiveChatByTo?.length ?? 0,
-                    itemBuilder: (context, index){
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        child: ChatPlaceHolderWidget(
-                            unread: true,
-                            name: state.listArchiveChatByTo![index]!.from?.name,
-                            message: state.listArchiveChatByTo![index]!.message),
-                      );
-                    },
-                  )
+                  // ListView.builder(
+                  //   physics: NeverScrollableScrollPhysics(),
+                  //   shrinkWrap: true,
+                  //   itemCount: state.listArchiveChatByTo?.length ?? 0,
+                  //   itemBuilder: (context, index){
+                  //     return Padding(
+                  //       padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  //       child: ChatPlaceHolderWidget(
+                  //           unread: true,
+                  //           name: state.listArchiveChatByTo![index]!.from?.name,
+                  //           message: state.listArchiveChatByTo![index]!.message),
+                  //     );
+                  //   },
+                  // )
                 ],
               );
             } else {

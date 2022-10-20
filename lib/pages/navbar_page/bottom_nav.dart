@@ -54,9 +54,10 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
     }
     return WillPopScope(
       onWillPop:() async {
-        bool? result= await _showMyDialog(context);
-        result ??= false;
-        return result;
+        // bool? result= await _showMyDialog(context);
+        // result ??= false;
+        // return result;
+        return true;
       },
       child: widget.role == StringConstant.midwife
             ? Scaffold(
