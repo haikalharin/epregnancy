@@ -50,6 +50,7 @@ class ServiceUrl {
   //game
   static String game = 'game';
   static String gameList = '$game/list';
+  static String gamePlay = '$game/play/';
 
   //chat
   static String chat = 'chat';

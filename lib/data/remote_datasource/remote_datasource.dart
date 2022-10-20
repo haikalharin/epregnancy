@@ -8,6 +8,7 @@ import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
+import 'package:PregnancyApp/data/model/games_model/play_game_response.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
@@ -416,6 +417,13 @@ class RemoteDataSource {
       data.add(ChatListResponse.fromJson(item));
     });
     return data;
+  }
+
+  Future<ResponseModel<PlayGameResponse>> pointForPlayGame(String gameId) async {
+    final response = await httpClient.get(ServiceUrl.gamePlay + gameId);
+
+    return ResponseModel<PlayGameResponse>.fromJson(
+        response, PlayGameResponse.fromJson);
   }
 
   Future<List<ChatListResponse>> fetchChatListByToIdResponse(
