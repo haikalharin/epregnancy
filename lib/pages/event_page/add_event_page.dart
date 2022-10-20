@@ -850,9 +850,8 @@ class _AddDateEndInput extends StatelessWidget {
         return InkWell(
           onTap: () async {
             var dateTime = await DatePickerUtils.getDate(
-                    context, state.dateEnd ?? DateTime.now(),
-                    firstDate: state.dateStart) ??
-                DateTime.now();
+                    context, state.dateStart ?? DateTime.now(),
+                    firstDate: state.dateStart) ?? DateTime.now();
             Injector.resolve<EventPageBloc>()
                 .add(EventDateEndChanged(dateTime));
           },
