@@ -41,6 +41,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
   GlobalKey _one = GlobalKey();
   GlobalKey _two = GlobalKey();
   GlobalKey _three = GlobalKey();
+  GlobalKey _four = GlobalKey();
   BuildContext? myContext;
   TabController? controller;
   int indexSelected = 0;
@@ -52,26 +53,25 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
   void initState() {
     setIndex();
 
-
     super.initState();
   }
 
   void setIndex() async {
     UserModel _userModel = await AppSharedPreference.getUser();
-    if(_userModel.isPregnant == true) {
+    if (_userModel.isPregnant == true) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         _isFirstLaunch().then((result) {
           if (result)
             ShowCaseWidget.of(myContext ?? context)
-                .startShowCase([_one, _two, _three]);
+                .startShowCase([_one, _two, _three, _four]);
         });
       });
-    } else{
+    } else {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         _isFirstLaunch().then((result) {
           if (result)
             ShowCaseWidget.of(myContext ?? context)
-                .startShowCase([_two, _three]);
+                .startShowCase([_two, _three,_four]);
         });
       });
     }
@@ -108,7 +108,8 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
             : Scaffold(
                 resizeToAvoidBottomInset: false,
                 body: _buildWidgetBody(),
-                bottomNavigationBar: _bottomNavigatorBar(indexSelected: indexSelected),
+                bottomNavigationBar:
+                    _bottomNavigatorBar(indexSelected: indexSelected),
               ),
         // Positioned.fill(
         //     bottom: 20,
@@ -199,12 +200,14 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           ),
           icon: Showcase.withWidget(
             key: _three,
-            description: 'klik untuk memulai konsultasi',
-            height: 300,
-            width: 300,
+            title: 'E-konsultasi dan Komunitas',
+            description:
+                'Komunikasikan dan diskusikan masalah, keluhan dan saran Anda dengan mudah kepada Profesional dan Komunitas',
+            height: 100,
+            width: 100,
             shapeBorder: const CircleBorder(),
             radius: const BorderRadius.all(Radius.circular(150)),
-            container:null,
+            container: null,
             child: Container(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(0),
@@ -229,13 +232,24 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
               fit: BoxFit.cover,
             ),
           ),
-          icon: ClipRRect(
-            borderRadius: BorderRadius.circular(0),
-            child: SvgPicture.asset(
-              'assets/ic_profile_bar.svg',
-              width: 30,
-              height: 30,
-              fit: BoxFit.cover,
+          icon: Showcase.withWidget(
+            key: _four,
+            title: 'Profil dan Pengaturan',
+            description:
+            'Ubah foto, kata sandi dan atur profil kehamilan Anda dalam satu menu pengaturan',
+            height: 100,
+            width: 100,
+            shapeBorder: const CircleBorder(),
+            radius: const BorderRadius.all(Radius.circular(150)),
+            container: null,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(0),
+              child: SvgPicture.asset(
+                'assets/ic_profile_bar.svg',
+                width: 30,
+                height: 30,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

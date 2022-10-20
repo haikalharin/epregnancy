@@ -299,7 +299,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           state.user!.isPregnant == true
                                       ? Showcase(
                                         key: widget.one?? GlobalKey(),
-                                        description: '',
+                                        title: 'Selamat datang !',
+                                        description: 'Anda akan dengan mudah mengetahui fase kehamilan dengan gambar interaktif yang menunjukkan kondisi janin Anda',
                                         child: Container(
                                             decoration: BoxDecoration(
                                                 borderRadius:
@@ -593,7 +594,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         )),
                     Showcase(key: widget.two?? GlobalKey(),
-                    description: '',
+                    title: 'Kumpulkan Poin',
+                    description: 'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
                     child: PoinCardSection(point: state.totalPointsEarned ?? 0)),
                     // Games Section
                     const GameCardSection(),
