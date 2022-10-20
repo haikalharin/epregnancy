@@ -197,12 +197,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       var days = 0;
       var weeks = 0;
-      UserModel? userRegister = await AppSharedPreference.getUserRegister();
-      if(userRegister.id != null){
-        UserModel? user = await AppSharedPreference.getUserRegister();
-        await AppSharedPreference.setUser(user);
-        await AppSharedPreference.remove("_userRegister");
-      }
+
 
       final UserModel user = await AppSharedPreference.getUser();
       ResponseModel response = await homeRepository.getBaby(user);

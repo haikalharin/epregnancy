@@ -33,6 +33,7 @@ class AppSharedPreference {
   static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
   static const String newInstall = "new_install";
+  static const String isFirstLaunch = "isFirstLaunch";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

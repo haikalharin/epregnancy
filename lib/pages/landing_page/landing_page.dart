@@ -58,7 +58,14 @@ class _LandingPageState extends State<LandingPage> {
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus ==
               FormzStatus.submissionSuccess) {
-
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteName.navBar,
+                  (Route<dynamic> route) => false,
+              arguments: {
+                'role':  StringConstant.patient,
+                'initial_index': 0
+              },
+            );
 
           }
         },
@@ -125,14 +132,7 @@ class _LandingPageState extends State<LandingPage> {
                         onPressed: () async {
                           if (currentIndex == slides.length - 1) {
                             // Navigate to next screen
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              RouteName.navBar,
-                                  (Route<dynamic> route) => false,
-                              arguments: {
-                                'role':  StringConstant.patient,
-                                'initial_index': 0
-                              },
-                            );
+                            Injector.resolve<LandingPageBloc>().add(const LoginRequest());
                           }
                           _controller.nextPage(
                               duration: Duration(milliseconds: 100),

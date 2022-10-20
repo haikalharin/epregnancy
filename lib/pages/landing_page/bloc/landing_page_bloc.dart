@@ -22,29 +22,30 @@ class LandingPageBloc extends Bloc<LandingPageEvent, LandingPageState> {
 
   @override
   Stream<LandingPageState> mapEventToState(LandingPageEvent event) async* {
-    if (event is LoginRequestOtp) {
-      yield* _mapLoginRequestOtpToState(event, state);
+    if (event is LoginRequest) {
+      yield* _mapLoginRequestToState(event, state);
     }
   }
 
-  Stream<LandingPageState> _mapLoginRequestOtpToState(
-      LoginRequestOtp event,
+  Stream<LandingPageState> _mapLoginRequestToState(
+      LoginRequest event,
       LandingPageState state,
       ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      // UserModel user = await AppSharedPreference.getUserRegister();
-      // ResponseModel response = await userRepository
-      //     .requestOtp(OtpModel(email:user.email));
-      // OtpModel otpModel = response.data;
-      // if (response.code == 200) {
-      //   await AppSharedPreference.setString(
-      //       AppSharedPreference.otp, otpModel.otp ?? '');
-      //   yield state.copyWith(
-      //       submitStatus: FormzStatus.submissionSuccess);
-      // } else {
-      //   yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
-      // }
+      UserModel? userRegister = await AppSharedPreference.getUserRegister();
+      if(userRegister.id != null){
+        UserModel? user = await AppSharedPreference.getUserRegister();
+        await AppSharedPreference.setUser(user);
+        await AppSharedPreference.remove("_userRegister");
+        UserModel? userLogin = await AppSharedPreference.getUser();
+        if(userLogin.id != null){
+          yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
+        }
+      } else{
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
+
     } on LoginErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
