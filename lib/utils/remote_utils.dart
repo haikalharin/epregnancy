@@ -1,6 +1,10 @@
 
 dynamic getDataValue(dynamic result) => result;
 
+dynamic getGameUrl(dynamic result) => result['game_url'];
+
+dynamic getGameName(dynamic result) => result['game_name'];
+
 dynamic getRoleArgument(dynamic result) => result['role'];
 
 dynamic getkey(dynamic result) => result['key'];

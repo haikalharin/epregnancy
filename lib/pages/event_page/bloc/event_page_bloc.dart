@@ -6,6 +6,7 @@ import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/utils/extension.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -63,16 +64,16 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
   EventPageState _mapEventInitEvent(
     EventInitEvent event,
     EventPageState state,
-  ) {
+  )  {
     var timeNotfication = TimeOfDay(hour: 0, minute: 30).toTimerNotif();
     final timeNotficationString =
         MandatoryFieldValidator.dirty(timeNotfication);
-
     final consulType = MandatoryFieldValidator.dirty(event.type);
     return EventPageState(
         timeNotfication: TimeOfDay(hour: 0, minute: 30),
         timeNotficationString: timeNotficationString,
-        consulType: consulType);
+        consulType: consulType,
+        dateStart: null);
   }
 
   EventPageState _mapEventTotalConsumeChangedEvent(
@@ -191,10 +192,14 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       try {
         UserModel person = await AppSharedPreference.getUser();
         final df = DateFormat('yyyy-MM-dd');
+        final forCalendar = DateFormat('yyyy-MM-dd hh:mm');
         var dateStart = df.format(state.dateStart ?? DateTime.now());
+        var dateStartFc = forCalendar.format(state.dateStart ?? DateTime.now());
         var dateEnd = df.format(state.dateEnd ?? DateTime.now());
-        DateTime fixDate = DateTime.now();
+        var dateEndFc = forCalendar.format(state.dateEnd ?? DateTime.now());
 
+        DateTime fixDate = DateTime.now();
+        String? remindBefore;
         ResponseModel response = ResponseModel();
         if (state.consulType.value == StringConstant.consumeMedicine) {
           response = await eventRepository.saveEvent(EventModel(
@@ -210,6 +215,35 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
             status: "active",
             notifications: state.listScheduleTime,
           ));
+          List<Event> _medEvent = [];
+          for (var element in state.listScheduleTime) {
+            var startDate = DateTime.parse("$dateStart ${element.time}");
+            final fStartDate = forCalendar.format(startDate);
+            _medEvent.add(Event(
+              title: state.scheduleName.value,
+              description: state.description.value,
+              location: '',
+              startDate: DateTime.parse(fStartDate),
+              endDate: DateTime.parse(dateEnd),
+              recurrence: Recurrence(
+                frequency: Frequency.daily,
+                endDate: DateTime.parse(dateEnd),
+                // interval: 1,
+                ocurrences: state.listScheduleTime.length,
+              ),
+              // todo ios param
+              // iosParams: IOSParams(
+              //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
+              // ),
+              androidParams: AndroidParams(
+                emailInvites: [person.email!], // on Android, you can add invite emails to your event.
+              ),
+            ));
+
+            for (var event in _medEvent) {
+              Add2Calendar.addEvent2Cal(event);
+            }
+          }
         } else {
           var hour = state.timeNotfication!.hour.toString().length == 1
               ? "0${state.timeNotfication!.hour}"
@@ -229,8 +263,8 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
               tempDate.day, tempDate.hour, tempDate.minute - total);
 
 
-          String remindBefore = "$hour:$minute:00";
-          print('remind before : $remindBefore');
+          String _remindBefore = "$hour:$minute:00";
+          remindBefore = _remindBefore;
           response = await eventRepository.saveEvent(EventModel(
             userId: person.id,
             type: state.consulType.value,
@@ -238,12 +272,34 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
             description: state.description.value,
             time: "${state.timeString.value}:00",
             startDate: dateStart,
-            endDate: dateStart,
+            endDate: dateEnd,
             date: dateStart,
-            remindBefore: remindBefore.toString(),
+            remindBefore: _remindBefore.toString(),
             status: "active",
           ));
+          var startDate = DateTime.parse("$dateStart ${state.timeString.value}");
+          final fStartDate = forCalendar.format(startDate);
+          Event event = Event(
+            title: state.scheduleName.value,
+            description: state.description.value,
+            location: '',
+            startDate: DateTime.parse(fStartDate),
+            endDate: DateTime.parse(dateEndFc),
+            // todo ios param
+            // iosParams: IOSParams(
+            //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
+            // ),
+            androidParams: AndroidParams(
+              emailInvites: [person.email!], // on Android, you can add invite emails to your event.
+            ),
+          );
+          Add2Calendar.addEvent2Cal(event);
         }
+        // var dateFormat = DateFormat('hh:mm:ss');
+        // DateTime durationStart = dateFormat.parse(dateStart);
+        // DateTime durationEnd = dateFormat.parse(dateEnd);
+        // var differenceInHours = durationStart.difference(DateTime.parse(remindBefore!)).inHours;
+        // DateTime subtractDateStart = DateTime.parse(dateStart).subtract(Duration(hours: differenceInHours));
         if (response.code == 200) {
 
           yield state.copyWith(

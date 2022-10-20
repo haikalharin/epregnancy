@@ -192,12 +192,17 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                         itemCount:
                             (state.chatPendingList?.length ?? 0) >= 1 ? 1 : 0,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: ChatPlaceHolderWidget(
-                                unread: false,
-                                name: state.chatPendingList![index].from?.name,
-                                message: state.chatPendingList![index].message),
+                          return InkWell(
+                            onTap: (){
+                              Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': 'MIDWIFE', 'initial_index': 0});
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: ChatPlaceHolderWidget(
+                                  unread: false,
+                                  name: state.chatPendingList![index].from?.name,
+                                  message: state.chatPendingList![index].message),
+                            ),
                           );
                         },
                       );

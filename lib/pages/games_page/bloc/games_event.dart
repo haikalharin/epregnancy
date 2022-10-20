@@ -14,3 +14,11 @@ class FetchGamesEvent extends GamesEvent {
   @override
   List<Object> get props => [];
 }
+
+class PlayGameEvent extends GamesEvent {
+  const PlayGameEvent(this.gameId);
+  final String? gameId;
+
+  @override
+  List<Object> get props => [];
+}

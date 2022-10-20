@@ -27,9 +27,9 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatResponse>> fetchPersonalChatRoom(String toId) async {
+  Future<List<ChatResponse>> fetchPersonalChatRoom(String toId, bool isArchive) async {
     if (await networkInfo.isConnected) {
-      return remoteDatasource.fetchPersonalChatRoom(toId);
+      return remoteDatasource.fetchPersonalChatRoom(toId, isArchive);
     }
     throw NetworkConnectionException();
   }
