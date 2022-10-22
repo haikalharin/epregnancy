@@ -7,6 +7,8 @@ dynamic getGameName(dynamic result) => result['game_name'];
 
 dynamic getRoleArgument(dynamic result) => result['role'];
 
+dynamic getkey(dynamic result) => result['key'];
+
 dynamic getInitialIndex(dynamic result) => result['initial_index'];
 
 dynamic getUserId(dynamic result) => result['user_id'];

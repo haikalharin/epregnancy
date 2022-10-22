@@ -713,7 +713,7 @@ class _ScheduleNameInput extends StatelessWidget {
                             ))
                     : Icon(Icons.add),
             hintText: 'Nama Jadwal',
-            errorText: state.scheduleName.invalid ? 'Tidak boleh kososng' : null,
+            errorText: state.scheduleName.invalid ? 'Tidak boleh kosong' : null,
           ),
         );
       },
@@ -756,7 +756,7 @@ class _DescInput extends StatelessWidget {
                       fit: BoxFit.fitHeight,
                     )),
             hintText: 'Deskripsi',
-            errorText: state.description.invalid ? 'Tidak boleh kososng' : null,
+            errorText: state.description.invalid ? 'Tidak boleh kosong' : null,
           ),
         );
       },

@@ -22,7 +22,7 @@ final Map<String, dynamic> environment = <String, dynamic>{
   'consumerKey': 'ck_015ecefc9ecedf3fb4208d7945173ff6bf498728',
   'consumerSecret': 'cs_51a47e2d054bfe8df212b12048cd6f65c6463529',
   'berita':'  http://ds-onlineadvertising.com/syariah/info.php',
-  'mode': 'prod', //dev or prod
+  'mode': 'dev', //dev or prod
   'isShowChucker': true, //dev or prod
 };
 

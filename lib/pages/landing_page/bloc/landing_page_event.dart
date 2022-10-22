@@ -9,7 +9,7 @@ abstract class LandingPageEvent extends Equatable{
   List<Object> get props => [];
 }
 
-class LoginRequestOtp extends LandingPageEvent {
-  const LoginRequestOtp();
+class LoginRequest extends LandingPageEvent {
+  const LoginRequest();
 }
 

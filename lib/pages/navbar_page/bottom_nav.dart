@@ -6,6 +6,8 @@ import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_pag
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../data/firebase/event/event_user.dart';
 import '../../data/model/user_model_firebase/user_model_firebase.dart';
@@ -19,12 +21,15 @@ import '../survey_page/survey_page.dart';
 
 int indexBottomNavSelected = 0;
 bool isChangeIndex = false;
+int index = 0;
 
 class NavbarPage extends StatefulWidget {
   String? role = StringConstant.patient;
   final int? initalIndex;
   final String? userId;
-  NavbarPage({Key? key, this.role, this.initalIndex, this.userId}) : super(key: key);
+
+  NavbarPage({Key? key, this.role, this.initalIndex, this.userId})
+      : super(key: key);
 
   // final UserModel bottomUserModelData;
 
@@ -33,15 +38,46 @@ class NavbarPage extends StatefulWidget {
 }
 
 class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
+  GlobalKey _one = GlobalKey();
+  GlobalKey _two = GlobalKey();
+  GlobalKey _three = GlobalKey();
+  GlobalKey _four = GlobalKey();
+  BuildContext? myContext;
   TabController? controller;
   int indexSelected = 0;
 
+  bool isFirst = true;
+  int count = 1;
+
   @override
   void initState() {
-    setState(() {
-      indexSelected = widget.initalIndex?? 0;
-    });
+    setIndex();
+
     super.initState();
+  }
+
+  void setIndex() async {
+    UserModel _userModel = await AppSharedPreference.getUser();
+    if (_userModel.isPregnant == true) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _isFirstLaunch().then((result) {
+          if (result)
+            ShowCaseWidget.of(myContext ?? context)
+                .startShowCase([_one, _two, _three, _four]);
+        });
+      });
+    } else {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _isFirstLaunch().then((result) {
+          if (result)
+            ShowCaseWidget.of(myContext ?? context)
+                .startShowCase([_two, _three,_four]);
+        });
+      });
+    }
+    setState(() {
+      indexSelected = widget.initalIndex ?? 0;
+    });
   }
 
   @override
@@ -52,23 +88,29 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         isChangeIndex = false;
       });
     }
-    return WillPopScope(
-      onWillPop:() async {
-        // bool? result= await _showMyDialog(context);
-        // result ??= false;
-        // return result;
-        return true;
-      },
-      child: widget.role == StringConstant.midwife
+    return ShowCaseWidget(onFinish: () {
+      setState(() {
+        isFirst = false;
+      });
+    }, builder: Builder(builder: (context) {
+      myContext = context;
+      return WillPopScope(
+        onWillPop: () async {
+          // bool? result = await _showMyDialog(context);
+          // result ??= false;
+          // return result;
+          return true;
+        },
+        child: widget.role == StringConstant.midwife
             ? Scaffold(
-          resizeToAvoidBottomInset: false,
-            body: _buildWidgetBodyMidwife()) :
-        Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: _buildWidgetBody(),
-          bottomNavigationBar: _bottomNavigatorBar(),
-        )
-        ,
+                resizeToAvoidBottomInset: false,
+                body: _buildWidgetBodyMidwife())
+            : Scaffold(
+                resizeToAvoidBottomInset: false,
+                body: _buildWidgetBody(),
+                bottomNavigationBar:
+                    _bottomNavigatorBar(indexSelected: indexSelected),
+              ),
         // Positioned.fill(
         //     bottom: 20,
         //     child: Align(
@@ -83,17 +125,17 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         //           },
         //           child: Image.asset('res/graphics/ic_order_40px.png')),
         //     ))
-
-    );
+      );
+    }));
   }
 
-  Widget _bottomNavigatorBar() {
+  Widget _bottomNavigatorBar({int? indexSelected}) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.black,
       showUnselectedLabels: true,
-      currentIndex: indexSelected,
+      currentIndex: indexSelected ?? 0,
       onTap: (indexSelected) {
         setState(() {
           this.indexSelected = indexSelected;
@@ -156,13 +198,26 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
               fit: BoxFit.cover,
             ),
           ),
-          icon: ClipRRect(
-            borderRadius: BorderRadius.circular(0),
-            child: SvgPicture.asset(
-              'assets/ic_consultation_bar.svg',
-              width: 30,
-              height: 30,
-              fit: BoxFit.cover,
+          icon: Showcase.withWidget(
+            key: _three,
+            title: 'E-konsultasi dan Komunitas',
+            description:
+                'Komunikasikan dan diskusikan masalah, keluhan dan saran Anda dengan mudah kepada Profesional dan Komunitas',
+            height: 100,
+            width: 100,
+            shapeBorder: const CircleBorder(),
+            radius: const BorderRadius.all(Radius.circular(150)),
+            container: null,
+            child: Container(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(0),
+                child: SvgPicture.asset(
+                  'assets/ic_consultation_bar.svg',
+                  width: 30,
+                  height: 30,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
         ),
@@ -177,13 +232,24 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
               fit: BoxFit.cover,
             ),
           ),
-          icon: ClipRRect(
-            borderRadius: BorderRadius.circular(0),
-            child: SvgPicture.asset(
-              'assets/ic_profile_bar.svg',
-              width: 30,
-              height: 30,
-              fit: BoxFit.cover,
+          icon: Showcase.withWidget(
+            key: _four,
+            title: 'Profil dan Pengaturan',
+            description:
+            'Ubah foto, kata sandi dan atur profil kehamilan Anda dalam satu menu pengaturan',
+            height: 100,
+            width: 100,
+            shapeBorder: const CircleBorder(),
+            radius: const BorderRadius.all(Radius.circular(150)),
+            container: null,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(0),
+              child: SvgPicture.asset(
+                'assets/ic_profile_bar.svg',
+                width: 30,
+                height: 30,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
@@ -207,10 +273,16 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
   Widget _buildWidgetBody() {
     switch (indexSelected) {
       case 0:
-        return HomePage(userId: widget.userId);
+        return HomePage(
+          userId: widget.userId,
+          one: _one,
+          two: _two,
+        );
       case 1:
         // return AddEventPage();
-        return ConsultationPage(role: widget.role,);
+        return ConsultationPage(
+          role: widget.role,
+        );
 
       case 2:
         return ProfileUserPage();
@@ -323,5 +395,20 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         );
       },
     );
+  }
+
+  Future<bool> _isFirstLaunch() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    bool? isFirstLaunch =
+        await AppSharedPreference.getBool(AppSharedPreference.isFirstLaunch) ??
+            true;
+    //
+    // if (isFirstLaunch) {
+    //   sharedPreferences.setBool(
+    //       AppSharedPreference.isFirstLaunch, false);
+    // }
+    // isFirst = isFirstLaunch;
+
+    return isFirstLaunch;
   }
 }
