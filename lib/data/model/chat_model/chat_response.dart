@@ -15,8 +15,8 @@ abstract class ChatResponse with _$ChatResponse {
     required String? imageUrl,
     required int? unreadCount,
     required bool? isRead,
-    required From? from,
-    required From? to,
+    required FromChatResponse? from,
+    required FromChatResponse? to,
     required bool? isDelete,
     required String? createdBy,
     required String? createdFrom,
@@ -30,9 +30,9 @@ abstract class ChatResponse with _$ChatResponse {
 }
 
 @freezed
-abstract class From with _$From {
+abstract class FromChatResponse with _$FromChatResponse {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-  const factory From({
+  const factory FromChatResponse({
     required String? id,
     required String? name,
     required String? dob,
@@ -49,7 +49,7 @@ abstract class From with _$From {
     dynamic hospital,
     required String? imageUrl,
     required String? coverUrl,
-  }) = _From;
+  }) = _FromChatResponse;
 
-  factory From.fromJson(Map<String, dynamic> json) => _$FromFromJson(json);
+  factory FromChatResponse.fromJson(Map<String, dynamic> json) => _$FromChatResponseFromJson(json);
 }

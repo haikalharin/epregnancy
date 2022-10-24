@@ -656,7 +656,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                   ),
                 ),
                 Visibility(
-                  visible: chatHasEnded,
+                  visible: !chatHasEnded,
                   child: Column(
                     children: [
                       Container(

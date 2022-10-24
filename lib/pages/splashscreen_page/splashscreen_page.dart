@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
 import 'package:PregnancyApp/utils/web_socket_chat_channel.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,16 +46,17 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<SplashscreenBloc, SplashscreenState>(
-      listener: (context, state) {
+      listener: (context, state) async {
       if (state.submitStatus == FormzStatus.submissionSuccess) {
         if(state.isExist){
           // Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: state.role!.role);
           // todo handel login from API
           print('role splash : ${state.role}');
-          if(state.role == 'MIDWIFE' || state.userModel?.isPatient == false){
+          if(state.role == 'MIDWIFE' || state.userModel?.isPatient == false) {
+            HospitalModel _hospital = await AppSharedPreference.getHospital();
             Navigator.of(context).pushReplacementNamed(
                 RouteName.dashboardNakesPage,
-                arguments: {'name': state.userModel?.name, 'hospital_id': state.userModel?.hospitalId}
+                arguments: {'name': state.userModel?.name, 'hospital_id': _hospital.id}
             );
           } else {
             Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: {'role': state.role, 'inital_index': 0, 'user_id':state.userModel?.id ??''});

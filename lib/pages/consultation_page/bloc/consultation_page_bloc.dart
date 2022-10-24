@@ -7,6 +7,7 @@ import 'package:PregnancyApp/common/validators/mandatory_field_validator.dart';
 import 'package:PregnancyApp/data/model/consultation_model/consultation_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/repository/consultation_repository/consultation_repository.dart';
+import 'package:PregnancyApp/utils/secure.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -51,7 +52,8 @@ class ConsultationPageBloc
     ConsultationDisposeEvent event,
     ConsultationPageState state,
   ) {
-    return ConsultationPageState(listConsultation: state.listConsultation, userModel: state.userModel);
+    return ConsultationPageState(
+        listConsultation: state.listConsultation, userModel: state.userModel);
   }
 
   ConsultationPageState _mapConsultationDescriptionChangedToState(
@@ -73,27 +75,66 @@ class ConsultationPageBloc
     ConsultationFetchEvent event,
     ConsultationPageState state,
   ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, listConsultation: []);
-    UserModel userModel = await AppSharedPreference.getUser();
-    try {
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress, listConsultation: []);
 
+    UserModel _userModel = await AppSharedPreference.getUser();
+    UserModel userModel = _userModel.copyWith(
+      imageUrl: _userModel.imageUrl != null || !_userModel.imageUrl!.contains("http")? await aesDecryptor(_userModel.imageUrl) : _userModel.imageUrl,
+    );
+
+    try {
       final responseModel =
           await consultationRepository.fetchListConsultation();
       List<ConsultationModel> listConsultation = responseModel.data ?? [];
-      if (listConsultation.isNotEmpty) {
+      List<ConsultationModel> consultations = [];
+
+      for (var consultation in listConsultation) {
+        List<Comment> _comments = [];
+        // todo comment decrypt entity
+        // for(var comment in consultation.comments ?? []){
+        //   Comment _comment = comment.copyWith(
+        //
+        //   );
+        // }
+
+
+        User? user = consultation.user?.copyWith(
+          id: await aesDecryptor(consultation.user?.id),
+          name: await aesDecryptor(consultation.user?.name),
+          imageUrl: consultation.user?.imageUrl != null
+              ? await aesDecryptor(consultation.user?.imageUrl)
+              : null,
+          // email: await aesDecryptor(consultation.user?.email),
+          // mobile: await aesDecryptor(consultation.user?.mobile),
+        );
+
+        ConsultationModel consultationModel = consultation.copyWith(
+          id: await aesDecryptor(consultation.id),
+          imageUrl: consultation.imageUrl != null ? await aesDecryptor(consultation.imageUrl) : null,
+          userId: await aesDecryptor(consultation.userId),
+          user: user,
+        );
+        consultations.add(consultationModel);
+      }
+
+      if (consultations.isNotEmpty) {
         yield state.copyWith(
-            listConsultation: listConsultation,
+            listConsultation: consultations,
             submitStatus: FormzStatus.submissionSuccess,
-        userModel: userModel);
-      } else{
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, userModel: userModel);
+            userModel: userModel);
+      } else {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure, userModel: userModel);
       }
     } on SurveyErrorException catch (e) {
       print(e);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, userModel: userModel);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, userModel: userModel);
     } on Exception catch (a) {
       print(a);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, userModel: userModel);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, userModel: userModel);
     }
   }
 

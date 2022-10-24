@@ -31,10 +31,10 @@ class DashBoardNakesPage extends StatefulWidget {
 }
 
 class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
-  DateTime dt2 = DateTime.parse("2022-10-12 02:50:00");
 
   @override
   void initState() {
+    print('hosptalId : ${widget.hospitalId}');
     // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
@@ -177,7 +177,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
 
                   BlocBuilder<ChatPendingBloc, ChatPendingState>(
                       builder: (context, state) {
-                    if (state.chatPendingList?.length == 0) {
+                    if (state.chatPendingList?.length == 0 || state.chatPendingList == null) {
                       return Container(
                         height: 100.h,
                         width: MediaQuery.of(context).size.width,

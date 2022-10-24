@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/login_model/login_model.dart';
+import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
+import 'package:PregnancyApp/utils/secure.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,6 +30,7 @@ import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.
 import '../../../utils/string_constans.dart';
 import '../../example_dashboard_chat_page/login_example_page/model/username.dart';
 import '../model/password.dart';
+
 
 part 'login_event.dart';
 
@@ -143,17 +147,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // temporary
       ResponseModel response = await userRepository.loginNonOtp(LoginModel(
           username: state.username.value, password: state.password.value));
-      UserModel userModel = response.data ?? const UserModel() ;
-
+      LoginResponseData loginResponseData = response.data;
       if (response.code == 200) {
-          await AppSharedPreference.setUser(response.data);
-          await AppSharedPreference.remove("_userRegister");
-        await AppSharedPreference.setString(
-            AppSharedPreference.token, userModel.token ?? '');
-        await AppSharedPreference.setUser(userModel);
-        if(userModel.isMidwife == true && userModel.hospitalModel != null) {
-          print('hospital model : ${userModel.hospitalModel?.name}');
-          await AppSharedPreference.setHospital(userModel.hospitalModel!);
+        // set jwt token
+        await AppSharedPreference.setString(AppSharedPreference.token, loginResponseData.token!.accessToken!);
+
+        final ResponseModel<UserModel> userInfoResponse = await userRepository.getUserInfo();
+        UserModel _userModel = userInfoResponse.data;
+        UserModel userModel = _userModel.copyWith(
+          name: await aesDecryptor(_userModel.name),
+          hospitalId: _userModel.hospitalId == null ? _userModel.hospitalId : await aesDecryptor(_userModel.hospitalId)
+        );
+        await AppSharedPreference.setUser(_userModel);
+        await AppSharedPreference.remove("_userRegister");
+        // await AppSharedPreference.setUser(userModel);
+        if(userModel.isMidwife == true && loginResponseData.user?.hospital != null) {
+          print('hospital model : ${loginResponseData.user?.hospital}');
+          HospitalModel hospitalModel = HospitalModel(
+              id: loginResponseData.user?.hospital?.id,
+              alias: loginResponseData.user?.hospital?.alias,
+              name: loginResponseData.user?.name,
+              address: loginResponseData.user?.hospital?.address,
+              city: loginResponseData.user?.hospital?.city,
+              country: "",
+              postalCode: loginResponseData.user?.hospital?.postalCode,
+              phone: loginResponseData.user?.hospital?.phone,
+              email: loginResponseData.user?.hospital?.email,
+              latitude: "",
+              longitude: "", status: "",
+              imageUrl: loginResponseData.user?.hospital?.imageUrl,
+              coverUrl: "", isDelete: false, createdBy: "", createdFrom: "", createdDate: "", modifiedBy: "",
+              modifiedFrom: "", modifiedDate: "", pin: "", pinValidStart: "", pinValidEnd: "");
+          await AppSharedPreference.setHospital(hospitalModel);
         }
 
         bool isActive = false;
@@ -165,20 +190,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
                 typeEvent: StringConstant.submitLogin,
-                userModel: response.data,
+                userModel: userModel,
                 isActive: isActive);
           } else {
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
                 typeEvent: StringConstant.submitLogin,
-                userModel: response.data,
+                userModel: userModel,
                 isActive: isActive);
           }
         }else {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
               typeEvent: StringConstant.submitLogin,
-              userModel: response.data, isActive: true);
+              userModel: userModel, isActive: true);
         }
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

@@ -9,12 +9,17 @@ class ServiceUrl {
   static String userInfo = '$user/info';
   static String checkIn = '$user/checkin/';
   static String pointHistory = '$user/points-history';
-  static String login = '$user/login';
+  static String login = '$auth/login';
   static String loginMobile = 'loginMobile';
   static String register = '$user/register';
   static String updateUser = '$user/update';
   static String updateQuestioner = '$user/update';
   static String forgotPassword = '$user/forgot-password';
+
+  //auth
+  static String auth = 'auth';
+  static String newLogin = '$auth/login';
+
 
   static String checkUserExist = '$user/check-availability/username';
   static String changePassword = '$user/change-password';

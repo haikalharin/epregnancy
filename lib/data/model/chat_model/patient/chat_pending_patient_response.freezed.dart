@@ -1394,8 +1394,8 @@ mixin _$ChatPendingPatientHospital {
   String? get postalCode => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
-  double? get latitude => throw _privateConstructorUsedError;
-  double? get longitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   String? get coverUrl => throw _privateConstructorUsedError;
@@ -1421,8 +1421,8 @@ abstract class $ChatPendingPatientHospitalCopyWith<$Res> {
       String? postalCode,
       String? phone,
       String? email,
-      double? latitude,
-      double? longitude,
+      String? latitude,
+      String? longitude,
       String? status,
       String? imageUrl,
       String? coverUrl});
@@ -1494,11 +1494,11 @@ class _$ChatPendingPatientHospitalCopyWithImpl<$Res>
       latitude: latitude == freezed
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as String?,
       longitude: longitude == freezed
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -1533,8 +1533,8 @@ abstract class _$$_ChatPendingPatientHospitalCopyWith<$Res>
       String? postalCode,
       String? phone,
       String? email,
-      double? latitude,
-      double? longitude,
+      String? latitude,
+      String? longitude,
       String? status,
       String? imageUrl,
       String? coverUrl});
@@ -1610,11 +1610,11 @@ class __$$_ChatPendingPatientHospitalCopyWithImpl<$Res>
       latitude: latitude == freezed
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as String?,
       longitude: longitude == freezed
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -1675,9 +1675,9 @@ class _$_ChatPendingPatientHospital
   @override
   final String? email;
   @override
-  final double? latitude;
+  final String? latitude;
   @override
-  final double? longitude;
+  final String? longitude;
   @override
   final String? status;
   @override
@@ -1776,8 +1776,8 @@ abstract class _ChatPendingPatientHospital
       required final String? postalCode,
       required final String? phone,
       required final String? email,
-      required final double? latitude,
-      required final double? longitude,
+      required final String? latitude,
+      required final String? longitude,
       required final String? status,
       required final String? imageUrl,
       required final String? coverUrl}) = _$_ChatPendingPatientHospital;
@@ -1804,9 +1804,9 @@ abstract class _ChatPendingPatientHospital
   @override
   String? get email => throw _privateConstructorUsedError;
   @override
-  double? get latitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
   @override
-  double? get longitude => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
   @override
   String? get status => throw _privateConstructorUsedError;
   @override

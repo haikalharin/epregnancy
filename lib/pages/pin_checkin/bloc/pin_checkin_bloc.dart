@@ -41,7 +41,6 @@ class PinCheckInBloc extends Bloc<PinCheckInEvent, PinCheckInState> {
     try {
       HospitalModel? hospitalModel = await AppSharedPreference.getHospital();
       ResponseModel response = await userRepository.checkInWithPin(hospitalModel.id!, event.pin!);
-
       if (response.code == 200) {
         yield state.copyWith(
           submitStatus: FormzStatus.submissionSuccess);

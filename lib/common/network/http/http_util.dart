@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
+import 'package:PregnancyApp/pages/login_page/login_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart';
 
+import '../../../main.dart';
 import '../../../utils/remote_utils.dart';
 import '../../exceptions/server_auth_error_exception.dart';
 import '../../exceptions/server_error_exception.dart';
@@ -23,7 +26,7 @@ class HttpUtil {
       case 200:
         return _getSuccessResponse(response);
       case 400:
-        return _getSuccessResponse(response);
+        return _tokenExpired(response);
       case 403:
         return _getSuccessResponse(response);
       case 404:
@@ -46,6 +49,17 @@ class HttpUtil {
 
     debugPrint('>>>>>>> [RESPONSE] $_responseJson');
 
+    return _responseJson;
+  }
+
+  static dynamic _tokenExpired(Response response) {
+    final _responseJson = json.decode(response.body);
+
+    debugPrint('>>>>>>> [Token Expired Response] $_responseJson');
+    // AppSharedPreference.clear();
+    //FIX SCREEN ONBOARDING MENUMPUK SAAT SESSION EXPIRED
+    // navigatorKey.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
+    //navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (BuildContext context) => OnBoardingScreen(isHavePopUpMessage: "401",)));
     return _responseJson;
   }
 }

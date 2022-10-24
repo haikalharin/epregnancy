@@ -14,8 +14,8 @@ abstract class ChatPendingSendResponse with _$ChatPendingSendResponse {
     required String? message,
     required int? unreadCount,
     required bool? isRead,
-    required From? from,
-    required From? to,
+    required ChatPendingFromSendResponse? from,
+    required ChatPendingFromSendResponse? to,
     required bool? isDelete,
     required String? createdBy,
     required String? createdFrom,
@@ -29,9 +29,9 @@ abstract class ChatPendingSendResponse with _$ChatPendingSendResponse {
 }
 
 @freezed
-abstract class From with _$From {
+abstract class ChatPendingFromSendResponse with _$ChatPendingFromSendResponse {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-  const factory From({
+  const factory ChatPendingFromSendResponse({
     required String? id,
     required String? name,
     required String? dob,
@@ -48,7 +48,7 @@ abstract class From with _$From {
     required String? hospital,
     required String? imageUrl,
     required String? coverUrl,
-  }) = _From;
+  }) = _ChatPendingFromSendResponse;
 
-  factory From.fromJson(Map<String, dynamic> json) => _$FromFromJson(json);
+  factory ChatPendingFromSendResponse.fromJson(Map<String, dynamic> json) => _$ChatPendingFromSendResponseFromJson(json);
 }

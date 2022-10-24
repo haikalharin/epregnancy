@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/repository/hospital_repository/hospital_repository.dart';
+import 'package:PregnancyApp/utils/secure.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -28,13 +31,25 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-hospital', hospitals: []);
     try {
-      List<HospitalModel> hospitalList = await hospitalRepository.fetchHospitals(event.name ?? '');
+      List<HospitalModel> _hospitalList = await hospitalRepository.fetchHospitals(event.name ?? '');
+      List<HospitalModel> hospitalList = [];
+
+      for (var element in _hospitalList) {
+        HospitalModel _hospital = element.copyWith(
+          id: await aesDecryptor(element.id),
+          name: await aesDecryptor(element.name),
+          address: await aesDecryptor(element.address),
+        );
+        hospitalList.add(_hospital);
+      }
+
       if(hospitalList.isNotEmpty) {
         yield state.copyWith(type: 'fetch-hospital-success', status: FormzStatus.submissionSuccess, hospitals: hospitalList);
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-hospital-failed', hospitals: []);
       }
     } catch(e) {
+      print('hospital failed : $e');
       yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
     }
   }
@@ -45,7 +60,19 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-hospital', hospitals: []);
     try {
-      List<HospitalModel> hospitalList = await hospitalRepository.fetchHospitalsById(event.id ?? '');
+      List<HospitalModel> _hospitalList = await hospitalRepository.fetchHospitalsById(event.id ?? '');
+      List<HospitalModel> hospitalList = [];
+      for (var element in _hospitalList) {
+        HospitalModel _hospital = element.copyWith(
+          id: await aesDecryptor(element.id),
+          name: await aesDecryptor(element.name),
+          address: await aesDecryptor(element.address),
+          pin: await aesDecryptor(element.pin),
+          pinValidStart: await aesDecryptor(element.pinValidStart),
+          pinValidEnd: await aesDecryptor(element.pinValidEnd),
+        );
+        hospitalList.add(_hospital);
+      }
       if(hospitalList.isNotEmpty) {
         await AppSharedPreference.setHospital(hospitalList[0]);
         yield state.copyWith(type: 'fetch-hospital-success', status: FormzStatus.submissionSuccess, hospitals: hospitalList);

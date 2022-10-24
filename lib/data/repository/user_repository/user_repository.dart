@@ -35,7 +35,7 @@ abstract class UserRepository {
   Future<ResponseModel> login(LoginModel loginModel);
   Future<ResponseModel> loginNonOtp(LoginModel loginModel);
 
-  Future<ResponseModel<UserInfo>> getUserInfo();
+  Future<ResponseModel<UserModel>> getUserInfo();
 
   Future<ResponseModel<CheckinResponse>> hitCheckIn(String day);
   Future<List<PointHistory>> fetchPointHistory();

@@ -14,6 +14,7 @@ import '../../../data/model/consultation_model/consultation_model.dart';
 import '../../../data/model/response_model/response_model.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../utils/secure.dart';
 
 part 'profile_page_event.dart';
 
@@ -36,7 +37,11 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
     InitialProfileEvent event,
     ProfilePageState state,
   ) async* {
-    var user = await AppSharedPreference.getUser();
+    var _user = await AppSharedPreference.getUser();
+    UserModel user = _user.copyWith(
+      imageUrl: _user.imageUrl != null ? await aesDecryptor(_user.imageUrl) : null,
+    );
+
     yield ProfilePageState(user: user);
   }
 

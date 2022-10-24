@@ -141,7 +141,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<ResponseModel<ui.UserInfo>> getUserInfo() async {
+  Future<ResponseModel<UserModel>> getUserInfo() async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.getUserInfo();
     }

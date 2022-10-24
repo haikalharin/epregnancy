@@ -27,8 +27,8 @@ mixin _$ChatPendingSendResponse {
   String? get message => throw _privateConstructorUsedError;
   int? get unreadCount => throw _privateConstructorUsedError;
   bool? get isRead => throw _privateConstructorUsedError;
-  From? get from => throw _privateConstructorUsedError;
-  From? get to => throw _privateConstructorUsedError;
+  ChatPendingFromSendResponse? get from => throw _privateConstructorUsedError;
+  ChatPendingFromSendResponse? get to => throw _privateConstructorUsedError;
   bool? get isDelete => throw _privateConstructorUsedError;
   String? get createdBy => throw _privateConstructorUsedError;
   String? get createdFrom => throw _privateConstructorUsedError;
@@ -55,8 +55,8 @@ abstract class $ChatPendingSendResponseCopyWith<$Res> {
       String? message,
       int? unreadCount,
       bool? isRead,
-      From? from,
-      From? to,
+      ChatPendingFromSendResponse? from,
+      ChatPendingFromSendResponse? to,
       bool? isDelete,
       String? createdBy,
       String? createdFrom,
@@ -65,8 +65,8 @@ abstract class $ChatPendingSendResponseCopyWith<$Res> {
       String? modifiedFrom,
       String? modifiedDate});
 
-  $FromCopyWith<$Res>? get from;
-  $FromCopyWith<$Res>? get to;
+  $ChatPendingFromSendResponseCopyWith<$Res>? get from;
+  $ChatPendingFromSendResponseCopyWith<$Res>? get to;
 }
 
 /// @nodoc
@@ -124,11 +124,11 @@ class _$ChatPendingSendResponseCopyWithImpl<$Res>
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as From?,
+              as ChatPendingFromSendResponse?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as From?,
+              as ChatPendingFromSendResponse?,
       isDelete: isDelete == freezed
           ? _value.isDelete
           : isDelete // ignore: cast_nullable_to_non_nullable
@@ -161,23 +161,23 @@ class _$ChatPendingSendResponseCopyWithImpl<$Res>
   }
 
   @override
-  $FromCopyWith<$Res>? get from {
+  $ChatPendingFromSendResponseCopyWith<$Res>? get from {
     if (_value.from == null) {
       return null;
     }
 
-    return $FromCopyWith<$Res>(_value.from!, (value) {
+    return $ChatPendingFromSendResponseCopyWith<$Res>(_value.from!, (value) {
       return _then(_value.copyWith(from: value));
     });
   }
 
   @override
-  $FromCopyWith<$Res>? get to {
+  $ChatPendingFromSendResponseCopyWith<$Res>? get to {
     if (_value.to == null) {
       return null;
     }
 
-    return $FromCopyWith<$Res>(_value.to!, (value) {
+    return $ChatPendingFromSendResponseCopyWith<$Res>(_value.to!, (value) {
       return _then(_value.copyWith(to: value));
     });
   }
@@ -197,8 +197,8 @@ abstract class _$$_ChatPendingSendResponseCopyWith<$Res>
       String? message,
       int? unreadCount,
       bool? isRead,
-      From? from,
-      From? to,
+      ChatPendingFromSendResponse? from,
+      ChatPendingFromSendResponse? to,
       bool? isDelete,
       String? createdBy,
       String? createdFrom,
@@ -208,9 +208,9 @@ abstract class _$$_ChatPendingSendResponseCopyWith<$Res>
       String? modifiedDate});
 
   @override
-  $FromCopyWith<$Res>? get from;
+  $ChatPendingFromSendResponseCopyWith<$Res>? get from;
   @override
-  $FromCopyWith<$Res>? get to;
+  $ChatPendingFromSendResponseCopyWith<$Res>? get to;
 }
 
 /// @nodoc
@@ -271,11 +271,11 @@ class __$$_ChatPendingSendResponseCopyWithImpl<$Res>
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as From?,
+              as ChatPendingFromSendResponse?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as From?,
+              as ChatPendingFromSendResponse?,
       isDelete: isDelete == freezed
           ? _value.isDelete
           : isDelete // ignore: cast_nullable_to_non_nullable
@@ -347,9 +347,9 @@ class _$_ChatPendingSendResponse
   @override
   final bool? isRead;
   @override
-  final From? from;
+  final ChatPendingFromSendResponse? from;
   @override
-  final From? to;
+  final ChatPendingFromSendResponse? to;
   @override
   final bool? isDelete;
   @override
@@ -461,8 +461,8 @@ abstract class _ChatPendingSendResponse implements ChatPendingSendResponse {
       required final String? message,
       required final int? unreadCount,
       required final bool? isRead,
-      required final From? from,
-      required final From? to,
+      required final ChatPendingFromSendResponse? from,
+      required final ChatPendingFromSendResponse? to,
       required final bool? isDelete,
       required final String? createdBy,
       required final String? createdFrom,
@@ -487,9 +487,9 @@ abstract class _ChatPendingSendResponse implements ChatPendingSendResponse {
   @override
   bool? get isRead => throw _privateConstructorUsedError;
   @override
-  From? get from => throw _privateConstructorUsedError;
+  ChatPendingFromSendResponse? get from => throw _privateConstructorUsedError;
   @override
-  From? get to => throw _privateConstructorUsedError;
+  ChatPendingFromSendResponse? get to => throw _privateConstructorUsedError;
   @override
   bool? get isDelete => throw _privateConstructorUsedError;
   @override
@@ -510,12 +510,13 @@ abstract class _ChatPendingSendResponse implements ChatPendingSendResponse {
       get copyWith => throw _privateConstructorUsedError;
 }
 
-From _$FromFromJson(Map<String, dynamic> json) {
-  return _From.fromJson(json);
+ChatPendingFromSendResponse _$ChatPendingFromSendResponseFromJson(
+    Map<String, dynamic> json) {
+  return _ChatPendingFromSendResponse.fromJson(json);
 }
 
 /// @nodoc
-mixin _$From {
+mixin _$ChatPendingFromSendResponse {
   String? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get dob => throw _privateConstructorUsedError;
@@ -535,13 +536,16 @@ mixin _$From {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $FromCopyWith<From> get copyWith => throw _privateConstructorUsedError;
+  $ChatPendingFromSendResponseCopyWith<ChatPendingFromSendResponse>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FromCopyWith<$Res> {
-  factory $FromCopyWith(From value, $Res Function(From) then) =
-      _$FromCopyWithImpl<$Res>;
+abstract class $ChatPendingFromSendResponseCopyWith<$Res> {
+  factory $ChatPendingFromSendResponseCopyWith(
+          ChatPendingFromSendResponse value,
+          $Res Function(ChatPendingFromSendResponse) then) =
+      _$ChatPendingFromSendResponseCopyWithImpl<$Res>;
   $Res call(
       {String? id,
       String? name,
@@ -562,12 +566,13 @@ abstract class $FromCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$FromCopyWithImpl<$Res> implements $FromCopyWith<$Res> {
-  _$FromCopyWithImpl(this._value, this._then);
+class _$ChatPendingFromSendResponseCopyWithImpl<$Res>
+    implements $ChatPendingFromSendResponseCopyWith<$Res> {
+  _$ChatPendingFromSendResponseCopyWithImpl(this._value, this._then);
 
-  final From _value;
+  final ChatPendingFromSendResponse _value;
   // ignore: unused_field
-  final $Res Function(From) _then;
+  final $Res Function(ChatPendingFromSendResponse) _then;
 
   @override
   $Res call({
@@ -658,9 +663,12 @@ class _$FromCopyWithImpl<$Res> implements $FromCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$_FromCopyWith<$Res> implements $FromCopyWith<$Res> {
-  factory _$$_FromCopyWith(_$_From value, $Res Function(_$_From) then) =
-      __$$_FromCopyWithImpl<$Res>;
+abstract class _$$_ChatPendingFromSendResponseCopyWith<$Res>
+    implements $ChatPendingFromSendResponseCopyWith<$Res> {
+  factory _$$_ChatPendingFromSendResponseCopyWith(
+          _$_ChatPendingFromSendResponse value,
+          $Res Function(_$_ChatPendingFromSendResponse) then) =
+      __$$_ChatPendingFromSendResponseCopyWithImpl<$Res>;
   @override
   $Res call(
       {String? id,
@@ -682,13 +690,17 @@ abstract class _$$_FromCopyWith<$Res> implements $FromCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_FromCopyWithImpl<$Res> extends _$FromCopyWithImpl<$Res>
-    implements _$$_FromCopyWith<$Res> {
-  __$$_FromCopyWithImpl(_$_From _value, $Res Function(_$_From) _then)
-      : super(_value, (v) => _then(v as _$_From));
+class __$$_ChatPendingFromSendResponseCopyWithImpl<$Res>
+    extends _$ChatPendingFromSendResponseCopyWithImpl<$Res>
+    implements _$$_ChatPendingFromSendResponseCopyWith<$Res> {
+  __$$_ChatPendingFromSendResponseCopyWithImpl(
+      _$_ChatPendingFromSendResponse _value,
+      $Res Function(_$_ChatPendingFromSendResponse) _then)
+      : super(_value, (v) => _then(v as _$_ChatPendingFromSendResponse));
 
   @override
-  _$_From get _value => super._value as _$_From;
+  _$_ChatPendingFromSendResponse get _value =>
+      super._value as _$_ChatPendingFromSendResponse;
 
   @override
   $Res call({
@@ -709,7 +721,7 @@ class __$$_FromCopyWithImpl<$Res> extends _$FromCopyWithImpl<$Res>
     Object? imageUrl = freezed,
     Object? coverUrl = freezed,
   }) {
-    return _then(_$_From(
+    return _then(_$_ChatPendingFromSendResponse(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -781,8 +793,10 @@ class __$$_FromCopyWithImpl<$Res> extends _$FromCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_From with DiagnosticableTreeMixin implements _From {
-  const _$_From(
+class _$_ChatPendingFromSendResponse
+    with DiagnosticableTreeMixin
+    implements _ChatPendingFromSendResponse {
+  const _$_ChatPendingFromSendResponse(
       {required this.id,
       required this.name,
       required this.dob,
@@ -800,7 +814,8 @@ class _$_From with DiagnosticableTreeMixin implements _From {
       required this.imageUrl,
       required this.coverUrl});
 
-  factory _$_From.fromJson(Map<String, dynamic> json) => _$$_FromFromJson(json);
+  factory _$_ChatPendingFromSendResponse.fromJson(Map<String, dynamic> json) =>
+      _$$_ChatPendingFromSendResponseFromJson(json);
 
   @override
   final String? id;
@@ -837,14 +852,14 @@ class _$_From with DiagnosticableTreeMixin implements _From {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'From(id: $id, name: $name, dob: $dob, email: $email, mobile: $mobile, username: $username, status: $status, isPatient: $isPatient, isMidwife: $isMidwife, isAdmin: $isAdmin, isSuperAdmin: $isSuperAdmin, isVerified: $isVerified, hospitalId: $hospitalId, hospital: $hospital, imageUrl: $imageUrl, coverUrl: $coverUrl)';
+    return 'ChatPendingFromSendResponse(id: $id, name: $name, dob: $dob, email: $email, mobile: $mobile, username: $username, status: $status, isPatient: $isPatient, isMidwife: $isMidwife, isAdmin: $isAdmin, isSuperAdmin: $isSuperAdmin, isVerified: $isVerified, hospitalId: $hospitalId, hospital: $hospital, imageUrl: $imageUrl, coverUrl: $coverUrl)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'From'))
+      ..add(DiagnosticsProperty('type', 'ChatPendingFromSendResponse'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('dob', dob))
@@ -867,7 +882,7 @@ class _$_From with DiagnosticableTreeMixin implements _From {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_From &&
+            other is _$_ChatPendingFromSendResponse &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.dob, dob) &&
@@ -912,17 +927,19 @@ class _$_From with DiagnosticableTreeMixin implements _From {
 
   @JsonKey(ignore: true)
   @override
-  _$$_FromCopyWith<_$_From> get copyWith =>
-      __$$_FromCopyWithImpl<_$_From>(this, _$identity);
+  _$$_ChatPendingFromSendResponseCopyWith<_$_ChatPendingFromSendResponse>
+      get copyWith => __$$_ChatPendingFromSendResponseCopyWithImpl<
+          _$_ChatPendingFromSendResponse>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FromToJson(this);
+    return _$$_ChatPendingFromSendResponseToJson(this);
   }
 }
 
-abstract class _From implements From {
-  const factory _From(
+abstract class _ChatPendingFromSendResponse
+    implements ChatPendingFromSendResponse {
+  const factory _ChatPendingFromSendResponse(
       {required final String? id,
       required final String? name,
       required final String? dob,
@@ -938,9 +955,10 @@ abstract class _From implements From {
       required final String? hospitalId,
       required final String? hospital,
       required final String? imageUrl,
-      required final String? coverUrl}) = _$_From;
+      required final String? coverUrl}) = _$_ChatPendingFromSendResponse;
 
-  factory _From.fromJson(Map<String, dynamic> json) = _$_From.fromJson;
+  factory _ChatPendingFromSendResponse.fromJson(Map<String, dynamic> json) =
+      _$_ChatPendingFromSendResponse.fromJson;
 
   @override
   String? get id => throw _privateConstructorUsedError;
@@ -976,5 +994,6 @@ abstract class _From implements From {
   String? get coverUrl => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_FromCopyWith<_$_From> get copyWith => throw _privateConstructorUsedError;
+  _$$_ChatPendingFromSendResponseCopyWith<_$_ChatPendingFromSendResponse>
+      get copyWith => throw _privateConstructorUsedError;
 }

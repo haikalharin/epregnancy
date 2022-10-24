@@ -10,6 +10,7 @@ import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_mod
 import 'package:PregnancyApp/data/repository/article_repository/article_repository.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
+import 'package:PregnancyApp/utils/secure.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -141,12 +142,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     yield state.copyWith(
         submitStatus: FormzStatus.submissionInProgress, tipe: "fetchtotalPoint");
     try {
-      final ResponseModel<UserInfo> userInfo = await userRepository.getUserInfo();
+      final ResponseModel<UserModel> responseModel = await userRepository.getUserInfo();
+      UserModel userInfo = responseModel.data;
       await AppSharedPreference.remove(AppSharedPreference.checkIn);
-      if(userInfo.code == 200) {
-        await AppSharedPreference.setUserInfo(userInfo.data);
+      if(responseModel.code == 200) {
+        // await AppSharedPreference.setUserInfo(userInfo.data);
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.data.totalPointsEarned);
+            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned);
       }
     } on HomeErrorException catch (e) {
       print(e);
@@ -169,7 +171,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if (lisArticle.isNotEmpty) {
         var length = lisArticle.length <3? lisArticle.length: 3;
         for (var i = 0; i < length; i++) {
-          lisArticleFix.add(lisArticle[i]);
+          ArticleModel _articleModel = lisArticle[i].copyWith(
+              id: await aesDecryptor(lisArticle[i].id),
+              imageUrl: await aesDecryptor(lisArticle[i].imageUrl)
+          );
+          print('id : ${_articleModel.id}');
+          print('image url : ${_articleModel.imageUrl}');
+          lisArticleFix.add(_articleModel);
         }
         yield state.copyWith(
             listArticle: lisArticleFix, submitStatus: FormzStatus.submissionSuccess);
@@ -202,9 +210,22 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       final UserModel user = await AppSharedPreference.getUser();
       ResponseModel response = await homeRepository.getBaby(user);
       final myBaby = response.data;
+      List<BabyModelApi>? _babies = [];
+
+      for(int i=0; i < myBaby.length; i++){
+        print('i : $i');
+        BabyModelApi _baby = BabyModelApi(
+          name: await aesDecryptor(myBaby[i].name),
+
+        );
+        _babies.add(_baby);
+      }
+
+
+
       BabyProgressModel babyProgressModel = BabyProgressModel.empty();
       if(myBaby.length != 0){
-      if (myBaby.last.id != '') {
+      if (myBaby?.last.id != '') {
           DateTime dateTimeCreatedAt =
               DateTime.parse(myBaby.last.lastMenstruationDate!);
           DateTime dateTimeNow = DateTime.now();
@@ -221,7 +242,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if (response.code == 200) {
         yield state.copyWith(
           submitStatus: FormzStatus.submissionSuccess,
-          baby: myBaby,
+          baby: _babies,
           days: days.toString(),
           weeks: weeks.toString(),
           babyProgressModel: babyProgressModel,

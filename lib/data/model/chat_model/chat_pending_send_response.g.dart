@@ -17,10 +17,12 @@ _$_ChatPendingSendResponse _$$_ChatPendingSendResponseFromJson(
       isRead: json['is_read'] as bool?,
       from: json['from'] == null
           ? null
-          : From.fromJson(json['from'] as Map<String, dynamic>),
+          : ChatPendingFromSendResponse.fromJson(
+              json['from'] as Map<String, dynamic>),
       to: json['to'] == null
           ? null
-          : From.fromJson(json['to'] as Map<String, dynamic>),
+          : ChatPendingFromSendResponse.fromJson(
+              json['to'] as Map<String, dynamic>),
       isDelete: json['is_delete'] as bool?,
       createdBy: json['created_by'] as String?,
       createdFrom: json['created_from'] as String?,
@@ -50,7 +52,9 @@ Map<String, dynamic> _$$_ChatPendingSendResponseToJson(
       'modified_date': instance.modifiedDate,
     };
 
-_$_From _$$_FromFromJson(Map<String, dynamic> json) => _$_From(
+_$_ChatPendingFromSendResponse _$$_ChatPendingFromSendResponseFromJson(
+        Map<String, dynamic> json) =>
+    _$_ChatPendingFromSendResponse(
       id: json['id'] as String?,
       name: json['name'] as String?,
       dob: json['dob'] as String?,
@@ -69,7 +73,9 @@ _$_From _$$_FromFromJson(Map<String, dynamic> json) => _$_From(
       coverUrl: json['cover_url'] as String?,
     );
 
-Map<String, dynamic> _$$_FromToJson(_$_From instance) => <String, dynamic>{
+Map<String, dynamic> _$$_ChatPendingFromSendResponseToJson(
+        _$_ChatPendingFromSendResponse instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'dob': instance.dob,

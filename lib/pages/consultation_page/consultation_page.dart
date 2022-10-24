@@ -127,6 +127,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
       backgroundColor: Colors.grey.shade200,
       body: BlocListener<ConsultationPageBloc, ConsultationPageState>(
         listener: (context, state) async {
+          print('state consultation : ${state.type}');
           if (state.submitStatus == FormzStatus.submissionFailure) {
             const snackBar = SnackBar(
                 content: Text("Gagal posting"), backgroundColor: Colors.red);
@@ -428,12 +429,14 @@ class _ConsultationPageState extends State<ConsultationPage> {
                           ],
                         )),
                     Expanded(
-                        child: ListForumWidget(
-                      tipeAcara: 'Acara umum',
-                      listConsul:
+                        child: state.listConsultation?.length == 0 ? const Center(
+                          child: CircularProgressIndicator(),
+                        ): ListForumWidget(
+                          tipeAcara: 'Acara umum',
+                          listConsul:
                           state.listConsultation?.reversed.toList() ?? [],
-                      psLikesCount: _psLikesCount,
-                    )),
+                          psLikesCount: _psLikesCount,
+                        )),
                   ],
                 ),
                 _Loading()

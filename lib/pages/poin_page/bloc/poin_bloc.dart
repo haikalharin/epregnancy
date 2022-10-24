@@ -10,7 +10,7 @@ import '../../../common/exceptions/home_error_exception.dart';
 import '../../../common/injector/injector.dart';
 import '../../../data/model/point_model/checkin_entity.dart';
 import '../../../data/model/point_model/checkin_response.dart';
-import '../../../data/model/user_info/user_info.dart';
+import '../../../data/model/user_model_api/user_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../utils/date_formatter.dart';
 import '../../home_page/bloc/home_page_bloc.dart';
@@ -80,8 +80,8 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
       String today =
           DateFormatter.dateFormatForCheckinFilter.format(DateTime.now());
       bool checkInDoneForToday = false;
-      List<CheckIn>? _checkIns = [];
-      UserInfo _userInfo = await AppSharedPreference.getUserInfo();
+      List<Checkin>? _checkIns = [];
+      UserModel _userInfo = await AppSharedPreference.getUser();
       _checkIns = _userInfo.checkins;
 
       //generate 7 day from install date for hari ke checkin

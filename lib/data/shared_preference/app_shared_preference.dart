@@ -83,11 +83,15 @@ class AppSharedPreference {
     String? json = prefs.getString(hospital);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
-      return HospitalModel.fromJson(map);
+      HospitalModel hospitalModel = HospitalModel.fromJson(map);
+      // HospitalModel _hospitalModel = hospitalModel.copyWith(
+      //   // id: await aesDecryptor(hospitalModel.id)
+      // );
+      return hospitalModel;
     } else {
       return const HospitalModel(
           id: "",
-          pin: 0,
+          pin: "",
           pinValidEnd: "",
           pinValidStart: "",
           alias: "",
@@ -98,8 +102,8 @@ class AppSharedPreference {
           postalCode: "",
           phone: "",
           email: "",
-          latitude: 0,
-          longitude: 0,
+          latitude: "",
+          longitude: "",
           status: "",
           imageUrl: "",
           coverUrl: "",
@@ -178,8 +182,15 @@ class AppSharedPreference {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString(_user);
     if (json != null) {
-      Map<String, dynamic> map = jsonDecode(json);
-      return UserModel.fromJson(map);
+      String decryptedJson = decrypty(json);
+      Map<String, dynamic> map = jsonDecode(decryptedJson);
+      UserModel _userModel = UserModel.fromJson(map);
+      UserModel userModel = _userModel.copyWith(
+        name: _userModel.name != null ?  await aesDecryptor(_userModel.name) : null,
+        imageUrl: _userModel.imageUrl != null ? await aesDecryptor(_userModel.imageUrl) : null,
+        hospitalId: _userModel.hospitalId == null ? _userModel.hospitalId : await aesDecryptor(_userModel.hospitalId),
+      );
+      return userModel;
     } else {
       return const UserModel();
     }
@@ -188,7 +199,9 @@ class AppSharedPreference {
   static setUser(UserModel data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_user, json);
+    String encryptedJson = encrypt(json);
+    prefs.setString(_user, encryptedJson);
+    // prefs.setString(_user, json);
   }
 
   static Future<UserRolesModelFirebase> getUserRoleFirebase() async {

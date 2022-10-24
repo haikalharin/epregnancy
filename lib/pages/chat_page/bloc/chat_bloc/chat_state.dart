@@ -8,7 +8,7 @@ class ChatState {
   final List<ChatResponse>? listPersonalChatRoom;
   final ChatResponse? sendChatResponse;
   final ChatPendingSendResponse? chatPendingSendResponse;
-  final ChatPendingPatientResponse? chatPendingPatientResponse;
+  final List<Content>? chatPendingPatientResponse;
   final FormzStatus status;
   final String? errorMessage;
   final String? type;
@@ -36,7 +36,7 @@ class ChatState {
         List<ChatResponse>? listPersonalChatRoom,
         ChatResponse? sendChatResponse,
         ChatPendingSendResponse? chatPendingSendResponse,
-        ChatPendingPatientResponse? chatPendingPatientResponse,
+        List<Content>? chatPendingPatientResponse,
         String? errorMessage,
         String? type
       }) {

@@ -27,8 +27,8 @@ mixin _$ChatResponse {
   String? get imageUrl => throw _privateConstructorUsedError;
   int? get unreadCount => throw _privateConstructorUsedError;
   bool? get isRead => throw _privateConstructorUsedError;
-  From? get from => throw _privateConstructorUsedError;
-  From? get to => throw _privateConstructorUsedError;
+  FromChatResponse? get from => throw _privateConstructorUsedError;
+  FromChatResponse? get to => throw _privateConstructorUsedError;
   bool? get isDelete => throw _privateConstructorUsedError;
   String? get createdBy => throw _privateConstructorUsedError;
   String? get createdFrom => throw _privateConstructorUsedError;
@@ -56,8 +56,8 @@ abstract class $ChatResponseCopyWith<$Res> {
       String? imageUrl,
       int? unreadCount,
       bool? isRead,
-      From? from,
-      From? to,
+      FromChatResponse? from,
+      FromChatResponse? to,
       bool? isDelete,
       String? createdBy,
       String? createdFrom,
@@ -66,8 +66,8 @@ abstract class $ChatResponseCopyWith<$Res> {
       String? modifiedFrom,
       String? modifiedDate});
 
-  $FromCopyWith<$Res>? get from;
-  $FromCopyWith<$Res>? get to;
+  $FromChatResponseCopyWith<$Res>? get from;
+  $FromChatResponseCopyWith<$Res>? get to;
 }
 
 /// @nodoc
@@ -129,11 +129,11 @@ class _$ChatResponseCopyWithImpl<$Res> implements $ChatResponseCopyWith<$Res> {
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as From?,
+              as FromChatResponse?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as From?,
+              as FromChatResponse?,
       isDelete: isDelete == freezed
           ? _value.isDelete
           : isDelete // ignore: cast_nullable_to_non_nullable
@@ -166,23 +166,23 @@ class _$ChatResponseCopyWithImpl<$Res> implements $ChatResponseCopyWith<$Res> {
   }
 
   @override
-  $FromCopyWith<$Res>? get from {
+  $FromChatResponseCopyWith<$Res>? get from {
     if (_value.from == null) {
       return null;
     }
 
-    return $FromCopyWith<$Res>(_value.from!, (value) {
+    return $FromChatResponseCopyWith<$Res>(_value.from!, (value) {
       return _then(_value.copyWith(from: value));
     });
   }
 
   @override
-  $FromCopyWith<$Res>? get to {
+  $FromChatResponseCopyWith<$Res>? get to {
     if (_value.to == null) {
       return null;
     }
 
-    return $FromCopyWith<$Res>(_value.to!, (value) {
+    return $FromChatResponseCopyWith<$Res>(_value.to!, (value) {
       return _then(_value.copyWith(to: value));
     });
   }
@@ -203,8 +203,8 @@ abstract class _$$_ChatResponseCopyWith<$Res>
       String? imageUrl,
       int? unreadCount,
       bool? isRead,
-      From? from,
-      From? to,
+      FromChatResponse? from,
+      FromChatResponse? to,
       bool? isDelete,
       String? createdBy,
       String? createdFrom,
@@ -214,9 +214,9 @@ abstract class _$$_ChatResponseCopyWith<$Res>
       String? modifiedDate});
 
   @override
-  $FromCopyWith<$Res>? get from;
+  $FromChatResponseCopyWith<$Res>? get from;
   @override
-  $FromCopyWith<$Res>? get to;
+  $FromChatResponseCopyWith<$Res>? get to;
 }
 
 /// @nodoc
@@ -281,11 +281,11 @@ class __$$_ChatResponseCopyWithImpl<$Res>
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as From?,
+              as FromChatResponse?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as From?,
+              as FromChatResponse?,
       isDelete: isDelete == freezed
           ? _value.isDelete
           : isDelete // ignore: cast_nullable_to_non_nullable
@@ -358,9 +358,9 @@ class _$_ChatResponse with DiagnosticableTreeMixin implements _ChatResponse {
   @override
   final bool? isRead;
   @override
-  final From? from;
+  final FromChatResponse? from;
   @override
-  final From? to;
+  final FromChatResponse? to;
   @override
   final bool? isDelete;
   @override
@@ -474,8 +474,8 @@ abstract class _ChatResponse implements ChatResponse {
       required final String? imageUrl,
       required final int? unreadCount,
       required final bool? isRead,
-      required final From? from,
-      required final From? to,
+      required final FromChatResponse? from,
+      required final FromChatResponse? to,
       required final bool? isDelete,
       required final String? createdBy,
       required final String? createdFrom,
@@ -502,9 +502,9 @@ abstract class _ChatResponse implements ChatResponse {
   @override
   bool? get isRead => throw _privateConstructorUsedError;
   @override
-  From? get from => throw _privateConstructorUsedError;
+  FromChatResponse? get from => throw _privateConstructorUsedError;
   @override
-  From? get to => throw _privateConstructorUsedError;
+  FromChatResponse? get to => throw _privateConstructorUsedError;
   @override
   bool? get isDelete => throw _privateConstructorUsedError;
   @override
@@ -525,12 +525,12 @@ abstract class _ChatResponse implements ChatResponse {
       throw _privateConstructorUsedError;
 }
 
-From _$FromFromJson(Map<String, dynamic> json) {
-  return _From.fromJson(json);
+FromChatResponse _$FromChatResponseFromJson(Map<String, dynamic> json) {
+  return _FromChatResponse.fromJson(json);
 }
 
 /// @nodoc
-mixin _$From {
+mixin _$FromChatResponse {
   String? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get dob => throw _privateConstructorUsedError;
@@ -550,13 +550,15 @@ mixin _$From {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $FromCopyWith<From> get copyWith => throw _privateConstructorUsedError;
+  $FromChatResponseCopyWith<FromChatResponse> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FromCopyWith<$Res> {
-  factory $FromCopyWith(From value, $Res Function(From) then) =
-      _$FromCopyWithImpl<$Res>;
+abstract class $FromChatResponseCopyWith<$Res> {
+  factory $FromChatResponseCopyWith(
+          FromChatResponse value, $Res Function(FromChatResponse) then) =
+      _$FromChatResponseCopyWithImpl<$Res>;
   $Res call(
       {String? id,
       String? name,
@@ -577,12 +579,13 @@ abstract class $FromCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$FromCopyWithImpl<$Res> implements $FromCopyWith<$Res> {
-  _$FromCopyWithImpl(this._value, this._then);
+class _$FromChatResponseCopyWithImpl<$Res>
+    implements $FromChatResponseCopyWith<$Res> {
+  _$FromChatResponseCopyWithImpl(this._value, this._then);
 
-  final From _value;
+  final FromChatResponse _value;
   // ignore: unused_field
-  final $Res Function(From) _then;
+  final $Res Function(FromChatResponse) _then;
 
   @override
   $Res call({
@@ -673,9 +676,11 @@ class _$FromCopyWithImpl<$Res> implements $FromCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$_FromCopyWith<$Res> implements $FromCopyWith<$Res> {
-  factory _$$_FromCopyWith(_$_From value, $Res Function(_$_From) then) =
-      __$$_FromCopyWithImpl<$Res>;
+abstract class _$$_FromChatResponseCopyWith<$Res>
+    implements $FromChatResponseCopyWith<$Res> {
+  factory _$$_FromChatResponseCopyWith(
+          _$_FromChatResponse value, $Res Function(_$_FromChatResponse) then) =
+      __$$_FromChatResponseCopyWithImpl<$Res>;
   @override
   $Res call(
       {String? id,
@@ -697,13 +702,15 @@ abstract class _$$_FromCopyWith<$Res> implements $FromCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_FromCopyWithImpl<$Res> extends _$FromCopyWithImpl<$Res>
-    implements _$$_FromCopyWith<$Res> {
-  __$$_FromCopyWithImpl(_$_From _value, $Res Function(_$_From) _then)
-      : super(_value, (v) => _then(v as _$_From));
+class __$$_FromChatResponseCopyWithImpl<$Res>
+    extends _$FromChatResponseCopyWithImpl<$Res>
+    implements _$$_FromChatResponseCopyWith<$Res> {
+  __$$_FromChatResponseCopyWithImpl(
+      _$_FromChatResponse _value, $Res Function(_$_FromChatResponse) _then)
+      : super(_value, (v) => _then(v as _$_FromChatResponse));
 
   @override
-  _$_From get _value => super._value as _$_From;
+  _$_FromChatResponse get _value => super._value as _$_FromChatResponse;
 
   @override
   $Res call({
@@ -724,7 +731,7 @@ class __$$_FromCopyWithImpl<$Res> extends _$FromCopyWithImpl<$Res>
     Object? imageUrl = freezed,
     Object? coverUrl = freezed,
   }) {
-    return _then(_$_From(
+    return _then(_$_FromChatResponse(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -796,8 +803,10 @@ class __$$_FromCopyWithImpl<$Res> extends _$FromCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_From with DiagnosticableTreeMixin implements _From {
-  const _$_From(
+class _$_FromChatResponse
+    with DiagnosticableTreeMixin
+    implements _FromChatResponse {
+  const _$_FromChatResponse(
       {required this.id,
       required this.name,
       required this.dob,
@@ -815,7 +824,8 @@ class _$_From with DiagnosticableTreeMixin implements _From {
       required this.imageUrl,
       required this.coverUrl});
 
-  factory _$_From.fromJson(Map<String, dynamic> json) => _$$_FromFromJson(json);
+  factory _$_FromChatResponse.fromJson(Map<String, dynamic> json) =>
+      _$$_FromChatResponseFromJson(json);
 
   @override
   final String? id;
@@ -852,14 +862,14 @@ class _$_From with DiagnosticableTreeMixin implements _From {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'From(id: $id, name: $name, dob: $dob, email: $email, mobile: $mobile, username: $username, status: $status, isPatient: $isPatient, isMidwife: $isMidwife, isAdmin: $isAdmin, isSuperAdmin: $isSuperAdmin, isVerified: $isVerified, hospitalId: $hospitalId, hospital: $hospital, imageUrl: $imageUrl, coverUrl: $coverUrl)';
+    return 'FromChatResponse(id: $id, name: $name, dob: $dob, email: $email, mobile: $mobile, username: $username, status: $status, isPatient: $isPatient, isMidwife: $isMidwife, isAdmin: $isAdmin, isSuperAdmin: $isSuperAdmin, isVerified: $isVerified, hospitalId: $hospitalId, hospital: $hospital, imageUrl: $imageUrl, coverUrl: $coverUrl)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'From'))
+      ..add(DiagnosticsProperty('type', 'FromChatResponse'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('dob', dob))
@@ -882,7 +892,7 @@ class _$_From with DiagnosticableTreeMixin implements _From {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_From &&
+            other is _$_FromChatResponse &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.dob, dob) &&
@@ -927,17 +937,17 @@ class _$_From with DiagnosticableTreeMixin implements _From {
 
   @JsonKey(ignore: true)
   @override
-  _$$_FromCopyWith<_$_From> get copyWith =>
-      __$$_FromCopyWithImpl<_$_From>(this, _$identity);
+  _$$_FromChatResponseCopyWith<_$_FromChatResponse> get copyWith =>
+      __$$_FromChatResponseCopyWithImpl<_$_FromChatResponse>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FromToJson(this);
+    return _$$_FromChatResponseToJson(this);
   }
 }
 
-abstract class _From implements From {
-  const factory _From(
+abstract class _FromChatResponse implements FromChatResponse {
+  const factory _FromChatResponse(
       {required final String? id,
       required final String? name,
       required final String? dob,
@@ -953,9 +963,10 @@ abstract class _From implements From {
       final dynamic hospitalId,
       final dynamic hospital,
       required final String? imageUrl,
-      required final String? coverUrl}) = _$_From;
+      required final String? coverUrl}) = _$_FromChatResponse;
 
-  factory _From.fromJson(Map<String, dynamic> json) = _$_From.fromJson;
+  factory _FromChatResponse.fromJson(Map<String, dynamic> json) =
+      _$_FromChatResponse.fromJson;
 
   @override
   String? get id => throw _privateConstructorUsedError;
@@ -991,5 +1002,6 @@ abstract class _From implements From {
   String? get coverUrl => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_FromCopyWith<_$_From> get copyWith => throw _privateConstructorUsedError;
+  _$$_FromChatResponseCopyWith<_$_FromChatResponse> get copyWith =>
+      throw _privateConstructorUsedError;
 }

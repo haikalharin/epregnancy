@@ -19,11 +19,13 @@ import '../../utils/string_constans.dart';
 import '../home_page/home_page.dart';
 import '../signup_page/bloc/signup_bloc.dart';
 import 'bloc/login_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const _horizontalPadding = 24.0;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key, this.tokenExpired = false}) : super(key: key);
+  final bool tokenExpired;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -39,6 +41,77 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.tokenExpired == true) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return WillPopScope(
+                child: Center(
+                  child: Container(
+                    width: 240.w,
+                    padding: EdgeInsets.all(20.w),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(4.w))),
+                    child: Material(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            "Sesi Berakhir.",
+                            style: TextStyle(
+                                color: EpregnancyColors.blueDark,
+                                fontSize: 14.sp,
+                                fontFamily: "bold"),
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 4.w)),
+                          Text(
+                            "Mohon maaf sesi Anda telah berakhir.",
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                            ),
+                          ),
+                          InkWell(
+                            child: Padding(
+                                padding:
+                                EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
+                                child: SizedBox(
+                                  height: 46.w,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(4.w)),
+                                      color: EpregnancyColors.blueDark,
+                                      disabledColor:
+                                      Colors.grey,
+                                      child: Text('Oke',
+                                          style: TextStyle(
+                                              fontFamily: "bold",
+                                              fontSize: 13.sp,
+                                              color: Colors.white)),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }),
+                                )),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                onWillPop: () => Future.value(false));
+          },
+        );
+      });
+    }
   }
 
   @override

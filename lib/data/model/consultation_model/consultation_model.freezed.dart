@@ -1531,9 +1531,9 @@ mixin _$Hospital {
   @JsonKey(includeIfNull: true)
   String? get email => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
-  double? get latitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
-  double? get longitude => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
   String? get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_url', includeIfNull: true)
@@ -1561,8 +1561,8 @@ abstract class $HospitalCopyWith<$Res> {
       @JsonKey(name: 'postal_code', includeIfNull: true) String? postalCode,
       @JsonKey(includeIfNull: true) String? phone,
       @JsonKey(includeIfNull: true) String? email,
-      @JsonKey(includeIfNull: true) double? latitude,
-      @JsonKey(includeIfNull: true) double? longitude,
+      @JsonKey(includeIfNull: true) String? latitude,
+      @JsonKey(includeIfNull: true) String? longitude,
       @JsonKey(includeIfNull: true) String? status,
       @JsonKey(name: 'image_url', includeIfNull: true) String? imageUrl,
       @JsonKey(name: 'cover_url', includeIfNull: true) String? coverUrl});
@@ -1633,11 +1633,11 @@ class _$HospitalCopyWithImpl<$Res> implements $HospitalCopyWith<$Res> {
       latitude: latitude == freezed
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as String?,
       longitude: longitude == freezed
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -1670,8 +1670,8 @@ abstract class _$$_HospitalCopyWith<$Res> implements $HospitalCopyWith<$Res> {
       @JsonKey(name: 'postal_code', includeIfNull: true) String? postalCode,
       @JsonKey(includeIfNull: true) String? phone,
       @JsonKey(includeIfNull: true) String? email,
-      @JsonKey(includeIfNull: true) double? latitude,
-      @JsonKey(includeIfNull: true) double? longitude,
+      @JsonKey(includeIfNull: true) String? latitude,
+      @JsonKey(includeIfNull: true) String? longitude,
       @JsonKey(includeIfNull: true) String? status,
       @JsonKey(name: 'image_url', includeIfNull: true) String? imageUrl,
       @JsonKey(name: 'cover_url', includeIfNull: true) String? coverUrl});
@@ -1744,11 +1744,11 @@ class __$$_HospitalCopyWithImpl<$Res> extends _$HospitalCopyWithImpl<$Res>
       latitude: latitude == freezed
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as String?,
       longitude: longitude == freezed
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -1816,10 +1816,10 @@ class _$_Hospital implements _Hospital {
   final String? email;
   @override
   @JsonKey(includeIfNull: true)
-  final double? latitude;
+  final String? latitude;
   @override
   @JsonKey(includeIfNull: true)
-  final double? longitude;
+  final String? longitude;
   @override
   @JsonKey(includeIfNull: true)
   final String? status;
@@ -1908,9 +1908,9 @@ abstract class _Hospital implements Hospital {
       @JsonKey(includeIfNull: true)
           final String? email,
       @JsonKey(includeIfNull: true)
-          final double? latitude,
+          final String? latitude,
       @JsonKey(includeIfNull: true)
-          final double? longitude,
+          final String? longitude,
       @JsonKey(includeIfNull: true)
           final String? status,
       @JsonKey(name: 'image_url', includeIfNull: true)
@@ -1949,10 +1949,10 @@ abstract class _Hospital implements Hospital {
   String? get email => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
-  double? get latitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
-  double? get longitude => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
   String? get status => throw _privateConstructorUsedError;

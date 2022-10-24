@@ -38,6 +38,7 @@ import 'package:PregnancyApp/pages/splashscreen_page/bloc/splash_screen_bloc.dar
 import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
 import 'package:PregnancyApp/pages/survey_page/bloc/survey_page_bloc.dart';
 import 'package:PregnancyApp/routes/routes.dart';
+import 'package:encrypt/encrypt.dart' as aes;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,6 +56,8 @@ import 'utils/simple_bloc_observer.dart';
 import 'package:flutter_alice/alice.dart';
 
 // void main() => runApp(MyApp());
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,7 +84,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-
+  @override
+  void initState() {
+    super.initState();
+  }
 
 
 

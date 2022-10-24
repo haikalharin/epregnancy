@@ -324,8 +324,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                           child: Text(
                                                             state.baby!.length !=
                                                                     0
-                                                                ? state.baby!
-                                                                    .first.name!
+                                                                ? state.baby!.first.name!
                                                                 : "",
                                                             style: TextStyle(
                                                                 fontSize: 16,

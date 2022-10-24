@@ -13,6 +13,8 @@ import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
+import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -49,10 +51,10 @@ class RemoteDataSource {
     return data;
   }
 
-  Future<ResponseModel> login(LoginModel loginModel) async {
-    final response = await httpClient.post(ServiceUrl.login, loginModel);
+  Future<ResponseModel<LoginResponseData>> login(LoginModel loginModel) async {
+    final response = await httpClient.post(ServiceUrl.newLogin, loginModel);
 
-    return ResponseModel<UserModel>.fromJson(response, UserModel.fromJson);
+    return ResponseModel<LoginResponseData>.fromJson(response, LoginResponseData.fromJson);
   }
 
   Future<ResponseModel> forgotPassword(String userName) async {
@@ -296,11 +298,11 @@ class RemoteDataSource {
     return ResponseModel.fromJson(response, ResponseModel.empty);
   }
 
-  Future<ResponseModel<UserInfo>> getUserInfo() async {
+  Future<ResponseModel<UserModel>> getUserInfo() async {
     final response = await httpClient.get(ServiceUrl.userInfo);
 
 //    return null;
-    return ResponseModel<UserInfo>.fromJson(response, UserInfo.fromJson);
+    return ResponseModel<UserModel>.fromJson(response, UserModel.fromJson);
   }
 
   Future<ResponseModel<CheckinResponse>> hitCheckInToday(String day) async {

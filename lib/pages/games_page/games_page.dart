@@ -41,7 +41,6 @@ class _GamesPageState extends State<GamesPage> {
       ),
       body: BlocListener<GamesBloc, GamesState>(
         listener: (context, state) {
-          print('state game is : ${state.type}');
           if(state.type == 'play-game-success'){
             Navigator.pop(context);
             Navigator.pushNamed(context, RouteName.webViewPage, arguments: {'game_url': state.playGameResponse?.url, 'game_name': state.playGameResponse?.name});
@@ -77,7 +76,7 @@ class _GamesPageState extends State<GamesPage> {
                             ),
                             child: Column(
                               children: [
-                                Text(state.gamesResponse![index].name ?? '', style: TextStyle(color: Colors.white), )
+                                Text(state.gamesResponse![index].name ?? '', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold), )
                               ],
                             ),
                           ),
