@@ -79,9 +79,6 @@ class ConsultationPageBloc
         submitStatus: FormzStatus.submissionInProgress, listConsultation: []);
 
     UserModel _userModel = await AppSharedPreference.getUser();
-    UserModel userModel = _userModel.copyWith(
-      imageUrl: _userModel.imageUrl != null || !_userModel.imageUrl!.contains("http")? await aesDecryptor(_userModel.imageUrl) : _userModel.imageUrl,
-    );
 
     try {
       final responseModel =
@@ -102,16 +99,11 @@ class ConsultationPageBloc
         User? user = consultation.user?.copyWith(
           id: await aesDecryptor(consultation.user?.id),
           name: await aesDecryptor(consultation.user?.name),
-          imageUrl: consultation.user?.imageUrl != null
-              ? await aesDecryptor(consultation.user?.imageUrl)
-              : null,
           // email: await aesDecryptor(consultation.user?.email),
           // mobile: await aesDecryptor(consultation.user?.mobile),
         );
 
         ConsultationModel consultationModel = consultation.copyWith(
-          id: await aesDecryptor(consultation.id),
-          imageUrl: consultation.imageUrl != null ? await aesDecryptor(consultation.imageUrl) : null,
           userId: await aesDecryptor(consultation.userId),
           user: user,
         );
@@ -122,19 +114,19 @@ class ConsultationPageBloc
         yield state.copyWith(
             listConsultation: consultations,
             submitStatus: FormzStatus.submissionSuccess,
-            userModel: userModel);
+            userModel: _userModel);
       } else {
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionFailure, userModel: userModel);
+            submitStatus: FormzStatus.submissionFailure, userModel: _userModel);
       }
     } on SurveyErrorException catch (e) {
       print(e);
       yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, userModel: userModel);
+          submitStatus: FormzStatus.submissionFailure, userModel: _userModel);
     } on Exception catch (a) {
       print(a);
       yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, userModel: userModel);
+          submitStatus: FormzStatus.submissionFailure, userModel: _userModel);
     }
   }
 

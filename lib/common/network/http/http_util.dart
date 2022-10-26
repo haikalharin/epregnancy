@@ -26,7 +26,7 @@ class HttpUtil {
       case 200:
         return _getSuccessResponse(response);
       case 400:
-        return _tokenExpired(response);
+        return _getSuccessResponse(response);
       case 403:
         return _getSuccessResponse(response);
       case 404:
@@ -38,9 +38,10 @@ class HttpUtil {
       case 500:
         return _getSuccessResponse(response);
       default:
-        throw ServerErrorException(
-          getErrorResult(json.decode(response.body)),
-        );
+        // throw ServerErrorException(
+        //   json.decode(response.body),
+        // );
+        return _getSuccessResponse(response);
     }
   }
 

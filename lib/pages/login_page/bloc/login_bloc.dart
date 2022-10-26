@@ -147,16 +147,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // temporary
       ResponseModel response = await userRepository.loginNonOtp(LoginModel(
           username: state.username.value, password: state.password.value));
-      LoginResponseData loginResponseData = response.data;
+      LoginResponseData? loginResponseData;
       if (response.code == 200) {
+        loginResponseData = response.data;
         // set jwt token
-        await AppSharedPreference.setString(AppSharedPreference.token, loginResponseData.token!.accessToken!);
-
+        await AppSharedPreference.setString(AppSharedPreference.token, loginResponseData!.token!.accessToken!);
         final ResponseModel<UserModel> userInfoResponse = await userRepository.getUserInfo();
         UserModel _userModel = userInfoResponse.data;
         UserModel userModel = _userModel.copyWith(
           name: await aesDecryptor(_userModel.name),
-          hospitalId: _userModel.hospitalId == null ? _userModel.hospitalId : await aesDecryptor(_userModel.hospitalId)
         );
         await AppSharedPreference.setUser(_userModel);
         await AppSharedPreference.remove("_userRegister");
@@ -173,11 +172,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               postalCode: loginResponseData.user?.hospital?.postalCode,
               phone: loginResponseData.user?.hospital?.phone,
               email: loginResponseData.user?.hospital?.email,
-              latitude: "",
-              longitude: "", status: "",
+              latitude: 0.0,
+              longitude: 0.0, status: "",
               imageUrl: loginResponseData.user?.hospital?.imageUrl,
               coverUrl: "", isDelete: false, createdBy: "", createdFrom: "", createdDate: "", modifiedBy: "",
-              modifiedFrom: "", modifiedDate: "", pin: "", pinValidStart: "", pinValidEnd: "");
+              modifiedFrom: "", modifiedDate: "", pin: 0, pinValidStart: "", pinValidEnd: "");
           await AppSharedPreference.setHospital(hospitalModel);
         }
 
@@ -205,14 +204,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               typeEvent: StringConstant.submitLogin,
               userModel: userModel, isActive: true);
         }
+      } else if (response.code == 500) {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: "Maaf Terjadi Kesalahan, Silahkan Coba Lagi");
       } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+        print('response message : ${response.message}');
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message);
       }
     } on LoginErrorException catch (e) {
-      print(e);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
-    } on Exception catch (a) {
-      print(a);
+      print("login error exception" + e.toString());
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+    } on Exception catch (error) {
+      print("exception error : ${error}");
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }

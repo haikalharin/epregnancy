@@ -42,7 +42,7 @@ class HomeRepositoryImpl extends HomeRepository {
   }
 
   @override
-  Future<List<GamesResponse>> fetchGameList() async {
+  Future<ResponseModel<GamesResponse>> fetchGameList() async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchGameList();
     }

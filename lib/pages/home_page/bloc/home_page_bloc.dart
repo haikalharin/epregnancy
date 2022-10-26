@@ -169,18 +169,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       List<ArticleModel> lisArticleFix = [];
       final List<ArticleModel> lisArticle = await articleRepository.fetchArticle();
       if (lisArticle.isNotEmpty) {
-        var length = lisArticle.length <3? lisArticle.length: 3;
-        for (var i = 0; i < length; i++) {
-          ArticleModel _articleModel = lisArticle[i].copyWith(
-              id: await aesDecryptor(lisArticle[i].id),
-              imageUrl: await aesDecryptor(lisArticle[i].imageUrl)
-          );
-          print('id : ${_articleModel.id}');
-          print('image url : ${_articleModel.imageUrl}');
-          lisArticleFix.add(_articleModel);
-        }
         yield state.copyWith(
-            listArticle: lisArticleFix, submitStatus: FormzStatus.submissionSuccess);
+            listArticle: lisArticle, submitStatus: FormzStatus.submissionSuccess);
       }
     } on HomeErrorException catch (e) {
       print(e);
@@ -210,17 +200,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       final UserModel user = await AppSharedPreference.getUser();
       ResponseModel response = await homeRepository.getBaby(user);
       final myBaby = response.data;
-      List<BabyModelApi>? _babies = [];
-
-      for(int i=0; i < myBaby.length; i++){
-        print('i : $i');
-        BabyModelApi _baby = BabyModelApi(
-          name: await aesDecryptor(myBaby[i].name),
-
-        );
-        _babies.add(_baby);
-      }
-
 
 
       BabyProgressModel babyProgressModel = BabyProgressModel.empty();
@@ -242,7 +221,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if (response.code == 200) {
         yield state.copyWith(
           submitStatus: FormzStatus.submissionSuccess,
-          baby: _babies,
+          baby: myBaby,
           days: days.toString(),
           weeks: weeks.toString(),
           babyProgressModel: babyProgressModel,

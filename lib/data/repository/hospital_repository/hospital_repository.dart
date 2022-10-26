@@ -1,8 +1,9 @@
 
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 
 abstract class HospitalRepository {
-  Future<List<HospitalModel>> fetchHospitals(String name);
-  Future<List<HospitalModel>> fetchHospitalsById(String id);
+  Future<ResponseModel<HospitalModel>> fetchHospitals(String name);
+  Future<ResponseModel<HospitalModel>> fetchHospitalsById(String id);
 
 }

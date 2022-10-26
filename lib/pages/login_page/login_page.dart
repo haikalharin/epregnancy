@@ -145,21 +145,19 @@ class _LoginPageState extends State<LoginPage> {
                       var snackBar = SnackBar(
                           content: RichText(
                             textAlign: TextAlign.center,
-                            text: const TextSpan(
+                            text: TextSpan(
                               // Note: Styles for TextSpans must be explicitly defined.
                               // Child text spans will inherit styles from parent
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14.0,
                                 color: Colors.black,
                               ),
                               children: <TextSpan>[
-                                TextSpan(
+                               const TextSpan(
                                     text: "Maaf, ",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
-                                TextSpan(
-                                    text:
-                                        ' Tidak dapat masuk. Informasi login anda tidak sesuai'),
+                                TextSpan(text: state.errorMessage),
                               ],
                             ),
                           ),

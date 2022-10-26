@@ -1,5 +1,6 @@
 
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 
 import '../../../common/exceptions/network_connection_exception.dart';
 import '../../../common/network/network_info.dart';
@@ -13,7 +14,7 @@ class HospitalRepositoryImpl extends HospitalRepository {
   HospitalRepositoryImpl(this.networkInfo, this.remoteDatasource);
 
   @override
-  Future<List<HospitalModel>> fetchHospitals(String name) async {
+  Future<ResponseModel<HospitalModel>> fetchHospitals(String name) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchHospitals(name);
     }
@@ -21,7 +22,7 @@ class HospitalRepositoryImpl extends HospitalRepository {
   }
 
   @override
-  Future<List<HospitalModel>> fetchHospitalsById(String id) async {
+  Future<ResponseModel<HospitalModel>> fetchHospitalsById(String id) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchHospitalsById(id);
     }

@@ -12,7 +12,7 @@ class FetchChatPendingByHospitalId extends ChatPendingEvent {
   final String? hospitalId;
 
   @override
-  List<Object> get props => [hospitalId ?? ''];
+  List<Object> get props => [hospitalId ?? ""];
 }
 
 class RespondPendingChat extends ChatPendingEvent {

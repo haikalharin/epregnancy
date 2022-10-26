@@ -313,22 +313,16 @@ class RemoteDataSource {
         response, CheckinResponse.fromJson);
   }
 
-  Future<List<PointHistory>> fetchPointHistory() async {
+  Future<ResponseModel<PointHistory>> fetchPointHistory() async {
     final response = await httpClient.get(ServiceUrl.pointHistory);
-    final data = <PointHistory>[];
-    getData(response).forEach((item) {
-      data.add(PointHistory.fromJson(item));
-    });
-    return data;
+
+    return ResponseModel.fromJson(response, PointHistory.fromJson);
   }
 
-  Future<List<GamesResponse>> fetchGameList() async {
+  Future<ResponseModel<GamesResponse>> fetchGameList() async {
     final response = await httpClient.get(ServiceUrl.gameList);
-    final data = <GamesResponse>[];
-    getData(response).forEach((item) {
-      data.add(GamesResponse.fromJson(item));
-    });
-    return data;
+
+    return ResponseModel.fromJson(response, GamesResponse.fromJson);
   }
 
   Future<ResponseModel> changePassword(
@@ -342,16 +336,14 @@ class RemoteDataSource {
     return ResponseModel.fromJson(response, ConsultationModel.fromJson);
   }
 
-  Future<List<ChatResponse>> fetchLatestChat() async {
+  Future<ResponseModel<ChatResponse>> fetchLatestChat() async {
     final response = await httpClient.get(ServiceUrl.latestChat);
-    final data = <ChatResponse>[];
-    getData(response).forEach((item) {
-      data.add(ChatResponse.fromJson(item));
-    });
-    return data;
+
+    return ResponseModel.fromJson(response, ChatResponse.fromJson);
+
   }
 
-  Future<List<ChatResponse>> fetchPersonalChatRoom(String id, bool archive) async {
+  Future<ResponseModel<ChatResponse>> fetchPersonalChatRoom(String id, bool archive) async {
     String url = '';
 
     if(archive){
@@ -361,20 +353,12 @@ class RemoteDataSource {
     }
 
     final response = await httpClient.get(url + id);
-    final data = <ChatResponse>[];
-    getData(response).forEach((item) {
-      data.add(ChatResponse.fromJson(item));
-    });
-    return data;
+    return ResponseModel.fromJson(response, ChatResponse.fromJson);
   }
 
-  Future<List<ChatPendingResponseList>> fetchChatPendingList() async {
+  Future<ResponseModel<ChatPendingResponseList>> fetchChatPendingList() async {
     final response = await httpClient.get(ServiceUrl.chatPendingList);
-    final data = <ChatPendingResponseList>[];
-    getData(response).forEach((item) {
-      data.add(ChatPendingResponseList.fromJson(item));
-    });
-    return data;
+    return ResponseModel.fromJson(response, ChatPendingResponseList.fromJson);
   }
 
   Future<ResponseModel<ChatPendingSendResponse>> chatPendingSend(
@@ -411,14 +395,11 @@ class RemoteDataSource {
         response, ChatResponse.fromJson);
   }
 
-  Future<List<ChatListResponse>> fetchChatListResponse(String fromId) async {
-    final response = await httpClient
-        .get(ServiceUrl.chatList, queryParameters: {'from_id': fromId});
-    final data = <ChatListResponse>[];
-    getData(response).forEach((item) {
-      data.add(ChatListResponse.fromJson(item));
-    });
-    return data;
+  Future<ResponseModel<ChatListResponse>> fetchChatListResponse(String fromId) async {
+    final response = await httpClient.get(ServiceUrl.chatList, queryParameters: {'from_id': fromId});
+
+    return ResponseModel.fromJson(
+        response, ChatListResponse.fromJson);
   }
 
   Future<ResponseModel<PlayGameResponse>> pointForPlayGame(String gameId) async {
@@ -428,37 +409,28 @@ class RemoteDataSource {
         response, PlayGameResponse.fromJson);
   }
 
-  Future<List<ChatListResponse>> fetchChatListByToIdResponse(
+  Future<ResponseModel<ChatListResponse>> fetchChatListByToIdResponse(
       String toId) async {
     final response = await httpClient
         .get(ServiceUrl.chatList, queryParameters: {'to_id': toId});
-    final data = <ChatListResponse>[];
-    getData(response).forEach((item) {
-      data.add(ChatListResponse.fromJson(item));
-    });
-    return data;
+
+    return ResponseModel.fromJson(response, ChatListResponse.fromJson);
   }
 
-  Future<List<ChatListResponse>> fetchArchiveChatListByFromIdResponse(
+  Future<ResponseModel<ChatListResponse>> fetchArchiveChatListByFromIdResponse(
       String fromId) async {
     final response = await httpClient
         .get(ServiceUrl.chatArchiveList, queryParameters: {'from_id': fromId});
-    final data = <ChatListResponse>[];
-    getData(response).forEach((item) {
-      data.add(ChatListResponse.fromJson(item));
-    });
-    return data;
+
+    return ResponseModel.fromJson(response, ChatListResponse.fromJson);
   }
 
-  Future<List<ChatListResponse>> fetchArchiveChatListByToIdResponse(
+  Future<ResponseModel<ChatListResponse>> fetchArchiveChatListByToIdResponse(
       String toId) async {
     final response = await httpClient
         .get(ServiceUrl.chatArchiveList, queryParameters: {'to_id': toId});
-    final data = <ChatListResponse>[];
-    getData(response).forEach((item) {
-      data.add(ChatListResponse.fromJson(item));
-    });
-    return data;
+
+    return ResponseModel.fromJson(response, ChatListResponse.fromJson);
   }
 
   Future<ResponseModel<ChatPendingPatientResponse>> fetchChatPendingPatient(
@@ -471,24 +443,20 @@ class RemoteDataSource {
         response, ChatPendingPatientResponse.fromJson);
   }
 
-  Future<List<HospitalModel>> fetchHospitals(String name) async {
+  Future<ResponseModel<HospitalModel>> fetchHospitals(String name) async {
     final response = await httpClient
         .get(ServiceUrl.hospitalList, queryParameters: {'name': name});
-    final data = <HospitalModel>[];
-    getData(response).forEach((item) {
-      data.add(HospitalModel.fromJson(item));
-    });
-    return data;
+
+    return ResponseModel.fromJson(
+        response, HospitalModel.fromJson);
   }
 
-  Future<List<HospitalModel>> fetchHospitalsById(String id) async {
+  Future<ResponseModel<HospitalModel>> fetchHospitalsById(String id) async {
     final response = await httpClient
         .get(ServiceUrl.hospitalList, queryParameters: {'id': id});
-    final data = <HospitalModel>[];
-    getData(response).forEach((item) {
-      data.add(HospitalModel.fromJson(item));
-    });
-    return data;
+
+    return ResponseModel.fromJson(
+        response, HospitalModel.fromJson);
   }
 
   Future<ResponseModel<ChatResponse>> nakesResponseChatPending(
@@ -500,15 +468,11 @@ class RemoteDataSource {
         response, ChatResponse.fromJson);
   }
 
-  Future<List<ChatPendingResponseList>> fetchChatPendingByHospitalId(
+  Future<ResponseModel<ChatPendingResponseList>> fetchChatPendingByHospitalId(
       String hospitalId) async {
-    final response =
-        await httpClient.get(ServiceUrl.chatPendingListForNakes + hospitalId);
-    final data = <ChatPendingResponseList>[];
-    getData(response).forEach((item) {
-      data.add(ChatPendingResponseList.fromJson(item));
-    });
-    return data;
+    final response = await httpClient.get(ServiceUrl.chatPendingListForNakes + hospitalId);
+
+    return ResponseModel.fromJson(response, ChatPendingResponseList.fromJson);
   }
 
   Future<ResponseModel> updatePhotoProfile(

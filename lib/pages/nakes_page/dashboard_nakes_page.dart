@@ -329,8 +329,9 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                                       return Text("Akan Expired Pada ${time?.min} : ${time?.sec}",
                                         style: TextStyle(fontWeight: FontWeight.bold),);
                                     },
+                                    // todo data valid start & end ngaco di response
                                     onEnd: (){
-                                      Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
+                                      // Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
                                     },
                                   ),
                                 )

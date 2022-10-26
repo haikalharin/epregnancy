@@ -34,14 +34,9 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     try {
       ResponseModel<PlayGameResponse> response = await homeRepository.getPointFromGame(event.gameId ?? '');
       PlayGameResponse _responseGame = response.data;
-      PlayGameResponse gameEntity = _responseGame.copyWith(
-        id: await aesDecryptor(_responseGame.id),
-        url: await aesDecryptor(_responseGame.url),
-        name: await aesDecryptor(_responseGame.name)
-      );
       
       if(response.code == 200) {
-        yield state.copyWith(type: 'play-game-success', status: FormzStatus.submissionSuccess, playGameResponse: gameEntity);
+        yield state.copyWith(type: 'play-game-success', status: FormzStatus.submissionSuccess, playGameResponse: _responseGame);
       }
     } catch(e) {
       print('error play game : $e');
@@ -55,23 +50,11 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'Loading Data', playGameResponse: null);
     try {
-      List<GamesResponse> _gameListResponse = await homeRepository.fetchGameList();
-      List<GamesResponse> _gameList = [];
+      ResponseModel<GamesResponse> response  = await homeRepository.fetchGameList();
+      List<GamesResponse> _gameListResponse = response.data ?? [];
 
-      for (var element in _gameListResponse) {
-        GamesResponse game = element.copyWith(
-          id: await aesDecryptor(element.id),
-          name: await aesDecryptor(element.name),
-          imageUrl: await aesDecryptor(element.imageUrl),
-          coverUrl: await aesDecryptor(element.coverUrl),
-          url: await aesDecryptor(element.url),
-        );
-
-        _gameList.add(game);
-      }
-
-      if(_gameList.isNotEmpty) {
-        yield state.copyWith(type: 'Load Data Success', status: FormzStatus.submissionSuccess, gamesResponse: _gameList);
+      if(_gameListResponse.isNotEmpty) {
+        yield state.copyWith(type: 'Load Data Success', status: FormzStatus.submissionSuccess, gamesResponse: _gameListResponse);
       }
     } catch(e) {
       yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());

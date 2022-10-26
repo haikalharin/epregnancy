@@ -43,7 +43,7 @@ class FirebaseRepositoryImpl extends FirebaseRepository {
 
       await _firebaseAuth.signInWithCredential(credential);
     } on FirebaseAuthErrorException catch (e) {
-      throw LogInWithGoogleFailure.fromCode(e.code!);
+      throw LogInWithGoogleFailure.fromCode(e.code.toString());
     } catch (_) {
       throw const LogInWithGoogleFailure();
     }

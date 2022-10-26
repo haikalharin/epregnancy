@@ -157,7 +157,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<List<PointHistory>> fetchPointHistory() async {
+  Future<ResponseModel<PointHistory>> fetchPointHistory() async {
     if(await networkInfo.isConnected){
       return remoteDatasource.fetchPointHistory();
     }

@@ -19,7 +19,7 @@ class ChatRepositoryImpl extends ChatRepository {
   ChatRepositoryImpl(this.networkInfo, this.remoteDatasource);
 
   @override
-  Future<List<ChatResponse>> fetchLatestChat() async {
+  Future<ResponseModel<ChatResponse>> fetchLatestChat() async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchLatestChat();
     }
@@ -27,7 +27,7 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatResponse>> fetchPersonalChatRoom(String toId, bool isArchive) async {
+  Future<ResponseModel<ChatResponse>> fetchPersonalChatRoom(String toId, bool isArchive) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchPersonalChatRoom(toId, isArchive);
     }
@@ -35,7 +35,7 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatPendingResponseList>> fetchChatPendingList() async {
+  Future<ResponseModel<ChatPendingResponseList>> fetchChatPendingList() async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchChatPendingList();
     }
@@ -51,7 +51,7 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatListResponse>> fetchChatList(String fromId) async {
+  Future<ResponseModel<ChatListResponse>> fetchChatList(String fromId) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchChatListResponse(fromId);
     }
@@ -75,7 +75,7 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatPendingResponseList>> fetchChatPendingListByHospitalId(String hospitalId) async {
+  Future<ResponseModel<ChatPendingResponseList>> fetchChatPendingListByHospitalId(String hospitalId) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchChatPendingByHospitalId(hospitalId);
     }
@@ -91,7 +91,7 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatListResponse>> fetchArchiveChatByFromIdList(String fromId) async {
+  Future<ResponseModel<ChatListResponse>> fetchArchiveChatByFromIdList(String fromId) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchArchiveChatListByFromIdResponse(fromId);
     }
@@ -99,7 +99,7 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatListResponse>> fetchArchiveChatByToIdList(String toId) async {
+  Future<ResponseModel<ChatListResponse>> fetchArchiveChatByToIdList(String toId) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchArchiveChatListByToIdResponse(toId);
     }
@@ -107,7 +107,7 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatListResponse>> fetchChatListByToId(String toId) async {
+  Future<ResponseModel<ChatListResponse>> fetchChatListByToId(String toId) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchChatListByToIdResponse(toId);
     }

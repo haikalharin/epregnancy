@@ -18,7 +18,7 @@ class ErrorList {
 
 class BaseException implements Exception {
   final String? message;
-  final String? code;
+  final int? code;
   final List<ErrorList>? errors;
 
   BaseException({this.message, this.code, this.errors});

@@ -7,7 +7,7 @@ class FirebaseAuthErrorException extends BaseException {
   FirebaseAuthErrorException(Map<String, dynamic> error)
       : super(
           message: error['message'],
-          code: ExceptionConstants.internalServerError,
+          code: 200,
           errors: <ErrorList>[],
         );
 }

@@ -38,11 +38,8 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
     ProfilePageState state,
   ) async* {
     var _user = await AppSharedPreference.getUser();
-    UserModel user = _user.copyWith(
-      imageUrl: _user.imageUrl != null ? await aesDecryptor(_user.imageUrl) : null,
-    );
 
-    yield ProfilePageState(user: user);
+    yield ProfilePageState(user: _user);
   }
 
   Stream<ProfilePageState> _mapChangePhotoProfileEventToState(

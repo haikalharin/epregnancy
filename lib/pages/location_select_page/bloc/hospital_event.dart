@@ -20,5 +20,5 @@ class FetchHospitalsByIdEvent extends HospitalEvent {
   final String? id;
 
   @override
-  List<Object> get props => [id ?? ''];
+  List<Object> get props => [];
 }

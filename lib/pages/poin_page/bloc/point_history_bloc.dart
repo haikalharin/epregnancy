@@ -27,7 +27,10 @@ class PointHistoryBloc extends Bloc<PointHistoryEvent, PointHistoryState> {
       ) async* {
      yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'Loading Data');
      try {
-       List<PointHistory> _pointHistoryResponse = await userRepository.fetchPointHistory();
+       ResponseModel<PointHistory> response = await userRepository.fetchPointHistory();
+       List<PointHistory> _pointHistoryResponse = response.data ?? [];
+
+
        if(_pointHistoryResponse.isNotEmpty) {
          yield state.copyWith(type: 'Load Data Success', status: FormzStatus.submissionSuccess, pointHistories: _pointHistoryResponse);
        }

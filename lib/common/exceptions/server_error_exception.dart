@@ -8,7 +8,7 @@ class ServerErrorException extends BaseException {
   ServerErrorException(Map<String, dynamic> error)
       : super(
           message: error['message'],
-          code: ExceptionConstants.internalServerError,
+          code: error['code'],
           errors: <ErrorList>[],
         );
 }

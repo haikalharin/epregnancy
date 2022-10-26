@@ -73,15 +73,15 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
             //   );
             // });
             for(var element in state.listPersonalChatRoom ?? []) {
-              String _fromId = await aesDecryptor(element.fromId);
-              String fromImageUrl = await aesDecryptor(element.from?.imageUrl);
-              String toImageUrl = await aesDecryptor(element.to?.imageUrl);
+              String _fromId = element.fromId;
+              String fromImageUrl = element.from?.imageUrl;
+              String toImageUrl = element.to?.imageUrl;
               chatMessageList.add(
                     ChatMessageEntity(
                         name: _fromId,
                         message: element.message,
                         dateTime: element.createdDate,
-                        imageUrl: element.imageUrl == null ? element.imageUrl : await aesDecryptor(element.imageUrl),
+                        imageUrl: element.imageUrl,
                         profileImage: _fromId == widget.userId ? fromImageUrl : toImageUrl,
                         mine: _fromId == widget.userId ? true: false
                     )
@@ -98,9 +98,9 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
             //   toName = state.listPersonalChatRoom?[0].from?.name;
             // }
 
-            String _toId = await aesDecryptor(state.listPersonalChatRoom?[0].toId);
-            String _toImageUrl = await aesDecryptor(state.listPersonalChatRoom?[0].to?.imageUrl);
-            String _toName = await aesDecryptor(state.listPersonalChatRoom?[0].to?.name);
+            String? _toId = state.listPersonalChatRoom?[0].toId;
+            String? _toImageUrl = state.listPersonalChatRoom?[0].to?.imageUrl;
+            String? _toName = state.listPersonalChatRoom?[0].to?.name;
             Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
               fromId: widget.userId,
               toId: _toId,

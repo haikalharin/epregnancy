@@ -30,7 +30,8 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
       ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-chat-pending-loading', chatPendingList: []);
     try {
-      List<ChatPendingResponseList> _chatPendingList = await chatRepository.fetchChatPendingListByHospitalId(event.hospitalId ?? '');
+      ResponseModel<ChatPendingResponseList> response = await chatRepository.fetchChatPendingListByHospitalId(event.hospitalId ?? '');
+      List<ChatPendingResponseList> _chatPendingList = response.data ?? [];
       List<ChatPendingResponseList> chatPendingList = [];
 
       if(_chatPendingList.length != 0){
@@ -41,9 +42,6 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
 
           ChatPendingResponseList pending = element.copyWith(
             from: from,
-            id: await aesDecryptor(element.id),
-            hospitalId: await aesDecryptor(element.hospitalId),
-            fromId: await aesDecryptor(element.fromId),
           );
 
           chatPendingList.add(pending);
@@ -69,9 +67,31 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
     try {
       ResponseModel<ChatResponse> _chatList = await chatRepository.nakesRespondPendingChat(event.fromId!, event.hospitalId!);
       if(_chatList.code == 200) {
-        String toId = await aesDecryptor(_chatList.data.toId!);
-        List<ChatResponse> chatList = await chatRepository.fetchPersonalChatRoom(toId, false);
-        yield state.copyWith(type: 'responding-pending-chat-success', status: FormzStatus.submissionSuccess, chatPendingResponseList: chatList);
+        String toId = _chatList.data.toId;
+        final ResponseModel<ChatResponse> response = await chatRepository.fetchPersonalChatRoom(toId, false);
+        List<ChatResponse> chatList = response.data ?? [];
+        List<ChatResponse> chats = [];
+
+        for(var element in chatList) {
+          FromChatResponse? from = element.from?.copyWith(
+            id: await aesDecryptor(element.from?.id),
+            name: await aesDecryptor(element.from?.name),
+          );
+
+          FromChatResponse? to = element.to?.copyWith(
+            id: await aesDecryptor(element.to?.id),
+            name: await aesDecryptor(element.to?.name),
+          );
+
+          ChatResponse chat = element.copyWith(
+            from: from,
+            to: to,
+          );
+
+          chats.add(chat);
+        }
+
+        yield state.copyWith(type: 'responding-pending-chat-success', status: FormzStatus.submissionSuccess, chatPendingResponseList: chats);
       } else {
         yield state.copyWith(status: FormzStatus.submissionFailure, type: 'responding-pending-chat-failed', chatPendingResponseList: []);
       }

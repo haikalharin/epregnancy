@@ -57,8 +57,8 @@ class _PendingChatTabPageState extends State<PendingChatTabPage> {
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: ChatPlaceHolderWidget(
                         unread: false,
-                        name: state.chatPendingList![index].from?.name,
-                        message: state.chatPendingList![index].message
+                        name: state.chatPendingList?[index].from?.name,
+                        message: state.chatPendingList?[index].message
                     ),
                   ),
                 );

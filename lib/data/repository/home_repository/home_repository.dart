@@ -11,7 +11,7 @@ abstract class HomeRepository {
   Future <ResponseModel>fetchListArticle();
 
 
-  Future<List<GamesResponse>> fetchGameList();
+  Future<ResponseModel<GamesResponse>> fetchGameList();
   Future<ResponseModel<PlayGameResponse>> getPointFromGame(String gameId);
 
 }

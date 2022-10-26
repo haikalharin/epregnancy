@@ -20,6 +20,7 @@ import '../model/user_roles_model_firebase/user_roles_model_firebase.dart';
 
 class AppSharedPreference {
   static const String _user = "user";
+  static const String _userFirebase = "user";
   static const String _usernameRegister = "_usernameRegister";
   static const String _userRegister = "_userRegister";
   static const String _role = "role";
@@ -91,7 +92,7 @@ class AppSharedPreference {
     } else {
       return const HospitalModel(
           id: "",
-          pin: "",
+          pin: 0,
           pinValidEnd: "",
           pinValidStart: "",
           alias: "",
@@ -102,8 +103,8 @@ class AppSharedPreference {
           postalCode: "",
           phone: "",
           email: "",
-          latitude: "",
-          longitude: "",
+          latitude: 0.0,
+          longitude: 0.0,
           status: "",
           imageUrl: "",
           coverUrl: "",
@@ -139,14 +140,14 @@ class AppSharedPreference {
 
   static Future<UserModelFirebase> getUserFirebaseInit() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString(_user);
+    String? json = prefs.getString(_userFirebase);
     Map<String, dynamic> map = jsonDecode(json!);
     return UserModelFirebase.fromJson(map);
   }
 
   static Future<UserModelFirebase> getUserFirebase() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString(_user);
+    String? json = prefs.getString(_userFirebase);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       return UserModelFirebase.fromJson(map);
@@ -158,7 +159,7 @@ class AppSharedPreference {
   static setUserFirebase(UserModelFirebase data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_user, json);
+    prefs.setString(_userFirebase, json);
   }
 
   static Future<UserModel> getUserRegister() async {
@@ -187,8 +188,7 @@ class AppSharedPreference {
       UserModel _userModel = UserModel.fromJson(map);
       UserModel userModel = _userModel.copyWith(
         name: _userModel.name != null ?  await aesDecryptor(_userModel.name) : null,
-        imageUrl: _userModel.imageUrl != null ? await aesDecryptor(_userModel.imageUrl) : null,
-        hospitalId: _userModel.hospitalId == null ? _userModel.hospitalId : await aesDecryptor(_userModel.hospitalId),
+        id: _userModel.id != null ?  await aesDecryptor(_userModel.id) : null,
       );
       return userModel;
     } else {

@@ -29,8 +29,8 @@ mixin _$HospitalModel {
   String? get postalCode => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
-  String? get latitude => throw _privateConstructorUsedError;
-  String? get longitude => throw _privateConstructorUsedError;
+  double? get latitude => throw _privateConstructorUsedError;
+  double? get longitude => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   String? get coverUrl => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ mixin _$HospitalModel {
   String? get modifiedBy => throw _privateConstructorUsedError;
   String? get modifiedFrom => throw _privateConstructorUsedError;
   String? get modifiedDate => throw _privateConstructorUsedError;
-  String? get pin => throw _privateConstructorUsedError;
+  int? get pin => throw _privateConstructorUsedError;
   String? get pinValidStart => throw _privateConstructorUsedError;
   String? get pinValidEnd => throw _privateConstructorUsedError;
 
@@ -66,8 +66,8 @@ abstract class $HospitalModelCopyWith<$Res> {
       String? postalCode,
       String? phone,
       String? email,
-      String? latitude,
-      String? longitude,
+      double? latitude,
+      double? longitude,
       String? status,
       String? imageUrl,
       String? coverUrl,
@@ -78,7 +78,7 @@ abstract class $HospitalModelCopyWith<$Res> {
       String? modifiedBy,
       String? modifiedFrom,
       String? modifiedDate,
-      String? pin,
+      int? pin,
       String? pinValidStart,
       String? pinValidEnd});
 }
@@ -159,11 +159,11 @@ class _$HospitalModelCopyWithImpl<$Res>
       latitude: latitude == freezed
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       longitude: longitude == freezed
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -207,7 +207,7 @@ class _$HospitalModelCopyWithImpl<$Res>
       pin: pin == freezed
           ? _value.pin
           : pin // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       pinValidStart: pinValidStart == freezed
           ? _value.pinValidStart
           : pinValidStart // ignore: cast_nullable_to_non_nullable
@@ -237,8 +237,8 @@ abstract class _$$_HospitalModelCopyWith<$Res>
       String? postalCode,
       String? phone,
       String? email,
-      String? latitude,
-      String? longitude,
+      double? latitude,
+      double? longitude,
       String? status,
       String? imageUrl,
       String? coverUrl,
@@ -249,7 +249,7 @@ abstract class _$$_HospitalModelCopyWith<$Res>
       String? modifiedBy,
       String? modifiedFrom,
       String? modifiedDate,
-      String? pin,
+      int? pin,
       String? pinValidStart,
       String? pinValidEnd});
 }
@@ -332,11 +332,11 @@ class __$$_HospitalModelCopyWithImpl<$Res>
       latitude: latitude == freezed
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       longitude: longitude == freezed
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -380,7 +380,7 @@ class __$$_HospitalModelCopyWithImpl<$Res>
       pin: pin == freezed
           ? _value.pin
           : pin // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       pinValidStart: pinValidStart == freezed
           ? _value.pinValidStart
           : pinValidStart // ignore: cast_nullable_to_non_nullable
@@ -445,9 +445,9 @@ class _$_HospitalModel with DiagnosticableTreeMixin implements _HospitalModel {
   @override
   final String? email;
   @override
-  final String? latitude;
+  final double? latitude;
   @override
-  final String? longitude;
+  final double? longitude;
   @override
   final String? status;
   @override
@@ -469,7 +469,7 @@ class _$_HospitalModel with DiagnosticableTreeMixin implements _HospitalModel {
   @override
   final String? modifiedDate;
   @override
-  final String? pin;
+  final int? pin;
   @override
   final String? pinValidStart;
   @override
@@ -602,8 +602,8 @@ abstract class _HospitalModel implements HospitalModel {
       required final String? postalCode,
       required final String? phone,
       required final String? email,
-      required final String? latitude,
-      required final String? longitude,
+      required final double? latitude,
+      required final double? longitude,
       required final String? status,
       required final String? imageUrl,
       required final String? coverUrl,
@@ -614,7 +614,7 @@ abstract class _HospitalModel implements HospitalModel {
       required final String? modifiedBy,
       required final String? modifiedFrom,
       required final String? modifiedDate,
-      required final String? pin,
+      required final int? pin,
       required final String? pinValidStart,
       required final String? pinValidEnd}) = _$_HospitalModel;
 
@@ -640,9 +640,9 @@ abstract class _HospitalModel implements HospitalModel {
   @override
   String? get email => throw _privateConstructorUsedError;
   @override
-  String? get latitude => throw _privateConstructorUsedError;
+  double? get latitude => throw _privateConstructorUsedError;
   @override
-  String? get longitude => throw _privateConstructorUsedError;
+  double? get longitude => throw _privateConstructorUsedError;
   @override
   String? get status => throw _privateConstructorUsedError;
   @override
@@ -664,7 +664,7 @@ abstract class _HospitalModel implements HospitalModel {
   @override
   String? get modifiedDate => throw _privateConstructorUsedError;
   @override
-  String? get pin => throw _privateConstructorUsedError;
+  int? get pin => throw _privateConstructorUsedError;
   @override
   String? get pinValidStart => throw _privateConstructorUsedError;
   @override
