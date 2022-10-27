@@ -22,6 +22,7 @@ import '../../../../data/firebase/g_authentication.dart';
 import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/services/auth_service.dart';
 import '../../../common/validators/mandatory_field_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
@@ -130,7 +131,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       } on Exception catch (a) {
         print(a);
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+        if( a is UnAuthorizeException) {
+          // AppSharedPreference.sessionExpiredEvent();
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+        } else {
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+        }
       }
     } else {
       final phoneNumber = PhoneValidator.dirty(state.phoneNumber.value);
@@ -214,8 +220,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print("login error exception" + e.toString());
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (error) {
-      print("exception error : ${error}");
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      if( error is UnAuthorizeException) {
+        // AppSharedPreference.sessionExpiredEvent();
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: error.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -244,8 +254,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        // AppSharedPreference.sessionExpiredEvent();
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -308,9 +322,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure,                  typeEvent: StringConstant.signUpGoogle,
       );
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure,                  typeEvent: StringConstant.signUpGoogle,
-      );
+      if( a is UnAuthorizeException) {
+        // AppSharedPreference.sessionExpiredEvent();
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure,                  typeEvent: StringConstant.signUpGoogle,);
+      }
     }
   }
 }

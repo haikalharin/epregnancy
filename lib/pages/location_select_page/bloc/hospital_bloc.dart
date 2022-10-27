@@ -8,6 +8,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 
 part 'hospital_event.dart';
@@ -42,6 +43,9 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       }
     } catch(e) {
       print('hospital failed : $e');
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
     }
   }
@@ -62,6 +66,9 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
         yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-hospital-failed', hospitals: []);
       }
     } catch(e) {
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
     }
   }

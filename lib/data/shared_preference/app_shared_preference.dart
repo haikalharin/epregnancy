@@ -8,8 +8,11 @@ import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../main.dart';
+import '../../pages/login_page/login_page.dart';
 import '../model/baby_model/baby_model.dart';
 import '../model/baby_progress_model/baby_progress_model.dart';
 import '../model/person_model/person_model.dart';
@@ -291,5 +294,17 @@ class AppSharedPreference {
     } else {
       return OtpModel.empty();
     }
+  }
+
+  static sessionExpiredEvent() async {
+    await AppSharedPreference.remove(AppSharedPreference.user);
+    await AppSharedPreference.remove(AppSharedPreference.userRegister);
+    await AppSharedPreference.remove(AppSharedPreference.baby);
+    await AppSharedPreference.remove(AppSharedPreference.baby);
+    await AppSharedPreference.remove(AppSharedPreference.hospital);
+    await AppSharedPreference.remove(AppSharedPreference.otp);
+    await AppSharedPreference.remove(AppSharedPreference.token);
+    alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
+    //navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (BuildContext context) => OnBoardingScreen(isHavePopUpMessage: "401",)));
   }
 }

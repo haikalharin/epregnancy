@@ -6,7 +6,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../data/model/chat_model/chat_response.dart';
+import '../../../data/shared_preference/app_shared_preference.dart';
 
 part 'chat_pending_event.dart';
 part 'chat_pending_state.dart';
@@ -55,6 +57,9 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
         yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetching-chat-pending-failed', chatPendingList: []);
       }
     } catch(e) {
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
     }
   }
@@ -96,6 +101,9 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
         yield state.copyWith(status: FormzStatus.submissionFailure, type: 'responding-pending-chat-failed', chatPendingResponseList: []);
       }
     } catch(e) {
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(status: FormzStatus.submissionFailure, type: 'responding-pending-chat-error', errorMessage: e.toString());
     }
   }

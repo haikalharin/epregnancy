@@ -22,6 +22,7 @@ import 'package:meta/meta.dart';
 import '../../../common/exceptions/event_error_exception.dart';
 import '../../../common/exceptions/home_error_exception.dart';
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/article_model/article_model.dart';
 import '../../../data/model/baby_model/baby_model.dart';
@@ -131,6 +132,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
+      if( a is UnAuthorizeException) {
+        AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
@@ -155,7 +159,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
-      print(a);
+      if( a is UnAuthorizeException) {
+        AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString());
     }
   }
@@ -178,6 +184,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
+      if( a is UnAuthorizeException) {
+        AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
@@ -242,6 +251,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
+      if( a is UnAuthorizeException) {
+        AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
@@ -269,6 +281,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
+      if( a is UnAuthorizeException) {
+        AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
 

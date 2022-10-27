@@ -12,3 +12,12 @@ class ServerErrorException extends BaseException {
           errors: <ErrorList>[],
         );
 }
+
+class UnAuthorizeException extends BaseException {
+  UnAuthorizeException(Map<String, dynamic> error)
+      : super(
+    message: error['message'],
+    code: error['code'],
+    errors: <ErrorList>[],
+  );
+}

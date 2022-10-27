@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:PregnancyApp/env.dart';
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/change_password_page/bloc/change_password_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/consultation_page_bloc.dart';
@@ -74,7 +75,7 @@ Future<void> main() async {
 }
 
 final Alice alice = Alice(
-    showNotification: true,
+    showNotification: environment['mode'] == "dev" ? false : true,
     darkTheme: true);
 
 class MyApp extends StatefulWidget {

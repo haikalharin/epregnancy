@@ -6,11 +6,13 @@ import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/validators/confirmPassword_validator.dart';
 import '../../../common/validators/password_validator.dart';
 import '../../../data/model/response_model/response_model.dart';
 import '../../../data/model/user_model_api/user_model.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
+import '../../../data/shared_preference/app_shared_preference.dart';
 
 part 'change_password_event.dart';
 
@@ -91,8 +93,12 @@ class ChangePasswordBloc
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
     }
   }
 

@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/event_error_exception.dart';
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/validators/mandatory_field_validator.dart';
 import '../../../common/validators/phone_validator.dart';
 import '../../../data/firebase/event/event_event.dart';
@@ -315,8 +316,12 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         print(e);
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       } on Exception catch (a) {
-        print(a);
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+        if( a is UnAuthorizeException) {
+          await AppSharedPreference.sessionExpiredEvent();
+          // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+        } else {
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+        }
       }
     } else {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

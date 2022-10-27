@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+import '../../../../common/exceptions/server_error_exception.dart';
 import '../../../../common/exceptions/survey_error_exception.dart';
 import '../../../../data/model/hospital_model/hospital_model.dart';
 import '../../../../data/model/user_model_api/user_model.dart';
@@ -100,8 +101,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -161,8 +166,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -213,8 +222,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -237,8 +250,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -263,8 +280,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -294,8 +315,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -362,8 +387,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -457,8 +486,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       print(e);
       yield state.copyWith(status: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
     }
   }
 }

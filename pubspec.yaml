@@ -75,7 +75,7 @@ dependencies:
   add_2_calendar: ^2.1.3
   showcaseview: ^1.1.8
   #flavor for environment management
-  flavor: ^2.0.0
+#  flutter_flavor: ^3.1.1
 
 
 

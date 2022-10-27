@@ -15,6 +15,7 @@ import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/exceptions/login_error_exception.dart';
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/exceptions/survey_error_exception.dart';
 import '../../../data/model/article_model/article_model.dart';
 import '../../../data/model/user_model_api/user_model.dart';
@@ -124,9 +125,12 @@ class ConsultationPageBloc
       yield state.copyWith(
           submitStatus: FormzStatus.submissionFailure, userModel: _userModel);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, userModel: _userModel);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, userModel: _userModel);
+      }
     }
   }
 
@@ -152,8 +156,12 @@ class ConsultationPageBloc
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -194,8 +202,12 @@ class ConsultationPageBloc
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
     }
   }
 }

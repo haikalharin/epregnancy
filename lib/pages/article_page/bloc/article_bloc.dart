@@ -12,11 +12,13 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/article_error_exception.dart';
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/exceptions/survey_error_exception.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
+import '../../../data/shared_preference/app_shared_preference.dart';
 
 part 'article_event.dart';
 
@@ -64,8 +66,11 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
     }
   }
 
@@ -85,8 +90,12 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      print(a);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
     }
   }
 //

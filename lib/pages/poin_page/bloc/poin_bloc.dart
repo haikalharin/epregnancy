@@ -7,6 +7,7 @@ import 'package:formz/formz.dart';
 
 import '../../../common/constants/app_constants.dart';
 import '../../../common/exceptions/home_error_exception.dart';
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/injector/injector.dart';
 import '../../../data/model/point_model/checkin_entity.dart';
 import '../../../data/model/point_model/checkin_response.dart';
@@ -122,7 +123,9 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
       yield state.copyWith(
           status: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
-      print(a);
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
       yield state.copyWith(
           status: FormzStatus.submissionFailure, errorMessage: a.toString());
     }

@@ -7,7 +7,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 
+import '../../../common/exceptions/server_error_exception.dart';
 import '../../../data/model/games_model/play_game_response.dart';
+import '../../../data/shared_preference/app_shared_preference.dart';
 
 part 'games_event.dart';
 
@@ -39,8 +41,12 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
         yield state.copyWith(type: 'play-game-success', status: FormzStatus.submissionSuccess, playGameResponse: _responseGame);
       }
     } catch(e) {
-      print('error play game : $e');
-      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'play-game-failed', errorMessage: e.toString());
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: e.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'play-game-failed', errorMessage: e.toString());
+      }
     }
   }
 
@@ -57,7 +63,13 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
         yield state.copyWith(type: 'Load Data Success', status: FormzStatus.submissionSuccess, gamesResponse: _gameListResponse);
       }
     } catch(e) {
-      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: e.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+
+      }
     }
   }
 }

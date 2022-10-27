@@ -37,10 +37,11 @@ class HttpUtil {
         return _getSuccessResponse(response);
       case 500:
         return _getSuccessResponse(response);
+      case 401 :
+        return throw UnAuthorizeException(
+          json.decode(response.body),
+        );
       default:
-        // throw ServerErrorException(
-        //   json.decode(response.body),
-        // );
         return _getSuccessResponse(response);
     }
   }
