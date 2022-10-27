@@ -144,9 +144,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       final ResponseModel<UserModel> responseModel = await userRepository.getUserInfo();
       UserModel userInfo = responseModel.data;
-      await AppSharedPreference.remove(AppSharedPreference.checkIn);
+      // await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if(responseModel.code == 200) {
         // await AppSharedPreference.setUserInfo(userInfo.data);
+        await AppSharedPreference.setBool(AppSharedPreference.isShowGuide, false);
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned);
       }
@@ -219,6 +220,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       final UserRolesModelFirebase role =
           await AppSharedPreference.getUserRoleFirebase();
       if (response.code == 200) {
+        bool? _showGuide = await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
+        print('show guide : $_showGuide');
         yield state.copyWith(
           submitStatus: FormzStatus.submissionSuccess,
           baby: myBaby,
@@ -226,6 +229,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           weeks: weeks.toString(),
           babyProgressModel: babyProgressModel,
           user: user,
+          showGuide: _showGuide ?? true,
           role: user.isPatient == true
               ? StringConstant.patient
               : StringConstant.midwife,

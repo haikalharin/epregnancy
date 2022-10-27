@@ -19,7 +19,14 @@ class LogoutPage extends StatelessWidget {
           onPressed: () async {
             //
             await GAuthentication.signOut(context: context);
-            await AppSharedPreference.clear();
+            // await AppSharedPreference.clear();
+            AppSharedPreference.remove(AppSharedPreference.user);
+            AppSharedPreference.remove(AppSharedPreference.userRegister);
+            AppSharedPreference.remove(AppSharedPreference.baby);
+            AppSharedPreference.remove(AppSharedPreference.baby);
+            AppSharedPreference.remove(AppSharedPreference.hospital);
+            AppSharedPreference.remove(AppSharedPreference.otp);
+            AppSharedPreference.remove(AppSharedPreference.token);
             Navigator.of(context).pushNamedAndRemoveUntil(
                 RouteName.login, (Route<dynamic> route) => false);
           },

@@ -35,6 +35,7 @@ class SplashscreenBloc extends Bloc<SplashscreenEvent, SplashscreenState> {
     final  UserModel userModel = await AppSharedPreference.getUser();
     final String? installDate = await AppSharedPreference.getString(AppConstants.installDateKey);
     installDate == null ? await AppSharedPreference.setString(AppConstants.installDateKey, DateFormatter.dateFormatForCheckinFilter.format(DateTime.now())): null;
+
     await Future.delayed(      const Duration(seconds: 2));
       if(userModel.id != null){
         String? role = '' ;

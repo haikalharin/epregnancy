@@ -19,13 +19,13 @@ import '../model/user_info/user_info.dart';
 import '../model/user_roles_model_firebase/user_roles_model_firebase.dart';
 
 class AppSharedPreference {
-  static const String _user = "user";
+  static const String user = "user";
   static const String _userFirebase = "user";
   static const String _usernameRegister = "_usernameRegister";
-  static const String _userRegister = "_userRegister";
-  static const String _role = "role";
-  static const String _baby = "baby";
-  static const String _babyProgress = "babyProfress";
+  static const String userRegister = "_userRegister";
+  static const String role = "role";
+  static const String baby = "baby";
+  static const String babyProgress = "babyProfress";
   static const String _person = "person";
   static const String otp = "otp";
   static const String bmSignature = "bm_signature";
@@ -35,6 +35,7 @@ class AppSharedPreference {
   static const String token = "token";
   static const String newInstall = "new_install";
   static const String isFirstLaunch = "isFirstLaunch";
+  static const String isShowGuide = "show_guide";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -164,7 +165,7 @@ class AppSharedPreference {
 
   static Future<UserModel> getUserRegister() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString(_userRegister);
+    String? json = prefs.getString(userRegister);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       return UserModel.fromJson(map);
@@ -176,12 +177,12 @@ class AppSharedPreference {
   static setUserRegister(UserModel data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_userRegister, json);
+    prefs.setString(userRegister, json);
   }
 
   static Future<UserModel> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString(_user);
+    String? json = prefs.getString(user);
     if (json != null) {
       String decryptedJson = decrypty(json);
       Map<String, dynamic> map = jsonDecode(decryptedJson);
@@ -200,13 +201,13 @@ class AppSharedPreference {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String encryptedJson = encrypt(json);
-    prefs.setString(_user, encryptedJson);
+    prefs.setString(user, encryptedJson);
     // prefs.setString(_user, json);
   }
 
   static Future<UserRolesModelFirebase> getUserRoleFirebase() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString(_role);
+    String? json = prefs.getString(role);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       return UserRolesModelFirebase.fromJson(map);
@@ -218,12 +219,12 @@ class AppSharedPreference {
   static setUserRoleFirebase(UserRolesModelFirebase data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_role, json);
+    prefs.setString(role, json);
   }
 
   static Future<BabyModel> getUserBabyirebase() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString(_baby);
+    String? json = prefs.getString(baby);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       return BabyModel.fromJson(map);
@@ -235,12 +236,12 @@ class AppSharedPreference {
   static setUserBabyFirebase(BabyModel data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_baby, json);
+    prefs.setString(baby, json);
   }
 
   static Future<BabyProgressModel> getBabyProgressFirebase() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString(_babyProgress);
+    String? json = prefs.getString(babyProgress);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       return BabyProgressModel.fromJson(map);
@@ -252,7 +253,7 @@ class AppSharedPreference {
   static setBabyProgressFirebase(BabyModel data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_babyProgress, json);
+    prefs.setString(babyProgress, json);
   }
 
   static Future<PersonModel> getPerson() async {

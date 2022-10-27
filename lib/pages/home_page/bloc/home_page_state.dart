@@ -17,6 +17,7 @@ class HomePageState with FormzMixin {
   final ArticleModel? articleModel;
   final int? totalPointsEarned;
   final String? errorMessage;
+  final bool? showGuide;
 
   HomePageState({this.user,
     this.role,
@@ -33,6 +34,7 @@ class HomePageState with FormzMixin {
     this.eventDate,
     this.articleModel,
     this.totalPointsEarned,
+    this.showGuide,
     this.errorMessage});
 
   HomePageState copyWith({FormzStatus? submitStatus,
@@ -50,12 +52,14 @@ class HomePageState with FormzMixin {
     String? eventDateString,
     DateTime? eventDate,
     int? totalPointsEarned,
+    bool? showGuide,
     String? errorMessage}) {
     return HomePageState(
         submitStatus: submitStatus,
         user: user ?? this.user,
         role: role ?? this.role,
         baby: baby ?? this.baby,
+        showGuide: showGuide ?? this.showGuide,
         babyProgressModel: babyProgressModel ?? this.babyProgressModel,
         listArticle: listArticle ?? this.listArticle,
         listEvent: listEvent ?? this.listEvent,

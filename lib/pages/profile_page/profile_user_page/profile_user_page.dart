@@ -294,7 +294,14 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                     onTap: () async {
                       //
                       await GAuthentication.signOut(context: context);
-                      await AppSharedPreference.clear();
+                      // await AppSharedPreference.clear();
+                      await AppSharedPreference.remove(AppSharedPreference.user);
+                      await AppSharedPreference.remove(AppSharedPreference.userRegister);
+                      await AppSharedPreference.remove(AppSharedPreference.baby);
+                      await AppSharedPreference.remove(AppSharedPreference.baby);
+                      await AppSharedPreference.remove(AppSharedPreference.hospital);
+                      await AppSharedPreference.remove(AppSharedPreference.otp);
+                      await AppSharedPreference.remove(AppSharedPreference.token);
                       _showMyDialog(context);
                     },
                     child: Row(

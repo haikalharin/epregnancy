@@ -85,7 +85,14 @@ class _DashboardExampleState extends State<DashboardExample> {
       ),
     );
     if (value == 'logout') {
-      AppSharedPreference.clear();
+      // AppSharedPreference.clear();
+      AppSharedPreference.remove(AppSharedPreference.user);
+      AppSharedPreference.remove(AppSharedPreference.userRegister);
+      AppSharedPreference.remove(AppSharedPreference.baby);
+      AppSharedPreference.remove(AppSharedPreference.baby);
+      AppSharedPreference.remove(AppSharedPreference.hospital);
+      AppSharedPreference.remove(AppSharedPreference.otp);
+      AppSharedPreference.remove(AppSharedPreference.token);
       await GAuthentication.signOut(context: context);
       Navigator.of(context).pushReplacementNamed(RouteName.login);
     }
