@@ -73,22 +73,12 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
       child: BlocBuilder<SplashscreenBloc, SplashscreenState>(
         builder: (context, state) {
           return Scaffold(
-              body: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        child:  SvgPicture.asset(
-                          'assets/ePregnancy_ss_logo.svg',
-                          fit: BoxFit.fitHeight,
-                          height: 200,
-                          width: 200,
-                        ),
-
-
-                      )
-                    ],
-                  )));
+              body: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Image.asset("assets/splashscreen.png"),
+              )
+          );
         },
       ),
     );
