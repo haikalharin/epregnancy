@@ -271,9 +271,20 @@ class _PoinPageState extends State<PoinPage> {
                     ),
                   ),
 
-                  HowToRedeemCard(),
-                  HowToRedeemCard(),
-                  HowToRedeemCard(),
+                  // HowToRedeemCard(),
+                  // HowToRedeemCard(),
+                  // HowToRedeemCard(),
+
+                  Container(
+                    height: 120.h,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset("assets/flyer_poin.jpeg", fit: BoxFit.fill,),
+                  ),
+                  Container(
+                    height: 120.h,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset("assets/flyer_gamification.jpeg", fit: BoxFit.fill),
+                  ),
                   SizedBox(height: 20.h,)
                 ],
               ),

@@ -76,7 +76,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
               body: Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                child: Image.asset("assets/splashscreen.png"),
+                child: Image.asset("assets/splashscreen.png", fit: BoxFit.fill),
               )
           );
         },
