@@ -15,6 +15,8 @@ dynamic getUserId(dynamic result) => result['user_id'];
 
 dynamic getName(dynamic result) => result['name'];
 
+dynamic getImageUrl(dynamic result) => result['image_url'];
+
 dynamic getHospitalId(dynamic result) => result['hospital_id'];
 
 dynamic getDataCondition(dynamic result) => result['Condition'];

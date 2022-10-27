@@ -21,9 +21,10 @@ import 'bloc/chat_pending_bloc.dart';
 import 'package:flutter_countdown_timer/index.dart';
 
 class DashBoardNakesPage extends StatefulWidget {
-  const DashBoardNakesPage({Key? key, required this.userName, this.hospitalId})
+  const DashBoardNakesPage({Key? key, required this.userName, this.hospitalId, this.imageUrl})
       : super(key: key);
   final String? userName;
+  final String? imageUrl;
   final String? hospitalId;
 
   @override
@@ -90,7 +91,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                             InkWell(
                                 onTap: () {
                                   Navigator.pushNamed(
-                                      context, RouteName.profileNakesPage, arguments: widget.userName);
+                                      context, RouteName.profileNakesPage, arguments: {"name": widget.userName, "image_url": widget.imageUrl});
                                 },
                                 child: Text(
                                   'Halo, ${widget.userName} ',
@@ -326,12 +327,12 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                                   child: CountdownTimer(
                                     endTime: DateTime.parse(state.hospitals?[0].pinValidEnd ?? DateTime.now().toString()).millisecondsSinceEpoch,
                                     widgetBuilder: (context, time){
-                                      return Text("Akan Expired Pada ${time?.min} : ${time?.sec}",
+                                      return Text("Akan Expired Pada ${time?.min.toString().padLeft(2, "0")} : ${time?.sec.toString().padLeft(2, "0")}",
                                         style: TextStyle(fontWeight: FontWeight.bold),);
                                     },
                                     // todo data valid start & end ngaco di response
                                     onEnd: (){
-                                      // Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
+                                      Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
                                     },
                                   ),
                                 )

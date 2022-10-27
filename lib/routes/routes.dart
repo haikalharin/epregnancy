@@ -95,6 +95,7 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => DashBoardNakesPage(
                   userName: getName(settings.arguments),
+                  imageUrl: getImageUrl(settings.arguments),
                   hospitalId: getHospitalId(settings.arguments),
                 ));
       case RouteName.addEventPage:
@@ -107,7 +108,7 @@ class Routes {
             builder: (_) =>
                 VerifikasiPage(userId: getDataValue(settings.arguments)));
       case RouteName.profileNakesPage:
-        return MaterialPageRoute(builder: (_) => ProfileNakesPage(name: getDataValue(settings.arguments),));
+        return MaterialPageRoute(builder: (_) => ProfileNakesPage(name: getName(settings.arguments), imageUrl: getImageUrl(settings.arguments),));
       case RouteName.profileUserPage:
         return MaterialPageRoute(builder: (_) => ProfileUserPage());
       case RouteName.poinPage:

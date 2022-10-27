@@ -11,8 +11,9 @@ import '../../../data/firebase/g_authentication.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 
 class ProfileNakesPage extends StatelessWidget {
-  const ProfileNakesPage({Key? key, this.name}) : super(key: key);
+  const ProfileNakesPage({Key? key, this.name, this.imageUrl}) : super(key: key);
   final String? name;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class ProfileNakesPage extends StatelessWidget {
           decoration: const BoxDecoration(
             shape: BoxShape.circle
           ),
-          child: Image.asset('assets/dummies/dummy_avatar.png'),
+          child: imageUrl == null ? Image.asset('assets/dummies/dummy_avatar.png') : Image.network(imageUrl!),
         )],
       ),
       body: Container(

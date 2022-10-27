@@ -56,7 +56,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
             HospitalModel _hospital = await AppSharedPreference.getHospital();
             Navigator.of(context).pushReplacementNamed(
                 RouteName.dashboardNakesPage,
-                arguments: {'name': state.userModel?.name, 'hospital_id': _hospital.id}
+                arguments: {'name': state.userModel?.name, 'hospital_id': _hospital.id, 'image_url': state.userModel?.imageUrl}
             );
           } else {
             Navigator.of(context).pushReplacementNamed(RouteName.navBar,arguments: {'role': state.role, 'inital_index': 0, 'user_id':state.userModel?.id ??''});

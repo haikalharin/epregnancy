@@ -209,6 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                             (Route<dynamic> route) => false,
                             arguments: {
                               'name': state.userModel?.name,
+                              'image_url': state.userModel?.imageUrl,
                               'hospital_id': state.userModel?.hospitalId
                             });
                       }
