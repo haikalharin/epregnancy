@@ -81,7 +81,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.of(context).pushNamed(RouteName.surveyPage,arguments: false);
                     }
                   } else {
-                    if (Configurations.mode == StringConstant.prod && state.type == 'toRequestOtp' ) {
+                    // todo needs implement flavour
+                    if (Configurations.mode == StringConstant.dev && state.type == 'toRequestOtp' ) {
                       if (state.userId!.contains('@')) {
                         Injector.resolve<SignupBloc>().add(const RequestOtp(true));
                       } else {

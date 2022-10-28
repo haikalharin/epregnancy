@@ -124,8 +124,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.of(context).pushReplacementNamed(RouteName.signup);
-        return Future.value(true);
+        // Navigator.of(context).pushReplacementNamed(RouteName.signup);
+        return Future.value(false);
       },
       child: Scaffold(
         backgroundColor: Colors.white,
