@@ -122,188 +122,182 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Navigator.of(context).pushReplacementNamed(RouteName.signup);
-        return Future.value(true);
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-            child: BlocListener<LoginBloc, LoginState>(
-                listener: (context, state) async {
-                  if (state.submitStatus == FormzStatus.submissionFailure) {
-                    if (state.typeEvent == StringConstant.signUpGoogle) {
-                      var snackBar = SnackBar(
-                          content: Text(state.errorMessage != null
-                              ? state.errorMessage!
-                              : 'Gagal mendaftar'),
-                          backgroundColor: Colors.red);
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    } else {
-                      var snackBar = SnackBar(
-                          content: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              // Note: Styles for TextSpans must be explicitly defined.
-                              // Child text spans will inherit styles from parent
-                              style: const TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.black,
-                              ),
-                              children: <TextSpan>[
-                               const TextSpan(
-                                    text: "Maaf, ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                TextSpan(text: state.errorMessage),
-                              ],
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+          child: BlocListener<LoginBloc, LoginState>(
+              listener: (context, state) async {
+                if (state.submitStatus == FormzStatus.submissionFailure) {
+                  if (state.typeEvent == StringConstant.signUpGoogle) {
+                    var snackBar = SnackBar(
+                        content: Text(state.errorMessage != null
+                            ? state.errorMessage!
+                            : 'Gagal mendaftar'),
+                        backgroundColor: Colors.red);
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  } else {
+                    var snackBar = SnackBar(
+                        content: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            // Note: Styles for TextSpans must be explicitly defined.
+                            // Child text spans will inherit styles from parent
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
                             ),
+                            children: <TextSpan>[
+                             const TextSpan(
+                                  text: "Maaf, ",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(text: state.errorMessage),
+                            ],
                           ),
-                          backgroundColor: Colors.red);
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    }
-                  } else if (state.submitStatus ==
-                      FormzStatus.submissionSuccess) {
-                    if (state.typeEvent == StringConstant.signUpGoogle) {
-                      if (state.isExist == true) {
-                        if (state.isSurvey == true) {
-                          var snackBar = SnackBar(
-                              content: Text("Akun Telah Terdaftar"),
-                              backgroundColor: Colors.red);
-                          Scaffold.of(context).showSnackBar(snackBar);
+                        ),
+                        backgroundColor: Colors.red);
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  }
+                } else if (state.submitStatus ==
+                    FormzStatus.submissionSuccess) {
+                  if (state.typeEvent == StringConstant.signUpGoogle) {
+                    if (state.isExist == true) {
+                      if (state.isSurvey == true) {
+                        var snackBar = SnackBar(
+                            content: Text("Akun Telah Terdaftar"),
+                            backgroundColor: Colors.red);
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      } else {
+                        Navigator.of(context).pushNamed(RouteName.surveyPage,
+                            arguments: false);
+                      }
+                    } else {
+                      if (Configurations.mode == StringConstant.prod &&
+                          state.type == 'toRequestOtp') {
+                        if (state.userId!.contains('@')) {
+                          Injector.resolve<LoginBloc>()
+                              .add(const LoginRequestOtp());
                         } else {
-                          Navigator.of(context).pushNamed(RouteName.surveyPage,
-                              arguments: false);
+                          Injector.resolve<LoginBloc>()
+                              .add(const LoginRequestOtp());
                         }
                       } else {
-                        if (Configurations.mode == StringConstant.prod &&
-                            state.type == 'toRequestOtp') {
-                          if (state.userId!.contains('@')) {
-                            Injector.resolve<LoginBloc>()
-                                .add(const LoginRequestOtp());
-                          } else {
-                            Injector.resolve<LoginBloc>()
-                                .add(const LoginRequestOtp());
-                          }
-                        } else {
-                          Navigator.of(context).pushNamed(RouteName.otpPage);
-                        }
+                        Navigator.of(context).pushNamed(RouteName.otpPage);
                       }
-                    } else if (state.typeEvent == StringConstant.submitLogin) {
-                      if (state.userModel?.isPatient == true) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          RouteName.navBar,
+                    }
+                  } else if (state.typeEvent == StringConstant.submitLogin) {
+                    if (state.userModel?.isPatient == true) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        RouteName.navBar,
+                        (Route<dynamic> route) => false,
+                        arguments: {
+                          'role': state.userModel?.isPatient == true
+                              ? StringConstant.patient
+                              : StringConstant.midwife,
+                          'initial_index': 0
+                        },
+                      );
+                    } else {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          RouteName.dashboardNakesPage,
                           (Route<dynamic> route) => false,
                           arguments: {
-                            'role': state.userModel?.isPatient == true
-                                ? StringConstant.patient
-                                : StringConstant.midwife,
-                            'initial_index': 0
-                          },
-                        );
-                      } else {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            RouteName.dashboardNakesPage,
-                            (Route<dynamic> route) => false,
-                            arguments: {
-                              'name': state.userModel?.name,
-                              'image_url': state.userModel?.imageUrl,
-                              'hospital_id': state.userModel?.hospitalId
-                            });
-                      }
+                            'name': state.userModel?.name,
+                            'image_url': state.userModel?.imageUrl,
+                            'hospital_id': state.userModel?.hospitalId
+                          });
                     }
                   }
-                },
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Image.asset(
-                        "assets/ePregnancy_login_logo.png",
-                        fit: BoxFit.fitWidth,
-                        alignment: Alignment.bottomLeft,
-                      ),
+                }
+              },
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Image.asset(
+                      "assets/ePregnancy_login_logo.png",
+                      fit: BoxFit.fitWidth,
+                      alignment: Alignment.bottomLeft,
                     ),
-                    Center(
-                      child: BlocBuilder<LoginBloc, LoginState>(
-                        builder: (context, state) {
-                          return ListView(
-                            physics: const ClampingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: _horizontalPadding,
+                  ),
+                  Center(
+                    child: BlocBuilder<LoginBloc, LoginState>(
+                      builder: (context, state) {
+                        return ListView(
+                          physics: const ClampingScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: _horizontalPadding,
+                          ),
+                          children: [
+                            SizedBox(height: 60),
+                            // SizedBox(height: 120),
+                            //_HeadingText(),
+                            Text(
+                              "Masuk dengan email",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 40,
+                              ),
                             ),
-                            children: [
-                              SizedBox(height: 60),
-                              // SizedBox(height: 120),
-                              //_HeadingText(),
-                              Text(
-                                "Masuk dengan email",
-                                style: TextStyle(
+                            Text(
+                              "Masuk dengan akun email/nomor handphone yang terdaftar",
+                              style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 40,
-                                ),
-                              ),
-                              Text(
-                                "Masuk dengan akun email/nomor handphone yang terdaftar",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15),
-                              ),
-                              SizedBox(height: 20),
-                              _UsernameInput(),
-                              SizedBox(height: 12),
-                              _PasswordInput(),
-                              _ForgotPasswordButton(),
-                              SizedBox(height: 20),
-                              Container(
-                                  height: 50,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: ElevatedButton(
-                                    child: const Text('Login'),
-                                    onPressed: () {
-                                      Injector.resolve<LoginBloc>()
-                                          .add(LoginSubmitted());
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary: EpregnancyColors.primer),
-                                  )),
-                              // SizedBox(height: 10),
-                              // Container(
-                              //   height: 50,
-                              //   padding:
-                              //       const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              //   child: ElevatedButton(
-                              //       onPressed: () async {
-                              //         // GAuthentication.signOut(context: context);
-                              //         // GAuthentication.signInWithGoogle();
-                              //         // alice.showInspector();
-                              //         final GoogleSignIn _googleSignIn = new GoogleSignIn();
-                              //
-                              //         await _googleSignIn.signOut();
-                              //         Injector.resolve<LoginBloc>()
-                              //             .add(LoginWithGoogleSubmitted());
-                              //       },
-                              //       child: Text("Lanjut dengan Google"),
-                              //       style: ElevatedButton.styleFrom(
-                              //           primary: Colors.white,
-                              //           onPrimary: Colors.black)),
-                              // ),
-                              SizedBox(height: 12),
-                              _RegisterButton()
-                              // _PasswordTextField(),
-                            ],
-                          );
-                        },
-                      ),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15),
+                            ),
+                            SizedBox(height: 20),
+                            _UsernameInput(),
+                            SizedBox(height: 12),
+                            _PasswordInput(),
+                            _ForgotPasswordButton(),
+                            SizedBox(height: 20),
+                            Container(
+                                height: 50,
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                child: ElevatedButton(
+                                  child: const Text('Login'),
+                                  onPressed: () {
+                                    Injector.resolve<LoginBloc>()
+                                        .add(LoginSubmitted());
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      primary: EpregnancyColors.primer),
+                                )),
+                            // SizedBox(height: 10),
+                            // Container(
+                            //   height: 50,
+                            //   padding:
+                            //       const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            //   child: ElevatedButton(
+                            //       onPressed: () async {
+                            //         // GAuthentication.signOut(context: context);
+                            //         // GAuthentication.signInWithGoogle();
+                            //         // alice.showInspector();
+                            //         final GoogleSignIn _googleSignIn = new GoogleSignIn();
+                            //
+                            //         await _googleSignIn.signOut();
+                            //         Injector.resolve<LoginBloc>()
+                            //             .add(LoginWithGoogleSubmitted());
+                            //       },
+                            //       child: Text("Lanjut dengan Google"),
+                            //       style: ElevatedButton.styleFrom(
+                            //           primary: Colors.white,
+                            //           onPrimary: Colors.black)),
+                            // ),
+                            SizedBox(height: 12),
+                            _RegisterButton()
+                            // _PasswordTextField(),
+                          ],
+                        );
+                      },
                     ),
-                    _Loading(),
-                  ],
-                ))),
-      ),
+                  ),
+                  _Loading(),
+                ],
+              ))),
     );
   }
 }
