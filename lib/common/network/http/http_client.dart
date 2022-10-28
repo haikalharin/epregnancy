@@ -118,6 +118,7 @@ class HttpClient {
         headers: requestHeader,
       )
           .interceptWithAlice(alice, body: data);
+      updateCookie(response);
     } else{
       response = await _client!
           .post(
@@ -126,6 +127,7 @@ class HttpClient {
             json.encode(data), requestHeader![HttpConstants.contentType]!),
         headers: requestHeader,
       );
+      updateCookie(response);
     }
 
     return HttpUtil.getResponse(response);
@@ -205,5 +207,14 @@ class HttpClient {
     final userString = prefs.getString(AppSharedPreference.token);
     if (userString == null) return null;
     return userString;
+  }
+
+  void updateCookie(Response response) {
+    String? rawCookie = response.headers['set-cookie'];
+    if (rawCookie != null) {
+      int index = rawCookie.indexOf(';');
+      header!['cookie'] =
+      (index == -1) ? rawCookie : rawCookie.substring(0, index);
+    }
   }
 }

@@ -44,6 +44,7 @@ abstract class EventModel with _$EventModel {
     @JsonKey(name: 'modified_by', includeIfNull: true) String? modifiedBy,
     @JsonKey(name: 'modified_from', includeIfNull: true) String? modifiedFrom,
     @JsonKey(name: 'modified_date', includeIfNull: true) String? modifiedDate,
+
   }) = _EventModel;
 
   factory EventModel.fromJson(Map<String, dynamic> json) =>
@@ -118,7 +119,22 @@ abstract class User with _$User {
         bool? isVerified,
     @JsonKey(name: 'image_url', includeIfNull: true) String? imageUrl,
     @JsonKey(name: 'cover_url', includeIfNull: true) String? coverUrl,
-  }) = _User;
+    @JsonKey(name: 'hospital_id', includeIfNull: true)String? hospitalId,
+    @JsonKey(includeIfNull: true) Hospital? hospital,
 
+  }) = _User;
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
+
+@freezed
+abstract class Hospital with _$Hospital {
+  const factory Hospital({
+    @JsonKey(includeIfNull: true) String? id,
+    @JsonKey(includeIfNull: true) String? alias,
+    @JsonKey(includeIfNull: true) String? name,
+    @JsonKey(name: 'image_url', includeIfNull: true) String? imageUrl,
+  }) = _Hospital;
+
+  factory Hospital.fromJson(Map<String, dynamic> json) => _$HospitalFromJson(json);
+}
+

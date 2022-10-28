@@ -1158,6 +1158,10 @@ mixin _$User {
   String? get imageUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'cover_url', includeIfNull: true)
   String? get coverUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hospital_id', includeIfNull: true)
+  String? get hospitalId => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: true)
+  Hospital? get hospital => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1201,7 +1205,13 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(name: 'image_url', includeIfNull: true)
           String? imageUrl,
       @JsonKey(name: 'cover_url', includeIfNull: true)
-          String? coverUrl});
+          String? coverUrl,
+      @JsonKey(name: 'hospital_id', includeIfNull: true)
+          String? hospitalId,
+      @JsonKey(includeIfNull: true)
+          Hospital? hospital});
+
+  $HospitalCopyWith<$Res>? get hospital;
 }
 
 /// @nodoc
@@ -1228,6 +1238,8 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? isVerified = freezed,
     Object? imageUrl = freezed,
     Object? coverUrl = freezed,
+    Object? hospitalId = freezed,
+    Object? hospital = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -1286,7 +1298,26 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.coverUrl
           : coverUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      hospitalId: hospitalId == freezed
+          ? _value.hospitalId
+          : hospitalId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hospital: hospital == freezed
+          ? _value.hospital
+          : hospital // ignore: cast_nullable_to_non_nullable
+              as Hospital?,
     ));
+  }
+
+  @override
+  $HospitalCopyWith<$Res>? get hospital {
+    if (_value.hospital == null) {
+      return null;
+    }
+
+    return $HospitalCopyWith<$Res>(_value.hospital!, (value) {
+      return _then(_value.copyWith(hospital: value));
+    });
   }
 }
 
@@ -1328,7 +1359,14 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(name: 'image_url', includeIfNull: true)
           String? imageUrl,
       @JsonKey(name: 'cover_url', includeIfNull: true)
-          String? coverUrl});
+          String? coverUrl,
+      @JsonKey(name: 'hospital_id', includeIfNull: true)
+          String? hospitalId,
+      @JsonKey(includeIfNull: true)
+          Hospital? hospital});
+
+  @override
+  $HospitalCopyWith<$Res>? get hospital;
 }
 
 /// @nodoc
@@ -1356,6 +1394,8 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? isVerified = freezed,
     Object? imageUrl = freezed,
     Object? coverUrl = freezed,
+    Object? hospitalId = freezed,
+    Object? hospital = freezed,
   }) {
     return _then(_$_User(
       id: id == freezed
@@ -1414,6 +1454,14 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.coverUrl
           : coverUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      hospitalId: hospitalId == freezed
+          ? _value.hospitalId
+          : hospitalId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hospital: hospital == freezed
+          ? _value.hospital
+          : hospital // ignore: cast_nullable_to_non_nullable
+              as Hospital?,
     ));
   }
 }
@@ -1454,7 +1502,11 @@ class _$_User implements _User {
       @JsonKey(name: 'image_url', includeIfNull: true)
           this.imageUrl,
       @JsonKey(name: 'cover_url', includeIfNull: true)
-          this.coverUrl});
+          this.coverUrl,
+      @JsonKey(name: 'hospital_id', includeIfNull: true)
+          this.hospitalId,
+      @JsonKey(includeIfNull: true)
+          this.hospital});
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
@@ -1505,10 +1557,16 @@ class _$_User implements _User {
   @override
   @JsonKey(name: 'cover_url', includeIfNull: true)
   final String? coverUrl;
+  @override
+  @JsonKey(name: 'hospital_id', includeIfNull: true)
+  final String? hospitalId;
+  @override
+  @JsonKey(includeIfNull: true)
+  final Hospital? hospital;
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, dob: $dob, email: $email, mobile: $mobile, username: $username, status: $status, isPatient: $isPatient, isMidwife: $isMidwife, isAdmin: $isAdmin, isSuperAdmin: $isSuperAdmin, isVerified: $isVerified, imageUrl: $imageUrl, coverUrl: $coverUrl)';
+    return 'User(id: $id, name: $name, dob: $dob, email: $email, mobile: $mobile, username: $username, status: $status, isPatient: $isPatient, isMidwife: $isMidwife, isAdmin: $isAdmin, isSuperAdmin: $isSuperAdmin, isVerified: $isVerified, imageUrl: $imageUrl, coverUrl: $coverUrl, hospitalId: $hospitalId, hospital: $hospital)';
   }
 
   @override
@@ -1531,7 +1589,10 @@ class _$_User implements _User {
             const DeepCollectionEquality()
                 .equals(other.isVerified, isVerified) &&
             const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
-            const DeepCollectionEquality().equals(other.coverUrl, coverUrl));
+            const DeepCollectionEquality().equals(other.coverUrl, coverUrl) &&
+            const DeepCollectionEquality()
+                .equals(other.hospitalId, hospitalId) &&
+            const DeepCollectionEquality().equals(other.hospital, hospital));
   }
 
   @JsonKey(ignore: true)
@@ -1551,7 +1612,9 @@ class _$_User implements _User {
       const DeepCollectionEquality().hash(isSuperAdmin),
       const DeepCollectionEquality().hash(isVerified),
       const DeepCollectionEquality().hash(imageUrl),
-      const DeepCollectionEquality().hash(coverUrl));
+      const DeepCollectionEquality().hash(coverUrl),
+      const DeepCollectionEquality().hash(hospitalId),
+      const DeepCollectionEquality().hash(hospital));
 
   @JsonKey(ignore: true)
   @override
@@ -1598,7 +1661,11 @@ abstract class _User implements User {
       @JsonKey(name: 'image_url', includeIfNull: true)
           final String? imageUrl,
       @JsonKey(name: 'cover_url', includeIfNull: true)
-          final String? coverUrl}) = _$_User;
+          final String? coverUrl,
+      @JsonKey(name: 'hospital_id', includeIfNull: true)
+          final String? hospitalId,
+      @JsonKey(includeIfNull: true)
+          final Hospital? hospital}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
@@ -1650,6 +1717,223 @@ abstract class _User implements User {
   @JsonKey(name: 'cover_url', includeIfNull: true)
   String? get coverUrl => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'hospital_id', includeIfNull: true)
+  String? get hospitalId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(includeIfNull: true)
+  Hospital? get hospital => throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
   _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;
+}
+
+Hospital _$HospitalFromJson(Map<String, dynamic> json) {
+  return _Hospital.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Hospital {
+  @JsonKey(includeIfNull: true)
+  String? get id => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: true)
+  String? get alias => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: true)
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image_url', includeIfNull: true)
+  String? get imageUrl => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $HospitalCopyWith<Hospital> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $HospitalCopyWith<$Res> {
+  factory $HospitalCopyWith(Hospital value, $Res Function(Hospital) then) =
+      _$HospitalCopyWithImpl<$Res>;
+  $Res call(
+      {@JsonKey(includeIfNull: true) String? id,
+      @JsonKey(includeIfNull: true) String? alias,
+      @JsonKey(includeIfNull: true) String? name,
+      @JsonKey(name: 'image_url', includeIfNull: true) String? imageUrl});
+}
+
+/// @nodoc
+class _$HospitalCopyWithImpl<$Res> implements $HospitalCopyWith<$Res> {
+  _$HospitalCopyWithImpl(this._value, this._then);
+
+  final Hospital _value;
+  // ignore: unused_field
+  final $Res Function(Hospital) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? alias = freezed,
+    Object? name = freezed,
+    Object? imageUrl = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      alias: alias == freezed
+          ? _value.alias
+          : alias // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      imageUrl: imageUrl == freezed
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_HospitalCopyWith<$Res> implements $HospitalCopyWith<$Res> {
+  factory _$$_HospitalCopyWith(
+          _$_Hospital value, $Res Function(_$_Hospital) then) =
+      __$$_HospitalCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {@JsonKey(includeIfNull: true) String? id,
+      @JsonKey(includeIfNull: true) String? alias,
+      @JsonKey(includeIfNull: true) String? name,
+      @JsonKey(name: 'image_url', includeIfNull: true) String? imageUrl});
+}
+
+/// @nodoc
+class __$$_HospitalCopyWithImpl<$Res> extends _$HospitalCopyWithImpl<$Res>
+    implements _$$_HospitalCopyWith<$Res> {
+  __$$_HospitalCopyWithImpl(
+      _$_Hospital _value, $Res Function(_$_Hospital) _then)
+      : super(_value, (v) => _then(v as _$_Hospital));
+
+  @override
+  _$_Hospital get _value => super._value as _$_Hospital;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? alias = freezed,
+    Object? name = freezed,
+    Object? imageUrl = freezed,
+  }) {
+    return _then(_$_Hospital(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      alias: alias == freezed
+          ? _value.alias
+          : alias // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      imageUrl: imageUrl == freezed
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_Hospital implements _Hospital {
+  const _$_Hospital(
+      {@JsonKey(includeIfNull: true) this.id,
+      @JsonKey(includeIfNull: true) this.alias,
+      @JsonKey(includeIfNull: true) this.name,
+      @JsonKey(name: 'image_url', includeIfNull: true) this.imageUrl});
+
+  factory _$_Hospital.fromJson(Map<String, dynamic> json) =>
+      _$$_HospitalFromJson(json);
+
+  @override
+  @JsonKey(includeIfNull: true)
+  final String? id;
+  @override
+  @JsonKey(includeIfNull: true)
+  final String? alias;
+  @override
+  @JsonKey(includeIfNull: true)
+  final String? name;
+  @override
+  @JsonKey(name: 'image_url', includeIfNull: true)
+  final String? imageUrl;
+
+  @override
+  String toString() {
+    return 'Hospital(id: $id, alias: $alias, name: $name, imageUrl: $imageUrl)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_Hospital &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.alias, alias) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.imageUrl, imageUrl));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(alias),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(imageUrl));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_HospitalCopyWith<_$_Hospital> get copyWith =>
+      __$$_HospitalCopyWithImpl<_$_Hospital>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_HospitalToJson(this);
+  }
+}
+
+abstract class _Hospital implements Hospital {
+  const factory _Hospital(
+      {@JsonKey(includeIfNull: true)
+          final String? id,
+      @JsonKey(includeIfNull: true)
+          final String? alias,
+      @JsonKey(includeIfNull: true)
+          final String? name,
+      @JsonKey(name: 'image_url', includeIfNull: true)
+          final String? imageUrl}) = _$_Hospital;
+
+  factory _Hospital.fromJson(Map<String, dynamic> json) = _$_Hospital.fromJson;
+
+  @override
+  @JsonKey(includeIfNull: true)
+  String? get id => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(includeIfNull: true)
+  String? get alias => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(includeIfNull: true)
+  String? get name => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'image_url', includeIfNull: true)
+  String? get imageUrl => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_HospitalCopyWith<_$_Hospital> get copyWith =>
+      throw _privateConstructorUsedError;
 }
