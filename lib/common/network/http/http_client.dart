@@ -113,6 +113,9 @@ class HttpClient {
 
     String? token = await getToken();
     String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
+    if(cookie != null){
+      setCookieFromSession(cookie);
+    }
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
@@ -185,6 +188,12 @@ class HttpClient {
     String? token = await getToken();
 
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+
+    String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
+    if(cookie != null){
+      setCookieFromSession(cookie);
+    }
+
     late Response response;
     if (Configurations.isShowChucker == true) {
       response = await _client!
@@ -217,6 +226,7 @@ class HttpClient {
 
   void updateCookie(Response response) {
     String? rawCookie = response.headers['set-cookie'];
+    print('cookie headers : ${json.encode(response.headers)}');
     if (rawCookie != null) {
       AppSharedPreference.setString(AppSharedPreference.cookie, rawCookie);
       int index = rawCookie.indexOf(';');
@@ -226,6 +236,7 @@ class HttpClient {
 
   void setCookieFromSession(String cookie) {
     if (cookie != null) {
+      header!['cookie'] = cookie;
       int index = cookie.indexOf(';');
       header!['cookie'] = (index == -1) ? cookie : cookie.substring(0, index);
     }
