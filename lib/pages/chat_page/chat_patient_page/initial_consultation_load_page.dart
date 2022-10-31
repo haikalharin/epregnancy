@@ -82,7 +82,7 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
                         message: element.message,
                         dateTime: element.createdDate,
                         imageUrl: element.imageUrl,
-                        profileImage: _fromId == widget.userId ? fromImageUrl : toImageUrl,
+                        profileImage: _fromId != widget.userId ? toImageUrl : fromImageUrl,
                         mine: _fromId == widget.userId ? true: false
                     )
                 );
@@ -100,7 +100,7 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
 
             String? _toId = state.listPersonalChatRoom?[0].toId;
             String? _toImageUrl = state.listPersonalChatRoom?[0].to?.imageUrl;
-            String? _toName = state.listPersonalChatRoom?[0].to?.name;
+            String? _toName = await aesDecryptor(state.listPersonalChatRoom?[0].to?.name);
             Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewChatRoom(
               fromId: widget.userId,
               toId: _toId,

@@ -36,7 +36,9 @@ class HttpUtil {
       case 405:
         return _getSuccessResponse(response);
       case 500:
-        return _getSuccessResponse(response);
+        return throw ServerErrorException(
+          json.decode(response.body),
+        );
       case 401 :
         return throw UnAuthorizeException(
           json.decode(response.body),

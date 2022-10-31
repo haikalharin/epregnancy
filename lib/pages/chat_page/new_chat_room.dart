@@ -73,7 +73,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   String? toId;
   late WebSocket _webSocket;
   String message = '';
-  late bool chatHasEnded = widget.isArchive == true ? true : false;
+  bool chatHasEnded = false;
 
   List<ChatMessageEntity>? chatMessageList = [];
 
@@ -248,6 +248,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
       chatMessageList = widget.chatMessageList;
       toName = widget.toName;
       toId = widget.toId;
+      chatHasEnded = widget.isArchive ?? false;
       isPendingChat = widget.pendingChat ?? false;
       chatMessageList?.forEach((element) {
         if(element.mine == true){
@@ -283,7 +284,6 @@ class _NewChatRoomState extends State<NewChatRoom> {
 
   _initWebSocket() async {
     UserModel userModel = await AppSharedPreference.getUser();
-    print('initwebsocket run url : ${environment['websockets']}${userModel.id}');
     Future<WebSocket> futureWebSocket = WebSocket.connect(
         '${environment['websockets']}${userModel.id}');
     futureWebSocket.then((WebSocket ws) {
@@ -578,7 +578,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                       : Alignment.topLeft),
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(chatMessageList![index].imageUrl!, height: 150.h, width: 150.w,)));
+                                      child: Image.network(chatMessageList![index].profileImage!, height: 150.h, width: 150.w,)));
                             }
                           } else {
                             return Row(
@@ -589,7 +589,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                     width: 20.w,
                                     decoration: BoxDecoration(shape: BoxShape.circle),
                                     child: chatMessageList![index].profileImage != null ? CircleAvatar(
-                                      backgroundImage: NetworkImage(chatMessageList![index].profileImage!, scale: 1.0),
+                                      backgroundImage: NetworkImage(widget.toImageUrl!, scale: 1.0),
                                     ) : Image.asset('assets/dummies/dummy_avatar.png')
                                 ),
                                 Expanded(
@@ -656,7 +656,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                   ),
                 ),
                 Visibility(
-                  visible: chatHasEnded,
+                  visible: true,
                   child: Column(
                     children: [
                       Container(

@@ -133,7 +133,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } on Exception catch (a) {
       print(a);
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
@@ -160,7 +160,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString());
     }
@@ -185,7 +185,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } on Exception catch (a) {
       print(a);
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
@@ -252,7 +252,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } on Exception catch (a) {
       print(a);
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
@@ -282,7 +282,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } on Exception catch (a) {
       print(a);
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
