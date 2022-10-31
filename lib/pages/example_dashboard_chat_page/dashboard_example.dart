@@ -93,6 +93,7 @@ class _DashboardExampleState extends State<DashboardExample> {
       AppSharedPreference.remove(AppSharedPreference.hospital);
       AppSharedPreference.remove(AppSharedPreference.otp);
       AppSharedPreference.remove(AppSharedPreference.token);
+      AppSharedPreference.remove(AppSharedPreference.cookie);
       await GAuthentication.signOut(context: context);
       Navigator.of(context).pushReplacementNamed(RouteName.login);
     }

@@ -98,12 +98,14 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
     if (value == 'logout') {
       // AppSharedPreference.clear();
       AppSharedPreference.remove(AppSharedPreference.user);
+      AppSharedPreference.remove(AppSharedPreference.cookie);
       AppSharedPreference.remove(AppSharedPreference.userRegister);
       AppSharedPreference.remove(AppSharedPreference.baby);
       AppSharedPreference.remove(AppSharedPreference.baby);
       AppSharedPreference.remove(AppSharedPreference.hospital);
       AppSharedPreference.remove(AppSharedPreference.otp);
       AppSharedPreference.remove(AppSharedPreference.token);
+      AppSharedPreference.remove(AppSharedPreference.cookie);
       await GAuthentication.signOut(context: context);
       Navigator.of(context).pushReplacementNamed(RouteName.login);
     }

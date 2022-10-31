@@ -54,6 +54,14 @@ class HttpClient {
 
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
 
+    String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
+
+    if(cookie != null){
+      setCookieFromSession(cookie);
+    }
+
+
+
     // TODO DO NOT USE THIS STATIC TOKEN FOR PROD
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
@@ -119,9 +127,8 @@ class HttpClient {
       )
           .interceptWithAlice(alice, body: data);
       updateCookie(response);
-    } else{
-      response = await _client!
-          .post(
+    } else {
+      response = await _client!.post(
         _getParsedUrl(path),
         body: HttpUtil.encodeRequestBody(
             json.encode(data), requestHeader![HttpConstants.contentType]!),
@@ -133,8 +140,7 @@ class HttpClient {
     return HttpUtil.getResponse(response);
   }
 
-  dynamic delete(String path, dynamic data,
-      {Map<String, String>? overrideHeader}) async {
+  dynamic delete(String path, dynamic data, {Map<String, String>? overrideHeader}) async {
     final Map<String, String>? requestHeader = overrideHeader ?? header;
 
     debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
@@ -211,10 +217,18 @@ class HttpClient {
 
   void updateCookie(Response response) {
     String? rawCookie = response.headers['set-cookie'];
+    AppSharedPreference.setString(AppSharedPreference.cookie, rawCookie ?? "");
+
     if (rawCookie != null) {
       int index = rawCookie.indexOf(';');
-      header!['cookie'] =
-      (index == -1) ? rawCookie : rawCookie.substring(0, index);
+      header!['cookie'] = (index == -1) ? rawCookie : rawCookie.substring(0, index);
+    }
+  }
+
+  void setCookieFromSession(String cookie) {
+    if (cookie != null) {
+      int index = cookie.indexOf(';');
+      header!['cookie'] = (index == -1) ? cookie : cookie.substring(0, index);
     }
   }
 }

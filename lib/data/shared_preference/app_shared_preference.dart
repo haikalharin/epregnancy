@@ -39,6 +39,7 @@ class AppSharedPreference {
   static const String newInstall = "new_install";
   static const String isFirstLaunch = "isFirstLaunch";
   static const String isShowGuide = "show_guide";
+  static const String cookie = "cookie";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -304,6 +305,7 @@ class AppSharedPreference {
     await AppSharedPreference.remove(AppSharedPreference.hospital);
     await AppSharedPreference.remove(AppSharedPreference.otp);
     await AppSharedPreference.remove(AppSharedPreference.token);
+    await AppSharedPreference.remove(AppSharedPreference.cookie);
     alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
     //navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (BuildContext context) => OnBoardingScreen(isHavePopUpMessage: "401",)));
   }

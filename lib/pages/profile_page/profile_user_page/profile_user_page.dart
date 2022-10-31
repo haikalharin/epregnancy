@@ -302,6 +302,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                       await AppSharedPreference.remove(AppSharedPreference.hospital);
                       await AppSharedPreference.remove(AppSharedPreference.otp);
                       await AppSharedPreference.remove(AppSharedPreference.token);
+                      await AppSharedPreference.remove(AppSharedPreference.cookie);
                       _showMyDialog(context);
                     },
                     child: Row(

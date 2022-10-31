@@ -27,6 +27,7 @@ class LogoutPage extends StatelessWidget {
             AppSharedPreference.remove(AppSharedPreference.hospital);
             AppSharedPreference.remove(AppSharedPreference.otp);
             AppSharedPreference.remove(AppSharedPreference.token);
+            AppSharedPreference.remove(AppSharedPreference.cookie);
             Navigator.of(context).pushNamedAndRemoveUntil(
                 RouteName.login, (Route<dynamic> route) => false);
           },
