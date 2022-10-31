@@ -12,9 +12,12 @@ import 'package:intl/intl.dart';
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../data/model/baby_model_api/baby_Model_api.dart';
+import '../../data/shared_preference/app_shared_preference.dart';
+import '../../main.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';
+import '../login_page/login_page.dart';
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPageBaby extends StatefulWidget {
@@ -46,10 +49,18 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
             Navigator.of(context).pushNamed(RouteName.navBar, arguments: {
               'role': StringConstant.patient,
               'initial_index': 2
-
             });
           } else {
-            Navigator.of(context).pushNamed(RouteName.landingPage);
+            // Navigator.of(context).pushNamed(RouteName.landingPage);
+            AppSharedPreference.remove(AppSharedPreference.user);
+            AppSharedPreference.remove(AppSharedPreference.userRegister);
+            AppSharedPreference.remove(AppSharedPreference.baby);
+            AppSharedPreference.remove(AppSharedPreference.baby);
+            AppSharedPreference.remove(AppSharedPreference.hospital);
+            AppSharedPreference.remove(AppSharedPreference.otp);
+            AppSharedPreference.remove(AppSharedPreference.token);
+            AppSharedPreference.remove(AppSharedPreference.cookie);
+            alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true, isFromRegister: true)), (route) => false);
           }
           // Navigator.of(context).pushNamedAndRemoveUntil(
           //                 RouteName.homeScreen,

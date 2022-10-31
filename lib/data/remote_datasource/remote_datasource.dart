@@ -105,6 +105,7 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel> updateUser(SignupQuestRequest user) async {
+    print("payload request : ${user.toJson()}");
     try {
       final response = await httpClient.put(ServiceUrl.updateUser, user);
       return ResponseModel.fromJson(response, UserModel.fromJson);

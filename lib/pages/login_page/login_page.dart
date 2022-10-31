@@ -24,8 +24,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 const _horizontalPadding = 24.0;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, this.tokenExpired = false}) : super(key: key);
+  const LoginPage({Key? key, this.tokenExpired = false, this.isFromRegister = false}) : super(key: key);
   final bool tokenExpired;
+  final bool isFromRegister;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -62,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            "Sesi Berakhir.",
+                            widget.isFromRegister ? "Selamat!!!" : "Sesi Berakhir.",
                             style: TextStyle(
                                 color: EpregnancyColors.blueDark,
                                 fontSize: 14.sp,
@@ -70,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Padding(padding: EdgeInsets.only(top: 4.w)),
                           Text(
-                            "Mohon maaf sesi Anda telah berakhir.",
+                            widget.isFromRegister ? "Registrasi Berhasil" :"Mohon maaf sesi Anda telah berakhir.",
                             style: TextStyle(
                               fontSize: 10.sp,
                             ),

@@ -22,6 +22,7 @@ class HttpClient {
   Client? _client;
   String? host = Configurations.host;
   Map<String, String>? header;
+  bool cookieFromSp = true;
 
   HttpClient() {
     _client = Client();
@@ -51,11 +52,10 @@ class HttpClient {
     debugPrint('>>>>>>> [GET] ${_getParsedUrl(path)}');
 
     String? token = await getToken();
-
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
 
     String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
-
+    print('cookie : $cookie');
     if(cookie != null){
       setCookieFromSession(cookie);
     }
@@ -112,7 +112,7 @@ class HttpClient {
     debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
 
     String? token = await getToken();
-
+    String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
@@ -217,9 +217,8 @@ class HttpClient {
 
   void updateCookie(Response response) {
     String? rawCookie = response.headers['set-cookie'];
-    AppSharedPreference.setString(AppSharedPreference.cookie, rawCookie ?? "");
-
     if (rawCookie != null) {
+      AppSharedPreference.setString(AppSharedPreference.cookie, rawCookie);
       int index = rawCookie.indexOf(';');
       header!['cookie'] = (index == -1) ? rawCookie : rawCookie.substring(0, index);
     }

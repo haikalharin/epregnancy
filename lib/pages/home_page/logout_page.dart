@@ -17,7 +17,6 @@ class LogoutPage extends StatelessWidget {
       children: [
         RaisedButton(
           onPressed: () async {
-            //
             await GAuthentication.signOut(context: context);
             // await AppSharedPreference.clear();
             AppSharedPreference.remove(AppSharedPreference.user);

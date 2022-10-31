@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:PregnancyApp/utils/secure.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import '../../../common/validators/confirmPassword_validator.dart';
 import '../../../common/validators/mandatory_field_validator.dart';
 import '../../../common/validators/password_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
+import '../../../data/model/login_model/login_model.dart';
 import '../../../data/model/response_model/response_model.dart';
 import '../../../data/model/user_model_api/user_model.dart';
 import '../../../data/model/user_model_firebase/user_model_firebase.dart';
@@ -154,9 +156,18 @@ class SignUpQuestionnaireBloc
             await AppSharedPreference.setUserRegister(userModel);
             await AppSharedPreference.setString(
                 AppSharedPreference.token, userModel.token ?? '');
-            yield state.copyWith(
-                submitStatus: FormzStatus.submissionSuccess,
-                userModel: response.data);
+            ResponseModel loginResponse = await userRepository.loginNonOtp(LoginModel(username: userModel.username, password: state.password.value));
+            await AppSharedPreference.setString(AppSharedPreference.token, loginResponse.data.token!.accessToken!);
+
+            if (loginResponse.code == 200){
+              yield state.copyWith(
+                  submitStatus: FormzStatus.submissionSuccess,
+                  userModel: response.data);
+            } else {
+              yield state.copyWith(
+                  submitStatus: FormzStatus.submissionFailure,
+                  errorMessage: loginResponse.message);
+            }
           } else {
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionFailure,
@@ -170,7 +181,7 @@ class SignUpQuestionnaireBloc
               password: state.password,
               confirmPassword: state.confirmPassword,
               date: state.date,
-          errorMessage: 'Silahkan cek kembali data anda');
+              errorMessage: 'Silahkan cek kembali data anda');
         }
       } else {
         yield state.copyWith(
@@ -179,7 +190,8 @@ class SignUpQuestionnaireBloc
             secondName: state.secondName,
             password: state.password,
             confirmPassword: state.confirmPassword,
-            date: state.date, errorMessage: 'Silahkan cek kembali data anda');
+            date: state.date,
+            errorMessage: 'Silahkan cek kembali data anda');
       }
     } on LoginErrorException catch (e) {
       print(e);

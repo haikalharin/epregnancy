@@ -75,7 +75,7 @@ Future<void> main() async {
 }
 
 final Alice alice = Alice(
-    showNotification: environment['mode'] == "dev" ? false : true,
+    showNotification: false,
     darkTheme: true);
 
 class MyApp extends StatefulWidget {

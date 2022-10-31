@@ -5,6 +5,7 @@ import 'package:PregnancyApp/data/model/baby_model/baby_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/signup_quest_request.dart';
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
+import 'package:PregnancyApp/utils/secure.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -139,7 +140,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
         if(event.isUpdate){
           await AppSharedPreference.setUser(response.data);
         }
-        await AppSharedPreference.setString(AppSharedPreference.token,userModel.token??'');
+        // await AppSharedPreference.setString(AppSharedPreference.token,userModel.token??'');
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: 'submit');
 
       } else {
@@ -166,12 +167,19 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
       ResponseModel response = ResponseModel.dataEmpty();
       if(state.dataBaby?.id != ""){
         response =  await userRepository.updateQuestionerBaby(
-            BabyModelApi(id: state.dataBaby?.id,name: state.name.value,lastMenstruationDate: state.date.value
+            BabyModelApi(id: state.dataBaby?.id ,name: state.name.value,lastMenstruationDate: state.date.value
             )
         );
       } else{
+        String? userId;
+        if(user.id != null) {
+          userId = await aesDecryptor(user.id);
+        } else {
+          userId = state.user?.id;
+        }
+
         response =  await userRepository.saveQuestionerBaby(
-            BabyModelApi(userId: user.id??state.user?.id,name: state.name.value,lastMenstruationDate: state.date.value
+            BabyModelApi(userId: userId, name: state.name.value,lastMenstruationDate: state.date.value
             )
         );
       }

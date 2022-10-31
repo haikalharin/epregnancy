@@ -12,6 +12,7 @@ import '../../../data/model/response_model/response_model.dart';
 import '../../../data/model/user_model_api/user_model.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../utils/secure.dart';
 
 part 'landing_page_event.dart';
 part 'landing_page_state.dart';
@@ -36,8 +37,9 @@ class LandingPageBloc extends Bloc<LandingPageEvent, LandingPageState> {
     try {
       UserModel? userRegister = await AppSharedPreference.getUserRegister();
       if(userRegister.id != null){
-        UserModel? user = await AppSharedPreference.getUserRegister();
-        await AppSharedPreference.setUser(user);
+        final ResponseModel<UserModel> userInfoResponse = await userRepository.getUserInfo();
+        UserModel _userModel = userInfoResponse.data;
+        await AppSharedPreference.setUser(_userModel);
         await AppSharedPreference.remove("_userRegister");
         UserModel? userLogin = await AppSharedPreference.getUser();
         if(userLogin.id != null){
