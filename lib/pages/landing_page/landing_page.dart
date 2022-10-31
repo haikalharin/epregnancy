@@ -45,8 +45,6 @@ class _LandingPageState extends State<LandingPage> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -54,12 +52,15 @@ class _LandingPageState extends State<LandingPage> {
       body: BlocListener<LandingPageBloc, LandingPageState>(
         listener: (context, state) {
           if (state.submitStatus == FormzStatus.submissionFailure) {
-            const snackBar = SnackBar(
-                content: Text("failed"), backgroundColor: Colors.red);
+            const snackBar =
+                SnackBar(content: Text("failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
-          } else if (state.submitStatus ==
-              FormzStatus.submissionSuccess) {
-            alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true, isFromRegister: true)), (route) => false);
+          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+            alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => const LoginPage(
+                        tokenExpired: true, isFromRegister: true)),
+                (route) => false);
           }
         },
         child: BlocBuilder<LandingPageBloc, LandingPageState>(
@@ -93,7 +94,7 @@ class _LandingPageState extends State<LandingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
                           slides.length,
-                              (index) => buildDot(index, context),
+                          (index) => buildDot(index, context),
                         ),
                       ),
                     ),
@@ -125,7 +126,8 @@ class _LandingPageState extends State<LandingPage> {
                         onPressed: () async {
                           if (currentIndex == slides.length - 1) {
                             // Navigate to next screen
-                            Injector.resolve<LandingPageBloc>().add(const LoginRequest());
+                            Injector.resolve<LandingPageBloc>()
+                                .add(const LoginRequest());
                           }
                           _controller.nextPage(
                               duration: Duration(milliseconds: 100),
@@ -163,10 +165,12 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 }
+
 class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LandingPageBloc, LandingPageState>(builder: (context, state) {
+    return BlocBuilder<LandingPageBloc, LandingPageState>(
+        builder: (context, state) {
       if (state.submitStatus == FormzStatus.submissionInProgress) {
         return Container(
             color: Colors.white.withAlpha(90),
@@ -177,4 +181,3 @@ class _Loading extends StatelessWidget {
     });
   }
 }
-

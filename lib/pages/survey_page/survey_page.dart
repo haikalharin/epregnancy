@@ -7,9 +7,11 @@ import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../main.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';
+import '../login_page/login_page.dart';
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPage extends StatefulWidget {
@@ -103,12 +105,11 @@ class _SurveyPageState extends State<SurveyPage> {
                 }
               } else {
                 if (widget.isEdit == true) {
-                  Injector.resolve<SurveyPageBloc>()
-                      .add(const SurveyDisposeEvent());
-                  Navigator.of(context).pushNamed(RouteName.navBar, arguments: {
-                    'role': StringConstant.patient,
-                    'initial_index': 2
-                  });
+                  alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => const LoginPage(
+                              tokenExpired: true, isFromRegister: true)),
+                          (route) => false);
                 } else {
                   Navigator.of(context).pushNamed(RouteName.landingPage);
                 }

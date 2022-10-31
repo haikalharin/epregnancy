@@ -185,6 +185,11 @@ class HttpClient {
     String? token = await getToken();
 
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
+
+    if(cookie != null){
+      setCookieFromSession(cookie);
+    }
     late Response response;
     if (Configurations.isShowChucker == true) {
       response = await _client!
