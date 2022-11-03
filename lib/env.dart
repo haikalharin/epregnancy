@@ -12,10 +12,24 @@
 // };
 
 // env dev allianz
-final Map<String, dynamic> environment = <String, dynamic>{
+final Map<String, dynamic> devEnvironment = <String, dynamic>{
   'host': 'https://igbeyewo.allianz.co.id/',
   'sub_host': '/di/epregnancy/api',
   'websockets': 'wss://igbeyewo.allianz.co.id/di/epregnancy/api/user/',
+  'image_host': 'https://image.tmdb.org/t/p/',
+  'http_client': 'https',
+  'wpUrl': 'http://192.168.64.2/panjistore',
+  'consumerKey': 'ck_015ecefc9ecedf3fb4208d7945173ff6bf498728',
+  'consumerSecret': 'cs_51a47e2d054bfe8df212b12048cd6f65c6463529',
+  'berita':'  http://ds-onlineadvertising.com/syariah/info.php',
+  'mode': 'prod', //dev or prod
+  'isShowChucker': true, //dev or prod
+};
+
+final Map<String, dynamic> environment = <String, dynamic>{
+  'host': 'https://services.allianz.co.id/',
+  'sub_host': '/di/komunitaz/api',
+  'websockets': 'wss://services.allianz.co.id/di/komunitaz/api/user/',
   'image_host': 'https://image.tmdb.org/t/p/',
   'http_client': 'https',
   'wpUrl': 'http://192.168.64.2/panjistore',

@@ -40,7 +40,9 @@ class _ListForumWidgetState extends State<ListForumWidget> {
         decoration: BoxDecoration(color: Colors.white),
         child: widget.listConsul.isEmpty
             ? Stack(children: [
-                Container(margin: EdgeInsets.only(), child: Container())
+                Container(margin: EdgeInsets.only(), child: Container(child: Center(
+                  child: Text("Belum Ada Postingan"),
+                ),))
               ])
             : Stack(
                 children: [
