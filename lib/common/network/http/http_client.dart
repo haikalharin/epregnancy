@@ -226,7 +226,6 @@ class HttpClient {
 
   void updateCookie(Response response) {
     String? rawCookie = response.headers['set-cookie'];
-    print('cookie headers : $rawCookie}');
     if (rawCookie != null) {
       AppSharedPreference.setString(AppSharedPreference.cookie, rawCookie);
       int index = rawCookie.indexOf(';');
@@ -236,7 +235,6 @@ class HttpClient {
 
   void setCookieFromSession(String cookie) {
     if (cookie != null) {
-      header!['cookie'] = cookie;
       int index = cookie.indexOf(';');
       header!['cookie'] = (index == -1) ? cookie : cookie.substring(0, index);
     }
