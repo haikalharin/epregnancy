@@ -11,6 +11,7 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
+import '../../../common/exceptions/login_error_exception.dart';
 import '../../../common/exceptions/otp_error_exception.dart';
 import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/exceptions/survey_error_exception.dart';
@@ -30,11 +31,40 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
   Stream<OtpPageState> mapEventToState(OtpPageEvent event) async* {
     if (event is OtpNumberChanged) {
       yield* _mapOtpPageEventToState(event, state);
+    } else if (event is RequestResendOtp) {
+      yield* _mapResendOtp(event, state);
     }
   }
 
 
-
+  Stream<OtpPageState> _mapResendOtp(
+      RequestResendOtp event,
+      OtpPageState state,
+      ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    try {
+      var type = '';
+      if (event.userId!.contains('@')) {
+        type = 'email';
+      } else {
+        type = 'mobile';
+      }
+      ResponseModel response = await userRepository.requestOtp(OtpModel(value: event.userId, type: type));
+      OtpModel otpModel = response.data;
+      if (response.code == 200) {
+        await AppSharedPreference.setOtp(otpModel);
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, otpResendSuccess: true);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, otpResendSuccess: false);
+      }
+    } on LoginErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    }
+  }
 
   Stream<OtpPageState> _mapOtpPageEventToState(
     OtpNumberChanged event,
@@ -56,7 +86,7 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
             // await AppSharedPreference.setString(
             //     AppSharedPreference.token, userModel.token ?? '');
             yield state.copyWith(
-                submitStatus: FormzStatus.submissionSuccess);
+                submitStatus: FormzStatus.submissionSuccess, otpResendSuccess: false);
         } else {
           yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
         }

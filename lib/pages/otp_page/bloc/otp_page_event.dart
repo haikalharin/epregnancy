@@ -21,3 +21,9 @@ class OtpNumberChanged extends OtpPageEvent {
   @override
   List<Object> get props => [];
 }
+
+class RequestResendOtp extends OtpPageEvent {
+  const RequestResendOtp(this.isEmail, this.userId);
+  final String? userId;
+  final bool isEmail;
+}

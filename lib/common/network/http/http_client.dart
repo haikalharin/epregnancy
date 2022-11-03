@@ -226,7 +226,7 @@ class HttpClient {
 
   void updateCookie(Response response) {
     String? rawCookie = response.headers['set-cookie'];
-    print('cookie headers : ${json.encode(response.headers)}');
+    print('cookie headers : $rawCookie}');
     if (rawCookie != null) {
       AppSharedPreference.setString(AppSharedPreference.cookie, rawCookie);
       int index = rawCookie.indexOf(';');

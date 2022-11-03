@@ -234,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                             // SizedBox(height: 120),
                             //_HeadingText(),
                             Text(
-                              "Masuk dengan email",
+                              "Selamat Datang",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,

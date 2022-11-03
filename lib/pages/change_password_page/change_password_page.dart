@@ -258,15 +258,16 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
                                 onPressed: () async {
+                                  print('state confirm password value : ${state.confirmPassword.value}');
                                   if(state.currentPassword.value == ''){
                                     Toast.show('Mohon mengisi kata sandi sekarang');
                                   }
                                   else if(state.currentPassword == state.newPassword){
                                     Toast.show('Kata sandi tidak boleh sama dengan password sebelumnya!');
-                                  } else if (state.currentPassword != null && state.confirmPassword != null && state.newPassword != null){
+                                  } else if (state.currentPassword != null && state.confirmPassword != null && state.newPassword != null && state.confirmPassword.value == state.newPassword.value){
                                     Injector.resolve<ChangePasswordBloc>()
                                         .add(ChangePasswordSubmitted());
-                                  } else if(state.newPassword != state.confirmPassword) {
+                                  } else if(state.newPassword.value != state.confirmPassword.value) {
                                     Toast.show("Konfirmasi password tidak sama!");
                                   } else {
                                     Toast.show("Form harus diisi semua");

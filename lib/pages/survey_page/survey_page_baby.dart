@@ -46,10 +46,18 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
           Scaffold.of(context).showSnackBar(snackBar);
         } else if (state.submitStatus == FormzStatus.submissionSuccess) {
           if (widget.isEdit == true) {
-            Navigator.of(context).pushNamed(RouteName.navBar, arguments: {
-              'role': StringConstant.patient,
-              'initial_index': 2
-            });
+            // Navigator.of(context).pushNamed(RouteName.navBar, arguments: {
+            //   'role': StringConstant.patient,
+            //   'initial_index': 0
+            // });
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteName.navBar,
+                  (Route<dynamic> route) => false,
+              arguments: {
+                'role': StringConstant.patient,
+                'initial_index': 0
+              },
+            );
           } else {
             // Navigator.of(context).pushNamed(RouteName.landingPage);
             AppSharedPreference.remove(AppSharedPreference.user);

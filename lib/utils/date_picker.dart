@@ -10,7 +10,7 @@ class DatePickerUtils {
       context: context,
       initialEntryMode: DatePickerEntryMode.calendar,
       initialDate: dateTime,
-      firstDate: firstDate ?? DateTime(1945),
+      firstDate: firstDate ?? DateTime.now(),
       lastDate: endDate ?? DateTime(2100),
       errorFormatText: 'Enter valid date',
       errorInvalidText: 'Enter date in valid range',

@@ -148,12 +148,15 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       final ResponseModel<UserModel> responseModel = await userRepository.getUserInfo();
       UserModel userInfo = responseModel.data;
+      UserModel userEntity = userInfo.copyWith(
+        name: await aesDecryptor(userInfo.name)
+      );
       // await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if(responseModel.code == 200) {
         // await AppSharedPreference.setUserInfo(userInfo.data);
         await AppSharedPreference.setBool(AppSharedPreference.isShowGuide, false);
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned);
+            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned, user: userEntity);
       }
     } on HomeErrorException catch (e) {
       print(e);
@@ -226,8 +229,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           print('$differenceInDays');
         }}
       babyProgressModel = await EventUser.checkBabyProgress(weeks.toString());
-      final UserRolesModelFirebase role =
-          await AppSharedPreference.getUserRoleFirebase();
+      // final UserRolesModelFirebase role = await AppSharedPreference.getUserRoleFirebase();
       if (response.code == 200) {
         bool? _showGuide = await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
         print('show guide : $_showGuide');

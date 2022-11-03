@@ -88,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         Injector.resolve<SignupBloc>().add(const RequestOtp(false));
                       }
                     } else {
-                      Navigator.of(context).pushNamed(RouteName.otpPage);
+                      Navigator.of(context).pushNamed(RouteName.otpPage, arguments: state.userId);
                     }
                   }
                 }

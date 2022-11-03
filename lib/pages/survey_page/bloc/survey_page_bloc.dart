@@ -163,7 +163,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      UserModel user = await AppSharedPreference.getUserRegister();
+      UserModel user = event.isUpdate == false ?  await AppSharedPreference.getUserRegister() : await AppSharedPreference.getUser();
       ResponseModel response = ResponseModel.dataEmpty();
       if(state.dataBaby?.id != ""){
         response =  await userRepository.updateQuestionerBaby(
@@ -183,8 +183,6 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
             )
         );
       }
-
-
 
       if (response.code == 200) {
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);

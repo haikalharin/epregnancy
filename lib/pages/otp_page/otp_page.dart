@@ -27,13 +27,13 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage> {
   OtpFieldController otpController = OtpFieldController();
   bool isResend = false;
-  int _start = 60;
-  int _current = 60;
+  int _start = 90;
+  int _current = 90;
 
   void startTimer() {
-    CountdownTimer countDownTimer = new CountdownTimer(
-      new Duration(seconds: _start),
-      new Duration(seconds: 1),
+    CountdownTimer countDownTimer =  CountdownTimer(
+       Duration(seconds: _start),
+       const Duration(seconds: 1),
     );
 
     var sub = countDownTimer.listen(null);
@@ -72,6 +72,11 @@ class _OtpPageState extends State<OtpPage> {
                 const snackBar = SnackBar(
                     content: Text("OTP Salah"), backgroundColor: Colors.red);
                 Scaffold.of(context).showSnackBar(snackBar);
+              } else if (state.submitStatus == FormzStatus.submissionSuccess && state.otpResendSuccess == true){
+                setState(() {
+                  isResend = false;
+                });
+                startTimer();
               } else if (state.submitStatus == FormzStatus.submissionSuccess) {
                 Navigator.of(context)
                     .pushNamed(RouteName.signUpQuestionnairePage);
@@ -161,12 +166,8 @@ class _OtpPageState extends State<OtpPage> {
                             isResend
                                 ? InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        isResend = true;
-                                      });
-                                      Injector.resolve<SignupBloc>()
-                                          .add(const RequestOtp(true));
-                                      startTimer();
+                                      Injector.resolve<OtpPageBloc>()
+                                          .add(RequestResendOtp(true, widget.userId));
                                     },
                                     child: Text("kirim ulang OTP",style: TextStyle(
                                       color: EpregnancyColors.primer)))
