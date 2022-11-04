@@ -74,8 +74,8 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
             // });
             for(var element in state.listPersonalChatRoom ?? []) {
               String _fromId = element.fromId;
-              String fromImageUrl = element.from?.imageUrl;
-              String toImageUrl = element.to?.imageUrl;
+              String? fromImageUrl = element.from?.imageUrl ;
+              String? toImageUrl = element.to?.imageUrl;
               chatMessageList.add(
                     ChatMessageEntity(
                         name: _fromId,

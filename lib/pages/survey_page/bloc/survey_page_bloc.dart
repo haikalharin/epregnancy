@@ -67,7 +67,8 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     user = await AppSharedPreference.getUser();
       ResponseModel response = await userRepository.getBaby(user);
      myBaby = response.data;
-
+      print("ispregnant : ${user.isPregnant}");
+      print("isPlanning : ${user.isPlanningPregnancy}");
       if (user.isPregnant == true) {
         choice = 1;
       } else if (user.isPlanningPregnancy == true) {
@@ -173,7 +174,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
       } else{
         String? userId;
         if(user.id != null) {
-          userId = await aesDecryptor(user.id);
+          userId = state.user?.id;
         } else {
           userId = state.user?.id;
         }

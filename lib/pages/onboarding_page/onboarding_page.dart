@@ -140,7 +140,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ))),
           onPressed: () async {
             await AppSharedPreference.setBool(AppSharedPreference.newInstall, true);
-            Navigator.of(context).pushReplacementNamed(RouteName.login);
+            Navigator.of(context).pushReplacementNamed(RouteName.login, arguments: {'token_expired': false, 'is_from_register': false});
           },
           child: Center(
             child: Text(

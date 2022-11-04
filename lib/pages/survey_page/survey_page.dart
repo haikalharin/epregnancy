@@ -107,20 +107,26 @@ class _SurveyPageState extends State<SurveyPage> {
                       arguments: widget.isEdit);
                 }
               } else {
+                // todo handle edit
                 if (widget.isEdit == true) {
-                  if(F.appFlavor == Flavor.PRODUCTION){
-                    aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => const LoginPage(
-                                tokenExpired: true, isFromRegister: true)),
-                            (route) => false);
-                  } else {
-                    aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => const LoginPage(
-                                tokenExpired: true, isFromRegister: true)),
-                            (route) => false);
-                  }
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    RouteName.navBar,
+                        (Route<dynamic> route) => false,
+                    arguments: {'role': StringConstant.patient, 'initial_index': 0},
+                  );
+                  // if(F.appFlavor == Flavor.PRODUCTION){
+                  //   aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                  //       MaterialPageRoute(
+                  //           builder: (BuildContext context) => const LoginPage(
+                  //               tokenExpired: true, isFromRegister: true)),
+                  //           (route) => false);
+                  // } else {
+                  //   aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                  //       MaterialPageRoute(
+                  //           builder: (BuildContext context) => const LoginPage(
+                  //               tokenExpired: true, isFromRegister: true)),
+                  //           (route) => false);
+                  // }
 
                 } else {
                   if(F.appFlavor == Flavor.PRODUCTION){
@@ -251,11 +257,7 @@ class _SurveyPageState extends State<SurveyPage> {
 
                                                 },
                                                 child: Container(
-                                                    decoration: (isEdit &&
-                                                                state.user
-                                                                        ?.isPregnant ==
-                                                                    true) ||
-                                                            state.choice == 1
+                                                    decoration: (isEdit && state.user?.isPregnant == true) || state.choice == 1
                                                         ? BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
@@ -326,11 +328,7 @@ class _SurveyPageState extends State<SurveyPage> {
 
                                                 },
                                                 child: Container(
-                                                    decoration: (isEdit &&
-                                                                state.user
-                                                                        ?.isPlanningPregnancy ==
-                                                                    true) ||
-                                                            state.choice == 2
+                                                    decoration: (isEdit && state.user?.isPlanningPregnancy == true) || state.choice == 2
                                                         ? BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius

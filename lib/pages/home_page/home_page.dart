@@ -296,8 +296,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
-                                  state.user != null &&
-                                          state.user!.isPregnant == true
+                                  state.user?.isPregnant == true &&
+                                      state.user?.babies?.length != 0
                                       ? BabySectionWidget(state: state, one: widget.one)
                                       : Container(),
                                 ],

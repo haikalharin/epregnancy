@@ -65,7 +65,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
           if(skipOnboarding == false || skipOnboarding == null){
             Navigator.of(context).pushReplacementNamed(RouteName.onboarding);
           } else {
-            Navigator.of(context).pushReplacementNamed(RouteName.login);
+            Navigator.of(context).pushReplacementNamed(RouteName.login, arguments: {'token_expired': false, 'is_from_register': false});
           }
         }
       }

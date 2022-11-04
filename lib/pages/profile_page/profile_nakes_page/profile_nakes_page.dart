@@ -115,7 +115,7 @@ class ProfileNakesPage extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () =>  Navigator.of(context).pushNamedAndRemoveUntil(
-                  RouteName.login, (Route<dynamic> route) => false),
+                  RouteName.login, (Route<dynamic> route) => false, arguments: {'token_expired': false, 'is_from_register': false}),
               child: Text('Ya'),
             ),
           ],

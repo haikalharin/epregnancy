@@ -286,6 +286,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   _initWebSocket() async {
     UserModel userModel = await AppSharedPreference.getUser();
     Future<WebSocket> futureWebSocket = WebSocket.connect('${F.appFlavor == Flavor.PRODUCTION ?  environment['websockets'] : devEnvironment['websockets']}${userModel.id}');
+    // Future<WebSocket> futureWebSocket = WebSocket.connect('${environment['websockets']}${userModel.id}');
     // print('ws url : ${environment['websockets']}${userModel.id}');
     futureWebSocket.then((WebSocket ws) {
       _webSocket = ws;
