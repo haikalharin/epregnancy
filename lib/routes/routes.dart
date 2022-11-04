@@ -42,7 +42,10 @@ class Routes {
       case RouteName.onboarding:
         return MaterialPageRoute(builder: (_) => OnboardingPage());
       case RouteName.login:
-        return MaterialPageRoute(builder: (_) => LoginPage());
+        return MaterialPageRoute(builder: (_) => LoginPage(
+          tokenExpired: getTokenExpiredArgument(settings.arguments),
+          isFromRegister: getIsFromRegisterArgument(settings.arguments),
+        ));
       case RouteName.homeScreen:
         return MaterialPageRoute(
             builder: (_) => HomePage(

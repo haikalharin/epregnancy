@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
@@ -154,12 +155,13 @@ class SignUpQuestionnaireBloc
           if (response.code == 200) {
             UserModel userModel = response.data;
             await AppSharedPreference.setUserRegister(userModel);
-            await AppSharedPreference.setString(
-                AppSharedPreference.token, userModel.token ?? '');
             ResponseModel loginResponse = await userRepository.loginNonOtp(LoginModel(username: userModel.username, password: state.password.value));
             await AppSharedPreference.setString(AppSharedPreference.token, loginResponse.data.token!.accessToken!);
 
             if (loginResponse.code == 200){
+              LoginResponseData userModel = loginResponse.data;
+              await AppSharedPreference.setString(
+                  AppSharedPreference.token, userModel.token?.accessToken ?? '');
               yield state.copyWith(
                   submitStatus: FormzStatus.submissionSuccess,
                   userModel: response.data);

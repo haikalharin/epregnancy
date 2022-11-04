@@ -185,7 +185,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
       }
 
       if (response.code == 200) {
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: 'submitBaby');
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }

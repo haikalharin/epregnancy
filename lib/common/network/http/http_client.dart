@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/user_example_model/user_example_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../flavors.dart';
 import '../../../main.dart';
 import '../../../utils/string_constans.dart';
 import '../../configurations/configurations.dart';
@@ -35,7 +36,9 @@ class HttpClient {
 
   Uri _getParsedUrl(String path, {Map<String, String>? queryParameters}) {
     String h = host!;
-    String _subHost = environment["sub_host"] + "/";
+    String _subHost = F.appFlavor == Flavor.DEVELOPMENT
+        ? devEnvironment["sub_host"] + "/"
+        : environment["sub_host"] + "/";
     String finalPath = _subHost + path;
     if (h.contains("//")) {
       h = h.split("//")[1];
@@ -54,19 +57,18 @@ class HttpClient {
     String? token = await getToken();
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
 
-    String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
+    String? cookie =
+        await AppSharedPreference.getString(AppSharedPreference.cookie);
     print('cookie : $cookie');
-    if(cookie != null){
+    if (cookie != null) {
       setCookieFromSession(cookie);
     }
-
-
 
     // TODO DO NOT USE THIS STATIC TOKEN FOR PROD
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
     late Response response;
-    if  (Configurations.isShowChucker == true) {
+    if (Configurations.isShowChucker == true) {
       response = await _client!
           .get(
             _getParsedUrl(path, queryParameters: queryParameters),
@@ -87,7 +89,7 @@ class HttpClient {
 
   Future<Response?> downloadFile(String path) async {
     late Response response;
-    if  (Configurations.isShowChucker == true) {
+    if (Configurations.isShowChucker == true) {
       response = await _client!
           .get(
             _getParsedUrl(path),
@@ -112,22 +114,23 @@ class HttpClient {
     debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
 
     String? token = await getToken();
-    String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
-    if(cookie != null){
+    String? cookie =
+        await AppSharedPreference.getString(AppSharedPreference.cookie);
+    if (cookie != null) {
       setCookieFromSession(cookie);
     }
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     late Response response;
-    if  (Configurations.isShowChucker == true) {
+    if (Configurations.isShowChucker == true) {
       response = await _client!
           .post(
-        _getParsedUrl(path),
-        body: HttpUtil.encodeRequestBody(
-            json.encode(data), requestHeader![HttpConstants.contentType]!),
-        headers: requestHeader,
-      )
+            _getParsedUrl(path),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(data), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
           .interceptWithAlice(alice, body: data);
       updateCookie(response);
     } else {
@@ -143,7 +146,8 @@ class HttpClient {
     return HttpUtil.getResponse(response);
   }
 
-  dynamic delete(String path, dynamic data, {Map<String, String>? overrideHeader}) async {
+  dynamic delete(String path, dynamic data,
+      {Map<String, String>? overrideHeader}) async {
     final Map<String, String>? requestHeader = overrideHeader ?? header;
 
     debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
@@ -156,18 +160,17 @@ class HttpClient {
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     late Response response;
-    if  (Configurations.isShowChucker == true) {
+    if (Configurations.isShowChucker == true) {
       response = await _client!
           .delete(
-        _getParsedUrl(path),
-        body: HttpUtil.encodeRequestBody(
-            json.encode(data), requestHeader![HttpConstants.contentType]!),
-        headers: requestHeader,
-      )
+            _getParsedUrl(path),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(data), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
           .interceptWithAlice(alice, body: data);
-    }else{
-      response = await _client!
-          .delete(
+    } else {
+      response = await _client!.delete(
         _getParsedUrl(path),
         body: HttpUtil.encodeRequestBody(
             json.encode(data), requestHeader![HttpConstants.contentType]!),
@@ -189,8 +192,9 @@ class HttpClient {
 
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
 
-    String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
-    if(cookie != null){
+    String? cookie =
+        await AppSharedPreference.getString(AppSharedPreference.cookie);
+    if (cookie != null) {
       setCookieFromSession(cookie);
     }
 
@@ -198,15 +202,14 @@ class HttpClient {
     if (Configurations.isShowChucker == true) {
       response = await _client!
           .put(
-        _getParsedUrl(path),
-        body: HttpUtil.encodeRequestBody(
-            json.encode(data), requestHeader![HttpConstants.contentType]!),
-        headers: requestHeader,
-      )
+            _getParsedUrl(path),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(data), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
           .interceptWithAlice(alice, body: data);
-    } else{
-      response = await _client!
-          .put(
+    } else {
+      response = await _client!.put(
         _getParsedUrl(path),
         body: HttpUtil.encodeRequestBody(
             json.encode(data), requestHeader![HttpConstants.contentType]!),
@@ -229,7 +232,8 @@ class HttpClient {
     if (rawCookie != null) {
       AppSharedPreference.setString(AppSharedPreference.cookie, rawCookie);
       int index = rawCookie.indexOf(';');
-      header!['cookie'] = (index == -1) ? rawCookie : rawCookie.substring(0, index);
+      header!['cookie'] =
+          (index == -1) ? rawCookie : rawCookie.substring(0, index);
     }
   }
 

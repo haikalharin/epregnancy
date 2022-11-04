@@ -7,6 +7,10 @@ dynamic getGameName(dynamic result) => result['game_name'];
 
 dynamic getRoleArgument(dynamic result) => result['role'];
 
+dynamic getTokenExpiredArgument(dynamic result) => result['token_expired'];
+
+dynamic getIsFromRegisterArgument(dynamic result) => result['is_from_register'];
+
 dynamic getkey(dynamic result) => result['key'];
 
 dynamic getInitialIndex(dynamic result) => result['initial_index'];
