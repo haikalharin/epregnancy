@@ -286,6 +286,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
     UserModel userModel = await AppSharedPreference.getUser();
     Future<WebSocket> futureWebSocket = WebSocket.connect(
         '${environment['websockets']}${userModel.id}');
+    // print('ws url : ${environment['websockets']}${userModel.id}');
     futureWebSocket.then((WebSocket ws) {
       _webSocket = ws;
       print('websocket ready state: ' + _webSocket.readyState.toString());

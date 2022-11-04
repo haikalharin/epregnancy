@@ -1,0 +1,127 @@
+{
+  "project_info": {
+    "project_number": "1088754075559",
+    "firebase_url": "https://epregnancy-2022-default-rtdb.firebaseio.com",
+    "project_id": "epregnancy-2022",
+    "storage_bucket": "epregnancy-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088754075559:android:248e781c8d40abb6fe5882",
+        "android_client_info": {
+          "package_name": "co.id.az.komunitaz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyAUb34zPv2yFYc9nlqRGNWzhib72OX1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1088754075559-5ff8dod4c93tc129f99sk127mjkpm5e1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pregnancyApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088754075559:android:e3a7de535c735be5fe5882",
+        "android_client_info": {
+          "package_name": "co.id.az.komunitaz.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyAUb34zPv2yFYc9nlqRGNWzhib72OX1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1088754075559-5ff8dod4c93tc129f99sk127mjkpm5e1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pregnancyApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088754075559:android:720429d15d6a95f0fe5882",
+        "android_client_info": {
+          "package_name": "com.example.pregnancyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088754075559-5stpefsc162kju798pfsjiobuqdhnsuv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pregnancyapp",
+            "certificate_hash": "e6bfcbaf51198383868648112b8d8dbeddc92d02"
+          }
+        },
+        {
+          "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyAUb34zPv2yFYc9nlqRGNWzhib72OX1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1088754075559-5ff8dod4c93tc129f99sk127mjkpm5e1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pregnancyApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

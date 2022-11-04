@@ -44,6 +44,7 @@ class _ListEventWidgetState extends State<ListEventWidget> {
       },
       child: BlocBuilder<HomePageBloc, HomePageState>(
         builder: (context, state) {
+          print('tipe : ${state.tipe}');
           return Stack(
             children: [
               Container(
