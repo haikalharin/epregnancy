@@ -83,6 +83,8 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    buildToolsVersion '30.0.2'
+    ndkVersion '24.0.8215888'
 }
 
 flutter {

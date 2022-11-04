@@ -92,7 +92,7 @@ class _SurveyPageState extends State<SurveyPage> {
             const snackBar =
                 SnackBar(content: Text("failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
-          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+          } else if (state.submitStatus == FormzStatus.submissionSuccess && state.type == 'submit') {
               if (state.choice == 1) {
                 if (widget.isEdit == true) {
                   Navigator.of(context).pushReplacementNamed(
@@ -111,7 +111,16 @@ class _SurveyPageState extends State<SurveyPage> {
                               tokenExpired: true, isFromRegister: true)),
                           (route) => false);
                 } else {
-                  Navigator.of(context).pushNamed(RouteName.landingPage);
+                  alice
+                      .getNavigatorKey()
+                      ?.currentState
+                      ?.pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                          const LoginPage(
+                              tokenExpired: true,
+                              isFromRegister: true)),
+                          (route) => false);
                 }
               }
             // Navigator.of(context).pushNamedAndRemoveUntil(

@@ -17,7 +17,6 @@ import '../login_page/login_page.dart';
 import '../navbar_page/bottom_nav.dart';
 import 'bloc/landing_page_bloc.dart';
 
-
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
 
@@ -126,8 +125,16 @@ class _LandingPageState extends State<LandingPage> {
                         onPressed: () async {
                           if (currentIndex == slides.length - 1) {
                             // Navigate to next screen
-                            Injector.resolve<LandingPageBloc>()
-                                .add(const LoginRequest());
+                            alice
+                                .getNavigatorKey()
+                                ?.currentState
+                                ?.pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            const LoginPage(
+                                                tokenExpired: true,
+                                                isFromRegister: true)),
+                                    (route) => false);
                           }
                           _controller.nextPage(
                               duration: Duration(milliseconds: 100),

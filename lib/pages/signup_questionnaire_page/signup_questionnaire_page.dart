@@ -335,7 +335,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                   },
                                   child: Text("Selanjutnya"),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue,
+                                    primary: EpregnancyColors.primer,
                                     onPrimary: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),

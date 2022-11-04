@@ -84,7 +84,7 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-final Alice alice = Alice(
+final Alice aliceDev = Alice(
     showNotification: false,
     darkTheme: true);
 
@@ -115,7 +115,7 @@ class _MyAppState extends State<MyApp> {
               child:  OverlaySupport.global(
                 child: MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  navigatorKey: alice.getNavigatorKey(),
+                  navigatorKey: aliceDev.getNavigatorKey(),
                   title: 'Epregnancy App',
                   home: SplashscreenPage(),
                   onGenerateRoute: Routes.generateRoute,
