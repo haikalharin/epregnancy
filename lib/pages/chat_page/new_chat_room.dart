@@ -30,6 +30,7 @@ import '../../data/model/chat_model/chat_pending_send_request.dart';
 import '../../data/model/hospital_model/hospital_model.dart';
 import '../../data/model/user_info/user_info.dart';
 import '../../env.dart';
+import '../../flavors.dart';
 import '../../utils/basic_loading_dialog.dart';
 import '../../utils/function_utils.dart';
 import '../location_select_page/bloc/hospital_bloc.dart';
@@ -284,8 +285,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
 
   _initWebSocket() async {
     UserModel userModel = await AppSharedPreference.getUser();
-    Future<WebSocket> futureWebSocket = WebSocket.connect(
-        '${environment['websockets']}${userModel.id}');
+    Future<WebSocket> futureWebSocket = WebSocket.connect('${F.appFlavor == Flavor.PRODUCTION ?  environment['websockets'] : devEnvironment['websockets']}${userModel.id}');
     // print('ws url : ${environment['websockets']}${userModel.id}');
     futureWebSocket.then((WebSocket ws) {
       _webSocket = ws;
