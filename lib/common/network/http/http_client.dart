@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:PregnancyApp/common/constants/app_constants.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/env.dart';
+import 'package:PregnancyApp/main_development.dart';
+import 'package:PregnancyApp/main_production.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/core/alice_http_extensions.dart';
 import 'package:http/http.dart';
@@ -69,13 +71,24 @@ class HttpClient {
 
     late Response response;
     if (Configurations.isShowChucker == true) {
-      response = await _client!
-          .get(
-            _getParsedUrl(path, queryParameters: queryParameters),
-            headers: header,
-          )
-          .timeout(Duration(minutes: 2))
-          .interceptWithAlice(alice);
+      if(F.appFlavor == Flavor.PRODUCTION){
+        response = await _client!
+            .get(
+          _getParsedUrl(path, queryParameters: queryParameters),
+          headers: header,
+        )
+            .timeout(Duration(minutes: 2))
+            .interceptWithAlice(aliceProd);
+      } else {
+        response = await _client!
+            .get(
+          _getParsedUrl(path, queryParameters: queryParameters),
+          headers: header,
+        )
+            .timeout(Duration(minutes: 2))
+            .interceptWithAlice(aliceDev);
+      }
+
     } else {
       response = await _client!
           .get(
@@ -90,12 +103,21 @@ class HttpClient {
   Future<Response?> downloadFile(String path) async {
     late Response response;
     if (Configurations.isShowChucker == true) {
-      response = await _client!
-          .get(
-            _getParsedUrl(path),
-            headers: header,
-          )
-          .interceptWithAlice(alice, body: path);
+      if(F.appFlavor == Flavor.PRODUCTION){
+        response = await _client!
+            .get(
+          _getParsedUrl(path),
+          headers: header,
+        )
+            .interceptWithAlice(aliceProd, body: path);
+      } else {
+        response = await _client!
+            .get(
+          _getParsedUrl(path),
+          headers: header,
+        )
+            .interceptWithAlice(aliceMain, body: path);
+      }
     } else {
       response = await _client!.get(
         _getParsedUrl(path),
@@ -124,14 +146,25 @@ class HttpClient {
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     late Response response;
     if (Configurations.isShowChucker == true) {
-      response = await _client!
-          .post(
-            _getParsedUrl(path),
-            body: HttpUtil.encodeRequestBody(
-                json.encode(data), requestHeader![HttpConstants.contentType]!),
-            headers: requestHeader,
-          )
-          .interceptWithAlice(alice, body: data);
+      if(F.appFlavor == Flavor.PRODUCTION) {
+        response = await _client!
+            .post(
+          _getParsedUrl(path),
+          body: HttpUtil.encodeRequestBody(
+              json.encode(data), requestHeader![HttpConstants.contentType]!),
+          headers: requestHeader,
+        )
+            .interceptWithAlice(aliceProd, body: data);
+      } else  {
+        response = await _client!
+            .post(
+          _getParsedUrl(path),
+          body: HttpUtil.encodeRequestBody(
+              json.encode(data), requestHeader![HttpConstants.contentType]!),
+          headers: requestHeader,
+        )
+            .interceptWithAlice(aliceDev, body: data);
+      }
       updateCookie(response);
     } else {
       response = await _client!.post(
@@ -168,7 +201,7 @@ class HttpClient {
                 json.encode(data), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .interceptWithAlice(alice, body: data);
+          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceDev, body: data);
     } else {
       response = await _client!.delete(
         _getParsedUrl(path),
@@ -207,7 +240,7 @@ class HttpClient {
                 json.encode(data), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .interceptWithAlice(alice, body: data);
+          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceDev, body: data);
     } else {
       response = await _client!.put(
         _getParsedUrl(path),

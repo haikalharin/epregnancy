@@ -1,3 +1,6 @@
+import 'package:PregnancyApp/flavors.dart';
+import 'package:PregnancyApp/main_development.dart';
+import 'package:PregnancyApp/main_production.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/survey_page/widget/baby_name.dart';
 import 'package:PregnancyApp/pages/survey_page/widget/last_menstruation.dart';
@@ -66,11 +69,19 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
               AppSharedPreference.remove(AppSharedPreference.otp);
               AppSharedPreference.remove(AppSharedPreference.token);
               AppSharedPreference.remove(AppSharedPreference.cookie);
-              alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const LoginPage(
-                          tokenExpired: true, isFromRegister: true)),
-                  (route) => false);
+              if(F.appFlavor == Flavor.PRODUCTION){
+                aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const LoginPage(
+                            tokenExpired: true, isFromRegister: true)),
+                        (route) => false);
+              } else {
+                aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const LoginPage(
+                            tokenExpired: true, isFromRegister: true)),
+                        (route) => false);
+              }
             }
             // Navigator.of(context).pushNamedAndRemoveUntil(
             //                 RouteName.homeScreen,

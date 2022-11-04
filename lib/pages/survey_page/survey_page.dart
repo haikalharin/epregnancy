@@ -1,3 +1,6 @@
+import 'package:PregnancyApp/flavors.dart';
+import 'package:PregnancyApp/main_development.dart';
+import 'package:PregnancyApp/main_production.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -105,22 +108,44 @@ class _SurveyPageState extends State<SurveyPage> {
                 }
               } else {
                 if (widget.isEdit == true) {
-                  alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => const LoginPage(
-                              tokenExpired: true, isFromRegister: true)),
-                          (route) => false);
+                  if(F.appFlavor == Flavor.PRODUCTION){
+                    aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => const LoginPage(
+                                tokenExpired: true, isFromRegister: true)),
+                            (route) => false);
+                  } else {
+                    aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => const LoginPage(
+                                tokenExpired: true, isFromRegister: true)),
+                            (route) => false);
+                  }
+
                 } else {
-                  alice
-                      .getNavigatorKey()
-                      ?.currentState
-                      ?.pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                          const LoginPage(
-                              tokenExpired: true,
-                              isFromRegister: true)),
-                          (route) => false);
+                  if(F.appFlavor == Flavor.PRODUCTION){
+                    aliceProd
+                        .getNavigatorKey()
+                        ?.currentState
+                        ?.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                            const LoginPage(
+                                tokenExpired: true,
+                                isFromRegister: true)),
+                            (route) => false);
+                  } else {
+                    aliceDev
+                        .getNavigatorKey()
+                        ?.currentState
+                        ?.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                            const LoginPage(
+                                tokenExpired: true,
+                                isFromRegister: true)),
+                            (route) => false);
+                  }
                 }
               }
             // Navigator.of(context).pushNamedAndRemoveUntil(

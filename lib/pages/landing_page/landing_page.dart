@@ -1,5 +1,8 @@
 import 'package:PregnancyApp/common/constants/router_constants.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
+import 'package:PregnancyApp/flavors.dart';
+import 'package:PregnancyApp/main_development.dart';
+import 'package:PregnancyApp/main_production.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/landing_page/slider_modal.dart';
 import 'package:PregnancyApp/pages/landing_page/widget/slider_list.dart';
@@ -55,11 +58,19 @@ class _LandingPageState extends State<LandingPage> {
                 SnackBar(content: Text("failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (BuildContext context) => const LoginPage(
-                        tokenExpired: true, isFromRegister: true)),
-                (route) => false);
+            if(F.appFlavor == Flavor.PRODUCTION){
+              aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const LoginPage(
+                          tokenExpired: true, isFromRegister: true)),
+                      (route) => false);
+            } else {
+              aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const LoginPage(
+                          tokenExpired: true, isFromRegister: true)),
+                      (route) => false);
+            }
           }
         },
         child: BlocBuilder<LandingPageBloc, LandingPageState>(
@@ -125,16 +136,29 @@ class _LandingPageState extends State<LandingPage> {
                         onPressed: () async {
                           if (currentIndex == slides.length - 1) {
                             // Navigate to next screen
-                            alice
-                                .getNavigatorKey()
-                                ?.currentState
-                                ?.pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            const LoginPage(
-                                                tokenExpired: true,
-                                                isFromRegister: true)),
-                                    (route) => false);
+                            if(F.appFlavor == Flavor.PRODUCTION){
+                              aliceProd
+                                  .getNavigatorKey()
+                                  ?.currentState
+                                  ?.pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                      const LoginPage(
+                                          tokenExpired: true,
+                                          isFromRegister: true)),
+                                      (route) => false);
+                            } else {
+                              aliceDev
+                                  .getNavigatorKey()
+                                  ?.currentState
+                                  ?.pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                      const LoginPage(
+                                          tokenExpired: true,
+                                          isFromRegister: true)),
+                                      (route) => false);
+                            }
                           }
                           _controller.nextPage(
                               duration: Duration(milliseconds: 100),
