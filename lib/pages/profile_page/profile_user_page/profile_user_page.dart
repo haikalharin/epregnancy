@@ -284,7 +284,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'App Versi 1.01',
+                    'App Versi 1.0.0',
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,

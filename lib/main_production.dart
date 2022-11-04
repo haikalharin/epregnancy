@@ -116,7 +116,7 @@ class _MyAppState extends State<MyApp> {
                 child: MaterialApp(
                   debugShowCheckedModeBanner: false,
                   navigatorKey: aliceProd.getNavigatorKey(),
-                  title: 'Epregnancy App',
+                  title: 'Komunitaz',
                   home: SplashscreenPage(),
                   onGenerateRoute: Routes.generateRoute,
                   localizationsDelegates: const [
