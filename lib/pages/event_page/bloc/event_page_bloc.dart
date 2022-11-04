@@ -226,12 +226,12 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
               location: '',
               startDate: DateTime.parse(fStartDate),
               endDate: DateTime.parse(dateEnd),
-              recurrence: Recurrence(
-                frequency: Frequency.daily,
-                endDate: DateTime.parse(dateEnd),
-                // interval: 1,
-                ocurrences: state.listScheduleTime.length,
-              ),
+              // recurrence: Recurrence(
+              //   frequency: Frequency.daily,
+              //   endDate: DateTime.parse(dateEnd),
+              //   // interval: 1,
+              //   ocurrences: state.listScheduleTime.length,
+              // ),
               // todo ios param
               // iosParams: IOSParams(
               //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.

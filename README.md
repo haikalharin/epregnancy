@@ -5,3 +5,6 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 
 flutter run --flavor development -t lib/main_development.dart
 flutter run --flavor production -t lib/main_production.dart
+
+build apk
+flutter build apk --release --flavor development -t lib/main_development.dart
