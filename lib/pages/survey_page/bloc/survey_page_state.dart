@@ -14,7 +14,7 @@ class SurveyPageState with FormzMixin {
   SurveyPageState(
       {this.user,
         this.dataBaby,
-        this.page = 3,
+        this.page = 2,
         this.choice = 0,
         this.name = const MandatoryFieldValidator.pure(),
         this.date = const MandatoryFieldValidator.pure(),

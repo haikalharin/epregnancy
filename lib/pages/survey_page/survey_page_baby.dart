@@ -40,6 +40,13 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
   int val2 = -1;
 
   @override
+  void initState() {
+    Injector.resolve<SurveyPageBloc>()
+        .add(SurveyInitEvent(isUpdate: widget.isEdit ?? false));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<SurveyPageBloc, SurveyPageState>(
@@ -93,10 +100,10 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
           builder: (context, state) {
             return WillPopScope(
               onWillPop: () {
-                if (state.page == 4) {
-                  Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(3));
+                if (state.page == 3) {
+                  Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(2));
                   return Future.value(false);
-                } else if (state.page == 3) {
+                } else if (state.page == 2) {
                   Navigator.pop(context);
                   return Future.value(true);
                 } else {
@@ -116,10 +123,10 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                       color: Colors.black,
                     ),
                     onTap: () {
-                      if (state.page == 4) {
+                      if (state.page == 3) {
                         Injector.resolve<SurveyPageBloc>()
-                            .add(SurveyPageChanged(3));
-                      } else if (state.page == 3) {
+                            .add(SurveyPageChanged(2));
+                      } else if (state.page == 2) {
                         Navigator.pop(context);
                       }
                     },
@@ -129,7 +136,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   color: EpregnancyColors.primerSoft,
                   child: Stack(
                     children: [
-                      state.page == 3
+                      state.page == 2
                           ? LastMenstruation(
                               isEdit: widget.isEdit,
                               baby: state.dataBaby ?? BabyModelApi.empty(),
@@ -142,7 +149,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              "${state.page} dari 4",
+                              "${state.page} dari 3",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.grey,
@@ -156,11 +163,11 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                 width: MediaQuery.of(context).size.width - 40,
                                 height: 50,
                                 child: RaisedButton(
-                                  color: state.page == 3
+                                  color: state.page == 2
                                       ? state.date.valid
                                           ? EpregnancyColors.primer
                                           : EpregnancyColors.primerSoft2
-                                      : state.page == 4
+                                      : state.page == 3
                                           ? state.name.valid
                                               ? EpregnancyColors.primer
                                               : EpregnancyColors.primerSoft2
@@ -168,7 +175,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                   child: Padding(
                                     padding: EdgeInsets.zero,
                                     child: Text(
-                                      state.page == 4
+                                      state.page == 3
                                           ? widget.isEdit == true
                                               ? "simpan"
                                               : "Selanjutnya"
@@ -183,10 +190,10 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                         BorderRadius.all(Radius.circular(7)),
                                   ),
                                   onPressed: () async {
-                                    if (state.page == 3 && state.date.valid) {
+                                    if (state.page == 2 && state.date.valid) {
                                       Injector.resolve<SurveyPageBloc>()
-                                          .add(SurveyPageChanged(4));
-                                    } else if (state.page == 4 &&
+                                          .add(SurveyPageChanged(3));
+                                    } else if (state.page == 3 &&
                                         state.name.valid) {
                                       Injector.resolve<SurveyPageBloc>().add(
                                           SurveyAddDataBabyEvent(

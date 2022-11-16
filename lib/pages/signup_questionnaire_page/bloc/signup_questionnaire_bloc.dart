@@ -150,18 +150,23 @@ class SignUpQuestionnaireBloc
               email: email,
               dob: state.date.value,
               password: state.password.value,
+              isPregnant: true,
               isPatient: true));
 
           if (response.code == 200) {
             UserModel userModel = response.data;
             await AppSharedPreference.setUserRegister(userModel);
-            ResponseModel loginResponse = await userRepository.loginNonOtp(LoginModel(username: userModel.username, password: state.password.value));
-            await AppSharedPreference.setString(AppSharedPreference.token, loginResponse.data.token!.accessToken!);
+            ResponseModel loginResponse = await userRepository.loginNonOtp(
+                LoginModel(
+                    username: userModel.username,
+                    password: state.password.value));
+            await AppSharedPreference.setString(AppSharedPreference.token,
+                loginResponse.data.token!.accessToken!);
 
-            if (loginResponse.code == 200){
+            if (loginResponse.code == 200) {
               LoginResponseData userModel = loginResponse.data;
-              await AppSharedPreference.setString(
-                  AppSharedPreference.token, userModel.token?.accessToken ?? '');
+              await AppSharedPreference.setString(AppSharedPreference.token,
+                  userModel.token?.accessToken ?? '');
               yield state.copyWith(
                   submitStatus: FormzStatus.submissionSuccess,
                   userModel: response.data);
