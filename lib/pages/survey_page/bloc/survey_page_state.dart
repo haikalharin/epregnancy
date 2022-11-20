@@ -50,7 +50,7 @@ class SurveyPageState with FormzMixin {
 
   @override
   // TODO: implement inputs
-  List<FormzInput> get inputs =>[name,date];
+  List<FormzInput> get inputs =>[date];
 }
 
 class SurveyPageInitial extends SurveyPageState {}

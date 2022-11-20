@@ -52,6 +52,9 @@ class _OtpPageState extends State<OtpPage> {
   @override
   void initState() {
     Injector.resolve<SignupBloc>().add(SignupInitEvent());
+    Injector.resolve<OtpPageBloc>()
+        .add(
+        RequestResendOtp(true, widget.userId));
     startTimer();
     super.initState();
   }

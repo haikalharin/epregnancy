@@ -151,7 +151,8 @@ class SignUpQuestionnaireBloc
               dob: state.date.value,
               password: state.password.value,
               isPregnant: true,
-              isPatient: true));
+              isPatient: true,
+              isAgree: true));
 
           if (response.code == 200) {
             UserModel userModel = response.data;
