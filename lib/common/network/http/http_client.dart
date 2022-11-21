@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:PregnancyApp/common/constants/app_constants.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/env.dart';
+import 'package:PregnancyApp/main_development.dart';
+import 'package:PregnancyApp/main_production.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/core/alice_http_extensions.dart';
 import 'package:http/http.dart';
@@ -11,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/user_example_model/user_example_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../flavors.dart';
 import '../../../main.dart';
 import '../../../utils/string_constans.dart';
 import '../../configurations/configurations.dart';
@@ -22,6 +25,7 @@ class HttpClient {
   Client? _client;
   String? host = Configurations.host;
   Map<String, String>? header;
+  bool cookieFromSp = true;
 
   HttpClient() {
     _client = Client();
@@ -34,7 +38,9 @@ class HttpClient {
 
   Uri _getParsedUrl(String path, {Map<String, String>? queryParameters}) {
     String h = host!;
-    String _subHost = environment["sub_host"] + "/";
+    String _subHost = F.appFlavor == Flavor.DEVELOPMENT
+        ? devEnvironment["sub_host"] + "/"
+        : environment["sub_host"] + "/";
     String finalPath = _subHost + path;
     if (h.contains("//")) {
       h = h.split("//")[1];
@@ -51,21 +57,38 @@ class HttpClient {
     debugPrint('>>>>>>> [GET] ${_getParsedUrl(path)}');
 
     String? token = await getToken();
-
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+
+    String? cookie =
+        await AppSharedPreference.getString(AppSharedPreference.cookie);
+    print('cookie : $cookie');
+    if (cookie != null) {
+      setCookieFromSession(cookie);
+    }
 
     // TODO DO NOT USE THIS STATIC TOKEN FOR PROD
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
     late Response response;
-    if  (Configurations.isShowChucker == true) {
-      response = await _client!
-          .get(
-            _getParsedUrl(path, queryParameters: queryParameters),
-            headers: header,
-          )
-          .timeout(Duration(minutes: 2))
-          .interceptWithAlice(alice);
+    if (Configurations.isShowChucker == true) {
+      if(F.appFlavor == Flavor.PRODUCTION){
+        response = await _client!
+            .get(
+          _getParsedUrl(path, queryParameters: queryParameters),
+          headers: header,
+        )
+            .timeout(Duration(minutes: 2))
+            .interceptWithAlice(aliceProd);
+      } else {
+        response = await _client!
+            .get(
+          _getParsedUrl(path, queryParameters: queryParameters),
+          headers: header,
+        )
+            .timeout(Duration(minutes: 2))
+            .interceptWithAlice(aliceDev);
+      }
+
     } else {
       response = await _client!
           .get(
@@ -79,13 +102,22 @@ class HttpClient {
 
   Future<Response?> downloadFile(String path) async {
     late Response response;
-    if  (Configurations.isShowChucker == true) {
-      response = await _client!
-          .get(
-            _getParsedUrl(path),
-            headers: header,
-          )
-          .interceptWithAlice(alice, body: path);
+    if (Configurations.isShowChucker == true) {
+      if(F.appFlavor == Flavor.PRODUCTION){
+        response = await _client!
+            .get(
+          _getParsedUrl(path),
+          headers: header,
+        )
+            .interceptWithAlice(aliceProd, body: path);
+      } else {
+        response = await _client!
+            .get(
+          _getParsedUrl(path),
+          headers: header,
+        )
+            .interceptWithAlice(aliceMain, body: path);
+      }
     } else {
       response = await _client!.get(
         _getParsedUrl(path),
@@ -104,28 +136,44 @@ class HttpClient {
     debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
 
     String? token = await getToken();
-
+    String? cookie =
+        await AppSharedPreference.getString(AppSharedPreference.cookie);
+    if (cookie != null) {
+      setCookieFromSession(cookie);
+    }
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     late Response response;
-    if  (Configurations.isShowChucker == true) {
-      response = await _client!
-          .post(
-        _getParsedUrl(path),
-        body: HttpUtil.encodeRequestBody(
-            json.encode(data), requestHeader![HttpConstants.contentType]!),
-        headers: requestHeader,
-      )
-          .interceptWithAlice(alice, body: data);
-    } else{
-      response = await _client!
-          .post(
+    if (Configurations.isShowChucker == true) {
+      if(F.appFlavor == Flavor.PRODUCTION) {
+        response = await _client!
+            .post(
+          _getParsedUrl(path),
+          body: HttpUtil.encodeRequestBody(
+              json.encode(data), requestHeader![HttpConstants.contentType]!),
+          headers: requestHeader,
+        )
+            .interceptWithAlice(aliceProd, body: data);
+      } else  {
+        response = await _client!
+            .post(
+          _getParsedUrl(path),
+          body: HttpUtil.encodeRequestBody(
+              json.encode(data), requestHeader![HttpConstants.contentType]!),
+          headers: requestHeader,
+        )
+            .interceptWithAlice(aliceDev, body: data);
+      }
+      updateCookie(response);
+    } else {
+      response = await _client!.post(
         _getParsedUrl(path),
         body: HttpUtil.encodeRequestBody(
             json.encode(data), requestHeader![HttpConstants.contentType]!),
         headers: requestHeader,
       );
+      updateCookie(response);
     }
 
     return HttpUtil.getResponse(response);
@@ -145,18 +193,17 @@ class HttpClient {
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     late Response response;
-    if  (Configurations.isShowChucker == true) {
+    if (Configurations.isShowChucker == true) {
       response = await _client!
           .delete(
-        _getParsedUrl(path),
-        body: HttpUtil.encodeRequestBody(
-            json.encode(data), requestHeader![HttpConstants.contentType]!),
-        headers: requestHeader,
-      )
-          .interceptWithAlice(alice, body: data);
-    }else{
-      response = await _client!
-          .delete(
+            _getParsedUrl(path),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(data), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
+          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceDev, body: data);
+    } else {
+      response = await _client!.delete(
         _getParsedUrl(path),
         body: HttpUtil.encodeRequestBody(
             json.encode(data), requestHeader![HttpConstants.contentType]!),
@@ -177,19 +224,25 @@ class HttpClient {
     String? token = await getToken();
 
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+
+    String? cookie =
+        await AppSharedPreference.getString(AppSharedPreference.cookie);
+    if (cookie != null) {
+      setCookieFromSession(cookie);
+    }
+
     late Response response;
     if (Configurations.isShowChucker == true) {
       response = await _client!
           .put(
-        _getParsedUrl(path),
-        body: HttpUtil.encodeRequestBody(
-            json.encode(data), requestHeader![HttpConstants.contentType]!),
-        headers: requestHeader,
-      )
-          .interceptWithAlice(alice, body: data);
-    } else{
-      response = await _client!
-          .put(
+            _getParsedUrl(path),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(data), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
+          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceDev, body: data);
+    } else {
+      response = await _client!.put(
         _getParsedUrl(path),
         body: HttpUtil.encodeRequestBody(
             json.encode(data), requestHeader![HttpConstants.contentType]!),
@@ -205,5 +258,22 @@ class HttpClient {
     final userString = prefs.getString(AppSharedPreference.token);
     if (userString == null) return null;
     return userString;
+  }
+
+  void updateCookie(Response response) {
+    String? rawCookie = response.headers['set-cookie'];
+    if (rawCookie != null) {
+      AppSharedPreference.setString(AppSharedPreference.cookie, rawCookie);
+      int index = rawCookie.indexOf(';');
+      header!['cookie'] =
+          (index == -1) ? rawCookie : rawCookie.substring(0, index);
+    }
+  }
+
+  void setCookieFromSession(String cookie) {
+    if (cookie != null) {
+      int index = cookie.indexOf(';');
+      header!['cookie'] = (index == -1) ? cookie : cookie.substring(0, index);
+    }
   }
 }

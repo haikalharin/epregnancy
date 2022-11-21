@@ -5,6 +5,7 @@ import 'package:PregnancyApp/pages/chat_page/new_chat_room.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
@@ -45,6 +46,8 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     getHospital();
+
+
     super.initState();
   }
 

@@ -48,6 +48,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       babies: (json['babies'] as List<dynamic>?)
           ?.map((e) => Baby.fromJson(e as Map<String, dynamic>))
           .toList(),
+      isAgree: json['is_agree'] as bool?,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) {
@@ -87,6 +88,7 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) {
   val['lastItemRedeemed'] = instance.lastItemRedeemed;
   val['checkins'] = instance.checkins;
   val['babies'] = instance.babies;
+  val['is_agree'] = instance.isAgree;
   return val;
 }
 

@@ -133,7 +133,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } on Exception catch (a) {
       print(a);
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
@@ -148,19 +148,22 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       final ResponseModel<UserModel> responseModel = await userRepository.getUserInfo();
       UserModel userInfo = responseModel.data;
+      UserModel userEntity = userInfo.copyWith(
+        name: await aesDecryptor(userInfo.name)
+      );
       // await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if(responseModel.code == 200) {
         // await AppSharedPreference.setUserInfo(userInfo.data);
         await AppSharedPreference.setBool(AppSharedPreference.isShowGuide, false);
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned);
+            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned, user: userEntity);
       }
     } on HomeErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString());
     }
@@ -185,7 +188,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } on Exception catch (a) {
       print(a);
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
@@ -226,8 +229,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           print('$differenceInDays');
         }}
       babyProgressModel = await EventUser.checkBabyProgress(weeks.toString());
-      final UserRolesModelFirebase role =
-          await AppSharedPreference.getUserRoleFirebase();
+      // final UserRolesModelFirebase role = await AppSharedPreference.getUserRoleFirebase();
       if (response.code == 200) {
         bool? _showGuide = await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
         print('show guide : $_showGuide');
@@ -252,7 +254,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } on Exception catch (a) {
       print(a);
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
@@ -282,7 +284,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     } on Exception catch (a) {
       print(a);
       if( a is UnAuthorizeException) {
-        AppSharedPreference.sessionExpiredEvent();
+        await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }

@@ -118,7 +118,7 @@ class ConsultationPageBloc
             userModel: _userModel);
       } else {
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionFailure, userModel: _userModel);
+            submitStatus: FormzStatus.submissionSuccess, userModel: _userModel, type: 'empty-thread');
       }
     } on SurveyErrorException catch (e) {
       print(e);

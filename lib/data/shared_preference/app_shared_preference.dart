@@ -6,12 +6,15 @@ import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
+import 'package:PregnancyApp/flavors.dart';
+import 'package:PregnancyApp/main_production.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../main.dart';
+import '../../main_development.dart';
 import '../../pages/login_page/login_page.dart';
 import '../model/baby_model/baby_model.dart';
 import '../model/baby_progress_model/baby_progress_model.dart';
@@ -39,6 +42,7 @@ class AppSharedPreference {
   static const String newInstall = "new_install";
   static const String isFirstLaunch = "isFirstLaunch";
   static const String isShowGuide = "show_guide";
+  static const String cookie = "cookie";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -304,7 +308,12 @@ class AppSharedPreference {
     await AppSharedPreference.remove(AppSharedPreference.hospital);
     await AppSharedPreference.remove(AppSharedPreference.otp);
     await AppSharedPreference.remove(AppSharedPreference.token);
-    alice.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
+    await AppSharedPreference.remove(AppSharedPreference.cookie);
+    if(F.appFlavor == Flavor.PRODUCTION){
+      aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
+    } else {
+      aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
+    }
     //navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (BuildContext context) => OnBoardingScreen(isHavePopUpMessage: "401",)));
   }
 }

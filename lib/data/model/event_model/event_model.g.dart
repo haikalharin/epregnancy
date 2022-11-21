@@ -102,6 +102,10 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       isVerified: json['is_verified'] as bool?,
       imageUrl: json['image_url'] as String?,
       coverUrl: json['cover_url'] as String?,
+      hospitalId: json['hospital_id'] as String?,
+      hospital: json['hospital'] == null
+          ? null
+          : Hospital.fromJson(json['hospital'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
@@ -119,4 +123,21 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'is_verified': instance.isVerified,
       'image_url': instance.imageUrl,
       'cover_url': instance.coverUrl,
+      'hospital_id': instance.hospitalId,
+      'hospital': instance.hospital,
+    };
+
+_$_Hospital _$$_HospitalFromJson(Map<String, dynamic> json) => _$_Hospital(
+      id: json['id'] as String?,
+      alias: json['alias'] as String?,
+      name: json['name'] as String?,
+      imageUrl: json['image_url'] as String?,
+    );
+
+Map<String, dynamic> _$$_HospitalToJson(_$_Hospital instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'alias': instance.alias,
+      'name': instance.name,
+      'image_url': instance.imageUrl,
     };

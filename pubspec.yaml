@@ -15,7 +15,12 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.10-dev+12
+
+# dev
+version: 1.0.13-dev+17
+
+#prod
+#version: 1.0.0+1
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
@@ -41,7 +46,7 @@ dependencies:
 #  cloud_firestore: ^3.0.0
   firebase_core: ^1.17.0
   firebase_auth: ^3.3.18
-  firebase_messaging: ^11.0.0
+  firebase_messaging: ^11.4.4
   flutter_local_notifications: ^9.5.3
   firebase_storage: ^10.2.16
   google_sign_in: ^5.0.7
@@ -74,6 +79,9 @@ dependencies:
   quiver: ^3.1.0
   add_2_calendar: ^2.1.3
   showcaseview: ^1.1.8
+  expandable: ^5.0.1
+  firebase_remote_config: ^2.0.1
+
   #flavor for environment management
 #  flutter_flavor: ^3.1.1
 
@@ -116,6 +124,7 @@ dev_dependencies:
   json_serializable: ^6.3.1
   onboarding: ^3.1.0
   flutter_countdown_timer: ^4.1.0
+  flutter_flavorizr: ^2.1.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -123,7 +132,57 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/app_icon.png"
+  image_path: "assets/ic_launcher.png"
+
+#flavour
+flavorizr:
+#  ide: "vscode"
+  app:
+    android:
+      flavorDimensions: "flavor-type"
+    ios:
+
+  flavors:
+    development:
+      app:
+        name: "Komunitaz dev"
+
+      android:
+        applicationId: "co.id.az.komunitaz.dev"
+        icon: "assets/ic_launcher.png"
+
+      ios:
+        bundleId: "co.id.az.komunitaz.dev"
+#        buildSettings:
+#          # Development Team is visible in the apple developer portal
+#          DEVELOPMENT_TEAM: YOURDEVTEAMID
+#          PROVISIONING_PROFILE_SPECIFIER: "Dev-ProvisioningProfile"
+
+#    staging:
+#      app:
+#        name: "Staging App"
+#
+#      android:
+#        applicationId: "com.staging.flavorsdemo"
+#      ios:
+#        bundleId: "com.staging.flavorsdemo"
+#        buildSettings:
+#          DEVELOPMENT_TEAM: YOURSTAGINGTEAMID
+#          PROVISIONING_PROFILE_SPECIFIER: "Staging-ProvisioningProfile"
+
+    production:
+      app:
+        name: "Komunitaz"
+
+      android:
+        applicationId: "co.id.az.komunitaz"
+        icon: "assets/ic_launcher.png"
+      ios:
+        bundleId: "co.id.az.komunitaz"
+#        buildSettings:
+#          DEVELOPMENT_TEAM: YOURPRODUCTIONTEAMID
+#          PROVISIONING_PROFILE_SPECIFIER: "Production-ProvisioningProfile"
+
 
 # The following section is specific to Flutter.
 flutter:

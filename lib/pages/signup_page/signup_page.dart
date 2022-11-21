@@ -2,6 +2,7 @@ import 'package:PregnancyApp/common/configurations/configurations.dart';
 import 'package:PregnancyApp/common/constants/regex_constants.dart';
 import 'package:PregnancyApp/main.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,9 +35,10 @@ final _codeController = TextEditingController();
 var authService = AuthService();
 
 class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _controllerEmail = TextEditingController();
 
-   final TextEditingController _controllerEmail = TextEditingController() ;
-   final TextEditingController _controllerPhone = TextEditingController() ;
+  final TextEditingController _controllerPhone = TextEditingController();
+
   bool isEdit = false;
 
   @override
@@ -54,7 +56,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
@@ -78,18 +79,15 @@ class _SignUpPageState extends State<SignUpPage> {
                       Injector.resolve<SignupBloc>().add(SignupInitEvent());
                       Scaffold.of(context).showSnackBar(snackBar);
                     } else {
-                      Navigator.of(context).pushNamed(RouteName.surveyPage,arguments: false);
+                      Navigator.of(context)
+                          .pushNamed(RouteName.surveyPage, arguments: false);
                     }
                   } else {
-                    // todo needs implement flavour
-                    if (Configurations.mode == StringConstant.dev && state.type == 'toRequestOtp' ) {
-                      if (state.userId!.contains('@')) {
-                        Injector.resolve<SignupBloc>().add(const RequestOtp(true));
-                      } else {
-                        Injector.resolve<SignupBloc>().add(const RequestOtp(false));
-                      }
+                    if (state.type == 'toDisclaimer') {
+                      Navigator.of(context).pushNamed(RouteName.disclaimer,
+                          arguments: {'user_id': state.userId, 'from': "signUp"});
                     } else {
-                      Navigator.of(context).pushNamed(RouteName.otpPage);
+                      // Navigator.of(context).pushNamed(RouteName.otpPage, arguments: state.userId);
                     }
                   }
                 }
@@ -99,10 +97,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   Center(
                     child: BlocBuilder<SignupBloc, SignupState>(
                       builder: (context, state) {
-                        if(isEdit){
+                        if (isEdit) {
                           _controllerEmail.text = "";
                           _controllerPhone.text = "";
-                          isEdit =false;
+                          isEdit = false;
                         }
 
                         return ListView(
@@ -128,7 +126,9 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                             SizedBox(height: 10),
-                            state.email.value.length < 1|| state.email == EmailAddressUsernameValidator.pure()
+                            state.email.value.length < 1 ||
+                                    state.email ==
+                                        EmailAddressUsernameValidator.pure()
                                 ? Column(
                                     children: [
                                       Text(
@@ -139,41 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             fontSize: 18),
                                       ),
                                       SizedBox(height: 20),
-                                      IntlPhoneField(
-                                        controller: _controllerPhone,
-                                        validator: (_val){
-                                          // if(_val?.completeNumber[0] != "8"){
-                                          //   print("_val : ${_val?.completeNumber}");
-                                          //   return "Format Nomor Salah";
-                                          // } else {
-                                          //   return null;
-                                          // }
-                                        },
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp(RegexConstants
-                                                  .validPhoneFirstNotZeroRegex)),
-                                        ],
-                                        decoration: InputDecoration(
-                                          labelText: 'Mobile Number',
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          errorText: state.phoneNumber.invalid
-                                              ? 'Format nomor salah'
-                                              : null,
-                                        ),
-                                        autovalidateMode:
-                                            AutovalidateMode.disabled,
-                                        initialCountryCode: 'ID',
-                                        onChanged: (phone) {
-                                          Injector.resolve<SignupBloc>().add(
-                                              SignupPhoneNumberChanged(
-                                                  "0${phone.number}"));
-                                        },
-                                      ),
+                                      _PhoneNumberInput(_controllerPhone),
                                       Text(
                                         "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
                                         textAlign: TextAlign.center,
@@ -187,11 +153,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                   )
                                 : Container(),
 
-                            state.phoneNumber.value.length <= 1 || state.email == PhoneValidator.pure()
+                            state.phoneNumber.value.length <= 1 ||
+                                    state.email == PhoneValidator.pure()
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children:  [
+                                    children: [
                                       SizedBox(height: 30),
                                       Text(
                                         "Atau daftar dengan akun email",
@@ -220,7 +187,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 Injector.resolve<SignupBloc>()
                                     .add(SignupSubmitted());
                                 isEdit = true;
-                                //
+                                FocusScope.of(context).unfocus();                                //
                                 // Navigator.pushReplacement(
                                 //   context,
                                 //   MaterialPageRoute(builder: (context) => OtpPage()),
@@ -229,7 +196,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Text("Daftar/Masuk"),
                               style: ElevatedButton.styleFrom(
                                 minimumSize: Size(50, 50),
-                                primary: Colors.blue,
+                                primary: EpregnancyColors.primer,
                                 onPrimary: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -265,7 +232,8 @@ class _Loading extends StatelessWidget {
 }
 
 class _EmailInput extends StatelessWidget {
-   const _EmailInput(this._controllerEmail);
+  const _EmailInput(this._controllerEmail);
+
   final TextEditingController _controllerEmail;
 
   @override
@@ -279,11 +247,80 @@ class _EmailInput extends StatelessWidget {
           onChanged: (username) => Injector.resolve<SignupBloc>()
               .add(SignupUsernameChanged(username)),
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(
+                top: 21.0, left: 10.0, right: 10.0, bottom: 21.0),
+            fillColor: EpregnancyColors.white,
+            filled: true,
             border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(color: EpregnancyColors.primer),
+            ),
+//            prefixIcon: Icon(
+//              Icons.attach_money,
+//              color: AppColor.warna_teks_sub,
+//            ),
+            hintStyle: TextStyle(color: EpregnancyColors.grey),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: EpregnancyColors.primer, width: 2),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: EpregnancyColors.grey),
               borderRadius: BorderRadius.circular(10.0),
             ),
             hintText: 'email@mail.com',
             errorText: state.email.invalid ? 'Format e-mail salah' : null,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _PhoneNumberInput extends StatelessWidget {
+  const _PhoneNumberInput(this._controllerPhone);
+
+  final TextEditingController _controllerPhone;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignupBloc, SignupState>(
+      buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
+      builder: (context, state) {
+        return TextField(
+          keyboardType: TextInputType.number,
+          controller: _controllerPhone,
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.allow(
+          //       RegExp(RegexConstants.validPhoneFirstNotZeroRegex)),
+          // ],
+          key: const Key('SignupForm_PhoneInput_textField'),
+          onChanged: (phone) => Injector.resolve<SignupBloc>()
+              .add(SignupPhoneNumberChanged("0${phone}")),
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(
+                top: 21.0, left: 10.0, right: 10.0, bottom: 21.0),
+            fillColor: EpregnancyColors.white,
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(color: EpregnancyColors.primer),
+            ),
+//            prefixIcon: Icon(
+//              Icons.attach_money,
+//              color: AppColor.warna_teks_sub,
+//            ),
+            hintStyle: TextStyle(color: EpregnancyColors.grey),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: EpregnancyColors.primer, width: 2),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: EpregnancyColors.grey),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            hintText: 'Mobile Number',
+            errorText: state.phoneNumber.invalid ? 'Format nomor salah' : null,
           ),
         );
       },

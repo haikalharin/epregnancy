@@ -25,7 +25,6 @@ Future<String> aesDecryptor(String? encryptedValue) async {
   final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
 
   String decrypted = encrypter.decrypt(Encrypted.fromBase64(encryptedValue!), iv: iv);
-  print('decrypted : $decrypted');
   return decrypted;
 }
 

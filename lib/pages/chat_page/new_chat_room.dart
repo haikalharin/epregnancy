@@ -30,6 +30,7 @@ import '../../data/model/chat_model/chat_pending_send_request.dart';
 import '../../data/model/hospital_model/hospital_model.dart';
 import '../../data/model/user_info/user_info.dart';
 import '../../env.dart';
+import '../../flavors.dart';
 import '../../utils/basic_loading_dialog.dart';
 import '../../utils/function_utils.dart';
 import '../location_select_page/bloc/hospital_bloc.dart';
@@ -73,7 +74,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   String? toId;
   late WebSocket _webSocket;
   String message = '';
-  late bool chatHasEnded = widget.isArchive == true ? true : false;
+  bool chatHasEnded = false;
 
   List<ChatMessageEntity>? chatMessageList = [];
 
@@ -244,10 +245,76 @@ class _NewChatRoomState extends State<NewChatRoom> {
 
   @override
   void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return WillPopScope(
+              child: Center(
+                child: Container(
+                  width: 240.w,
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(4.w))),
+                  child: Material(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text("Informasi Konsultasi",
+                          style: TextStyle(
+                              color: EpregnancyColors.blueDark,
+                              fontSize: 14.sp,
+                              fontFamily: "bold"),
+                        ),
+                        Padding(padding: EdgeInsets.only(top: 4.w)),
+                        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum ante ex, ullamcorper convallis quam pulvinar ac. Fusce viverra cursus malesuada. Nam ac dapibus ante. I leo, accumsan vitae odio eu, tristique luctus enim.",
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                          ),
+                        ),
+                        InkWell(
+                          child: Padding(
+                              padding:
+                              EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
+                              child: SizedBox(
+                                height: 46.w,
+                                width: MediaQuery.of(context).size.width,
+                                child: FlatButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(4.w)),
+                                    color: EpregnancyColors.blueDark,
+                                    disabledColor: Colors.grey,
+                                    child: Text('Oke',
+                                        style: TextStyle(
+                                            fontFamily: "bold",
+                                            fontSize: 13.sp,
+                                            color: Colors.white)),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    }),
+                              )),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              onWillPop: () => Future.value(false));
+        },
+      );
+    });
     setState(() {
       chatMessageList = widget.chatMessageList;
       toName = widget.toName;
       toId = widget.toId;
+      chatHasEnded = widget.isArchive ?? false;
       isPendingChat = widget.pendingChat ?? false;
       chatMessageList?.forEach((element) {
         if(element.mine == true){
@@ -283,9 +350,9 @@ class _NewChatRoomState extends State<NewChatRoom> {
 
   _initWebSocket() async {
     UserModel userModel = await AppSharedPreference.getUser();
-    print('initwebsocket run url : ${environment['websockets']}${userModel.id}');
-    Future<WebSocket> futureWebSocket = WebSocket.connect(
-        '${environment['websockets']}${userModel.id}');
+    Future<WebSocket> futureWebSocket = WebSocket.connect('${F.appFlavor == Flavor.PRODUCTION ?  environment['websockets'] : devEnvironment['websockets']}${userModel.id}');
+    // Future<WebSocket> futureWebSocket = WebSocket.connect('${environment['websockets']}${userModel.id}');
+    // print('ws url : ${environment['websockets']}${userModel.id}');
     futureWebSocket.then((WebSocket ws) {
       _webSocket = ws;
       print('websocket ready state: ' + _webSocket.readyState.toString());
@@ -578,7 +645,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                       : Alignment.topLeft),
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(chatMessageList![index].imageUrl!, height: 150.h, width: 150.w,)));
+                                      child: Image.network(chatMessageList![index].profileImage!, height: 150.h, width: 150.w,)));
                             }
                           } else {
                             return Row(
@@ -589,7 +656,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                     width: 20.w,
                                     decoration: BoxDecoration(shape: BoxShape.circle),
                                     child: chatMessageList![index].profileImage != null ? CircleAvatar(
-                                      backgroundImage: NetworkImage(chatMessageList![index].profileImage!, scale: 1.0),
+                                      backgroundImage: NetworkImage(widget.toImageUrl!, scale: 1.0),
                                     ) : Image.asset('assets/dummies/dummy_avatar.png')
                                 ),
                                 Expanded(
@@ -656,7 +723,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                   ),
                 ),
                 Visibility(
-                  visible: chatHasEnded,
+                  visible: true,
                   child: Column(
                     children: [
                       Container(

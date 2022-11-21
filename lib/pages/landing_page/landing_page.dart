@@ -1,5 +1,8 @@
 import 'package:PregnancyApp/common/constants/router_constants.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
+import 'package:PregnancyApp/flavors.dart';
+import 'package:PregnancyApp/main_development.dart';
+import 'package:PregnancyApp/main_production.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/landing_page/slider_modal.dart';
 import 'package:PregnancyApp/pages/landing_page/widget/slider_list.dart';
@@ -11,11 +14,11 @@ import 'package:formz/formz.dart';
 import '../../common/injector/injector.dart';
 import '../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
+import '../../main.dart';
 import '../../utils/string_constans.dart';
 import '../login_page/login_page.dart';
 import '../navbar_page/bottom_nav.dart';
 import 'bloc/landing_page_bloc.dart';
-
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -44,8 +47,6 @@ class _LandingPageState extends State<LandingPage> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -53,20 +54,23 @@ class _LandingPageState extends State<LandingPage> {
       body: BlocListener<LandingPageBloc, LandingPageState>(
         listener: (context, state) {
           if (state.submitStatus == FormzStatus.submissionFailure) {
-            const snackBar = SnackBar(
-                content: Text("failed"), backgroundColor: Colors.red);
+            const snackBar =
+                SnackBar(content: Text("failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
-          } else if (state.submitStatus ==
-              FormzStatus.submissionSuccess) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              RouteName.navBar,
-                  (Route<dynamic> route) => false,
-              arguments: {
-                'role':  StringConstant.patient,
-                'initial_index': 0
-              },
-            );
-
+          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+            if(F.appFlavor == Flavor.PRODUCTION){
+              aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const LoginPage(
+                          tokenExpired: true, isFromRegister: true)),
+                      (route) => false);
+            } else {
+              aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const LoginPage(
+                          tokenExpired: true, isFromRegister: true)),
+                      (route) => false);
+            }
           }
         },
         child: BlocBuilder<LandingPageBloc, LandingPageState>(
@@ -100,7 +104,7 @@ class _LandingPageState extends State<LandingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
                           slides.length,
-                              (index) => buildDot(index, context),
+                          (index) => buildDot(index, context),
                         ),
                       ),
                     ),
@@ -132,7 +136,29 @@ class _LandingPageState extends State<LandingPage> {
                         onPressed: () async {
                           if (currentIndex == slides.length - 1) {
                             // Navigate to next screen
-                            Injector.resolve<LandingPageBloc>().add(const LoginRequest());
+                            if(F.appFlavor == Flavor.PRODUCTION){
+                              aliceProd
+                                  .getNavigatorKey()
+                                  ?.currentState
+                                  ?.pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                      const LoginPage(
+                                          tokenExpired: true,
+                                          isFromRegister: true)),
+                                      (route) => false);
+                            } else {
+                              aliceDev
+                                  .getNavigatorKey()
+                                  ?.currentState
+                                  ?.pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                      const LoginPage(
+                                          tokenExpired: true,
+                                          isFromRegister: true)),
+                                      (route) => false);
+                            }
                           }
                           _controller.nextPage(
                               duration: Duration(milliseconds: 100),
@@ -170,10 +196,12 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 }
+
 class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LandingPageBloc, LandingPageState>(builder: (context, state) {
+    return BlocBuilder<LandingPageBloc, LandingPageState>(
+        builder: (context, state) {
       if (state.submitStatus == FormzStatus.submissionInProgress) {
         return Container(
             color: Colors.white.withAlpha(90),
@@ -184,4 +212,3 @@ class _Loading extends StatelessWidget {
     });
   }
 }
-

@@ -72,7 +72,7 @@ class ProfileNakesPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('App Versi 1.01', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),),
+            Text('App Versi 1.0.0', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),),
             InkWell(
               onTap: ()async {
                 //
@@ -85,6 +85,7 @@ class ProfileNakesPage extends StatelessWidget {
                 AppSharedPreference.remove(AppSharedPreference.hospital);
                 AppSharedPreference.remove(AppSharedPreference.otp);
                 AppSharedPreference.remove(AppSharedPreference.token);
+                AppSharedPreference.remove(AppSharedPreference.cookie);
                 _showMyDialog(context);
 
               },
@@ -114,7 +115,7 @@ class ProfileNakesPage extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () =>  Navigator.of(context).pushNamedAndRemoveUntil(
-                  RouteName.login, (Route<dynamic> route) => false),
+                  RouteName.login, (Route<dynamic> route) => false, arguments: {'token_expired': false, 'is_from_register': false}),
               child: Text('Ya'),
             ),
           ],

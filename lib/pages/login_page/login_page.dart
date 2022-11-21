@@ -1,5 +1,7 @@
 import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,8 +26,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 const _horizontalPadding = 24.0;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, this.tokenExpired = false}) : super(key: key);
+  const LoginPage(
+      {Key? key, this.tokenExpired = false, this.isFromRegister = false})
+      : super(key: key);
   final bool tokenExpired;
+  final bool isFromRegister;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -37,10 +42,12 @@ var authService = AuthService();
 
 class _LoginPageState extends State<LoginPage> {
   bool _isHiddenPassword = true;
+  String nama = "";
 
   @override
   void initState() {
     super.initState();
+    getRemoteConfig();
 
     if (widget.tokenExpired == true) {
       WidgetsBinding.instance?.addPostFrameCallback((_) async {
@@ -62,7 +69,9 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            "Sesi Berakhir.",
+                            widget.isFromRegister
+                                ? "Selamat!!!"
+                                : "Sesi Berakhir.",
                             style: TextStyle(
                                 color: EpregnancyColors.blueDark,
                                 fontSize: 14.sp,
@@ -70,7 +79,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Padding(padding: EdgeInsets.only(top: 4.w)),
                           Text(
-                            "Mohon maaf sesi Anda telah berakhir.",
+                            widget.isFromRegister
+                                ? "Registrasi Berhasil"
+                                : "Mohon maaf sesi Anda telah berakhir.",
                             style: TextStyle(
                               fontSize: 10.sp,
                             ),
@@ -78,17 +89,16 @@ class _LoginPageState extends State<LoginPage> {
                           InkWell(
                             child: Padding(
                                 padding:
-                                EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
+                                    EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
                                 child: SizedBox(
                                   height: 46.w,
                                   width: MediaQuery.of(context).size.width,
                                   child: FlatButton(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(4.w)),
+                                              BorderRadius.circular(4.w)),
                                       color: EpregnancyColors.blueDark,
-                                      disabledColor:
-                                      Colors.grey,
+                                      disabledColor: Colors.grey,
                                       child: Text('Oke',
                                           style: TextStyle(
                                               fontFamily: "bold",
@@ -114,6 +124,11 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void getRemoteConfig() async {
+    FirebaseRemoteConfig _remoteConfig = await FirebaseRemoteConfig.instance;
+    nama = _remoteConfig.getString('term_and_condition');
+  }
+
   @override
   void dispose() {
     Injector.resolve<LoginBloc>().add(LoginDispose());
@@ -122,77 +137,73 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        // Navigator.of(context).pushReplacementNamed(RouteName.signup);
-        return Future.value(false);
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-            child: BlocListener<LoginBloc, LoginState>(
-                listener: (context, state) async {
-                  if (state.submitStatus == FormzStatus.submissionFailure) {
-                    if (state.typeEvent == StringConstant.signUpGoogle) {
-                      var snackBar = SnackBar(
-                          content: Text(state.errorMessage != null
-                              ? state.errorMessage!
-                              : 'Gagal mendaftar'),
-                          backgroundColor: Colors.red);
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    } else {
-                      var snackBar = SnackBar(
-                          content: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              // Note: Styles for TextSpans must be explicitly defined.
-                              // Child text spans will inherit styles from parent
-                              style: const TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.black,
-                              ),
-                              children: <TextSpan>[
-                               const TextSpan(
-                                    text: "Maaf, ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                TextSpan(text: state.errorMessage),
-                              ],
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+          child: BlocListener<LoginBloc, LoginState>(
+              listener: (context, state) async {
+                if (state.submitStatus == FormzStatus.submissionFailure) {
+                  if (state.typeEvent == StringConstant.signUpGoogle) {
+                    var snackBar = SnackBar(
+                        content: Text(state.errorMessage != null
+                            ? state.errorMessage!
+                            : 'Gagal mendaftar'),
+                        backgroundColor: Colors.red);
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  } else {
+                    var snackBar = SnackBar(
+                        content: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            // Note: Styles for TextSpans must be explicitly defined.
+                            // Child text spans will inherit styles from parent
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
                             ),
+                            children: <TextSpan>[
+                              const TextSpan(
+                                  text: "Maaf, ",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(text: state.errorMessage),
+                            ],
                           ),
-                          backgroundColor: Colors.red);
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    }
-                  } else if (state.submitStatus ==
-                      FormzStatus.submissionSuccess) {
-                    if (state.typeEvent == StringConstant.signUpGoogle) {
-                      if (state.isExist == true) {
-                        if (state.isSurvey == true) {
-                          var snackBar = SnackBar(
-                              content: Text("Akun Telah Terdaftar"),
-                              backgroundColor: Colors.red);
-                          Scaffold.of(context).showSnackBar(snackBar);
+                        ),
+                        backgroundColor: Colors.red);
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  }
+                } else if (state.submitStatus ==
+                    FormzStatus.submissionSuccess) {
+                  if (state.typeEvent == StringConstant.signUpGoogle) {
+                    if (state.isExist == true) {
+                      if (state.isSurvey == true) {
+                        var snackBar = SnackBar(
+                            content: Text("Akun Telah Terdaftar"),
+                            backgroundColor: Colors.red);
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      } else {
+                        Navigator.of(context)
+                            .pushNamed(RouteName.surveyPage, arguments: false);
+                      }
+                    } else {
+                      if (Configurations.mode == StringConstant.prod &&
+                          state.type == 'toRequestOtp') {
+                        if (state.userId!.contains('@')) {
+                          Injector.resolve<LoginBloc>()
+                              .add(const LoginRequestOtp());
                         } else {
-                          Navigator.of(context).pushNamed(RouteName.surveyPage,
-                              arguments: false);
+                          Injector.resolve<LoginBloc>()
+                              .add(const LoginRequestOtp());
                         }
                       } else {
-                        if (Configurations.mode == StringConstant.prod &&
-                            state.type == 'toRequestOtp') {
-                          if (state.userId!.contains('@')) {
-                            Injector.resolve<LoginBloc>()
-                                .add(const LoginRequestOtp());
-                          } else {
-                            Injector.resolve<LoginBloc>()
-                                .add(const LoginRequestOtp());
-                          }
-                        } else {
-                          Navigator.of(context).pushNamed(RouteName.otpPage);
-                        }
+                        Navigator.of(context).pushNamed(RouteName.otpPage);
                       }
-                    } else if (state.typeEvent == StringConstant.submitLogin) {
-                      if (state.userModel?.isPatient == true) {
+                    }
+                  } else if (state.typeEvent == StringConstant.submitLogin) {
+                    if (state.userModel?.isPatient == true) {
+                      if (state.userModel?.isAgree == true) {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                           RouteName.navBar,
                           (Route<dynamic> route) => false,
@@ -204,106 +215,112 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         );
                       } else {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            RouteName.dashboardNakesPage,
-                            (Route<dynamic> route) => false,
+                        Navigator.of(context).pushNamed(RouteName.disclaimer,
                             arguments: {
-                              'name': state.userModel?.name,
-                              'image_url': state.userModel?.imageUrl,
-                              'hospital_id': state.userModel?.hospitalId
+                              'user_id': state.userId,
+                              'from': "login"
                             });
                       }
+                    } else {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          RouteName.dashboardNakesPage,
+                          (Route<dynamic> route) => false,
+                          arguments: {
+                            'name': state.userModel?.name,
+                            'image_url': state.userModel?.imageUrl,
+                            'hospital_id': state.userModel?.hospitalId
+                          });
                     }
                   }
-                },
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Image.asset(
-                        "assets/ePregnancy_login_logo.png",
-                        fit: BoxFit.fitWidth,
-                        alignment: Alignment.bottomLeft,
-                      ),
+                }
+              },
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Image.asset(
+                      "assets/ePregnancy_login_logo.png",
+                      fit: BoxFit.fitWidth,
+                      alignment: Alignment.bottomLeft,
                     ),
-                    Center(
-                      child: BlocBuilder<LoginBloc, LoginState>(
-                        builder: (context, state) {
-                          return ListView(
-                            physics: const ClampingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: _horizontalPadding,
+                  ),
+                  Center(
+                    child: BlocBuilder<LoginBloc, LoginState>(
+                      builder: (context, state) {
+                        return ListView(
+                          physics: const ClampingScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: _horizontalPadding,
+                          ),
+                          children: [
+                            SizedBox(height: 60),
+                            // SizedBox(height: 120),
+                            //_HeadingText(),
+                            Text(
+                              "Selamat Datang",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 40,
+                              ),
                             ),
-                            children: [
-                              SizedBox(height: 60),
-                              // SizedBox(height: 120),
-                              //_HeadingText(),
-                              Text(
-                                "Masuk dengan email",
-                                style: TextStyle(
+                            Text(
+                              "Masuk dengan akun email/nomor handphone yang terdaftar",
+                              style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 40,
-                                ),
-                              ),
-                              Text(
-                                "Masuk dengan akun email/nomor handphone yang terdaftar",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15),
-                              ),
-                              SizedBox(height: 20),
-                              _UsernameInput(),
-                              SizedBox(height: 12),
-                              _PasswordInput(),
-                              _ForgotPasswordButton(),
-                              SizedBox(height: 20),
-                              Container(
-                                  height: 50,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: ElevatedButton(
-                                    child: const Text('Login'),
-                                    onPressed: () {
-                                      Injector.resolve<LoginBloc>()
-                                          .add(LoginSubmitted());
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary: EpregnancyColors.primer),
-                                  )),
-                              // SizedBox(height: 10),
-                              // Container(
-                              //   height: 50,
-                              //   padding:
-                              //       const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              //   child: ElevatedButton(
-                              //       onPressed: () async {
-                              //         // GAuthentication.signOut(context: context);
-                              //         // GAuthentication.signInWithGoogle();
-                              //         // alice.showInspector();
-                              //         final GoogleSignIn _googleSignIn = new GoogleSignIn();
-                              //
-                              //         await _googleSignIn.signOut();
-                              //         Injector.resolve<LoginBloc>()
-                              //             .add(LoginWithGoogleSubmitted());
-                              //       },
-                              //       child: Text("Lanjut dengan Google"),
-                              //       style: ElevatedButton.styleFrom(
-                              //           primary: Colors.white,
-                              //           onPrimary: Colors.black)),
-                              // ),
-                              SizedBox(height: 12),
-                              _RegisterButton()
-                              // _PasswordTextField(),
-                            ],
-                          );
-                        },
-                      ),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15),
+                            ),
+                            SizedBox(height: 20),
+                            _UsernameInput(),
+                            SizedBox(height: 12),
+                            _PasswordInput(),
+                            _ForgotPasswordButton(),
+                            SizedBox(height: 20),
+                            Container(
+                                height: 50,
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                child: ElevatedButton(
+                                  child: const Text('Login'),
+                                  onPressed: () {
+                                    Injector.resolve<LoginBloc>()
+                                        .add(LoginSubmitted());
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      primary: EpregnancyColors.primer),
+                                )),
+                            // SizedBox(height: 10),
+                            // Container(
+                            //   height: 50,
+                            //   padding:
+                            //       const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            //   child: ElevatedButton(
+                            //       onPressed: () async {
+                            //         // GAuthentication.signOut(context: context);
+                            //         // GAuthentication.signInWithGoogle();
+                            //         // alice.showInspector();
+                            //         final GoogleSignIn _googleSignIn = new GoogleSignIn();
+                            //
+                            //         await _googleSignIn.signOut();
+                            //         Injector.resolve<LoginBloc>()
+                            //             .add(LoginWithGoogleSubmitted());
+                            //       },
+                            //       child: Text("Lanjut dengan Google"),
+                            //       style: ElevatedButton.styleFrom(
+                            //           primary: Colors.white,
+                            //           onPrimary: Colors.black)),
+                            // ),
+                            SizedBox(height: 12),
+                            _RegisterButton()
+                            // _PasswordTextField(),
+                          ],
+                        );
+                      },
                     ),
-                    _Loading(),
-                  ],
-                ))),
-      ),
+                  ),
+                  _Loading(),
+                ],
+              ))),
     );
   }
 }
@@ -443,7 +460,7 @@ class _ForgotPasswordButton extends StatelessWidget {
               children: <Widget>[
                 TextButton(
                   child: Text(
-                    'Lupa kata sandi?',
+                    "Lupa Password?",
                     style: TextStyle(color: EpregnancyColors.primer),
                   ),
                   onPressed: () {

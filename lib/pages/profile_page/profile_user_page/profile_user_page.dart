@@ -226,7 +226,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                       InkWell(
                         onTap: () {
                           Navigator.of(context)
-                              .pushNamed(RouteName.surveyPage, arguments: true);
+                              .pushNamed(RouteName.surveyPageBaby, arguments: true);
                         },
                         child: ListTile(
                           leading: Text(
@@ -284,7 +284,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'App Versi 1.01',
+                    'App Versi 1.0.0',
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
@@ -302,6 +302,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                       await AppSharedPreference.remove(AppSharedPreference.hospital);
                       await AppSharedPreference.remove(AppSharedPreference.otp);
                       await AppSharedPreference.remove(AppSharedPreference.token);
+                      await AppSharedPreference.remove(AppSharedPreference.cookie);
                       _showMyDialog(context);
                     },
                     child: Row(
@@ -347,7 +348,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                 Injector.resolve<SurveyPageBloc>()
                     .add(const SurveyDisposeEvent());
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    RouteName.login, (Route<dynamic> route) => false);
+                    RouteName.login, (Route<dynamic> route) => false, arguments: {'token_expired': false, 'is_from_register': false});
               },
               child: Text('Ya'),
             ),

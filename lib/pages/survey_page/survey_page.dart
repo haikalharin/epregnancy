@@ -1,3 +1,6 @@
+import 'package:PregnancyApp/flavors.dart';
+import 'package:PregnancyApp/main_development.dart';
+import 'package:PregnancyApp/main_production.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +10,11 @@ import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../main.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';
+import '../login_page/login_page.dart';
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPage extends StatefulWidget {
@@ -90,7 +95,7 @@ class _SurveyPageState extends State<SurveyPage> {
             const snackBar =
                 SnackBar(content: Text("failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
-          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+          } else if (state.submitStatus == FormzStatus.submissionSuccess && state.type == 'submit') {
               if (state.choice == 1) {
                 if (widget.isEdit == true) {
                   Navigator.of(context).pushReplacementNamed(
@@ -102,15 +107,51 @@ class _SurveyPageState extends State<SurveyPage> {
                       arguments: widget.isEdit);
                 }
               } else {
+                // todo handle edit
                 if (widget.isEdit == true) {
-                  Injector.resolve<SurveyPageBloc>()
-                      .add(const SurveyDisposeEvent());
-                  Navigator.of(context).pushNamed(RouteName.navBar, arguments: {
-                    'role': StringConstant.patient,
-                    'initial_index': 2
-                  });
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    RouteName.navBar,
+                        (Route<dynamic> route) => false,
+                    arguments: {'role': StringConstant.patient, 'initial_index': 0},
+                  );
+                  // if(F.appFlavor == Flavor.PRODUCTION){
+                  //   aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                  //       MaterialPageRoute(
+                  //           builder: (BuildContext context) => const LoginPage(
+                  //               tokenExpired: true, isFromRegister: true)),
+                  //           (route) => false);
+                  // } else {
+                  //   aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                  //       MaterialPageRoute(
+                  //           builder: (BuildContext context) => const LoginPage(
+                  //               tokenExpired: true, isFromRegister: true)),
+                  //           (route) => false);
+                  // }
+
                 } else {
-                  Navigator.of(context).pushNamed(RouteName.landingPage);
+                  if(F.appFlavor == Flavor.PRODUCTION){
+                    aliceProd
+                        .getNavigatorKey()
+                        ?.currentState
+                        ?.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                            const LoginPage(
+                                tokenExpired: true,
+                                isFromRegister: true)),
+                            (route) => false);
+                  } else {
+                    aliceDev
+                        .getNavigatorKey()
+                        ?.currentState
+                        ?.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                            const LoginPage(
+                                tokenExpired: true,
+                                isFromRegister: true)),
+                            (route) => false);
+                  }
                 }
               }
             // Navigator.of(context).pushNamedAndRemoveUntil(
@@ -216,11 +257,7 @@ class _SurveyPageState extends State<SurveyPage> {
 
                                                 },
                                                 child: Container(
-                                                    decoration: (isEdit &&
-                                                                state.user
-                                                                        ?.isPregnant ==
-                                                                    true) ||
-                                                            state.choice == 1
+                                                    decoration: (isEdit && state.user?.isPregnant == true) || state.choice == 1
                                                         ? BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
@@ -291,11 +328,7 @@ class _SurveyPageState extends State<SurveyPage> {
 
                                                 },
                                                 child: Container(
-                                                    decoration: (isEdit &&
-                                                                state.user
-                                                                        ?.isPlanningPregnancy ==
-                                                                    true) ||
-                                                            state.choice == 2
+                                                    decoration: (isEdit && state.user?.isPlanningPregnancy == true) || state.choice == 2
                                                         ? BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius

@@ -105,7 +105,21 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel> updateUser(SignupQuestRequest user) async {
+    print("payload request : ${user.toJson()}");
     try {
+      final response = await httpClient.put(ServiceUrl.updateUser, user);
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> updateDisclaimer(UserModel user) async {
+    try {
+      Map<String, dynamic> data = {
+        'id': user.id?? "",
+        'is_agree': user.isAgree ?? false,
+      };
       final response = await httpClient.put(ServiceUrl.updateUser, user);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
