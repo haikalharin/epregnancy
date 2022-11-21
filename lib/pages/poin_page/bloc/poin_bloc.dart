@@ -127,7 +127,7 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: a.toString());
+          status: FormzStatus.submissionFailure, errorMessage: "Terjadi Kesalahan, Silahkan Coba Lagi");
     }
   }
 }
