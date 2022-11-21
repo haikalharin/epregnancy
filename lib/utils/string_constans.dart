@@ -1,7 +1,6 @@
-
-
 class StringConstant {
-  static const imagenodata = 'https://firebasestorage.googleapis.com/v0/b/epregnancy-2022.appspot.com/o/no-image-icon-23485.png?alt=media&token=0fdde983-b757-41f0-881f-162c3980be9f';
+  static const imagenodata =
+      'https://firebasestorage.googleapis.com/v0/b/epregnancy-2022.appspot.com/o/no-image-icon-23485.png?alt=media&token=0fdde983-b757-41f0-881f-162c3980be9f';
   static const active = 'Username sudah terdaftar';
   static const inActive = 'Username Available';
   static const pregnant = 'PREGNANT';
@@ -37,7 +36,6 @@ class StringConstant {
   static const point = 'Poin';
   static const claimPoint = 'Klaim Poin';
 
-
   //chat
   static const baru = 'Baru';
   static const startConsultation = "Mulai Konsultasi";
@@ -53,7 +51,8 @@ class StringConstant {
   static const publishedArticle = 'Artikel yang diterbitkan';
   static const otherArticle = 'Artikel lainnya';
   static const noConsultationYet = 'Belum ada perminataan\nkonsultasi';
-  static const noConsultationDetail = 'Permintaan konsulatsi dari pasien akan\nditampilkan di halaman ini';
+  static const noConsultationDetail =
+      'Permintaan konsulatsi dari pasien akan\nditampilkan di halaman ini';
 
   //profile
   static const profileChange = 'Ganti Profil';
@@ -73,11 +72,14 @@ class StringConstant {
   static const newChat = 'new-chat';
   static const base64tag = 'data:image/png;base64,';
 
-
   //password
   static const alertPassword1 = '• Minimal 8 karakter dan maksimal 128';
-  static const alertPassword2 = '• Setidaknya memiliki 1 huruf besar, 1 huruf kecil, 1 angka, dan 1 simbol (contoh !,@,#,% )';
-  static const alertPassword3 = '• Tidak ada huruf yang berulang atau berurutan ( contoh: AAA, ababab, katakata )';
+  static const alertPassword2 =
+      '• Setidaknya memiliki 1 huruf besar, 1 huruf kecil, 1 angka, dan 1 simbol (contoh !,@,#,% )';
+  static const alertPassword3 =
+      '• Tidak ada huruf yang berulang atau berurutan ( contoh: AAA, ababab, katakata )';
 
-
+  //Disclaimer
+  static const column1Disclaimer =
+      "<p>Dokumen ini merupakan Syarat dan Ketentuan (&quot;Perjanjian&quot;) dan ketika disetujui oleh Anda dengan cara yang dijelaskan di bawah ini menjadi suatu kontrak yang mengikat secara hukum antara PT. Allianz Indonesia (&quot;kami&quot;), suatu perseroan terbatas yang didirikan berdasarkan hukum Indonesia, dan Anda.</p><p>Kami adalah penyedia Layanan (sebagaimana didefinisikan dalam Perjanjian ini) yang sah di Indonesia. Kondisi prasyarat bagi Anda untuk dapat mengakses, membeli, menggunakan atau mendaftar Layanan apa pun dari kami adalah Anda harus membaca dan menyetujui untuk terikat dengan setiap dan masing-masing syarat dan ketentuan yang terkandung dalam Perjanjian ini. Apabila Anda mengakses komponen Layanan apa pun atau menggunakan atau mendaftar Layanan dengan cara apa pun, kegiatan-kegiatan tersebut terhadap Anda akan secara tegas diartikan bahwa Anda telah membaca Perjanjian ini dan menyetujui untuk terikat dengan syarat dan ketentuan yang terkandung dalam Perjanjian ini.</p>";
 }

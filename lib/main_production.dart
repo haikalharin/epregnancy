@@ -1,3 +1,5 @@
+import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
+import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'app.dart';
 import 'flavors.dart';
@@ -66,7 +68,7 @@ import 'utils/simple_bloc_observer.dart';
 import 'package:flutter_alice/alice.dart';
 
 // void main() => runApp(MyApp());
-
+FirebaseService firebaseService = FirebaseService();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
@@ -94,39 +96,46 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late Future<void> _firebaseFuture;
 
   @override
   void initState() {
     super.initState();
+    _firebaseFuture = firebaseService
+        .initializeFlutterFirebase(context);
   }
-
 
 
   @override
   Widget build(BuildContext context) {
 
-    return ScreenUtilInit(
-        designSize: const Size(360, 690),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) {
-          return MultiBlocProvider(
-              providers: _getProviders(),
-              child:  OverlaySupport.global(
-                child: MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  navigatorKey: aliceProd.getNavigatorKey(),
-                  title: 'Komunitaz',
-                  home: SplashscreenPage(),
-                  onGenerateRoute: Routes.generateRoute,
-                  localizationsDelegates: const [
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                  ],
-                ),
-              ));
-        });
+    return FutureBuilder(
+      future: Future.wait([_firebaseFuture]),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return  ScreenUtilInit(
+            designSize: const Size(360, 690),
+            minTextAdapt: true,
+            splitScreenMode: true,
+            builder: (context, child) {
+              return MultiBlocProvider(
+                  providers: _getProviders(),
+                  child: OverlaySupport.global(
+                    child: MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      navigatorKey: aliceProd.getNavigatorKey(),
+                      title: 'Komunitaz',
+                      home: SplashscreenPage(),
+                      onGenerateRoute: Routes.generateRoute,
+                      localizationsDelegates: const [
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
+                    ),
+                  ));
+            });
+      },
+    );
   }
 
   List<BlocProvider> _getProviders() => [
@@ -182,6 +191,8 @@ class _MyAppState extends State<MyApp> {
         create: (context) => Injector.container.resolve<ForgotPasswordPageBloc>()),
     BlocProvider<PinCheckInBloc>(
         create: (context) => Injector.container.resolve<PinCheckInBloc>()),
+    BlocProvider<DisclaimerPageBloc>(
+        create: (context) => Injector.container.resolve<DisclaimerPageBloc>()),
   ];
 }
 

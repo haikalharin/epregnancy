@@ -1,5 +1,7 @@
 import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +26,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 const _horizontalPadding = 24.0;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, this.tokenExpired = false, this.isFromRegister = false}) : super(key: key);
+  const LoginPage(
+      {Key? key, this.tokenExpired = false, this.isFromRegister = false})
+      : super(key: key);
   final bool tokenExpired;
   final bool isFromRegister;
 
@@ -38,10 +42,12 @@ var authService = AuthService();
 
 class _LoginPageState extends State<LoginPage> {
   bool _isHiddenPassword = true;
+  String nama = "";
 
   @override
   void initState() {
     super.initState();
+    getRemoteConfig();
 
     if (widget.tokenExpired == true) {
       WidgetsBinding.instance?.addPostFrameCallback((_) async {
@@ -63,7 +69,9 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            widget.isFromRegister ? "Selamat!!!" : "Sesi Berakhir.",
+                            widget.isFromRegister
+                                ? "Selamat!!!"
+                                : "Sesi Berakhir.",
                             style: TextStyle(
                                 color: EpregnancyColors.blueDark,
                                 fontSize: 14.sp,
@@ -71,7 +79,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Padding(padding: EdgeInsets.only(top: 4.w)),
                           Text(
-                            widget.isFromRegister ? "Registrasi Berhasil" :"Mohon maaf sesi Anda telah berakhir.",
+                            widget.isFromRegister
+                                ? "Registrasi Berhasil"
+                                : "Mohon maaf sesi Anda telah berakhir.",
                             style: TextStyle(
                               fontSize: 10.sp,
                             ),
@@ -79,17 +89,16 @@ class _LoginPageState extends State<LoginPage> {
                           InkWell(
                             child: Padding(
                                 padding:
-                                EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
+                                    EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
                                 child: SizedBox(
                                   height: 46.w,
                                   width: MediaQuery.of(context).size.width,
                                   child: FlatButton(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(4.w)),
+                                              BorderRadius.circular(4.w)),
                                       color: EpregnancyColors.blueDark,
-                                      disabledColor:
-                                      Colors.grey,
+                                      disabledColor: Colors.grey,
                                       child: Text('Oke',
                                           style: TextStyle(
                                               fontFamily: "bold",
@@ -113,6 +122,11 @@ class _LoginPageState extends State<LoginPage> {
         );
       });
     }
+  }
+
+  void getRemoteConfig() async {
+    FirebaseRemoteConfig _remoteConfig = await FirebaseRemoteConfig.instance;
+    nama = _remoteConfig.getString('term_and_condition');
   }
 
   @override
@@ -149,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.black,
                             ),
                             children: <TextSpan>[
-                             const TextSpan(
+                              const TextSpan(
                                   text: "Maaf, ",
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
@@ -170,8 +184,8 @@ class _LoginPageState extends State<LoginPage> {
                             backgroundColor: Colors.red);
                         Scaffold.of(context).showSnackBar(snackBar);
                       } else {
-                        Navigator.of(context).pushNamed(RouteName.surveyPage,
-                            arguments: false);
+                        Navigator.of(context)
+                            .pushNamed(RouteName.surveyPage, arguments: false);
                       }
                     } else {
                       if (Configurations.mode == StringConstant.prod &&
@@ -189,16 +203,24 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   } else if (state.typeEvent == StringConstant.submitLogin) {
                     if (state.userModel?.isPatient == true) {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        RouteName.navBar,
-                        (Route<dynamic> route) => false,
-                        arguments: {
-                          'role': state.userModel?.isPatient == true
-                              ? StringConstant.patient
-                              : StringConstant.midwife,
-                          'initial_index': 0
-                        },
-                      );
+                      if (state.userModel?.isAgree == true) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          RouteName.navBar,
+                          (Route<dynamic> route) => false,
+                          arguments: {
+                            'role': state.userModel?.isPatient == true
+                                ? StringConstant.patient
+                                : StringConstant.midwife,
+                            'initial_index': 0
+                          },
+                        );
+                      } else {
+                        Navigator.of(context).pushNamed(RouteName.disclaimer,
+                            arguments: {
+                              'user_id': state.userId,
+                              'from': "login"
+                            });
+                      }
                     } else {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           RouteName.dashboardNakesPage,
@@ -438,7 +460,7 @@ class _ForgotPasswordButton extends StatelessWidget {
               children: <Widget>[
                 TextButton(
                   child: Text(
-                    'Lupa kata sandi?',
+                    "Lupa Password?",
                     style: TextStyle(color: EpregnancyColors.primer),
                   ),
                   onPressed: () {

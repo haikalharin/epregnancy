@@ -114,6 +114,19 @@ class RemoteDataSource {
     }
   }
 
+  Future<ResponseModel> updateDisclaimer(UserModel user) async {
+    try {
+      Map<String, dynamic> data = {
+        'id': user.id?? "",
+        'is_agree': user.isAgree ?? false,
+      };
+      final response = await httpClient.put(ServiceUrl.updateUser, user);
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
   Future<ResponseModel> saveBaby(BabyModelApi baby) async {
     try {
       final response = await httpClient.post(ServiceUrl.saveBaby, baby);

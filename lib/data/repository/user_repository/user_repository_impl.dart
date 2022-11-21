@@ -67,6 +67,15 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
+  Future<ResponseModel> updateDisclaimer(UserModel user) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.updateDisclaimer(user);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
   Future<ResponseModel> updateQuestionerBaby(BabyModelApi baby) async {
     if (await networkInfo.isConnected) {
       ResponseModel responseModel = await remoteDatasource.updateBaby(baby);

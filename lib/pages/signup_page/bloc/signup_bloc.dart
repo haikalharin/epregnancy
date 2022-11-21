@@ -114,18 +114,24 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
             //       isExist: true,
             //       isSurvey: false);
             // }
-            yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: "Username sudah terdaftar");
-
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionFailure,
+                errorMessage: "Username sudah terdaftar",
+                phoneNumber: PhoneValidator.pure(),
+                email: EmailAddressUsernameValidator.pure());
           } else {
             await AppSharedPreference.setUsernameRegisterUser(data);
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
                 userId: data,
                 isExist: false,
-                type: 'toRequestOtp');
+                type: 'toDisclaimer');
           }
         } else {
-          yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionFailure,
+              phoneNumber: PhoneValidator.dirty(),
+          email: EmailAddressUsernameValidator.dirty());
         }
       } else {
         yield state.copyWith(
