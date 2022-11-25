@@ -64,7 +64,7 @@ class _StartConsulationDialogState extends State<StartConsulationDialog> {
         child: Column(
           children: [
             Text(
-              "Apakah anda ingin memulai konsultasi dengan",
+              "Apakah anda ingin memulai diskusi dengan",
               style: TextStyle(color: Colors.black),
             ),
             Text(

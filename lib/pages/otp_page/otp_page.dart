@@ -88,6 +88,7 @@ class _OtpPageState extends State<OtpPage> {
                 });
                 startTimer();
               } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+                // todo navigator select puskesmas & bpjs
                 Navigator.of(context)
                     .pushNamed(RouteName.signUpQuestionnairePage);
               }

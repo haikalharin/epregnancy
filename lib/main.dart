@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
+import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'app.dart';
@@ -192,6 +193,8 @@ class _MyAppState extends State<MyApp> {
         create: (context) => Injector.container.resolve<PinCheckInBloc>()),
     BlocProvider<DisclaimerPageBloc>(
         create: (context) => Injector.container.resolve<DisclaimerPageBloc>()),
+    BlocProvider<PatientSelectBloc>(
+        create: (context) => Injector.container.resolve<PatientSelectBloc>()),
   ];
 }
 

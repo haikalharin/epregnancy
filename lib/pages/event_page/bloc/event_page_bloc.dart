@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/utils/extension.dart';
@@ -59,6 +60,8 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       yield _mapEventInitEvent(event, state);
     } else if (event is EventAddSubmitted) {
       yield* _mapEventAddSubmittedToState(event, state);
+    } else if (event is EventAddSubmittedFromMidwife) {
+      yield* _mapEventAddSubmittedFromMidwifeToState(event, state);
     }
   }
 
@@ -295,6 +298,154 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
             ),
           );
           Add2Calendar.addEvent2Cal(event);
+        }
+        // var dateFormat = DateFormat('hh:mm:ss');
+        // DateTime durationStart = dateFormat.parse(dateStart);
+        // DateTime durationEnd = dateFormat.parse(dateEnd);
+        // var differenceInHours = durationStart.difference(DateTime.parse(remindBefore!)).inHours;
+        // DateTime subtractDateStart = DateTime.parse(dateStart).subtract(Duration(hours: differenceInHours));
+        if (response.code == 200) {
+
+          yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess,
+            role: person.isPatient == true
+                ? StringConstant.patient
+                : StringConstant.midwife,
+          );
+        } else {
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+        }
+      } on EventErrorException catch (e) {
+        print(e);
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      } on Exception catch (a) {
+        if( a is UnAuthorizeException) {
+          await AppSharedPreference.sessionExpiredEvent();
+          // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+        } else {
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+        }
+      }
+    } else {
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    }
+  }
+
+  Stream<EventPageState> _mapEventAddSubmittedFromMidwifeToState(
+      EventAddSubmittedFromMidwife event,
+      EventPageState state,
+      ) async* {
+    if (state.status.isValidated) {
+      yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+      try {
+        HospitalModel hospital = await AppSharedPreference.getHospital();
+        UserModel person = event.user;
+        final df = DateFormat('yyyy-MM-dd');
+        final forCalendar = DateFormat('yyyy-MM-dd hh:mm');
+        var dateStart = df.format(state.dateStart ?? DateTime.now());
+        var dateStartFc = forCalendar.format(state.dateStart ?? DateTime.now());
+        var dateEnd = df.format(state.dateEnd ?? DateTime.now());
+        var dateEndFc = forCalendar.format(state.dateEnd ?? DateTime.now());
+
+        DateTime fixDate = DateTime.now();
+        String? remindBefore;
+        ResponseModel response = ResponseModel();
+        if (state.consulType.value == StringConstant.consumeMedicine) {
+          response = await eventRepository.saveEventMedicineFromMidwife(EventModel(
+            userId: person.id,
+            location: hospital.address ?? '',
+            type: state.consulType.value,
+            title: state.scheduleName.value,
+            startDate: dateStart,
+            endDate: dateEnd,
+            medicineTakenDays: int.parse(state.days.value),
+            medicineTakenTimes: int.parse(state.totalConsume.value),
+            medicineUnit: "tablet",
+            remindBefore: "00:05:00",
+            status: "active",
+            notifications: state.listScheduleTime,
+          ));
+          List<Event> _medEvent = [];
+          for (var element in state.listScheduleTime) {
+            var startDate = DateTime.parse("$dateStart ${element.time}");
+            final fStartDate = forCalendar.format(startDate);
+            _medEvent.add(Event(
+              title: state.scheduleName.value,
+              description: state.description.value,
+              location: hospital.address ?? '',
+              startDate: DateTime.parse(fStartDate),
+              endDate: DateTime.parse(dateEnd),
+              // recurrence: Recurrence(
+              //   frequency: Frequency.daily,
+              //   endDate: DateTime.parse(dateEnd),
+              //   // interval: 1,
+              //   ocurrences: state.listScheduleTime.length,
+              // ),
+              // todo ios param
+              // iosParams: IOSParams(
+              //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
+              // ),
+              androidParams: AndroidParams(
+                emailInvites: [person.email!], // on Android, you can add invite emails to your event.
+              ),
+            ));
+
+            // for (var event in _medEvent) {
+            //   Add2Calendar.addEvent2Cal(event);
+            // }
+          }
+        } else {
+          print('person name : ${person.name}');
+          print('person id : ${person.id}');
+          var hour = state.timeNotfication!.hour.toString().length == 1
+              ? "0${state.timeNotfication!.hour}"
+              : state.timeNotfication!.hour.toString();
+          var minute = state.timeNotfication!.minute.toString().length == 1
+              ? "0${state.timeNotfication!.hour}"
+              : state.timeNotfication!.minute.toString();
+
+          var hourToMinute = state.timeNotfication!.hour * 60;
+          int total = state.timeNotfication!.minute + hourToMinute;
+          String time = "${state.timeString.value}:00";
+          String fullDate = "$dateStart $time";
+          DateTime tempDate =
+          new DateFormat("yyyy-MM-dd hh:mm:ss").parse(fullDate);
+
+          fixDate = DateTime(tempDate.year, tempDate.month,
+              tempDate.day, tempDate.hour, tempDate.minute - total);
+
+
+          String _remindBefore = "$hour:$minute:00";
+          remindBefore = _remindBefore;
+          response = await eventRepository.saveEventAppointmentFromMidwife(EventModel(
+            userId: person.id,
+            type: state.consulType.value,
+            title: state.scheduleName.value,
+            description: state.description.value,
+            time: "${state.timeString.value}:00",
+            startDate: dateStart,
+            endDate: dateEnd,
+            date: dateStart,
+            remindBefore: _remindBefore.toString(),
+            status: "active",
+          ));
+          var startDate = DateTime.parse("$dateStart ${state.timeString.value}");
+          final fStartDate = forCalendar.format(startDate);
+          Event event = Event(
+            title: state.scheduleName.value,
+            description: state.description.value,
+            location: '',
+            startDate: DateTime.parse(fStartDate),
+            endDate: DateTime.parse(dateEndFc),
+            // todo ios param
+            // iosParams: IOSParams(
+            //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
+            // ),
+            androidParams: AndroidParams(
+              emailInvites: [person.email!], // on Android, you can add invite emails to your event.
+            ),
+          );
+          // Add2Calendar.addEvent2Cal(event);
         }
         // var dateFormat = DateFormat('hh:mm:ss');
         // DateTime durationStart = dateFormat.parse(dateStart);

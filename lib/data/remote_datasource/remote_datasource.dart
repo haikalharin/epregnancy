@@ -284,6 +284,26 @@ class RemoteDataSource {
     }
   }
 
+  Future<ResponseModel> saveScheduleEventMedicineFromMidwife(EventModel eventModel) async {
+    try {
+      final response =
+      await httpClient.post(ServiceUrl.createScheduleMedicineMw, eventModel);
+      return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> saveScheduleEventAppointmentFromMidwife(EventModel eventModel) async {
+    try {
+      final response =
+      await httpClient.post(ServiceUrl.createScheduleAppointmentMw, eventModel);
+      return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
   Future<ResponseModel> deleteScheduleEventPersonal(String id) async {
     try {
 
@@ -463,6 +483,14 @@ class RemoteDataSource {
 
     return ResponseModel.fromJson(
         response, HospitalModel.fromJson);
+  }
+
+  Future<ResponseModel<UserModel>> fetchUsers(String name) async {
+    final response = await httpClient
+        .get(ServiceUrl.userList, queryParameters: {'name': name});
+
+    return ResponseModel.fromJson(
+        response, UserModel.fromJson);
   }
 
   Future<ResponseModel<HospitalModel>> fetchHospitalsById(String id) async {

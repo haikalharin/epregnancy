@@ -28,8 +28,8 @@ class SliderModal {
     List<SliderModal> slides = [];
     SliderModal sliderModal = SliderModal();
     sliderModal.setImage('assets/slider1.png');
-    sliderModal.setTitle('Konsultasi dengan Bidan dimana saja');
-    sliderModal.setDescription('Gunakan fitur obrolan di aplikasi untuk konsultasi dengan Bidan');
+    sliderModal.setTitle('Diskusi dengan Bidan dimana saja');
+    sliderModal.setDescription('Gunakan fitur obrolan di aplikasi untuk diskusi dengan Bidan');
     slides.add(sliderModal);
 
     sliderModal = SliderModal();

@@ -38,19 +38,19 @@ class StringConstant {
 
   //chat
   static const baru = 'Baru';
-  static const startConsultation = "Mulai Konsultasi";
+  static const startConsultation = "Mulai Diskusi";
   static const pending = 'Pending';
   static const archive = 'Arsip';
   static const onGoing = 'Sedang Berlangsung';
-  static const consultation = 'Konsultasi';
+  static const consultation = 'Diskusi';
   static const newestIncomingMessage = 'Chat yang baru masuk';
-  static const seeAllConsulation = 'Lihat Semua Konsultasi';
+  static const seeAllConsulation = 'Lihat Semua Diskusi';
   static const topic = 'Topik';
 
   //article
   static const publishedArticle = 'Artikel yang diterbitkan';
   static const otherArticle = 'Artikel lainnya';
-  static const noConsultationYet = 'Belum ada perminataan\nkonsultasi';
+  static const noConsultationYet = 'Belum ada perminataan\ndiskusi';
   static const noConsultationDetail =
       'Permintaan konsulatsi dari pasien akan\nditampilkan di halaman ini';
 

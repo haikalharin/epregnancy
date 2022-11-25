@@ -169,7 +169,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("Konsultasi",
+                                        Text("Diskusi",
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold)),
@@ -243,12 +243,12 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                                   ),
                                                   widget.role == "PATIENT"
                                                       ? Text(
-                                                          "Hubungi profesional",
+                                                          "Diskusi Dengan Bidan",
                                                           style: TextStyle(
                                                               fontSize: 12),
                                                         )
                                                       : Text(
-                                                          "Cek Konsultasi",
+                                                          "Cek Diskusi",
                                                           style: TextStyle(
                                                               fontSize: 12),
                                                         ),

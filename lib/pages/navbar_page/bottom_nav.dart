@@ -188,7 +188,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         //   ),
         // ),
         BottomNavigationBarItem(
-          label: "Konsultasi",
+          label: "Diskusi",
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
@@ -305,7 +305,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
       },
       items: [
         BottomNavigationBarItem(
-          label: "Konsultasi",
+          label: "Diskusi",
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
