@@ -164,7 +164,7 @@ class _ChatPageState extends State<ChatPage> {
                                     height: 5,
                                   ),
                                   Text(
-                                    "Untuk pengalaman konsultasi terbaik, hubungi kami pukul 15:00 - 16:00 WIB",
+                                    "Untuk pengalaman diskusi terbaik, hubungi kami pukul 15:00 - 16:00 WIB",
                                     style: TextStyle(color: EpregnancyColors.black),
                                   )
                                 ],
@@ -192,7 +192,7 @@ class _ChatPageState extends State<ChatPage> {
                                     height: 5,
                                   ),
                                   Text(
-                                    "Apa tujuan mama konsultasi hari ini ?",
+                                    "Apa tujuan mama diskusi hari ini ?",
                                     style: TextStyle(color: EpregnancyColors.black),
                                   )
                                 ],
@@ -328,7 +328,7 @@ class _ChatPageState extends State<ChatPage> {
                               child: Padding(
                                 padding: EdgeInsets.zero,
                                 child: Text(
-                                  "Mulai Konsultasi",
+                                  "Mulai Diskusi",
                                   style: TextStyle(fontSize: 16, color: Colors.white),
                                 ),
                               ),

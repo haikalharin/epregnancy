@@ -35,7 +35,8 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => ProfilePageBloc(c<UserRepository>()))
       ..registerSingleton((c) => ForgotPasswordPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => PinCheckInBloc(c<UserRepository>()))
-      ..registerSingleton((c) => DisclaimerPageBloc(c<UserRepository>()));
+      ..registerSingleton((c) => DisclaimerPageBloc(c<UserRepository>()))
+      ..registerSingleton((c) => PatientSelectBloc(c<UserRepository>()));
   }
 
   @override

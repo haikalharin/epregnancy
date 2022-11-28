@@ -29,6 +29,7 @@ abstract class UserRepository {
   Future <ResponseModel>checkInWithPin(String hospitalId, String pin);
   Future <ResponseModel>changePassword(String currentPassword, String newPassword);
   Future <ResponseModel>forgotPassword(String userName);
+  Future <ResponseModel<UserModel>> fetchUsers(String name);
   Future <ResponseModel>changePhotoProfile(String userId, String imgProfile);
 
 

@@ -386,7 +386,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             onPressed: () async {
-              Navigator.of(context).pushNamed(RouteName.chooseTypeEvent);
+              Navigator.of(context).pushNamed(RouteName.chooseTypeEvent, arguments: 'MIDWIFE');
             },
           ),
         ),

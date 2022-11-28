@@ -261,20 +261,39 @@ class _NewChatRoomState extends State<NewChatRoom> {
                   child: Material(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text("Informasi Konsultasi",
-                          style: TextStyle(
-                              color: EpregnancyColors.blueDark,
-                              fontSize: 14.sp,
-                              fontFamily: "bold"),
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 4.w)),
-                        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum ante ex, ullamcorper convallis quam pulvinar ac. Fusce viverra cursus malesuada. Nam ac dapibus ante. I leo, accumsan vitae odio eu, tristique luctus enim.",
-                          style: TextStyle(
-                            fontSize: 10.sp,
+                        Center(
+                          child: Text("Do's",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: EpregnancyColors.blueDark,
+                                fontSize: 14.sp,
+                                fontFamily: "bold"),
                           ),
                         ),
+
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Mengedukasi dan menginformasikan seputar kehamilan", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Bertanya perihal seputar kehamilan", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan saran agar melakukan permeriksaan rutin di Rumah Sakit atau Puskesmas", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tetap tenang selama sesi sharing dengan Bidan", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan dukungan kepada Ibu hamil", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Sebutkan keluhan yang dialami dengan jelas dan jujur", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Merujuk ke dokter kandungan/Rumah Sakit/Puskesmas terdekat jika terjadi keluhan kehamilan", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Mempersiapkan diri dengan data/riwayat kondisi kehamilan", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menjawab keluhan/pertanyaan sesuai dengan kapasitas", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Didampingi pasangan/keluarga saat sesi sharing", style: TextStyle(fontSize: 10.sp,),),),
+                        SizedBox(height: 4.h,),
+                        Center(
+                          child: Text("Don'ts",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: EpregnancyColors.blueDark,
+                                fontSize: 14.sp,
+                                fontFamily: "bold"),
+                          ),
+                        ),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak menginformasikan pengobatan atau tindakan medis", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak bertanya diluar seputar kehamilan", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak memberikan informasi perihal pengalaman kehamilan pribadi", style: TextStyle(fontSize: 10.sp,),),) :  Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak memberikan opini/pernyataan membandingkan Bidan dengan Dokter dan sebaliknya", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak menanyakan informasi pribadi", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak menyakan informasi pribadi", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak membandingkan kehamilan antara pasien", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak mendiagnosis diri sendiri tanpa ada rujukan", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak mengikuti standar profesi, standar kompetensi kebidanan, standar asuhan kebidanan dan kode etik profesi bidan", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menyinggung Bidan dengan pertanyaan yang mengarah ke Malpraktek", style: TextStyle(fontSize: 10.sp,),),),
                         InkWell(
                           child: Padding(
                               padding:
@@ -395,9 +414,9 @@ class _NewChatRoomState extends State<NewChatRoom> {
             toId = socketResponse['data']['to_id'];
             toName = socketResponse['data']['to']['name'];
           });
-          Toast.show("$toName Telah Merespon Konsultasi Anda, Silahkan Jelaskan Kondisi Anda Lebih Lanjut", gravity: Toast.center);
+          Toast.show("$toName Telah Merespon Diskusi Anda, Silahkan Jelaskan Kondisi Anda Lebih Lanjut", gravity: Toast.center);
         } else if (socketResponse['action'] == 'end-chat') {
-          Toast.show("$toName Konsultasi anda telah selesai, Terima Kasih!", gravity: Toast.center);
+          Toast.show("$toName Diskusi anda telah selesai, Terima Kasih!", gravity: Toast.center);
           // Navigator.pop(context, "end");
           setState(() {
             chatHasEnded = true;
@@ -732,7 +751,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                         padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.h),
                         color: Colors.white,
                         child: chatHasEnded ? Center(
-                          child: Text("Konsultasi Telah Berakhir", style: TextStyle(
+                          child: Text("Diskusi Telah Berakhir", style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold
                           ),)
                         ) : Row(
@@ -861,7 +880,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                 },
                                 // onBackspacePressed: () {
                                 //   if (_messageEditingController.text != null && _messageEditingController.text.length > 0) {
-                                //     _messageEditingController.text = _messageEditingController.text.substring(0, _messageEditingController.text.length - 1);
+                                //     _messageEditingController.text = _messageEditingController.text.substring(0, _messageEditingController.text.length • 1);
                                 //   }
                                 // },
                                 config: Config(

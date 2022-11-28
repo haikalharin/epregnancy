@@ -96,7 +96,7 @@ class _ListChatRoomPatientState extends State<ListChatRoomPatient> {
                     SizedBox(width: 10,),
                     Padding(
                       padding:  EdgeInsets.only(top: 3.h),
-                      child: Text("Mulai Konsultasi", style: TextStyle(color: Colors.white, fontSize: 14.sp),),
+                      child: Text("Mulai Diskusi", style: TextStyle(color: Colors.white, fontSize: 14.sp),),
                     ),
                   ],
                 )
