@@ -218,18 +218,29 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.of(context).pushNamed(RouteName.disclaimer,
                             arguments: {
                               'user_id': state.userId,
+                              'is_patient': state.userModel?.isPatient,
                               'from': "login"
                             });
                       }
                     } else {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          RouteName.dashboardNakesPage,
-                          (Route<dynamic> route) => false,
-                          arguments: {
-                            'name': state.userModel?.name,
-                            'image_url': state.userModel?.imageUrl,
-                            'hospital_id': state.userModel?.hospitalId
-                          });
+                      if (state.userModel?.isAgree == true) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            RouteName.dashboardNakesPage,
+                                (Route<dynamic> route) => false,
+                            arguments: {
+                              'name': state.userModel?.name,
+                              'image_url': state.userModel?.imageUrl,
+                              'hospital_id': state.userModel?.hospitalId
+                            });
+                      } else {
+                        Navigator.of(context).pushNamed(RouteName.disclaimer,
+                            arguments: {
+                              'user_id': state.userId,
+                              'is_patient': state.userModel?.isPatient,
+                              'from': "login"
+                            });
+                      }
+
                     }
                   }
                 }

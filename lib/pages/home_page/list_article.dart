@@ -38,7 +38,7 @@ class ListArticle extends StatelessWidget {
                       String outputDate = "";
                       var outputFormat = DateFormat.yMMMMd('id');
                       outputDate = outputFormat.format(
-                          DateTime.parse(listArticle?[index].createdDate?? "0000-00-00"));
+                          DateTime.parse(listArticle?[index].publishDate?? "0000-00-00"));
                       // 12/3
                       return InkWell(
                         onTap: () {

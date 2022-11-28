@@ -23,6 +23,8 @@ dynamic getInitialIndex(dynamic result) => result['initial_index'];
 
 dynamic getUserId(dynamic result) => result['user_id'];
 
+dynamic getIsPatient(dynamic result) => result['is_patient'];
+
 dynamic getName(dynamic result) => result['name'];
 
 dynamic getFrom(dynamic result) => result['from'];
