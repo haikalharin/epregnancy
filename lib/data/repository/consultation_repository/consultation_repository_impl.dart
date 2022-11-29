@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/consultation_model/add_comment_response.dart';
 import 'package:PregnancyApp/data/model/consultation_model/consultation_model.dart';
 
 import '../../../common/exceptions/network_connection_exception.dart';
@@ -25,6 +26,15 @@ class ConsultationRepositoryImpl extends ConsultationRepository {
   Future<ResponseModel> postConsultation(ConsultationModel consultationModel) async {
     if (await networkInfo.isConnected) {
       ResponseModel responseModel = await remoteDatasource.postConsultation(consultationModel);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> addComment(String postId, String comment) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.addComment(postId, comment);
       return responseModel;
     }
     throw NetworkConnectionException();

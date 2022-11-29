@@ -1,3 +1,5 @@
+import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
+import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
@@ -174,6 +176,8 @@ class _MyAppState extends State<MyApp> {
         create: (context) => Injector.container.resolve<DisclaimerPageBloc>()),
     BlocProvider<PatientSelectBloc>(
         create: (context) => Injector.container.resolve<PatientSelectBloc>()),
+    BlocProvider<CommentBloc>(
+        create: (context) => Injector.container.resolve<CommentBloc>()),
       ];
 }
 

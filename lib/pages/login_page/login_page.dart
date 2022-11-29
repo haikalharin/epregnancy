@@ -283,6 +283,13 @@ class _LoginPageState extends State<LoginPage> {
                                 child: ElevatedButton(
                                   child: const Text('Login'),
                                   onPressed: () {
+                                    // dismiss active keyboard
+                                    FocusScopeNode currentFocus = FocusScope.of(context);
+
+                                    if (!currentFocus.hasPrimaryFocus) {
+                                      currentFocus.unfocus();
+                                    }
+
                                     Injector.resolve<LoginBloc>()
                                         .add(LoginSubmitted());
                                   },

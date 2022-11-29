@@ -1,5 +1,7 @@
 import 'package:PregnancyApp/common/injector/injector.dart';
 import 'package:PregnancyApp/data/model/consultation_model/consultation_model.dart';
+import 'package:PregnancyApp/pages/consultation_page/comment_bottom_sheet.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,11 +21,19 @@ class ForumEventSection extends StatefulWidget {
 
 class _ForumEventSectionState extends State<ForumEventSection> {
   ConsultationModel? _consultationModel;
-  late bool isLiked = widget.consultationModel.isLiked ?? false;
-  late int likesCount = widget.consultationModel.likesCount ?? 0;
+  late final bool _isLiked = widget.consultationModel.isLiked ?? false;
+  late final int _likesCount = widget.consultationModel.likesCount ?? 0;
+  late final int _commentCounts = widget.consultationModel.commentsCount ?? 0;
+
+  late ValueNotifier<bool> isLiked = ValueNotifier<bool>(_isLiked);
+  late ValueNotifier<int> likesCount = ValueNotifier<int>(_likesCount);
+  late ValueNotifier<int> commentCounts = ValueNotifier<int>(_commentCounts);
+
   late int commentCount = widget.consultationModel.commentsCount ?? 0;
 
   bool enableComment = true;
+
+  int newCommentCount = 0;
 
   @override
   void initState() {
@@ -35,6 +45,7 @@ class _ForumEventSectionState extends State<ForumEventSection> {
 
   @override
   Widget build(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
     ToastContext().init(context);
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20, top: 30),
@@ -69,21 +80,30 @@ class _ForumEventSectionState extends State<ForumEventSection> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                              width: 200,
-                              child: Text(
-                                '$likesCount orang menyukai post ini',
-                                maxLines: 3,
-                                style: const TextStyle(
-                                    fontSize: 10, color: Colors.grey),
-                              )),
+                          ValueListenableBuilder<int>(
+                              valueListenable: likesCount,
+                              builder: (context, value, child) {
+                                return Container(
+                                    width: 200,
+                                    child: Text(
+                                      '$value orang menyukai post ini',
+                                      maxLines: 3,
+                                      style: const TextStyle(
+                                          fontSize: 10, color: Colors.grey),
+                                    ));
+                              }),
                         ],
                       ),
                     ],
                   ),
                 ),
-                Text("${_consultationModel?.commentsCount} komentar",
-                    style: const TextStyle(fontSize: 12, color: Colors.black)),
+                ValueListenableBuilder<int>(
+                    valueListenable: commentCounts,
+                    builder: (context, value, child) {
+                      return Text("$value komentar",
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.black));
+                    })
               ],
             ),
           ),
@@ -137,65 +157,107 @@ class _ForumEventSectionState extends State<ForumEventSection> {
                     ),
                     child: InkWell(
                       onTap: () {
-                            Toast.show("Fitur ini akan tersedia di versi berikutnya", gravity: Toast.bottom);
+                        // show comment modal bottom sheet
+
+                        setState(() {
+                          newCommentCount = commentCounts.value;
+                        });
+
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            isDismissible: false,
+                            enableDrag: true,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            context: context,
+                            builder: (context) {
+                              return CommentBottomSheet(
+                                  isLiked: isLiked,
+                                  likesCount: likesCount,
+                                  commentCounts: commentCounts,
+                                  consultationModel: _consultationModel);
+                            }).then((result) {
+                          if (newCommentCount != commentCounts.value) {
+                            Injector.resolve<ConsultationPageBloc>()
+                                .add(const ConsultationFetchEvent());
+                          }
+
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
+                        });
                       },
-                      child: TextField(
-                        style: const TextStyle(
-                            fontSize: 12.0, height: 2.0, color: Colors.black),
-                        enabled: false,
-                        // onTap: (){
-                        //   setState(() {
-                        //     Toast.show("Update terus Komunitazmu untuk menikmati fitur komentar");
-                        //     Future.delayed(Duration(seconds: 2), (){
-                        //       setState(() {
-                        //         enableComment = false;
-                        //       });
-                        //     });
-                        //   });
-                        // },
-                        maxLines: 3,
-                        minLines: 1,
-                        decoration: const InputDecoration(
-                          hintText: 'Beri komentar...',
-                          border: InputBorder.none,
-                          isDense: true,
+                      child: Hero(
+                        tag: 'comment',
+                        child: Container(
+                          child: TextField(
+                            style: const TextStyle(
+                                fontSize: 12.0,
+                                height: 2.0,
+                                color: Colors.black),
+                            enabled: false,
+                            // onTap: (){
+                            //   setState(() {
+                            //     Toast.show("Update terus Komunitazmu untuk menikmati fitur komentar");
+                            //     Future.delayed(Duration(seconds: 2), (){
+                            //       setState(() {
+                            //         enableComment = false;
+                            //       });
+                            //     });
+                            //   });
+                            // },
+                            maxLines: 3,
+                            minLines: 1,
+                            decoration: const InputDecoration(
+                              hintText: 'Beri komentar...',
+                              border: InputBorder.none,
+                              isDense: true,
+                            ),
+                            onChanged: (value) {},
+                          ),
                         ),
-                        onChanged: (value) {},
                       ),
                     ),
                   ),
-                  Container(
-                    child: isLiked
-                        ? InkWell(
-                            onTap: () {
-                              Injector.resolve<ConsultationPageBloc>().add(
-                                  ConsultationLikeSubmitted(
-                                      _consultationModel?.id ?? '', false));
-                              setState(() {
-                                isLiked = false;
-                                likesCount -= 1;
-                              });
-                            },
-                            child: SvgPicture.asset(
-                              'assets/ic_like_fill.svg',
-                              fit: BoxFit.fitHeight,
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () {
-                              Injector.resolve<ConsultationPageBloc>().add(
-                                  ConsultationLikeSubmitted(
-                                      _consultationModel?.id ?? '', true));
-                              setState(() {
-                                isLiked = true;
-                                likesCount += 1;
-                              });
-                            },
-                            child: SvgPicture.asset(
-                              'assets/like_logo.svg',
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
+                  Hero(
+                    tag: 'like',
+                    child: Container(
+                        child: ValueListenableBuilder<bool>(
+                            valueListenable: isLiked,
+                            builder: (context, value, child) {
+                              return InkWell(
+                                onTap: () {
+                                  if (value == false) {
+                                    Injector.resolve<ConsultationPageBloc>()
+                                        .add(ConsultationLikeSubmitted(
+                                            _consultationModel?.id ?? '',
+                                            true));
+                                    setState(() {
+                                      isLiked.value = true;
+                                      likesCount.value += 1;
+                                    });
+                                  } else {
+                                    Injector.resolve<ConsultationPageBloc>()
+                                        .add(ConsultationLikeSubmitted(
+                                            _consultationModel?.id ?? '',
+                                            false));
+                                    setState(() {
+                                      isLiked.value = false;
+                                      likesCount.value -= 1;
+                                    });
+                                  }
+                                },
+                                child: value == true
+                                    ? SvgPicture.asset(
+                                        'assets/ic_like_fill.svg',
+                                        fit: BoxFit.fitHeight,
+                                      )
+                                    : SvgPicture.asset(
+                                        'assets/like_logo.svg',
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                              );
+                            })),
                   )
                 ],
               ));

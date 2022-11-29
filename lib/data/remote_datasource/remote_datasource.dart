@@ -22,6 +22,7 @@ import 'package:PregnancyApp/data/model/games_model/games_response.dart';
 import 'package:PregnancyApp/data/model/point_model/checkin_response.dart';
 import 'package:PregnancyApp/data/model/point_model/point_history.dart';
 import 'package:PregnancyApp/data/model/user_info/user_info.dart';
+import 'package:http/http.dart';
 
 import '../../common/network/http/http_client.dart';
 import '../../common/remote/url/service_url.dart';
@@ -278,6 +279,15 @@ class RemoteDataSource {
     try {
       final response =
           await httpClient.post(ServiceUrl.saveSchedule, eventModel);
+      return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> addComment(String postId, String comment) async {
+    try {
+      final response = await httpClient.post(ServiceUrl.addComment + "$postId/add-comment", {"message": comment});
       return ResponseModel.fromJson(response, EventModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
