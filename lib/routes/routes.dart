@@ -155,6 +155,7 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => DisclaimerPage(
                   userId: getUserId(settings.arguments),
+                  isPatient: getIsFromRegisterArgument(settings.arguments),
                   from: getFrom(settings.arguments),
                 ));
 
