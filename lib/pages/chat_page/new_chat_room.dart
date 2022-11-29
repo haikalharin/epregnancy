@@ -265,7 +265,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Center(
-                          child: Text("Do's",
+                          child: Text("Boleh dan tidak boleh dilakukan pada fitur \"Tanya Yuk\"",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: EpregnancyColors.blueDark,
@@ -274,14 +274,28 @@ class _NewChatRoomState extends State<NewChatRoom> {
                           ),
                         ),
 
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Mengedukasi dan menginformasikan seputar kehamilan", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Bertanya perihal seputar kehamilan", style: TextStyle(fontSize: 10.sp,),),),
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan saran agar melakukan permeriksaan rutin di Rumah Sakit atau Puskesmas", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tetap tenang selama sesi sharing dengan Bidan", style: TextStyle(fontSize: 10.sp,),),),
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan dukungan kepada Ibu hamil", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Sebutkan keluhan yang dialami dengan jelas dan jujur", style: TextStyle(fontSize: 10.sp,),),),
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Merujuk ke dokter kandungan/Rumah Sakit/Puskesmas terdekat jika terjadi keluhan kehamilan", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Mempersiapkan diri dengan data/riwayat kondisi kehamilan", style: TextStyle(fontSize: 10.sp,),),),
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menjawab keluhan/pertanyaan sesuai dengan kapasitas", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Didampingi pasangan/keluarga saat sesi sharing", style: TextStyle(fontSize: 10.sp,),),),
-                        SizedBox(height: 4.h,),
+                        widget.isNakes == true ? SizedBox(height: 0.h,) : SizedBox(height: 10.h,),
+
+                        widget.isNakes == true ? Container(): Center(
+                          child: Text(widget.isNakes == true ? "" : "Disclaimer!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: EpregnancyColors.blueDark,
+                                fontSize: 12.sp,
+                                fontFamily: "bold"),
+                          ),
+                        ),
+
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Hanya untuk pertanyaan dengan Bidan bukan untuk telekonsultasi medis)", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Bidan akan menjawab tergantung availability Bidan itu sendiri)", style: TextStyle(fontSize: 10.sp,),),),
+
+
+                        widget.isNakes == true ? SizedBox(height: 0.h,) : SizedBox(height: 10.h,),
+
                         Center(
-                          child: Text("Don'ts",
+                          child: Text(widget.isNakes == true ? "Yang bisa dilakukan hal ini ya!" : "Tidak perlu bingung Moms, ini yang boleh dilakukan!",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: EpregnancyColors.blueDark,
@@ -289,11 +303,36 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                 fontFamily: "bold"),
                           ),
                         ),
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak menginformasikan pengobatan atau tindakan medis", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak bertanya diluar seputar kehamilan", style: TextStyle(fontSize: 10.sp,),),),
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak memberikan informasi perihal pengalaman kehamilan pribadi", style: TextStyle(fontSize: 10.sp,),),) :  Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak memberikan opini/pernyataan membandingkan Bidan dengan Dokter dan sebaliknya", style: TextStyle(fontSize: 10.sp,),),),
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak menanyakan informasi pribadi", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak menyakan informasi pribadi", style: TextStyle(fontSize: 10.sp,),),),
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak membandingkan kehamilan antara pasien", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak mendiagnosis diri sendiri tanpa ada rujukan", style: TextStyle(fontSize: 10.sp,),),),
-                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Tidak mengikuti standar profesi, standar kompetensi kebidanan, standar asuhan kebidanan dan kode etik profesi bidan", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menyinggung Bidan dengan pertanyaan yang mengarah ke Malpraktek", style: TextStyle(fontSize: 10.sp,),),),
+
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan kondisi ataupun keluhan yang dihadapi ibu hamil", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Bertanya informasi dan tips-tips seputar periode kehamilan (hamil usia 10 minggu, ada tips apa)", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan tips, edukasi dan informasi seputar kehamilan sesuai dengan sharing yang disampaikan ibu hamil", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Sharing apabila ada keluhan yang dialami selama kehamilan", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan saran agar melakukan permeriksaan rutin di Puskesmas atau Rumah Sakit terdekat", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberi informasi kapan terakhir kali kontrol kehamilan ke Puskesmas / Rumah Sakit", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan kapan terkahir kali kontrol ke Puskesmas / Rumah Sakit, dan menyarankan untuk kontrol sesuai dengan jadwal kehamilan", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberi informasi kapan rencana kunjungan berikut nya ke Puskesmas / Rumah Sakit", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan apakah sudah mendapat vitamin, asam folat, supplement dari Puskesmas atau Rumah Sakit. Menanyakan apakah konsumsi vitamin dan supplement sudah seusai jadwal", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("", style: TextStyle(fontSize: 10.sp,),),),
+                        SizedBox(height: 4.h,),
+                        Center(
+                          child: Text(widget.isNakes == true ? "Jangan lakukan hal ini!" :"Eitss.. Moms tidak boleh melakukan hal ini ya!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: EpregnancyColors.blueDark,
+                                fontSize: 14.sp,
+                                fontFamily: "bold"),
+                          ),
+                        ),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan informasi pribadi, termasuk riwayat medis, yang tidak berhubungan dengan kehamilan", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan informasi di luar seputar kehamilan", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan rekomendasi pengobatan atau tindakan medis", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan informasi pribadi, termasuk riwayat medis, yang tidak berhubungan dengan kehamilan", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan informasi yang tidak sesuai dengan standar profesi bidan dan kode etik profesi bidan", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Meminta rekomendasi pengobatan atau tindakan medis", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menawarkan produk, jasa dalam bentuk apapun", style: TextStyle(fontSize: 10.sp,),),) :
+                        Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menawarkan produk, jasa dalam bentuk apapun", style: TextStyle(fontSize: 10.sp,),),),
+                        widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("", style: TextStyle(fontSize: 10.sp,),),),
                         InkWell(
                           child: Padding(
                               padding:

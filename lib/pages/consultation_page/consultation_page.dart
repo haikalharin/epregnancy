@@ -243,7 +243,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                               ),
                                               widget.role == "PATIENT"
                                                   ? Text(
-                                                "Diskusi Dengan Bidan",
+                                                "Tanya Yuk",
                                                 style: TextStyle(
                                                     fontSize: 12),
                                               )
@@ -550,7 +550,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                               ),
                                               widget.role == "PATIENT"
                                                   ? Text(
-                                                "Diskusi Dengan Bidan",
+                                                "Tanya Yuk",
                                                 style: TextStyle(
                                                     fontSize: 12),
                                               )
