@@ -54,7 +54,7 @@ class FunctionUtils {
       //   }
       // }
 
-      if (startDate == lastDate ) {
+      if (eventDate != null) {
         if(_eventDate == _dateCurrent){
           isContaintsList.add(true);
         } else {

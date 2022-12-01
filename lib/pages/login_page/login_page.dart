@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
       WidgetsBinding.instance?.addPostFrameCallback((_) async {
         await showDialog(
           context: context,
-          barrierDismissible: false,
+          barrierDismissible: true,
           builder: (_) {
             return WillPopScope(
                 child: Center(
