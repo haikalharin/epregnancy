@@ -100,9 +100,40 @@ class _ForumEventSectionState extends State<ForumEventSection> {
                 ValueListenableBuilder<int>(
                     valueListenable: commentCounts,
                     builder: (context, value, child) {
-                      return Text("$value komentar",
-                          style: const TextStyle(
-                              fontSize: 12, color: Colors.black));
+                      return InkWell(
+                        onTap: (){
+                          setState(() {
+                            newCommentCount = commentCounts.value;
+                          });
+
+                          showModalBottomSheet(
+                              isScrollControlled: true,
+                              isDismissible: false,
+                              enableDrag: true,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              context: context,
+                              builder: (context) {
+                                return CommentBottomSheet(
+                                    isLiked: isLiked,
+                                    likesCount: likesCount,
+                                    commentCounts: commentCounts,
+                                    consultationModel: _consultationModel);
+                              }).then((result) {
+                            if (newCommentCount != commentCounts.value) {
+                              Injector.resolve<ConsultationPageBloc>()
+                                  .add(const ConsultationFetchEvent());
+                            }
+
+                            if (!currentFocus.hasPrimaryFocus) {
+                              currentFocus.unfocus();
+                            }
+                          });
+                        },
+                        child: Text("$value komentar",
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.black)),
+                      );
                     })
               ],
             ),
@@ -219,45 +250,46 @@ class _ForumEventSectionState extends State<ForumEventSection> {
                       ),
                     ),
                   ),
-                  Hero(
-                    tag: 'like',
-                    child: Container(
-                        child: ValueListenableBuilder<bool>(
-                            valueListenable: isLiked,
-                            builder: (context, value, child) {
-                              return InkWell(
-                                onTap: () {
-                                  if (value == false) {
-                                    Injector.resolve<ConsultationPageBloc>()
-                                        .add(ConsultationLikeSubmitted(
-                                            _consultationModel?.id ?? '',
-                                            true));
-                                    setState(() {
-                                      isLiked.value = true;
-                                      likesCount.value += 1;
-                                    });
-                                  } else {
-                                    Injector.resolve<ConsultationPageBloc>()
-                                        .add(ConsultationLikeSubmitted(
-                                            _consultationModel?.id ?? '',
-                                            false));
-                                    setState(() {
-                                      isLiked.value = false;
-                                      likesCount.value -= 1;
-                                    });
-                                  }
-                                },
-                                child: value == true
-                                    ? SvgPicture.asset(
-                                        'assets/ic_like_fill.svg',
-                                        fit: BoxFit.fitHeight,
-                                      )
-                                    : SvgPicture.asset(
-                                        'assets/like_logo.svg',
-                                        fit: BoxFit.fitHeight,
-                                      ),
-                              );
-                            })),
+                  Expanded(
+                    child: Hero(
+                      tag: 'like',
+                      child: ValueListenableBuilder<bool>(
+                              valueListenable: isLiked,
+                              builder: (context, value, child) {
+                                return InkWell(
+                                  onTap: () {
+                                    if (value == false) {
+                                      Injector.resolve<ConsultationPageBloc>()
+                                          .add(ConsultationLikeSubmitted(
+                                              _consultationModel?.id ?? '',
+                                              true));
+                                      setState(() {
+                                        isLiked.value = true;
+                                        likesCount.value += 1;
+                                      });
+                                    } else {
+                                      Injector.resolve<ConsultationPageBloc>()
+                                          .add(ConsultationLikeSubmitted(
+                                              _consultationModel?.id ?? '',
+                                              false));
+                                      setState(() {
+                                        isLiked.value = false;
+                                        likesCount.value -= 1;
+                                      });
+                                    }
+                                  },
+                                  child: value == true
+                                      ? SvgPicture.asset(
+                                          'assets/ic_like_fill.svg',
+                                          fit: BoxFit.fitHeight,
+                                        )
+                                      : SvgPicture.asset(
+                                          'assets/like_logo.svg',
+                                          fit: BoxFit.fitHeight,
+                                        ),
+                                );
+                              }),
+                    ),
                   )
                 ],
               ));

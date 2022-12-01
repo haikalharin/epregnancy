@@ -16,8 +16,8 @@ class StringConstant {
   static const yourPoin = 'Poin Anda';
   static const today = 'Hari ini';
   static const dayCount = 'Hari ke-';
-  static const checkInText = 'Check-in untuk mendapatkan 750 poin';
-  static const checkInDone = 'Check-in lagi besok untuk dapatkan 750 poin';
+  static const checkInText = 'Check-in untuk mendapatkan 10 poin';
+  static const checkInDone = 'Check-in lagi besok untuk dapatkan 10 poin';
   static const titlePoin = 'Tukar poinmu sekarang';
   static const reedemPoin = 'Reedem Poin';
   static const consumeMedicine = 'medicine';

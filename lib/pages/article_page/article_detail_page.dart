@@ -17,7 +17,7 @@ class ArticleDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String outputDate = "";
     var outputFormat = DateFormat.yMMMMd('id');
-    outputDate = outputFormat.format(DateTime.parse(article?.createdDate?? "0000-00-00"));
+    outputDate = outputFormat.format(DateTime.parse(article?.publishDate?? "0000-00-00"));
 
     return WillPopScope(
       onWillPop: () {
