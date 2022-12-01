@@ -53,6 +53,8 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
       },
       child: BlocBuilder<HomePageBloc, HomePageState>(
         builder: (context, state) {
+          print('list event p : ${state.listEventPersonal?.length}');
+          print('list event  : ${state.listEvent?.length}');
           return Stack(
             children: [
               Container(
