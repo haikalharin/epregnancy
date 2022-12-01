@@ -81,7 +81,11 @@ class _$InjectorConfig extends InjectorConfig {
   }
 
   @override
-  void _configureUtils() {}
+  void _configureUtils() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerSingleton((c) => FirebaseMessagingService());
+  }
+
   @override
   void _configureDao() {}
 }

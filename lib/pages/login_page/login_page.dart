@@ -236,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.of(context).pushNamed(RouteName.disclaimer,
                             arguments: {
                               'user_id': state.userId,
-                              'is_patient': state.userModel?.isPatient,
+                              'getIsPatient': state.userModel?.isPatient,
                               'from': "login"
                             });
                       }

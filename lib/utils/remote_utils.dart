@@ -17,13 +17,13 @@ dynamic getTokenExpiredArgument(dynamic result) => result['token_expired'];
 
 dynamic getIsFromRegisterArgument(dynamic result) => result['is_from_register'];
 
+dynamic getIsPatient(dynamic result) => result['is_patient'];
+
 dynamic getkey(dynamic result) => result['key'];
 
 dynamic getInitialIndex(dynamic result) => result['initial_index'];
 
 dynamic getUserId(dynamic result) => result['user_id'];
-
-dynamic getIsPatient(dynamic result) => result['is_patient'];
 
 dynamic getName(dynamic result) => result['name'];
 
@@ -62,7 +62,9 @@ String remoteConfigGetString(String key) {
   if(F.appFlavor == Flavor.PRODUCTION){
     return prod.firebaseService.remoteConfig.getString(key);
   } else {
-    return dev.firebaseService.remoteConfig.getString(key);
+    var data =  dev.firebaseServiceUtils.remoteConfig.getString(key);
+    print(data);
+    return dev.firebaseServiceUtils.remoteConfig.getString(key);
   }
 }
 
@@ -70,7 +72,7 @@ int remoteConfigGetInt(FirebaseRemoteConfig remoteConfig, String key) {
   if(F.appFlavor == Flavor.PRODUCTION){
     return prod.firebaseService.remoteConfig.getInt(key);
   } else {
-    return dev.firebaseService.remoteConfig.getInt(key);
+    return dev.firebaseServiceUtils.remoteConfig.getInt(key);
   }
 }
 
