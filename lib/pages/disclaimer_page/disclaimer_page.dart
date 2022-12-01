@@ -103,8 +103,8 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                       ],
                     ),
                   ),
-                  Card1(widget.isPatient ?? false),
-                  Card2(widget.isPatient ?? false),
+                  Card1(widget.isPatient ?? true),
+                  Card2(widget.isPatient ?? true),
                   CheckboxListTile(
                     activeColor: EpregnancyColors.primer,
                     contentPadding: EdgeInsets.only(top: 10),

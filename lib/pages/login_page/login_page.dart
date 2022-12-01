@@ -238,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
                                 (Route<dynamic> route) => false,
                             arguments: {
                               'user_id': state.userId,
-                              'is_patient': state.userModel?.isPatient,
+                              'getIsPatient': state.userModel?.isPatient,
                               'from': "login"
                             });
                       }

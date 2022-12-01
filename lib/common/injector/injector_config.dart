@@ -27,6 +27,7 @@ import 'package:PregnancyApp/pages/pin_checkin/bloc/pin_checkin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
 import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
+import 'package:PregnancyApp/utils/firebase_messaging.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../data/remote_datasource/remote_datasource.dart';
@@ -120,7 +121,7 @@ abstract class InjectorConfig {
   @Register.factory(NetworkInfoImpl)
   void _configureCommon();
 
-  // @Register.singleton(Ticker)
+  @Register.singleton(FirebaseMessagingService)
   void _configureUtils();
 
   // @Register.factory(CommunityDao)
