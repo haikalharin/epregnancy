@@ -93,6 +93,7 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
                         // pickAndCropImageGallery();
                         setState(() {
                           consulForPatientType = StringConstant.visitHospital;
+                          Injector.resolve<EventPageBloc>().add(EventInitEvent(consulForPatientType ?? ""));
                         });
                         Navigator.pop(context);
                       }),
@@ -103,6 +104,7 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
                       // pickAndCropImageCamera();
                       setState(() {
                         consulForPatientType = StringConstant.consumeMedicine;
+                        Injector.resolve<EventPageBloc>().add(EventInitEvent(consulForPatientType ?? ""));
                       });
                       Navigator.pop(context);
                     },

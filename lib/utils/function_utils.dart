@@ -14,9 +14,6 @@ class FunctionUtils {
     var dateCurent = outputFormat.format(date?? DateTime.now());
     try{
       listEvent.forEach((element) async {
-        // print('date event loop : ${element.date}');
-        // print('date start loop : ${element.startDate}');
-        // print('date end loop : ${element.endDate}');
         var isContain = await FunctionUtils.checkDate(
             startDate: element.startDate,
             lastDate: element.endDate,
@@ -44,9 +41,8 @@ class FunctionUtils {
       DateTime _startDate = DateTime.parse(startDate ?? "");
       DateTime _endDate = DateTime.parse(lastDate ?? "");
       DateTime _dateCurrent = DateTime.parse(dateCurrent ?? "");
-      DateTime _eventDate = DateTime.parse(eventDate ?? "");
+      DateTime? _eventDate = DateTime.parse(eventDate ?? startDate!);
       final differenceInDays = _endDate.difference(_startDate).inDays;
-
       // for (var i = 0; i <= differenceInDays; i++) {
       //   var newDate = new DateTime(_startDate.year, _startDate.month, _startDate.day + i);
       //   print("newdate : $newDate");
@@ -58,10 +54,22 @@ class FunctionUtils {
       //   }
       // }
 
-      if(_eventDate == _dateCurrent){
-        isContaintsList.add(true);
+      if (startDate == lastDate ) {
+        if(_eventDate == _dateCurrent){
+          isContaintsList.add(true);
+        } else {
+          isContaintsList.add(false);
+        }
       } else {
-        isContaintsList.add(false);
+        for (var i = 0; i <= differenceInDays; i++) {
+          print('date loop $i');
+          var newDate = new DateTime(_startDate.year, _startDate.month, _startDate.day + i);
+          if (newDate == _dateCurrent) {
+            isContaintsList.add(true);
+          } else {
+            isContaintsList.add(false);
+          }
+        }
       }
 
       if (isContaintsList.contains(true)) {

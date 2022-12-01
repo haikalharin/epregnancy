@@ -92,9 +92,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         listEvent = responseModel.data?? [];
       }
 
-      print("response event length : ${listEvent.length}");
-      print("date : ${event.date}");
-
       if (listEvent.isNotEmpty) {
         listEvent = responseModel.data??[];
         listEventBeforeSort = await FunctionUtils.getCheckDate(listEvent: listEvent, date: event.date);
