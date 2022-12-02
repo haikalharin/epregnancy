@@ -226,7 +226,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                       InkWell(
                         onTap: () {
                           Navigator.of(context)
-                              .pushNamed(RouteName.surveyPage, arguments: true);
+                              .pushNamed(RouteName.surveyPageBaby, arguments: true);
                         },
                         child: ListTile(
                           leading: Text(

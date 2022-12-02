@@ -190,7 +190,7 @@ class BabySectionWidget extends StatelessWidget {
                                 context)
                                 .pushNamed(
                                 RouteName
-                                    .surveyPage,
+                                    .surveyPageBaby,
                                 arguments:
                                 true);
                           },
@@ -405,7 +405,7 @@ class BabySectionWidget extends StatelessWidget {
                               context)
                               .pushNamed(
                               RouteName
-                                  .surveyPage,
+                                  .surveyPageBaby,
                               arguments:
                               true);
                         },

@@ -67,6 +67,8 @@ abstract class UserModel with _$UserModel {
     List<Checkin>? checkins,
     @JsonKey(includeIfNull: true)
     List<Baby>? babies,
+    @JsonKey(name:'is_agree',includeIfNull: true)
+    bool? isAgree,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

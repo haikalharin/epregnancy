@@ -26,8 +26,25 @@ class EventRepositoryImpl extends EventRepository {
   @override
   Future<ResponseModel> saveEvent(EventModel eventModel) async {
     if (await networkInfo.isConnected) {
-      ResponseModel response =
-          await remoteDatasource.saveScheduleEventPersonal(eventModel);
+      ResponseModel response = await remoteDatasource.saveScheduleEventPersonal(eventModel);
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> saveEventMedicineFromMidwife(EventModel eventModel) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response = await remoteDatasource.saveScheduleEventMedicineFromMidwife(eventModel);
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> saveEventAppointmentFromMidwife(EventModel eventModel) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response = await remoteDatasource.saveScheduleEventAppointmentFromMidwife(eventModel);
       return response;
     }
     throw NetworkConnectionException();

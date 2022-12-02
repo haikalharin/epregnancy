@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
@@ -29,14 +31,12 @@ class _OtpPageState extends State<OtpPage> {
   bool isResend = false;
   int _start = 90;
   int _current = 90;
+  StreamSubscription<CountdownTimer> sub =  CountdownTimer(
+      const Duration(seconds: 90),
+      const Duration(seconds: 1),).listen(null);
+
 
   void startTimer() {
-    CountdownTimer countDownTimer =  CountdownTimer(
-       Duration(seconds: _start),
-       const Duration(seconds: 1),
-    );
-
-    var sub = countDownTimer.listen(null);
     sub.onData((duration) {
       setState(() {
         _current = _start - duration.elapsed.inSeconds;
@@ -52,8 +52,17 @@ class _OtpPageState extends State<OtpPage> {
   @override
   void initState() {
     Injector.resolve<SignupBloc>().add(SignupInitEvent());
+    Injector.resolve<OtpPageBloc>()
+        .add(
+        RequestResendOtp(true, widget.userId));
     startTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    sub.cancel();
+    super.dispose();
   }
 
   @override
@@ -72,12 +81,14 @@ class _OtpPageState extends State<OtpPage> {
                 const snackBar = SnackBar(
                     content: Text("OTP Salah"), backgroundColor: Colors.red);
                 Scaffold.of(context).showSnackBar(snackBar);
-              } else if (state.submitStatus == FormzStatus.submissionSuccess && state.otpResendSuccess == true){
+              } else if (state.submitStatus == FormzStatus.submissionSuccess &&
+                  state.otpResendSuccess == true) {
                 setState(() {
                   isResend = false;
                 });
                 startTimer();
               } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+                // todo navigator select puskesmas & bpjs
                 Navigator.of(context)
                     .pushNamed(RouteName.signUpQuestionnairePage);
               }
@@ -145,9 +156,12 @@ class _OtpPageState extends State<OtpPage> {
                             OTPTextField(
                                 controller: otpController,
                                 length: 6,
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
                                 textFieldAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                MainAxisAlignment.spaceAround,
                                 fieldWidth: 45,
                                 fieldStyle: FieldStyle.box,
                                 outlineBorderRadius: 10,
@@ -161,20 +175,21 @@ class _OtpPageState extends State<OtpPage> {
                                       .add(OtpNumberChanged(pin));
                                 }),
                             SizedBox(height: 20),
-                            isResend?Container(): Text("$_current detik"),
+                            isResend ? Container() : Text("$_current detik"),
                             SizedBox(height: 20),
                             isResend
                                 ? InkWell(
-                                    onTap: () {
-                                      Injector.resolve<OtpPageBloc>()
-                                          .add(RequestResendOtp(true, widget.userId));
-                                    },
-                                    child: Text("kirim ulang OTP",style: TextStyle(
-                                      color: EpregnancyColors.primer)))
+                                onTap: () {
+                                  Injector.resolve<OtpPageBloc>()
+                                      .add(
+                                      RequestResendOtp(true, widget.userId));
+                                },
+                                child: Text("kirim ulang OTP", style: TextStyle(
+                                    color: EpregnancyColors.primer)))
                                 : Text("kirim ulang OTP",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                    ))
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                ))
                           ]),
                     ],
                   ),

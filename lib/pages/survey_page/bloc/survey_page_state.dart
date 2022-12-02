@@ -14,7 +14,7 @@ class SurveyPageState with FormzMixin {
   SurveyPageState(
       {this.user,
         this.dataBaby,
-        this.page = 3,
+        this.page = 2,
         this.choice = 0,
         this.name = const MandatoryFieldValidator.pure(),
         this.date = const MandatoryFieldValidator.pure(),
@@ -50,7 +50,7 @@ class SurveyPageState with FormzMixin {
 
   @override
   // TODO: implement inputs
-  List<FormzInput> get inputs =>[name,date];
+  List<FormzInput> get inputs =>[date];
 }
 
 class SurveyPageInitial extends SurveyPageState {}

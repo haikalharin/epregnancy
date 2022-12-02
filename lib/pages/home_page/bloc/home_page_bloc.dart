@@ -93,10 +93,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       }
 
       if (listEvent.isNotEmpty) {
-        listEventBeforeSort = await FunctionUtils.getCheckDate(
-            listEvent: listEvent, date: event.date);
-        var listEventFix =
-            await FunctionUtils.sortDate(listEvent: listEventBeforeSort);
+        listEvent = responseModel.data??[];
+        listEventBeforeSort = await FunctionUtils.getCheckDate(listEvent: listEvent, date: event.date);
+        var listEventFix = await FunctionUtils.sortDate(listEvent: listEventBeforeSort);
         var outputFormat = DateFormat.yMMMMd('id');
         var dateTimeString = outputFormat.format(event.date);
         if (listEvent.isNotEmpty) {

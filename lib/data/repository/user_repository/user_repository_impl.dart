@@ -27,6 +27,14 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl(this.networkInfo, this.remoteDatasource);
 
   @override
+  Future<ResponseModel<UserModel>> fetchUsers(String name) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchUsers(name);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
   Future<List<UserExampleModel>> fetchUserList() async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchUserList();
@@ -61,6 +69,15 @@ class UserRepositoryImpl extends UserRepository {
   Future<ResponseModel> updateQuestioner(SignupQuestRequest user) async {
     if (await networkInfo.isConnected) {
       ResponseModel responseModel = await remoteDatasource.updateUser(user);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> updateDisclaimer(UserModel user) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.updateDisclaimer(user);
       return responseModel;
     }
     throw NetworkConnectionException();

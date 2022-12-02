@@ -1,3 +1,17 @@
+import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
+import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
+import 'package:PregnancyApp/utils/firebase_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'app.dart';
+import 'flavors.dart';
+
+// void main() {
+//   F.appFlavor = Flavor.DEVELOPMENT;
+//   runApp(App());
+// }
+
 import 'dart:io';
 
 import 'package:PregnancyApp/env.dart';
@@ -57,7 +71,10 @@ import 'utils/simple_bloc_observer.dart';
 import 'package:flutter_alice/alice.dart';
 
 // void main() => runApp(MyApp());
+SharedPreferences? sharedPreferences;
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
 
+FirebaseService firebaseService = FirebaseService();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
@@ -84,87 +101,94 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late Future<void> _firebaseFuture;
 
   @override
   void initState() {
     super.initState();
+    _firebaseFuture = firebaseService
+        .initializeFlutterFirebase(context);
   }
-
 
 
   @override
   Widget build(BuildContext context) {
 
-    return ScreenUtilInit(
-        designSize: const Size(360, 690),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) {
-          return MultiBlocProvider(
-              providers: _getProviders(),
-              child:  OverlaySupport.global(
-                child: MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  navigatorKey: aliceMain.getNavigatorKey(),
-                  title: 'Epregnancy App',
-                  home: SplashscreenPage(),
-                  onGenerateRoute: Routes.generateRoute,
-                  localizationsDelegates: const [
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                  ],
-                ),
-              ));
-        });
+    return FutureBuilder(
+      future: Future.wait([_firebaseFuture]),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return  ScreenUtilInit(
+            designSize: const Size(360, 690),
+            minTextAdapt: true,
+            splitScreenMode: true,
+            builder: (context, child) {
+              return MultiBlocProvider(
+                  providers: _getProviders(),
+                  child: OverlaySupport.global(
+                    child: MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      navigatorKey: aliceMain.getNavigatorKey(),
+                      title: 'Komunitaz',
+                      home: SplashscreenPage(),
+                      onGenerateRoute: Routes.generateRoute,
+                      localizationsDelegates: const [
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
+                    ),
+                  ));
+            });
+      },
+    );
   }
 
   List<BlocProvider> _getProviders() => [
-        BlocProvider<LoginExampleBloc>(
-            create: (context) =>
-                Injector.container.resolve<LoginExampleBloc>()),
-        BlocProvider<SignupBloc>(
-            create: (context) => Injector.container.resolve<SignupBloc>()),
-        BlocProvider<LoginBloc>(
-            create: (context) => Injector.container.resolve<LoginBloc>()),
-        BlocProvider<HomePageBloc>(
-            create: (context) => Injector.container.resolve<HomePageBloc>()),
-        BlocProvider<SurveyPageBloc>(
-            create: (context) => Injector.container.resolve<SurveyPageBloc>()),
-        BlocProvider<ArticlePageBloc>(
-            create: (context) => Injector.container.resolve<ArticlePageBloc>()),
-        BlocProvider<SignUpQuestionnaireBloc>(
-            create: (context) =>
-                Injector.container.resolve<SignUpQuestionnaireBloc>()),
-        BlocProvider<SplashscreenBloc>(
-            create: (context) =>
-                Injector.container.resolve<SplashscreenBloc>()),
-        BlocProvider<EventPageBloc>(
-            create: (context) => Injector.container.resolve<EventPageBloc>()),
-        BlocProvider<PoinBloc>(
-            create: (context) => Injector.container.resolve<PoinBloc>()),
-        BlocProvider<PointHistoryBloc>(
-            create: (context) =>
-                Injector.container.resolve<PointHistoryBloc>()),
-        BlocProvider<GamesBloc>(
-            create: (context) => Injector.container.resolve<GamesBloc>()),
-        BlocProvider<OtpPageBloc>(
-            create: (context) => Injector.container.resolve<OtpPageBloc>()),
-        BlocProvider<LandingPageBloc>(
-            create: (context) => Injector.container.resolve<LandingPageBloc>()),
+    BlocProvider<LoginExampleBloc>(
+        create: (context) =>
+            Injector.container.resolve<LoginExampleBloc>()),
+    BlocProvider<SignupBloc>(
+        create: (context) => Injector.container.resolve<SignupBloc>()),
+    BlocProvider<LoginBloc>(
+        create: (context) => Injector.container.resolve<LoginBloc>()),
+    BlocProvider<HomePageBloc>(
+        create: (context) => Injector.container.resolve<HomePageBloc>()),
+    BlocProvider<SurveyPageBloc>(
+        create: (context) => Injector.container.resolve<SurveyPageBloc>()),
+    BlocProvider<ArticlePageBloc>(
+        create: (context) => Injector.container.resolve<ArticlePageBloc>()),
+    BlocProvider<SignUpQuestionnaireBloc>(
+        create: (context) =>
+            Injector.container.resolve<SignUpQuestionnaireBloc>()),
+    BlocProvider<SplashscreenBloc>(
+        create: (context) =>
+            Injector.container.resolve<SplashscreenBloc>()),
+    BlocProvider<EventPageBloc>(
+        create: (context) => Injector.container.resolve<EventPageBloc>()),
+    BlocProvider<PoinBloc>(
+        create: (context) => Injector.container.resolve<PoinBloc>()),
+    BlocProvider<PointHistoryBloc>(
+        create: (context) =>
+            Injector.container.resolve<PointHistoryBloc>()),
+    BlocProvider<GamesBloc>(
+        create: (context) => Injector.container.resolve<GamesBloc>()),
+    BlocProvider<OtpPageBloc>(
+        create: (context) => Injector.container.resolve<OtpPageBloc>()),
+    BlocProvider<LandingPageBloc>(
+        create: (context) => Injector.container.resolve<LandingPageBloc>()),
     BlocProvider<ConsultationPageBloc>(
         create: (context) => Injector.container.resolve<ConsultationPageBloc>()),
     BlocProvider<ChangePasswordBloc>(
         create: (context) => Injector.container.resolve<ChangePasswordBloc>()),
-        BlocProvider<ChatBloc>(
-            create: (context) => Injector.container.resolve<ChatBloc>()),
-        BlocProvider<ConsultationPageBloc>(
-            create: (context) =>
-                Injector.container.resolve<ConsultationPageBloc>()),
-        BlocProvider<HospitalBloc>(
-            create: (context) => Injector.container.resolve<HospitalBloc>()),
-        BlocProvider<ChatPendingBloc>(
-            create: (context) => Injector.container.resolve<ChatPendingBloc>()),
+    BlocProvider<ChatBloc>(
+        create: (context) => Injector.container.resolve<ChatBloc>()),
+    BlocProvider<ConsultationPageBloc>(
+        create: (context) =>
+            Injector.container.resolve<ConsultationPageBloc>()),
+    BlocProvider<HospitalBloc>(
+        create: (context) => Injector.container.resolve<HospitalBloc>()),
+    BlocProvider<ChatPendingBloc>(
+        create: (context) => Injector.container.resolve<ChatPendingBloc>()),
     BlocProvider<ProfilePageBloc>(
         create: (context) => Injector.container.resolve<ProfilePageBloc>()),
 
@@ -172,7 +196,11 @@ class _MyAppState extends State<MyApp> {
         create: (context) => Injector.container.resolve<ForgotPasswordPageBloc>()),
     BlocProvider<PinCheckInBloc>(
         create: (context) => Injector.container.resolve<PinCheckInBloc>()),
-      ];
+    BlocProvider<DisclaimerPageBloc>(
+        create: (context) => Injector.container.resolve<DisclaimerPageBloc>()),
+    BlocProvider<PatientSelectBloc>(
+        create: (context) => Injector.container.resolve<PatientSelectBloc>()),
+  ];
 }
 
 class HexColor extends Color {
@@ -186,3 +214,4 @@ class HexColor extends Color {
     return int.parse(hexColor, radix: 16);
   }
 }
+

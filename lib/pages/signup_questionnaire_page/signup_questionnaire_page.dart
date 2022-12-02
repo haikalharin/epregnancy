@@ -48,8 +48,9 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                   SnackBar(content: Text(message), backgroundColor: Colors.red);
               Scaffold.of(context).showSnackBar(snackBar);
             } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-              Navigator.of(context)
-                  .pushNamed(RouteName.surveyPage, arguments: false);
+              Navigator.of(context).pushNamed(
+                  RouteName.surveyPageBaby,
+                  arguments: false);
             }
           },
           child: BlocBuilder<SignUpQuestionnaireBloc, SignUpQuestionnaireState>(
@@ -318,7 +319,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                           child: Column(
                             children: [
                               Text(
-                                "1 dari 4",
+                                "1 dari 3",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.grey,

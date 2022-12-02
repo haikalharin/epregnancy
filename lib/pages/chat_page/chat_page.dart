@@ -5,6 +5,7 @@ import 'package:PregnancyApp/pages/chat_page/new_chat_room.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
@@ -45,6 +46,8 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     getHospital();
+
+
     super.initState();
   }
 
@@ -161,7 +164,7 @@ class _ChatPageState extends State<ChatPage> {
                                     height: 5,
                                   ),
                                   Text(
-                                    "Untuk pengalaman konsultasi terbaik, hubungi kami pukul 15:00 - 16:00 WIB",
+                                    "Untuk pengalaman diskusi terbaik, hubungi kami pukul 15:00 - 16:00 WIB",
                                     style: TextStyle(color: EpregnancyColors.black),
                                   )
                                 ],
@@ -189,7 +192,7 @@ class _ChatPageState extends State<ChatPage> {
                                     height: 5,
                                   ),
                                   Text(
-                                    "Apa tujuan mama konsultasi hari ini ?",
+                                    "Apa tujuan mama diskusi hari ini ?",
                                     style: TextStyle(color: EpregnancyColors.black),
                                   )
                                 ],
@@ -325,7 +328,7 @@ class _ChatPageState extends State<ChatPage> {
                               child: Padding(
                                 padding: EdgeInsets.zero,
                                 child: Text(
-                                  "Mulai Konsultasi",
+                                  "Mulai Diskusi",
                                   style: TextStyle(fontSize: 16, color: Colors.white),
                                 ),
                               ),

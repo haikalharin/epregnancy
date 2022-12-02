@@ -75,6 +75,8 @@ mixin _$UserModel {
   List<Checkin>? get checkins => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
   List<Baby>? get babies => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_agree', includeIfNull: true)
+  bool? get isAgree => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -139,7 +141,9 @@ abstract class $UserModelCopyWith<$Res> {
       @JsonKey(includeIfNull: true)
           List<Checkin>? checkins,
       @JsonKey(includeIfNull: true)
-          List<Baby>? babies});
+          List<Baby>? babies,
+      @JsonKey(name: 'is_agree', includeIfNull: true)
+          bool? isAgree});
 
   $HospitalModelCopyWith<$Res>? get hospitalModel;
   $LastItemRedeemedCopyWith<$Res>? get lastItemRedeemed;
@@ -182,6 +186,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? lastItemRedeemed = freezed,
     Object? checkins = freezed,
     Object? babies = freezed,
+    Object? isAgree = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -292,6 +297,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
           ? _value.babies
           : babies // ignore: cast_nullable_to_non_nullable
               as List<Baby>?,
+      isAgree: isAgree == freezed
+          ? _value.isAgree
+          : isAgree // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 
@@ -377,7 +386,9 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       @JsonKey(includeIfNull: true)
           List<Checkin>? checkins,
       @JsonKey(includeIfNull: true)
-          List<Baby>? babies});
+          List<Baby>? babies,
+      @JsonKey(name: 'is_agree', includeIfNull: true)
+          bool? isAgree});
 
   @override
   $HospitalModelCopyWith<$Res>? get hospitalModel;
@@ -424,6 +435,7 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? lastItemRedeemed = freezed,
     Object? checkins = freezed,
     Object? babies = freezed,
+    Object? isAgree = freezed,
   }) {
     return _then(_$_UserModel(
       id: id == freezed
@@ -534,6 +546,10 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
           ? _value._babies
           : babies // ignore: cast_nullable_to_non_nullable
               as List<Baby>?,
+      isAgree: isAgree == freezed
+          ? _value.isAgree
+          : isAgree // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -594,7 +610,9 @@ class _$_UserModel implements _UserModel {
       @JsonKey(includeIfNull: true)
           final List<Checkin>? checkins,
       @JsonKey(includeIfNull: true)
-          final List<Baby>? babies})
+          final List<Baby>? babies,
+      @JsonKey(name: 'is_agree', includeIfNull: true)
+          this.isAgree})
       : _gamificationpoints = gamificationpoints,
         _redeemHistory = redeemHistory,
         _checkins = checkins,
@@ -712,8 +730,12 @@ class _$_UserModel implements _UserModel {
   }
 
   @override
+  @JsonKey(name: 'is_agree', includeIfNull: true)
+  final bool? isAgree;
+
+  @override
   String toString() {
-    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospitalModel: $hospitalModel, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies)';
+    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospitalModel: $hospitalModel, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree)';
   }
 
   @override
@@ -759,7 +781,8 @@ class _$_UserModel implements _UserModel {
             const DeepCollectionEquality()
                 .equals(other.lastItemRedeemed, lastItemRedeemed) &&
             const DeepCollectionEquality().equals(other._checkins, _checkins) &&
-            const DeepCollectionEquality().equals(other._babies, _babies));
+            const DeepCollectionEquality().equals(other._babies, _babies) &&
+            const DeepCollectionEquality().equals(other.isAgree, isAgree));
   }
 
   @JsonKey(ignore: true)
@@ -792,7 +815,8 @@ class _$_UserModel implements _UserModel {
         const DeepCollectionEquality().hash(_redeemHistory),
         const DeepCollectionEquality().hash(lastItemRedeemed),
         const DeepCollectionEquality().hash(_checkins),
-        const DeepCollectionEquality().hash(_babies)
+        const DeepCollectionEquality().hash(_babies),
+        const DeepCollectionEquality().hash(isAgree)
       ]);
 
   @JsonKey(ignore: true)
@@ -860,7 +884,9 @@ abstract class _UserModel implements UserModel {
       @JsonKey(includeIfNull: true)
           final List<Checkin>? checkins,
       @JsonKey(includeIfNull: true)
-          final List<Baby>? babies}) = _$_UserModel;
+          final List<Baby>? babies,
+      @JsonKey(name: 'is_agree', includeIfNull: true)
+          final bool? isAgree}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -947,6 +973,9 @@ abstract class _UserModel implements UserModel {
   @override
   @JsonKey(includeIfNull: true)
   List<Baby>? get babies => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'is_agree', includeIfNull: true)
+  bool? get isAgree => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

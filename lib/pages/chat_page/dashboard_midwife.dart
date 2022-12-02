@@ -42,10 +42,10 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
   ];
 
   void getMyPerson() async {
-    UserModelFirebase person = await AppSharedPreference.getUserFirebase();
-    setState(() {
-      _myPerson = person;
-    });
+    // UserModelFirebase person = await AppSharedPreference.getUserFirebase();
+    // setState(() {
+    //   _myPerson = person;
+    // });
   }
 
   void pickAndCropPhoto() async {

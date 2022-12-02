@@ -25,6 +25,8 @@ class RouteName {
   static const otpPage = '/otpPage';
   static const verifikasiPage = '/verifikasiPage';
   static const addEventPage = '/addEventPage';
+  static const addEventPageMidwife = '/addEventPageMidwife';
+  static const addEventPageForPatient = '/addEventPageForPatient';
   static const chooseTypeEvent = '/chooseTypeEvent';
   static const poinPage = '/poinPage';
   static const poinActivityPage = '/poinActivityPage';
@@ -37,4 +39,6 @@ class RouteName {
   static const changePasswordPage = '/changePasswordPage';
   static const locationSelect = '/locationSelect';
   static const forgotPassword = '/forgotPassword';
+  static const disclaimer = '/disclaimer';
+
 }

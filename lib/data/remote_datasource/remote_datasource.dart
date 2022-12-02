@@ -22,6 +22,7 @@ import 'package:PregnancyApp/data/model/games_model/games_response.dart';
 import 'package:PregnancyApp/data/model/point_model/checkin_response.dart';
 import 'package:PregnancyApp/data/model/point_model/point_history.dart';
 import 'package:PregnancyApp/data/model/user_info/user_info.dart';
+import 'package:http/http.dart';
 
 import '../../common/network/http/http_client.dart';
 import '../../common/remote/url/service_url.dart';
@@ -107,6 +108,19 @@ class RemoteDataSource {
   Future<ResponseModel> updateUser(SignupQuestRequest user) async {
     print("payload request : ${user.toJson()}");
     try {
+      final response = await httpClient.put(ServiceUrl.updateUser, user);
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> updateDisclaimer(UserModel user) async {
+    try {
+      Map<String, dynamic> data = {
+        'id': user.id?? "",
+        'is_agree': user.isAgree ?? false,
+      };
       final response = await httpClient.put(ServiceUrl.updateUser, user);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
@@ -265,6 +279,35 @@ class RemoteDataSource {
     try {
       final response =
           await httpClient.post(ServiceUrl.saveSchedule, eventModel);
+      return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> addComment(String postId, String comment) async {
+    try {
+      final response = await httpClient.post(ServiceUrl.addComment + "$postId/add-comment", {"message": comment});
+      return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> saveScheduleEventMedicineFromMidwife(EventModel eventModel) async {
+    try {
+      final response =
+      await httpClient.post(ServiceUrl.createScheduleMedicineMw, eventModel);
+      return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> saveScheduleEventAppointmentFromMidwife(EventModel eventModel) async {
+    try {
+      final response =
+      await httpClient.post(ServiceUrl.createScheduleAppointmentMw, eventModel);
       return ResponseModel.fromJson(response, EventModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -450,6 +493,14 @@ class RemoteDataSource {
 
     return ResponseModel.fromJson(
         response, HospitalModel.fromJson);
+  }
+
+  Future<ResponseModel<UserModel>> fetchUsers(String name) async {
+    final response = await httpClient
+        .get(ServiceUrl.userList, queryParameters: {'name': name});
+
+    return ResponseModel.fromJson(
+        response, UserModel.fromJson);
   }
 
   Future<ResponseModel<HospitalModel>> fetchHospitalsById(String id) async {
