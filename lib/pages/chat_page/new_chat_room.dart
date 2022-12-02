@@ -33,6 +33,7 @@ import '../../env.dart';
 import '../../flavors.dart';
 import '../../utils/basic_loading_dialog.dart';
 import '../../utils/function_utils.dart';
+import '../../utils/secure.dart';
 import '../location_select_page/bloc/hospital_bloc.dart';
 import '../nakes_page/bloc/chat_pending_bloc.dart';
 import 'bloc/chat_bloc/chat_bloc.dart';
@@ -475,9 +476,11 @@ class _NewChatRoomState extends State<NewChatRoom> {
           }
         } else if (isPendingChat == true && socketResponse['action'] == 'new-chat') {
           setState(() {
+            String? name = socketResponse['data']['to']['name'];
+            name =  decryptName(name!);
             isPendingChat = false;
             toId = socketResponse['data']['to_id'];
-            toName = socketResponse['data']['to']['name'];
+            // toName = name;
           });
           Toast.show("$toName Telah Merespon Diskusi Anda, Silahkan Jelaskan Kondisi Anda Lebih Lanjut", gravity: Toast.center);
         } else if (socketResponse['action'] == 'end-chat') {
@@ -495,6 +498,19 @@ class _NewChatRoomState extends State<NewChatRoom> {
         print(e);
       }, onDone: () => print("done"));
     });
+  }
+
+  String? decryptName(String encryptedName)  {
+    String? name = encryptedName;
+    aesDecryptor(encryptedName).then((value) {
+      // name = value;
+      setState(() {
+        toName = value;
+      });
+      print("name in then: $toName");
+    });
+    print("name : $toName");
+    return name;
   }
 
 
