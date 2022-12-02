@@ -17,6 +17,7 @@ class FunctionUtils {
         var isContain = await FunctionUtils.checkDate(
             startDate: element.startDate,
             lastDate: element.endDate,
+            eventDate: element.date,
             dateCurrent: dateCurent);
 
         if (isContain) {
@@ -33,23 +34,44 @@ class FunctionUtils {
     String? startDate,
     String? lastDate,
     String? dateCurrent,
+    String? eventDate,
   }) async {
     List<bool> isContaintsList = [];
     try {
       DateTime _startDate = DateTime.parse(startDate ?? "");
       DateTime _endDate = DateTime.parse(lastDate ?? "");
       DateTime _dateCurrent = DateTime.parse(dateCurrent ?? "");
+      DateTime? _eventDate = DateTime.parse(eventDate ?? startDate!);
       final differenceInDays = _endDate.difference(_startDate).inDays;
+      // for (var i = 0; i <= differenceInDays; i++) {
+      //   var newDate = new DateTime(_startDate.year, _startDate.month, _startDate.day + i);
+      //   print("newdate : $newDate");
+      //   print("datecurrent : $_dateCurrent");
+      //   if (newDate == _dateCurrent) {
+      //     isContaintsList.add(true);
+      //   } else {
+      //     isContaintsList.add(false);
+      //   }
+      // }
 
-      for (var i = 0; i <= differenceInDays; i++) {
-        var newDate =
-            new DateTime(_startDate.year, _startDate.month, _startDate.day + i);
-        if (newDate == _dateCurrent) {
+      if (eventDate != null) {
+        if(_eventDate == _dateCurrent){
           isContaintsList.add(true);
         } else {
           isContaintsList.add(false);
         }
+      } else {
+        for (var i = 0; i <= differenceInDays; i++) {
+          print('date loop $i');
+          var newDate = new DateTime(_startDate.year, _startDate.month, _startDate.day + i);
+          if (newDate == _dateCurrent) {
+            isContaintsList.add(true);
+          } else {
+            isContaintsList.add(false);
+          }
+        }
       }
+
       if (isContaintsList.contains(true)) {
         return true;
       } else {

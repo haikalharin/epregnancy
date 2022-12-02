@@ -17,7 +17,9 @@ import '../signup_page/bloc/signup_bloc.dart';
 import 'bloc/disclaimer_page_bloc.dart';
 
 class DisclaimerPage extends StatefulWidget {
-  DisclaimerPage({Key? key, this.userId, this.from}) : super(key: key);
+  DisclaimerPage({Key? key, this.userId, this.from, this.isPatient})
+      : super(key: key);
+  final bool? isPatient;
   final String? userId;
   final String? from;
 
@@ -53,16 +55,26 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                 SnackBar(content: Text(message), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              RouteName.navBar,
-                  (Route<dynamic> route) => false,
-              arguments: {
-                'role': state.userModel?.isPatient == true
-                    ? StringConstant.patient
-                    : StringConstant.midwife,
-                'initial_index': 0
-              },
-            );
+            if (widget.isPatient == true) {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                RouteName.navBar,
+                (Route<dynamic> route) => false,
+                arguments: {
+                  'role': state.userModel?.isPatient == true
+                      ? StringConstant.patient
+                      : StringConstant.midwife,
+                  'initial_index': 0
+                },
+              );
+            } else {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteName.dashboardNakesPage, (Route<dynamic> route) => false,
+                  arguments: {
+                    'name': state.userModel?.name,
+                    'image_url': state.userModel?.imageUrl,
+                    'hospital_id': state.userModel?.hospitalId
+                  });
+            }
           }
         },
         child: BlocBuilder<DisclaimerPageBloc, DisclaimerPageState>(
@@ -83,13 +95,16 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                       children: [
                         Container(
                             child: Html(
-                                data: remoteConfigGetString(
-                                    "term_and_condition")))
+                                data: widget.isPatient == true
+                                    ? remoteConfigGetString(
+                                    StringConstant.termAndConditionUserHeader)
+                                    : remoteConfigGetString(
+                                    StringConstant.termAndConditionMidwifeHeader),))
                       ],
                     ),
                   ),
-                  Card1(),
-                  Card2(),
+                  Card1(widget.isPatient ?? true),
+                  Card2(widget.isPatient ?? true),
                   CheckboxListTile(
                     activeColor: EpregnancyColors.primer,
                     contentPadding: EdgeInsets.only(top: 10),
@@ -167,10 +182,14 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
   }
 }
 
-const loremIpsum =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+// const loremIpsum =
+//     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 class Card1 extends StatefulWidget {
+  Card1(this.isPatient);
+
+  bool isPatient;
+
   @override
   State<Card1> createState() => _Card1State();
 }
@@ -240,7 +259,11 @@ class _Card1State extends State<Card1> {
                     Padding(
                         padding: EdgeInsets.only(bottom: 10),
                         child: Html(
-                          data: loremIpsum,
+                          data: widget.isPatient
+                              ? remoteConfigGetString(
+                                  StringConstant.termAndConditionUserBody1)
+                              : remoteConfigGetString(
+                                  StringConstant.termAndConditionMidwifeBody1),
                         )),
                   ],
                 ),
@@ -264,6 +287,10 @@ class _Card1State extends State<Card1> {
 }
 
 class Card2 extends StatefulWidget {
+  Card2(this.isPatient);
+
+  bool isPatient;
+
   @override
   State<Card2> createState() => _Card2State();
 }
@@ -333,7 +360,11 @@ class _Card2State extends State<Card2> {
                     Padding(
                         padding: EdgeInsets.only(bottom: 10),
                         child: Html(
-                          data: loremIpsum,
+                          data:widget.isPatient
+                              ? remoteConfigGetString(
+                              StringConstant.termAndConditionUserBody2)
+                              : remoteConfigGetString(
+                              StringConstant.termAndConditionMidwifeBody2),
                         )),
                   ],
                 ),
@@ -426,7 +457,8 @@ class _Card3State extends State<Card3> {
                     Padding(
                         padding: EdgeInsets.only(bottom: 10),
                         child: Html(
-                          data: loremIpsum,
+                          data: remoteConfigGetString(
+                              StringConstant.termAndConditionUserBody2),
                         )),
                   ],
                 ),
@@ -455,23 +487,23 @@ class _Loading extends StatelessWidget {
     ToastContext().init(context);
     return BlocBuilder<DisclaimerPageBloc, DisclaimerPageState>(
         builder: (context, state) {
-          if (state.submitStatus == FormzStatus.submissionInProgress) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Align(
-                  alignment: Alignment(0, 0),
-                  child: Container(
-                      height: 1000,
-                      color: Colors.white.withAlpha(90),
-                      child: Center(child: CircularProgressIndicator())),
-                ),
-              ],
-            );
-          } else {
-            return Text("");
-          }
-        });
+      if (state.submitStatus == FormzStatus.submissionInProgress) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Align(
+              alignment: Alignment(0, 0),
+              child: Container(
+                  height: 1000,
+                  color: Colors.white.withAlpha(90),
+                  child: Center(child: CircularProgressIndicator())),
+            ),
+          ],
+        );
+      } else {
+        return Text("");
+      }
+    });
   }
 }

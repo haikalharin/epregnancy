@@ -27,6 +27,14 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl(this.networkInfo, this.remoteDatasource);
 
   @override
+  Future<ResponseModel<UserModel>> fetchUsers(String name) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchUsers(name);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
   Future<List<UserExampleModel>> fetchUserList() async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchUserList();

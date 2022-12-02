@@ -7,5 +7,5 @@ abstract class ConsultationRepository {
   Future <ResponseModel<ConsultationModel>> fetchListConsultation();
   Future <ResponseModel> postConsultation(ConsultationModel consultationModel);
   Future <ResponseModel> likeConsultation(String id, bool isLike);
-
+  Future <ResponseModel> addComment(String postId, String comment);
 }

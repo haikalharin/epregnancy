@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
       WidgetsBinding.instance?.addPostFrameCallback((_) async {
         await showDialog(
           context: context,
-          barrierDismissible: false,
+          barrierDismissible: true,
           builder: (_) {
             return WillPopScope(
                 child: Center(
@@ -215,21 +215,34 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         );
                       } else {
-                        Navigator.of(context).pushNamed(RouteName.disclaimer,
+                        Navigator.of(context).pushNamedAndRemoveUntil(RouteName.disclaimer,
+                                (Route<dynamic> route) => false,
                             arguments: {
                               'user_id': state.userId,
+                              'is_patient': state.userModel?.isPatient,
                               'from': "login"
                             });
                       }
                     } else {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          RouteName.dashboardNakesPage,
-                          (Route<dynamic> route) => false,
-                          arguments: {
-                            'name': state.userModel?.name,
-                            'image_url': state.userModel?.imageUrl,
-                            'hospital_id': state.userModel?.hospitalId
-                          });
+                      if (state.userModel?.isAgree == true) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            RouteName.dashboardNakesPage,
+                                (Route<dynamic> route) => false,
+                            arguments: {
+                              'name': state.userModel?.name,
+                              'image_url': state.userModel?.imageUrl,
+                              'hospital_id': state.userModel?.hospitalId
+                            });
+                      } else {
+                        Navigator.of(context).pushNamedAndRemoveUntil(RouteName.disclaimer,
+                                (Route<dynamic> route) => false,
+                            arguments: {
+                              'user_id': state.userId,
+                              'getIsPatient': state.userModel?.isPatient,
+                              'from': "login"
+                            });
+                      }
+
                     }
                   }
                 }
@@ -283,6 +296,13 @@ class _LoginPageState extends State<LoginPage> {
                                 child: ElevatedButton(
                                   child: const Text('Login'),
                                   onPressed: () {
+                                    // dismiss active keyboard
+                                    FocusScopeNode currentFocus = FocusScope.of(context);
+
+                                    if (!currentFocus.hasPrimaryFocus) {
+                                      currentFocus.unfocus();
+                                    }
+
                                     Injector.resolve<LoginBloc>()
                                         .add(LoginSubmitted());
                                   },

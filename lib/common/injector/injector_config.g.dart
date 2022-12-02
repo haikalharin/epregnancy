@@ -35,7 +35,9 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => ProfilePageBloc(c<UserRepository>()))
       ..registerSingleton((c) => ForgotPasswordPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => PinCheckInBloc(c<UserRepository>()))
-      ..registerSingleton((c) => DisclaimerPageBloc(c<UserRepository>()));
+      ..registerSingleton((c) => DisclaimerPageBloc(c<UserRepository>()))
+      ..registerSingleton((c) => PatientSelectBloc(c<UserRepository>()))
+      ..registerSingleton((c) => CommentBloc(c<ConsultationRepository>()));
   }
 
   @override
@@ -79,7 +81,11 @@ class _$InjectorConfig extends InjectorConfig {
   }
 
   @override
-  void _configureUtils() {}
+  void _configureUtils() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerSingleton((c) => FirebaseMessagingService());
+  }
+
   @override
   void _configureDao() {}
 }

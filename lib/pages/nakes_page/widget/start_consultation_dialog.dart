@@ -60,75 +60,81 @@ class _StartConsulationDialogState extends State<StartConsulationDialog> {
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-        height: MediaQuery.of(context).size.height / 5.5,
+        height: MediaQuery.of(context).size.height * 0.20,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              "Apakah anda ingin memulai konsultasi dengan",
+              "Apakah anda ingin memulai diskusi dengan",
               style: TextStyle(color: Colors.black),
             ),
             Text(
               "${widget.name} ?",
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
             ),
-            SizedBox(height: 10.h),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10),
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                EpregnancyColors.blueDark),
-                            shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ))),
-                        onPressed: () {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          Injector.resolve<ChatPendingBloc>().add(RespondPendingChat(hospitalId: widget.hospitalId, fromId: widget.fromId));
-                        },
-                        child: Center(
-                          child: _isLoading ? SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(),
-                          ) : Text(
-                            "Ya",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        )),
-                  ),
-                ),
-                Expanded(
+            SizedBox(height: 5.h),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                children: [
+                  Expanded(
                     child: Container(
                       margin: EdgeInsets.only(right: 10),
                       child: ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor:
-                              MaterialStateProperty.all(EpregnancyColors.white),
+                              backgroundColor: MaterialStateProperty.all(
+                                  EpregnancyColors.blueDark),
                               shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      side: BorderSide(
-                                          color: EpregnancyColors.blueDark)))),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ))),
                           onPressed: () {
-                            Navigator.pop(context);
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            Injector.resolve<ChatPendingBloc>().add(RespondPendingChat(hospitalId: widget.hospitalId, fromId: widget.fromId));
                           },
                           child: Center(
-                            child: Text(
-                              "Tidak",
-                              style: TextStyle(
-                                  color: EpregnancyColors.blueDark, fontSize: 16),
+                            child: _isLoading ? SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(),
+                            ) : Text(
+                              "Ya",
+                              style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           )),
-                    ))
-              ],
+                    ),
+                  ),
+                  Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                MaterialStateProperty.all(EpregnancyColors.white),
+                                shape:
+                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        side: BorderSide(
+                                            color: EpregnancyColors.blueDark)))),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Center(
+                              child: Text(
+                                "Tidak",
+                                style: TextStyle(
+                                    color: EpregnancyColors.blueDark, fontSize: 16),
+                              ),
+                            )),
+                      ))
+                ],
+              ),
             )
           ],
         ),

@@ -4,16 +4,17 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../flavors.dart';
+import 'firebase_messaging.dart';
 
 class FirebaseService {
 
-  late RemoteConfig remoteConfig;
+  final messaging = FirebaseMessagingService();
+  late FirebaseRemoteConfig remoteConfig =  FirebaseRemoteConfig.instance;
 
   Future<void> initializeFlutterFirebase(BuildContext context) async {
     await Firebase.initializeApp();
     // if (F.appFlavor == Flavor.PRODUCTION) await crashlytics.initializeFlutterFire();
-    remoteConfig = RemoteConfig.instance;
-    remoteConfig.setDefaults(<String, dynamic>{
+    FirebaseRemoteConfig.instance.setDefaults(<String, dynamic>{
       'cornerscard_force_update_version': 0,
       'cornerscard_force_update_version_dev': 0,
       'cornerscard_force_update_text': '',
@@ -25,24 +26,24 @@ class FirebaseService {
     });
 
     if (F.appFlavor == Flavor.DEVELOPMENT) {
-      await remoteConfig.setConfigSettings(RemoteConfigSettings(
+      await  FirebaseRemoteConfig.instance.setConfigSettings(RemoteConfigSettings(
         fetchTimeout: Duration(seconds: 10),
         minimumFetchInterval: Duration(seconds: 30),
       ));
     } else {
-      await remoteConfig.setConfigSettings(RemoteConfigSettings(
+      await  FirebaseRemoteConfig.instance.setConfigSettings(RemoteConfigSettings(
         fetchTimeout: Duration(minutes: 10),
         minimumFetchInterval: Duration(minutes: 30),
       ));
     }
     try {
-      await remoteConfig.fetchAndActivate();
+      await  FirebaseRemoteConfig.instance.fetchAndActivate();
     } catch (exception) {
       debugPrint('Unable to fetch remote config. Cached or default values will '
           'be');
     }
 
-    // await messaging.handleMessageFromTerminatedState(context);
-    // await messaging.setup(context);
+    await messaging.handleMessageFromTerminatedState(context);
+    await messaging.setup(context);
   }
 }

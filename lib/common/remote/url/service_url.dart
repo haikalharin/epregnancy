@@ -7,6 +7,7 @@ class ServiceUrl {
   // user
   static String user = 'user';
   static String userInfo = '$user/info';
+  static String userList = '$user/list';
   static String checkIn = '$user/checkin/';
   static String pointHistory = '$user/points-history';
   static String login = '$auth/login';
@@ -45,11 +46,14 @@ class ServiceUrl {
   static String consultation = 'post';
   static String listConsultation = '$consultation/list';
   static String postConsultation = '$consultation/create';
+  static String addComment = '$consultation/';
 
   //eventSchedule
   static String schedule = 'schedule';
   static String listSchedule = '$schedule/list';
   static String saveSchedule = '$schedule/save';
+  static String createScheduleAppointmentMw = '$schedule/create/appointment';
+  static String createScheduleMedicineMw = '$schedule/create/medicine';
   static String deleteSchedule = '$schedule/delete';
 
   //game

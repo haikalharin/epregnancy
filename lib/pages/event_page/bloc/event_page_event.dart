@@ -85,6 +85,15 @@ class EventAddSubmitted extends EventPageEvent {
   const EventAddSubmitted();
 }
 
+class EventAddSubmittedFromMidwife extends EventPageEvent {
+  const EventAddSubmittedFromMidwife(this.user);
+
+  final UserModel user;
+
+  @override
+  List<Object> get props => [];
+}
+
 class EventDisposeEvent extends EventPageEvent {
   const EventDisposeEvent();
 }

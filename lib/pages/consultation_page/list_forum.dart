@@ -187,7 +187,7 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                             ],
                                           ),
                                         ),
-                                        Icon(Icons.ios_share)
+                                        // Icon(Icons.ios_share)
                                       ],
                                     ),
                                   ),

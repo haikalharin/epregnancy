@@ -1,5 +1,4 @@
-class
-ResponseModel<T> {
+class ResponseModel<T> {
   int? code;
   String? status;
   String? message;

@@ -14,6 +14,7 @@ import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
+import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/forgot_password_page/bloc/forgot_password_page_bloc.dart';
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
@@ -26,6 +27,7 @@ import 'package:PregnancyApp/pages/pin_checkin/bloc/pin_checkin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
 import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
+import 'package:PregnancyApp/utils/firebase_messaging.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../data/remote_datasource/remote_datasource.dart';
@@ -34,6 +36,7 @@ import '../../data/repository/consultation_repository/consultation_repository_im
 import '../../data/repository/user_repository/user_repository.dart';
 import '../../data/repository/user_repository/user_repository_impl.dart';
 import '../../pages/change_password_page/bloc/change_password_bloc.dart';
+import '../../pages/consultation_page/bloc/comment_bloc.dart';
 import '../../pages/consultation_page/bloc/consultation_page_bloc.dart';
 import '../../pages/login_page/bloc/login_bloc.dart';
 import '../../pages/profile_page/bloc/profile_page_bloc.dart';
@@ -96,6 +99,8 @@ abstract class InjectorConfig {
   @Register.singleton(ForgotPasswordPageBloc)
   @Register.singleton(PinCheckInBloc)
   @Register.singleton(DisclaimerPageBloc)
+  @Register.singleton(PatientSelectBloc)
+  @Register.singleton(CommentBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)
@@ -116,7 +121,7 @@ abstract class InjectorConfig {
   @Register.factory(NetworkInfoImpl)
   void _configureCommon();
 
-  // @Register.singleton(Ticker)
+  @Register.singleton(FirebaseMessagingService)
   void _configureUtils();
 
   // @Register.factory(CommunityDao)

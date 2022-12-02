@@ -1,6 +1,9 @@
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
+import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'flavors.dart';
 
@@ -68,6 +71,9 @@ import 'utils/simple_bloc_observer.dart';
 import 'package:flutter_alice/alice.dart';
 
 // void main() => runApp(MyApp());
+SharedPreferences? sharedPreferences;
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
+
 FirebaseService firebaseService = FirebaseService();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -192,6 +198,8 @@ class _MyAppState extends State<MyApp> {
         create: (context) => Injector.container.resolve<PinCheckInBloc>()),
     BlocProvider<DisclaimerPageBloc>(
         create: (context) => Injector.container.resolve<DisclaimerPageBloc>()),
+    BlocProvider<PatientSelectBloc>(
+        create: (context) => Injector.container.resolve<PatientSelectBloc>()),
   ];
 }
 

@@ -99,7 +99,11 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           // bool? result = await _showMyDialog(context);
           // result ??= false;
           // return result;
-          return true;
+          if (widget.role == StringConstant.midwife) {
+            return true;
+          } else {
+            return false;
+          }
         },
         child: widget.role == StringConstant.midwife
             ? Scaffold(
@@ -188,7 +192,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         //   ),
         // ),
         BottomNavigationBarItem(
-          label: "Konsultasi",
+          label: "Diskusi",
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
@@ -305,7 +309,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
       },
       items: [
         BottomNavigationBarItem(
-          label: "Konsultasi",
+          label: "Diskusi",
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
