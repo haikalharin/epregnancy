@@ -355,7 +355,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                     ],
                                   ),
                                 ): const SizedBox.shrink(),
-                                widget.isNakes == false || widget.isNakes == null ? Text("• Meminta atau menanyakan rekomendasi pengobatan atau tindakan medis seperti:", style: TextStyle(fontSize: 10.sp,),) : const SizedBox.shrink(),
+                                widget.isNakes == false || widget.isNakes == null ? Text("• Menawarkan produk, jasa dalam bentuk apapun", style: TextStyle(fontSize: 10.sp,),) : const SizedBox.shrink(),
                               ],
                             ),
                           ),
