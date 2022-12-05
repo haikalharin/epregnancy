@@ -295,11 +295,11 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                 ),
 
                                 widget.isNakes == true ? const SizedBox.shrink() :
-                                Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Aplikasi digunakan Hanya untuk mendapatkan informasi umum seperti kehamilan dengan Bidan dan bukan untuk telekonsultasi medis. Penyediaan informasi umum oleh Bidan bukan merupakan nasihat medis", style: TextStyle(fontSize: 10.sp,),),),
+                                Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Aplikasi digunakan hanya untuk mendapatkan informasi umum seputar kehamilan dengan Bidan dan bukan untuk telekonsultasi medis. Penyediaan informasi umum oleh Bidan bukan merupakan nasihat medis", style: TextStyle(fontSize: 10.sp,),),),
                                 widget.isNakes == true ? const SizedBox.shrink() :
                                 Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Bidan akan menjawab tergantung availability Bidan itu sendiri", style: TextStyle(fontSize: 10.sp,),),),
                                 widget.isNakes == true ? const SizedBox.shrink() :
-                                Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• PT Asuransi Life Indonesia hanya merupakan penyedia aplikasi dan tidak bertanggung jawab atas (i) Pembicaraan antara pengguna dan Bidan; dan (ii) penggunaan oleh pengguna atas setiap informasi yang terdapat dalam aplikasi ini.", style: TextStyle(fontSize: 10.sp,),),),
+                                Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• PT Asuransi Allianz Life Indonesia hanya merupakan penyedia aplikasi dan tidak bertanggung jawab atas (i) Pembicaraan antara pengguna dan Bidan; dan (ii) penggunaan oleh pengguna atas setiap informasi yang terdapat dalam aplikasi ini.", style: TextStyle(fontSize: 10.sp,),),),
 
 
                                 SizedBox(height: 10.h,),
@@ -314,8 +314,8 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                   ),
                                 ),
 
-                                widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan kondisi ataupun keluhan yang dihadapi ibu hamil secara umum.", style: TextStyle(fontSize: 10.sp,),),) :
-                                Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Bertanya informasi dan tips-tips umum seputar periode kehamilan (hamil usia 10 minggu, ada tips apa, olahraga apa yang baik saat masa kehamilan, makanan yang sebaiknya dikonsumsi)", style: TextStyle(fontSize: 10.sp,),),),
+                                widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan kondisi ibu hamil secara umum.", style: TextStyle(fontSize: 10.sp,),),) :
+                                Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Bertanya informasi dan tips-tips umum seputar periode kehamilan (hamil usia 10 minggu, ada tips apa, olahraga apa yang baik selama masa kehamilan, makanan yang sebaiknya dikonsumsi)", style: TextStyle(fontSize: 10.sp,),),),
                                 widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan tips, edukasi dan informasi non medis seputar kehamilan sesuai dengan sharing yang disampaikan ibu hamil.", style: TextStyle(fontSize: 10.sp,),),) :
                                 Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberi informasi kapan terkahir kali tindakan kehamilan ke Puskesmas / Rumah Sakit", style: TextStyle(fontSize: 10.sp,),),),
                                 widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Dalam hal ibu hamil menyampaikan keluhan atau penyakit seputar kehamilan, Bidan memberikan saran agar melakukan pemeriksaan rutin di Puskesmas atau Rumah Sakit terdekat.", style: TextStyle(fontSize: 10.sp,),),) :
@@ -338,11 +338,11 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                 ),
                                 widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan informasi pribadi, termasuk riwayat medis, yang tidak berhubungan dengan kehamilan", style: TextStyle(fontSize: 10.sp,),),) :
                                 Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan informasi di luar seputar kehamilan", style: TextStyle(fontSize: 10.sp,),),),
-                                widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan rekomendasi pengobatan atau tindakan medis", style: TextStyle(fontSize: 10.sp,),),) :
+                                widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan nasihat medis untuk keluhan yang dialami oleh ibu hamil", style: TextStyle(fontSize: 10.sp,),),) :
                                 Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menanyakan keluhan yang dialami secara pribadi, dan menanyakan perawatan atau pengobatan yang perlu dilakukan.", style: TextStyle(fontSize: 10.sp,),),),
-                                widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan informasi yang tidak sesuai dengan standar profesi bidan dan kode etik profesi bidan", style: TextStyle(fontSize: 10.sp,),),) :
+                                widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan rekomendasi pengobatan atau tindakan medis termasuk namun tidak terbatas pada melakukan pertolongan pertama kegawatdaruratan ibu hamil", style: TextStyle(fontSize: 10.sp,),),) :
                                 Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan informasi pribadi, termasuk informasi medis, dan memberikan informasi yang tidak berhubungan dengan kehamilan", style: TextStyle(fontSize: 10.sp,),),),
-                                widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menawarkan produk, jasa dalam bentuk apapun", style: TextStyle(fontSize: 10.sp,),),) :
+                                widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menganalisa atau melakukan diagnosa terhadap keluhan atau penyakit yang dialami ibu hamil", style: TextStyle(fontSize: 10.sp,),),) :
                                 Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Meminta atau menanyakan rekomendasi pengobatan atau tindakan medis seperti:", style: TextStyle(fontSize: 10.sp,),),),
                                 // widget.isNakes == true ? Padding(padding: EdgeInsets.only(top: 4.w), child: Text("", style: TextStyle(fontSize: 10.sp,),),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("", style: TextStyle(fontSize: 10.sp,),),),
                                 widget.isNakes == false || widget.isNakes == null ?  Padding(
@@ -354,8 +354,8 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                       Text("- Apa saja jenis vitamin yang perlu dikonsumsi saat hamil", style: TextStyle(fontSize: 10.sp,)),
                                     ],
                                   ),
-                                ): const SizedBox.shrink(),
-                                widget.isNakes == false || widget.isNakes == null ? Text("• Menawarkan produk, jasa dalam bentuk apapun", style: TextStyle(fontSize: 10.sp,),) : const SizedBox.shrink(),
+                                ):  Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Menawarkan produk, jasa dalam bentuk apapun", style: TextStyle(fontSize: 10.sp,),),),
+                                widget.isNakes == false || widget.isNakes == null ? Text("• Menawarkan produk, jasa dalam bentuk apapun", style: TextStyle(fontSize: 10.sp,),) : Padding(padding: EdgeInsets.only(top: 4.w), child: Text("• Memberikan rekomendasi obat atau vitamin yang perlu dikonsumsi oleh ibu hamil", style: TextStyle(fontSize: 10.sp,),),),
                               ],
                             ),
                           ),

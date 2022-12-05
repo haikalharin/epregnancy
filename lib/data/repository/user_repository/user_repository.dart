@@ -20,6 +20,7 @@ abstract class UserRepository {
   Future insertUser(UserExampleModel todo);
   Future <ResponseModel>register(UserModel userModel);
   Future <ResponseModel>updateQuestioner(SignupQuestRequest userModel);
+  Future <ResponseModel>updateHospital(String hospitalId);
   Future <ResponseModel>updateDisclaimer(UserModel userModel);
   Future <ResponseModel>saveQuestionerBaby(BabyModelApi babyModelApi);
   Future <ResponseModel>updateQuestionerBaby(BabyModelApi babyModelApi);
