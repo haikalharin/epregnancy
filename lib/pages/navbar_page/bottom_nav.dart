@@ -27,8 +27,9 @@ class NavbarPage extends StatefulWidget {
   String? role = StringConstant.patient;
   final int? initalIndex;
   final String? userId;
+  final bool? isFromNotif;
 
-  NavbarPage({Key? key, this.role, this.initalIndex, this.userId})
+  NavbarPage({Key? key, this.role, this.initalIndex, this.userId, this.isFromNotif = false})
       : super(key: key);
 
   // final UserModel bottomUserModelData;
@@ -274,6 +275,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
     switch (indexSelected) {
       case 0:
         return HomePage(
+          isFromNotif: widget.isFromNotif,
           userId: widget.userId,
           one: _one,
           two: _two,

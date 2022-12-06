@@ -76,6 +76,7 @@ class Routes {
                   role: getRoleArgument(settings.arguments),
                   initalIndex: getInitialIndex(settings.arguments),
                   userId: getUserId(settings.arguments),
+                  isFromNotif: getIsFromNotif(settings.arguments)
                 ));
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());

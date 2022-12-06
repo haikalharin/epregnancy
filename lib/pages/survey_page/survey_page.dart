@@ -141,7 +141,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                 isFromRegister: true)),
                             (route) => false);
                   } else {
-                    aliceDev
+                    aliceMain
                         .getNavigatorKey()
                         ?.currentState
                         ?.pushAndRemoveUntil(

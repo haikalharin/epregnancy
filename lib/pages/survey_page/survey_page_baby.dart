@@ -85,7 +85,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                             tokenExpired: true, isFromRegister: true)),
                     (route) => false);
               } else {
-                aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+                aliceMain.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
                     MaterialPageRoute(
                         builder: (BuildContext context) => const LoginPage(
                             tokenExpired: true, isFromRegister: true)),

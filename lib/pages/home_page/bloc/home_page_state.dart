@@ -18,6 +18,7 @@ class HomePageState with FormzMixin {
   final int? totalPointsEarned;
   final String? errorMessage;
   final bool? showGuide;
+  final bool? isNotHaveSession;
 
   HomePageState({this.user,
     this.role,
@@ -35,6 +36,7 @@ class HomePageState with FormzMixin {
     this.articleModel,
     this.totalPointsEarned,
     this.showGuide,
+    this.isNotHaveSession,
     this.errorMessage});
 
   HomePageState copyWith({FormzStatus? submitStatus,
@@ -53,6 +55,7 @@ class HomePageState with FormzMixin {
     DateTime? eventDate,
     int? totalPointsEarned,
     bool? showGuide,
+    bool? isNotHaveSession,
     String? errorMessage}) {
     return HomePageState(
         submitStatus: submitStatus,
@@ -71,6 +74,7 @@ class HomePageState with FormzMixin {
         eventDateString: eventDateString ?? this.eventDateString,
         eventDate: eventDate ?? this.eventDate,
         totalPointsEarned: totalPointsEarned ?? this.totalPointsEarned,
+        isNotHaveSession: isNotHaveSession,
         errorMessage: errorMessage);
   }
 

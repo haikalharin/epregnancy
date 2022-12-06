@@ -135,7 +135,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
   }
 
@@ -165,7 +165,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString());
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString(), isNotHaveSession: true);
     }
   }
 
@@ -190,7 +190,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
   }
 
@@ -208,16 +208,18 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       var days = 0;
       var weeks = 0;
+      var myBaby = [];
 
 
       final UserModel user = await AppSharedPreference.getUser();
       ResponseModel response = await homeRepository.getBaby(user);
-      final myBaby = response.data;
-
+      if (response.code == 200) {
+        myBaby = response.data;
+      }
 
       BabyProgressModel babyProgressModel = BabyProgressModel.empty();
       if(myBaby.length != 0){
-      if (myBaby?.last.id != '') {
+      if (myBaby.last.id != '') {
           DateTime dateTimeCreatedAt =
               DateTime.parse(myBaby.last.lastMenstruationDate!);
           DateTime dateTimeNow = DateTime.now();
@@ -245,7 +247,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
               ? StringConstant.patient
               : StringConstant.midwife,
         );
-      } else {
+      } else if (response.code == 0){
+        await AppSharedPreference.sessionExpiredEvent();
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+      }else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     } on HomeErrorException catch (e) {
@@ -256,7 +261,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
   }
 //
@@ -286,7 +291,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
 
   }

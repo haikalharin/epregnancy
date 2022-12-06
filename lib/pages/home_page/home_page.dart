@@ -29,16 +29,20 @@ import '../../data/firebase/g_authentication.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../env.dart';
 import '../../utils/epragnancy_color.dart';
+import '../login_page/login_page.dart';
 import 'bloc/home_page_bloc.dart';
 import 'list_article.dart';
 import 'list_shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, this.userId, this.one, this.two}) : super(key: key);
+  const HomePage(
+      {Key? key, this.userId, this.one, this.two, this.isFromNotif = false})
+      : super(key: key);
   final String? userId;
   final GlobalKey? one;
   final GlobalKey? two;
+  final bool? isFromNotif;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -50,6 +54,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   String dateTimeString = "";
   TabController? _tabController;
   HospitalModel? _hospitalModel;
+  bool? _isFromNotif = false;
 
   void getHospitalFromLocal() async {
     HospitalModel _hospital = await AppSharedPreference.getHospital();
@@ -65,6 +70,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    start();
+    super.initState();
+  }
+
+  void start() {
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
     Injector.resolve<HomePageBloc>().add(PointFetchEvent());
@@ -89,7 +99,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         }
       });
     });
-    super.initState();
   }
 
   @override
@@ -100,8 +109,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // webSocket.sink.add('test');
-
     return Scaffold(
         backgroundColor: Colors.grey.shade200,
         floatingActionButton: FloatingActionButton.extended(
@@ -115,7 +122,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         body: BlocListener<HomePageBloc, HomePageState>(
           listener: (context, state) {
-            if (state.submitStatus == FormzStatus.submissionSuccess) {}
+            if (state.submitStatus == FormzStatus.submissionSuccess) {
+            } else if (state.submitStatus == FormzStatus.submissionFailure && state.isNotHaveSession == true) {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const LoginPage(
+                            tokenExpired: true,
+                          )),
+                  (route) => false);
+            }
           },
           child: BlocBuilder<HomePageBloc, HomePageState>(
             builder: (context, state) {
@@ -297,8 +312,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     ),
                                   ),
                                   state.user?.isPregnant == true &&
-                                      state.user?.babies?.length != 0
-                                      ? BabySectionWidget(state: state, one: widget.one)
+                                          state.user?.babies?.length != 0
+                                      ? BabySectionWidget(
+                                          state: state, one: widget.one)
                                       : Container(),
                                 ],
                               ),
@@ -374,10 +390,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ],
                           ),
                         )),
-                    state.showGuide == true ? Showcase(key: widget.two?? GlobalKey(),
-                          title: 'Kumpulkan Poin',
-                          description: 'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
-                          child: PoinCardSection(point: state.totalPointsEarned ?? 0)) : PoinCardSection(point: state.totalPointsEarned ?? 0),
+                    state.showGuide == true
+                        ? Showcase(
+                            key: widget.two ?? GlobalKey(),
+                            title: 'Kumpulkan Poin',
+                            description:
+                                'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
+                            child: PoinCardSection(
+                                point: state.totalPointsEarned ?? 0))
+                        : PoinCardSection(point: state.totalPointsEarned ?? 0),
                     // Games Section
                     const GameCardSection(),
 

@@ -86,7 +86,7 @@ class HttpClient {
           headers: header,
         )
             .timeout(Duration(minutes: 2))
-            .interceptWithAlice(aliceDev);
+            .interceptWithAlice(aliceMain);
       }
 
     } else {
@@ -163,7 +163,7 @@ class HttpClient {
               json.encode(data), requestHeader![HttpConstants.contentType]!),
           headers: requestHeader,
         )
-            .interceptWithAlice(aliceDev, body: data);
+            .interceptWithAlice(aliceMain, body: data);
       }
       updateCookie(response);
     } else {
@@ -201,7 +201,7 @@ class HttpClient {
                 json.encode(data), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceDev, body: data);
+          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceMain, body: data);
     } else {
       response = await _client!.delete(
         _getParsedUrl(path),
@@ -240,7 +240,7 @@ class HttpClient {
                 json.encode(data), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceDev, body: data);
+          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceMain, body: data);
     } else {
       response = await _client!.put(
         _getParsedUrl(path),
