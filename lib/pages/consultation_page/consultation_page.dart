@@ -146,6 +146,8 @@ class _ConsultationPageState extends State<ConsultationPage> {
         },
         child: BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
           builder: (context, state) {
+            var _height = MediaQuery.of(context).size.height;
+            print('width : $_height');
             return NestedScrollView(
               headerSliverBuilder: (context, innerBoxScrolled) {
                 return <Widget>[
@@ -155,7 +157,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                       snap: false,
                       floating: false,
                       backgroundColor: Colors.white,
-                      expandedHeight: MediaQuery.of(context).size.height * 0.29,
+                      expandedHeight: _height <= 820 && _height >= 680  ? MediaQuery.of(context).size.height * 0.35 : MediaQuery.of(context).size.height * 0.29,
                       flexibleSpace: FlexibleSpaceBar(
                         centerTitle: true,
                         collapseMode: CollapseMode.pin,

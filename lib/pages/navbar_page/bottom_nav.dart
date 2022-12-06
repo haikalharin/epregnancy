@@ -100,7 +100,11 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           // bool? result = await _showMyDialog(context);
           // result ??= false;
           // return result;
-          return true;
+          if (widget.role == StringConstant.midwife) {
+            return true;
+          } else {
+            return false;
+          }
         },
         child: widget.role == StringConstant.midwife
             ? Scaffold(

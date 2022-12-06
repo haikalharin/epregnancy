@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
       WidgetsBinding.instance?.addPostFrameCallback((_) async {
         await showDialog(
           context: context,
-          barrierDismissible: false,
+          barrierDismissible: true,
           builder: (_) {
             return WillPopScope(
                 child: Center(
@@ -215,7 +215,8 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         );
                       } else {
-                        Navigator.of(context).pushNamed(RouteName.disclaimer,
+                        Navigator.of(context).pushNamedAndRemoveUntil(RouteName.disclaimer,
+                                (Route<dynamic> route) => false,
                             arguments: {
                               'user_id': state.userId,
                               'is_patient': state.userModel?.isPatient,
@@ -233,7 +234,8 @@ class _LoginPageState extends State<LoginPage> {
                               'hospital_id': state.userModel?.hospitalId
                             });
                       } else {
-                        Navigator.of(context).pushNamed(RouteName.disclaimer,
+                        Navigator.of(context).pushNamedAndRemoveUntil(RouteName.disclaimer,
+                                (Route<dynamic> route) => false,
                             arguments: {
                               'user_id': state.userId,
                               'getIsPatient': state.userModel?.isPatient,
