@@ -156,30 +156,44 @@ class SignUpQuestionnaireBloc
 
           if (response.code == 200) {
             UserModel userModel = response.data;
-            await AppSharedPreference.setUserRegister(userModel);
-            ResponseModel loginResponse = await userRepository.loginNonOtp(
-                LoginModel(
-                    username: userModel.username,
-                    password: state.password.value));
-            await AppSharedPreference.setString(AppSharedPreference.token,
-                loginResponse.data.token!.accessToken!);
+            // await AppSharedPreference.setUserRegister(userModel);
+            // ResponseModel loginResponse = await userRepository.loginNonOtp(
+            //     LoginModel(
+            //         username: userModel.username,
+            //         password: state.password.value));
+            // await AppSharedPreference.setString(AppSharedPreference.token,
+            //     loginResponse.data.token!.accessToken!);
 
-            if (loginResponse.code == 200) {
-              LoginResponseData userModel = loginResponse.data;
-              await AppSharedPreference.setString(AppSharedPreference.token,
-                  userModel.token?.accessToken ?? '');
+            // if (loginResponse.code == 200) {
+            //   LoginResponseData userModel = loginResponse.data;
+            //   await AppSharedPreference.setString(AppSharedPreference.token,
+            //       userModel.token?.accessToken ?? '');
+            //   yield state.copyWith(
+            //       submitStatus: FormzStatus.submissionSuccess,
+            //       userModel: response.data);
+
               yield state.copyWith(
                   submitStatus: FormzStatus.submissionSuccess,
                   userModel: response.data);
             } else {
-              yield state.copyWith(
-                  submitStatus: FormzStatus.submissionFailure,
-                  errorMessage: loginResponse.message);
-            }
-          } else {
             yield state.copyWith(
                 submitStatus: FormzStatus.submissionFailure,
-                errorMessage: response.message);
+                firstName: state.firstName,
+                secondName: state.secondName,
+                password: state.password,
+                confirmPassword: state.confirmPassword,
+                date: state.date,
+                errorMessage: 'Silahkan cek kembali data anda');
+            }
+          } else {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionFailure,
+              firstName: state.firstName,
+              secondName: state.secondName,
+              password: state.password,
+              confirmPassword: state.confirmPassword,
+              date: state.date,
+              errorMessage: 'Silahkan cek kembali data anda');
           }
         } else {
           yield state.copyWith(
@@ -191,16 +205,6 @@ class SignUpQuestionnaireBloc
               date: state.date,
               errorMessage: 'Silahkan cek kembali data anda');
         }
-      } else {
-        yield state.copyWith(
-            submitStatus: FormzStatus.submissionFailure,
-            firstName: state.firstName,
-            secondName: state.secondName,
-            password: state.password,
-            confirmPassword: state.confirmPassword,
-            date: state.date,
-            errorMessage: 'Silahkan cek kembali data anda');
-      }
     } on LoginErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
