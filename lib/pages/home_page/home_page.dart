@@ -167,18 +167,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         Alignment.centerRight,
                                                     child: InkWell(
                                                       onTap: () {
-                                                        Navigator.pushNamed(
-                                                                context,
-                                                                RouteName
-                                                                    .locationSelect)
-                                                            .then((value) {
-                                                          if (value != null) {
-                                                            setState(() {
-                                                              _hospitalModel = value
-                                                                  as HospitalModel?;
-                                                            });
-                                                          }
-                                                        });
+                                                        // todo puskesmas select
+                                                        if (_hospitalModel?.name == "") {
+                                                          Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                                            if (value != null) {
+                                                              setState(() {
+                                                                _hospitalModel = value as HospitalModel?;
+                                                              });
+                                                            }
+                                                          });
+                                                        }
                                                       },
                                                       child: Align(
                                                         alignment: Alignment
@@ -297,8 +295,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     ),
                                   ),
                                   state.user?.isPregnant == true &&
-                                      state.user?.babies?.length != 0
-                                      ? BabySectionWidget(state: state, one: widget.one)
+                                          state.user?.babies?.length != 0
+                                      ? BabySectionWidget(
+                                          state: state, one: widget.one)
                                       : Container(),
                                 ],
                               ),
@@ -374,10 +373,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ],
                           ),
                         )),
-                    state.showGuide == true ? Showcase(key: widget.two?? GlobalKey(),
-                          title: 'Kumpulkan Poin',
-                          description: 'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
-                          child: PoinCardSection(point: state.totalPointsEarned ?? 0)) : PoinCardSection(point: state.totalPointsEarned ?? 0),
+                    state.showGuide == true
+                        ? Showcase(
+                            key: widget.two ?? GlobalKey(),
+                            title: 'Kumpulkan Poin',
+                            description:
+                                'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
+                            child: PoinCardSection(
+                                point: state.totalPointsEarned ?? 0))
+                        : PoinCardSection(point: state.totalPointsEarned ?? 0),
                     // Games Section
                     const GameCardSection(),
 

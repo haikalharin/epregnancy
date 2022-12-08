@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/common/injector/injector.dart';
 import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
@@ -10,6 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
+import 'bloc/hospital_bloc.dart';
 
 class LocationSelectPage extends StatefulWidget {
   const LocationSelectPage({Key? key}) : super(key: key);
@@ -114,6 +116,7 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
                       setState(() {
                         _hospitalModel = value;
                       });
+                      Injector.resolve<HospitalBloc>().add(ChangeHospitalEvent(_hospitalModel?.id));
                     }
                   });
                 },
