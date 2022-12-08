@@ -506,7 +506,7 @@ class RemoteDataSource {
 
   Future<ResponseModel<UserModel>> fetchUsers(String name) async {
     final response = await httpClient
-        .get(ServiceUrl.userList, queryParameters: {'name': name});
+        .get(ServiceUrl.userList, queryParameters: {'name': name, 'is_midwife': "false", 'is_patient': "true"});
 
     return ResponseModel.fromJson(
         response, UserModel.fromJson);
