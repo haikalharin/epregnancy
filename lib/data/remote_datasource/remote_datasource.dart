@@ -128,6 +128,15 @@ class RemoteDataSource {
     }
   }
 
+  Future<ResponseModel> updateHospital(String hospitalId) async {
+    try {
+      final response = await httpClient.put(ServiceUrl.updateUserProfile, {"hospital_id": hospitalId});
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
   Future<ResponseModel> updateDisclaimer(UserModel user) async {
     try {
       Map<String, dynamic> data = {

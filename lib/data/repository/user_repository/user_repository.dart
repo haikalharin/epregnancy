@@ -21,6 +21,7 @@ abstract class UserRepository {
   Future <ResponseModel>register(UserModel userModel);
   Future <ResponseModel>updateQuestioner(SignupQuestRequest userModel);
   Future <ResponseModel>updateFcmToken(UserModel userModel);
+  Future <ResponseModel>updateHospital(String hospitalId);
   Future <ResponseModel>updateDisclaimer(UserModel userModel);
   Future <ResponseModel>saveQuestionerBaby(BabyModelApi babyModelApi);
   Future <ResponseModel>updateQuestionerBaby(BabyModelApi babyModelApi);
