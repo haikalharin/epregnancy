@@ -115,6 +115,19 @@ class RemoteDataSource {
     }
   }
 
+  Future<ResponseModel> updateFcmToken(UserModel user) async {
+    print("payload request : ${user.toJson()}");
+    try {
+     var data = {
+        'fcm_token': user.fcmToken??"",
+      };
+      final response = await httpClient.put(ServiceUrl.updateUser, data);
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
   Future<ResponseModel> updateDisclaimer(UserModel user) async {
     try {
       Map<String, dynamic> data = {

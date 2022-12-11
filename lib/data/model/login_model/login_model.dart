@@ -3,8 +3,9 @@ import 'package:PregnancyApp/data/model/base_model/base_model.dart';
 class LoginModel implements BaseModel {
   String? username;
   String? password;
+  String? fcmToken;
 
-  LoginModel({this.username, this.password});
+  LoginModel({this.username, this.password, this.fcmToken});
 
 
 
@@ -12,6 +13,7 @@ class LoginModel implements BaseModel {
     return LoginModel(
       username: json['username'],
       password: json['password'],
+      fcmToken: json['fcm_token'],
 
     );}
 
@@ -19,6 +21,7 @@ class LoginModel implements BaseModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['username'] = this.username;
     data['password'] = this.password;
+    data['fcm_token'] = this.fcmToken;
     return data;
   }
 

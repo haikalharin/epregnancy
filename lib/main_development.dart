@@ -89,13 +89,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _firebaseFuture = firebaseServiceUtils
         .initializeFlutterFirebase(context);
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print("message recieved");
-      print(event.notification!.body);
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('Message clicked!');
-    });
+
   }
 
   @override
