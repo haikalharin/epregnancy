@@ -182,18 +182,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         Alignment.centerRight,
                                                     child: InkWell(
                                                       onTap: () {
-                                                        Navigator.pushNamed(
-                                                                context,
-                                                                RouteName
-                                                                    .locationSelect)
-                                                            .then((value) {
-                                                          if (value != null) {
-                                                            setState(() {
-                                                              _hospitalModel = value
-                                                                  as HospitalModel?;
-                                                            });
-                                                          }
-                                                        });
+                                                        // todo puskesmas select
+                                                        if (_hospitalModel?.name == "") {
+                                                          Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                                            if (value != null) {
+                                                              setState(() {
+                                                                _hospitalModel = value as HospitalModel?;
+                                                              });
+                                                            }
+                                                          });
+                                                        }
                                                       },
                                                       child: Align(
                                                         alignment: Alignment

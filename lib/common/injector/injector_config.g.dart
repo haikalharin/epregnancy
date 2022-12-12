@@ -30,7 +30,8 @@ class _$InjectorConfig extends InjectorConfig {
           (c) => ConsultationPageBloc(c<ConsultationRepository>()))
       ..registerSingleton((c) => ChangePasswordBloc(c<UserRepository>()))
       ..registerSingleton((c) => ChatBloc(c<ChatRepository>()))
-      ..registerSingleton((c) => HospitalBloc(c<HospitalRepository>()))
+      ..registerSingleton(
+          (c) => HospitalBloc(c<HospitalRepository>(), c<UserRepository>()))
       ..registerSingleton((c) => ChatPendingBloc(c<ChatRepository>()))
       ..registerSingleton((c) => ProfilePageBloc(c<UserRepository>()))
       ..registerSingleton((c) => ForgotPasswordPageBloc(c<UserRepository>()))

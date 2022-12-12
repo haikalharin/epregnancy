@@ -144,7 +144,16 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
                   Text(selectedUser != null ? selectedUser!.name!  :"Nama peserta", style: TextStyle(color: EpregnancyColors.primer, fontSize: 12.sp),)
                 ],
               ),
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios_rounded, color: EpregnancyColors.primer,))
+              IconButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const PatientSelectPage())).then((_selectedUser) {
+                  if(_selectedUser != null){
+                    setState(() {
+                      selectedUser = _selectedUser;
+                    });
+                    print('selected user : ${selectedUser?.id}');
+                  }
+                });
+              }, icon: const Icon(Icons.arrow_forward_ios_rounded, color: EpregnancyColors.primer,))
             ],
           ),
         ),

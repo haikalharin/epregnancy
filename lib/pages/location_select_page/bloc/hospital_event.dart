@@ -22,3 +22,11 @@ class FetchHospitalsByIdEvent extends HospitalEvent {
   @override
   List<Object> get props => [];
 }
+
+class ChangeHospitalEvent extends HospitalEvent {
+  const ChangeHospitalEvent(this.id);
+  final String? id;
+
+  @override
+  List<Object> get props => [];
+}

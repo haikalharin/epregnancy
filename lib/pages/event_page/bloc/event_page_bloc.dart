@@ -147,7 +147,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
     EventDateStartChanged event,
     EventPageState state,
   ) {
-    final df = DateFormat.yMMMMd('id');
+    final df = DateFormat.yMMMMEEEEd('id');
     var date = df.format(event.dateStart);
     final dateStartString = MandatoryFieldValidator.dirty(date);
 
@@ -159,7 +159,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
     EventDateEndChanged event,
     EventPageState state,
   ) {
-    final df = DateFormat.yMMMMd('id');
+    final df = DateFormat.yMMMMEEEEd('id');
     var date = df.format(event.dateEnd);
     final dateEndString = MandatoryFieldValidator.dirty(date);
 

@@ -9,14 +9,16 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
 import '../../../common/exceptions/server_error_exception.dart';
+import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 
 part 'hospital_event.dart';
 part 'hospital_state.dart';
 
 class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
-  HospitalBloc(this.hospitalRepository) : super(HospitalBlocInitialState());
+  HospitalBloc(this.hospitalRepository, this.userRepository) : super(HospitalBlocInitialState());
   final HospitalRepository hospitalRepository;
+  final UserRepository userRepository;
 
   @override
   Stream<HospitalState> mapEventToState(HospitalEvent event) async* {
@@ -24,6 +26,8 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       yield* _mapFetchHospitalEvent(event, state);
     } else if (event is FetchHospitalsByIdEvent) {
       yield* _mapFetchHospitalByIdEvent(event, state);
+    } else if (event is ChangeHospitalEvent){
+      yield* _mapChangeHospital(event, state);
     }
   }
 
@@ -70,6 +74,27 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+    }
+  }
+
+  Stream<HospitalState> _mapChangeHospital(
+      ChangeHospitalEvent event,
+      HospitalState state,
+      ) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'change-hospital');
+    try {
+      final ResponseModel response = await userRepository.updateHospital(event.id ?? '');
+
+      if(response.code == 200) {
+        yield state.copyWith(type: 'change-hospital-success', status: FormzStatus.submissionSuccess);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'change-hospital-failed', hospitals: []);
+      }
+    } catch(e) {
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Change Hospital Error', errorMessage: e.toString());
     }
   }
 }

@@ -167,13 +167,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         );
         await AppSharedPreference.setUser(_userModel);
         await AppSharedPreference.remove("_userRegister");
-        // await AppSharedPreference.setUser(userModel);
-        if(userModel.isMidwife == true && loginResponseData.user?.hospital != null) {
+        // await AppSharedPreference.setUser(userModel);no
+        if(loginResponseData.user?.hospital != null) {
           print('hospital model : ${loginResponseData.user?.hospital}');
           HospitalModel hospitalModel = HospitalModel(
               id: loginResponseData.user?.hospital?.id,
               alias: loginResponseData.user?.hospital?.alias,
-              name: loginResponseData.user?.name,
+              name: loginResponseData.user?.hospital?.name,
               address: loginResponseData.user?.hospital?.address,
               city: loginResponseData.user?.hospital?.city,
               country: "",

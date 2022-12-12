@@ -12,6 +12,7 @@ import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/string_constans.dart';
+import '../login_page/login_page.dart';
 import 'bloc/signup_questionnaire_bloc.dart';
 
 const _horizontalPadding = 30.0;
@@ -32,7 +33,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         Navigator.pop(context);
         Navigator.pop(context);
         return Future.value(true);
@@ -48,9 +49,15 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                   SnackBar(content: Text(message), backgroundColor: Colors.red);
               Scaffold.of(context).showSnackBar(snackBar);
             } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-              Navigator.of(context).pushNamed(
-                  RouteName.surveyPageBaby,
-                  arguments: false);
+              // todo login page
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const LoginPage(
+                          tokenExpired: true, isFromRegister: true)),
+                  (route) => false);
+              // Navigator.of(context).pushNamed(
+              //     RouteName.surveyPageBaby,
+              //     arguments: false);
             }
           },
           child: BlocBuilder<SignUpQuestionnaireBloc, SignUpQuestionnaireState>(
@@ -164,7 +171,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 children: [
                                   TextField(
                                     onChanged: (value) {
-                                      Injector.resolve<SignUpQuestionnaireBloc>()
+                                      Injector.resolve<
+                                              SignUpQuestionnaireBloc>()
                                           .add(SignupPasswordChanged(value));
                                     },
                                     obscureText: _isHiddenNewPassword,
@@ -173,7 +181,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                           TextStyle(color: Colors.grey[500]),
                                       hintText: 'Masukan kata sandi',
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
                                       ),
                                       errorText:
                                           state.password.invalid ? "" : null,
@@ -207,13 +216,15 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                             children: const [
                                               Text(
                                                 StringConstant.alertPassword1,
-                                                style:
-                                                    TextStyle(color: Colors.red),
+                                                style: TextStyle(
+                                                    color: Colors.red),
                                               ),
-                                              Text(StringConstant.alertPassword2,
+                                              Text(
+                                                  StringConstant.alertPassword2,
                                                   style: TextStyle(
                                                       color: Colors.red)),
-                                              Text(StringConstant.alertPassword3,
+                                              Text(
+                                                  StringConstant.alertPassword3,
                                                   style: TextStyle(
                                                       color: Colors.red))
                                             ],
@@ -286,7 +297,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 mode: DateTimeFieldPickerMode.date,
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.black45),
-                                  errorStyle: TextStyle(color: Colors.redAccent),
+                                  errorStyle:
+                                      TextStyle(color: Colors.redAccent),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -318,14 +330,14 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                         Container(
                           child: Column(
                             children: [
-                              Text(
-                                "1 dari 3",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12),
-                              ),
+                              // Text(
+                              //   "1 dari 3",
+                              //   textAlign: TextAlign.center,
+                              //   style: TextStyle(
+                              //       color: Colors.grey,
+                              //       fontWeight: FontWeight.normal,
+                              //       fontSize: 12),
+                              // ),
                               SizedBox(height: 10),
                               Container(
                                 width: 350,
@@ -334,7 +346,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                     Injector.resolve<SignUpQuestionnaireBloc>()
                                         .add(SignupSubmitted());
                                   },
-                                  child: Text("Selanjutnya"),
+                                  child: Text("Daftar"),
                                   style: ElevatedButton.styleFrom(
                                     primary: EpregnancyColors.primer,
                                     onPrimary: Colors.white,
