@@ -44,6 +44,8 @@ mixin _$UserModel {
   String? get token => throw _privateConstructorUsedError;
   @JsonKey(name: 'total_points_earned', includeIfNull: true)
   int? get totalpointsEarned => throw _privateConstructorUsedError;
+  @JsonKey(name: 'total_login', includeIfNull: true)
+  int? get totalLogin => throw _privateConstructorUsedError;
   @JsonKey(name: 'total_points_redeemed', includeIfNull: true)
   int? get totalpointsRedeemed => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_url', includeIfNull: true)
@@ -115,6 +117,8 @@ abstract class $UserModelCopyWith<$Res> {
           String? token,
       @JsonKey(name: 'total_points_earned', includeIfNull: true)
           int? totalpointsEarned,
+      @JsonKey(name: 'total_login', includeIfNull: true)
+          int? totalLogin,
       @JsonKey(name: 'total_points_redeemed', includeIfNull: true)
           int? totalpointsRedeemed,
       @JsonKey(name: 'image_url', includeIfNull: true)
@@ -175,6 +179,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? mobile = freezed,
     Object? token = freezed,
     Object? totalpointsEarned = freezed,
+    Object? totalLogin = freezed,
     Object? totalpointsRedeemed = freezed,
     Object? imageUrl = freezed,
     Object? hospitalId = freezed,
@@ -241,6 +246,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
       totalpointsEarned: totalpointsEarned == freezed
           ? _value.totalpointsEarned
           : totalpointsEarned // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalLogin: totalLogin == freezed
+          ? _value.totalLogin
+          : totalLogin // ignore: cast_nullable_to_non_nullable
               as int?,
       totalpointsRedeemed: totalpointsRedeemed == freezed
           ? _value.totalpointsRedeemed
@@ -367,6 +376,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
           String? token,
       @JsonKey(name: 'total_points_earned', includeIfNull: true)
           int? totalpointsEarned,
+      @JsonKey(name: 'total_login', includeIfNull: true)
+          int? totalLogin,
       @JsonKey(name: 'total_points_redeemed', includeIfNull: true)
           int? totalpointsRedeemed,
       @JsonKey(name: 'image_url', includeIfNull: true)
@@ -431,6 +442,7 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? mobile = freezed,
     Object? token = freezed,
     Object? totalpointsEarned = freezed,
+    Object? totalLogin = freezed,
     Object? totalpointsRedeemed = freezed,
     Object? imageUrl = freezed,
     Object? hospitalId = freezed,
@@ -497,6 +509,10 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
       totalpointsEarned: totalpointsEarned == freezed
           ? _value.totalpointsEarned
           : totalpointsEarned // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalLogin: totalLogin == freezed
+          ? _value.totalLogin
+          : totalLogin // ignore: cast_nullable_to_non_nullable
               as int?,
       totalpointsRedeemed: totalpointsRedeemed == freezed
           ? _value.totalpointsRedeemed
@@ -598,6 +614,8 @@ class _$_UserModel implements _UserModel {
           this.token,
       @JsonKey(name: 'total_points_earned', includeIfNull: true)
           this.totalpointsEarned,
+      @JsonKey(name: 'total_login', includeIfNull: true)
+          this.totalLogin,
       @JsonKey(name: 'total_points_redeemed', includeIfNull: true)
           this.totalpointsRedeemed,
       @JsonKey(name: 'image_url', includeIfNull: true)
@@ -675,6 +693,9 @@ class _$_UserModel implements _UserModel {
   @override
   @JsonKey(name: 'total_points_earned', includeIfNull: true)
   final int? totalpointsEarned;
+  @override
+  @JsonKey(name: 'total_login', includeIfNull: true)
+  final int? totalLogin;
   @override
   @JsonKey(name: 'total_points_redeemed', includeIfNull: true)
   final int? totalpointsRedeemed;
@@ -756,7 +777,7 @@ class _$_UserModel implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospitalModel: $hospitalModel, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
+    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalLogin: $totalLogin, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospitalModel: $hospitalModel, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
   }
 
   @override
@@ -778,6 +799,8 @@ class _$_UserModel implements _UserModel {
             const DeepCollectionEquality().equals(other.token, token) &&
             const DeepCollectionEquality()
                 .equals(other.totalpointsEarned, totalpointsEarned) &&
+            const DeepCollectionEquality()
+                .equals(other.totalLogin, totalLogin) &&
             const DeepCollectionEquality()
                 .equals(other.totalpointsRedeemed, totalpointsRedeemed) &&
             const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
@@ -823,6 +846,7 @@ class _$_UserModel implements _UserModel {
         const DeepCollectionEquality().hash(mobile),
         const DeepCollectionEquality().hash(token),
         const DeepCollectionEquality().hash(totalpointsEarned),
+        const DeepCollectionEquality().hash(totalLogin),
         const DeepCollectionEquality().hash(totalpointsRedeemed),
         const DeepCollectionEquality().hash(imageUrl),
         const DeepCollectionEquality().hash(hospitalId),
@@ -879,6 +903,8 @@ abstract class _UserModel implements UserModel {
           final String? token,
       @JsonKey(name: 'total_points_earned', includeIfNull: true)
           final int? totalpointsEarned,
+      @JsonKey(name: 'total_login', includeIfNull: true)
+          final int? totalLogin,
       @JsonKey(name: 'total_points_redeemed', includeIfNull: true)
           final int? totalpointsRedeemed,
       @JsonKey(name: 'image_url', includeIfNull: true)
@@ -952,6 +978,9 @@ abstract class _UserModel implements UserModel {
   @override
   @JsonKey(name: 'total_points_earned', includeIfNull: true)
   int? get totalpointsEarned => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'total_login', includeIfNull: true)
+  int? get totalLogin => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'total_points_redeemed', includeIfNull: true)
   int? get totalpointsRedeemed => throw _privateConstructorUsedError;

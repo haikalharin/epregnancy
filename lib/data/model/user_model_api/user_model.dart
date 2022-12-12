@@ -38,6 +38,8 @@ abstract class UserModel with _$UserModel {
     String? token,
     @JsonKey(name:'total_points_earned',includeIfNull: true)
     int? totalpointsEarned,
+    @JsonKey(name:'total_login',includeIfNull: true)
+    int? totalLogin,
     @JsonKey(name:'total_points_redeemed',includeIfNull: true)
     int? totalpointsRedeemed,
     @JsonKey(name:'image_url',includeIfNull: true)

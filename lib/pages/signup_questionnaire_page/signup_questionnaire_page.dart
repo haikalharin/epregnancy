@@ -72,6 +72,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.pop(context);
+                            Navigator.pop(context);
                           },
                           child: Image.asset(
                             'assets/back.png',

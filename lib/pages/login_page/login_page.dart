@@ -204,19 +204,26 @@ class _LoginPageState extends State<LoginPage> {
                   } else if (state.typeEvent == StringConstant.submitLogin) {
                     if (state.userModel?.isPatient == true) {
                       if (state.userModel?.isAgree == true) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          RouteName.navBar,
-                          (Route<dynamic> route) => false,
-                          arguments: {
-                            'role': state.userModel?.isPatient == true
-                                ? StringConstant.patient
-                                : StringConstant.midwife,
-                            'initial_index': 0
-                          },
-                        );
+                        if (state.userModel!.totalLogin! > 1) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            RouteName.navBar,
+                            (Route<dynamic> route) => false,
+                            arguments: {
+                              'role': state.userModel?.isPatient == true
+                                  ? StringConstant.patient
+                                  : StringConstant.midwife,
+                              'initial_index': 0
+                            },
+                          );
+                        } else {
+                          Navigator.of(context).pushReplacementNamed(
+                              RouteName.surveyPageBaby,
+                              arguments: false);
+                        }
                       } else {
-                        Navigator.of(context).pushNamedAndRemoveUntil(RouteName.disclaimer,
-                                (Route<dynamic> route) => false,
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            RouteName.disclaimer,
+                            (Route<dynamic> route) => false,
                             arguments: {
                               'user_id': state.userId,
                               'is_patient': state.userModel?.isPatient,
@@ -227,22 +234,22 @@ class _LoginPageState extends State<LoginPage> {
                       if (state.userModel?.isAgree == true) {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             RouteName.dashboardNakesPage,
-                                (Route<dynamic> route) => false,
+                            (Route<dynamic> route) => false,
                             arguments: {
                               'name': state.userModel?.name,
                               'image_url': state.userModel?.imageUrl,
                               'hospital_id': state.userModel?.hospitalId
                             });
                       } else {
-                        Navigator.of(context).pushNamedAndRemoveUntil(RouteName.disclaimer,
-                                (Route<dynamic> route) => false,
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            RouteName.disclaimer,
+                            (Route<dynamic> route) => false,
                             arguments: {
                               'user_id': state.userId,
                               'getIsPatient': state.userModel?.isPatient,
                               'from': "login"
                             });
                       }
-
                     }
                   }
                 }
@@ -297,7 +304,8 @@ class _LoginPageState extends State<LoginPage> {
                                   child: const Text('Login'),
                                   onPressed: () {
                                     // dismiss active keyboard
-                                    FocusScopeNode currentFocus = FocusScope.of(context);
+                                    FocusScopeNode currentFocus =
+                                        FocusScope.of(context);
 
                                     if (!currentFocus.hasPrimaryFocus) {
                                       currentFocus.unfocus();
