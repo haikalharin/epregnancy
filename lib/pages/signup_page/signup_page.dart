@@ -290,13 +290,13 @@ class _PhoneNumberInput extends StatelessWidget {
         return TextField(
           keyboardType: TextInputType.number,
           controller: _controllerPhone,
-          // inputFormatters: [
-          //   FilteringTextInputFormatter.allow(
-          //       RegExp(RegexConstants.validPhoneFirstNotZeroRegex)),
-          // ],
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(
+                RegExp(RegexConstants.validPhoneFirstNotZeroRegex)),
+          ],
           key: const Key('SignupForm_PhoneInput_textField'),
           onChanged: (phone) => Injector.resolve<SignupBloc>()
-              .add(SignupPhoneNumberChanged("0${phone}")),
+              .add(SignupPhoneNumberChanged("+62${phone}")),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(
                 top: 21.0, left: 10.0, right: 10.0, bottom: 21.0),
