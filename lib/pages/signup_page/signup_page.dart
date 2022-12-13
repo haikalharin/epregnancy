@@ -19,6 +19,7 @@ import '../../common/validators/email_address_username_validator.dart';
 import '../../common/validators/phone_validator.dart';
 import '../../utils/string_constans.dart';
 import 'bloc/signup_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const _horizontalPadding = 24.0;
 var _signUpWithEmail = false;
@@ -33,6 +34,8 @@ class SignUpPage extends StatefulWidget {
 
 final _codeController = TextEditingController();
 var authService = AuthService();
+FocusNode _phoneFocusNode = FocusNode();
+FocusNode _emailFocusNode = FocusNode();
 
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _controllerEmail = TextEditingController();
@@ -44,14 +47,34 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     Injector.resolve<SignupBloc>().add(SignupInitEvent());
-
+    _phoneFocusNode.addListener(_onFocusPhoneNumberChange);
+    _emailFocusNode.addListener(_onFocusEmailChange);
     super.initState();
   }
 
   @override
   Future<void> dispose() async {
     Injector.resolve<SignupBloc>().add(SignupInitEvent());
+    _phoneFocusNode.removeListener(_onFocusPhoneNumberChange);
+    _emailFocusNode.removeListener(_onFocusEmailChange);
     super.dispose();
+  }
+
+  bool phoneIsFocus = false;
+  bool emailIsFocus = false;
+
+  void _onFocusPhoneNumberChange() {
+    debugPrint("Focus: ${_phoneFocusNode.hasFocus.toString()}");
+    setState(() {
+      phoneIsFocus = _phoneFocusNode.hasFocus;
+    });
+  }
+
+  void _onFocusEmailChange() {
+    debugPrint("Focus: ${_emailFocusNode.hasFocus.toString()}");
+    setState(() {
+      emailIsFocus = _emailFocusNode.hasFocus;
+    });
   }
 
   @override
@@ -130,7 +153,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     state.email ==
                                         EmailAddressUsernameValidator.pure()
                                 ? Column(
-                                    children: [
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                       Text(
                                         "Daftar dengan akun telepon seluler",
                                         style: TextStyle(
@@ -139,70 +163,47 @@ class _SignUpPageState extends State<SignUpPage> {
                                             fontSize: 18),
                                       ),
                                       SizedBox(height: 20),
-                                      _PhoneNumberInput(_controllerPhone),
-                                      Text(
-                                        "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 12),
-                                      ),
+                                      _PhoneNumberInput(_controllerPhone, phoneIsFocus),
+                                      // Text(
+                                      //   "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
+                                      //   textAlign: TextAlign.center,
+                                      //   style: TextStyle(
+                                      //       color: Colors.grey,
+                                      //       fontWeight: FontWeight.normal,
+                                      //       fontSize: 12),
+                                      // ),
                                       SizedBox(height: 10),
                                     ],
                                   )
                                 : Container(),
 
-                            state.phoneNumber.value.length <= 1 ||
+                            state.phoneNumber.value.length <= 2 ||
                                     state.email == PhoneValidator.pure()
                                 ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 30),
+                                      SizedBox(height: state.email.value.isNotEmpty ? 0: 30),
                                       Text(
-                                        "Atau daftar dengan akun email",
+                                        state.email.value.isNotEmpty ? "Daftar dengan akun email" : "Atau daftar dengan akun email",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.normal,
                                             fontSize: 18),
                                       ),
                                       SizedBox(height: 30),
-                                      Text(
-                                        "Email",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                      SizedBox(height: 10),
-                                      _EmailInput(_controllerEmail),
+                                      // Text(
+                                      //   "Email",
+                                      //   style: TextStyle(
+                                      //       color: Colors.black,
+                                      //       fontWeight: FontWeight.bold,
+                                      //       fontSize: 16),
+                                      // ),
+                                      // SizedBox(height: 10),
+                                      _EmailInput(_controllerEmail, emailIsFocus),
                                       SizedBox(height: 50),
                                     ],
                                   )
                                 : Container(),
-
-                            ElevatedButton(
-                              onPressed: () async {
-                                Injector.resolve<SignupBloc>()
-                                    .add(SignupSubmitted());
-                                isEdit = true;
-                                FocusScope.of(context).unfocus();                                //
-                                // Navigator.pushReplacement(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => OtpPage()),
-                                // );
-                              },
-                              child: Text("Daftar/Masuk"),
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: Size(50, 50),
-                                primary: EpregnancyColors.primer,
-                                onPrimary: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
                             // _PasswordTextField(),
                           ],
                         );
@@ -212,6 +213,37 @@ class _SignUpPageState extends State<SignUpPage> {
                   _Loading(),
                 ],
               ))),
+      bottomNavigationBar: BlocBuilder<SignupBloc, SignupState>(
+        builder: (context, state){
+          return Container(
+            margin: EdgeInsets.all(24.w),
+            child: ElevatedButton(
+              onPressed: state.phoneNumber.valid || state.email.valid ? () async {
+            Injector.resolve<SignupBloc>()
+                .add(SignupSubmitted());
+            isEdit = true;
+            FocusScope.of(context).unfocus();                                //
+            // Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => OtpPage()),
+            // );
+            } : null,
+              child: Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Text("Daftar", style: TextStyle(fontSize: 14.sp),),
+              ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(50, 50),
+                primary: EpregnancyColors.primer,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -232,8 +264,8 @@ class _Loading extends StatelessWidget {
 }
 
 class _EmailInput extends StatelessWidget {
-  const _EmailInput(this._controllerEmail);
-
+  _EmailInput(this._controllerEmail, this.emailFocus);
+  bool? emailFocus;
   final TextEditingController _controllerEmail;
 
   @override
@@ -242,17 +274,18 @@ class _EmailInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
+          focusNode: _emailFocusNode,
           controller: _controllerEmail,
           key: const Key('SignupForm_emailInput_textField'),
           onChanged: (username) => Injector.resolve<SignupBloc>()
               .add(SignupUsernameChanged(username)),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(
-                top: 21.0, left: 10.0, right: 10.0, bottom: 21.0),
+                top: 21.0, left: 16.w, right: 10.0, bottom: 21.0),
             fillColor: EpregnancyColors.white,
             filled: true,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(4.w),
               borderSide: BorderSide(color: EpregnancyColors.primer),
             ),
 //            prefixIcon: Icon(
@@ -262,13 +295,14 @@ class _EmailInput extends StatelessWidget {
             hintStyle: TextStyle(color: EpregnancyColors.grey),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: EpregnancyColors.primer, width: 2),
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(4.w),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: EpregnancyColors.grey),
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(4.w),
             ),
-            hintText: 'email@mail.com',
+            label: const Text('Email'),
+            labelStyle: emailFocus ?? false ? TextStyle(fontSize: 14.sp) : TextStyle(fontSize: 14.sp, color: EpregnancyColors.greyText),
             errorText: state.email.invalid ? 'Format e-mail salah' : null,
           ),
         );
@@ -278,8 +312,8 @@ class _EmailInput extends StatelessWidget {
 }
 
 class _PhoneNumberInput extends StatelessWidget {
-  const _PhoneNumberInput(this._controllerPhone);
-
+  _PhoneNumberInput(this._controllerPhone, this.phoneFocusNode);
+  bool? phoneFocusNode;
   final TextEditingController _controllerPhone;
 
   @override
@@ -288,8 +322,11 @@ class _PhoneNumberInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
       builder: (context, state) {
         return TextField(
+          maxLength: 13,
+          focusNode: _phoneFocusNode,
           keyboardType: TextInputType.number,
           controller: _controllerPhone,
+          style: TextStyle(fontSize: 14.sp),
           inputFormatters: [
             FilteringTextInputFormatter.allow(
                 RegExp(RegexConstants.validPhoneFirstNotZeroRegex)),
@@ -299,11 +336,12 @@ class _PhoneNumberInput extends StatelessWidget {
               .add(SignupPhoneNumberChanged("62${phone}")),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(
-                top: 21.0, left: 10.0, right: 10.0, bottom: 21.0),
+                top: 30.h, left: 10.0, right: 10.0, bottom: 10.h),
             fillColor: EpregnancyColors.white,
             filled: true,
+            counter: const SizedBox.shrink(),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(4.w),
               borderSide: BorderSide(color: EpregnancyColors.primer),
             ),
 //            prefixIcon: Icon(
@@ -313,13 +351,20 @@ class _PhoneNumberInput extends StatelessWidget {
             hintStyle: TextStyle(color: EpregnancyColors.grey),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: EpregnancyColors.primer, width: 2),
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(4.w),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: EpregnancyColors.grey),
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(4.w),
             ),
-            hintText: 'Mobile Number',
+            prefixIcon: Container(
+              // padding: EdgeInsets.only(left: 10.w, top: 10.h),
+              height: 20.h,
+                width: 20.w,
+                padding: EdgeInsets.only(left: 10.w, bottom: 1.5.h),
+                child: Center(child: Text("+62", style: TextStyle(color: Colors.black, fontSize: 14.sp),))),
+            label: const Text("Nomor Handphone"),
+            labelStyle: phoneFocusNode ?? false ? TextStyle(fontSize: 14.sp) : TextStyle(fontSize: 14.sp, color: EpregnancyColors.greyText),
             errorText: state.phoneNumber.invalid ? 'Format nomor salah' : null,
           ),
         );

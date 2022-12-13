@@ -36,7 +36,6 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
       onWillPop: () {
         Navigator.pop(context);
         Navigator.pop(context);
-        Navigator.pop(context);
         return Future.value(true);
       },
       child: Scaffold(
@@ -73,7 +72,6 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            Navigator.pop(context);
                           },
                           child: Image.asset(
                             'assets/back.png',
@@ -99,22 +97,22 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               ),
                               SizedBox(height: 10),
                               Text(
-                                "Untuk personalisasi kebutuhan Anda dalam kehamilan",
+                                "Untuk personalisasi kebutuhan Anda\ndalam kehamilan",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.normal,
-                                    fontSize: 14),
+                                    fontSize: 14.sp),
                               ),
                               SizedBox(height: 30),
-                              Text(
-                                "Nama Depan",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
+                              // Text(
+                              //   "Nama Depan",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               TextField(
                                 onChanged: (value) {
                                   Injector.resolve<SignUpQuestionnaireBloc>()
@@ -122,26 +120,26 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(4.w),
                                   ),
                                   filled: true,
                                   hintStyle: TextStyle(color: Colors.grey[500]),
                                   fillColor: Colors.white70,
-                                  hintText: 'Isi dengan nama depan Anda',
+                                  label: Text('Nama depan'),
                                   errorText: state.firstName.invalid
                                       ? 'Mohon lengkapi Data'
                                       : null,
                                 ),
                               ),
                               SizedBox(height: 20),
-                              Text(
-                                "Nama Belakang",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
+                              // Text(
+                              //   "Nama Belakang",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               TextField(
                                 onChanged: (value) {
                                   Injector.resolve<SignUpQuestionnaireBloc>()
@@ -149,26 +147,26 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(4.w),
                                   ),
                                   filled: true,
                                   hintStyle: TextStyle(color: Colors.grey[500]),
                                   fillColor: Colors.white70,
-                                  hintText: 'Isi dengan nama belakang Anda',
+                                  label: Text("Nama belakang"),
                                   errorText: state.secondName.invalid
                                       ? 'Mohon lengkapi Data'
                                       : null,
                                 ),
                               ),
                               SizedBox(height: 20),
-                              Text(
-                                "Kata Sandi",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
+                              // Text(
+                              //   "Kata Sandi",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               Column(
                                 children: [
                                   TextField(
@@ -181,10 +179,10 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                     decoration: InputDecoration(
                                       hintStyle:
                                           TextStyle(color: Colors.grey[500]),
-                                      hintText: 'Masukan kata sandi',
+                                      label: Text("Kata Sandi"),
                                       border: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(4.w),
                                       ),
                                       errorText:
                                           state.password.invalid ? "" : null,
@@ -210,6 +208,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                       ),
                                     ),
                                   ),
+                                  // todo need to change password validataion info
                                   state.password.invalid
                                       ? Container(
                                           child: Column(
@@ -236,14 +235,14 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 ],
                               ),
                               SizedBox(height: 20),
-                              Text(
-                                "Konfirmasi Kata Sandi",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
+                              // Text(
+                              //   "Konfirmasi Kata Sandi",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               TextField(
                                 enabled: state.password.valid,
                                 onChanged: (value) {
@@ -253,9 +252,9 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 obscureText: _isHiddenConfirmNewPassword,
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.grey[500]),
-                                  hintText: 'Konfirmasi kata sandi',
+                                  label: Text('Konfirmasi Kata Sandi'),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(4.w),
                                   ),
                                   errorText: state.confirmPassword.invalid ||
                                           state.password.value !=
@@ -286,16 +285,20 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 ),
                               ),
                               SizedBox(height: 20),
-                              Text(
-                                "Tanggal lahir",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
+                              // Text(
+                              //   "Tanggal lahir",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               DateTimeFormField(
-                                dateFormat: DateFormat('dd/MM/yyyy'),
+                                dateTextStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                dateFormat: DateFormat('dd / MM / yyyy'),
                                 mode: DateTimeFieldPickerMode.date,
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.black45),
@@ -306,10 +309,11 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                   ),
                                   suffixIcon: Icon(Icons.event_note),
                                   hintText: 'DD / MM / YYYY',
-                                  labelStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  label: Text("Tanggal Lahir"),
+                                  // labelStyle: TextStyle(
+                                  //   color: Colors.black,
+                                  //   fontWeight: FontWeight.bold,
+                                  // ),
                                   errorText: state.date.invalid
                                       ? 'Mohon lengkapi Data'
                                       : null,
@@ -342,13 +346,17 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               // ),
                               SizedBox(height: 10),
                               Container(
-                                width: 350,
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.symmetric(horizontal: _horizontalPadding),
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     Injector.resolve<SignUpQuestionnaireBloc>()
                                         .add(SignupSubmitted());
                                   },
-                                  child: Text("Daftar"),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
+                                    child: Text("Daftar", style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),),
+                                  ),
                                   style: ElevatedButton.styleFrom(
                                     primary: EpregnancyColors.primer,
                                     onPrimary: Colors.white,
