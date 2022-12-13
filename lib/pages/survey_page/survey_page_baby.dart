@@ -70,26 +70,18 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
               );
             } else {
               // Navigator.of(context).pushNamed(RouteName.landingPage);
-              AppSharedPreference.remove(AppSharedPreference.user);
-              AppSharedPreference.remove(AppSharedPreference.userRegister);
-              AppSharedPreference.remove(AppSharedPreference.baby);
-              AppSharedPreference.remove(AppSharedPreference.baby);
-              AppSharedPreference.remove(AppSharedPreference.hospital);
-              AppSharedPreference.remove(AppSharedPreference.otp);
-              AppSharedPreference.remove(AppSharedPreference.token);
-              AppSharedPreference.remove(AppSharedPreference.cookie);
               if (F.appFlavor == Flavor.PRODUCTION) {
-                aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => const LoginPage(
-                            tokenExpired: true, isFromRegister: true)),
-                    (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteName.navBar,
+                      (Route<dynamic> route) => false,
+                  arguments: {'role': StringConstant.patient, 'initial_index': 0},
+                );
               } else {
-                aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => const LoginPage(
-                            tokenExpired: true, isFromRegister: true)),
-                    (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteName.navBar,
+                      (Route<dynamic> route) => false,
+                  arguments: {'role': StringConstant.patient, 'initial_index': 0},
+                );
               }
             }
             // Navigator.of(context).pushNamedAndRemoveUntil(

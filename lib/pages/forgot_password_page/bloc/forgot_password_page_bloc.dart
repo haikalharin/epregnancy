@@ -61,17 +61,24 @@ class ForgotPasswordPageBloc
       ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
+      var typeMessage = "";
+      if (state.userName.value.contains('@')) {
+        typeMessage = "Email";
+      } else {
+        typeMessage = "Nomor";
+      }
       if(state.status.isValidated) {
+
         ResponseModel response = await userRepository.forgotPassword(
             state.userName.value);
 
         if (response.code == 200) {
-          yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
+          yield state.copyWith(submitStatus: FormzStatus.submissionSuccess,typeMessage: typeMessage);
         } else {
-          yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure, typeMessage: typeMessage);
         }
       } else{
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, typeMessage: typeMessage );
       }
 
     } on LoginErrorException catch (e) {

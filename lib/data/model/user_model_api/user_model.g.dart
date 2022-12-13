@@ -19,6 +19,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       mobile: json['mobile'] as String?,
       token: json['token'] as String?,
       totalpointsEarned: json['total_points_earned'] as int?,
+      totalLogin: json['total_login'] as int?,
       totalpointsRedeemed: json['total_points_redeemed'] as int?,
       imageUrl: json['image_url'] as String?,
       hospitalId: json['hospital_id'] as String?,
@@ -49,6 +50,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
           ?.map((e) => Baby.fromJson(e as Map<String, dynamic>))
           .toList(),
       isAgree: json['is_agree'] as bool?,
+      fcmToken: json['fcm_token'] as String?,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) {
@@ -65,6 +67,7 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) {
     'mobile': instance.mobile,
     'token': instance.token,
     'total_points_earned': instance.totalpointsEarned,
+    'total_login': instance.totalLogin,
     'total_points_redeemed': instance.totalpointsRedeemed,
     'image_url': instance.imageUrl,
   };
@@ -89,6 +92,7 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) {
   val['checkins'] = instance.checkins;
   val['babies'] = instance.babies;
   val['is_agree'] = instance.isAgree;
+  val['fcm_token'] = instance.fcmToken;
   return val;
 }
 

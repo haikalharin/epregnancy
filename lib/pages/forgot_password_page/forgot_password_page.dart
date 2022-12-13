@@ -15,12 +15,10 @@ import '../change_password_page/bloc/change_password_bloc.dart';
 import '../signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import 'bloc/forgot_password_page_bloc.dart';
 
-
 const _horizontalPadding = 30.0;
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
-
 
   @override
   _ForgotPasswordPage createState() => _ForgotPasswordPage();
@@ -47,17 +45,18 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
       body: BlocListener<ForgotPasswordPageBloc, ForgotPasswordPageState>(
         listener: (context, state) async {
           if (state.submitStatus == FormzStatus.submissionFailure) {
-            var message = 'email tidak tersedia';
+            var message = '${state.errorMessage} tidak tersedia';
             final snackBar =
-            SnackBar(content: Text(message), backgroundColor: Colors.red);
+                SnackBar(content: Text(message), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            final snackBar =
-            SnackBar(content: Text("Password baru berhasil dikirim, Silahkan cek email anda"), backgroundColor: Colors.blue);
+            final snackBar = SnackBar(
+                content: Text(
+                    "Password baru berhasil dikirim, Silahkan cek ${state.typeMessage == "Nomor" ? "kotak pesan" : "email"} anda"),
+                backgroundColor: Colors.blue);
             Scaffold.of(context).showSnackBar(snackBar);
             await Future.delayed(const Duration(seconds: 3));
             Navigator.pop(context);
-
           }
         },
         child: BlocBuilder<ForgotPasswordPageBloc, ForgotPasswordPageState>(
@@ -130,15 +129,13 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                               },
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(color: Colors.grey[500]),
-                                hintText: 'Contoh : email@mail.com / 0857646...',
+                                hintText:
+                                    'Contoh : email@mail.com / 0857646...',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-
                               ),
                             ),
-
-
                             SizedBox(height: 30),
                           ],
                         ),
@@ -173,7 +170,6 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
       ),
     );
   }
-
 }
 
 class _Loading extends StatelessWidget {
@@ -181,23 +177,23 @@ class _Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ForgotPasswordPageBloc, ForgotPasswordPageState>(
         builder: (context, state) {
-          if (state.submitStatus == FormzStatus.submissionInProgress) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Align(
-                  alignment: Alignment(0, 0),
-                  child: Container(
-                      height: 1000,
-                      color: Colors.white.withAlpha(90),
-                      child: Center(child: CircularProgressIndicator())),
-                ),
-              ],
-            );
-          } else {
-            return Text("");
-          }
-        });
+      if (state.submitStatus == FormzStatus.submissionInProgress) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Align(
+              alignment: Alignment(0, 0),
+              child: Container(
+                  height: 1000,
+                  color: Colors.white.withAlpha(90),
+                  child: Center(child: CircularProgressIndicator())),
+            ),
+          ],
+        );
+      } else {
+        return Text("");
+      }
+    });
   }
 }

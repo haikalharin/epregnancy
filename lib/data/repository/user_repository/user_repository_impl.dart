@@ -73,6 +73,13 @@ class UserRepositoryImpl extends UserRepository {
     }
     throw NetworkConnectionException();
   }
+  Future<ResponseModel> updateFcmToken(UserModel user) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.updateFcmToken(user);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
 
   @override
   Future<ResponseModel> updateHospital(String hospitalId) async {

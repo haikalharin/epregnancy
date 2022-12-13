@@ -38,6 +38,8 @@ abstract class UserModel with _$UserModel {
     String? token,
     @JsonKey(name:'total_points_earned',includeIfNull: true)
     int? totalpointsEarned,
+    @JsonKey(name:'total_login',includeIfNull: true)
+    int? totalLogin,
     @JsonKey(name:'total_points_redeemed',includeIfNull: true)
     int? totalpointsRedeemed,
     @JsonKey(name:'image_url',includeIfNull: true)
@@ -69,6 +71,8 @@ abstract class UserModel with _$UserModel {
     List<Baby>? babies,
     @JsonKey(name:'is_agree',includeIfNull: true)
     bool? isAgree,
+    @JsonKey(name:'fcm_token',includeIfNull: true)
+    String? fcmToken,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

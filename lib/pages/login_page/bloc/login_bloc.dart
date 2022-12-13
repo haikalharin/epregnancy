@@ -7,6 +7,7 @@ import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
+import 'package:PregnancyApp/main.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -151,8 +152,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       // temporary
+      var token = await firebaseService.messaging.getDeviceToken();
       ResponseModel response = await userRepository.loginNonOtp(LoginModel(
-          username: state.username.value, password: state.password.value));
+          username: state.username.value, password: state.password.value, fcmToken: token));
       LoginResponseData? loginResponseData;
       if (response.code == 200) {
         loginResponseData = response.data;

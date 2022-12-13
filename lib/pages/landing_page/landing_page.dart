@@ -65,7 +65,7 @@ class _LandingPageState extends State<LandingPage> {
                           tokenExpired: true, isFromRegister: true)),
                       (route) => false);
             } else {
-              aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+              aliceMain.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
                   MaterialPageRoute(
                       builder: (BuildContext context) => const LoginPage(
                           tokenExpired: true, isFromRegister: true)),
@@ -148,7 +148,7 @@ class _LandingPageState extends State<LandingPage> {
                                           isFromRegister: true)),
                                       (route) => false);
                             } else {
-                              aliceDev
+                              aliceMain
                                   .getNavigatorKey()
                                   ?.currentState
                                   ?.pushAndRemoveUntil(
