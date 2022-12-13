@@ -36,6 +36,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
       onWillPop: () {
         Navigator.pop(context);
         Navigator.pop(context);
+        Navigator.pop(context);
         return Future.value(true);
       },
       child: Scaffold(
