@@ -180,7 +180,7 @@ class _OtpPageState extends State<OtpPage> {
                                   fontSize: 14),
                             ),
                             Text(
-                              widget.userId ?? "",
+                              widget.userId!.contains("@") ? widget.userId?? "" : "+${widget.userId?.replaceAll("62", "62 ")}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.black,
