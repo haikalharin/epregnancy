@@ -92,7 +92,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         final response = await userRepository.checkUserExist(data);
         UserModel userModel = response.data;
         if (response.code == 200) {
-          if (response.message == StringConstant.active || response.message == StringConstant.available) {
+          if (response.message == StringConstant.active) {
             // if (userModel.isPregnant == true ||
             //     userModel.isHaveBaby == true ||
             //     userModel.isPlanningPregnancy == true) {

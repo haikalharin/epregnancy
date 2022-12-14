@@ -184,45 +184,45 @@ class BabySectionWidget extends StatelessWidget {
                                   FontWeight
                                       .bold),
                             )),
-                        InkWell(
-                          onTap: (){
-                            Navigator.of(
-                                context)
-                                .pushNamed(
-                                RouteName
-                                    .surveyPageBaby,
-                                arguments:
-                                true);
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius
-                                      .circular(
-                                      6.0),
-                                  color: Colors
-                                      .white),
-                              child: Container(
-                                width: 210,
-                                height: 30,
-                                child: Center(
-                                  child:
-                                  Container(
-                                    child:
-                                    const Text(
-                                      "Ubah Profil Kehamilan ",
-                                      style: TextStyle(
-                                          fontSize:
-                                          14,
-                                          color:
-                                          EpregnancyColors.primer),
-                                      maxLines:
-                                      3,
-                                    ),
-                                  ),
-                                ),
-                              )),
-                        ),
+                        // InkWell(
+                        //   onTap: (){
+                        //     Navigator.of(
+                        //         context)
+                        //         .pushNamed(
+                        //         RouteName
+                        //             .surveyPageBaby,
+                        //         arguments:
+                        //         true);
+                        //   },
+                        //   child: Container(
+                        //       decoration: BoxDecoration(
+                        //           borderRadius:
+                        //           BorderRadius
+                        //               .circular(
+                        //               6.0),
+                        //           color: Colors
+                        //               .white),
+                        //       child: Container(
+                        //         width: 210,
+                        //         height: 30,
+                        //         child: Center(
+                        //           child:
+                        //           Container(
+                        //             child:
+                        //             const Text(
+                        //               "Ubah Profil Kehamilan ",
+                        //               style: TextStyle(
+                        //                   fontSize:
+                        //                   14,
+                        //                   color:
+                        //                   EpregnancyColors.primer),
+                        //               maxLines:
+                        //               3,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       )),
+                        // ),
                       ],
                     ),
                   ),
@@ -234,29 +234,18 @@ class BabySectionWidget extends StatelessWidget {
       ),
     ) : Container(
       decoration: BoxDecoration(
-          borderRadius:
-          BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(8.w),
           color: EpregnancyColors.primer),
-      margin: EdgeInsets.only(
-          left: 20, right: 20),
+      margin: EdgeInsets.only(left: 20, right: 20),
       child: Container(
-        margin: EdgeInsets.only(
-            left: 30, right: 30),
-        padding: EdgeInsets.only(
-            top: 20, bottom: 20),
+        margin: EdgeInsets.only(left: 30, right: 30),
+        padding: EdgeInsets.only(top: 10.h, bottom: 0.h),
         child: Column(
-          crossAxisAlignment:
-          CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             state.baby != null
-                ? Container(
-                margin: EdgeInsets.only(
-                    bottom: 10),
-                child: Text(
-                  state.baby!.length !=
-                      0
-                      ? state.baby!.first.name!
-                      : "",
+                ? Container(margin: EdgeInsets.only(bottom: 10),
+                child: Text(state.baby!.length != 0 ? state.baby!.first.name! : "",
                   style: TextStyle(
                       fontSize: 16,
                       color:
@@ -268,73 +257,39 @@ class BabySectionWidget extends StatelessWidget {
                 ))
                 : Container(),
             Row(
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
-              mainAxisAlignment:
-              MainAxisAlignment
-                  .spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                state.babyProgressModel !=
-                    null
-                    ? Container(
+                state.babyProgressModel != null ? Container(
                   // margin: EdgeInsets.only(left: 50, right: 50),
                   child: FadeInImage(
-                    placeholder:
-                    AssetImage(
-                        'assets/ic_no_photo.png'),
-                    image: NetworkImage(state
-                        .babyProgressModel!
-                        .iconUrl!),
+                    placeholder: AssetImage('assets/ic_no_photo.png'),
+                    image: NetworkImage(state.babyProgressModel!.iconUrl!),
                     width: 60.w,
                     height: 60.h,
                     fit: BoxFit.fill,
-                    imageErrorBuilder:
-                        (context,
-                        error,
-                        stackTrace) {
-                      return Image
-                          .asset(
-                        'assets/ic_no_photo.png',
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit
-                            .cover,
-                      );
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/ic_no_photo.png', width: 60, height: 60, fit: BoxFit.cover);
                     },
                   ),
                 )
-                    : Container(
-                  width: 60,
-                  height: 60,
+                    : SizedBox(
+                  width: 60.w,
+                  height: 60.w,
                 ),
+                SizedBox(width: 20.w,),
                 Container(
-                  child: Column(
-                    crossAxisAlignment:
-                    CrossAxisAlignment
-                        .start,
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         child: Row(
-                          crossAxisAlignment:
-                          CrossAxisAlignment
-                              .start,
-                          mainAxisAlignment:
-                          MainAxisAlignment
-                              .spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                                margin: EdgeInsets.only(
-                                    bottom:
-                                    10),
-                                width:
-                                150.w,
+                            Container(margin: EdgeInsets.only(bottom: 10),
+                                width: 150.w,
                                 child: Text(
-                                  state.babyProgressModel !=
-                                      null
-                                      ? state
-                                      .babyProgressModel!
-                                      .title!
-                                      : '',
+                                  state.babyProgressModel != null ? state.babyProgressModel!.title! : '',
                                   style: TextStyle(
                                       fontSize:
                                       14,
@@ -399,45 +354,45 @@ class BabySectionWidget extends StatelessWidget {
                                 FontWeight
                                     .bold),
                           )),
-                      InkWell(
-                        onTap: (){
-                          Navigator.of(
-                              context)
-                              .pushNamed(
-                              RouteName
-                                  .surveyPageBaby,
-                              arguments:
-                              true);
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius
-                                    .circular(
-                                    6.0),
-                                color: Colors
-                                    .white),
-                            child: Container(
-                              width: 210,
-                              height: 30,
-                              child: Center(
-                                child:
-                                Container(
-                                  child:
-                                  const Text(
-                                    "Ubah Profil Kehamilan ",
-                                    style: TextStyle(
-                                        fontSize:
-                                        14,
-                                        color:
-                                        EpregnancyColors.primer),
-                                    maxLines:
-                                    3,
-                                  ),
-                                ),
-                              ),
-                            )),
-                      ),
+                      // InkWell(
+                      //   onTap: (){
+                      //     Navigator.of(
+                      //         context)
+                      //         .pushNamed(
+                      //         RouteName
+                      //             .surveyPageBaby,
+                      //         arguments:
+                      //         true);
+                      //   },
+                      //   child: Container(
+                      //       decoration: BoxDecoration(
+                      //           borderRadius:
+                      //           BorderRadius
+                      //               .circular(
+                      //               6.0),
+                      //           color: Colors
+                      //               .white),
+                      //       child: Container(
+                      //         width: 210,
+                      //         height: 30,
+                      //         child: Center(
+                      //           child:
+                      //           Container(
+                      //             child:
+                      //             const Text(
+                      //               "Ubah Profil Kehamilan ",
+                      //               style: TextStyle(
+                      //                   fontSize:
+                      //                   14,
+                      //                   color:
+                      //                   EpregnancyColors.primer),
+                      //               maxLines:
+                      //               3,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       )),
+                      // ),
                     ],
                   ),
                 ),
