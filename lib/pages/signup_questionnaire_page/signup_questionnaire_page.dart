@@ -9,6 +9,7 @@ import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
+import '../../common/constants/regex_constants.dart';
 import '../../common/services/auth_service.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/string_constans.dart';
@@ -29,6 +30,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
   DateTime? selectedDate;
   bool _isHiddenNewPassword = true;
   bool _isHiddenConfirmNewPassword = true;
+  final TextEditingController _passwordController = TextEditingController();
+  String? passwordText;
 
   @override
   Widget build(BuildContext context) {
@@ -171,10 +174,15 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 children: [
                                   TextField(
                                     onChanged: (value) {
+                                      setState(() {
+                                        passwordText = value;
+                                      });
+
                                       Injector.resolve<
                                               SignUpQuestionnaireBloc>()
                                           .add(SignupPasswordChanged(value));
                                     },
+                                    controller: _passwordController,
                                     obscureText: _isHiddenNewPassword,
                                     decoration: InputDecoration(
                                       hintStyle:
@@ -209,30 +217,64 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                     ),
                                   ),
                                   // todo need to change password validataion info
-                                  state.password.invalid
-                                      ? Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                StringConstant.alertPassword1,
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                              Text(
-                                                  StringConstant.alertPassword2,
-                                                  style: TextStyle(
-                                                      color: Colors.red)),
-                                              Text(
-                                                  StringConstant.alertPassword3,
-                                                  style: TextStyle(
-                                                      color: Colors.red))
-                                            ],
-                                          ),
-                                        )
-                                      : Container()
                                 ],
+                              ),
+                              Material(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.w)
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.all(16.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4.w),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Builder(
+                                            builder: (context){
+                                              // if(RegExp(RegexConstants.validPasswordlRegex).hasMatch(passwordText ?? "")) {
+                                              if((passwordText?.length ?? 0) >= 8) {
+                                                return Icon(Icons.check_circle_rounded, color: EpregnancyColors.primer, size: 14.sp,);
+                                              } else {
+                                                return Icon(Icons.check_circle_rounded, color: EpregnancyColors.grey, size: 14.sp,);
+                                              }
+
+                                            },
+                                          ),
+                                          SizedBox(width: 8.w,),
+                                          Text("Minimal 8 karakter dan maksimal 128 karakter", style: TextStyle(
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.w300
+                                          ),)
+                                        ],
+                                      ),
+                                      SizedBox(height: 10.h,),
+                                      Row(
+                                        children: [
+                                          Builder(builder: (context){
+                                            if(RegExp(RegexConstants.validPasswordlRegex).hasMatch(passwordText ?? "")) {
+                                              return Icon(Icons.check_circle_rounded, color: EpregnancyColors.primer, size: 14.sp,);
+                                            } else {
+                                              return Icon(Icons.check_circle_rounded, color: EpregnancyColors.grey, size: 14.sp,);
+                                            }
+                                          }),
+                                          SizedBox(width: 8.w,),
+                                          Expanded(
+                                            child: Text("Setidaknya memiliki 1 huruf besar, 1 huruf kecil dan 1 angka", style: TextStyle(
+                                                fontSize: 11.sp,
+                                                fontWeight: FontWeight.w300
+                                            )),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
                               SizedBox(height: 20),
                               // Text(

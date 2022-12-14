@@ -235,6 +235,7 @@ class _SignUpPageState extends State<SignUpPage> {
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(50, 50),
                 primary: EpregnancyColors.primer,
+                onSurface: EpregnancyColors.primer.withOpacity(0.25),
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
