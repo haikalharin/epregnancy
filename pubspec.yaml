@@ -81,6 +81,8 @@ dependencies:
   showcaseview: ^1.1.8
   expandable: ^5.0.1
   firebase_remote_config: ^2.0.1
+  # for lottie animation
+  lottie: ^1.4.2
 
   #flavor for environment management
 #  flutter_flavor: ^3.1.1
@@ -197,6 +199,7 @@ flutter:
     - assets/
     - assets/dummies/
     - assets/onboarding/
+    - assets/lottie/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

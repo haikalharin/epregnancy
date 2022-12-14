@@ -216,7 +216,6 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                       ),
                                     ),
                                   ),
-                                  // todo need to change password validataion info
                                 ],
                               ),
                               Material(
@@ -391,7 +390,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 width: MediaQuery.of(context).size.width,
                                 margin: EdgeInsets.symmetric(horizontal: _horizontalPadding),
                                 child: ElevatedButton(
-                                  onPressed: () async {
+                                  onPressed: state.password.invalid || state.confirmPassword.invalid || _passwordController.text.isEmpty  ? null : () async {
                                     Injector.resolve<SignUpQuestionnaireBloc>()
                                         .add(SignupSubmitted());
                                   },
@@ -401,6 +400,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     primary: EpregnancyColors.primer,
+                                    onSurface: EpregnancyColors.primer.withOpacity(0.25),
                                     onPrimary: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
