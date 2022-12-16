@@ -34,7 +34,9 @@ class _OtpPageState extends State<OtpPage> {
   int _start = 90;
   int _current = 90;
   bool wrongOtp = false;
-  StreamSubscription<CountdownTimer>? sub;
+  StreamSubscription<CountdownTimer> sub =  CountdownTimer(
+      const Duration(seconds: 90),
+      const Duration(seconds: 1),).listen(null);
 
 
   formatedTime({required int timeInSecond}) {
@@ -46,20 +48,20 @@ class _OtpPageState extends State<OtpPage> {
   }
 
   void startTimer() {
-    sub?.onData((duration) {
+    sub.onData((duration) {
       setState(() {
         _current = _start - duration.elapsed.inSeconds;
       });
     });
 
-    sub?.onDone(() {
+    sub.onDone(() {
       isResend = true;
-      sub?.pause();
+      sub.cancel();
     });
   }
 
   void restartTimer() {
-    sub?.resume();
+    sub.resume();
   }
 
   @override
@@ -68,18 +70,13 @@ class _OtpPageState extends State<OtpPage> {
     Injector.resolve<OtpPageBloc>()
         .add(
         RequestResendOtp(true, widget.userId));
-    setState(() {
-      sub = CountdownTimer(
-        const Duration(seconds: 90),
-        const Duration(seconds: 1),).listen(null);
-    });
     startTimer();
     super.initState();
   }
 
   @override
   void dispose() {
-    sub?.cancel();
+    sub.cancel();
     super.dispose();
   }
 
@@ -115,7 +112,7 @@ class _OtpPageState extends State<OtpPage> {
                   sub = CountdownTimer(
                     const Duration(seconds: 90),
                     const Duration(seconds: 1),).listen(null);
-                  sub?.resume();
+                  sub.resume();
                 });
                 startTimer();
               } else if (state.submitStatus == FormzStatus.submissionSuccess) {

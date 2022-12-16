@@ -198,6 +198,7 @@ flutter:
     - assets/
     - assets/dummies/
     - assets/onboarding/
+    - assets/lottie/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
