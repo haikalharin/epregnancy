@@ -61,11 +61,11 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
 
   Stream<SurveyPageState> _mapSurveyInitEventToState(
       SurveyInitEvent event, SurveyPageState state) async* {
-    var user = await AppSharedPreference.getUserRegister();
+    var user = await AppSharedPreference.getUser();
     List<dynamic> myBaby = [];
     var choice = 0;
     if (event.isUpdate) {
-      user = await AppSharedPreference.getUser();
+      // user = await AppSharedPreference.getUser();
       ResponseModel response = await userRepository.getBaby(user);
       myBaby = response.data;
       if (user.isPregnant == true) {
