@@ -96,7 +96,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         listEvent = responseModel.data??[];
         listEventBeforeSort = await FunctionUtils.getCheckDate(listEvent: listEvent, date: event.date);
         var listEventFix = await FunctionUtils.sortDate(listEvent: listEventBeforeSort);
-        var outputFormat = DateFormat.yMMMMd('id');
+        var outputFormat = DateFormat.yMMMMEEEEd('id');
         var dateTimeString = outputFormat.format(event.date);
         if (listEvent.isNotEmpty) {
           if (event.type == StringConstant.typePublic) {
@@ -118,7 +118,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
               submitStatus: FormzStatus.submissionFailure);
         }
       } else {
-        var outputFormat = DateFormat.yMMMMd('id');
+        var outputFormat = DateFormat.yMMMMEEEEd('id');
         var dateTimeString = outputFormat.format(event.date);
         yield state.copyWith(
             eventDateString: dateTimeString,

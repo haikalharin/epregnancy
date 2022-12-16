@@ -9,6 +9,7 @@ import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
+import '../../common/constants/regex_constants.dart';
 import '../../common/services/auth_service.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/string_constans.dart';
@@ -29,6 +30,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
   DateTime? selectedDate;
   bool _isHiddenNewPassword = true;
   bool _isHiddenConfirmNewPassword = true;
+  final TextEditingController _passwordController = TextEditingController();
+  String? passwordText;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +75,6 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            Navigator.pop(context);
                           },
                           child: Image.asset(
                             'assets/back.png',
@@ -98,22 +100,22 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               ),
                               SizedBox(height: 10),
                               Text(
-                                "Untuk personalisasi kebutuhan Anda dalam kehamilan",
+                                "Untuk personalisasi kebutuhan Anda\ndalam kehamilan",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.normal,
-                                    fontSize: 14),
+                                    fontSize: 14.sp),
                               ),
                               SizedBox(height: 30),
-                              Text(
-                                "Nama Depan",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
+                              // Text(
+                              //   "Nama Depan",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               TextField(
                                 onChanged: (value) {
                                   Injector.resolve<SignUpQuestionnaireBloc>()
@@ -121,26 +123,26 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(4.w),
                                   ),
                                   filled: true,
                                   hintStyle: TextStyle(color: Colors.grey[500]),
                                   fillColor: Colors.white70,
-                                  hintText: 'Isi dengan nama depan Anda',
+                                  label: Text('Nama depan'),
                                   errorText: state.firstName.invalid
                                       ? 'Mohon lengkapi Data'
                                       : null,
                                 ),
                               ),
                               SizedBox(height: 20),
-                              Text(
-                                "Nama Belakang",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
+                              // Text(
+                              //   "Nama Belakang",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               TextField(
                                 onChanged: (value) {
                                   Injector.resolve<SignUpQuestionnaireBloc>()
@@ -148,42 +150,47 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(4.w),
                                   ),
                                   filled: true,
                                   hintStyle: TextStyle(color: Colors.grey[500]),
                                   fillColor: Colors.white70,
-                                  hintText: 'Isi dengan nama belakang Anda',
+                                  label: Text("Nama belakang"),
                                   errorText: state.secondName.invalid
                                       ? 'Mohon lengkapi Data'
                                       : null,
                                 ),
                               ),
                               SizedBox(height: 20),
-                              Text(
-                                "Kata Sandi",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
+                              // Text(
+                              //   "Kata Sandi",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               Column(
                                 children: [
                                   TextField(
                                     onChanged: (value) {
+                                      setState(() {
+                                        passwordText = value;
+                                      });
+
                                       Injector.resolve<
                                               SignUpQuestionnaireBloc>()
                                           .add(SignupPasswordChanged(value));
                                     },
+                                    controller: _passwordController,
                                     obscureText: _isHiddenNewPassword,
                                     decoration: InputDecoration(
                                       hintStyle:
                                           TextStyle(color: Colors.grey[500]),
-                                      hintText: 'Masukan kata sandi',
+                                      label: Text("Kata Sandi"),
                                       border: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(4.w),
                                       ),
                                       errorText:
                                           state.password.invalid ? "" : null,
@@ -209,40 +216,74 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                       ),
                                     ),
                                   ),
-                                  state.password.invalid
-                                      ? Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                StringConstant.alertPassword1,
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                              Text(
-                                                  StringConstant.alertPassword2,
-                                                  style: TextStyle(
-                                                      color: Colors.red)),
-                                              Text(
-                                                  StringConstant.alertPassword3,
-                                                  style: TextStyle(
-                                                      color: Colors.red))
-                                            ],
-                                          ),
-                                        )
-                                      : Container()
                                 ],
                               ),
-                              SizedBox(height: 20),
-                              Text(
-                                "Konfirmasi Kata Sandi",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
+                              Material(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.w)
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.all(16.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4.w),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Builder(
+                                            builder: (context){
+                                              // if(RegExp(RegexConstants.validPasswordlRegex).hasMatch(passwordText ?? "")) {
+                                              if((passwordText?.length ?? 0) >= 8) {
+                                                return Icon(Icons.check_circle_rounded, color: EpregnancyColors.primer, size: 14.sp,);
+                                              } else {
+                                                return Icon(Icons.check_circle_rounded, color: EpregnancyColors.grey, size: 14.sp,);
+                                              }
+
+                                            },
+                                          ),
+                                          SizedBox(width: 8.w,),
+                                          Text("Minimal 8 karakter dan maksimal 128 karakter", style: TextStyle(
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.w300
+                                          ),)
+                                        ],
+                                      ),
+                                      SizedBox(height: 10.h,),
+                                      Row(
+                                        children: [
+                                          Builder(builder: (context){
+                                            if(RegExp(RegexConstants.validPasswordlRegex).hasMatch(passwordText ?? "")) {
+                                              return Icon(Icons.check_circle_rounded, color: EpregnancyColors.primer, size: 14.sp,);
+                                            } else {
+                                              return Icon(Icons.check_circle_rounded, color: EpregnancyColors.grey, size: 14.sp,);
+                                            }
+                                          }),
+                                          SizedBox(width: 8.w,),
+                                          Expanded(
+                                            child: Text("Setidaknya memiliki 1 huruf besar, 1 huruf kecil dan 1 angka", style: TextStyle(
+                                                fontSize: 11.sp,
+                                                fontWeight: FontWeight.w300
+                                            )),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 20),
+                              // Text(
+                              //   "Konfirmasi Kata Sandi",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               TextField(
                                 enabled: state.password.valid,
                                 onChanged: (value) {
@@ -252,9 +293,9 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 obscureText: _isHiddenConfirmNewPassword,
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.grey[500]),
-                                  hintText: 'Konfirmasi kata sandi',
+                                  label: Text('Konfirmasi Kata Sandi'),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(4.w),
                                   ),
                                   errorText: state.confirmPassword.invalid ||
                                           state.password.value !=
@@ -285,16 +326,20 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 ),
                               ),
                               SizedBox(height: 20),
-                              Text(
-                                "Tanggal lahir",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
+                              // Text(
+                              //   "Tanggal lahir",
+                              //   style: TextStyle(
+                              //       color: Colors.black,
+                              //       fontWeight: FontWeight.bold,
+                              //       fontSize: 16),
+                              // ),
+                              // SizedBox(height: 10),
                               DateTimeFormField(
-                                dateFormat: DateFormat('dd/MM/yyyy'),
+                                dateTextStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                dateFormat: DateFormat('dd / MM / yyyy'),
                                 mode: DateTimeFieldPickerMode.date,
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.black45),
@@ -305,10 +350,11 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                   ),
                                   suffixIcon: Icon(Icons.event_note),
                                   hintText: 'DD / MM / YYYY',
-                                  labelStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  label: Text("Tanggal Lahir"),
+                                  // labelStyle: TextStyle(
+                                  //   color: Colors.black,
+                                  //   fontWeight: FontWeight.bold,
+                                  // ),
                                   errorText: state.date.invalid
                                       ? 'Mohon lengkapi Data'
                                       : null,
@@ -341,15 +387,20 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               // ),
                               SizedBox(height: 10),
                               Container(
-                                width: 350,
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.symmetric(horizontal: _horizontalPadding),
                                 child: ElevatedButton(
-                                  onPressed: () async {
+                                  onPressed: state.password.invalid || state.confirmPassword.invalid || _passwordController.text.isEmpty  ? null : () async {
                                     Injector.resolve<SignUpQuestionnaireBloc>()
                                         .add(SignupSubmitted());
                                   },
-                                  child: Text("Daftar"),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
+                                    child: Text("Daftar", style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),),
+                                  ),
                                   style: ElevatedButton.styleFrom(
                                     primary: EpregnancyColors.primer,
+                                    onSurface: EpregnancyColors.primer.withOpacity(0.25),
                                     onPrimary: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),

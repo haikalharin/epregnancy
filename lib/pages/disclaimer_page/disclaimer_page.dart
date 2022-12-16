@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math' as math;
 
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:toast/toast.dart';
 
@@ -114,7 +115,7 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                   Card2(widget.isPatient ?? true),
                   CheckboxListTile(
                     activeColor: EpregnancyColors.primer,
-                    contentPadding: EdgeInsets.only(top: 10),
+                    contentPadding: EdgeInsets.only(top: 5.w),
                     title: Container(
                       padding: EdgeInsets.only(top: 20),
                       child: Column(
@@ -123,7 +124,7 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                           Container(
                               child: Text(
                             "Centang untuk menyetujui Syarat dan Ketentuan yang telah Anda baca dengan teliti.",
-                            style: TextStyle(color: EpregnancyColors.primer),
+                            style: TextStyle(color: EpregnancyColors.black),
                           )),
                         ],
                       ),
@@ -148,7 +149,7 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                           child: RaisedButton(
                             color: checkedValue == true
                                 ? EpregnancyColors.primer
-                                : Colors.grey.shade200,
+                                : EpregnancyColors.primer.withOpacity(0.25),
                             child: Padding(
                               padding: EdgeInsets.zero,
                               child: Text(
@@ -157,10 +158,10 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                                     fontSize: 16, color: Colors.white),
                               ),
                             ),
-                            elevation: 8,
-                            shape: const RoundedRectangleBorder(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(7)),
+                                  BorderRadius.all(Radius.circular(12.w)),
                             ),
                             onPressed: () async {
                               if (checkedValue == true) {
@@ -170,7 +171,9 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                                 } else {
                                   Navigator.of(context).pushNamed(
                                       RouteName.otpPage,
-                                      arguments: widget.userId);
+                                      arguments: widget.userId).then((value) {
+                                        Navigator.pop(context);
+                                  });
                                 }
                               }
                             },

@@ -103,27 +103,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            if(_hospitalModel?.name == ''){
-              Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                if(value != null){
-                  setState(() {
-                    _hospitalModel = value as HospitalModel?;
-                  });
-                }
-              });
-            } else {
-              showModalBottomSheet(context: context,
-                  isScrollControlled: false,
-                  builder: (context){
-                return PinCheckInPage();
-              });
-            }
-          },
-          icon: FaIcon(FontAwesomeIcons.calendarCheck),
-          label: Text("CheckIn Kunjungan")
-      ),
       backgroundColor: Colors.grey.shade200,
       body: BlocListener<ConsultationPageBloc, ConsultationPageState>(
         listener: (context, state) async {

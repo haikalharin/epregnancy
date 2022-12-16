@@ -193,7 +193,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         //   ),
         // ),
         BottomNavigationBarItem(
-          label: "Diskusi",
+          label: "Ruang Diskusi",
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
