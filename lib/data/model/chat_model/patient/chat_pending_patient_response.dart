@@ -64,7 +64,7 @@ abstract class ChatPendingPatientFrom with _$ChatPendingPatientFrom {
     required bool? isSuperAdmin,
     required bool? isVerified,
     required String? hospitalId,
-    required String? hospital,
+    required ChatPendingPatientHospital? hospital,
     required String? imageUrl,
     required String? coverUrl,
   }) = _ChatPendingPatientFrom;

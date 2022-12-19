@@ -33,7 +33,7 @@ class _PendingChatTabPageState extends State<PendingChatTabPage> {
             backgroundColor: Colors.white,
             body: ListView.builder(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              // physics: const NeverScrollableScrollPhysics(),
               itemCount: state.chatPendingList?.length,
               itemBuilder: (context, index){
                 return InkWell(
