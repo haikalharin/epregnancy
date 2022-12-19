@@ -264,7 +264,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                           }),
                                           SizedBox(width: 8.w,),
                                           Expanded(
-                                            child: Text("Setidaknya memiliki 1 huruf besar, 1 huruf kecil dan 1 angka", style: TextStyle(
+                                            child: Text("Setidaknya memiliki 1 huruf besar, 1 huruf kecil, 1 angka dan 1 simbol", style: TextStyle(
                                                 fontSize: 11.sp,
                                                 fontWeight: FontWeight.w300
                                             )),

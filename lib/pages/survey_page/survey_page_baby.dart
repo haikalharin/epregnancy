@@ -98,10 +98,8 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(2));
                   return Future.value(false);
                 } else if (state.page == 2) {
-                  Navigator.pop(context);
-                  return Future.value(true);
+                  return Future.value(false);
                 } else {
-                  Navigator.of(context).pushNamed(RouteName.signup);
                   return Future.value(false);
                 }
               },
@@ -111,7 +109,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   elevation: 0.0,
                   backgroundColor: EpregnancyColors.primerSoft,
                   iconTheme: IconThemeData(color: Colors.black),
-                  leading: GestureDetector(
+                  leading: state.page == 3?GestureDetector(
                     child: const Icon(
                       Icons.arrow_back_ios,
                       color: Colors.black,
@@ -120,11 +118,9 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                       if (state.page == 3) {
                         Injector.resolve<SurveyPageBloc>()
                             .add(SurveyPageChanged(2));
-                      } else if (state.page == 2) {
-                        Navigator.pop(context);
                       }
                     },
-                  ),
+                  ): null,
                 ),
                 body: Container(
                   color: EpregnancyColors.primerSoft,
