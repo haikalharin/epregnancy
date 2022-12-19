@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 #dev
-version: 1.0.20-dev+25
+version: 1.0.20-dev+26
 
 #prod
 #version: 1.0.2+5
@@ -81,7 +81,6 @@ dependencies:
   showcaseview: ^1.1.8
   expandable: ^5.0.1
   firebase_remote_config: ^2.0.1
-  # for lottie animation
   lottie: ^1.4.2
 
   #flavor for environment management

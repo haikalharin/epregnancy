@@ -189,7 +189,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                     } else {
                       return ListView.builder(
                         shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
+                        // physics: const NeverScrollableScrollPhysics(),
                         itemCount:
                             (state.chatPendingList?.length ?? 0) >= 1 ? 1 : 0,
                         itemBuilder: (context, index) {

@@ -312,7 +312,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                                "Setidaknya memiliki 1 huruf besar, 1 huruf kecil dan 1 angka",
+                                                "Setidaknya memiliki 1 huruf besar, 1 huruf kecil dan 1 angka dan 1 simbol",
                                                 style: TextStyle(
                                                     fontSize: 11.sp,
                                                     fontWeight:

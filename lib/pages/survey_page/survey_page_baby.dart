@@ -100,7 +100,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   return Future.value(false);
                 } else if (state.page == 2) {
                   Navigator.pop(context);
-                  return Future.value(true);
+                  return Future.value(false);
                 } else {
                   if(widget.isEdit == true) {
                     Navigator.pop(context);
@@ -117,7 +117,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   elevation: 0.0,
                   backgroundColor: EpregnancyColors.primerSoft,
                   iconTheme: IconThemeData(color: Colors.black),
-                  leading: GestureDetector(
+                  leading: state.page == 3?GestureDetector(
                     child: const Icon(
                       Icons.arrow_back_ios,
                       color: Colors.black,
@@ -137,7 +137,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                         }
                       }
                     },
-                  ),
+                  ): null,
                 ),
                 body: Container(
                   color: EpregnancyColors.primerSoft,
