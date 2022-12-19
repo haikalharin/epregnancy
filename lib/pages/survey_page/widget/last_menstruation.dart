@@ -71,7 +71,7 @@ class _LastMenstruationState extends State<LastMenstruation> {
                             Container(
                               margin: EdgeInsets.only(left: 30, right: 30),
                               child: const Text(
-                                "Kapan hari terakhir haid Anda ?",
+                                "Kapan hari pertama haid terakhir Anda ?",
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.bold),

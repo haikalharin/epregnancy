@@ -94,6 +94,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
           builder: (context, state) {
             return WillPopScope(
               onWillPop: () {
+                // todo handle back press device
                 if (state.page == 3) {
                   Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(2));
                   return Future.value(false);
@@ -101,8 +102,13 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   Navigator.pop(context);
                   return Future.value(true);
                 } else {
-                  Navigator.of(context).pushNamed(RouteName.signup);
-                  return Future.value(false);
+                  if(widget.isEdit == true) {
+                    Navigator.pop(context);
+                    return Future.value(true);
+                  } else {
+                    Navigator.of(context).pushNamed(RouteName.signup);
+                    return Future.value(false);
+                  }
                 }
               },
               child: Scaffold(
@@ -117,11 +123,18 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                       color: Colors.black,
                     ),
                     onTap: () {
+                      // todo handle back
                       if (state.page == 3) {
                         Injector.resolve<SurveyPageBloc>()
                             .add(SurveyPageChanged(2));
                       } else if (state.page == 2) {
                         Navigator.pop(context);
+                      } else {
+                        if(widget.isEdit == true) {
+                          Navigator.pop(context);
+                        } else {
+                          Navigator.of(context).pushNamed(RouteName.signup);
+                        }
                       }
                     },
                   ),

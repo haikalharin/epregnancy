@@ -183,7 +183,7 @@ class SignUpQuestionnaireBloc
                 password: state.password,
                 confirmPassword: state.confirmPassword,
                 date: state.date,
-                errorMessage: 'Silahkan cek kembali data anda');
+                errorMessage: response.message);
             }
           } else {
           yield state.copyWith(

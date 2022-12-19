@@ -50,6 +50,9 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
       if (checkInResponse.code == 200) {
         pointEarn = checkInResponse.data.pointsEarned;
         int newTotalPoint = currentPoint + pointEarn;
+        print("current point : $currentPoint");
+        print("earned point : $pointEarn");
+        print("new total point : $newTotalPoint");
         _currentEntityList![state.todayIndex!].done = true;
 
         // sync point_model value in homescreen

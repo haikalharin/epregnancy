@@ -78,6 +78,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     }
     yield SurveyPageState(
         user: user,
+        page: 1,
         dataBaby: myBaby.isNotEmpty ? myBaby.last : BabyModelApi.empty(),
         choice: choice);
   }

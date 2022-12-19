@@ -372,7 +372,8 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<CheckinResponse>> hitCheckInToday(String day) async {
-    final response = await httpClient.post(ServiceUrl.checkIn + day, {});
+    // final response = await httpClient.post(ServiceUrl.checkIn + day, {});
+    final response = await httpClient.post(ServiceUrl.checkIn, {});
 
 //    return null;
     return ResponseModel<CheckinResponse>.fromJson(

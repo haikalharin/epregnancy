@@ -33,6 +33,26 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
   final TextEditingController _passwordController = TextEditingController();
   String? passwordText;
 
+  void _showDialog(Widget child) {
+    showCupertinoModalPopup<void>(
+        context: context,
+        builder: (BuildContext context) => Container(
+              height: 216,
+              padding: const EdgeInsets.only(top: 6.0),
+              // The Bottom margin is provided to align the popup above the system navigation bar.
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              // Provide a background color for the popup.
+              color: CupertinoColors.systemBackground.resolveFrom(context),
+              // Use a SafeArea widget to avoid system overlaps.
+              child: SafeArea(
+                top: false,
+                child: child,
+              ),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -221,8 +241,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               Material(
                                 elevation: 2,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.w)
-                                ),
+                                    borderRadius: BorderRadius.circular(4.w)),
                                 child: Container(
                                   padding: EdgeInsets.all(16.w),
                                   decoration: BoxDecoration(
@@ -230,44 +249,74 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                     color: Colors.white,
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
                                           Builder(
-                                            builder: (context){
+                                            builder: (context) {
                                               // if(RegExp(RegexConstants.validPasswordlRegex).hasMatch(passwordText ?? "")) {
-                                              if((passwordText?.length ?? 0) >= 8) {
-                                                return Icon(Icons.check_circle_rounded, color: EpregnancyColors.primer, size: 14.sp,);
+                                              if ((passwordText?.length ?? 0) >=
+                                                  8) {
+                                                return Icon(
+                                                  Icons.check_circle_rounded,
+                                                  color:
+                                                      EpregnancyColors.primer,
+                                                  size: 14.sp,
+                                                );
                                               } else {
-                                                return Icon(Icons.check_circle_rounded, color: EpregnancyColors.grey, size: 14.sp,);
+                                                return Icon(
+                                                  Icons.check_circle_rounded,
+                                                  color: EpregnancyColors.grey,
+                                                  size: 14.sp,
+                                                );
                                               }
-
                                             },
                                           ),
-                                          SizedBox(width: 8.w,),
-                                          Text("Minimal 8 karakter dan maksimal 128 karakter", style: TextStyle(
-                                            fontSize: 11.sp,
-                                            fontWeight: FontWeight.w300
-                                          ),)
+                                          SizedBox(
+                                            width: 8.w,
+                                          ),
+                                          Text(
+                                            "Minimal 8 karakter dan maksimal 128 karakter",
+                                            style: TextStyle(
+                                                fontSize: 11.sp,
+                                                fontWeight: FontWeight.w300),
+                                          )
                                         ],
                                       ),
-                                      SizedBox(height: 10.h,),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
                                       Row(
                                         children: [
-                                          Builder(builder: (context){
-                                            if(RegExp(RegexConstants.validPasswordlRegex).hasMatch(passwordText ?? "")) {
-                                              return Icon(Icons.check_circle_rounded, color: EpregnancyColors.primer, size: 14.sp,);
+                                          Builder(builder: (context) {
+                                            if (RegExp(RegexConstants
+                                                    .validPasswordlRegex)
+                                                .hasMatch(passwordText ?? "")) {
+                                              return Icon(
+                                                Icons.check_circle_rounded,
+                                                color: EpregnancyColors.primer,
+                                                size: 14.sp,
+                                              );
                                             } else {
-                                              return Icon(Icons.check_circle_rounded, color: EpregnancyColors.grey, size: 14.sp,);
+                                              return Icon(
+                                                Icons.check_circle_rounded,
+                                                color: EpregnancyColors.grey,
+                                                size: 14.sp,
+                                              );
                                             }
                                           }),
-                                          SizedBox(width: 8.w,),
+                                          SizedBox(
+                                            width: 8.w,
+                                          ),
                                           Expanded(
-                                            child: Text("Setidaknya memiliki 1 huruf besar, 1 huruf kecil dan 1 angka", style: TextStyle(
-                                                fontSize: 11.sp,
-                                                fontWeight: FontWeight.w300
-                                            )),
+                                            child: Text(
+                                                "Setidaknya memiliki 1 huruf besar, 1 huruf kecil dan 1 angka",
+                                                style: TextStyle(
+                                                    fontSize: 11.sp,
+                                                    fontWeight:
+                                                        FontWeight.w300)),
                                           )
                                         ],
                                       )
@@ -334,42 +383,86 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               //       fontSize: 16),
                               // ),
                               // SizedBox(height: 10),
-                              DateTimeFormField(
-                                dateTextStyle: TextStyle(
+                              InkWell(
+                                // todo used cupertino picker
+                                onTap: () => _showDialog(
+                                  CupertinoDatePicker(
+                                    initialDateTime: DateTime.now(),
+                                    mode: CupertinoDatePickerMode.date,
+                                    dateOrder: DatePickerDateOrder.dmy,
+                                    maximumDate: DateTime.now(),
+                                    use24hFormat: true,
+                                    // This is called when the user changes the date.
+                                    onDateTimeChanged: (DateTime newDate) {
+                                      String dateTime = DateFormat('yyyy-MM-dd').format(newDate);
+
+                                      Injector.resolve<SignUpQuestionnaireBloc>()
+                                          .add(SignupDateChanged(dateTime));
+                                    },
+                                  ),
+                                ),
+                                child: DateTimeFormField(
+                                  dateTextStyle: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
                                   ),
-                                dateFormat: DateFormat('dd / MM / yyyy'),
-                                mode: DateTimeFieldPickerMode.date,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.black45),
-                                  errorStyle:
-                                      TextStyle(color: Colors.redAccent),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                  dateFormat: DateFormat('dd / MM / yyyy'),
+                                  enabled: true,
+                                  lastDate: DateTime.now(),
+                                  mode: DateTimeFieldPickerMode.date,
+                                  decoration: InputDecoration(
+                                    hintStyle: TextStyle(color: Colors.black45),
+                                    errorStyle:
+                                        TextStyle(color: Colors.redAccent),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4.w),
+                                    ),
+                                    suffixIcon: Icon(Icons.event_note),
+                                    hintText: 'DD / MM / YYYY',
+                                    label: Text("Tanggal Lahir"),
+                                    // labelStyle: TextStyle(
+                                    //   color: Colors.black,
+                                    //   fontWeight: FontWeight.bold,
+                                    // ),
+                                    errorText: state.date.invalid
+                                        ? 'Mohon lengkapi Data'
+                                        : null,
                                   ),
-                                  suffixIcon: Icon(Icons.event_note),
-                                  hintText: 'DD / MM / YYYY',
-                                  label: Text("Tanggal Lahir"),
-                                  // labelStyle: TextStyle(
-                                  //   color: Colors.black,
-                                  //   fontWeight: FontWeight.bold,
-                                  // ),
-                                  errorText: state.date.invalid
-                                      ? 'Mohon lengkapi Data'
-                                      : null,
-                                ),
-                                // firstDate: DateTime.now().add(const Duration(days: 10)),
-                                // lastDate: DateTime.now().add(const Duration(days: 40)),
-                                // initialDate: DateTime.now().add(const Duration(days: 20)),
-                                onDateSelected: (DateTime value) {
-                                  String dateTime =
-                                      DateFormat('yyyy-MM-dd').format(value);
+                                  // firstDate: DateTime.now().add(const Duration(days: 10)),
+                                  // lastDate: DateTime.now().add(const Duration(days: 40)),
+                                  // initialDate: DateTime.now().add(const Duration(days: 20)),
+                                  onDateSelected: (DateTime value) {
+                                    String dateTime =
+                                        DateFormat('yyyy-MM-dd').format(value);
 
-                                  Injector.resolve<SignUpQuestionnaireBloc>()
-                                      .add(SignupDateChanged(dateTime));
-                                },
+                                    Injector.resolve<SignUpQuestionnaireBloc>()
+                                        .add(SignupDateChanged(dateTime));
+                                  },
+                                ),
                               ),
+                              // CupertinoButton(
+                              //   // Display a CupertinoDatePicker in date picker mode.
+                              //   onPressed: () => _showDialog(
+                              //     CupertinoDatePicker(
+                              //       initialDateTime: DateTime.now(),
+                              //       mode: CupertinoDatePickerMode.date,
+                              //       dateOrder: DatePickerDateOrder.dmy,
+                              //       use24hFormat: true,
+                              //       // This is called when the user changes the date.
+                              //       onDateTimeChanged: (DateTime newDate) {
+                              //         setState(() => date = newDate);
+                              //       },
+                              //     ),
+                              //   ),
+                              //   // In this example, the date value is formatted manually. You can use intl package
+                              //   // to format the value based on user's locale settings.
+                              //   child: Text(
+                              //     '${date.month}-${date.day}-${date.year}',
+                              //     style: const TextStyle(
+                              //       fontSize: 22.0,
+                              //     ),
+                              //   ),
+                              // ),
                               SizedBox(height: 30),
                             ],
                           ),
@@ -388,19 +481,32 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               SizedBox(height: 10),
                               Container(
                                 width: MediaQuery.of(context).size.width,
-                                margin: EdgeInsets.symmetric(horizontal: _horizontalPadding),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: _horizontalPadding),
                                 child: ElevatedButton(
-                                  onPressed: state.password.invalid || state.confirmPassword.invalid || _passwordController.text.isEmpty  ? null : () async {
-                                    Injector.resolve<SignUpQuestionnaireBloc>()
-                                        .add(SignupSubmitted());
-                                  },
+                                  onPressed: state.password.invalid ||
+                                          state.confirmPassword.invalid ||
+                                          _passwordController.text.isEmpty
+                                      ? null
+                                      : () async {
+                                          Injector.resolve<
+                                                  SignUpQuestionnaireBloc>()
+                                              .add(SignupSubmitted());
+                                        },
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
-                                    child: Text("Daftar", style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),),
+                                    padding: EdgeInsets.only(
+                                        top: 16.w, bottom: 16.w),
+                                    child: Text(
+                                      "Daftar",
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     primary: EpregnancyColors.primer,
-                                    onSurface: EpregnancyColors.primer.withOpacity(0.25),
+                                    onSurface: EpregnancyColors.primer
+                                        .withOpacity(0.25),
                                     onPrimary: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),

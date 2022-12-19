@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController? _tabController;
   HospitalModel? _hospitalModel;
   bool? _isFromNotif = false;
+  bool showEditBaby = false;
 
   void getHospitalFromLocal() async {
     HospitalModel _hospital = await AppSharedPreference.getHospital();
@@ -134,6 +135,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: BlocListener<HomePageBloc, HomePageState>(
           listener: (context, state) {
             if (state.submitStatus == FormzStatus.submissionSuccess) {
+              if (state.user?.babies?.length == 0) {
+                setState(() {
+                  showEditBaby = true;
+                });
+              }
             } else if (state.submitStatus == FormzStatus.submissionFailure &&
                 state.isNotHaveSession == true) {
               Navigator.of(context).pushAndRemoveUntil(
@@ -390,6 +396,72 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 ],
                               ),
                             ])),
+                    // update baby section
+                    Visibility(
+                      visible: showEditBaby,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              RouteName.surveyPageBaby,
+                              arguments: true);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10.h),
+                          padding: EdgeInsets.only(
+                              top: 16.w, bottom: 16.w, left: 12.w, right: 12.w),
+                          decoration: BoxDecoration(
+                              color: EpregnancyColors.greyBlue,
+                              borderRadius: BorderRadius.circular(8.w)),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset("assets/icStroller.svg"),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Profil Bayi",
+                                          style: TextStyle(
+                                              color: EpregnancyColors.blueDark,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 12.sp),
+                                        ),
+                                        InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                showEditBaby = false;
+                                              });
+                                            },
+                                            child: Icon(Icons.close,
+                                                color:
+                                                    EpregnancyColors.primer)),
+                                      ],
+                                    ),
+                                    Text(
+                                      "Anda bisa mengisi nama bayi di profil\ndengan klik spanduk ini",
+                                      style: TextStyle(
+                                          color: EpregnancyColors.blueDark,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12.sp),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     // checkin section
                     Container(
                       margin:
@@ -451,10 +523,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Icon(
-                                      Icons.check_circle_rounded,
-                                      color: Colors.white,
-                                    ),
+                                    SvgPicture.asset('assets/icQr.svg'),
                                     SizedBox(
                                       width: 9.w,
                                     ),
@@ -559,9 +628,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             title: 'Kumpulkan Poin',
                             description:
                                 'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
-                            child: PoinCardSection(
-                                point: state.totalPointsEarned ?? 0))
-                        : PoinCardSection(point: state.totalPointsEarned ?? 0),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.pushNamed(context, RouteName.poinPage,
+                                    arguments: state.totalPointsEarned ?? 0);
+                              },
+                              child: PoinCardSection(
+                                  point: state.totalPointsEarned ?? 0),
+                            ))
+                        : InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, RouteName.poinPage,
+                              arguments: state.totalPointsEarned ?? 0);
+                        },
+                        child: PoinCardSection(point: state.totalPointsEarned ?? 0)),
                     // Games Section
                     const GameCardSection(),
 

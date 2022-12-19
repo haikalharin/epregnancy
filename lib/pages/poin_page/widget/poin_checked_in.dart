@@ -14,7 +14,7 @@ class PointCheckedIn extends StatelessWidget {
             color: EpregnancyColors.blueDark
         ),
         child: Center(
-          child: Icon(Icons.check_circle_rounded, color: Colors.white, size: 19.w,),
+          child: Icon(Icons.check_circle_rounded, color: Colors.white, size: 20.w,),
         )
     );
   }
