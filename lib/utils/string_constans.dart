@@ -58,7 +58,8 @@ class StringConstant {
   //profile
   static const profileChange = 'Ganti Profil';
   static const profilePregnantChange = 'Ganti Profil Kehamilan';
-  static const passwordChange = 'Ganti Kata Sandi';
+  static const passwordChange = 'Ubah Kata Sandi';
+  static const deleteAccount = 'Hapus Akun';
   static const logout = 'Keluar';
 
   //game

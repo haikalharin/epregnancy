@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
+import 'package:PregnancyApp/common/widget/primary_btn.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:clipboard/clipboard.dart';
@@ -59,271 +60,391 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
       child: BlocBuilder<ProfilePageBloc, ProfilePageState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              // leading: const BtnBackIosStyle(),
-              elevation: 0,
-              backgroundColor: Colors.white,
-              title: Text(
-               state.user?.name??"",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24.sp),
-              ),
-              actions: [
-                InkWell(
-                  onTap: () {
-                    _showPicker(context);
-                  },
-                  child: Container(
-                    height: 40.h,
-                    width: 40.w,
-                    margin: EdgeInsets.only(right: 10.w, top: 10.w),
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
-                    child:   state.user?.imageUrl != null?  Container(
-                      // width: 62,
-
-                      child: ClipRRect(
-                        borderRadius:
-                        BorderRadius.circular(40),
-                        child: FadeInImage(
-                          placeholder: const AssetImage(
-                              'assets/ic_no_photo.png'),
-                          image: NetworkImage(state.user?.imageUrl??
-                              ""),
-                          width: 40,
-                          height: 40,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ):Container(
-                      // width: 62,
-
-                      child: ClipRRect(
-                        borderRadius:
-                        BorderRadius.circular(40),
-                        child: const FadeInImage(
-                          placeholder: AssetImage(
-                              'assets/ic_no_photo.png'),
-                          image: AssetImage(
-                              'assets/ic_no_photo.png'),
-                          width: 40,
-                          height: 40,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
+            // appBar: AppBar(
+            //   // leading: const BtnBackIosStyle(),
+            //   elevation: 0,
+            //   backgroundColor: Colors.white,
+            //   title: Text(
+            //    state.user?.name??"",
+            //     style: TextStyle(
+            //         color: Colors.black,
+            //         fontWeight: FontWeight.w700,
+            //         fontSize: 24.sp),
+            //   ),
+            //   actions: [
+            //     InkWell(
+            //       onTap: () {
+            //         _showPicker(context);
+            //       },
+            //       child: Container(
+            //         height: 40.h,
+            //         width: 40.w,
+            //         margin: EdgeInsets.only(right: 10.w, top: 10.w),
+            //         decoration: const BoxDecoration(shape: BoxShape.circle),
+            //         child:   state.user?.imageUrl != null?  Container(
+            //           // width: 62,
+            //
+            //           child: ClipRRect(
+            //             borderRadius:
+            //             BorderRadius.circular(40),
+            //             child: FadeInImage(
+            //               placeholder: const AssetImage(
+            //                   'assets/ic_no_photo.png'),
+            //               image: NetworkImage(state.user?.imageUrl??
+            //                   ""),
+            //               width: 40,
+            //               height: 40,
+            //               fit: BoxFit.cover,
+            //             ),
+            //           ),
+            //         ):Container(
+            //           // width: 62,
+            //
+            //           child: ClipRRect(
+            //             borderRadius:
+            //             BorderRadius.circular(40),
+            //             child: const FadeInImage(
+            //               placeholder: AssetImage(
+            //                   'assets/ic_no_photo.png'),
+            //               image: AssetImage(
+            //                   'assets/ic_no_photo.png'),
+            //               width: 40,
+            //               height: 40,
+            //               fit: BoxFit.cover,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     )
+            //   ],
+            // ),
             body: Stack(
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height,
-                  color: Colors.white,
-                  padding: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
-                  child: Column(
-                    children: [
-                      Visibility(
-                        visible: false,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width - 40,
-
-                          padding:
-                              EdgeInsets.only(left: 20, right: 0, top: 20, bottom: 5),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey.shade200,
+                  // color: Colors.white,
+                  padding: EdgeInsets.only(top: 20.h, left: 0.w, right: 0.w),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 28.h),
+                          child: Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    // _showPicker(context);
+                                  },
+                                  child: Container(
+                                    height: 80.h,
+                                    width: 80.w,
+                                    margin: EdgeInsets.only(right: 10.w, top: 10.w, bottom: 10.h),
+                                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                                    child: state.user?.imageUrl != null
+                                        ? Container(
+                                            // width: 62,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(40),
+                                              child: FadeInImage(
+                                                placeholder: const AssetImage(
+                                                    'assets/ic_no_photo_blue.png'),
+                                                image: NetworkImage(
+                                                    state.user?.imageUrl ?? ""),
+                                                width: 40,
+                                                height: 40,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                        : Container(
+                                            // width: 62,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(40),
+                                              child: const FadeInImage(
+                                                placeholder: AssetImage(
+                                                    'assets/ic_no_photo_blue.png'),
+                                                image: AssetImage(
+                                                    'assets/ic_no_photo_blue.png'),
+                                                width: 40,
+                                                height: 40,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                                Container(
+                                    width: MediaQuery.of(context).size.width / 2.1,
+                                    margin: EdgeInsets.only(bottom: 24.h),
+                                    child: BtnPrimary(text: "Ubah Data Diri", function: (){
+                                      _showPicker(context);
+                                    }))
+                              ],
                             ),
-                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                          // color: Colors.greenAccent,
-                          margin: EdgeInsets.only(left: 20, right: 20, bottom: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    // margin: EdgeInsets.only(left: 50, right: 50),
-                                    child: SvgPicture.asset(
-                                      'assets/ic_invitation.svg',
-                                      // height: 200,
+                        ),
+                        Visibility(
+                          visible: true,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width - 40,
+                            padding: EdgeInsets.only(left: 20, right: 0, top: 20, bottom: 5),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey.shade200,
+                                width: 1.5.h
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            // color: Colors.greenAccent,
+                            margin: EdgeInsets.only(left: 20, right: 20, bottom: 5.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      // margin: EdgeInsets.only(left: 50, right: 50),
+                                      child: SvgPicture.asset(
+                                        'assets/ic_invitation.svg',
+                                        // height: 200,
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              200,
+                                          margin: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: const Text(
+                                            "Undang teman anda untuk mendapatkan poin !",
+                                            textAlign: TextAlign.left,
+                                            maxLines: 5,
+                                            style: TextStyle(
+                                                letterSpacing: 1.0,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context).size.width - 200,
+                                          margin:  EdgeInsets.only(
+                                              left: 10, right: 10, top: 5.h),
+                                          child: Text(
+                                            "Bagikan kode dengan teman Anda dan dapatkan 300 poin",
+                                            textAlign: TextAlign.left,
+                                            maxLines: 5,
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 20, top: 10.h, bottom: 10.h),
+                                  width: MediaQuery.of(context).size.width - 100,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.w),
+                                      color: EpregnancyColors.primerSoft),
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                        left: 20,
+                                        right: 20,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          child: Text(
+                                            state.user?.referralCode ?? "",
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: EpregnancyColors.primer),
+                                            maxLines: 3,
+                                          ),
+                                        ),
+                                        InkWell(
+                                            onTap: () {
+                                              FlutterClipboard.copy(state.user?.referralCode ?? "")
+                                                  .then((value) {
+                                                const snackBar = SnackBar(
+                                                    content: Text("Berhasil dicopy"),
+                                                    backgroundColor: EpregnancyColors.primer);
+                                                Scaffold.of(context).showSnackBar(snackBar);
+                                              });
+                                            },
+                                            child: SvgPicture.asset("assets/icCopy.svg"))
+                                      ],
                                     ),
                                   ),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width - 200,
-                                        margin: const EdgeInsets.only(
-                                            left: 10, right: 10),
-                                        child: const Text(
-                                          "Undang team anda untuk mendapatkan poin !",
-                                          textAlign: TextAlign.left,
-                                          maxLines: 5,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width - 200,
-                                        margin: const EdgeInsets.only(
-                                            left: 10, right: 10),
-                                        child: const Text(
-                                          "Bagikan kode dengan teman Anda dan dapatkan 300 poin",
-                                          textAlign: TextAlign.left,
-                                          maxLines: 5,
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 20),
-                                width: MediaQuery.of(context).size.width - 100,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    color: EpregnancyColors.primerSoft2),
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      left: 20, right: 20, top: 10, bottom: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        child:  Text(
-                                          state.user?.referralCode??"",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: EpregnancyColors.white),
-                                          maxLines: 3,
-                                        ),
-                                      ),
-                                      InkWell(onTap: (){
-                                        FlutterClipboard.copy(state.user?.referralCode??"").then(( value ) {
-                                          const snackBar = SnackBar(
-                                              content: Text("Berhasil dicopy"),
-                                              backgroundColor: EpregnancyColors.primer);
-                                          Scaffold.of(context).showSnackBar(snackBar);
-                                        });
-                                      },child: Icon(Icons.copy))
-                                    ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 14.w, vertical: 8.h),
+                          child: Text(
+                            "Pengaturan Akun",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14.sp),
+                          ),
+                        ),
+                        Container(
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  //todo change password
+                                  // Navigator.of(context)
+                                  //     .pushNamed(RouteName.surveyPageBaby, arguments: true);
+
+                                  Navigator.of(context)
+                                      .pushNamed(RouteName.changePasswordPage);
+                                },
+                                child: ListTile(
+                                  leading: Text(
+                                    StringConstant.passwordChange,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500),
                                   ),
+                                  trailing: const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: EpregnancyColors.greyText,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10.h, horizontal: 10.w),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 1.5.h,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  // todo delete account
+                                  // Navigator.of(context)
+                                  //     .pushNamed(RouteName.changePasswordPage);
+                                },
+                                child: ListTile(
+                                  leading: Text(
+                                    StringConstant.deleteAccount,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  // trailing: const Icon(
+                                  //   Icons.arrow_forward_ios,
+                                  //   color: EpregnancyColors.greyText,
+                                  // ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(RouteName.surveyPageBaby, arguments: true);
-                        },
-                        child: ListTile(
-                          leading: Text(
-                            StringConstant.profilePregnantChange,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: EpregnancyColors.greyText,
+                        Container(
+                          // color: Colors.white,
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
+                          margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                          height: 100.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Image.asset("assets/icApp.png"),
+                                  SizedBox(height: 5.h,),
+                                  Text("KOMUNITAZ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 10.sp),),
+                                  SizedBox(height: 5.h,),
+                                  Text(
+                                    'App Versi 1.0.0',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12.sp),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 10.h),
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: InkWell(
+                                    onTap: () async {
+                                      //
+                                      await GAuthentication.signOut(context: context);
+                                      // await AppSharedPreference.clear();
+                                      await AppSharedPreference.remove(
+                                          AppSharedPreference.user);
+                                      await AppSharedPreference.remove(
+                                          AppSharedPreference.userRegister);
+                                      await AppSharedPreference.remove(
+                                          AppSharedPreference.baby);
+                                      await AppSharedPreference.remove(
+                                          AppSharedPreference.baby);
+                                      await AppSharedPreference.remove(
+                                          AppSharedPreference.hospital);
+                                      await AppSharedPreference.remove(AppSharedPreference.otp);
+                                      await AppSharedPreference.remove(
+                                          AppSharedPreference.token);
+                                      await AppSharedPreference.remove(
+                                          AppSharedPreference.cookie);
+                                      _showMyDialog(context);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset('assets/icLogoutNakes.svg'),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        Text(
+                                          StringConstant.logout,
+                                          style: TextStyle(
+                                              color: EpregnancyColors.primer,
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w700),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-                        child: Divider(
-                          color: Colors.grey,
-                          height: 1.h,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(RouteName.changePasswordPage);
-                        },
-                        child: ListTile(
-                          leading: Text(
-                            StringConstant.passwordChange,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: EpregnancyColors.greyText,
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 _Loading()
               ],
             ),
-            bottomSheet: Container(
-              color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              height: 70.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'App Versi 1.0.0',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12.sp),
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      //
-                      await GAuthentication.signOut(context: context);
-                      // await AppSharedPreference.clear();
-                      await AppSharedPreference.remove(AppSharedPreference.user);
-                      await AppSharedPreference.remove(AppSharedPreference.userRegister);
-                      await AppSharedPreference.remove(AppSharedPreference.baby);
-                      await AppSharedPreference.remove(AppSharedPreference.baby);
-                      await AppSharedPreference.remove(AppSharedPreference.hospital);
-                      await AppSharedPreference.remove(AppSharedPreference.otp);
-                      await AppSharedPreference.remove(AppSharedPreference.token);
-                      await AppSharedPreference.remove(AppSharedPreference.cookie);
-                      _showMyDialog(context);
-                    },
-                    child: Row(
-                      children: [
-                        SvgPicture.asset('assets/icLogoutNakes.svg'),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Text(
-                          StringConstant.logout,
-                          style: TextStyle(
-                              color: EpregnancyColors.primer,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w700),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // bottomSheet:
           );
         },
       ),
@@ -348,7 +469,11 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                 Injector.resolve<SurveyPageBloc>()
                     .add(const SurveyDisposeEvent());
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    RouteName.login, (Route<dynamic> route) => false, arguments: {'token_expired': false, 'is_from_register': false});
+                    RouteName.login, (Route<dynamic> route) => false,
+                    arguments: {
+                      'token_expired': false,
+                      'is_from_register': false
+                    });
               },
               child: Text('Ya'),
             ),
@@ -439,14 +564,14 @@ class _Loading extends StatelessWidget {
     ToastContext().init(context);
     return BlocBuilder<ProfilePageBloc, ProfilePageState>(
         builder: (context, state) {
-          if (state.submitStatus == FormzStatus.submissionInProgress &&
-              state.type == 'updateProfile') {
-            return Container(
-                color: Colors.white.withAlpha(90),
-                child: Center(child: CircularProgressIndicator()));
-          } else {
-            return Text("");
-          }
-        });
+      if (state.submitStatus == FormzStatus.submissionInProgress &&
+          state.type == 'updateProfile') {
+        return Container(
+            color: Colors.white.withAlpha(90),
+            child: Center(child: CircularProgressIndicator()));
+      } else {
+        return Text("");
+      }
+    });
   }
 }

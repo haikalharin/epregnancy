@@ -77,12 +77,12 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
     yield state.copyWith(
         status: FormzStatus.submissionInProgress, type: "check-in initial");
     try {
-      String? installDate =
-          await AppSharedPreference.getString(AppConstants.installDateKey);
-      DateTime startDate =
-          DateFormatter.dateFormatForCheckinFilter.parse(installDate ?? DateTime.now().toString());
-      String today =
-          DateFormatter.dateFormatForCheckinFilter.format(DateTime.now());
+      // String? installDate = await AppSharedPreference.getString(AppConstants.installDateKey);
+      var d = DateTime.now();
+      var weekDay = d.weekday;
+      String? installDate = d.subtract(Duration(days: weekDay - 1)).toString();
+      DateTime startDate = DateFormatter.dateFormatForCheckinFilter.parse(installDate);
+      String today = DateFormatter.dateFormatForCheckinFilter.format(DateTime.now());
       bool checkInDoneForToday = false;
       List<Checkin>? _checkIns = [];
       UserModel _userInfo = await AppSharedPreference.getUser();
@@ -90,8 +90,7 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
 
       //generate 7 day from install date for hari ke checkin
       final _checkinDateList = List<CheckInEntity>.generate(7, (i) {
-        String _plusDate = DateFormatter.dateFormatForCheckinFilter
-            .format(startDate.add(Duration(days: i)));
+        String _plusDate = DateFormatter.dateFormatForCheckinFilter.format(startDate.add(Duration(days: i)));
         bool hasCheckIn = _checkIns!.any((e) => e.date == _plusDate || e.day == i + 1);
         if (hasCheckIn) {
           return CheckInEntity(done: true, date: _plusDate, day: i + 1);

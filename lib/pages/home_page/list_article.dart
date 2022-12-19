@@ -73,96 +73,95 @@ class ListArticle extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: EpregnancyColors.primer.withAlpha(110)),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                          child: Container(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Wrap(
+                                      // spacing: 5.w,
                                       children: [
-                                        Wrap(
-                                          spacing: 5.w,
-                                          children: [
-                                            Container(
-                                                width: 200,
-                                                height: 85,
-                                                margin: EdgeInsets.only(),
-                                                child: Text(
-                                                  listArticle![index].title!,
-                                                  maxLines: 4,
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
-                                                )),
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 8.h),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.circular(24.w)
-                                                ),
+                                        Container(
+                                            width: 200,
+                                            height: 85,
+                                            margin: EdgeInsets.only(),
+                                            child: Text(
+                                              listArticle![index].title!,
+                                              maxLines: 4,
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            )),
+                                        Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 8.h),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(24.w)
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.asset("assets/icP.svg"),
+                                                Text(" 50", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 10.sp),)
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    Expanded(
+                                      child: Container(
+                                        margin: EdgeInsets.only(bottom: 16.h),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
                                                 child: Row(
                                                   children: [
-                                                    SvgPicture.asset("assets/icP.svg"),
-                                                    Text(" 50", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 10.sp),)
+                                                    Container(
+                                                        child: Icon(
+                                                          Icons.access_time,
+                                                          color: Colors.white,
+                                                          size: 12,
+                                                        )),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Container(
+                                                        child: Text(
+                                                          outputDate,
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              color: Colors.white),
+                                                        )),
                                                   ],
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                    Container(
-                                        // margin: EdgeInsets.only(top: 40),
-                                        child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          child: Row(
-                                            children: [
                                               Container(
-                                                  child: Icon(
-                                                Icons.access_time,
-                                                color: Colors.white,
-                                                size: 12,
-                                              )),
-                                              SizedBox(
-                                                width: 5,
+                                                margin: EdgeInsets.only(top: 5),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                    color: EpregnancyColors.primer),
+                                                height: 18,
+                                                width: 60,
+                                                child: Center(
+                                                    child: Text(
+                                                      "Berita",
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          color: Colors.white),
+                                                    )),
                                               ),
-                                              Container(
-                                                  child: Text(
-                                                outputDate,
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.white),
-                                              )),
                                             ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: 5),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              color: EpregnancyColors.primer),
-                                          height: 18,
-                                          width: 60,
-                                          child: Center(
-                                              child: Text(
-                                            "Berita",
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.white),
                                           )),
-                                        ),
-                                      ],
-                                    )),
+                                    ),
                                   ])),
-                            ],
-                          ),
+
                         ),
                       ),
                     );
