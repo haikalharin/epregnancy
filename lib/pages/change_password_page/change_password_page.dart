@@ -49,6 +49,8 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
         leading: const BtnBackIosStyle(),
         backgroundColor: Colors.white,
         elevation: 0,
+        title: Text("Ubah Kata Sandi", style: TextStyle(color: Colors.black, fontSize: 14.sp, fontWeight: FontWeight.w700),),
+        centerTitle: true,
       ),
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,

@@ -155,7 +155,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         // await AppSharedPreference.setUserInfo(userInfo.data);
         await AppSharedPreference.setBool(AppSharedPreference.isShowGuide, false);
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned, user: userEntity);
+            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned, user: userEntity, tipe: "get-info-done");
       }
     } on HomeErrorException catch (e) {
       print(e);

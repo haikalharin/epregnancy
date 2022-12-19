@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
 import 'package:PregnancyApp/common/widget/primary_btn.dart';
+import 'package:PregnancyApp/pages/profile_page/profile_user_page/change_profile_page.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:clipboard/clipboard.dart';
@@ -37,6 +38,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
 
   void onRefresh() async {
     Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
+
   }
 
   @override
@@ -130,7 +132,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 28.h),
+                          margin: EdgeInsets.only(top: 14.h),
                           child: Center(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -150,7 +152,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                             // width: 62,
                                             child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(40),
+                                                  BorderRadius.circular(50),
                                               child: FadeInImage(
                                                 placeholder: const AssetImage(
                                                     'assets/ic_no_photo_blue.png'),
@@ -166,7 +168,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                             // width: 62,
                                             child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(40),
+                                                  BorderRadius.circular(50),
                                               child: const FadeInImage(
                                                 placeholder: AssetImage(
                                                     'assets/ic_no_photo_blue.png'),
@@ -182,9 +184,11 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                 ),
                                 Container(
                                     width: MediaQuery.of(context).size.width / 2.1,
-                                    margin: EdgeInsets.only(bottom: 24.h),
+                                    margin: EdgeInsets.only(bottom: 18.h),
                                     child: BtnPrimary(text: "Ubah Data Diri", function: (){
-                                      _showPicker(context);
+                                      // print("user name : ${state.user?.name}");
+                                      // _showPicker(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangeProfilePage()));
                                     }))
                               ],
                             ),

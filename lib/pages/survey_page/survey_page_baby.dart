@@ -43,6 +43,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
   void initState() {
     Injector.resolve<SurveyPageBloc>()
         .add(SurveyInitEvent(isUpdate: widget.isEdit ?? false));
+    Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(2));
     super.initState();
   }
 
@@ -99,8 +100,13 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(2));
                   return Future.value(false);
                 } else if (state.page == 2) {
-                  Navigator.pop(context);
-                  return Future.value(false);
+                  // Navigator.pop(context);
+                  if(widget.isEdit == true) {
+                    Navigator.pop(context);
+                    return Future.value(true);
+                  } else {
+                    return Future.value(false);
+                  }
                 } else {
                   if(widget.isEdit == true) {
                     Navigator.pop(context);
@@ -128,12 +134,16 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                         Injector.resolve<SurveyPageBloc>()
                             .add(SurveyPageChanged(2));
                       } else if (state.page == 2) {
-                        Navigator.pop(context);
+                        if(widget.isEdit == true) {
+                          Navigator.pop(context);
+                        }
+                        // Navigator.pop(context);
                       } else {
                         if(widget.isEdit == true) {
                           Navigator.pop(context);
                         } else {
-                          Navigator.of(context).pushNamed(RouteName.signup);
+                          // cannot back (new flow)
+                          // Navigator.of(context).pushNamed(RouteName.signup);
                         }
                       }
                     },
@@ -156,7 +166,8 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              "${state.page} dari 3",
+                              // note ada perubahan step
+                              "${state.page - 1} dari 2",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.grey,
@@ -184,7 +195,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                     child: Text(
                                       state.page == 3
                                           ? widget.isEdit == true
-                                              ? "simpan"
+                                              ? "Simpan"
                                               : "Selanjutnya"
                                           : "Selanjutnya",
                                       style: TextStyle(
@@ -211,6 +222,9 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                       Injector.resolve<SurveyPageBloc>().add(
                                           SurveyAddDataBabyEvent(
                                               isUpdate: widget.isEdit!));
+                                    } else if (state.page == 1 && state.name.valid) {
+                                      Injector.resolve<SurveyPageBloc>()
+                                          .add(SurveyPageChanged(2));
                                     }
                                   },
                                 ),

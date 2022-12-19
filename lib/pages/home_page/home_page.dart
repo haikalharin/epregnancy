@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: BlocListener<HomePageBloc, HomePageState>(
           listener: (context, state) {
             if (state.submitStatus == FormzStatus.submissionSuccess) {
-              if (state.user?.babies?.length == 0) {
+              if (state.user?.babies?.length == 0 && state.tipe == "get-info-done") {
                 setState(() {
                   showEditBaby = true;
                 });
@@ -159,6 +159,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: ListView(
                   controller: _scrollControler,
                   children: [
+
                     Container(
                         padding: EdgeInsets.only(bottom: 0, top: 20),
                         color: Colors.white,
@@ -388,6 +389,73 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
+
+                                  Visibility(
+                                    visible: showEditBaby,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(
+                                            RouteName.surveyPageBaby,
+                                            arguments: true);
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10.h),
+                                        padding: EdgeInsets.only(
+                                            top: 16.w, bottom: 16.w, left: 12.w, right: 12.w),
+                                        decoration: BoxDecoration(
+                                            color: EpregnancyColors.greyBlue,
+                                            borderRadius: BorderRadius.circular(8.w)),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset("assets/icStroller.svg"),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Profil Bayi",
+                                                        style: TextStyle(
+                                                            color: EpregnancyColors.blueDark,
+                                                            fontWeight: FontWeight.w700,
+                                                            fontSize: 12.sp),
+                                                      ),
+                                                      InkWell(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              showEditBaby = false;
+                                                            });
+                                                          },
+                                                          child: Icon(Icons.close,
+                                                              color:
+                                                              EpregnancyColors.primer)),
+                                                    ],
+                                                  ),
+                                                  Text(
+                                                    "Anda bisa mengisi nama bayi di profil\ndengan klik spanduk ini",
+                                                    style: TextStyle(
+                                                        color: EpregnancyColors.blueDark,
+                                                        fontWeight: FontWeight.w400,
+                                                        fontSize: 12.sp),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
                                   state.user?.isPregnant == true &&
                                           state.user?.babies?.length != 0
                                       ? BabySectionWidget(
@@ -397,71 +465,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ])),
                     // update baby section
-                    Visibility(
-                      visible: showEditBaby,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                              RouteName.surveyPageBaby,
-                              arguments: true);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10.h),
-                          padding: EdgeInsets.only(
-                              top: 16.w, bottom: 16.w, left: 12.w, right: 12.w),
-                          decoration: BoxDecoration(
-                              color: EpregnancyColors.greyBlue,
-                              borderRadius: BorderRadius.circular(8.w)),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset("assets/icStroller.svg"),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Profil Bayi",
-                                          style: TextStyle(
-                                              color: EpregnancyColors.blueDark,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 12.sp),
-                                        ),
-                                        InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                showEditBaby = false;
-                                              });
-                                            },
-                                            child: Icon(Icons.close,
-                                                color:
-                                                    EpregnancyColors.primer)),
-                                      ],
-                                    ),
-                                    Text(
-                                      "Anda bisa mengisi nama bayi di profil\ndengan klik spanduk ini",
-                                      style: TextStyle(
-                                          color: EpregnancyColors.blueDark,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12.sp),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
                     // checkin section
                     Container(
                       margin:

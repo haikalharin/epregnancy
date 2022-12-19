@@ -82,6 +82,7 @@ dependencies:
   expandable: ^5.0.1
   firebase_remote_config: ^2.0.1
   lottie: ^1.4.2
+  age_calculator: ^1.0.0
 
   #flavor for environment management
 #  flutter_flavor: ^3.1.1
