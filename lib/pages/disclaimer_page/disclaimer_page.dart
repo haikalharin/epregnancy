@@ -71,7 +71,7 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
               } else {
                 Navigator.of(context).pushReplacementNamed(
                     RouteName.surveyPageBaby,
-                    arguments: false);
+                    arguments: {"is_edit": false, "edit_name": false});
               }
             } else {
               Navigator.of(context).pushNamedAndRemoveUntil(

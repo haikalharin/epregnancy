@@ -78,40 +78,51 @@ class ListArticle extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Wrap(
-                                      // spacing: 5.w,
-                                      children: [
-                                        Container(
-                                            width: 200,
-                                            height: 85,
-                                            margin: EdgeInsets.only(),
-                                            child: Text(
-                                              listArticle![index].title!,
-                                              maxLines: 4,
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
-                                            )),
-                                        Align(
-                                          alignment: Alignment.topRight,
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 8.h),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(24.w)
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                SvgPicture.asset("assets/icP.svg"),
-                                                Text(" 50", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 10.sp),)
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
+                                    // Wrap(
+                                    //   // spacing: 5.w,
+                                    //   children: [
+                                    //     Container(
+                                    //         width: 200,
+                                    //         height: 85,
+                                    //         margin: EdgeInsets.only(),
+                                    //         child: Text(
+                                    //           listArticle![index].title!,
+                                    //           maxLines: 4,
+                                    //           style: TextStyle(
+                                    //               fontSize: 16,
+                                    //               fontWeight: FontWeight.bold,
+                                    //               color: Colors.white),
+                                    //         )),
+                                    //     // Align(
+                                    //     //   alignment: Alignment.topRight,
+                                    //     //   child: Container(
+                                    //     //     padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 8.h),
+                                    //     //     decoration: BoxDecoration(
+                                    //     //         color: Colors.white,
+                                    //     //         borderRadius: BorderRadius.circular(24.w)
+                                    //     //     ),
+                                    //     //     child: Row(
+                                    //     //       children: [
+                                    //     //         SvgPicture.asset("assets/icP.svg"),
+                                    //     //         Text(" 50", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 10.sp),)
+                                    //     //       ],
+                                    //     //     ),
+                                    //     //   ),
+                                    //     // ),
+                                    //   ],
+                                    // ),
+                                    Container(
+                                        width: 200,
+                                        height: 85,
+                                        margin: EdgeInsets.only(),
+                                        child: Text(
+                                          listArticle![index].title!,
+                                          maxLines: 4,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        )),
                                     Expanded(
                                       child: Container(
                                         margin: EdgeInsets.only(bottom: 16.h),

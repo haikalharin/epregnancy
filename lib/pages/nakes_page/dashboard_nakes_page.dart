@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -313,16 +314,23 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                       if(state.type == 'fetch-hospital-success'){
                         return Container(
                           // height: 200.h,
-                            margin: EdgeInsets.only(left: 16.w, top: 10.h),
+                            margin: EdgeInsets.only(left: 16.w, top: 5.h, bottom: 0.h),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("Pin Check-in Pasien", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),),
-                                SizedBox(height: 20.h,),
+                                Text("QR Check-in Pasien", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),),
+                                SizedBox(height: 0.h,),
+                                // Center(
+                                //   child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
+                                // ),
                                 Center(
-                                  child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
+                                  child: QrImage(
+                                    data: "KomunitAZ-${state.hospitals?[0].pin.toString()}",
+                                    version: QrVersions.auto,
+                                    size: 150.w,
+                                  ),
                                 ),
-                                SizedBox(height: 20.h,),
+                                // SizedBox(height: 20.h,),
                                 Center(
                                   child: CountdownTimer(
                                     endTime: DateTime.parse(state.hospitals?[0].pinValidEnd ?? DateTime.now().toString()).millisecondsSinceEpoch,

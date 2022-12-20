@@ -62,6 +62,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
       child: BlocBuilder<ProfilePageBloc, ProfilePageState>(
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: EpregnancyColors.profileBg,
             // appBar: AppBar(
             //   // leading: const BtnBackIosStyle(),
             //   elevation: 0,
@@ -230,11 +231,11 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                           margin: const EdgeInsets.only(
                                               left: 10, right: 10),
                                           child: const Text(
-                                            "Undang teman anda untuk mendapatkan poin !",
+                                            "Undang teman anda\nuntuk mendapatkan poin !",
                                             textAlign: TextAlign.left,
                                             maxLines: 5,
                                             style: TextStyle(
-                                                letterSpacing: 1.0,
+                                                // letterSpacing: 1.0,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -244,12 +245,12 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                           margin:  EdgeInsets.only(
                                               left: 10, right: 10, top: 5.h),
                                           child: Text(
-                                            "Bagikan kode dengan teman Anda dan dapatkan 300 poin",
+                                            "Bagikan kode dengan teman Anda dan dapatkan 100 poin",
                                             textAlign: TextAlign.left,
                                             maxLines: 5,
                                             style: TextStyle(
                                                 fontSize: 12.sp,
-                                                fontWeight: FontWeight.normal),
+                                                fontWeight: FontWeight.w500),
                                           ),
                                         ),
                                       ],
@@ -278,7 +279,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                             style: TextStyle(
                                                 fontSize: 12.sp,
                                                 fontWeight: FontWeight.w700,
-                                                color: EpregnancyColors.primer),
+                                                color: EpregnancyColors.blueDark),
                                             maxLines: 3,
                                           ),
                                         ),

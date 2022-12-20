@@ -86,7 +86,7 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
       bool checkInDoneForToday = false;
       List<Checkin>? _checkIns = [];
       UserModel _userInfo = await AppSharedPreference.getUser();
-      _checkIns = _userInfo.checkins;
+      _checkIns = _userInfo.checkins ?? [];
 
       //generate 7 day from install date for hari ke checkin
       final _checkinDateList = List<CheckInEntity>.generate(7, (i) {

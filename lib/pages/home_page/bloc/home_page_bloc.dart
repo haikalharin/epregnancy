@@ -152,7 +152,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       );
       // await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if(responseModel.code == 200) {
-        // await AppSharedPreference.setUserInfo(userInfo.data);
+        await AppSharedPreference.setUser(responseModel.data);
         await AppSharedPreference.setBool(AppSharedPreference.isShowGuide, false);
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned, user: userEntity, tipe: "get-info-done");

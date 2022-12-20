@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 #dev
-version: 1.0.20-dev+26
+version: 1.0.21-dev+27
 
 #prod
 #version: 1.0.2+5
@@ -83,6 +83,8 @@ dependencies:
   firebase_remote_config: ^2.0.1
   lottie: ^1.4.2
   age_calculator: ^1.0.0
+  mobile_scanner: ^1.1.2
+  qr_flutter: ^4.0.0
 
   #flavor for environment management
 #  flutter_flavor: ^3.1.1

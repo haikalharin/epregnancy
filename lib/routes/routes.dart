@@ -62,7 +62,7 @@ class Routes {
       case RouteName.surveyPageBaby:
         return MaterialPageRoute(
             builder: (_) =>
-                SurveyPageBaby(isEdit: getDataValue(settings.arguments)));
+                SurveyPageBaby(isEdit: getIsEdit(settings.arguments), editName: getEditName(settings.arguments),));
       case RouteName.articleDetailPage:
         return MaterialPageRoute(builder: (_) => ArticleDetailPage());
       case RouteName.chatPage:

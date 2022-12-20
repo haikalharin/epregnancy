@@ -24,8 +24,9 @@ import '../login_page/login_page.dart';
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPageBaby extends StatefulWidget {
-  const SurveyPageBaby({Key? key, this.isEdit = false}) : super(key: key);
+  const SurveyPageBaby({Key? key, this.isEdit = false, this.editName = false}) : super(key: key);
   final bool? isEdit;
+  final bool? editName;
 
   @override
   State<SurveyPageBaby> createState() => _SurveyPageBabyState();
@@ -43,7 +44,11 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
   void initState() {
     Injector.resolve<SurveyPageBloc>()
         .add(SurveyInitEvent(isUpdate: widget.isEdit ?? false));
-    Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(2));
+    if(widget.editName == true) {
+      Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(3));
+    } else {
+      Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(2));
+    }
     super.initState();
   }
 

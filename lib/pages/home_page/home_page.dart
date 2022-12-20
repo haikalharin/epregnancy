@@ -8,6 +8,7 @@ import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.
 import 'package:PregnancyApp/pages/home_page/baby_section_widget.dart';
 import 'package:PregnancyApp/pages/home_page/game_card_section.dart';
 import 'package:PregnancyApp/pages/home_page/poin_card_section.dart';
+import 'package:PregnancyApp/pages/home_page/qr_scanner.dart';
 import 'package:PregnancyApp/pages/home_page/tab_bar_event_page.dart';
 import 'package:PregnancyApp/pages/home_page/widget/check_in_widget.dart';
 import 'package:PregnancyApp/pages/poin_page/widget/poin_placeholder.dart';
@@ -135,10 +136,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: BlocListener<HomePageBloc, HomePageState>(
           listener: (context, state) {
             if (state.submitStatus == FormzStatus.submissionSuccess) {
-              if (state.user?.babies?.length == 0 && state.tipe == "get-info-done") {
-                setState(() {
-                  showEditBaby = true;
-                });
+              if (state.user?.babies?.length != 0 && state.tipe == "get-info-done") {
+                if (state.user?.babies?.first.name == "" || state.user?.babies?.first.name == null) {
+                  setState(() {
+                    showEditBaby = true;
+                  });
+                }
               }
             } else if (state.submitStatus == FormzStatus.submissionFailure &&
                 state.isNotHaveSession == true) {
@@ -159,7 +162,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: ListView(
                   controller: _scrollControler,
                   children: [
-
                     Container(
                         padding: EdgeInsets.only(bottom: 0, top: 20),
                         color: Colors.white,
@@ -389,62 +391,84 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
-
                                   Visibility(
                                     visible: showEditBaby,
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.of(context).pushNamed(
                                             RouteName.surveyPageBaby,
-                                            arguments: true);
+                                            arguments: {
+                                              "is_edit": true,
+                                              "edit_name": true
+                                            }).then((value) {
+                                              print("sukses edit baby name");
+                                          Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+                                        });
                                       },
                                       child: Container(
                                         margin: EdgeInsets.symmetric(
                                             horizontal: 20, vertical: 10.h),
                                         padding: EdgeInsets.only(
-                                            top: 16.w, bottom: 16.w, left: 12.w, right: 12.w),
+                                            top: 16.w,
+                                            bottom: 16.w,
+                                            left: 12.w,
+                                            right: 12.w),
                                         decoration: BoxDecoration(
                                             color: EpregnancyColors.greyBlue,
-                                            borderRadius: BorderRadius.circular(8.w)),
+                                            borderRadius:
+                                                BorderRadius.circular(8.w)),
                                         child: Row(
                                           children: [
-                                            SvgPicture.asset("assets/icStroller.svg"),
+                                            SvgPicture.asset(
+                                                "assets/icStroller.svg"),
                                             SizedBox(
                                               width: 10.w,
                                             ),
                                             Expanded(
                                               child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Row(
-                                                    mainAxisSize: MainAxisSize.max,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment.spaceBetween,
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Text(
                                                         "Profil Bayi",
                                                         style: TextStyle(
-                                                            color: EpregnancyColors.blueDark,
-                                                            fontWeight: FontWeight.w700,
+                                                            color:
+                                                                EpregnancyColors
+                                                                    .blueDark,
+                                                            fontWeight:
+                                                                FontWeight.w700,
                                                             fontSize: 12.sp),
                                                       ),
                                                       InkWell(
                                                           onTap: () {
                                                             setState(() {
-                                                              showEditBaby = false;
+                                                              showEditBaby =
+                                                                  false;
                                                             });
                                                           },
-                                                          child: Icon(Icons.close,
+                                                          child: Icon(
+                                                              Icons.close,
                                                               color:
-                                                              EpregnancyColors.primer)),
+                                                                  EpregnancyColors
+                                                                      .primer)),
                                                     ],
                                                   ),
                                                   Text(
                                                     "Anda bisa mengisi nama bayi di profil\ndengan klik spanduk ini",
                                                     style: TextStyle(
-                                                        color: EpregnancyColors.blueDark,
-                                                        fontWeight: FontWeight.w400,
+                                                        color: EpregnancyColors
+                                                            .blueDark,
+                                                        fontWeight:
+                                                            FontWeight.w400,
                                                         fontSize: 12.sp),
                                                   )
                                                 ],
@@ -455,7 +479,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       ),
                                     ),
                                   ),
-
                                   state.user?.isPregnant == true &&
                                           state.user?.babies?.length != 0
                                       ? BabySectionWidget(
@@ -512,12 +535,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     }
                                   });
                                 } else {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: false,
-                                      builder: (context) {
-                                        return PinCheckInPage();
-                                      });
+                                  // todo implement barcode scanner
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const QrScanner())).then((value) {
+                                    // todo handel pin checkin from barcode
+                                    print("scan result : $value");
+                                  });
+                                  // showModalBottomSheet(
+                                  //     context: context,
+                                  //     isScrollControlled: false,
+                                  //     builder: (context) {
+                                  //       return PinCheckInPage();
+                                  //     });
                                 }
                               },
                               child: Padding(
@@ -632,7 +660,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             description:
                                 'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
                             child: InkWell(
-                              onTap: (){
+                              onTap: () {
                                 Navigator.pushNamed(context, RouteName.poinPage,
                                     arguments: state.totalPointsEarned ?? 0);
                               },
@@ -640,11 +668,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   point: state.totalPointsEarned ?? 0),
                             ))
                         : InkWell(
-                        onTap: (){
-                          Navigator.pushNamed(context, RouteName.poinPage,
-                              arguments: state.totalPointsEarned ?? 0);
-                        },
-                        child: PoinCardSection(point: state.totalPointsEarned ?? 0)),
+                            onTap: () {
+                              Navigator.pushNamed(context, RouteName.poinPage,
+                                  arguments: state.totalPointsEarned ?? 0);
+                            },
+                            child: PoinCardSection(
+                                point: state.totalPointsEarned ?? 0)),
                     // Games Section
                     const GameCardSection(),
 

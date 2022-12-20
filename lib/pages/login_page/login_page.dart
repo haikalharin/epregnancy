@@ -227,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                         } else {
                           Navigator.of(context).pushReplacementNamed(
                               RouteName.surveyPageBaby,
-                              arguments: false);
+                              arguments: {"is_edit": false, "edit_name": false});
                         }
                       } else {
                         Navigator.of(context).pushNamedAndRemoveUntil(

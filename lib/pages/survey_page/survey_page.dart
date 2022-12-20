@@ -100,11 +100,11 @@ class _SurveyPageState extends State<SurveyPage> {
                 if (widget.isEdit == true) {
                   Navigator.of(context).pushReplacementNamed(
                       RouteName.surveyPageBaby,
-                      arguments: widget.isEdit);
+                      arguments: {"is_edit": widget.isEdit, "edit_name": false});
                 } else{
                   Navigator.of(context).pushNamed(
                       RouteName.surveyPageBaby,
-                      arguments: widget.isEdit);
+                      arguments: {"is_edit": widget.isEdit, "edit_name": false});
                 }
               } else {
                 // todo handle edit
