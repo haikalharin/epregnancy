@@ -98,7 +98,13 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(2));
                   return Future.value(false);
                 } else if (state.page == 2) {
-                  return Future.value(false);
+                  if(widget.isEdit!){
+                    Navigator.pop(context);
+                    return Future.value(true);
+
+                  } else{
+                    return Future.value(false);
+                  }
                 } else {
                   return Future.value(false);
                 }
@@ -118,6 +124,8 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                       if (state.page == 3) {
                         Injector.resolve<SurveyPageBloc>()
                             .add(SurveyPageChanged(2));
+                      } else if (state.page == 2 && widget.isEdit!) {
+                        Navigator.pop(context);
                       }
                     },
                   ): null,

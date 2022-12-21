@@ -223,26 +223,30 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
           for (var element in state.listScheduleTime) {
             var startDate = DateTime.parse("$dateStart ${element.time}");
             final fStartDate = forCalendar.format(startDate);
-            _medEvent.add(Event(
-              title: state.scheduleName.value,
-              description: state.description.value,
-              location: '',
-              startDate: DateTime.parse(fStartDate),
-              endDate: DateTime.parse(dateEnd),
-              // recurrence: Recurrence(
-              //   frequency: Frequency.daily,
-              //   endDate: DateTime.parse(dateEnd),
-              //   // interval: 1,
-              //   ocurrences: state.listScheduleTime.length,
-              // ),
-              // todo ios param
-              // iosParams: IOSParams(
-              //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
-              // ),
-              androidParams: AndroidParams(
-                emailInvites: [person.email!], // on Android, you can add invite emails to your event.
-              ),
-            ));
+            if(person.email != null ) {
+              _medEvent.add(Event(
+                title: state.scheduleName.value,
+                description: state.description.value,
+                location: '',
+                startDate: DateTime.parse(fStartDate),
+                endDate: DateTime.parse(dateEnd),
+                // recurrence: Recurrence(
+                //   frequency: Frequency.daily,
+                //   endDate: DateTime.parse(dateEnd),
+                //   // interval: 1,
+                //   ocurrences: state.listScheduleTime.length,
+                // ),
+                // todo ios param
+                // iosParams: IOSParams(
+                //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
+                // ),
+                androidParams: AndroidParams(
+                  emailInvites: [
+                    person.email!
+                  ], // on Android, you can add invite emails to your event.
+                ),
+              ));
+            }
 
             for (var event in _medEvent) {
               Add2Calendar.addEvent2Cal(event);
