@@ -530,7 +530,7 @@ mixin _$ChatPendingFromSendResponse {
   bool? get isSuperAdmin => throw _privateConstructorUsedError;
   bool? get isVerified => throw _privateConstructorUsedError;
   String? get hospitalId => throw _privateConstructorUsedError;
-  String? get hospital => throw _privateConstructorUsedError;
+  HospitalModel? get hospital => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   String? get coverUrl => throw _privateConstructorUsedError;
 
@@ -560,9 +560,11 @@ abstract class $ChatPendingFromSendResponseCopyWith<$Res> {
       bool? isSuperAdmin,
       bool? isVerified,
       String? hospitalId,
-      String? hospital,
+      HospitalModel? hospital,
       String? imageUrl,
       String? coverUrl});
+
+  $HospitalModelCopyWith<$Res>? get hospital;
 }
 
 /// @nodoc
@@ -649,7 +651,7 @@ class _$ChatPendingFromSendResponseCopyWithImpl<$Res>
       hospital: hospital == freezed
           ? _value.hospital
           : hospital // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as HospitalModel?,
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -659,6 +661,17 @@ class _$ChatPendingFromSendResponseCopyWithImpl<$Res>
           : coverUrl // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
+  }
+
+  @override
+  $HospitalModelCopyWith<$Res>? get hospital {
+    if (_value.hospital == null) {
+      return null;
+    }
+
+    return $HospitalModelCopyWith<$Res>(_value.hospital!, (value) {
+      return _then(_value.copyWith(hospital: value));
+    });
   }
 }
 
@@ -684,9 +697,12 @@ abstract class _$$_ChatPendingFromSendResponseCopyWith<$Res>
       bool? isSuperAdmin,
       bool? isVerified,
       String? hospitalId,
-      String? hospital,
+      HospitalModel? hospital,
       String? imageUrl,
       String? coverUrl});
+
+  @override
+  $HospitalModelCopyWith<$Res>? get hospital;
 }
 
 /// @nodoc
@@ -777,7 +793,7 @@ class __$$_ChatPendingFromSendResponseCopyWithImpl<$Res>
       hospital: hospital == freezed
           ? _value.hospital
           : hospital // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as HospitalModel?,
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -844,7 +860,7 @@ class _$_ChatPendingFromSendResponse
   @override
   final String? hospitalId;
   @override
-  final String? hospital;
+  final HospitalModel? hospital;
   @override
   final String? imageUrl;
   @override
@@ -953,7 +969,7 @@ abstract class _ChatPendingFromSendResponse
       required final bool? isSuperAdmin,
       required final bool? isVerified,
       required final String? hospitalId,
-      required final String? hospital,
+      required final HospitalModel? hospital,
       required final String? imageUrl,
       required final String? coverUrl}) = _$_ChatPendingFromSendResponse;
 
@@ -987,7 +1003,7 @@ abstract class _ChatPendingFromSendResponse
   @override
   String? get hospitalId => throw _privateConstructorUsedError;
   @override
-  String? get hospital => throw _privateConstructorUsedError;
+  HospitalModel? get hospital => throw _privateConstructorUsedError;
   @override
   String? get imageUrl => throw _privateConstructorUsedError;
   @override

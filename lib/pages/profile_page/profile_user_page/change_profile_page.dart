@@ -253,9 +253,11 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                       ),
                     ),
                     Container(
-                      color: Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        // border: Border(bottom: BorderSide(color: ))
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -273,11 +275,11 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                                     fontSize: 12.sp),
                               ),
                               IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: EpregnancyColors.grey,
-                                  ))
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Colors.white
+                                    )),
                             ],
                           )
                         ],
@@ -303,12 +305,12 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                                     fontWeight: FontWeight.w700,
                                     fontSize: 12.sp),
                               ),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: EpregnancyColors.grey,
-                                  ))
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Colors.white,
+                                    )),
                             ],
                           )
                         ],

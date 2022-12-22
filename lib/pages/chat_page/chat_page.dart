@@ -84,7 +84,7 @@ class _ChatPageState extends State<ChatPage> {
               List<ChatMessageEntity> chatMessageList = [];
               chatMessageList.add(
                   ChatMessageEntity(
-                      name: state.chatPendingSendResponse?.from?.hospital,
+                      name: state.chatPendingSendResponse?.from?.hospital?.name,
                       message: state.chatPendingSendResponse?.message,
                       dateTime: state.chatPendingSendResponse?.createdDate,
                       mine: state.chatPendingSendResponse?.fromId == widget.userId ? true: false

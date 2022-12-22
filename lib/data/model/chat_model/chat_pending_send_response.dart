@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -45,7 +46,7 @@ abstract class ChatPendingFromSendResponse with _$ChatPendingFromSendResponse {
     required bool? isSuperAdmin,
     required bool? isVerified,
     required String? hospitalId,
-    required String? hospital,
+    required HospitalModel? hospital,
     required String? imageUrl,
     required String? coverUrl,
   }) = _ChatPendingFromSendResponse;

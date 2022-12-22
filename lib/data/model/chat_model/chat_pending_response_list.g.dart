@@ -65,7 +65,9 @@ _$_FromChatPendingResponseLIst _$$_FromChatPendingResponseLIstFromJson(
       isSuperAdmin: json['isSuperAdmin'] as bool?,
       isVerified: json['isVerified'] as bool?,
       hospitalId: json['hospitalId'] as String?,
-      hospital: json['hospital'] as String?,
+      hospital: json['hospital'] == null
+          ? null
+          : Hospital.fromJson(json['hospital'] as Map<String, dynamic>),
       imageUrl: json['imageUrl'] as String?,
       coverUrl: json['coverUrl'] as String?,
     );

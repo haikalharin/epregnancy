@@ -546,7 +546,6 @@ class RemoteDataSource {
   Future<ResponseModel<ChatPendingResponseList>> fetchChatPendingByHospitalId(
       String hospitalId) async {
     final response = await httpClient.get(ServiceUrl.chatPendingListForNakes + hospitalId);
-
     return ResponseModel.fromJson(response, ChatPendingResponseList.fromJson);
   }
 

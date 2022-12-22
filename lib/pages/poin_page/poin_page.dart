@@ -341,7 +341,7 @@ class _PoinPageState extends State<PoinPage> {
                     const PoinInfoCard(
                         title: "Kunjungi Puskesmas",
                         subtitle:
-                            "Anda akan mendapatkan 10 POIN untuk setiap\nkunjungan ke puskesmas dalam sehari",
+                            "Anda akan mendapatkan 100 POIN untuk setiap\nkunjungan ke puskesmas dalam sehari",
                         image: "assets/imgKunjungan.png"),
                     // const PoinInfoCard(title: "Bermain Game", subtitle: "Anda akan mendapatkan 50 POIN untuk setiap\ngame yang dimainkan", image: "assets/imgGame.png", game: true,),
                     // Container(

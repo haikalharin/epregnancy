@@ -508,7 +508,7 @@ mixin _$FromChatPendingResponseLIst {
   bool? get isSuperAdmin => throw _privateConstructorUsedError;
   bool? get isVerified => throw _privateConstructorUsedError;
   String? get hospitalId => throw _privateConstructorUsedError;
-  String? get hospital => throw _privateConstructorUsedError;
+  Hospital? get hospital => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   String? get coverUrl => throw _privateConstructorUsedError;
 
@@ -538,9 +538,11 @@ abstract class $FromChatPendingResponseLIstCopyWith<$Res> {
       bool? isSuperAdmin,
       bool? isVerified,
       String? hospitalId,
-      String? hospital,
+      Hospital? hospital,
       String? imageUrl,
       String? coverUrl});
+
+  $HospitalCopyWith<$Res>? get hospital;
 }
 
 /// @nodoc
@@ -627,7 +629,7 @@ class _$FromChatPendingResponseLIstCopyWithImpl<$Res>
       hospital: hospital == freezed
           ? _value.hospital
           : hospital // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Hospital?,
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -637,6 +639,17 @@ class _$FromChatPendingResponseLIstCopyWithImpl<$Res>
           : coverUrl // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
+  }
+
+  @override
+  $HospitalCopyWith<$Res>? get hospital {
+    if (_value.hospital == null) {
+      return null;
+    }
+
+    return $HospitalCopyWith<$Res>(_value.hospital!, (value) {
+      return _then(_value.copyWith(hospital: value));
+    });
   }
 }
 
@@ -662,9 +675,12 @@ abstract class _$$_FromChatPendingResponseLIstCopyWith<$Res>
       bool? isSuperAdmin,
       bool? isVerified,
       String? hospitalId,
-      String? hospital,
+      Hospital? hospital,
       String? imageUrl,
       String? coverUrl});
+
+  @override
+  $HospitalCopyWith<$Res>? get hospital;
 }
 
 /// @nodoc
@@ -755,7 +771,7 @@ class __$$_FromChatPendingResponseLIstCopyWithImpl<$Res>
       hospital: hospital == freezed
           ? _value.hospital
           : hospital // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Hospital?,
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -821,7 +837,7 @@ class _$_FromChatPendingResponseLIst
   @override
   final String? hospitalId;
   @override
-  final String? hospital;
+  final Hospital? hospital;
   @override
   final String? imageUrl;
   @override
@@ -930,7 +946,7 @@ abstract class _FromChatPendingResponseLIst
       required final bool? isSuperAdmin,
       required final bool? isVerified,
       required final String? hospitalId,
-      required final String? hospital,
+      required final Hospital? hospital,
       required final String? imageUrl,
       required final String? coverUrl}) = _$_FromChatPendingResponseLIst;
 
@@ -964,7 +980,7 @@ abstract class _FromChatPendingResponseLIst
   @override
   String? get hospitalId => throw _privateConstructorUsedError;
   @override
-  String? get hospital => throw _privateConstructorUsedError;
+  Hospital? get hospital => throw _privateConstructorUsedError;
   @override
   String? get imageUrl => throw _privateConstructorUsedError;
   @override

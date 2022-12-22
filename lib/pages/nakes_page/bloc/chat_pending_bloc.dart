@@ -35,7 +35,6 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
       ResponseModel<ChatPendingResponseList> response = await chatRepository.fetchChatPendingListByHospitalId(event.hospitalId ?? '');
       List<ChatPendingResponseList> _chatPendingList = response.data ?? [];
       List<ChatPendingResponseList> chatPendingList = [];
-
       if(_chatPendingList.length != 0){
         for(var element in _chatPendingList){
           FromChatPendingResponseLIst? from = element.from?.copyWith(

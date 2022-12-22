@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
+import 'package:PregnancyApp/pages/nakes_page/full_qr_screen.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/chat_placeholder_widget.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/consultation_container.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
@@ -38,10 +39,10 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
     // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
-    Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
-    Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
     Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
-    Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
+    // Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
+    // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+    // Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
 
     super.initState();
   }
@@ -323,11 +324,19 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                                 // Center(
                                 //   child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
                                 // ),
-                                Center(
-                                  child: QrImage(
-                                    data: "KomunitAZ-${state.hospitals?[0].pin.toString()}",
-                                    version: QrVersions.auto,
-                                    size: 150.w,
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  FullQrScreen(value: "KomunitAZ-${state.hospitals?[0].pin.toString()}",)));
+                                  },
+                                  child: Hero(
+                                    tag: 'qr-hero',
+                                    child: Center(
+                                      child: QrImage(
+                                        data: "KomunitAZ-${state.hospitals?[0].pin.toString()}",
+                                        version: QrVersions.auto,
+                                        size: 150.w,
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 // SizedBox(height: 20.h,),
