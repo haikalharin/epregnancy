@@ -227,15 +227,15 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
                 style:
                     TextStyle(color: EpregnancyColors.white, fontSize: 14.sp),
               ),
-              onPressed: _hospitalModel == null ? null : () async{
+              onPressed: _hospitalModel?.name == '' ? null : () async{
                 // todo save to local
                 await AppSharedPreference.setHospital(_hospitalModel!);
                 await AppSharedPreference.setBool(AppSharedPreference.haveBpjsorKis, haveBpjs);
                 Navigator.pop(context, _hospitalModel);
               },
               style: ButtonStyle(
-                  backgroundColor:
-                      _hospitalModel == null ? MaterialStateProperty.all<Color>(EpregnancyColors.greyText) :  MaterialStateProperty.all<Color>(EpregnancyColors.primer),
+
+                  backgroundColor: _hospitalModel?.name == '' ? MaterialStateProperty.all<Color>(EpregnancyColors.greyText) :  MaterialStateProperty.all<Color>(EpregnancyColors.primer),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),

@@ -38,11 +38,11 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
   @override
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
-    // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+    Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
-    // Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
-    // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-    // Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
+    Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
+    Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+    Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
 
     super.initState();
   }

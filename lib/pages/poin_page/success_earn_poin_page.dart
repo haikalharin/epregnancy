@@ -23,7 +23,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                 SvgPicture.asset("assets/ic_earned_poin.svg"),
                 SizedBox(height: 36.h,),
                 Text("Selamat! Anda", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 22.sp),),
-                Text("mendapatkan 10 Poin", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 22.sp),),
+                Text("mendapatkan 100 Poin", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 22.sp),),
               ],
             ),
         ),
