@@ -66,7 +66,7 @@ class _AddEventPageState extends State<AddEventPage> {
             margin: EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
               widget.consulType == StringConstant.visitHospital
-                  ? "Kunjugan Puskesmas / Posyandu"
+                  ? "Kunjungan Puskesmas / Posyandu"
                   : widget.consulType == StringConstant.consumeMedicine
                       ? "Konsumsi Obat"
                       : "Lain-lain",

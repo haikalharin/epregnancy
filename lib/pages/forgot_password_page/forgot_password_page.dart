@@ -45,7 +45,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
       body: BlocListener<ForgotPasswordPageBloc, ForgotPasswordPageState>(
         listener: (context, state) async {
           if (state.submitStatus == FormzStatus.submissionFailure) {
-            var message = '${state.errorMessage} tidak tersedia';
+            var message = '${state.typeMessage} tidak tersedia';
             final snackBar =
                 SnackBar(content: Text(message), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);

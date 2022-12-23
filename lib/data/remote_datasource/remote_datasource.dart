@@ -560,8 +560,11 @@ class RemoteDataSource {
     }
   }
 
-  Future<List<ArticleModel>> fetchArticle() async {
-    final response = await httpClient.get(ServiceUrl.listArticle);
+  Future<List<ArticleModel>> fetchArticle(String category) async {
+    Map<String, String> param = {
+      'category': category,
+    };
+    final response = await httpClient.get(ServiceUrl.listArticle,queryParameters: param);
     final data = <ArticleModel>[];
     getData(response).forEach((item) {
       data.add(ArticleModel.fromJson(item));

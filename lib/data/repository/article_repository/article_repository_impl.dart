@@ -17,12 +17,12 @@ class ArticleRepositoryImpl extends ArticleRepository {
   ArticleRepositoryImpl(this.networkInfo, this.remoteDatasource);
 
   @override
-  Future<List<ArticleModel>> fetchArticle({bool isSearch = false, String keyword = ""}) async {
+  Future<List<ArticleModel>> fetchArticle({bool isSearch = false, String keyword = "", String category = ""}) async {
     if (await networkInfo.isConnected) {
       if(isSearch){
         return remoteDatasource.searchArticle(isSearch, keyword);
       } else {
-        return remoteDatasource.fetchArticle();
+        return remoteDatasource.fetchArticle(category);
       }
     }
     throw NetworkConnectionException();
