@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -265,13 +266,13 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Stack(
                 children: [
-                  Positioned.fill(
-                    child: Image.asset(
-                      "assets/ePregnancy_login_logo.png",
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.bottomLeft,
-                    ),
-                  ),
+                  // Positioned.fill(
+                  //   child: Image.asset(
+                  //     "assets/ePregnancy_login_logo.png",
+                  //     fit: BoxFit.fitWidth,
+                  //     alignment: Alignment.bottomLeft,
+                  //   ),
+                  // ),
                   Center(
                     child: BlocBuilder<LoginBloc, LoginState>(
                       builder: (context, state) {
@@ -284,6 +285,8 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 60),
                             // SizedBox(height: 120),
                             //_HeadingText(),
+                            SvgPicture.asset("assets/img_login.svg"),
+                            SizedBox(height: 36.h),
                             Text(
                               "Selamat Datang",
                               style: TextStyle(
@@ -292,8 +295,9 @@ class _LoginPageState extends State<LoginPage> {
                                 fontSize: 40,
                               ),
                             ),
+                            SizedBox(height: 8.h),
                             Text(
-                              "Masuk dengan akun email/nomor handphone yang terdaftar",
+                              "Masuk dengan akun email atau nomor telepon seluler",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.normal,
@@ -301,16 +305,15 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             SizedBox(height: 20),
                             _UsernameInput(),
-                            SizedBox(height: 12),
+                            SizedBox(height: 16.h),
                             _PasswordInput(),
                             _ForgotPasswordButton(),
-                            SizedBox(height: 20),
+                            SizedBox(height: 0.h),
                             Container(
-                                height: 50,
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                height: 56,
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 child: ElevatedButton(
-                                  child: const Text('Login'),
+                                  child: const Text('Masuk'),
                                   onPressed: () {
                                     // dismiss active keyboard
                                     FocusScopeNode currentFocus =
@@ -324,7 +327,10 @@ class _LoginPageState extends State<LoginPage> {
                                         .add(LoginSubmitted());
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      primary: EpregnancyColors.primer),
+                                      primary: EpregnancyColors.primer,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),),
                                 )),
                             // SizedBox(height: 10),
                             // Container(
@@ -347,8 +353,28 @@ class _LoginPageState extends State<LoginPage> {
                             //           primary: Colors.white,
                             //           onPrimary: Colors.black)),
                             // ),
-                            SizedBox(height: 12),
-                            _RegisterButton()
+                            SizedBox(height: 50.h),
+                            _RegisterButton(),
+                            SizedBox(height: 8.h,),
+                            Container(
+                                height: 56,
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: ElevatedButton(
+                                  child: Text('Daftar', style: TextStyle(color: EpregnancyColors.primer ),),
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(RouteName.signup);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    side: BorderSide(
+                                      width: 1.w,
+                                      color: EpregnancyColors.primer
+                                    ),
+                                    primary: EpregnancyColors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),),
+                                )),
                             // _PasswordTextField(),
                           ],
                         );
@@ -422,13 +448,17 @@ class _UsernameInput extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
-        return TextField(
+        return TextFormField(
           key: const Key('loginForm_usernameInput_textField'),
           onChanged: (username) =>
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
-            labelText: 'E-mail/Nomor handphone',
+            labelText: 'E-mail / Nomor Telepon Seluler',
             errorText: state.username.invalid ? 'Silahkan isi username' : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.w),
+              borderSide: BorderSide(color: EpregnancyColors.primer),
+            ),
           ),
         );
       },
@@ -459,6 +489,10 @@ class _PasswordInputState extends State<_PasswordInput> {
           decoration: InputDecoration(
             labelText: 'Kata Sandi',
             errorText: state.password.invalid ? 'Kata Sandi salah' : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.w),
+              borderSide: BorderSide(color: EpregnancyColors.primer),
+            ),
             suffixIcon: GestureDetector(
               onTap: () {
                 var _isHiddenTap = _isHiddenPassword == true ? false : true;
@@ -497,8 +531,8 @@ class _ForgotPasswordButton extends StatelessWidget {
               children: <Widget>[
                 TextButton(
                   child: Text(
-                    "Lupa Password?",
-                    style: TextStyle(color: EpregnancyColors.primer),
+                    "Lupa kata sandi ?",
+                    style: TextStyle(color: EpregnancyColors.primer, fontSize: 14.sp, fontWeight: FontWeight.w700),
                   ),
                   onPressed: () {
                     Navigator.of(context).pushNamed(RouteName.forgotPassword);
@@ -521,32 +555,33 @@ class _RegisterButton extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return Align(
-          alignment: Alignment.centerRight,
+          alignment: Alignment.centerLeft,
           child: Container(
             child: Column(
               children: <Widget>[
                 RichText(
                   textAlign: TextAlign.center,
-                  text: TextSpan(
+                  text:  TextSpan(
                     // Note: Styles for TextSpans must be explicitly defined.
                     // Child text spans will inherit styles from parent
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black,
+                    style:  TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: EpregnancyColors.primer,
                     ),
-                    children: [
-                      TextSpan(text: 'Belum punya akun? '),
-                      WidgetSpan(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(RouteName.signup);
-                          },
-                          child: const Text("Register",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: EpregnancyColors.primer)),
-                        ),
-                      )
+                    children: const [
+                      TextSpan(text: 'Belum punya akun ?'),
+                      // WidgetSpan(
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       Navigator.of(context).pushNamed(RouteName.signup);
+                      //     },
+                      //     child: const Text("Register",
+                      //         style: TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             color: EpregnancyColors.primer)),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
