@@ -958,7 +958,7 @@ class _AddDateStartInput extends StatelessWidget {
           onTap: () async {
             var dateTime = await DatePickerUtils.getDate(
                     context, state.dateStart ?? DateTime.now(),
-                    fieldLabelText: "Date", endDate: state.dateEnd) ??
+                    fieldLabelText: "Date", endDate: state.dateEnd, firstDate: DateTime.now()) ??
                 DateTime.now();
             Injector.resolve<EventPageBloc>()
                 .add(EventDateStartChanged(dateTime));
