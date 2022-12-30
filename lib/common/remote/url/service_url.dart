@@ -70,7 +70,7 @@ class ServiceUrl {
   static String sendChat = '$chat/send';
   static String latestChat =  '$chat/latest';
   static String chatList =  '$chat/list';
-  static String chatArchiveList =  '$chatArchive/list';
+  static String chatArchiveList =  '$chatArchive/latest';
   static String personalChatRoom =  '$chat/personal/';
   static String archivePersonalChatRoom =  '$chatArchive/personal/';
   static String personalChatArchive =  '$chatArchive/personal/';

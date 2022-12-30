@@ -32,7 +32,7 @@ class PointHistoryBloc extends Bloc<PointHistoryEvent, PointHistoryState> {
 
 
        if(_pointHistoryResponse.isNotEmpty) {
-         yield state.copyWith(type: 'Load Data Success', status: FormzStatus.submissionSuccess, pointHistories: _pointHistoryResponse);
+         yield state.copyWith(type: 'Load Data Success', status: FormzStatus.submissionSuccess, pointHistories: _pointHistoryResponse.reversed.toList());
        }
      } catch(e) {
        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());

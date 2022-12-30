@@ -463,7 +463,7 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<ChatListResponse>> fetchChatListResponse(String fromId) async {
-    final response = await httpClient.get(ServiceUrl.chatList, queryParameters: {'from_id': fromId});
+    final response = await httpClient.get(ServiceUrl.latestChat, queryParameters: {'from_id': fromId});
 
     return ResponseModel.fromJson(
         response, ChatListResponse.fromJson);
@@ -479,7 +479,7 @@ class RemoteDataSource {
   Future<ResponseModel<ChatListResponse>> fetchChatListByToIdResponse(
       String toId) async {
     final response = await httpClient
-        .get(ServiceUrl.chatList, queryParameters: {'to_id': toId});
+        .get(ServiceUrl.latestChat, queryParameters: {'to_id': toId});
 
     return ResponseModel.fromJson(response, ChatListResponse.fromJson);
   }
