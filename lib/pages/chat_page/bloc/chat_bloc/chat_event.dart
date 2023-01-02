@@ -51,7 +51,16 @@ class FetchPersonalChatRoom extends ChatEvent {
 
 class SendChatPendingEvent extends ChatEvent {
   final ChatPendingSendRequest chatPendingSendRequest;
-  const SendChatPendingEvent(this.chatPendingSendRequest);
+  final bool? firsTime;
+  const SendChatPendingEvent(this.chatPendingSendRequest, {this.firsTime});
+
+  @override
+  List<Object> get props => [];
+}
+
+class ReSendChatPendingEvent extends ChatEvent {
+  final ChatPendingSendRequest chatPendingSendRequest;
+  const ReSendChatPendingEvent(this.chatPendingSendRequest);
 
   @override
   List<Object> get props => [];

@@ -132,10 +132,13 @@ class _SignUpPageState extends State<SignUpPage> {
                             horizontal: _horizontalPadding,
                           ),
                           children: [
-                            Image.asset(
-                              "assets/signup_background.png",
-                              alignment: Alignment.center,
-                              height: 280,
+                            Hero(
+                              tag: 'ibu',
+                              child: Image.asset(
+                                "assets/signup_background.png",
+                                alignment: Alignment.center,
+                                height: 280,
+                              ),
                             ),
                             // Image.asset(
                             //   'assets/signup_background.png',

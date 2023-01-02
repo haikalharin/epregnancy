@@ -11,7 +11,7 @@ _$_ChatPendingSendResponse _$$_ChatPendingSendResponseFromJson(
     _$_ChatPendingSendResponse(
       id: json['id'] as String?,
       fromId: json['from_id'] as String?,
-      toId: json['to_id'] as String?,
+      hospitalId: json['hospital_id'] as String?,
       message: json['message'] as String?,
       unreadCount: json['unread_count'] as int?,
       isRead: json['is_read'] as bool?,
@@ -37,7 +37,7 @@ Map<String, dynamic> _$$_ChatPendingSendResponseToJson(
     <String, dynamic>{
       'id': instance.id,
       'from_id': instance.fromId,
-      'to_id': instance.toId,
+      'hospital_id': instance.hospitalId,
       'message': instance.message,
       'unread_count': instance.unreadCount,
       'is_read': instance.isRead,

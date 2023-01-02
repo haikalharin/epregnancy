@@ -285,7 +285,9 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 60),
                             // SizedBox(height: 120),
                             //_HeadingText(),
-                            SvgPicture.asset("assets/img_login.svg"),
+                            Hero(
+                              tag: 'ibu',
+                                child: SvgPicture.asset("assets/img_login.svg")),
                             SizedBox(height: 36.h),
                             Text(
                               "Selamat Datang",
