@@ -981,6 +981,12 @@ class _AddTimeInput extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 12,
                                 )),
+                            state.isTimeCorrect == false
+                                ? Text("Mohon pilih waktu yang akan datang",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: EpregnancyColors.red))
+                                : Container(),
                           ],
                         ),
                       ),
