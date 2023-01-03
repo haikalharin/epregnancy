@@ -243,9 +243,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else {
         type = 'mobile';
       }
+      var data = {
+        'type': type,
+        'value':  state.userId,
+      };
       ResponseModel response = await userRepository
-          .requestOtp(OtpModel(value: state.userId, type: type));
-      OtpModel otpModel = response.data;
+          .requestOtp(data);
+      OtpModel otpModel = OtpModel(otp: "",type: type,value: state.userId);
       if (response.code == 200) {
         await AppSharedPreference.setOtp(otpModel);
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
@@ -275,10 +279,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final User? user = await GAuthentication.signInWithGoogle();
       if (user != null) {
         var data = user.email??"";
-        final response = await userRepository.checkUserExist(data);
+        final response = await userRepository.checkUserExist(data,"email");
         UserModel userModel = response.data;
         if (response.code == 200) {
-          if (response.message == StringConstant.active) {
+          if (response.message == StringConstant.emailActive) {
             if (userModel.isPregnant == true ||
                 userModel.isHaveBaby == true ||
                 userModel.isPlanningPregnancy == true) {

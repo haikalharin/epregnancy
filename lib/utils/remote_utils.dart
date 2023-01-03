@@ -29,9 +29,13 @@ dynamic getUserId(dynamic result) => result['user_id'];
 
 dynamic getIsFromNotif(dynamic result) => result['is_from_notif'];
 
+dynamic getUserName(dynamic result) => result['username'];
+
 dynamic getName(dynamic result) => result['name'];
 
 dynamic getFrom(dynamic result) => result['from'];
+
+dynamic getOtp(dynamic result) => result['otp'];
 
 dynamic getImageUrl(dynamic result) => result['image_url'];
 

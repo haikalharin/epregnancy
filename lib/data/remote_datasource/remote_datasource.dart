@@ -58,17 +58,8 @@ class RemoteDataSource {
     return ResponseModel<LoginResponseData>.fromJson(response, LoginResponseData.fromJson);
   }
 
-  Future<ResponseModel> forgotPassword(String userName) async {
-    Map<String, String> data = {};
-    if (userName.contains('@')) {
-      data = {
-        'email': userName,
-      };
-    } else {
-      data = {
-        'mobile': userName,
-      };
-    }
+  Future<ResponseModel> forgotPassword(Map data) async {
+
     final response = await httpClient.post(ServiceUrl.forgotPassword, data);
 
     return ResponseModel.fromJson(response, UserModel.fromJson);
@@ -193,9 +184,9 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel> requestOtp(OtpModel otpModel) async {
+  Future<ResponseModel> requestOtp(Map data) async {
     try {
-      final response = await httpClient.post(ServiceUrl.requestOtp, otpModel);
+      final response = await httpClient.post(ServiceUrl.requestOtp, data);
       return ResponseModel.fromJson(response, OtpModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -221,10 +212,10 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel<UserModel>> checkUserExist(String user) async {
+  Future<ResponseModel<UserModel>> checkUserExist(String user, String type) async {
     try {
-      Map<String, String> data = {'username': user};
-      final response = await httpClient.post(ServiceUrl.checkUserExist, data);
+      Map<String, String> data = {type: user};
+      final response = await httpClient.post("${ServiceUrl.checkUserExist}/$type", data);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
       return ResponseModel(data: const UserModel());

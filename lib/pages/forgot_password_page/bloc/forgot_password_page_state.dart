@@ -10,6 +10,7 @@ class ForgotPasswordPageState with FormzMixin {
   final FormzStatus? submitStatus;
   final String? errorMessage;
   final String? typeMessage;
+  final String? typeEvent;
 
   ForgotPasswordPageState(
       {this.userName = const MandatoryFieldValidator.pure(),
@@ -19,6 +20,7 @@ class ForgotPasswordPageState with FormzMixin {
         this.submitStatus = FormzStatus.pure,
         this.errorMessage,
         this.typeMessage,
+        this.typeEvent,
       });
 
   ForgotPasswordPageState copyWith(
@@ -29,6 +31,7 @@ class ForgotPasswordPageState with FormzMixin {
         ConfirmPasswordValidator? confirmPassword,
         String? errorMessage,
         String? typeMessage,
+        String? typeEvent,
       }) {
     return ForgotPasswordPageState(
         submitStatus: submitStatus,
@@ -38,6 +41,7 @@ class ForgotPasswordPageState with FormzMixin {
         userModel: userModel ?? this.userModel,
         errorMessage: errorMessage,
         typeMessage: typeMessage,
+      typeEvent: typeEvent,
     );
   }
 

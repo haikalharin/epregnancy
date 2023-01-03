@@ -171,7 +171,7 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                                 } else {
                                   Navigator.of(context).pushNamed(
                                       RouteName.otpPage,
-                                      arguments: widget.userId).then((value) {
+                                      arguments: {'username':  widget.userId, 'from': "disclaimer"}).then((value) {
                                         Navigator.pop(context);
                                   });
                                 }

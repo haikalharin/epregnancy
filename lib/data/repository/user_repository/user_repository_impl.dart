@@ -127,9 +127,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<ResponseModel> requestOtp(OtpModel otpModel) async {
+  Future<ResponseModel> requestOtp(Map data) async {
     if (await networkInfo.isConnected) {
-      ResponseModel responseModel = await remoteDatasource.requestOtp(otpModel);
+      ResponseModel responseModel = await remoteDatasource.requestOtp(data);
       return responseModel;
     }
     throw NetworkConnectionException();
@@ -197,9 +197,9 @@ class UserRepositoryImpl extends UserRepository {
     throw NetworkConnectionException();
   }
   @override
-  Future<ResponseModel<UserModel>> checkUserExist(String user) async {
+  Future<ResponseModel<UserModel>> checkUserExist(String user, String type) async {
     if(await networkInfo.isConnected){
-      return remoteDatasource.checkUserExist(user);
+      return remoteDatasource.checkUserExist(user,type);
     }
     throw NetworkConnectionException();
   }
@@ -230,9 +230,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<ResponseModel> forgotPassword (String userName) async {
+  Future<ResponseModel> forgotPassword (Map data) async {
     if (await networkInfo.isConnected) {
-      ResponseModel responseModel = await remoteDatasource.forgotPassword(userName);
+      ResponseModel responseModel = await remoteDatasource.forgotPassword(data);
       return responseModel;
     }
     throw NetworkConnectionException();
