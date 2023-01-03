@@ -15,10 +15,11 @@ import 'bloc/home_page_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListEventPersonalWidget extends StatefulWidget {
-  ListEventPersonalWidget({Key? key, this.tipeAcara, this.dateTime})
+  ListEventPersonalWidget({Key? key, this.tipeAcara, this.dateTime, this.isMidwife = false})
       : super(key: key);
   final String? tipeAcara;
   final DateTime? dateTime;
+  final bool isMidwife;
 
   @override
   State<ListEventPersonalWidget> createState() =>
@@ -37,7 +38,7 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
         widget.tipeAcara == StringConstant.typeEventJadwalUmum
             ? StringConstant.typePublic
             : StringConstant.typePersonal,
-        widget.dateTime ?? DateTime.now()));
+        widget.dateTime ?? DateTime.now(), isMidwife: widget.isMidwife));
   }
 
   // final String nextMenu, content;

@@ -85,10 +85,19 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       List<EventModel> listEvent = [];
       if (event.type == StringConstant.typePersonal) {
-        responseModel = await eventRepository.fetchEvent(userId: person.id,isPublic: false );
+        print('midwife status : ${event.isMidwife}');
+        if(event.isMidwife == true){
+          responseModel = await eventRepository.fetchEventForMidwife(midwifeId: person.id, isPublic: false );
+        } else {
+          responseModel = await eventRepository.fetchEvent(userId: person.id,isPublic: false );
+        }
         listEvent = responseModel.data??[];
       } else {
-        responseModel = await eventRepository.fetchEvent(userId: person.id, isPublic: true);
+        if(event.isMidwife == true) {
+          responseModel = await eventRepository.fetchEventForMidwife(midwifeId: person.id, isPublic: true);
+        } else {
+          responseModel = await eventRepository.fetchEvent(userId: person.id, isPublic: true);
+        }
         listEvent = responseModel.data?? [];
       }
 

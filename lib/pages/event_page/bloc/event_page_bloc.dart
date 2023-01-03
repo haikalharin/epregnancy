@@ -343,6 +343,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
       try {
         HospitalModel hospital = await AppSharedPreference.getHospital();
+        UserModel userMidwife = await AppSharedPreference.getUser();
         UserModel person = event.user;
         final df = DateFormat('yyyy-MM-dd');
         final forCalendar = DateFormat('yyyy-MM-dd hh:mm');
@@ -357,6 +358,8 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         if (state.consulType.value == StringConstant.consumeMedicine) {
           response = await eventRepository.saveEventMedicineFromMidwife(EventModel(
             userId: person.id,
+            // midwifeId: userMidwife.id,
+            hospitalId: hospital.id,
             location: hospital.address ?? '',
             type: state.consulType.value,
             title: state.scheduleName.value,
@@ -423,6 +426,8 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
           remindBefore = _remindBefore;
           response = await eventRepository.saveEventAppointmentFromMidwife(EventModel(
             userId: person.id,
+            midwifeId: userMidwife.id,
+            hospitalId: hospital.id,
             type: state.consulType.value,
             title: state.scheduleName.value,
             description: state.description.value,

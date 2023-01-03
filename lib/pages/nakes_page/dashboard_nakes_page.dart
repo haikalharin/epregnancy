@@ -19,6 +19,7 @@ import '../../common/injector/injector.dart';
 import '../article_page/list_shimmer_verticle.dart';
 import '../chat_page/bloc/chat_bloc/chat_bloc.dart';
 import '../home_page/list_article.dart';
+import '../home_page/tab_bar_event_page.dart';
 import 'bloc/chat_pending_bloc.dart';
 import 'package:flutter_countdown_timer/index.dart';
 
@@ -33,7 +34,9 @@ class DashBoardNakesPage extends StatefulWidget {
   State<DashBoardNakesPage> createState() => _DashBoardNakesPageState();
 }
 
-class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
+class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProviderStateMixin {
+
+  TabController? _tabController;
 
   @override
   void initState() {
@@ -43,7 +46,8 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
     Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
-
+    Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -72,13 +76,9 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
           key: _refreshIndicatorKey,
           onRefresh: _handleRefresh,
           showChildOpacityTransition: false,
-          child: SingleChildScrollView(
-            child: Container(
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height,
-              child: ListView(
+          child: ListView(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                // physics: NeverScrollableScrollPhysics(),
                 // mainAxisAlignment: MainAxisAlignment.start,
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -310,6 +310,23 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                           ],
                         ),
                       )),
+
+                  Container(
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              height:
+                              MediaQuery.of(context).size.height - 200,
+                              child: TabBarEventPage(
+                                tabController: _tabController,
+                                dateTime: state.eventDate,
+                                isMidwife: true,
+                              )),
+                        ],
+                      )),
+
                   BlocBuilder<HospitalBloc, HospitalState>(
                     builder: (context, state) {
                       if(state.type == 'fetch-hospital-success'){
@@ -360,11 +377,10 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                         return Container();
                       }
                     },
-                  )
+                  ),
+                  SizedBox(height: 50.h,)
                 ],
-              ),
             ),
-          ),
         );
       }),
       floatingActionButton: Align(

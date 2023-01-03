@@ -297,6 +297,18 @@ class RemoteDataSource {
     return ResponseModel.fromJson(response, EventModel.fromJson);
   }
 
+  // fetch event for midwife
+  Future<ResponseModel<EventModel>> fetchListEventForMidwife(
+      {String midwifeId = '', bool isPublic = false}) async {
+    Map<String, String> qParams = {
+      'midwife_id': midwifeId,
+      'is_public': isPublic.toString()
+    };
+    final response =
+    await httpClient.get(ServiceUrl.listSchedule, queryParameters: qParams);
+    return ResponseModel.fromJson(response, EventModel.fromJson);
+  }
+
   Future<ResponseModel> saveScheduleEventPersonal(EventModel eventModel) async {
     try {
       final response =
