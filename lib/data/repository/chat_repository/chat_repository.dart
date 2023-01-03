@@ -24,5 +24,4 @@ abstract class ChatRepository {
   Future<ResponseModel<ChatResponse>> sendChat(ChatSendRequest _request);
   Future<ResponseModel<ChatPendingPatientResponse>> fetchChatPendingPatient(String fromId, String hospitalId);
   Future<int> endChat(String toId);
-
 }

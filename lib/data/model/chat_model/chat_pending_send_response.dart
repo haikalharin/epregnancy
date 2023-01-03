@@ -11,7 +11,7 @@ abstract class ChatPendingSendResponse with _$ChatPendingSendResponse {
   const factory ChatPendingSendResponse({
     required String? id,
     required String? fromId,
-    required String? toId,
+    required String? hospitalId,
     required String? message,
     required int? unreadCount,
     required bool? isRead,

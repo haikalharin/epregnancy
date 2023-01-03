@@ -34,6 +34,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       yield* _mapFetchPendingChatEventToState(event, state);
     } else if (event is SendChatPendingEvent) {
       yield* _mapSendChatPendingEvent(event, state);
+    } else if (event is ReSendChatPendingEvent){
+      yield* _mapReSendChatPendingEvent(event, state);
     } else if (event is SendChatEvent) {
       yield* _mapSendChatEvent(event, state);
     } else if (event is EndChatEvent) {
@@ -298,18 +300,57 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     try {
       final ResponseModel<ChatPendingSendResponse> _response = await chatRepository.sendChatPending(event.chatPendingSendRequest);
       // ChatPendingSendResponse _chatPendingSendResponse = _response.data;
-
+      print('event firstime : ${event.firsTime}');
       if (_response.code == 200) {
         // ChatPendingSendResponse chatPendingSendResponse = _chatPendingSendResponse.copyWith(
         //   id: await aesDecryptor(_chatPendingSendResponse.id),
         //   toId: await aesDecryptor(_chatPendingSendResponse.toId),
         //   fromId: await aesDecryptor(_chatPendingSendResponse.fromId),
         // );
+        if(event.firsTime == false) {
+          yield state.copyWith(
+              chatPendingSendResponse: _response.data,
+              status: FormzStatus.submissionSuccess,
+              type: 'resend-pending-success');
+        } else {
+          yield state.copyWith(
+              chatPendingSendResponse: _response.data,
+              status: FormzStatus.submissionSuccess,
+              type: 'send-pending-success');
+        }
+      }
+    } on SurveyErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
+    }
+  }
 
+  Stream<ChatState> _mapReSendChatPendingEvent(
+      ReSendChatPendingEvent event,
+      ChatState state,
+      ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, type: 'resend-pending-loading');
+    try {
+      final ResponseModel<ChatPendingSendResponse> _response = await chatRepository.sendChatPending(event.chatPendingSendRequest);
+      // ChatPendingSendResponse _chatPendingSendResponse = _response.data;
+      if (_response.code == 200) {
+        // ChatPendingSendResponse chatPendingSendResponse = _chatPendingSendResponse.copyWith(
+        //   id: await aesDecryptor(_chatPendingSendResponse.id),
+        //   toId: await aesDecryptor(_chatPendingSendResponse.toId),
+        //   fromId: await aesDecryptor(_chatPendingSendResponse.fromId),
+        // );
         yield state.copyWith(
             chatPendingSendResponse: _response.data,
             status: FormzStatus.submissionSuccess,
-            type: 'send-pending-success');
+            type: 'resend-pending-success');
       }
     } on SurveyErrorException catch (e) {
       print(e);

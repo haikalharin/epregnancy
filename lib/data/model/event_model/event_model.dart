@@ -20,6 +20,8 @@ abstract class EventModel with _$EventModel {
   const factory EventModel({
     @JsonKey(includeIfNull: true) @JsonKey(includeIfNull: true) String? id,
     @JsonKey(name: 'user_id', includeIfNull: true) String? userId,
+    @JsonKey(name: 'hospital_id', includeIfNull: true) String? hospitalId,
+    @JsonKey(name: 'midwife_id', includeIfNull: true) String? midwifeId,
     @JsonKey(name: 'user', includeIfNull: true)User? user,
     @JsonKey(includeIfNull: true) String? type,
     @JsonKey(includeIfNull: true) String? title,

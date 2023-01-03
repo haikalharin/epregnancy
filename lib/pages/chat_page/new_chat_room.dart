@@ -884,7 +884,9 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                             null
                                         ? CircleAvatar(
                                             backgroundImage: NetworkImage(
-                                                widget.toImageUrl!,
+                                                // widget.toImageUrl!,
+                                                chatMessageList![index]
+                                                    .profileImage!,
                                                 scale: 1.0),
                                           )
                                         : Image.asset(
@@ -1050,10 +1052,32 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                                       _chatSendRequest));
                                             });
                                           } else {
-                                            Toast.show(
-                                                'Mohon tunggu respon Nakes sebelum membuat chat baru',
-                                                duration: 3,
-                                                gravity: 1);
+                                            // todo handel pending send
+                                            if((chatMessageList?.length?? 0) >= 5) {
+                                              Toast.show(
+                                                  'Silahkan tunggu nakes merespon chat anda sebelum mengirim chat baru',
+                                                  duration: 3,
+                                                  gravity: 1);
+                                            } else {
+                                              setState(() {
+                                                chatMessageList?.add(
+                                                    ChatMessageEntity(
+                                                        mine: true,
+                                                        profileImage:
+                                                        myImageProfile,
+                                                        dateTime: DateTime.now()
+                                                            .toString(),
+                                                        message: val,
+                                                        name: 'sender'));
+                                                _scrollDown();
+
+                                                ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(
+                                                    fromId: widget.fromId, hospitalId: toId, message: val);
+
+                                                Injector.resolve<ChatBloc>().add(ReSendChatPendingEvent(_chatPendingSendRequest));
+                                                _messageEditingController.clear();
+                                              });
+                                            }
                                           }
                                         }
                                       },
@@ -1079,8 +1103,9 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                       if (isPendingChat == false) {
                                         _showPicker(context);
                                       } else {
+                                        // todo handle chat pending
                                         Toast.show(
-                                            'Mohon tunggu respon Nakes sebelum membuat chat baru',
+                                            'Silahkan tunggu nakes merespon chat anda sebelum mengirim chat baru',
                                             duration: 3,
                                             gravity: 1);
                                       }
@@ -1124,10 +1149,30 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                             _messageEditingController.clear();
                                           });
                                         } else {
-                                          Toast.show(
-                                              'Mohon tunggu respon Nakes sebelum membuat chat baru',
-                                              duration: 3,
-                                              gravity: 1);
+                                          if((chatMessageList?.length ?? 0) >= 5) {
+                                            Toast.show(
+                                                'Silahkan tunggu nakes merespon chat anda sebelum mengirim chat baru',
+                                                duration: 3,
+                                                gravity: 1);
+                                          } else {
+                                            setState(() {
+                                              chatMessageList?.add(
+                                                  ChatMessageEntity(
+                                                      mine: true,
+                                                      profileImage:
+                                                      myImageProfile,
+                                                      dateTime: DateTime.now().toString(),
+                                                      message: _messageEditingController.text,
+                                                      name: 'sender'));
+                                              _scrollDown();
+
+                                              ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(
+                                                  fromId: widget.fromId, hospitalId: toId, message: _messageEditingController.text);
+
+                                              Injector.resolve<ChatBloc>().add(ReSendChatPendingEvent(_chatPendingSendRequest));
+                                              _messageEditingController.clear();
+                                            });
+                                          }
                                         }
                                       }
                                     },

@@ -25,6 +25,10 @@ mixin _$EventModel {
   String? get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'user_id', includeIfNull: true)
   String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hospital_id', includeIfNull: true)
+  String? get hospitalId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'midwife_id', includeIfNull: true)
+  String? get midwifeId => throw _privateConstructorUsedError;
   @JsonKey(name: 'user', includeIfNull: true)
   User? get user => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
@@ -92,6 +96,10 @@ abstract class $EventModelCopyWith<$Res> {
           String? id,
       @JsonKey(name: 'user_id', includeIfNull: true)
           String? userId,
+      @JsonKey(name: 'hospital_id', includeIfNull: true)
+          String? hospitalId,
+      @JsonKey(name: 'midwife_id', includeIfNull: true)
+          String? midwifeId,
       @JsonKey(name: 'user', includeIfNull: true)
           User? user,
       @JsonKey(includeIfNull: true)
@@ -156,6 +164,8 @@ class _$EventModelCopyWithImpl<$Res> implements $EventModelCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
+    Object? hospitalId = freezed,
+    Object? midwifeId = freezed,
     Object? user = freezed,
     Object? type = freezed,
     Object? title = freezed,
@@ -189,6 +199,14 @@ class _$EventModelCopyWithImpl<$Res> implements $EventModelCopyWith<$Res> {
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hospitalId: hospitalId == freezed
+          ? _value.hospitalId
+          : hospitalId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      midwifeId: midwifeId == freezed
+          ? _value.midwifeId
+          : midwifeId // ignore: cast_nullable_to_non_nullable
               as String?,
       user: user == freezed
           ? _value.user
@@ -314,6 +332,10 @@ abstract class _$$_EventModelCopyWith<$Res>
           String? id,
       @JsonKey(name: 'user_id', includeIfNull: true)
           String? userId,
+      @JsonKey(name: 'hospital_id', includeIfNull: true)
+          String? hospitalId,
+      @JsonKey(name: 'midwife_id', includeIfNull: true)
+          String? midwifeId,
       @JsonKey(name: 'user', includeIfNull: true)
           User? user,
       @JsonKey(includeIfNull: true)
@@ -381,6 +403,8 @@ class __$$_EventModelCopyWithImpl<$Res> extends _$EventModelCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
+    Object? hospitalId = freezed,
+    Object? midwifeId = freezed,
     Object? user = freezed,
     Object? type = freezed,
     Object? title = freezed,
@@ -414,6 +438,14 @@ class __$$_EventModelCopyWithImpl<$Res> extends _$EventModelCopyWithImpl<$Res>
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hospitalId: hospitalId == freezed
+          ? _value.hospitalId
+          : hospitalId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      midwifeId: midwifeId == freezed
+          ? _value.midwifeId
+          : midwifeId // ignore: cast_nullable_to_non_nullable
               as String?,
       user: user == freezed
           ? _value.user
@@ -524,6 +556,10 @@ class _$_EventModel implements _EventModel {
           this.id,
       @JsonKey(name: 'user_id', includeIfNull: true)
           this.userId,
+      @JsonKey(name: 'hospital_id', includeIfNull: true)
+          this.hospitalId,
+      @JsonKey(name: 'midwife_id', includeIfNull: true)
+          this.midwifeId,
       @JsonKey(name: 'user', includeIfNull: true)
           this.user,
       @JsonKey(includeIfNull: true)
@@ -584,6 +620,12 @@ class _$_EventModel implements _EventModel {
   @override
   @JsonKey(name: 'user_id', includeIfNull: true)
   final String? userId;
+  @override
+  @JsonKey(name: 'hospital_id', includeIfNull: true)
+  final String? hospitalId;
+  @override
+  @JsonKey(name: 'midwife_id', includeIfNull: true)
+  final String? midwifeId;
   @override
   @JsonKey(name: 'user', includeIfNull: true)
   final User? user;
@@ -666,7 +708,7 @@ class _$_EventModel implements _EventModel {
 
   @override
   String toString() {
-    return 'EventModel(id: $id, userId: $userId, user: $user, type: $type, title: $title, description: $description, location: $location, date: $date, time: $time, remindBefore: $remindBefore, startDate: $startDate, endDate: $endDate, medicineTakenTimes: $medicineTakenTimes, medicineTakenDays: $medicineTakenDays, medicineUnit: $medicineUnit, status: $status, notifications: $notifications, isDelete: $isDelete, isPublic: $isPublic, imageUrl: $imageUrl, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
+    return 'EventModel(id: $id, userId: $userId, hospitalId: $hospitalId, midwifeId: $midwifeId, user: $user, type: $type, title: $title, description: $description, location: $location, date: $date, time: $time, remindBefore: $remindBefore, startDate: $startDate, endDate: $endDate, medicineTakenTimes: $medicineTakenTimes, medicineTakenDays: $medicineTakenDays, medicineUnit: $medicineUnit, status: $status, notifications: $notifications, isDelete: $isDelete, isPublic: $isPublic, imageUrl: $imageUrl, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
   }
 
   @override
@@ -676,6 +718,9 @@ class _$_EventModel implements _EventModel {
             other is _$_EventModel &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
+            const DeepCollectionEquality()
+                .equals(other.hospitalId, hospitalId) &&
+            const DeepCollectionEquality().equals(other.midwifeId, midwifeId) &&
             const DeepCollectionEquality().equals(other.user, user) &&
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.title, title) &&
@@ -719,6 +764,8 @@ class _$_EventModel implements _EventModel {
         runtimeType,
         const DeepCollectionEquality().hash(id),
         const DeepCollectionEquality().hash(userId),
+        const DeepCollectionEquality().hash(hospitalId),
+        const DeepCollectionEquality().hash(midwifeId),
         const DeepCollectionEquality().hash(user),
         const DeepCollectionEquality().hash(type),
         const DeepCollectionEquality().hash(title),
@@ -763,6 +810,10 @@ abstract class _EventModel implements EventModel {
           final String? id,
       @JsonKey(name: 'user_id', includeIfNull: true)
           final String? userId,
+      @JsonKey(name: 'hospital_id', includeIfNull: true)
+          final String? hospitalId,
+      @JsonKey(name: 'midwife_id', includeIfNull: true)
+          final String? midwifeId,
       @JsonKey(name: 'user', includeIfNull: true)
           final User? user,
       @JsonKey(includeIfNull: true)
@@ -822,6 +873,12 @@ abstract class _EventModel implements EventModel {
   @override
   @JsonKey(name: 'user_id', includeIfNull: true)
   String? get userId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'hospital_id', includeIfNull: true)
+  String? get hospitalId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'midwife_id', includeIfNull: true)
+  String? get midwifeId => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'user', includeIfNull: true)
   User? get user => throw _privateConstructorUsedError;

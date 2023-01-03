@@ -91,7 +91,8 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
       //generate 7 day from install date for hari ke checkin
       final _checkinDateList = List<CheckInEntity>.generate(7, (i) {
         String _plusDate = DateFormatter.dateFormatForCheckinFilter.format(startDate.add(Duration(days: i)));
-        bool hasCheckIn = _checkIns!.any((e) => e.date == _plusDate || e.day == i + 1);
+        // bool hasCheckIn = _checkIns!.any((e) => e.date == _plusDate || e.day == i + 1);
+        bool hasCheckIn = _checkIns!.any((e) => e.date == _plusDate);
         if (hasCheckIn) {
           return CheckInEntity(done: true, date: _plusDate, day: i + 1);
         } else {
