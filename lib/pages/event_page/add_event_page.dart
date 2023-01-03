@@ -116,9 +116,16 @@ class _AddEventPageState extends State<AddEventPage> {
                         width: MediaQuery.of(context).size.width - 40,
                         height: 50,
                         child: RaisedButton(
-                          color: state.status.isValidated
-                              ? EpregnancyColors.primer
-                              : EpregnancyColors.primerSoft,
+                          color: widget.consulType ==
+                                      StringConstant.visitHospital ||
+                                  widget.consulType == StringConstant.other
+                              ? state.status.isValidated &&
+                                      state.isTimeCorrect == true
+                                  ? EpregnancyColors.primer
+                                  : EpregnancyColors.primerSoft
+                              : state.status.isValidated
+                                  ? EpregnancyColors.primer
+                                  : EpregnancyColors.primerSoft,
                           child: Padding(
                             padding: EdgeInsets.zero,
                             child: Text(
@@ -132,9 +139,15 @@ class _AddEventPageState extends State<AddEventPage> {
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           onPressed: () async {
-                            if (state.status.isValidated) {
-                              Injector.resolve<EventPageBloc>()
-                                  .add(EventAddSubmitted());
+                            if (widget.consulType ==
+                                    StringConstant.visitHospital ||
+                                widget.consulType == StringConstant.other) {
+                              if (state.isTimeCorrect == true) {
+                                if (state.status.isValidated) {
+                                  Injector.resolve<EventPageBloc>()
+                                      .add(EventAddSubmitted());
+                                }
+                              }
                             }
                           },
                         ),
@@ -780,8 +793,7 @@ class _AddDateStartInput extends StatelessWidget {
           onTap: () async {
             var dateTime = await DatePickerUtils.getDate(
                     context, state.dateStart ?? DateTime.now(),
-                    fieldLabelText: "Date",
-                    endDate: state.dateEnd) ??
+                    fieldLabelText: "Date", endDate: state.dateEnd) ??
                 DateTime.now();
             Injector.resolve<EventPageBloc>()
                 .add(EventDateStartChanged(dateTime));
@@ -851,7 +863,8 @@ class _AddDateEndInput extends StatelessWidget {
           onTap: () async {
             var dateTime = await DatePickerUtils.getDate(
                     context, state.dateStart ?? DateTime.now(),
-                    firstDate: state.dateStart) ?? DateTime.now();
+                    firstDate: state.dateStart) ??
+                DateTime.now();
             Injector.resolve<EventPageBloc>()
                 .add(EventDateEndChanged(dateTime));
           },
@@ -950,6 +963,12 @@ class _AddTimeInput extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 12,
                                 )),
+                            state.isTimeCorrect == false
+                                ? Text("Mohon pilih waktu yang akan datang",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: EpregnancyColors.red))
+                                : Container(),
                           ],
                         ),
                       ),

@@ -294,7 +294,14 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
                         width: MediaQuery.of(context).size.width - 40,
                         height: 50,
                         child: RaisedButton(
-                          color: state.status.isValidated && selectedUser != null
+                          color: widget.consulType ==
+                              StringConstant.visitHospital ||
+                              widget.consulType == StringConstant.other
+                              ? state.status.isValidated &&
+                              state.isTimeCorrect == true
+                              ? EpregnancyColors.primer
+                              : EpregnancyColors.primerSoft
+                              : state.status.isValidated
                               ? EpregnancyColors.primer
                               : EpregnancyColors.primerSoft,
                           child: Padding(
@@ -310,10 +317,22 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           onPressed: () async {
-                            if (state.status.isValidated && selectedUser != null) {
-                              Injector.resolve<EventPageBloc>()
-                                  .add(EventAddSubmittedFromMidwife(selectedUser!));
+                            if( widget.consulType == StringConstant.visitHospital ||
+                                widget.consulType == StringConstant.other){
+                              if(state.isTimeCorrect == true){
+                                if (state.status.isValidated && selectedUser != null) {
+                                  Injector.resolve<EventPageBloc>()
+                                      .add(EventAddSubmittedFromMidwife(selectedUser!));
+                                }
+                              }
+                            } else{
+                              if (state.status.isValidated && selectedUser != null) {
+                                Injector.resolve<EventPageBloc>()
+                                    .add(EventAddSubmittedFromMidwife(selectedUser!));
+                              }
                             }
+
+
                           },
                         ),
                       ),
@@ -1129,8 +1148,15 @@ class _AddTimeInput extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: EpregnancyColors.primer)),
+                          state.isTimeCorrect == false
+                              ?  Text("Mohon pilih waktu yang akan datang",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: EpregnancyColors.red)): Container(),
+
                           ],
                         ),
+
                       ),
                     ],
                   ),
