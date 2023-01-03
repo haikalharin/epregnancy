@@ -148,6 +148,11 @@ class _AddEventPageState extends State<AddEventPage> {
                                       .add(EventAddSubmitted());
                                 }
                               }
+                            } else {
+                              if (state.status.isValidated) {
+                                Injector.resolve<EventPageBloc>()
+                                    .add(EventAddSubmitted());
+                              }
                             }
                           },
                         ),
