@@ -19,8 +19,8 @@ class EmailChangedEvent extends ForgotPasswordPageEvent {
   List<Object> get props => [userName];
 }
 
-class ChangeNewPasswordChanged extends ForgotPasswordPageEvent {
-  const ChangeNewPasswordChanged(this.newPassword);
+class ChangeNewPasswordChangedEvent extends ForgotPasswordPageEvent {
+  const ChangeNewPasswordChangedEvent(this.newPassword);
 
   final String newPassword;
 
@@ -28,8 +28,8 @@ class ChangeNewPasswordChanged extends ForgotPasswordPageEvent {
   List<Object> get props => [newPassword];
 }
 
-class ChangeConfirmNewPasswordChanged extends ForgotPasswordPageEvent {
-  const ChangeConfirmNewPasswordChanged(this.confirmPassword);
+class ChangeConfirmNewPasswordChangedEvent extends ForgotPasswordPageEvent {
+  const ChangeConfirmNewPasswordChangedEvent(this.confirmPassword);
 
   final String confirmPassword;
 
@@ -39,6 +39,10 @@ class ChangeConfirmNewPasswordChanged extends ForgotPasswordPageEvent {
 
 class ForgotPasswordSubmitted extends ForgotPasswordPageEvent {
   const ForgotPasswordSubmitted();
+}
+class ForgotPasswordNewPasswordSubmitted extends ForgotPasswordPageEvent {
+  const ForgotPasswordNewPasswordSubmitted(this.otp);
+  final String otp;
 }
 
 class ForgotPasswordInitEvent extends ForgotPasswordPageEvent {
