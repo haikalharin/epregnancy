@@ -170,9 +170,24 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
     EventTimeChanged event,
     EventPageState state,
   ) {
+    bool result = false;
+    getTime(startTime, endTime) {
+      bool result = false;
+      int startTimeInt = (startTime.hour * 60 + startTime.minute) * 60;
+      int EndTimeInt = (endTime.hour * 60 + endTime.minute) * 60;
+      int dif = EndTimeInt - startTimeInt;
+
+      if (EndTimeInt > startTimeInt) {
+        result = true;
+      } else {
+        result = false;
+      }
+      return result;
+    }
+    bool value= getTime( TimeOfDay.now(), event.timeStart);
     var time = event.timeStart.to24hours();
     final timeString = MandatoryFieldValidator.dirty(time);
-    return state.copyWith(time: event.timeStart, timeString: timeString);
+    return state.copyWith(time: event.timeStart, timeString: timeString, isTimeCorrect: value);
   }
 
   EventPageState _mapEventTimeNotificationChangedToState(

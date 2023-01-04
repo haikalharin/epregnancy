@@ -9,6 +9,7 @@ class OtpPageState {
   final UserModel? userInfo;
   final bool? otpResendSuccess;
   final bool? isActive;
+  final String? typeEvent;
 
   OtpPageState(
       {this.otp,
@@ -16,6 +17,7 @@ class OtpPageState {
       this.errorMessage,
       this.otpResendSuccess,
       this.userInfo,
+      this.typeEvent,
       this.isActive});
 
   OtpPageState copyWith(
@@ -23,6 +25,7 @@ class OtpPageState {
       String? otp,
       String? errorMessage,
       UserModel? userInfo,
+      String? typeEvent,
       bool? isActive,
       bool? otpResendSuccess}) {
     return OtpPageState(
@@ -31,6 +34,7 @@ class OtpPageState {
         otp: otp ?? this.otp,
         otpResendSuccess: otpResendSuccess ?? this.otpResendSuccess,
         userInfo: userInfo ?? this.userInfo,
+        typeEvent: typeEvent ?? this.typeEvent,
         isActive: isActive ?? this.isActive);
   }
 }

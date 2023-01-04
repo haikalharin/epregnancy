@@ -23,7 +23,7 @@ class ServiceUrl {
   static String newLogin = '$auth/login';
 
 
-  static String checkUserExist = '$user/check-availability/username';
+  static String checkUserExist = '$user/check-availability';
   static String changePassword = '$user/change-password';
 
   //otp

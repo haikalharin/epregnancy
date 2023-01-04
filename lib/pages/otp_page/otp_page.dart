@@ -20,8 +20,9 @@ import '../signup_page/bloc/signup_bloc.dart';
 const _horizontalPadding = 24.0;
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({Key? key, this.userId}) : super(key: key);
-  final String? userId;
+  const OtpPage({Key? key, this.userName, this.from}) : super(key: key);
+  final String? userName;
+  final String? from;
 
   @override
   _OtpPageState createState() => _OtpPageState();
@@ -66,17 +67,21 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   void initState() {
-    Injector.resolve<SignupBloc>().add(SignupInitEvent());
+    if(widget.from == "disclaimer") {
+      Injector.resolve<SignupBloc>().add(SignupInitEvent());
+    }
     Injector.resolve<OtpPageBloc>()
         .add(
-        RequestResendOtp(true, widget.userId));
-    startTimer();
+        RequestResendOtp(true, widget.userName));
+    restartTimer();
     super.initState();
   }
 
   @override
   void dispose() {
     sub.cancel();
+    _current = 0;
+    _start =0;
     super.dispose();
   }
 
@@ -87,6 +92,7 @@ class _OtpPageState extends State<OtpPage> {
       onWillPop: () {
         Injector.resolve<SignupBloc>().add(SignupInitEvent());
         Navigator.pop(context);
+        sub.cancel();
         return Future.value(true);
       },
       child: Scaffold(
@@ -117,8 +123,15 @@ class _OtpPageState extends State<OtpPage> {
                 startTimer();
               } else if (state.submitStatus == FormzStatus.submissionSuccess) {
                 // todo navigator select puskesmas & bpjs
-                Navigator.of(context)
-                    .pushNamed(RouteName.signUpQuestionnairePage);
+                if(widget.from == "forgotPassword"){
+                  Navigator.of(context)
+                      .pushNamed(RouteName.newPasswordPage,arguments: {
+                    'otp': state.otp
+                  });
+                } else {
+                  Navigator.of(context)
+                      .pushNamed(RouteName.signUpQuestionnairePage);
+                }
               } else if (state.submitStatus == FormzStatus.submissionInProgress) {
                 setState(() {
                   isResendLoading = true;
@@ -152,7 +165,7 @@ class _OtpPageState extends State<OtpPage> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Image.asset(
-                                    widget.userId!.contains("@") ? "assets/email_otp.png" : "assets/otp_icon.png",
+                                    widget.userName!.contains("@") ? "assets/email_otp.png" : "assets/otp_icon.png",
                                     height: 200,
                                   ),
                                 ),
@@ -169,7 +182,7 @@ class _OtpPageState extends State<OtpPage> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              widget.userId!.contains("@") ? "Ketik kode 6 digit yang telah kami kirimkan ke email" : "Ketik kode 6 digit yang telah kami kirimkan ke ",
+                              widget.userName!.contains("@") ? "Ketik kode 6 digit yang telah kami kirimkan ke email" : "Ketik kode 6 digit yang telah kami kirimkan ke ",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.black,
@@ -177,7 +190,7 @@ class _OtpPageState extends State<OtpPage> {
                                   fontSize: 14),
                             ),
                             Text(
-                              widget.userId!.contains("@") ? widget.userId?? "" : "+${widget.userId?.replaceAll("62", "62 ")}",
+                              widget.userName!.contains("@") ? widget.userName?? "" : "+${widget.userName?.replaceAll("62", "62 ")}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.black,
@@ -230,7 +243,7 @@ class _OtpPageState extends State<OtpPage> {
                                   });
                                   Injector.resolve<OtpPageBloc>()
                                       .add(
-                                      RequestResendOtp(true, widget.userId));
+                                      RequestResendOtp(true, widget.userName));
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,

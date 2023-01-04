@@ -44,8 +44,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     }
   }
 
-  SignupState _mapSignupInitEventToState(
-      SignupInitEvent event, SignupState state) {
+  SignupState _mapSignupInitEventToState(SignupInitEvent event,
+      SignupState state) {
     return state.copyWith(
         submitStatus: FormzStatus.pure,
         userName: const MandatoryFieldValidator.pure(),
@@ -54,9 +54,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   }
 
   SignupState _mapSignupPhoneNumberChangedToState(
-    SignupPhoneNumberChanged event,
-    SignupState state,
-  ) {
+      SignupPhoneNumberChanged event,
+      SignupState state,) {
     final phoneNumber = PhoneValidator.dirty(event.phoneNumber);
 
     return state.copyWith(
@@ -64,10 +63,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         userName: MandatoryFieldValidator.dirty(phoneNumber.value));
   }
 
-  SignupState _mapUsernameChangedToState(
-    SignupUsernameChanged event,
-    SignupState state,
-  ) {
+  SignupState _mapUsernameChangedToState(SignupUsernameChanged event,
+      SignupState state,) {
     final email = EmailAddressUsernameValidator.dirty(event.email);
     return state.copyWith(
       email: email,
@@ -75,24 +72,29 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     );
   }
 
-  Stream<SignupState> _mapSignupSubmittedToState(
-    SignupSubmitted event,
-    SignupState state,
-  ) async* {
+  Stream<SignupState> _mapSignupSubmittedToState(SignupSubmitted event,
+      SignupState state,) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       if (state.email.valid && state.phoneNumber.valid) {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,
             errorMessage:
-                'Pilih salah satu meode Signup email atau nomor telfon');
+            'Pilih salah satu meode Signup email atau nomor telfon');
       } else if (state.email.valid || state.phoneNumber.valid) {
         var data =
-            state.email.valid ? state.email.value : state.phoneNumber.value;
-        final response = await userRepository.checkUserExist(data);
+        state.email.valid ? state.email.value : state.phoneNumber.value;
+        var type = "";
+        if (state.userName.value.contains('@')) {
+          type = "email";
+        } else {
+          type = "mobile";
+        }
+        final response = await userRepository.checkUserExist(data, type);
         UserModel userModel = response.data;
         if (response.code == 200) {
-          if (response.message == StringConstant.active) {
+          if (response.message == StringConstant.mobileActive ||
+              response.message == StringConstant.emailActive) {
             // if (userModel.isPregnant == true ||
             //     userModel.isHaveBaby == true ||
             //     userModel.isPlanningPregnancy == true) {
@@ -131,7 +133,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionFailure,
               phoneNumber: PhoneValidator.dirty(),
-          email: EmailAddressUsernameValidator.dirty());
+              email: EmailAddressUsernameValidator.dirty());
         }
       } else {
         yield state.copyWith(
@@ -147,10 +149,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     }
   }
 
-  Stream<SignupState> _mapRequestOtpToState(
-    RequestOtp event,
-    SignupState state,
-  ) async* {
+  Stream<SignupState> _mapRequestOtpToState(RequestOtp event,
+      SignupState state,) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       var type = '';
@@ -159,9 +159,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       } else {
         type = 'mobile';
       }
-      ResponseModel response = await userRepository
-          .requestOtp(OtpModel(value: state.userId, type: type));
-      OtpModel otpModel = response.data;
+      var data = {
+        'type': type,
+        'value': state.userId,
+      };
+      ResponseModel response = await userRepository.requestOtp(data);
+      OtpModel otpModel = OtpModel(otp: "", type: type, value: state.userId);
       if (response.code == 200) {
         await AppSharedPreference.setOtp(otpModel);
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);

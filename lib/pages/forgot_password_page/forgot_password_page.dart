@@ -49,14 +49,18 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
             final snackBar =
                 SnackBar(content: Text(message), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
-          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+          } else if (state.submitStatus == FormzStatus.submissionSuccess &&
+              state.typeEvent == 'checkUserExist') {
             final snackBar = SnackBar(
                 content: Text(
-                    "Password baru berhasil dikirim, Silahkan cek ${state.typeMessage == "Nomor" ? "kotak pesan" : "email"} anda"),
+                    "OTP berhasil dikirim, Silahkan cek ${state.typeMessage == "Nomor" ? "kotak pesan" : "email"} anda"),
                 backgroundColor: Colors.blue);
             Scaffold.of(context).showSnackBar(snackBar);
-            await Future.delayed(const Duration(seconds: 3));
-            Navigator.pop(context);
+            await Future.delayed(const Duration(seconds: 1));
+            Navigator.of(context).pushNamed(RouteName.otpPage, arguments: {
+              'username': state.userName.value,
+              'from': "forgotPassword"
+            });
           }
         },
         child: BlocBuilder<ForgotPasswordPageBloc, ForgotPasswordPageState>(
@@ -120,12 +124,19 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16),
+
                             ),
                             SizedBox(height: 10),
                             TextField(
                               onChanged: (value) {
+                               var username = "";
+                                if(!state.userName.value.contains("@") &&  value.contains("0",0)){
+                                  username = value.replaceFirst("0","62");
+                                } else{
+                                  username = value;
+                                }
                                 Injector.resolve<ForgotPasswordPageBloc>()
-                                    .add(EmailChangedEvent(value));
+                                    .add(EmailChangedEvent(username));
                               },
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(color: Colors.grey[500]),
