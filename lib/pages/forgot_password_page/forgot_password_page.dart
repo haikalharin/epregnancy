@@ -33,6 +33,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
 
   @override
   void dispose() {
+    userNameController.clear();
     Injector.resolve<ForgotPasswordPageBloc>()
         .add(const ForgotPasswordInitEvent());
     super.dispose();
@@ -40,7 +41,9 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
 
   @override
   void initState() {
-    Injector.resolve<ForgotPasswordPageBloc>().add(ForgotPasswordInitEvent());    super.initState();
+    userNameController.clear();
+    Injector.resolve<ForgotPasswordPageBloc>().add(ForgotPasswordInitEvent());
+    super.initState();
   }
 
   @override
