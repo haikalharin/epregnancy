@@ -16,7 +16,7 @@ import '../signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import 'bloc/forgot_password_page_bloc.dart';
 
 const _horizontalPadding = 30.0;
-
+final userNameController = TextEditingController();
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
 
@@ -25,6 +25,7 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPage extends State<ForgotPasswordPage> {
+
   DateTime? selectedDate;
 
   bool _isHiddenNewPassword = true;
@@ -35,6 +36,11 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
     Injector.resolve<ForgotPasswordPageBloc>()
         .add(const ForgotPasswordInitEvent());
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    Injector.resolve<ForgotPasswordPageBloc>().add(ForgotPasswordInitEvent());    super.initState();
   }
 
   @override
@@ -128,6 +134,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                             ),
                             SizedBox(height: 10),
                             TextField(
+                              controller: userNameController,
                               onChanged: (value) {
                                var username = "";
                                 if(!state.userName.value.contains("@") &&  value.contains("0",0)){

@@ -177,10 +177,17 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       int EndTimeInt = (endTime.hour * 60 + endTime.minute) * 60;
       int dif = EndTimeInt - startTimeInt;
 
-      if (EndTimeInt > startTimeInt) {
+      DateTime valEnd = state.dateStart?? DateTime.now();
+      DateTime date =DateTime.now();
+      bool valDate = valEnd.isAfter(date);
+      if(valDate) {
         result = true;
-      } else {
-        result = false;
+      } else{
+        if (EndTimeInt > startTimeInt) {
+          result = true;
+        } else {
+          result = false;
+        }
       }
       return result;
     }

@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
+import 'package:PregnancyApp/pages/forgot_password_page/forgot_password_page.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
@@ -47,8 +48,9 @@ class _NewPasswordPage extends State<NewPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        Injector.resolve<ForgotPasswordPageBloc>().add(ForgotPasswordInitEvent());
+      onWillPop: () async {
+        userNameController.clear();
+       Injector.resolve<ForgotPasswordPageBloc>().add(ForgotPasswordInitEvent());
         Navigator.pop(context);
         Navigator.pop(context);
         return Future.value(true);

@@ -928,17 +928,25 @@ class _AddTimeInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EventPageBloc, EventPageState>(
-      buildWhen: (previous, current) => previous.time != current.time,
+      buildWhen: (previous, current) => previous.time != current.time|| previous.dateStart != current.dateStart,
       builder: (context, state) {
         return InkWell(
           onTap: () async {
-            TimeOfDay initialTime = state.time ?? TimeOfDay.now();
-            var pickedTime = await showTimePicker(
-              context: context,
-              initialTime: initialTime,
-            );
-            Injector.resolve<EventPageBloc>()
-                .add(EventTimeChanged(pickedTime ?? initialTime));
+            if(state.dateStart == null){
+              var message = 'Silahkan pilih tanggal terlebih dahulu';
+              final snackBar =
+              SnackBar(content: Text(message), backgroundColor: Colors.red);
+              Scaffold.of(context).showSnackBar(snackBar);
+            } else{
+              TimeOfDay initialTime = state.time ?? TimeOfDay.now();
+              var pickedTime = await showTimePicker(
+                context: context,
+                initialTime: initialTime,
+              );
+              Injector.resolve<EventPageBloc>()
+                  .add(EventTimeChanged(pickedTime ?? initialTime));
+            }
+
           },
           child: Container(
             child: Column(
@@ -964,7 +972,7 @@ class _AddTimeInput extends StatelessWidget {
                             Text(
                                 state.timeString.value != ""
                                     ? state.timeString.value
-                                    : "Pilih tanggal",
+                                    : "Pilih waktu",
                                 style: TextStyle(
                                   fontSize: 12,
                                 )),
