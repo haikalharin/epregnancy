@@ -147,12 +147,34 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
     EventDateStartChanged event,
     EventPageState state,
   ) {
+    bool result = false;
+    getTime(startTime, endTime) {
+      bool result = false;
+      int startTimeInt = (startTime.hour * 60 + startTime.minute) * 60;
+      int EndTimeInt = (endTime.hour * 60 + endTime.minute) * 60;
+      int dif = EndTimeInt - startTimeInt;
+
+      DateTime valEnd = event.dateStart;
+      DateTime date =DateTime.now();
+      bool valDate = valEnd.isAfter(date);
+      if(valDate) {
+        result = true;
+      } else{
+        if (EndTimeInt > startTimeInt) {
+          result = true;
+        } else {
+          result = false;
+        }
+      }
+      return result;
+    }
+    bool value= getTime( TimeOfDay.now(), state.time??TimeOfDay.now());
     final df = DateFormat.yMMMMEEEEd('id');
     var date = df.format(event.dateStart);
     final dateStartString = MandatoryFieldValidator.dirty(date);
 
     return state.copyWith(
-        dateStart: event.dateStart, dateStartString: dateStartString);
+        dateStart: event.dateStart, dateStartString: dateStartString, isTimeCorrect: value);
   }
 
   EventPageState _mapEventDateEndChangedToState(
