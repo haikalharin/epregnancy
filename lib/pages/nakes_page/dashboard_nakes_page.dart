@@ -311,28 +311,12 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
                         ),
                       )),
 
-                  Container(
-                      color: Colors.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              height:
-                              MediaQuery.of(context).size.height - 200,
-                              child: TabBarEventPage(
-                                tabController: _tabController,
-                                dateTime: state.eventDate,
-                                isMidwife: true,
-                              )),
-                        ],
-                      )),
-
                   BlocBuilder<HospitalBloc, HospitalState>(
                     builder: (context, state) {
                       if(state.type == 'fetch-hospital-success'){
                         return Container(
                           // height: 200.h,
-                            margin: EdgeInsets.only(left: 16.w, top: 5.h, bottom: 0.h),
+                            margin: EdgeInsets.only(left: 16.w, top: 5.h, bottom: 20.h),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -378,6 +362,23 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
                       }
                     },
                   ),
+
+                  Container(
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              height:
+                              MediaQuery.of(context).size.height - 200,
+                              child: TabBarEventPage(
+                                tabController: _tabController,
+                                dateTime: state.eventDate,
+                                isMidwife: true,
+                              )),
+                        ],
+                      )),
+
                   SizedBox(height: 50.h,)
                 ],
             ),
