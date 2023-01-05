@@ -274,15 +274,29 @@ class FirebaseMessagingService {
       }
     } else {
       if (user.id != null || user.id != "") {
-        main.aliceMain.getNavigatorKey()?.currentState?.pushNamedAndRemoveUntil(
-          RouteName.navBar,
-              (Route<dynamic> route) => false,
-          arguments: {'role': StringConstant.patient, 'initial_index': 0, 'is_from_notif': true},
-        );
+        if(F.appFlavor == Flavor.PRODUCTION){
+          prod.aliceProd.getNavigatorKey()?.currentState?.pushNamedAndRemoveUntil(
+            RouteName.navBar,
+                (Route<dynamic> route) => false,
+            arguments: {'role': StringConstant.patient, 'initial_index': 0, 'is_from_notif': true},
+          );
+        } else {
+          dev.aliceDev.getNavigatorKey()?.currentState?.pushNamedAndRemoveUntil(
+            RouteName.navBar,
+                (Route<dynamic> route) => false,
+            arguments: {'role': StringConstant.patient, 'initial_index': 0, 'is_from_notif': true},
+          );
+        }
       } else {
-        main.aliceMain.getNavigatorKey()?.currentState?.pushReplacementNamed(
-            RouteName.login,
-            arguments: {'token_expired': false, 'is_from_register': false});
+        if(F.appFlavor == Flavor.PRODUCTION){
+          prod.aliceProd.getNavigatorKey()?.currentState?.pushReplacementNamed(
+              RouteName.login,
+              arguments: {'token_expired': false, 'is_from_register': false});
+        }else {
+          dev.aliceDev.getNavigatorKey()?.currentState?.pushReplacementNamed(
+              RouteName.login,
+              arguments: {'token_expired': false, 'is_from_register': false});
+        }
       }
     }
 

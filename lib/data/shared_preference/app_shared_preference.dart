@@ -312,7 +312,7 @@ class AppSharedPreference {
     if(F.appFlavor == Flavor.PRODUCTION){
       aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
     } else {
-      aliceMain.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
+      aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
     }
     //navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (BuildContext context) => OnBoardingScreen(isHavePopUpMessage: "401",)));
   }
