@@ -57,7 +57,15 @@ class _NewPasswordPage extends State<NewPasswordPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: const BtnBackIosStyle(),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.black,),
+            onPressed: (){
+              userNameController.clear();
+              Injector.resolve<ForgotPasswordPageBloc>().add(ForgotPasswordInitEvent());
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          ),
           backgroundColor: Colors.white,
           elevation: 0,
 
