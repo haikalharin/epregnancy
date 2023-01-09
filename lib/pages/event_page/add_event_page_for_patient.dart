@@ -70,7 +70,7 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
         context: context,
         builder: (BuildContext bc) {
           return Container(
-            height: 150.h,
+            height: 180.h,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: [

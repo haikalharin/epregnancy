@@ -285,9 +285,8 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
                 //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
                 // ),
                 androidParams: AndroidParams(
-                  emailInvites: [
-                    person.email!
-                  ], // on Android, you can add invite emails to your event.
+                  emailInvites: person.email != null ?  [person.email!] : [""],
+                  // on Android, you can add invite emails to your event.
                 ),
               ));
             }
@@ -437,7 +436,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
               //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
               // ),
               androidParams: AndroidParams(
-                emailInvites: [person.email!], // on Android, you can add invite emails to your event.
+                emailInvites: person.email != null ?  [person.email!] : [""], // on Android, you can add invite emails to your event.
               ),
             ));
 
