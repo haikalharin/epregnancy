@@ -68,7 +68,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
   EventPageState _mapEventInitEvent(
     EventInitEvent event,
     EventPageState state,
-  )  {
+  ) {
     var timeNotfication = TimeOfDay(hour: 0, minute: 30).toTimerNotif();
     final timeNotficationString =
         MandatoryFieldValidator.dirty(timeNotfication);
@@ -121,7 +121,8 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
   ) {
     List<NotificationModel>? listScheduleTime = [];
     listScheduleTime = state.listScheduleTime;
-    NotificationModel newScheduleTime = NotificationModel(time: "${event.time}:00");
+    NotificationModel newScheduleTime =
+        NotificationModel(time: "${event.time}:00");
     listScheduleTime.removeAt(event.index);
     listScheduleTime.insert(event.index, newScheduleTime);
     return state.copyWith(listScheduleTime: listScheduleTime);
@@ -155,11 +156,11 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       int dif = EndTimeInt - startTimeInt;
 
       DateTime valEnd = event.dateStart;
-      DateTime date =DateTime.now();
+      DateTime date = DateTime.now();
       bool valDate = valEnd.isAfter(date);
-      if(valDate) {
+      if (valDate) {
         result = true;
-      } else{
+      } else {
         if (EndTimeInt > startTimeInt) {
           result = true;
         } else {
@@ -168,13 +169,16 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       }
       return result;
     }
-    bool value= getTime( TimeOfDay.now(), state.time??TimeOfDay.now());
+
+    bool value = getTime(TimeOfDay.now(), state.time ?? TimeOfDay.now());
     final df = DateFormat.yMMMMEEEEd('id');
     var date = df.format(event.dateStart);
     final dateStartString = MandatoryFieldValidator.dirty(date);
 
     return state.copyWith(
-        dateStart: event.dateStart, dateStartString: dateStartString, isTimeCorrect: value);
+        dateStart: event.dateStart,
+        dateStartString: dateStartString,
+        isTimeCorrect: value);
   }
 
   EventPageState _mapEventDateEndChangedToState(
@@ -199,12 +203,12 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       int EndTimeInt = (endTime.hour * 60 + endTime.minute) * 60;
       int dif = EndTimeInt - startTimeInt;
 
-      DateTime valEnd = state.dateStart?? DateTime.now();
-      DateTime date =DateTime.now();
+      DateTime valEnd = state.dateStart ?? DateTime.now();
+      DateTime date = DateTime.now();
       bool valDate = valEnd.isAfter(date);
-      if(valDate) {
+      if (valDate) {
         result = true;
-      } else{
+      } else {
         if (EndTimeInt > startTimeInt) {
           result = true;
         } else {
@@ -213,10 +217,12 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
       }
       return result;
     }
-    bool value= getTime( TimeOfDay.now(), event.timeStart);
+
+    bool value = getTime(TimeOfDay.now(), event.timeStart);
     var time = event.timeStart.to24hours();
     final timeString = MandatoryFieldValidator.dirty(time);
-    return state.copyWith(time: event.timeStart, timeString: timeString, isTimeCorrect: value);
+    return state.copyWith(
+        time: event.timeStart, timeString: timeString, isTimeCorrect: value);
   }
 
   EventPageState _mapEventTimeNotificationChangedToState(
@@ -267,7 +273,6 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
           for (var element in state.listScheduleTime) {
             var startDate = DateTime.parse("$dateStart ${element.time}");
             final fStartDate = forCalendar.format(startDate);
-            if(person.email != null ) {
               _medEvent.add(Event(
                 title: state.scheduleName.value,
                 description: state.description.value,
@@ -285,14 +290,14 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
                 //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
                 // ),
                 androidParams: AndroidParams(
-                  emailInvites: person.email != null ?  [person.email!] : [""],
-                  // on Android, you can add invite emails to your event.
+                  emailInvites: [
+                    person.email??""
+                  ], // on Android, you can add invite emails to your event.
                 ),
               ));
-            }
 
-            for (var event in _medEvent) {
-              Add2Calendar.addEvent2Cal(event);
+              for (var event in _medEvent) {
+                Add2Calendar.addEvent2Cal(event);
             }
           }
         } else {
@@ -308,11 +313,10 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
           String time = "${state.timeString.value}:00";
           String fullDate = "$dateStart $time";
           DateTime tempDate =
-          new DateFormat("yyyy-MM-dd hh:mm:ss").parse(fullDate);
+              new DateFormat("yyyy-MM-dd hh:mm:ss").parse(fullDate);
 
-           fixDate = DateTime(tempDate.year, tempDate.month,
-              tempDate.day, tempDate.hour, tempDate.minute - total);
-
+          fixDate = DateTime(tempDate.year, tempDate.month, tempDate.day,
+              tempDate.hour, tempDate.minute - total);
 
           String _remindBefore = "$hour:$minute:00";
           remindBefore = _remindBefore;
@@ -328,23 +332,27 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
             remindBefore: _remindBefore.toString(),
             status: "active",
           ));
-          var startDate = DateTime.parse("$dateStart ${state.timeString.value}");
+          var startDate =
+              DateTime.parse("$dateStart ${state.timeString.value}");
           final fStartDate = forCalendar.format(startDate);
-          Event event = Event(
-            title: state.scheduleName.value,
-            description: state.description.value,
-            location: '',
-            startDate: DateTime.parse(fStartDate),
-            endDate: DateTime.parse(dateEndFc),
-            // todo ios param
-            // iosParams: IOSParams(
-            //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
-            // ),
-            androidParams: AndroidParams(
-              emailInvites: [person.email!], // on Android, you can add invite emails to your event.
-            ),
-          );
-          Add2Calendar.addEvent2Cal(event);
+
+            Event event = Event(
+              title: state.scheduleName.value,
+              description: state.description.value,
+              location: '',
+              startDate: DateTime.parse(fStartDate),
+              endDate: DateTime.parse(dateEndFc),
+              // todo ios param
+              // iosParams: IOSParams(
+              //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
+              // ),
+              androidParams: AndroidParams(
+                emailInvites: [
+                  person.email??""
+                ], // on Android, you can add invite emails to your event.
+              ),
+            );
+            Add2Calendar.addEvent2Cal(event);
         }
         // var dateFormat = DateFormat('hh:mm:ss');
         // DateTime durationStart = dateFormat.parse(dateStart);
@@ -352,7 +360,6 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         // var differenceInHours = durationStart.difference(DateTime.parse(remindBefore!)).inHours;
         // DateTime subtractDateStart = DateTime.parse(dateStart).subtract(Duration(hours: differenceInHours));
         if (response.code == 200) {
-
           yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,
             role: person.isPatient == true
@@ -366,7 +373,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         print(e);
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       } on Exception catch (a) {
-        if( a is UnAuthorizeException) {
+        if (a is UnAuthorizeException) {
           await AppSharedPreference.sessionExpiredEvent();
           // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
         } else {
@@ -379,9 +386,9 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
   }
 
   Stream<EventPageState> _mapEventAddSubmittedFromMidwifeToState(
-      EventAddSubmittedFromMidwife event,
-      EventPageState state,
-      ) async* {
+    EventAddSubmittedFromMidwife event,
+    EventPageState state,
+  ) async* {
     if (state.status.isValidated) {
       yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
       try {
@@ -399,7 +406,8 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         String? remindBefore;
         ResponseModel response = ResponseModel();
         if (state.consulType.value == StringConstant.consumeMedicine) {
-          response = await eventRepository.saveEventMedicineFromMidwife(EventModel(
+          response =
+              await eventRepository.saveEventMedicineFromMidwife(EventModel(
             userId: person.id,
             // midwifeId: userMidwife.id,
             hospitalId: hospital.id,
@@ -436,13 +444,15 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
               //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
               // ),
               androidParams: AndroidParams(
-                emailInvites: person.email != null ?  [person.email!] : [""], // on Android, you can add invite emails to your event.
+                emailInvites: [
+                  person.email??""
+                ], // on Android, you can add invite emails to your event.
               ),
             ));
 
-            // for (var event in _medEvent) {
-            //   Add2Calendar.addEvent2Cal(event);
-            // }
+            for (var event in _medEvent) {
+              Add2Calendar.addEvent2Cal(event);
+            }
           }
         } else {
           print('person name : ${person.name}');
@@ -459,15 +469,15 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
           String time = "${state.timeString.value}:00";
           String fullDate = "$dateStart $time";
           DateTime tempDate =
-          new DateFormat("yyyy-MM-dd hh:mm:ss").parse(fullDate);
+              new DateFormat("yyyy-MM-dd hh:mm:ss").parse(fullDate);
 
-          fixDate = DateTime(tempDate.year, tempDate.month,
-              tempDate.day, tempDate.hour, tempDate.minute - total);
-
+          fixDate = DateTime(tempDate.year, tempDate.month, tempDate.day,
+              tempDate.hour, tempDate.minute - total);
 
           String _remindBefore = "$hour:$minute:00";
           remindBefore = _remindBefore;
-          response = await eventRepository.saveEventAppointmentFromMidwife(EventModel(
+          response =
+              await eventRepository.saveEventAppointmentFromMidwife(EventModel(
             userId: person.id,
             midwifeId: userMidwife.id,
             hospitalId: hospital.id,
@@ -481,7 +491,8 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
             remindBefore: _remindBefore.toString(),
             status: "active",
           ));
-          var startDate = DateTime.parse("$dateStart ${state.timeString.value}");
+          var startDate =
+              DateTime.parse("$dateStart ${state.timeString.value}");
           final fStartDate = forCalendar.format(startDate);
           Event event = Event(
             title: state.scheduleName.value,
@@ -505,7 +516,6 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         // var differenceInHours = durationStart.difference(DateTime.parse(remindBefore!)).inHours;
         // DateTime subtractDateStart = DateTime.parse(dateStart).subtract(Duration(hours: differenceInHours));
         if (response.code == 200) {
-
           yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,
             role: person.isPatient == true
@@ -519,7 +529,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         print(e);
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       } on Exception catch (a) {
-        if( a is UnAuthorizeException) {
+        if (a is UnAuthorizeException) {
           await AppSharedPreference.sessionExpiredEvent();
           // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
         } else {
