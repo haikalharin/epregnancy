@@ -30,10 +30,12 @@ const _horizontalPadding = 24.0;
 
 class LoginPage extends StatefulWidget {
   const LoginPage(
-      {Key? key, this.tokenExpired = false, this.isFromRegister = false})
+      {Key? key, this.tokenExpired = false, this.isFromRegister = false, this.passwordFromRegister, this.userFromRegister})
       : super(key: key);
   final bool tokenExpired;
   final bool isFromRegister;
+  final String? userFromRegister;
+  final String? passwordFromRegister;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -214,6 +216,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     }
                   } else if (state.typeEvent == StringConstant.submitLogin) {
+                    // todo login success logic
                     if (state.userModel?.isPatient == true) {
                       if (state.userModel?.isAgree == true) {
                         if (state.userModel!.totalLogin! > 1) {

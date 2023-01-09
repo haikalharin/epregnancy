@@ -75,8 +75,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
               // todo login page
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                      builder: (BuildContext context) => const LoginPage(
-                          tokenExpired: true, isFromRegister: true)),
+                      builder: (BuildContext context) =>  LoginPage(
+                          tokenExpired: true, isFromRegister: true, userFromRegister: state.userModel?.username, passwordFromRegister: state.password.value,)),
                   (route) => false);
               // Navigator.of(context).pushNamed(
               //     RouteName.surveyPageBaby,
