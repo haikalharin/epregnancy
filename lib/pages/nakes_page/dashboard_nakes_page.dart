@@ -420,7 +420,14 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             onPressed: () async {
-              Navigator.of(context).pushNamed(RouteName.chooseTypeEvent, arguments: 'MIDWIFE');
+              Navigator.of(context).pushNamed(RouteName.chooseTypeEvent, arguments: 'MIDWIFE').then((value) {
+                Injector.resolve<HomePageBloc>().add(
+                    EventFetchEvent(
+                        _tabController!.index == 0
+                            ? StringConstant.typePersonal
+                            :StringConstant.typePublic ,
+                        DateTime.now(), isMidwife: true));
+              });
             },
           ),
         ),

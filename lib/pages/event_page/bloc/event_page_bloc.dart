@@ -505,9 +505,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
             //   reminder: Duration(/* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
             // ),
             androidParams: AndroidParams(
-              emailInvites: [
-                person.email??""
-              ], // on Android, you can add invite emails to your event.
+              emailInvites: [person.email ?? "bidan2@gmail.com"], // on Android, you can add invite emails to your event.
             ),
           );
           // Add2Calendar.addEvent2Cal(event);

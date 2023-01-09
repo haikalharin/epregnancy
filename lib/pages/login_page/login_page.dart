@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_development.dart';
 import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
 import 'package:PregnancyApp/pages/state_page/registration_success_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -114,7 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                                                 fontSize: 13.sp,
                                                 color: Colors.white)),
                                         onPressed: () {
-                                          Navigator.pop(context);
+                                          // Navigator.pop(context);
+                                          aliceDev.getNavigatorKey()?.currentState?.pop();
                                         }),
                                   )),
                               onTap: () {
