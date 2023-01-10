@@ -58,7 +58,10 @@ class _LoginPageState extends State<LoginPage> {
       if (widget.isFromRegister) {
         WidgetsBinding.instance?.addPostFrameCallback((_) async {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return const RegistrationSuccessPage();
+            return  RegistrationSuccessPage(
+              username: widget.userFromRegister,
+              password: widget.passwordFromRegister,
+            );
           }));
         });
       } else {
@@ -360,7 +363,7 @@ class _LoginPageState extends State<LoginPage> {
                             //           primary: Colors.white,
                             //           onPrimary: Colors.black)),
                             // ),
-                            SizedBox(height: 50.h),
+                            SizedBox(height: 30.h),
                             _RegisterButton(),
                             SizedBox(height: 8.h,),
                             Container(

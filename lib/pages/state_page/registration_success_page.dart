@@ -25,13 +25,11 @@ class _RegistrationSuccessPageState extends State<RegistrationSuccessPage> {
   @override
   void initState() {
     super.initState();
-    Injector.resolve<LoginBloc>().add(LoginUsernameChanged(widget.username!));
-    Injector.resolve<LoginBloc>().add(LoginPasswordChanged(widget.password!));
 
     Future.delayed(
-      const Duration(seconds: 5), () {
+      const Duration(seconds: 3), () {
       Injector.resolve<LoginBloc>()
-          .add(LoginSubmitted());
+          .add(LoginSubmittedFromRegister(widget.username, widget.password));
       },
     );
   }
