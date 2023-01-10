@@ -492,6 +492,7 @@ class _PasswordInputState extends State<_PasswordInput> {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
+          enableInteractiveSelection: false,
           key: const Key('loginForm_passwordInput_textField'),
           onChanged: (password) =>
               Injector.resolve<LoginBloc>().add(LoginPasswordChanged(password)),
