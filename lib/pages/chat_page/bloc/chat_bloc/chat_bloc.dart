@@ -33,9 +33,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Stream<ChatState> mapEventToState(ChatEvent event) async* {
     if (event is FetchChatPendingEvent) {
       yield* _mapFetchPendingChatEventToState(event, state);
-    } else if (event is CheckDoAndDontsEvent) {
-      yield* _mapCheckDoAndDontsEventToState(event, state);
-    }else if (event is SendChatPendingEvent) {
+    } else if (event is SendChatPendingEvent) {
       yield* _mapSendChatPendingEvent(event, state);
     } else if (event is ReSendChatPendingEvent){
       yield* _mapReSendChatPendingEvent(event, state);
@@ -64,34 +62,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Stream<ChatState> _mapCheckDoAndDontsEventToState(
-      CheckDoAndDontsEvent event,
-      ChatState state,
-      ) async* {
-    try {
-      bool isShow = false;
-      DateTime dateNow = DateTime.now();
-      ChatDialogModel? data = await AppSharedPreference.getShowDialogDoAndDonts();
-      DateTime dateTime = DateTime.parse(data?.dateTime ?? "");
-      if (data?.isFirst == true || dateNow.day != dateTime.day ) {
-           await AppSharedPreference.setShowDialogDoAndDonts(ChatDialogModel(dateTime: dateNow.toString(), isFirst: false));
-          isShow = true;
-        } else{
-        isShow = false;
-      }
-        yield state.copyWith(status: FormzStatus.submissionSuccess, isShowDialog: isShow, type: 'isShowDialog');
-    }on SurveyErrorException catch (e) {
-      print(e);
-      yield state.copyWith(status: FormzStatus.submissionFailure);
-    } on Exception catch (a) {
-      if( a is UnAuthorizeException) {
-        await AppSharedPreference.sessionExpiredEvent();
-        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
-      } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure);
-      }
-    }
-  }
+
 
   Stream<ChatState> _mapFetchPendingChatEventToState(
     FetchChatPendingEvent event,
