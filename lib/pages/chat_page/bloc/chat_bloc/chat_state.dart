@@ -12,6 +12,7 @@ class ChatState {
   final FormzStatus status;
   final String? errorMessage;
   final String? type;
+  final bool? isShowDialog;
 
   ChatState(
       {
@@ -24,6 +25,7 @@ class ChatState {
         this.chatPendingSendResponse,
         this.chatPendingPatientResponse,
         this.type,
+        this.isShowDialog,
         this.status = FormzStatus.pure,
         this.errorMessage});
 
@@ -37,6 +39,7 @@ class ChatState {
         ChatResponse? sendChatResponse,
         ChatPendingSendResponse? chatPendingSendResponse,
         List<Content>? chatPendingPatientResponse,
+        bool? isShowDialog,
         String? errorMessage,
         String? type
       }) {
@@ -51,6 +54,7 @@ class ChatState {
         sendChatResponse: sendChatResponse ?? this.sendChatResponse,
         chatPendingPatientResponse: chatPendingPatientResponse ?? this.chatPendingPatientResponse,
         errorMessage: errorMessage ?? this.errorMessage,
+        isShowDialog: isShowDialog ?? this.isShowDialog,
         type:  type ?? this.type);
   }
 

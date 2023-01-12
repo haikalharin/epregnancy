@@ -115,9 +115,9 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                   Card2(widget.isPatient ?? true),
                   CheckboxListTile(
                     activeColor: EpregnancyColors.primer,
-                    contentPadding: EdgeInsets.only(top: 5.w),
+                    contentPadding: EdgeInsets.only(top: 5.h),
                     title: Container(
-                      padding: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.only(top: 20.h),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
