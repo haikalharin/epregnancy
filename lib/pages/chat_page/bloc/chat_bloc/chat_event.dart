@@ -82,9 +82,3 @@ class EndChatEvent extends ChatEvent {
   List<Object> get props => [];
 
 }
-class CheckDoAndDontsEvent extends ChatEvent {
-  const CheckDoAndDontsEvent();
-
-  @override
-  List<Object> get props => [];
-}
