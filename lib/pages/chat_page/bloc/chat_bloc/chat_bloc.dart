@@ -15,6 +15,7 @@ import 'package:formz/formz.dart';
 
 import '../../../../common/exceptions/server_error_exception.dart';
 import '../../../../common/exceptions/survey_error_exception.dart';
+import '../../../../data/model/chat_model/chat_dialog_model.dart';
 import '../../../../data/model/hospital_model/hospital_model.dart';
 import '../../../../data/model/user_model_api/user_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
@@ -32,7 +33,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Stream<ChatState> mapEventToState(ChatEvent event) async* {
     if (event is FetchChatPendingEvent) {
       yield* _mapFetchPendingChatEventToState(event, state);
-    } else if (event is SendChatPendingEvent) {
+    } else if (event is CheckDoAndDontsEvent) {
+      yield* _mapCheckDoAndDontsEventToState(event, state);
+    }else if (event is SendChatPendingEvent) {
       yield* _mapSendChatPendingEvent(event, state);
     } else if (event is ReSendChatPendingEvent){
       yield* _mapReSendChatPendingEvent(event, state);
@@ -58,6 +61,35 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         listChatOngoing: null,
         listChatPending: null,
       );
+    }
+  }
+
+  Stream<ChatState> _mapCheckDoAndDontsEventToState(
+      CheckDoAndDontsEvent event,
+      ChatState state,
+      ) async* {
+    try {
+      bool isShow = false;
+      DateTime dateNow = DateTime.now();
+      ChatDialogModel? data = await AppSharedPreference.getShowDialogDoAndDonts();
+      DateTime dateTime = DateTime.parse(data?.dateTime ?? "");
+      if (data?.isFirst == true || dateNow.day != dateTime.day ) {
+           await AppSharedPreference.setShowDialogDoAndDonts(ChatDialogModel(dateTime: dateNow.toString(), isFirst: false));
+          isShow = true;
+        } else{
+        isShow = false;
+      }
+        yield state.copyWith(status: FormzStatus.submissionSuccess, isShowDialog: isShow, type: 'isShowDialog');
+    }on SurveyErrorException catch (e) {
+      print(e);
+      yield state.copyWith(status: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(status: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure);
+      }
     }
   }
 

@@ -27,6 +27,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../data/model/chat_model/chat_dialog_model.dart';
 import '../../data/model/chat_model/chat_pending_send_request.dart';
 import '../../data/model/hospital_model/hospital_model.dart';
 import '../../data/model/user_info/user_info.dart';
@@ -87,6 +88,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   late WebSocket _webSocket;
   String message = '';
   bool chatHasEnded = false;
+  bool isFirst = true;
 
   List<ChatMessageEntity>? chatMessageList = [];
 
@@ -257,196 +259,6 @@ class _NewChatRoomState extends State<NewChatRoom> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) {
-          return WillPopScope(
-              child: Center(
-                child: Container(
-                  width: 240.w,
-                  height: MediaQuery.of(context).size.height * 0.75,
-                  padding: EdgeInsets.all(20.w),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(4.w))),
-                  child: Material(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Expanded(
-                          child: Scrollbar(
-                            isAlwaysShown: true,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: ListView(
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      "Boleh dan tidak boleh dilakukan pada fitur \"Tanya Yuk\"",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: EpregnancyColors.blueDark,
-                                          fontSize: 14.sp,
-                                          fontFamily: "bold"),
-                                    ),
-                                  ),
-                                  widget.isNakes == true
-                                      ? SizedBox(
-                                          height: 0.h,
-                                        )
-                                      : SizedBox(
-                                          height: 10.h,
-                                        ),
-                                  widget.isNakes == true
-                                      ? Container()
-                                      : Center(
-                                          child: Text(
-                                            widget.isNakes == true
-                                                ? ""
-                                                : "Disclaimer!",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color:
-                                                    EpregnancyColors.blueDark,
-                                                fontSize: 12.sp,
-                                                fontFamily: "bold"),
-                                          ),
-                                        ),
-                                  widget.isNakes == true
-                                      ? const SizedBox.shrink()
-                                      : Padding(
-                                          padding: EdgeInsets.only(top: 4.w),
-                                          child: Html(
-                                              data: remoteConfigGetString(
-                                                  StringConstant
-                                                      .doesAndDontsHeaderUser),
-                                              style: {
-                                                "body": Style(
-                                                  fontSize: FontSize(10.0),
-                                                ),
-                                              }),
-                                        ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      widget.isNakes == true
-                                          ? "Yang bisa dilakukan hal ini ya!"
-                                          : "Tidak perlu bingung Moms, ini yang boleh dilakukan!",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: EpregnancyColors.blueDark,
-                                          fontSize: 14.sp,
-                                          fontFamily: "bold"),
-                                    ),
-                                  ),
-                                  widget.isNakes == true
-                                      ? Padding(
-                                          padding: EdgeInsets.only(top: 4.w),
-                                          child: Html(
-                                              data: remoteConfigGetString(
-                                                  StringConstant
-                                                      .doesBodyMidwife),
-                                              style: {
-                                                "body": Style(
-                                                  fontSize: FontSize(10.0),
-                                                ),
-                                              }),
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.only(top: 4.w),
-                                          child: Html(
-                                              data: remoteConfigGetString(
-                                                  StringConstant.doesBodyUser),
-                                              style: {
-                                                "body": Style(
-                                                  fontSize: FontSize(10.0),
-                                                ),
-                                              }),
-                                        ),
-                                  SizedBox(
-                                    height: 4.h,
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      widget.isNakes == true
-                                          ? "Jangan lakukan hal ini!"
-                                          : "Eitss.. Moms tidak boleh melakukan hal ini ya!",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: EpregnancyColors.blueDark,
-                                          fontSize: 14.sp,
-                                          fontFamily: "bold"),
-                                    ),
-                                  ),
-                                  widget.isNakes == true
-                                      ? Padding(
-                                          padding: EdgeInsets.only(top: 4.w),
-                                          child: Html(
-                                              data: remoteConfigGetString(
-                                                  StringConstant
-                                                      .dontsBodyMidewife),
-                                              style: {
-                                                "body": Style(
-                                                  fontSize: FontSize(10.0),
-                                                ),
-                                              }),
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.only(top: 4.w),
-                                          child: Html(
-                                              data: remoteConfigGetString(
-                                                  StringConstant.dontsBodyUser),
-                                              style: {
-                                                "body": Style(
-                                                  fontSize: FontSize(10.0),
-                                                ),
-                                              }),
-                                        ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          child: Padding(
-                              padding: EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
-                              child: SizedBox(
-                                height: 46.w,
-                                width: MediaQuery.of(context).size.width,
-                                child: FlatButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(4.w)),
-                                    color: EpregnancyColors.blueDark,
-                                    disabledColor: Colors.grey,
-                                    child: Text('Oke',
-                                        style: TextStyle(
-                                            fontFamily: "bold",
-                                            fontSize: 13.sp,
-                                            color: Colors.white)),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    }),
-                              )),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              onWillPop: () => Future.value(false));
-        },
-      );
-    });
     setState(() {
       chatMessageList = widget.chatMessageList;
       toName = widget.toName;
@@ -460,7 +272,9 @@ class _NewChatRoomState extends State<NewChatRoom> {
         }
       });
     });
+
     _initWebSocket();
+    _initShowDialog();
     getHospitalFromLocal();
     getUserModel();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -482,6 +296,209 @@ class _NewChatRoomState extends State<NewChatRoom> {
       duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
     );
+  }
+
+  _initShowDialog() async {
+    DateTime dateNow = DateTime.now();
+    ChatDialogModel? data = await AppSharedPreference.getShowDialogDoAndDonts();
+    DateTime dateTime = DateTime.parse(data?.dateTime ?? "0000-00-00 00:00:00");
+    if (data?.isFirst == true || dateNow.day != dateTime.day) {
+      await AppSharedPreference.setShowDialogDoAndDonts(
+          ChatDialogModel(dateTime: dateNow.toString(), isFirst: false));
+      WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return WillPopScope(
+                child: Center(
+                  child: Container(
+                    width: 240.w,
+                    height: MediaQuery.of(context).size.height * 0.75,
+                    padding: EdgeInsets.all(20.w),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(4.w))),
+                    child: Material(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Expanded(
+                            child: Scrollbar(
+                              isAlwaysShown: true,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: ListView(
+                                  children: [
+                                    Center(
+                                      child: Text(
+                                        "Boleh dan tidak boleh dilakukan pada fitur \"Tanya Yuk\"",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: EpregnancyColors.blueDark,
+                                            fontSize: 14.sp,
+                                            fontFamily: "bold"),
+                                      ),
+                                    ),
+                                    widget.isNakes == true
+                                        ? SizedBox(
+                                            height: 0.h,
+                                          )
+                                        : SizedBox(
+                                            height: 10.h,
+                                          ),
+                                    widget.isNakes == true
+                                        ? Container()
+                                        : Center(
+                                            child: Text(
+                                              widget.isNakes == true
+                                                  ? ""
+                                                  : "Disclaimer!",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color:
+                                                      EpregnancyColors.blueDark,
+                                                  fontSize: 12.sp,
+                                                  fontFamily: "bold"),
+                                            ),
+                                          ),
+                                    widget.isNakes == true
+                                        ? const SizedBox.shrink()
+                                        : Padding(
+                                            padding: EdgeInsets.only(top: 4.w),
+                                            child: Html(
+                                                data: remoteConfigGetString(
+                                                    StringConstant
+                                                        .doesAndDontsHeaderUser),
+                                                style: {
+                                                  "body": Style(
+                                                    fontSize: FontSize(10.0),
+                                                  ),
+                                                }),
+                                          ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        widget.isNakes == true
+                                            ? "Yang bisa dilakukan hal ini ya!"
+                                            : "Tidak perlu bingung Moms, ini yang boleh dilakukan!",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: EpregnancyColors.blueDark,
+                                            fontSize: 14.sp,
+                                            fontFamily: "bold"),
+                                      ),
+                                    ),
+                                    widget.isNakes == true
+                                        ? Padding(
+                                            padding: EdgeInsets.only(top: 4.w),
+                                            child: Html(
+                                                data: remoteConfigGetString(
+                                                    StringConstant
+                                                        .doesBodyMidwife),
+                                                style: {
+                                                  "body": Style(
+                                                    fontSize: FontSize(10.0),
+                                                  ),
+                                                }),
+                                          )
+                                        : Padding(
+                                            padding: EdgeInsets.only(top: 4.w),
+                                            child: Html(
+                                                data: remoteConfigGetString(
+                                                    StringConstant
+                                                        .doesBodyUser),
+                                                style: {
+                                                  "body": Style(
+                                                    fontSize: FontSize(10.0),
+                                                  ),
+                                                }),
+                                          ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        widget.isNakes == true
+                                            ? "Jangan lakukan hal ini!"
+                                            : "Eitss.. Moms tidak boleh melakukan hal ini ya!",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: EpregnancyColors.blueDark,
+                                            fontSize: 14.sp,
+                                            fontFamily: "bold"),
+                                      ),
+                                    ),
+                                    widget.isNakes == true
+                                        ? Padding(
+                                            padding: EdgeInsets.only(top: 4.w),
+                                            child: Html(
+                                                data: remoteConfigGetString(
+                                                    StringConstant
+                                                        .dontsBodyMidewife),
+                                                style: {
+                                                  "body": Style(
+                                                    fontSize: FontSize(10.0),
+                                                  ),
+                                                }),
+                                          )
+                                        : Padding(
+                                            padding: EdgeInsets.only(top: 4.w),
+                                            child: Html(
+                                                data: remoteConfigGetString(
+                                                    StringConstant
+                                                        .dontsBodyUser),
+                                                style: {
+                                                  "body": Style(
+                                                    fontSize: FontSize(10.0),
+                                                  ),
+                                                }),
+                                          ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            child: Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
+                                child: SizedBox(
+                                  height: 46.w,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4.w)),
+                                      color: EpregnancyColors.blueDark,
+                                      disabledColor: Colors.grey,
+                                      child: Text('Oke',
+                                          style: TextStyle(
+                                              fontFamily: "bold",
+                                              fontSize: 13.sp,
+                                              color: Colors.white)),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }),
+                                )),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                onWillPop: () => Future.value(false));
+          },
+        );
+      });
+    }
   }
 
   _initWebSocket() async {
@@ -1053,7 +1070,9 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                             });
                                           } else {
                                             // todo handel pending send
-                                            if((chatMessageList?.length?? 0) >= 5) {
+                                            if ((chatMessageList?.length ??
+                                                    0) >=
+                                                5) {
                                               Toast.show(
                                                   'Silahkan tunggu nakes merespon chat anda sebelum mengirim chat baru',
                                                   duration: 3,
@@ -1064,18 +1083,25 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                                     ChatMessageEntity(
                                                         mine: true,
                                                         profileImage:
-                                                        myImageProfile,
+                                                            myImageProfile,
                                                         dateTime: DateTime.now()
                                                             .toString(),
                                                         message: val,
                                                         name: 'sender'));
                                                 _scrollDown();
 
-                                                ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(
-                                                    fromId: widget.fromId, hospitalId: toId, message: val);
+                                                ChatPendingSendRequest
+                                                    _chatPendingSendRequest =
+                                                    ChatPendingSendRequest(
+                                                        fromId: widget.fromId,
+                                                        hospitalId: toId,
+                                                        message: val);
 
-                                                Injector.resolve<ChatBloc>().add(ReSendChatPendingEvent(_chatPendingSendRequest));
-                                                _messageEditingController.clear();
+                                                Injector.resolve<ChatBloc>()
+                                                    .add(ReSendChatPendingEvent(
+                                                        _chatPendingSendRequest));
+                                                _messageEditingController
+                                                    .clear();
                                               });
                                             }
                                           }
@@ -1149,7 +1175,8 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                             _messageEditingController.clear();
                                           });
                                         } else {
-                                          if((chatMessageList?.length ?? 0) >= 5) {
+                                          if ((chatMessageList?.length ?? 0) >=
+                                              5) {
                                             Toast.show(
                                                 'Silahkan tunggu nakes merespon chat anda sebelum mengirim chat baru',
                                                 duration: 3,
@@ -1160,16 +1187,27 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                                   ChatMessageEntity(
                                                       mine: true,
                                                       profileImage:
-                                                      myImageProfile,
-                                                      dateTime: DateTime.now().toString(),
-                                                      message: _messageEditingController.text,
+                                                          myImageProfile,
+                                                      dateTime: DateTime.now()
+                                                          .toString(),
+                                                      message:
+                                                          _messageEditingController
+                                                              .text,
                                                       name: 'sender'));
                                               _scrollDown();
 
-                                              ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(
-                                                  fromId: widget.fromId, hospitalId: toId, message: _messageEditingController.text);
+                                              ChatPendingSendRequest
+                                                  _chatPendingSendRequest =
+                                                  ChatPendingSendRequest(
+                                                      fromId: widget.fromId,
+                                                      hospitalId: toId,
+                                                      message:
+                                                          _messageEditingController
+                                                              .text);
 
-                                              Injector.resolve<ChatBloc>().add(ReSendChatPendingEvent(_chatPendingSendRequest));
+                                              Injector.resolve<ChatBloc>().add(
+                                                  ReSendChatPendingEvent(
+                                                      _chatPendingSendRequest));
                                               _messageEditingController.clear();
                                             });
                                           }
