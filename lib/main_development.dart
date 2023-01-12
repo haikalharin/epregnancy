@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +55,9 @@ import 'common/injector/injector_config.dart';
 import 'env.dart' as config;
 import 'pages/login_page/bloc/login_bloc.dart';
 import 'package:flutter_alice/alice.dart';
+import 'package:secure_content/secure_content.dart';
+import 'package:flutter_portal/flutter_portal.dart';
+import 'package:provider/provider.dart';
 
 // void main() => runApp(MyApp());
 SharedPreferences? sharedPreferences;
@@ -91,6 +97,7 @@ class _MyAppState extends State<MyApp> {
         .initializeFlutterFirebase(context);
 
   }
+  final RouteObserver<PageRoute> _routeObserver = RouteObserver();
 
   @override
   Widget build(BuildContext context) {
@@ -105,17 +112,49 @@ class _MyAppState extends State<MyApp> {
               return MultiBlocProvider(
                   providers: _getProviders(),
                   child: OverlaySupport.global(
-                    child: MaterialApp(
-                      debugShowCheckedModeBanner: false,
-                      navigatorKey: aliceDev.getNavigatorKey(),
-                      title: 'Komunitaz',
-                      home: SplashscreenPage(),
-                      onGenerateRoute: Routes.generateRoute,
-                      localizationsDelegates: const [
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                      ],
+                    child: Portal(
+                      child: Provider.value(
+                        value: _routeObserver,
+                        child: SecureWidget(
+                          isSecure: true,
+                          builder: (BuildContext context, void Function() onInit, void Function() onDispose) {
+                            return  MaterialApp(
+                                  debugShowCheckedModeBanner: false,
+                                  navigatorKey: aliceDev.getNavigatorKey(),
+                                  title: 'Komunitaz',
+                                  home: SplashscreenPage(),
+                                  onGenerateRoute: Routes.generateRoute,
+                                  localizationsDelegates: const [
+                                    GlobalMaterialLocalizations.delegate,
+                                    GlobalWidgetsLocalizations.delegate,
+                                    GlobalCupertinoLocalizations.delegate,
+                                  ],
+                                );
+                          },
+                          overlayWidgetBuilder: (context) => BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child:  SizedBox(
+                              child: Center(
+                                child: Image.asset("assets/ic_launcher.png"),
+                              ),
+                            ),
+                          ),
+                          appSwitcherMenuColor: EpregnancyColors.primer,
+                          protectInAppSwitcherMenu: true,
+                        ),
+                        // child: MaterialApp(
+                        //   debugShowCheckedModeBanner: false,
+                        //   navigatorKey: aliceDev.getNavigatorKey(),
+                        //   title: 'Komunitaz',
+                        //   home: SplashscreenPage(),
+                        //   onGenerateRoute: Routes.generateRoute,
+                        //   localizationsDelegates: const [
+                        //     GlobalMaterialLocalizations.delegate,
+                        //     GlobalWidgetsLocalizations.delegate,
+                        //     GlobalCupertinoLocalizations.delegate,
+                        //   ],
+                        // ),
+                      )
                     ),
                   ));
             });

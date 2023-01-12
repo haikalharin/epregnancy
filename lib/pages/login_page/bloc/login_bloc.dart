@@ -64,6 +64,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is LoginSubmittedWithNumberPhone) {
       yield* _mapLoginSubmittedLoginSubmittedWithNumberPhoneToState(
           event, state);
+    } else if (event is LoginSubmittedFromRegister){
+      yield* _mapLoginSubmittedFromRegisterToState(event, state);
     }
   }
 
@@ -155,6 +157,92 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       var token = await firebaseService.messaging.getDeviceToken();
       ResponseModel response = await userRepository.loginNonOtp(LoginModel(
           username: state.username.value, password: state.password.value, fcmToken: token));
+      LoginResponseData? loginResponseData;
+      if (response.code == 200) {
+        loginResponseData = response.data;
+        // set jwt token
+        await AppSharedPreference.setString(AppSharedPreference.token, loginResponseData!.token!.accessToken!);
+        final ResponseModel<UserModel> userInfoResponse = await userRepository.getUserInfo();
+        UserModel _userModel = userInfoResponse.data;
+        UserModel userModel = _userModel.copyWith(
+          name: await aesDecryptor(_userModel.name),
+        );
+        await AppSharedPreference.setUser(_userModel);
+        await AppSharedPreference.remove("_userRegister");
+        // await AppSharedPreference.setUser(userModel);no
+        if(loginResponseData.user?.hospital != null) {
+          print('hospital model : ${loginResponseData.user?.hospital}');
+          HospitalModel hospitalModel = HospitalModel(
+              id: loginResponseData.user?.hospital?.id,
+              alias: loginResponseData.user?.hospital?.alias,
+              name: loginResponseData.user?.hospital?.name,
+              address: loginResponseData.user?.hospital?.address,
+              city: loginResponseData.user?.hospital?.city,
+              country: "",
+              postalCode: loginResponseData.user?.hospital?.postalCode,
+              phone: loginResponseData.user?.hospital?.phone,
+              email: loginResponseData.user?.hospital?.email,
+              latitude: 0.0,
+              longitude: 0.0, status: "",
+              imageUrl: loginResponseData.user?.hospital?.imageUrl,
+              coverUrl: "", isDelete: false, createdBy: "", createdFrom: "", createdDate: "", modifiedBy: "",
+              modifiedFrom: "", modifiedDate: "", pin: 0, pinValidStart: "", pinValidEnd: "");
+          await AppSharedPreference.setHospital(hospitalModel);
+        }
+
+        bool isActive = false;
+        if (userModel.isPatient == true) {
+          if (userModel.isHaveBaby != false ||
+              userModel.isPregnant != false ||
+              userModel.isPlanningPregnancy != false) {
+            isActive = true;
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionSuccess,
+                typeEvent: StringConstant.submitLogin,
+                userModel: userModel,
+                isActive: isActive);
+          } else {
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionSuccess,
+                typeEvent: StringConstant.submitLogin,
+                userModel: userModel,
+                isActive: isActive);
+          }
+        }else {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              typeEvent: StringConstant.submitLogin,
+              userModel: userModel, isActive: true);
+        }
+      } else if (response.code == 500) {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: "Maaf Terjadi Kesalahan, Silahkan Coba Lagi");
+      } else {
+        print('response message : ${response.message}');
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message);
+      }
+    } on LoginErrorException catch (e) {
+      print("login error exception" + e.toString());
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+    } on Exception catch (error) {
+      if( error is UnAuthorizeException) {
+        // AppSharedPreference.sessionExpiredEvent();
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: error.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
+    }
+  }
+
+  Stream<LoginState> _mapLoginSubmittedFromRegisterToState(
+      LoginSubmittedFromRegister event,
+      LoginState state,
+      ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    try {
+      // temporary
+      var token = await firebaseService.messaging.getDeviceToken();
+      ResponseModel response = await userRepository.loginNonOtp(LoginModel(
+          username: event.username, password: event.password, fcmToken: token));
       LoginResponseData? loginResponseData;
       if (response.code == 200) {
         loginResponseData = response.data;

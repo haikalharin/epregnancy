@@ -30,10 +30,12 @@ const _horizontalPadding = 24.0;
 
 class LoginPage extends StatefulWidget {
   const LoginPage(
-      {Key? key, this.tokenExpired = false, this.isFromRegister = false})
+      {Key? key, this.tokenExpired = false, this.isFromRegister = false, this.passwordFromRegister, this.userFromRegister})
       : super(key: key);
   final bool tokenExpired;
   final bool isFromRegister;
+  final String? userFromRegister;
+  final String? passwordFromRegister;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -56,7 +58,10 @@ class _LoginPageState extends State<LoginPage> {
       if (widget.isFromRegister) {
         WidgetsBinding.instance?.addPostFrameCallback((_) async {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return const RegistrationSuccessPage();
+            return  RegistrationSuccessPage(
+              username: widget.userFromRegister,
+              password: widget.passwordFromRegister,
+            );
           }));
         });
       } else {
@@ -214,6 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     }
                   } else if (state.typeEvent == StringConstant.submitLogin) {
+                    // todo login success logic
                     if (state.userModel?.isPatient == true) {
                       if (state.userModel?.isAgree == true) {
                         if (state.userModel!.totalLogin! > 1) {
@@ -357,7 +363,7 @@ class _LoginPageState extends State<LoginPage> {
                             //           primary: Colors.white,
                             //           onPrimary: Colors.black)),
                             // ),
-                            SizedBox(height: 50.h),
+                            SizedBox(height: 30.h),
                             _RegisterButton(),
                             SizedBox(height: 8.h,),
                             Container(
@@ -486,6 +492,7 @@ class _PasswordInputState extends State<_PasswordInput> {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
+          enableInteractiveSelection: false,
           key: const Key('loginForm_passwordInput_textField'),
           onChanged: (password) =>
               Injector.resolve<LoginBloc>().add(LoginPasswordChanged(password)),

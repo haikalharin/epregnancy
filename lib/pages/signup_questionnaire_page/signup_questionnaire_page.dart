@@ -73,10 +73,12 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
               Scaffold.of(context).showSnackBar(snackBar);
             } else if (state.submitStatus == FormzStatus.submissionSuccess) {
               // todo login page
+              print('username : ${state.userModel?.username}');
+              print('password : ${state.password.value}');
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                      builder: (BuildContext context) => const LoginPage(
-                          tokenExpired: true, isFromRegister: true)),
+                      builder: (BuildContext context) =>  LoginPage(
+                          tokenExpired: true, isFromRegister: true, userFromRegister: state.userModel?.username, passwordFromRegister: state.password.value,)),
                   (route) => false);
               // Navigator.of(context).pushNamed(
               //     RouteName.surveyPageBaby,

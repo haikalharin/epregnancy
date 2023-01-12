@@ -136,8 +136,7 @@ class HttpClient {
     debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
 
     String? token = await getToken();
-    String? cookie =
-        await AppSharedPreference.getString(AppSharedPreference.cookie);
+    String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
     if (cookie != null) {
       setCookieFromSession(cookie);
     }
