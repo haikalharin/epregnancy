@@ -1,4 +1,4 @@
-import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_default.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +66,7 @@ class _AddEventPageState extends State<AddEventPage> {
             margin: EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
               widget.consulType == StringConstant.visitHospital
-                  ? "Kunjungan Puskesmas / Posyandu"
+                  ? "Kunjungan Puskesmas"
                   : widget.consulType == StringConstant.consumeMedicine
                       ? "Konsumsi Obat"
                       : "Lain-lain",

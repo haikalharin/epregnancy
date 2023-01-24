@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/model/user_example_model/user_example_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../flavors.dart';
-import '../../../main.dart';
+import '../../../main_default.dart';
 import '../../../utils/string_constans.dart';
 import '../../configurations/configurations.dart';
 import '../../remote/url/service_url.dart';

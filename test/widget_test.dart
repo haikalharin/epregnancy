@@ -9,7 +9,7 @@ import 'package:PregnancyApp/utils/function_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_default.dart';
 
 void main() {
 

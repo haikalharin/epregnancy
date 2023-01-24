@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart';
 
-import '../../../main.dart';
+import '../../../main_default.dart';
 import '../../../utils/remote_utils.dart';
 import '../../exceptions/server_auth_error_exception.dart';
 import '../../exceptions/server_error_exception.dart';

@@ -688,6 +688,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 child: TabBarEventPage(
                                   tabController: _tabController,
                                   dateTime: state.eventDate,
+                                  isMidwife: false,
                                 )),
                           ],
                         )),

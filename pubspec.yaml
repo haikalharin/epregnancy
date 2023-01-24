@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 #dev
-version: 1.0.31-dev+40
+version: 1.0.33-dev+42
 
 #prod
 #version: 1.0.2+5
@@ -87,6 +87,7 @@ dependencies:
   qr_flutter: ^4.0.0
   #blur from recent app
   secure_content: ^0.0.11
+  root_detector: ^0.0.6
 
   #flavor for environment management
 #  flutter_flavor: ^3.1.1
@@ -186,7 +187,7 @@ flavorizr:
       ios:
         bundleId: "co.id.az.komunitaz"
 #        buildSettings:
-#          DEVELOPMENT_TEAM: YOURPRODUCTIONTEAMID
+#          DEVELOPMENT_TEAM: XH238TV6PN
 #          PROVISIONING_PROFILE_SPECIFIER: "Production-ProvisioningProfile"
 
 

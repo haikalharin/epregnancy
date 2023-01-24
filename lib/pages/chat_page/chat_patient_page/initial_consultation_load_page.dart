@@ -25,6 +25,7 @@ class InitialConsultationLoadPage extends StatefulWidget {
 }
 
 class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPage> {
+  List<ChatMessageEntity> chatMessageList = [];
 
 
 
@@ -128,12 +129,16 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
           final UserModel userModel = await AppSharedPreference.getUser();
           final HospitalModel _hospital = await AppSharedPreference.getHospital();
 
-          ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(
-              fromId: userModel.id, hospitalId: _hospital.id, message: "Hai Bunda ${userModel.name}, selamat datang di tanya Bidan. Di sini, Bunda bisa bertanya mengenai informasi umum dan tips seputar kehamilan langsung dengan Bidan. Pertanyaan akan dijawab maksimal 3x24 jam. Yuk, Bunda bisa mulai bertanya.");
+          ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Hai Bunda ${userModel.name}, selamat datang di tanya Bidan.");
+          ChatPendingSendRequest _chatPendingSendRequest2 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Di sini, Bunda bisa bertanya mengenai informasi umum dan tips seputar kehamilan langsung dengan Bidan.");
+          ChatPendingSendRequest _chatPendingSendRequest3 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Pertanyaan akan dijawab maksimal 3x24 jam. Yuk, Bunda bisa mulai bertanya.");
 
           Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest, firsTime: true));
+          await Future.delayed(const Duration(seconds: 1));
+          Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest2, firsTime: true));
+          await Future.delayed(const Duration(seconds: 1));
+          Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest3, firsTime: true));
         } else if (state.type == 'send-pending-success' && state.chatPendingSendResponse != null) {
-          List<ChatMessageEntity> chatMessageList = [];
           chatMessageList.add(
               ChatMessageEntity(
                   name: state.chatPendingSendResponse?.from?.hospital?.name,
@@ -142,19 +147,22 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
                   mine: state.chatPendingSendResponse?.fromId == widget.userId ? true: false
               )
           );
-          Navigator.push(context, MaterialPageRoute(builder: (context) => NewChatRoom(
-            fromId: state.chatPendingSendResponse?.fromId,
-            toImageUrl: state.chatPendingSendResponse?.to?.imageUrl,
-            toId: state.chatPendingSendResponse?.hospitalId,
-            chatMessageList: chatMessageList,
-            toName: state.chatPendingSendResponse?.to?.name ?? hospitalModel?.name ,
-            pendingChat: true,
-          ))).then((value) {
-            if(value != null){
-              print('back with data');
-              Navigator.pop(context, "back");
-            }
-          });
+          print("chat message list pending : ${chatMessageList.length}");
+          if(chatMessageList.length == 3) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => NewChatRoom(
+              fromId: state.chatPendingSendResponse?.fromId,
+              toImageUrl: state.chatPendingSendResponse?.to?.imageUrl,
+              toId: state.chatPendingSendResponse?.hospitalId,
+              chatMessageList: chatMessageList,
+              toName: state.chatPendingSendResponse?.to?.name ?? hospitalModel?.name ,
+              pendingChat: true,
+            ))).then((value) {
+              if(value != null){
+                print('back with data');
+                Navigator.pop(context, "back");
+              }
+            });
+          }
         }
       },
       child: Scaffold(

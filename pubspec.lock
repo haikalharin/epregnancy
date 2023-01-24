@@ -1113,6 +1113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
+  root_detector:
+    dependency: "direct main"
+    description:
+      name: root_detector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.6"
   rxdart:
     dependency: "direct main"
     description:

@@ -15,7 +15,7 @@ class F {
       case Flavor.PRODUCTION:
         return 'Komunitaz';
       default:
-        return 'Komunitaz';
+        return 'title';
     }
   }
 

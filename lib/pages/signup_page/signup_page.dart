@@ -1,6 +1,6 @@
 import 'package:PregnancyApp/common/configurations/configurations.dart';
 import 'package:PregnancyApp/common/constants/regex_constants.dart';
-import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_default.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:flutter/cupertino.dart';

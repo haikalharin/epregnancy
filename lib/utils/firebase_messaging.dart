@@ -17,10 +17,10 @@ import '../data/model/Firebase_topic_response.dart';
 import '../data/model/user_model_api/user_model.dart';
 import '../data/shared_preference/app_shared_preference.dart';
 import '../flavors.dart';
-import '../main.dart';
+import '../main_default.dart';
 
 import '../main_development.dart' as dev;
-import '../main.dart' as main;
+import '../main_default.dart' as main;
 import '../main_production.dart' as prod;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

@@ -16,7 +16,7 @@ import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
-import '../../main.dart';
+import '../../main_default.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';

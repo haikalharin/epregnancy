@@ -10,7 +10,7 @@ import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
-import '../../main.dart';
+import '../../main_default.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';

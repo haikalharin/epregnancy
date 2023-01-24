@@ -8,7 +8,9 @@ import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:root_detector/root_detector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'flavors.dart';
@@ -80,7 +82,7 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-final Alice aliceDev = Alice(showNotification: true, darkTheme: true);
+final Alice aliceDev = Alice(showNotification: false, darkTheme: true);
 
 class MyApp extends StatefulWidget {
   @override
@@ -93,10 +95,42 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    initPlatformState();
     _firebaseFuture = firebaseServiceUtils
         .initializeFlutterFirebase(context);
 
   }
+
+  String _isRooted = 'Unknown';
+
+  Future<void> initPlatformState() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      await RootDetector.isRooted(
+        busyBox: true,
+        ignoreSimulator: true,
+      ).then((value) {
+        setState(() {
+          _isRooted = value.toString();
+          if(_isRooted == "true"){
+            exit(0);
+          }
+        });
+      });
+    } on PlatformException {
+      setState(() {
+        _isRooted = 'Failed to get root status.';
+      });
+    }
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   final RouteObserver<PageRoute> _routeObserver = RouteObserver();
 
   @override
@@ -116,7 +150,7 @@ class _MyAppState extends State<MyApp> {
                       child: Provider.value(
                         value: _routeObserver,
                         child: SecureWidget(
-                          isSecure: true,
+                          isSecure: false,
                           builder: (BuildContext context, void Function() onInit, void Function() onDispose) {
                             return  MaterialApp(
                                   debugShowCheckedModeBanner: false,

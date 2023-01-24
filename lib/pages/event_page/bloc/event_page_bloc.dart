@@ -256,7 +256,7 @@ class EventPageBloc extends Bloc<EventPageEvent, EventPageState> {
         String? remindBefore;
         ResponseModel response = ResponseModel();
         if (state.consulType.value == StringConstant.consumeMedicine) {
-          response = await eventRepository.saveEvent(EventModel(
+          response = await eventRepository.saveEventMedicine(EventModel(
             userId: person.id,
             type: state.consulType.value,
             title: state.scheduleName.value,

@@ -303,7 +303,9 @@ class RemoteDataSource {
   Future<ResponseModel> saveScheduleEventPersonal(EventModel eventModel) async {
     try {
       final response =
-          await httpClient.post(ServiceUrl.saveSchedule, eventModel);
+      // old endpoint
+          // await httpClient.post(ServiceUrl.saveSchedule, eventModel);
+          await httpClient.post(ServiceUrl.createScheduleAppointmentMw, eventModel);
       return ResponseModel.fromJson(response, EventModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();

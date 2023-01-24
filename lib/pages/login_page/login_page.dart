@@ -1,4 +1,4 @@
-import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_default.dart';
 import 'package:PregnancyApp/main_development.dart';
 import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
 import 'package:PregnancyApp/pages/state_page/registration_success_page.dart';

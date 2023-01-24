@@ -14,7 +14,7 @@ import 'package:formz/formz.dart';
 import '../../common/injector/injector.dart';
 import '../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
-import '../../main.dart';
+import '../../main_default.dart';
 import '../../utils/string_constans.dart';
 import '../login_page/login_page.dart';
 import '../navbar_page/bottom_nav.dart';
