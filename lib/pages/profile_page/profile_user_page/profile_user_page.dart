@@ -350,6 +350,37 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                               ),
                               InkWell(
                                 onTap: () {
+                                  //todo change password
+                                  // Navigator.of(context)
+                                  //     .pushNamed(RouteName.surveyPageBaby, arguments: true);
+
+                                  Navigator.of(context).pushNamed(RouteName.disclaimer,
+                                      arguments: {'user_id': state.user?.id, 'from': "account"});
+                                },
+                                child: ListTile(
+                                  leading: Text(
+                                    StringConstant.termAndCondition,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  trailing: const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: EpregnancyColors.greyText,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10.h, horizontal: 10.w),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 1.5.h,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
                                   // todo delete account
                                   // Navigator.of(context)
                                   //     .pushNamed(RouteName.changePasswordPage);

@@ -9,6 +9,7 @@ class StringConstant {
   static const pregnant = 'PREGNANT';
   static const notPregnant = 'NOT PREGNANT';
   static const postMaternity = 'POST MATERNITY';
+  static const babySitter = 'BABY SITTER';
   static const midwife = 'MIDWIFE';
   static const patient = 'PATIENT';
   static const typePersonal = 'PERSONAL';
@@ -38,6 +39,8 @@ class StringConstant {
   static const amap = 'sebanyak-banyaknya ';
   static const point = 'Poin';
   static const claimPoint = 'Klaim Poin';
+  static const titleComingSoon =
+      'Ayo kumpulkan POIN dengan cara dibawah ini dan nantikan hadiah menarik dari kami';
 
   //chat
   static const baru = 'Baru';
@@ -61,6 +64,7 @@ class StringConstant {
   static const profileChange = 'Ganti Profil';
   static const profilePregnantChange = 'Ganti Profil Kehamilan';
   static const passwordChange = 'Ubah Kata Sandi';
+  static const termAndCondition = 'Syarat dan ketentuan';
   static const deleteAccount = 'Hapus Akun';
   static const logout = 'Keluar';
 
@@ -87,9 +91,12 @@ class StringConstant {
   static const termAndConditionUserHeader = 'term_and_condition_user_header';
   static const termAndConditionUserBody1 = 'term_and_condition_user_body_1';
   static const termAndConditionUserBody2 = 'term_and_condition_user_body_2';
-  static const termAndConditionMidwifeHeader = 'term_and_condition_midwife_header';
-  static const termAndConditionMidwifeBody1 = 'term_and_condition_midwife_body_1';
-  static const termAndConditionMidwifeBody2 = 'term_and_condition_midwife_body_2';
+  static const termAndConditionMidwifeHeader =
+      'term_and_condition_midwife_header';
+  static const termAndConditionMidwifeBody1 =
+      'term_and_condition_midwife_body_1';
+  static const termAndConditionMidwifeBody2 =
+      'term_and_condition_midwife_body_2';
   static const column1Disclaimer =
       "<p>Dokumen ini merupakan Syarat dan Ketentuan (&quot;Perjanjian&quot;) dan ketika disetujui oleh Anda dengan cara yang dijelaskan di bawah ini menjadi suatu kontrak yang mengikat secara hukum antara PT. Allianz Indonesia (&quot;kami&quot;), suatu perseroan terbatas yang didirikan berdasarkan hukum Indonesia, dan Anda.</p><p>Kami adalah penyedia Layanan (sebagaimana didefinisikan dalam Perjanjian ini) yang sah di Indonesia. Kondisi prasyarat bagi Anda untuk dapat mengakses, membeli, menggunakan atau mendaftar Layanan apa pun dari kami adalah Anda harus membaca dan menyetujui untuk terikat dengan setiap dan masing-masing syarat dan ketentuan yang terkandung dalam Perjanjian ini. Apabila Anda mengakses komponen Layanan apa pun atau menggunakan atau mendaftar Layanan dengan cara apa pun, kegiatan-kegiatan tersebut terhadap Anda akan secara tegas diartikan bahwa Anda telah membaca Perjanjian ini dan menyetujui untuk terikat dengan syarat dan ketentuan yang terkandung dalam Perjanjian ini.</p>";
 
@@ -99,5 +106,4 @@ class StringConstant {
   static const dontsBodyUser = 'donts_body_user';
   static const doesBodyMidwife = 'does_body_midwife';
   static const dontsBodyMidewife = 'donts_body_midwife';
-
 }
