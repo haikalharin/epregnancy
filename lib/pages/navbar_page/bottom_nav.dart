@@ -29,7 +29,12 @@ class NavbarPage extends StatefulWidget {
   final String? userId;
   final bool? isFromNotif;
 
-  NavbarPage({Key? key, this.role, this.initalIndex, this.userId, this.isFromNotif = false})
+  NavbarPage(
+      {Key? key,
+      this.role,
+      this.initalIndex,
+      this.userId,
+      this.isFromNotif = false})
       : super(key: key);
 
   // final UserModel bottomUserModelData;
@@ -43,6 +48,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
   GlobalKey _two = GlobalKey();
   GlobalKey _three = GlobalKey();
   GlobalKey _four = GlobalKey();
+  GlobalKey _five = GlobalKey();
   BuildContext? myContext;
   TabController? controller;
   int indexSelected = 0;
@@ -62,17 +68,19 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
     if (_userModel.isPregnant == true) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         _isFirstLaunch().then((result) {
-          if (result)
+          if (result) {
             ShowCaseWidget.of(myContext ?? context)
-                .startShowCase([_one, _two, _three, _four]);
+                .startShowCase([_one, _two, _three, _four, _five]);
+          }
         });
       });
     } else {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         _isFirstLaunch().then((result) {
-          if (result)
+          if (result) {
             ShowCaseWidget.of(myContext ?? context)
-                .startShowCase([_two, _three,_four]);
+                .startShowCase([_two, _four, _five]);
+          }
         });
       });
     }
@@ -204,7 +212,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
             ),
           ),
           icon: Showcase.withWidget(
-            key: _three,
+            key: _four,
             title: 'E-konsultasi dan Komunitas',
             description:
                 'Komunikasikan dan diskusikan masalah, keluhan dan saran Anda dengan mudah kepada Profesional dan Komunitas',
@@ -238,10 +246,10 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
             ),
           ),
           icon: Showcase.withWidget(
-            key: _four,
+            key: _five,
             title: 'Profil dan Pengaturan',
             description:
-            'Ubah foto, kata sandi dan atur profil kehamilan Anda dalam satu menu pengaturan',
+                'Ubah foto, kata sandi dan atur profil kehamilan Anda dalam satu menu pengaturan',
             height: 100,
             width: 100,
             shapeBorder: const CircleBorder(),
@@ -283,6 +291,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           userId: widget.userId,
           one: _one,
           two: _two,
+          three: _three,
         );
       case 1:
         // return AddEventPage();

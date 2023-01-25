@@ -40,11 +40,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(
-      {Key? key, this.userId, this.one, this.two, this.isFromNotif = false})
+      {Key? key,
+      this.userId,
+      this.one,
+      this.two,
+      this.three,
+      this.isFromNotif = false})
       : super(key: key);
   final String? userId;
   final GlobalKey? one;
   final GlobalKey? two;
+  final GlobalKey? three;
   final bool? isFromNotif;
 
   @override
@@ -136,8 +142,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: BlocListener<HomePageBloc, HomePageState>(
           listener: (context, state) {
             if (state.submitStatus == FormzStatus.submissionSuccess) {
-              if (state.user?.babies?.length != 0 && state.tipe == "get-info-done") {
-                if (state.user?.babies?.first.name == "" || state.user?.babies?.first.name == null) {
+              if (state.user?.babies?.length != 0 &&
+                  state.tipe == "get-info-done") {
+                if (state.user?.babies?.first.name == "" ||
+                    state.user?.babies?.first.name == null) {
                   setState(() {
                     showEditBaby = true;
                   });
@@ -401,8 +409,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               "is_edit": true,
                                               "edit_name": true
                                             }).then((value) {
-                                              print("sukses edit baby name");
-                                          Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+                                          print("sukses edit baby name");
+                                          Injector.resolve<HomePageBloc>()
+                                              .add(HomeFetchDataEvent());
                                         });
                                       },
                                       child: Container(
@@ -489,99 +498,219 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ])),
                     // update baby section
                     // checkin section
-                    Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 16.h),
-                      padding: EdgeInsets.all(16.w),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: EpregnancyColors.grey),
-                          borderRadius: BorderRadius.circular(8.w)),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Kunjungan ke Puskesmas",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          SizedBox(
-                            height: 4.h,
-                          ),
-                          Text(
-                            "Klik tombol ini untuk memulai kunjungan Anda",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(
-                            height: 16.h,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (_hospitalModel?.name == '') {
-                                  Navigator.pushNamed(
-                                          context, RouteName.locationSelect)
-                                      .then((value) {
-                                    if (value != null) {
-                                      setState(() {
-                                        _hospitalModel =
-                                            value as HospitalModel?;
-                                      });
-                                    }
-                                  });
-                                } else {
-                                  // todo implement barcode scanner
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const QrScanner())).then((value) {
-                                    // todo handel pin checkin from barcode
-                                    print("scan result : $value");
-                                  });
-                                  // showModalBottomSheet(
-                                  //     context: context,
-                                  //     isScrollControlled: false,
-                                  //     builder: (context) {
-                                  //       return PinCheckInPage();
-                                  //     });
-                                }
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 11.h),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset('assets/icQr.svg'),
-                                    SizedBox(
-                                      width: 9.w,
+
+                    state.showGuide == true
+                        ? Showcase(
+                            key: widget.three ?? GlobalKey(),
+                            title: 'Kunjungan ke Puskesmas',
+                            description:
+                                '',
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 16.h),
+                              padding: EdgeInsets.all(16.w),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border:
+                                      Border.all(color: EpregnancyColors.grey),
+                                  borderRadius: BorderRadius.circular(8.w)),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Kunjungan ke Puskesmas",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  SizedBox(
+                                    height: 4.h,
+                                  ),
+                                  Text(
+                                    "Klik tombol ini untuk memulai kunjungan Anda",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  SizedBox(
+                                    height: 16.h,
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (_hospitalModel?.name == '') {
+                                          Navigator.pushNamed(context,
+                                                  RouteName.locationSelect)
+                                              .then((value) {
+                                            if (value != null) {
+                                              setState(() {
+                                                _hospitalModel =
+                                                    value as HospitalModel?;
+                                              });
+                                            }
+                                          });
+                                        } else {
+                                          // todo implement barcode scanner
+                                          Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const QrScanner()))
+                                              .then((value) {
+                                            // todo handel pin checkin from barcode
+                                            print("scan result : $value");
+                                          });
+                                          // showModalBottomSheet(
+                                          //     context: context,
+                                          //     isScrollControlled: false,
+                                          //     builder: (context) {
+                                          //       return PinCheckInPage();
+                                          //     });
+                                        }
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 11.h),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset('assets/icQr.svg'),
+                                            SizedBox(
+                                              width: 9.w,
+                                            ),
+                                            Text(
+                                              "Check-in Kunjungan",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 11.sp,
+                                                  fontWeight: FontWeight.w700),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: EpregnancyColors.primer,
+                                        onSurface: EpregnancyColors.primer
+                                            .withOpacity(0.25),
+                                        onPrimary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                      ),
                                     ),
-                                    Text(
-                                      "Check-in Kunjungan",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w700),
-                                    )
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
-                              style: ElevatedButton.styleFrom(
-                                primary: EpregnancyColors.primer,
-                                onSurface:
-                                    EpregnancyColors.primer.withOpacity(0.25),
-                                onPrimary: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                            ))
+                        : Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 16.h),
+                            padding: EdgeInsets.all(16.w),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border:
+                                    Border.all(color: EpregnancyColors.grey),
+                                borderRadius: BorderRadius.circular(8.w)),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Kunjungan ke Puskesmas",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w700),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 4.h,
+                                ),
+                                Text(
+                                  "Klik tombol ini untuk memulai kunjungan Anda",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                SizedBox(
+                                  height: 16.h,
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (_hospitalModel?.name == '') {
+                                        Navigator.pushNamed(context,
+                                                RouteName.locationSelect)
+                                            .then((value) {
+                                          if (value != null) {
+                                            setState(() {
+                                              _hospitalModel =
+                                                  value as HospitalModel?;
+                                            });
+                                          }
+                                        });
+                                      } else {
+                                        // todo implement barcode scanner
+                                        Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const QrScanner()))
+                                            .then((value) {
+                                          // todo handel pin checkin from barcode
+                                          print("scan result : $value");
+                                        });
+                                        // showModalBottomSheet(
+                                        //     context: context,
+                                        //     isScrollControlled: false,
+                                        //     builder: (context) {
+                                        //       return PinCheckInPage();
+                                        //     });
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 11.h),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset('assets/icQr.svg'),
+                                          SizedBox(
+                                            width: 9.w,
+                                          ),
+                                          Text(
+                                            "Check-in Kunjungan",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 11.sp,
+                                                fontWeight: FontWeight.w700),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: EpregnancyColors.primer,
+                                      onSurface: EpregnancyColors.primer
+                                          .withOpacity(0.25),
+                                      onPrimary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
+                          ),
                     Container(
                         // height: 200,
                         color: Colors.white,
