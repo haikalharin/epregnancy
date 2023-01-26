@@ -8,7 +8,7 @@ class DatePickerUtils {
       {DateTime? firstDate, DateTime? endDate, String? fieldLabelText }) {
     return showDatePicker(
       context: context,
-      initialEntryMode: DatePickerEntryMode.calendar,
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
       initialDate: dateTime,
       firstDate: firstDate ?? DateTime.now(),
       lastDate: endDate ?? DateTime(2100),
