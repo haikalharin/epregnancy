@@ -131,13 +131,16 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
 
           ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Hai Bunda ${userModel.name}, selamat datang di tanya Bidan.");
           ChatPendingSendRequest _chatPendingSendRequest2 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Di sini, Bunda bisa bertanya mengenai informasi umum dan tips seputar kehamilan langsung dengan Bidan.");
-          ChatPendingSendRequest _chatPendingSendRequest3 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Pertanyaan akan dijawab maksimal 3x24 jam. Yuk, Bunda bisa mulai bertanya.");
+          ChatPendingSendRequest _chatPendingSendRequest3 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Pertanyaan akan dijawab maksimal 3x24 jam.");
+          ChatPendingSendRequest _chatPendingSendRequest4 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Yuk, Bunda bisa mulai bertanya.");
 
           Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest, firsTime: true));
           await Future.delayed(const Duration(seconds: 1));
           Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest2, firsTime: true));
           await Future.delayed(const Duration(seconds: 1));
           Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest3, firsTime: true));
+          await Future.delayed(const Duration(seconds: 1));
+          Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest4, firsTime: true));
         } else if (state.type == 'send-pending-success' && state.chatPendingSendResponse != null) {
           chatMessageList.add(
               ChatMessageEntity(
