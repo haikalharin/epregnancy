@@ -371,13 +371,6 @@ class _PoinPageState extends State<PoinPage> {
                     // SizedBox(height: 20,),
                     // ReedemItemCard(),
                     const PoinInfoCard(
-                      title: "Registrasi Akun",
-                      subtitle:
-                          "Anda akan mendapatkan 200 POIN setelah\nregistrasi dalam aplikasi",
-                      image: "assets/ic_register_poin.png",
-                      game: true,
-                    ),
-                    const PoinInfoCard(
                       title: "Masuk ke Aplikasi Harian",
                       subtitle:
                           "Klaim 10 POIN harian Anda ketika masuk ke\naplikasi",
