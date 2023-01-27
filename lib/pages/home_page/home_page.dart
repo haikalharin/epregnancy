@@ -501,7 +501,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
                     state.showGuide == true
                         ? Showcase(
-                            key: widget.three ?? GlobalKey(),
+                            key: widget.two ?? GlobalKey(),
                             title: 'Kunjungan ke Puskesmas',
                             description:
                                 '',
@@ -784,7 +784,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         )),
                     state.showGuide == true
                         ? Showcase(
-                            key: widget.two ?? GlobalKey(),
+                            key: widget.three ?? GlobalKey(),
                             title: 'Kumpulkan Poin',
                             description:
                                 'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',

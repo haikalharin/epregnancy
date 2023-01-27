@@ -113,7 +113,9 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                   ),
                   Card1(widget.isPatient ?? true),
                   Card2(widget.isPatient ?? true),
-                  CheckboxListTile(
+                  widget.from == "account"
+                      ? Container()
+                      : CheckboxListTile(
                     activeColor: EpregnancyColors.primer,
                     contentPadding: EdgeInsets.only(top: 5.h),
                     title: Container(
@@ -138,50 +140,56 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                     controlAffinity: ListTileControlAffinity
                         .leading, //  <-- leading Checkbox
                   ),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 10, bottom: 10),
-                          width: MediaQuery.of(context).size.width - 40,
-                          height: 50,
-                          child: RaisedButton(
-                            color: checkedValue == true
-                                ? EpregnancyColors.primer
-                                : EpregnancyColors.primer.withOpacity(0.25),
-                            child: Padding(
-                              padding: EdgeInsets.zero,
-                              child: Text(
-                                "Saya Setuju",
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white),
+                  widget.from == "account"
+                      ? Container()
+                      : Container(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 10, bottom: 10),
+                                width: MediaQuery.of(context).size.width - 40,
+                                height: 50,
+                                child: RaisedButton(
+                                  color: checkedValue == true
+                                      ? EpregnancyColors.primer
+                                      : EpregnancyColors.primer
+                                          .withOpacity(0.25),
+                                  child: Padding(
+                                    padding: EdgeInsets.zero,
+                                    child: Text(
+                                      "Saya Setuju",
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white),
+                                    ),
+                                  ),
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12.w)),
+                                  ),
+                                  onPressed: () async {
+                                    if (checkedValue == true) {
+                                      if (widget.from == "login") {
+                                        Injector.resolve<DisclaimerPageBloc>()
+                                            .add(DisclaimerAddDataEvent());
+                                      } else {
+                                        Navigator.of(context).pushNamed(
+                                            RouteName.otpPage,
+                                            arguments: {
+                                              'username': widget.userId,
+                                              'from': "disclaimer"
+                                            }).then((value) {
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    }
+                                  },
+                                ),
                               ),
-                            ),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12.w)),
-                            ),
-                            onPressed: () async {
-                              if (checkedValue == true) {
-                                if (widget.from == "login") {
-                                  Injector.resolve<DisclaimerPageBloc>()
-                                      .add(DisclaimerAddDataEvent());
-                                } else {
-                                  Navigator.of(context).pushNamed(
-                                      RouteName.otpPage,
-                                      arguments: {'username':  widget.userId, 'from': "disclaimer"}).then((value) {
-                                        Navigator.pop(context);
-                                  });
-                                }
-                              }
-                            },
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             );
