@@ -80,6 +80,7 @@ class ServiceUrl {
   static String chatPendingList = '$chatPending/list';
   static String chatPendingListForNakes = '$chatPending/latest/';
   static String chatPendingSend = '$chatPending/send';
+  static String lastChat = '$chatPending/last-chat';
 
   //hospital
   static String hospital = 'hospital';

@@ -4,6 +4,7 @@ import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dar
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
+import 'package:PregnancyApp/data/model/chat_model/last_chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 
@@ -17,6 +18,7 @@ abstract class ChatRepository {
   Future<ResponseModel<ChatListResponse>> fetchArchiveChatByToIdList(String toId);
   Future<ResponseModel<ChatResponse>> fetchPersonalChatRoom(String toId, bool isArchive);
   Future<ResponseModel<ChatResponse>> nakesRespondPendingChat(String fromId, String hospitalId);
+  Future<ResponseModel<LastChatResponse>> lastChatDashboard();
 
   Future<ResponseModel<ChatPendingResponseList>> fetchChatPendingList();
   Future<ResponseModel<ChatPendingResponseList>> fetchChatPendingListByHospitalId(String hospitalId);

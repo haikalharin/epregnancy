@@ -82,7 +82,7 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-final Alice aliceDev = Alice(showNotification: false, darkTheme: true);
+final Alice aliceDev = Alice(showNotification: true, darkTheme: true);
 
 class MyApp extends StatefulWidget {
   @override

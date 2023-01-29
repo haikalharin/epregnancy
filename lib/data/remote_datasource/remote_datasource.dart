@@ -4,6 +4,7 @@ import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dar
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
+import 'package:PregnancyApp/data/model/chat_model/last_chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
 import 'dart:math';
 
@@ -552,6 +553,11 @@ class RemoteDataSource {
       String hospitalId) async {
     final response = await httpClient.get(ServiceUrl.chatPendingListForNakes + hospitalId);
     return ResponseModel.fromJson(response, ChatPendingResponseList.fromJson);
+  }
+
+  Future<ResponseModel<LastChatResponse>> fetchLastChatDashboard() async {
+    final response = await httpClient.get(ServiceUrl.lastChat);
+    return ResponseModel.fromJson(response, LastChatResponse.fromJson);
   }
 
   Future<ResponseModel> updatePhotoProfile(
