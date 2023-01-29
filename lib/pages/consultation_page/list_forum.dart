@@ -15,11 +15,13 @@ class ListForumWidget extends StatefulWidget {
   ListForumWidget(
       {Key? key,
       this.tipeAcara,
+        required this.userId,
       required this.listConsul,
       required this.psLikesCount})
       : super(key: key);
   final String? tipeAcara;
   List<ConsultationModel> listConsul = [];
+  final String? userId;
   final PublishSubject<bool> psLikesCount;
 
   @override
@@ -88,18 +90,14 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                   Container(
                                     margin: EdgeInsets.only(left: 20, right: 20),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           margin: EdgeInsets.only(bottom: 10),
                                           child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               // widget image profile komentar
                                               widget.listConsul[index].user?.imageUrl != null
@@ -155,6 +153,7 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                                       margin: EdgeInsets.only(
                                                           bottom: 10),
                                                       child: Text(
+                                                        // widget.listConsul[index].user?.name ?? "",
                                                         widget.listConsul[index].user?.name ?? "",
                                                         style: TextStyle(
                                                             fontSize: 16,
@@ -187,6 +186,13 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                             ],
                                           ),
                                         ),
+                                        widget.listConsul[index].userId == widget.userId ?
+                                        InkWell(
+                                          onTap: (){
+                                            // todo delete postingan
+                                          },
+                                            child: SvgPicture.asset('assets/icDelete.svg', color: Colors.black,)): const SizedBox.shrink(),
+
                                         // Icon(Icons.ios_share)
                                       ],
                                     ),
