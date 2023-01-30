@@ -136,7 +136,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                       snap: false,
                       floating: false,
                       backgroundColor: Colors.white,
-                      expandedHeight: _height <= 820 && _height >= 680  ? MediaQuery.of(context).size.height * 0.35 : MediaQuery.of(context).size.height * 0.29,
+                      expandedHeight: 120.h,
                       flexibleSpace: FlexibleSpaceBar(
                         centerTitle: true,
                         collapseMode: CollapseMode.pin,
@@ -184,7 +184,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                         minWidth: MediaQuery.of(context)
                                             .size
                                             .width /
-                                            4,
+                                            4.w,
                                         padding: EdgeInsets.only(
                                             top: 20,
                                             bottom: 20,
@@ -249,164 +249,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                             // Padding(
                             //   padding: EdgeInsets.only(left: 16.w, top: 20.h),
                             //     child: Text('Tanya ke komunitas untuk dapatkan 200 Poin',style: TextStyle(color: EpregnancyColors.primer, fontWeight: FontWeight.w700, fontSize: 12.sp),)),
-                            Container(
-                                margin: EdgeInsets.only(
-                                    top: 20,
-                                    bottom: 20,
-                                    left: 20,
-                                    right: 20),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    state.userModel?.imageUrl != null?  Container(
-                                      // width: 62,
 
-                                      child: ClipRRect(
-                                        borderRadius:
-                                        BorderRadius.circular(40),
-                                        child: FadeInImage(
-                                          placeholder: const AssetImage(
-                                              'assets/ic_no_photo.png'),
-                                          image: NetworkImage(state.userModel?.imageUrl??
-                                              ""),
-                                          width: 40,
-                                          height: 40,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ):Container(
-                                      // width: 62,
-
-                                      child: ClipRRect(
-                                        borderRadius:
-                                        BorderRadius.circular(40),
-                                        child: const FadeInImage(
-                                          placeholder: AssetImage(
-                                              'assets/ic_no_photo.png'),
-                                          image: AssetImage(
-                                              'assets/ic_no_photo.png'),
-                                          width: 40,
-                                          height: 40,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          width: 260,
-                                          margin: EdgeInsets.all(4),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.shade200,
-                                            borderRadius:
-                                            BorderRadius.circular(12),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              imagePath != ""
-                                                  ? InkWell(
-                                                onLongPress: () {
-                                                  _showPickerDelete(
-                                                      context);
-                                                },
-                                                child: Container(
-                                                    margin:
-                                                    const EdgeInsets
-                                                        .only(
-                                                        left: 0,
-                                                        right: 0,
-                                                        bottom:
-                                                        10,
-                                                        top: 10),
-                                                    child: Image.file(
-                                                      File(
-                                                          imagePath ??
-                                                              ""),
-                                                      height: 70,
-                                                    )),
-                                              )
-                                                  : Container(),
-                                              TextField(
-                                                controller: _controller,
-                                                maxLines: 5,
-                                                autofocus: false,
-                                                minLines: 1,
-                                                decoration:
-                                                const InputDecoration(
-                                                  // prefixIcon: Image(image: image),
-                                                  hintText:
-                                                  'Tanya ke komunitas...',
-                                                  border: InputBorder.none,
-                                                  isDense: true,
-                                                ),
-                                                textInputAction: TextInputAction.send,
-                                                onSubmitted: (val){
-                                                  Injector.resolve<
-                                                      ConsultationPageBloc>()
-                                                      .add(
-                                                      ConsultationSubmittedEvent());
-                                                },
-                                                onChanged: (value) {
-                                                  Injector.resolve<
-                                                      ConsultationPageBloc>()
-                                                      .add(
-                                                      ConsultationDescriptionChanged(
-                                                          value));
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        // Container(
-                                        //   width: 100,
-                                        //   height: 30,
-                                        //   decoration: BoxDecoration(
-                                        //       borderRadius:
-                                        //           BorderRadius.circular(
-                                        //               10.0),
-                                        //       color:
-                                        //           EpregnancyColors.primer),
-                                        //   child: FlatButton(
-                                        //     minWidth: MediaQuery.of(context)
-                                        //             .size
-                                        //             .width /
-                                        //         5,
-                                        //     onPressed: () {
-                                        //       Injector.resolve<
-                                        //               ConsultationPageBloc>()
-                                        //           .add(
-                                        //               ConsultationSubmittedEvent());
-                                        //     },
-                                        //     child: Container(
-                                        //       child: Text(
-                                        //         "Kirim",
-                                        //         style: TextStyle(
-                                        //             color: Colors.white),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                      ],
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        _showPicker(context);
-                                      },
-                                      child: Container(
-                                          margin: EdgeInsets.only(),
-                                          child: Image.asset('assets/icPictureColor.png')),
-                                    ),
-                                  ],
-                                )),
-                            Divider(),
                           ],
                         ),
                       )
@@ -414,14 +257,181 @@ class _ConsultationPageState extends State<ConsultationPage> {
 
                 ];
               }, body: Container(
-                child: state.listConsultation?.length == 0 ? const Center(
-                  child: CircularProgressIndicator(),
-                ): ListForumWidget(
-                  tipeAcara: 'Acara umum',
-                  listConsul:
-                  state.listConsultation?.reversed.toList() ?? [],
-                  psLikesCount: _psLikesCount,
-                )),
+              decoration: BoxDecoration(color: Colors.white),
+                child: Column(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(
+                            top: 20,
+                            bottom: 20,
+                            left: 20,
+                            right: 20),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            state.userModel?.imageUrl != null?  Container(
+                              // width: 62,
+
+                              child: ClipRRect(
+                                borderRadius:
+                                BorderRadius.circular(40),
+                                child: FadeInImage(
+                                  placeholder: const AssetImage(
+                                      'assets/ic_no_photo.png'),
+                                  image: NetworkImage(state.userModel?.imageUrl??
+                                      ""),
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ):Container(
+                              // width: 62,
+
+                              child: ClipRRect(
+                                borderRadius:
+                                BorderRadius.circular(40),
+                                child: const FadeInImage(
+                                  placeholder: AssetImage(
+                                      'assets/ic_no_photo.png'),
+                                  image: AssetImage(
+                                      'assets/ic_no_photo.png'),
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  width: 260,
+                                  margin: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius:
+                                    BorderRadius.circular(12),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      imagePath != ""
+                                          ? InkWell(
+                                        onLongPress: () {
+                                          _showPickerDelete(
+                                              context);
+                                        },
+                                        child: Container(
+                                            margin:
+                                            const EdgeInsets
+                                                .only(
+                                                left: 0,
+                                                right: 0,
+                                                bottom:
+                                                10,
+                                                top: 10),
+                                            child: Image.file(
+                                              File(
+                                                  imagePath ??
+                                                      ""),
+                                              height: 70,
+                                            )),
+                                      )
+                                          : Container(),
+                                      TextField(
+                                        controller: _controller,
+                                        maxLines: 5,
+                                        autofocus: false,
+                                        minLines: 1,
+                                        decoration:
+                                        const InputDecoration(
+                                          // prefixIcon: Image(image: image),
+                                          hintText:
+                                          'Tanya ke komunitas...',
+                                          border: InputBorder.none,
+                                          isDense: true,
+                                        ),
+                                        textInputAction: TextInputAction.send,
+                                        onSubmitted: (val){
+                                          Injector.resolve<
+                                              ConsultationPageBloc>()
+                                              .add(
+                                              ConsultationSubmittedEvent());
+                                        },
+                                        onChanged: (value) {
+                                          Injector.resolve<
+                                              ConsultationPageBloc>()
+                                              .add(
+                                              ConsultationDescriptionChanged(
+                                                  value));
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Container(
+                                //   width: 100,
+                                //   height: 30,
+                                //   decoration: BoxDecoration(
+                                //       borderRadius:
+                                //           BorderRadius.circular(
+                                //               10.0),
+                                //       color:
+                                //           EpregnancyColors.primer),
+                                //   child: FlatButton(
+                                //     minWidth: MediaQuery.of(context)
+                                //             .size
+                                //             .width /
+                                //         5,
+                                //     onPressed: () {
+                                //       Injector.resolve<
+                                //               ConsultationPageBloc>()
+                                //           .add(
+                                //               ConsultationSubmittedEvent());
+                                //     },
+                                //     child: Container(
+                                //       child: Text(
+                                //         "Kirim",
+                                //         style: TextStyle(
+                                //             color: Colors.white),
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _showPicker(context);
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.only(),
+                                  child: Image.asset('assets/icPictureColor.png')),
+                            ),
+                          ],
+                        )),
+                    Divider(),
+                    Expanded(
+                      child: Container(
+                        child: state.listConsultation?.length == 0 ? const Center(
+                          child: CircularProgressIndicator(),
+                        ): ListForumWidget(
+                          tipeAcara: 'Acara umum',
+                          listConsul:
+                          state.listConsultation?.reversed.toList() ?? [],
+                          psLikesCount: _psLikesCount,
+                        )),
+                    ),
+                  ],
+                ),
+              ),
 
             );
           },
