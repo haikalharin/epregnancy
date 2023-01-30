@@ -112,7 +112,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                 content: Text("Gagal posting"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            if (state.type == 'update') {
+            if (state.type == 'update' || state.type == 'delete-post-success') {
               const snackBar = SnackBar(
                   content: Text("Berhasil"),
                   backgroundColor: EpregnancyColors.primer);

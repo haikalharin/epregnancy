@@ -356,6 +356,20 @@ class RemoteDataSource {
     }
   }
 
+  Future<ResponseModel> deletePost(String id) async {
+    try {
+
+      Map<String, String> data = {
+        'id': id,
+      };
+      final response =
+      await httpClient.delete(ServiceUrl.deletePost, data);
+      return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
   Future<ResponseModel> postUK(Map<String, dynamic> ujiKelayakan) async {
     final response = await httpClient.post(ServiceUrl.login, ujiKelayakan);
     return ResponseModel.fromJson(response, ResponseModel.empty);

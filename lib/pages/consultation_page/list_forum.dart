@@ -190,6 +190,8 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                         InkWell(
                                           onTap: (){
                                             // todo delete postingan
+                                            Injector.resolve<ConsultationPageBloc>().add(ConsultationDeletePostEvent(widget.listConsul[index].id));
+                                            // print("post id : ${widget.listConsul[index].id}");
                                           },
                                             child: SvgPicture.asset('assets/icDelete.svg', color: Colors.black,)): const SizedBox.shrink(),
 
