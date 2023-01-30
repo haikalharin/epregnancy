@@ -26,8 +26,9 @@ class TabBarEventPage extends StatefulWidget {
   final String? type;
   TabController? tabController;
   final DateTime? dateTime;
+  final bool isMidwife;
 
-  TabBarEventPage({Key? key, this.type, this.tabController, this.dateTime})
+  TabBarEventPage({Key? key, this.type, this.tabController, this.dateTime, this.isMidwife = false})
       : super(key: key);
 
   @override
@@ -122,7 +123,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                                     _tabController!.index == 0
                                         ? StringConstant.typePersonal
                                         :StringConstant.typePublic ,
-                                    dateTime));
+                                    dateTime, isMidwife: widget.isMidwife));
                           },
                           child: Container(
                               padding: EdgeInsets.only(right: 16.w, bottom: 5.h),
@@ -155,7 +156,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                               _tabController!.index == 0
                                   ? StringConstant.typePersonal
                                   : StringConstant.typePublic,
-                              date ?? DateTime.now()));
+                              date ?? DateTime.now(), isMidwife: widget.isMidwife));
                         },
                         child: Container(
                             height: 20,
@@ -176,7 +177,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                               _tabController!.index == 0
                                   ? StringConstant.typePersonal
                                   : StringConstant.typePublic,
-                              date ?? DateTime.now()));
+                              date ?? DateTime.now(), isMidwife: widget.isMidwife));
                         },
                         child: Container(
                             height: 20,
@@ -206,6 +207,7 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                             ListEventPersonalWidget(
                               tipeAcara: StringConstant.typeEventJadwalPribadi,
                               dateTime: widget.dateTime,
+                              isMidwife: widget.isMidwife,
                             ),
                             ListEventWidget(
                               tipeAcara: StringConstant.typeEventJadwalUmum,

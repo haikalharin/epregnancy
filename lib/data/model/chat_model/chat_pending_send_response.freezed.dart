@@ -23,7 +23,7 @@ ChatPendingSendResponse _$ChatPendingSendResponseFromJson(
 mixin _$ChatPendingSendResponse {
   String? get id => throw _privateConstructorUsedError;
   String? get fromId => throw _privateConstructorUsedError;
-  String? get toId => throw _privateConstructorUsedError;
+  String? get hospitalId => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
   int? get unreadCount => throw _privateConstructorUsedError;
   bool? get isRead => throw _privateConstructorUsedError;
@@ -51,7 +51,7 @@ abstract class $ChatPendingSendResponseCopyWith<$Res> {
   $Res call(
       {String? id,
       String? fromId,
-      String? toId,
+      String? hospitalId,
       String? message,
       int? unreadCount,
       bool? isRead,
@@ -82,7 +82,7 @@ class _$ChatPendingSendResponseCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? fromId = freezed,
-    Object? toId = freezed,
+    Object? hospitalId = freezed,
     Object? message = freezed,
     Object? unreadCount = freezed,
     Object? isRead = freezed,
@@ -105,9 +105,9 @@ class _$ChatPendingSendResponseCopyWithImpl<$Res>
           ? _value.fromId
           : fromId // ignore: cast_nullable_to_non_nullable
               as String?,
-      toId: toId == freezed
-          ? _value.toId
-          : toId // ignore: cast_nullable_to_non_nullable
+      hospitalId: hospitalId == freezed
+          ? _value.hospitalId
+          : hospitalId // ignore: cast_nullable_to_non_nullable
               as String?,
       message: message == freezed
           ? _value.message
@@ -193,7 +193,7 @@ abstract class _$$_ChatPendingSendResponseCopyWith<$Res>
   $Res call(
       {String? id,
       String? fromId,
-      String? toId,
+      String? hospitalId,
       String? message,
       int? unreadCount,
       bool? isRead,
@@ -229,7 +229,7 @@ class __$$_ChatPendingSendResponseCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? fromId = freezed,
-    Object? toId = freezed,
+    Object? hospitalId = freezed,
     Object? message = freezed,
     Object? unreadCount = freezed,
     Object? isRead = freezed,
@@ -252,9 +252,9 @@ class __$$_ChatPendingSendResponseCopyWithImpl<$Res>
           ? _value.fromId
           : fromId // ignore: cast_nullable_to_non_nullable
               as String?,
-      toId: toId == freezed
-          ? _value.toId
-          : toId // ignore: cast_nullable_to_non_nullable
+      hospitalId: hospitalId == freezed
+          ? _value.hospitalId
+          : hospitalId // ignore: cast_nullable_to_non_nullable
               as String?,
       message: message == freezed
           ? _value.message
@@ -317,7 +317,7 @@ class _$_ChatPendingSendResponse
   const _$_ChatPendingSendResponse(
       {required this.id,
       required this.fromId,
-      required this.toId,
+      required this.hospitalId,
       required this.message,
       required this.unreadCount,
       required this.isRead,
@@ -339,7 +339,7 @@ class _$_ChatPendingSendResponse
   @override
   final String? fromId;
   @override
-  final String? toId;
+  final String? hospitalId;
   @override
   final String? message;
   @override
@@ -367,7 +367,7 @@ class _$_ChatPendingSendResponse
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ChatPendingSendResponse(id: $id, fromId: $fromId, toId: $toId, message: $message, unreadCount: $unreadCount, isRead: $isRead, from: $from, to: $to, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
+    return 'ChatPendingSendResponse(id: $id, fromId: $fromId, hospitalId: $hospitalId, message: $message, unreadCount: $unreadCount, isRead: $isRead, from: $from, to: $to, isDelete: $isDelete, createdBy: $createdBy, createdFrom: $createdFrom, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedFrom: $modifiedFrom, modifiedDate: $modifiedDate)';
   }
 
   @override
@@ -377,7 +377,7 @@ class _$_ChatPendingSendResponse
       ..add(DiagnosticsProperty('type', 'ChatPendingSendResponse'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('fromId', fromId))
-      ..add(DiagnosticsProperty('toId', toId))
+      ..add(DiagnosticsProperty('hospitalId', hospitalId))
       ..add(DiagnosticsProperty('message', message))
       ..add(DiagnosticsProperty('unreadCount', unreadCount))
       ..add(DiagnosticsProperty('isRead', isRead))
@@ -399,7 +399,8 @@ class _$_ChatPendingSendResponse
             other is _$_ChatPendingSendResponse &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.fromId, fromId) &&
-            const DeepCollectionEquality().equals(other.toId, toId) &&
+            const DeepCollectionEquality()
+                .equals(other.hospitalId, hospitalId) &&
             const DeepCollectionEquality().equals(other.message, message) &&
             const DeepCollectionEquality()
                 .equals(other.unreadCount, unreadCount) &&
@@ -426,7 +427,7 @@ class _$_ChatPendingSendResponse
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(fromId),
-      const DeepCollectionEquality().hash(toId),
+      const DeepCollectionEquality().hash(hospitalId),
       const DeepCollectionEquality().hash(message),
       const DeepCollectionEquality().hash(unreadCount),
       const DeepCollectionEquality().hash(isRead),
@@ -457,7 +458,7 @@ abstract class _ChatPendingSendResponse implements ChatPendingSendResponse {
   const factory _ChatPendingSendResponse(
       {required final String? id,
       required final String? fromId,
-      required final String? toId,
+      required final String? hospitalId,
       required final String? message,
       required final int? unreadCount,
       required final bool? isRead,
@@ -479,7 +480,7 @@ abstract class _ChatPendingSendResponse implements ChatPendingSendResponse {
   @override
   String? get fromId => throw _privateConstructorUsedError;
   @override
-  String? get toId => throw _privateConstructorUsedError;
+  String? get hospitalId => throw _privateConstructorUsedError;
   @override
   String? get message => throw _privateConstructorUsedError;
   @override
@@ -530,7 +531,7 @@ mixin _$ChatPendingFromSendResponse {
   bool? get isSuperAdmin => throw _privateConstructorUsedError;
   bool? get isVerified => throw _privateConstructorUsedError;
   String? get hospitalId => throw _privateConstructorUsedError;
-  String? get hospital => throw _privateConstructorUsedError;
+  HospitalModel? get hospital => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   String? get coverUrl => throw _privateConstructorUsedError;
 
@@ -560,9 +561,11 @@ abstract class $ChatPendingFromSendResponseCopyWith<$Res> {
       bool? isSuperAdmin,
       bool? isVerified,
       String? hospitalId,
-      String? hospital,
+      HospitalModel? hospital,
       String? imageUrl,
       String? coverUrl});
+
+  $HospitalModelCopyWith<$Res>? get hospital;
 }
 
 /// @nodoc
@@ -649,7 +652,7 @@ class _$ChatPendingFromSendResponseCopyWithImpl<$Res>
       hospital: hospital == freezed
           ? _value.hospital
           : hospital // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as HospitalModel?,
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -659,6 +662,17 @@ class _$ChatPendingFromSendResponseCopyWithImpl<$Res>
           : coverUrl // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
+  }
+
+  @override
+  $HospitalModelCopyWith<$Res>? get hospital {
+    if (_value.hospital == null) {
+      return null;
+    }
+
+    return $HospitalModelCopyWith<$Res>(_value.hospital!, (value) {
+      return _then(_value.copyWith(hospital: value));
+    });
   }
 }
 
@@ -684,9 +698,12 @@ abstract class _$$_ChatPendingFromSendResponseCopyWith<$Res>
       bool? isSuperAdmin,
       bool? isVerified,
       String? hospitalId,
-      String? hospital,
+      HospitalModel? hospital,
       String? imageUrl,
       String? coverUrl});
+
+  @override
+  $HospitalModelCopyWith<$Res>? get hospital;
 }
 
 /// @nodoc
@@ -777,7 +794,7 @@ class __$$_ChatPendingFromSendResponseCopyWithImpl<$Res>
       hospital: hospital == freezed
           ? _value.hospital
           : hospital // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as HospitalModel?,
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -844,7 +861,7 @@ class _$_ChatPendingFromSendResponse
   @override
   final String? hospitalId;
   @override
-  final String? hospital;
+  final HospitalModel? hospital;
   @override
   final String? imageUrl;
   @override
@@ -953,7 +970,7 @@ abstract class _ChatPendingFromSendResponse
       required final bool? isSuperAdmin,
       required final bool? isVerified,
       required final String? hospitalId,
-      required final String? hospital,
+      required final HospitalModel? hospital,
       required final String? imageUrl,
       required final String? coverUrl}) = _$_ChatPendingFromSendResponse;
 
@@ -987,7 +1004,7 @@ abstract class _ChatPendingFromSendResponse
   @override
   String? get hospitalId => throw _privateConstructorUsedError;
   @override
-  String? get hospital => throw _privateConstructorUsedError;
+  HospitalModel? get hospital => throw _privateConstructorUsedError;
   @override
   String? get imageUrl => throw _privateConstructorUsedError;
   @override

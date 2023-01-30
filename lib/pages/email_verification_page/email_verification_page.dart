@@ -1,4 +1,4 @@
-import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_default.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';

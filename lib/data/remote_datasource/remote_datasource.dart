@@ -4,6 +4,7 @@ import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dar
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
+import 'package:PregnancyApp/data/model/chat_model/last_chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
 import 'dart:math';
 
@@ -58,17 +59,8 @@ class RemoteDataSource {
     return ResponseModel<LoginResponseData>.fromJson(response, LoginResponseData.fromJson);
   }
 
-  Future<ResponseModel> forgotPassword(String userName) async {
-    Map<String, String> data = {};
-    if (userName.contains('@')) {
-      data = {
-        'email': userName,
-      };
-    } else {
-      data = {
-        'mobile': userName,
-      };
-    }
+  Future<ResponseModel> forgotPassword(Map data) async {
+
     final response = await httpClient.post(ServiceUrl.forgotPassword, data);
 
     return ResponseModel.fromJson(response, UserModel.fromJson);
@@ -109,6 +101,28 @@ class RemoteDataSource {
     print("payload request : ${user.toJson()}");
     try {
       final response = await httpClient.put(ServiceUrl.updateUser, user);
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> updateFcmToken(UserModel user) async {
+    print("payload request : ${user.toJson()}");
+    try {
+     var data = {
+        'fcm_token': user.fcmToken??"",
+      };
+      final response = await httpClient.put(ServiceUrl.updateUser, data);
+      return ResponseModel.fromJson(response, UserModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> updateHospital(String hospitalId) async {
+    try {
+      final response = await httpClient.put(ServiceUrl.updateUserProfile, {"hospital_id": hospitalId});
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -171,9 +185,9 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel> requestOtp(OtpModel otpModel) async {
+  Future<ResponseModel> requestOtp(Map data) async {
     try {
-      final response = await httpClient.post(ServiceUrl.requestOtp, otpModel);
+      final response = await httpClient.post(ServiceUrl.requestOtp, data);
       return ResponseModel.fromJson(response, OtpModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -199,10 +213,10 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel<UserModel>> checkUserExist(String user) async {
+  Future<ResponseModel<UserModel>> checkUserExist(String user, String type) async {
     try {
-      Map<String, String> data = {'username': user};
-      final response = await httpClient.post(ServiceUrl.checkUserExist, data);
+      Map<String, String> data = {type: user};
+      final response = await httpClient.post("${ServiceUrl.checkUserExist}/$type", data);
       return ResponseModel.fromJson(response, UserModel.fromJson);
     } catch (e) {
       return ResponseModel(data: const UserModel());
@@ -275,10 +289,24 @@ class RemoteDataSource {
     return ResponseModel.fromJson(response, EventModel.fromJson);
   }
 
+  // fetch event for midwife
+  Future<ResponseModel<EventModel>> fetchListEventForMidwife(
+      {String midwifeId = '', bool isPublic = false}) async {
+    Map<String, String> qParams = {
+      'midwife_id': midwifeId,
+      'is_public': isPublic.toString()
+    };
+    final response =
+    await httpClient.get(ServiceUrl.listSchedule, queryParameters: qParams);
+    return ResponseModel.fromJson(response, EventModel.fromJson);
+  }
+
   Future<ResponseModel> saveScheduleEventPersonal(EventModel eventModel) async {
     try {
       final response =
-          await httpClient.post(ServiceUrl.saveSchedule, eventModel);
+      // old endpoint
+          // await httpClient.post(ServiceUrl.saveSchedule, eventModel);
+          await httpClient.post(ServiceUrl.createScheduleAppointmentMw, eventModel);
       return ResponseModel.fromJson(response, EventModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -328,6 +356,20 @@ class RemoteDataSource {
     }
   }
 
+  Future<ResponseModel> deletePost(String id) async {
+    try {
+
+      Map<String, String> data = {
+        'id': id,
+      };
+      final response =
+      await httpClient.delete(ServiceUrl.deletePost, data);
+      return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
   Future<ResponseModel> postUK(Map<String, dynamic> ujiKelayakan) async {
     final response = await httpClient.post(ServiceUrl.login, ujiKelayakan);
     return ResponseModel.fromJson(response, ResponseModel.empty);
@@ -350,7 +392,8 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<CheckinResponse>> hitCheckInToday(String day) async {
-    final response = await httpClient.post(ServiceUrl.checkIn + day, {});
+    // final response = await httpClient.post(ServiceUrl.checkIn + day, {});
+    final response = await httpClient.post(ServiceUrl.checkIn, {});
 
 //    return null;
     return ResponseModel<CheckinResponse>.fromJson(
@@ -440,7 +483,7 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<ChatListResponse>> fetchChatListResponse(String fromId) async {
-    final response = await httpClient.get(ServiceUrl.chatList, queryParameters: {'from_id': fromId});
+    final response = await httpClient.get(ServiceUrl.latestChat, queryParameters: {'from_id': fromId});
 
     return ResponseModel.fromJson(
         response, ChatListResponse.fromJson);
@@ -456,7 +499,7 @@ class RemoteDataSource {
   Future<ResponseModel<ChatListResponse>> fetchChatListByToIdResponse(
       String toId) async {
     final response = await httpClient
-        .get(ServiceUrl.chatList, queryParameters: {'to_id': toId});
+        .get(ServiceUrl.latestChat, queryParameters: {'to_id': toId});
 
     return ResponseModel.fromJson(response, ChatListResponse.fromJson);
   }
@@ -497,7 +540,7 @@ class RemoteDataSource {
 
   Future<ResponseModel<UserModel>> fetchUsers(String name) async {
     final response = await httpClient
-        .get(ServiceUrl.userList, queryParameters: {'name': name});
+        .get(ServiceUrl.userList, queryParameters: {'name': name, 'is_midwife': "false", 'is_patient': "true"});
 
     return ResponseModel.fromJson(
         response, UserModel.fromJson);
@@ -523,8 +566,12 @@ class RemoteDataSource {
   Future<ResponseModel<ChatPendingResponseList>> fetchChatPendingByHospitalId(
       String hospitalId) async {
     final response = await httpClient.get(ServiceUrl.chatPendingListForNakes + hospitalId);
-
     return ResponseModel.fromJson(response, ChatPendingResponseList.fromJson);
+  }
+
+  Future<ResponseModel<LastChatResponse>> fetchLastChatDashboard() async {
+    final response = await httpClient.get(ServiceUrl.lastChat);
+    return ResponseModel.fromJson(response, LastChatResponse.fromJson);
   }
 
   Future<ResponseModel> updatePhotoProfile(
@@ -538,8 +585,11 @@ class RemoteDataSource {
     }
   }
 
-  Future<List<ArticleModel>> fetchArticle() async {
-    final response = await httpClient.get(ServiceUrl.listArticle);
+  Future<List<ArticleModel>> fetchArticle(String category) async {
+    Map<String, String> param = {
+      'category': category,
+    };
+    final response = await httpClient.get(ServiceUrl.listArticle,queryParameters: param);
     final data = <ArticleModel>[];
     getData(response).forEach((item) {
       data.add(ArticleModel.fromJson(item));

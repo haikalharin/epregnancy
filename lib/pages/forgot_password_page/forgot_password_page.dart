@@ -15,18 +15,17 @@ import '../change_password_page/bloc/change_password_bloc.dart';
 import '../signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import 'bloc/forgot_password_page_bloc.dart';
 
-
 const _horizontalPadding = 30.0;
-
+final userNameController = TextEditingController();
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
-
 
   @override
   _ForgotPasswordPage createState() => _ForgotPasswordPage();
 }
 
 class _ForgotPasswordPage extends State<ForgotPasswordPage> {
+
   DateTime? selectedDate;
 
   bool _isHiddenNewPassword = true;
@@ -34,9 +33,17 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
 
   @override
   void dispose() {
+    userNameController.clear();
     Injector.resolve<ForgotPasswordPageBloc>()
         .add(const ForgotPasswordInitEvent());
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    userNameController.clear();
+    Injector.resolve<ForgotPasswordPageBloc>().add(ForgotPasswordInitEvent());
+    super.initState();
   }
 
   @override
@@ -47,17 +54,22 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
       body: BlocListener<ForgotPasswordPageBloc, ForgotPasswordPageState>(
         listener: (context, state) async {
           if (state.submitStatus == FormzStatus.submissionFailure) {
-            var message = 'email tidak tersedia';
+            var message = '${state.typeMessage} tidak tersedia';
             final snackBar =
-            SnackBar(content: Text(message), backgroundColor: Colors.red);
+                SnackBar(content: Text(message), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
-          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            final snackBar =
-            SnackBar(content: Text("Password baru berhasil dikirim, Silahkan cek email anda"), backgroundColor: Colors.blue);
+          } else if (state.submitStatus == FormzStatus.submissionSuccess &&
+              state.typeEvent == 'checkUserExist') {
+            final snackBar = SnackBar(
+                content: Text(
+                    "OTP berhasil dikirim, Silahkan cek ${state.typeMessage == "Nomor" ? "kotak pesan" : "email"} anda"),
+                backgroundColor: Colors.blue);
             Scaffold.of(context).showSnackBar(snackBar);
-            await Future.delayed(const Duration(seconds: 3));
-            Navigator.pop(context);
-
+            await Future.delayed(const Duration(seconds: 1));
+            Navigator.of(context).pushNamed(RouteName.otpPage, arguments: {
+              'username': state.userName.value,
+              'from': "forgotPassword"
+            });
           }
         },
         child: BlocBuilder<ForgotPasswordPageBloc, ForgotPasswordPageState>(
@@ -121,24 +133,30 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16),
+
                             ),
                             SizedBox(height: 10),
                             TextField(
+                              controller: userNameController,
                               onChanged: (value) {
+                               var username = "";
+                                if(!state.userName.value.contains("@") &&  value.contains("0",0)){
+                                  username = value.replaceFirst("0","62");
+                                } else{
+                                  username = value;
+                                }
                                 Injector.resolve<ForgotPasswordPageBloc>()
-                                    .add(EmailChangedEvent(value));
+                                    .add(EmailChangedEvent(username));
                               },
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(color: Colors.grey[500]),
-                                hintText: 'Contoh : email@mail.com / 0857646...',
+                                hintText:
+                                    'Contoh : email@mail.com / 0857646...',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-
                               ),
                             ),
-
-
                             SizedBox(height: 30),
                           ],
                         ),
@@ -173,7 +191,6 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
       ),
     );
   }
-
 }
 
 class _Loading extends StatelessWidget {
@@ -181,23 +198,23 @@ class _Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ForgotPasswordPageBloc, ForgotPasswordPageState>(
         builder: (context, state) {
-          if (state.submitStatus == FormzStatus.submissionInProgress) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Align(
-                  alignment: Alignment(0, 0),
-                  child: Container(
-                      height: 1000,
-                      color: Colors.white.withAlpha(90),
-                      child: Center(child: CircularProgressIndicator())),
-                ),
-              ],
-            );
-          } else {
-            return Text("");
-          }
-        });
+      if (state.submitStatus == FormzStatus.submissionInProgress) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Align(
+              alignment: Alignment(0, 0),
+              child: Container(
+                  height: 1000,
+                  color: Colors.white.withAlpha(90),
+                  child: Center(child: CircularProgressIndicator())),
+            ),
+          ],
+        );
+      } else {
+        return Text("");
+      }
+    });
   }
 }

@@ -30,6 +30,7 @@ import '../pages/chat_page/chat_page.dart';
 import '../pages/chat_page/chat_room.dart';
 import '../pages/event_page/add_event_page_for_patient.dart';
 import '../pages/forgot_password_page/forgot_password_page.dart';
+import '../pages/forgot_password_page/new_password_page.dart';
 import '../pages/games_page/games_page.dart';
 import '../pages/landing_page/landing_page.dart';
 import '../pages/login_page/login_page.dart';
@@ -62,7 +63,7 @@ class Routes {
       case RouteName.surveyPageBaby:
         return MaterialPageRoute(
             builder: (_) =>
-                SurveyPageBaby(isEdit: getDataValue(settings.arguments)));
+                SurveyPageBaby(isEdit: getIsEdit(settings.arguments), editName: getEditName(settings.arguments),));
       case RouteName.articleDetailPage:
         return MaterialPageRoute(builder: (_) => ArticleDetailPage());
       case RouteName.chatPage:
@@ -76,6 +77,7 @@ class Routes {
                   role: getRoleArgument(settings.arguments),
                   initalIndex: getInitialIndex(settings.arguments),
                   userId: getUserId(settings.arguments),
+                  isFromNotif: getIsFromNotif(settings.arguments)
                 ));
       case RouteName.dashboard:
         return MaterialPageRoute(builder: (_) => Dashboard());
@@ -93,7 +95,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => LandingPage());
       case RouteName.otpPage:
         return MaterialPageRoute(
-            builder: (_) => OtpPage(userId: getDataValue(settings.arguments)));
+            builder: (_) => OtpPage(userName: getUserName(settings.arguments),
+           from: getFrom(settings.arguments),));
       case RouteName.verifikasiPage:
         return MaterialPageRoute(
             builder: (_) =>
@@ -149,6 +152,8 @@ class Routes {
 
       case RouteName.changePasswordPage:
         return MaterialPageRoute(builder: (_) => const ChangePasswordPage());
+      case RouteName.newPasswordPage:
+        return MaterialPageRoute(builder: (_) =>  NewPasswordPage( otp: getOtp(settings.arguments)));
       case RouteName.forgotPassword:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordPage());
       case RouteName.disclaimer:

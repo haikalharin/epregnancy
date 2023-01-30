@@ -1,4 +1,4 @@
-import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_default.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +66,7 @@ class _AddEventPageState extends State<AddEventPage> {
             margin: EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
               widget.consulType == StringConstant.visitHospital
-                  ? "Kunjugan Puskesmas / Posyandu"
+                  ? "Kunjungan Puskesmas"
                   : widget.consulType == StringConstant.consumeMedicine
                       ? "Konsumsi Obat"
                       : "Lain-lain",
@@ -116,9 +116,16 @@ class _AddEventPageState extends State<AddEventPage> {
                         width: MediaQuery.of(context).size.width - 40,
                         height: 50,
                         child: RaisedButton(
-                          color: state.status.isValidated
-                              ? EpregnancyColors.primer
-                              : EpregnancyColors.primerSoft,
+                          color: widget.consulType ==
+                                      StringConstant.visitHospital ||
+                                  widget.consulType == StringConstant.other
+                              ? state.status.isValidated &&
+                                      state.isTimeCorrect == true
+                                  ? EpregnancyColors.primer
+                                  : EpregnancyColors.primerSoft
+                              : state.status.isValidated
+                                  ? EpregnancyColors.primer
+                                  : EpregnancyColors.primerSoft,
                           child: Padding(
                             padding: EdgeInsets.zero,
                             child: Text(
@@ -132,9 +139,20 @@ class _AddEventPageState extends State<AddEventPage> {
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           onPressed: () async {
-                            if (state.status.isValidated) {
-                              Injector.resolve<EventPageBloc>()
-                                  .add(EventAddSubmitted());
+                            if (widget.consulType ==
+                                    StringConstant.visitHospital ||
+                                widget.consulType == StringConstant.other) {
+                              if (state.isTimeCorrect == true) {
+                                if (state.status.isValidated) {
+                                  Injector.resolve<EventPageBloc>()
+                                      .add(EventAddSubmitted());
+                                }
+                              }
+                            } else {
+                              if (state.status.isValidated) {
+                                Injector.resolve<EventPageBloc>()
+                                    .add(EventAddSubmitted());
+                              }
                             }
                           },
                         ),
@@ -780,8 +798,7 @@ class _AddDateStartInput extends StatelessWidget {
           onTap: () async {
             var dateTime = await DatePickerUtils.getDate(
                     context, state.dateStart ?? DateTime.now(),
-                    fieldLabelText: "Date",
-                    endDate: state.dateEnd) ??
+                    fieldLabelText: "Date", endDate: state.dateEnd) ??
                 DateTime.now();
             Injector.resolve<EventPageBloc>()
                 .add(EventDateStartChanged(dateTime));
@@ -851,7 +868,8 @@ class _AddDateEndInput extends StatelessWidget {
           onTap: () async {
             var dateTime = await DatePickerUtils.getDate(
                     context, state.dateStart ?? DateTime.now(),
-                    firstDate: state.dateStart) ?? DateTime.now();
+                    firstDate: state.dateStart) ??
+                DateTime.now();
             Injector.resolve<EventPageBloc>()
                 .add(EventDateEndChanged(dateTime));
           },
@@ -910,17 +928,25 @@ class _AddTimeInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EventPageBloc, EventPageState>(
-      buildWhen: (previous, current) => previous.time != current.time,
+      buildWhen: (previous, current) => previous.time != current.time|| previous.dateStart != current.dateStart,
       builder: (context, state) {
         return InkWell(
           onTap: () async {
-            TimeOfDay initialTime = state.time ?? TimeOfDay.now();
-            var pickedTime = await showTimePicker(
-              context: context,
-              initialTime: initialTime,
-            );
-            Injector.resolve<EventPageBloc>()
-                .add(EventTimeChanged(pickedTime ?? initialTime));
+            if(state.dateStart == null){
+              var message = 'Silahkan pilih tanggal terlebih dahulu';
+              final snackBar =
+              SnackBar(content: Text(message), backgroundColor: Colors.red);
+              Scaffold.of(context).showSnackBar(snackBar);
+            } else{
+              TimeOfDay initialTime = state.time ?? TimeOfDay.now();
+              var pickedTime = await showTimePicker(
+                context: context,
+                initialTime: initialTime,
+              );
+              Injector.resolve<EventPageBloc>()
+                  .add(EventTimeChanged(pickedTime ?? initialTime));
+            }
+
           },
           child: Container(
             child: Column(
@@ -946,10 +972,16 @@ class _AddTimeInput extends StatelessWidget {
                             Text(
                                 state.timeString.value != ""
                                     ? state.timeString.value
-                                    : "Pilih tanggal",
+                                    : "Pilih waktu",
                                 style: TextStyle(
                                   fontSize: 12,
                                 )),
+                            state.isTimeCorrect == false
+                                ? Text("Mohon pilih waktu yang akan datang",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: EpregnancyColors.red))
+                                : Container(),
                           ],
                         ),
                       ),

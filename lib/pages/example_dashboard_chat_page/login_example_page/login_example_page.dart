@@ -33,7 +33,7 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
                       content: Text("failed"), backgroundColor: Colors.red);
                   Scaffold.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
-                  if(state.userModelFirebase!.status == StringConstant.active){
+                  if(state.userModelFirebase!.status == StringConstant.usernameActive){
                     // Navigator.of(context).pushNamed(RouteName.navBar,arguments: 0);
                   } else {
                     Navigator.of(context).pushNamed(RouteName.surveyPage,arguments: false);

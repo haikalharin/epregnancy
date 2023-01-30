@@ -41,9 +41,10 @@ class PointFetchEvent extends HomePageEvent {
 }
 
 class EventFetchEvent extends HomePageEvent {
-  const EventFetchEvent(this.type, this.date);
+  const EventFetchEvent(this.type, this.date, {this.isMidwife = false});
   final String type;
   final DateTime date;
+  final bool isMidwife;
   @override
   List<Object> get props => [];
 }

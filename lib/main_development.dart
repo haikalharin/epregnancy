@@ -1,11 +1,16 @@
+import 'dart:ui';
+
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:root_detector/root_detector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'flavors.dart';
@@ -52,6 +57,9 @@ import 'common/injector/injector_config.dart';
 import 'env.dart' as config;
 import 'pages/login_page/bloc/login_bloc.dart';
 import 'package:flutter_alice/alice.dart';
+import 'package:secure_content/secure_content.dart';
+import 'package:flutter_portal/flutter_portal.dart';
+import 'package:provider/provider.dart';
 
 // void main() => runApp(MyApp());
 SharedPreferences? sharedPreferences;
@@ -74,7 +82,7 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-final Alice aliceDev = Alice(showNotification: false, darkTheme: true);
+final Alice aliceDev = Alice(showNotification: true, darkTheme: true);
 
 class MyApp extends StatefulWidget {
   @override
@@ -87,16 +95,43 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    initPlatformState();
     _firebaseFuture = firebaseServiceUtils
         .initializeFlutterFirebase(context);
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print("message recieved");
-      print(event.notification!.body);
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('Message clicked!');
-    });
+
   }
+
+  String _isRooted = 'Unknown';
+
+  Future<void> initPlatformState() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      await RootDetector.isRooted(
+        busyBox: true,
+        ignoreSimulator: true,
+      ).then((value) {
+        setState(() {
+          _isRooted = value.toString();
+          if(_isRooted == "true"){
+            exit(0);
+          }
+        });
+      });
+    } on PlatformException {
+      setState(() {
+        _isRooted = 'Failed to get root status.';
+      });
+    }
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  final RouteObserver<PageRoute> _routeObserver = RouteObserver();
 
   @override
   Widget build(BuildContext context) {
@@ -111,17 +146,49 @@ class _MyAppState extends State<MyApp> {
               return MultiBlocProvider(
                   providers: _getProviders(),
                   child: OverlaySupport.global(
-                    child: MaterialApp(
-                      debugShowCheckedModeBanner: false,
-                      navigatorKey: aliceDev.getNavigatorKey(),
-                      title: 'Komunitaz',
-                      home: SplashscreenPage(),
-                      onGenerateRoute: Routes.generateRoute,
-                      localizationsDelegates: const [
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                      ],
+                    child: Portal(
+                      child: Provider.value(
+                        value: _routeObserver,
+                        child: SecureWidget(
+                          isSecure: false,
+                          builder: (BuildContext context, void Function() onInit, void Function() onDispose) {
+                            return  MaterialApp(
+                                  debugShowCheckedModeBanner: false,
+                                  navigatorKey: aliceDev.getNavigatorKey(),
+                                  title: 'Komunitaz',
+                                  home: SplashscreenPage(),
+                                  onGenerateRoute: Routes.generateRoute,
+                                  localizationsDelegates: const [
+                                    GlobalMaterialLocalizations.delegate,
+                                    GlobalWidgetsLocalizations.delegate,
+                                    GlobalCupertinoLocalizations.delegate,
+                                  ],
+                                );
+                          },
+                          overlayWidgetBuilder: (context) => BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child:  SizedBox(
+                              child: Center(
+                                child: Image.asset("assets/ic_launcher.png"),
+                              ),
+                            ),
+                          ),
+                          appSwitcherMenuColor: EpregnancyColors.primer,
+                          protectInAppSwitcherMenu: true,
+                        ),
+                        // child: MaterialApp(
+                        //   debugShowCheckedModeBanner: false,
+                        //   navigatorKey: aliceDev.getNavigatorKey(),
+                        //   title: 'Komunitaz',
+                        //   home: SplashscreenPage(),
+                        //   onGenerateRoute: Routes.generateRoute,
+                        //   localizationsDelegates: const [
+                        //     GlobalMaterialLocalizations.delegate,
+                        //     GlobalWidgetsLocalizations.delegate,
+                        //     GlobalCupertinoLocalizations.delegate,
+                        //   ],
+                        // ),
+                      )
                     ),
                   ));
             });

@@ -14,6 +14,7 @@ class ServiceUrl {
   static String loginMobile = 'loginMobile';
   static String register = '$user/register';
   static String updateUser = '$user/update';
+  static String updateUserProfile = '$user/profile/update';
   static String updateQuestioner = '$user/update';
   static String forgotPassword = '$user/forgot-password';
 
@@ -22,7 +23,7 @@ class ServiceUrl {
   static String newLogin = '$auth/login';
 
 
-  static String checkUserExist = '$user/check-availability/username';
+  static String checkUserExist = '$user/check-availability';
   static String changePassword = '$user/change-password';
 
   //otp
@@ -47,6 +48,7 @@ class ServiceUrl {
   static String listConsultation = '$consultation/list';
   static String postConsultation = '$consultation/create';
   static String addComment = '$consultation/';
+  static String deletePost = '$consultation/delete';
 
   //eventSchedule
   static String schedule = 'schedule';
@@ -69,7 +71,7 @@ class ServiceUrl {
   static String sendChat = '$chat/send';
   static String latestChat =  '$chat/latest';
   static String chatList =  '$chat/list';
-  static String chatArchiveList =  '$chatArchive/list';
+  static String chatArchiveList =  '$chatArchive/latest';
   static String personalChatRoom =  '$chat/personal/';
   static String archivePersonalChatRoom =  '$chatArchive/personal/';
   static String personalChatArchive =  '$chatArchive/personal/';
@@ -79,6 +81,7 @@ class ServiceUrl {
   static String chatPendingList = '$chatPending/list';
   static String chatPendingListForNakes = '$chatPending/latest/';
   static String chatPendingSend = '$chatPending/send';
+  static String lastChat = '$chatPending/last-chat';
 
   //hospital
   static String hospital = 'hospital';

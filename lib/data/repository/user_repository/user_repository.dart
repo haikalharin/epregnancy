@@ -20,15 +20,17 @@ abstract class UserRepository {
   Future insertUser(UserExampleModel todo);
   Future <ResponseModel>register(UserModel userModel);
   Future <ResponseModel>updateQuestioner(SignupQuestRequest userModel);
+  Future <ResponseModel>updateFcmToken(UserModel userModel);
+  Future <ResponseModel>updateHospital(String hospitalId);
   Future <ResponseModel>updateDisclaimer(UserModel userModel);
   Future <ResponseModel>saveQuestionerBaby(BabyModelApi babyModelApi);
   Future <ResponseModel>updateQuestionerBaby(BabyModelApi babyModelApi);
   Future <ResponseModel>getBaby(UserModel userModel);
-  Future <ResponseModel>requestOtp(OtpModel otpModel);
+  Future <ResponseModel>requestOtp(Map data);
   Future <ResponseModel>verifyOtp(OtpModel otpModel);
   Future <ResponseModel>checkInWithPin(String hospitalId, String pin);
   Future <ResponseModel>changePassword(String currentPassword, String newPassword);
-  Future <ResponseModel>forgotPassword(String userName);
+  Future <ResponseModel>forgotPassword(Map data);
   Future <ResponseModel<UserModel>> fetchUsers(String name);
   Future <ResponseModel>changePhotoProfile(String userId, String imgProfile);
 
@@ -41,7 +43,7 @@ abstract class UserRepository {
 
   Future<ResponseModel<CheckinResponse>> hitCheckIn(String day);
   Future<ResponseModel<PointHistory>> fetchPointHistory();
-  Future<ResponseModel<UserModel>> checkUserExist(String user);
+  Future<ResponseModel<UserModel>> checkUserExist(String user, String type);
 
   logout();
 }

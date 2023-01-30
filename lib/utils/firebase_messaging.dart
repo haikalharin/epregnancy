@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:developer';
-
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -12,14 +12,16 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../common/constants/router_constants.dart';
 import '../data/model/Firebase_topic_response.dart';
+import '../data/model/user_model_api/user_model.dart';
+import '../data/shared_preference/app_shared_preference.dart';
 import '../flavors.dart';
-import '../main.dart';
+import '../main_default.dart';
 
 import '../main_development.dart' as dev;
-import '../main_development.dart' as main;
+import '../main_default.dart' as main;
 import '../main_production.dart' as prod;
-
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -32,9 +34,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class FirebaseMessagingService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  String linkUri = "",
-      target = "",
-      content = "";
+  String linkUri = "", target = "", content = "";
   BuildContext? mContext;
 
   Future<bool> getFirebaseTopic(FirebaseTopicResponse response) async {
@@ -70,7 +70,6 @@ class FirebaseMessagingService {
     }
   }
 
-
   Future<String> getDeviceToken() async {
     String? strEncryInfoData = "";
     try {
@@ -93,23 +92,21 @@ class FirebaseMessagingService {
     await flutterLocalNotificationsPlugin.show(0, title, body, platform,
         payload: data);
     if (F.appFlavor == Flavor.DEVELOPMENT) {
-      await dev.flutterLocalNotificationsPlugin.show(0, title, body, platform,
-          payload: data);
+      await dev.flutterLocalNotificationsPlugin
+          .show(0, title, body, platform, payload: data);
     } else if (F.appFlavor == Flavor.PRODUCTION) {
-      await prod.flutterLocalNotificationsPlugin.show(0, title, body, platform,
-          payload: data);
-    }else{
-      await main.flutterLocalNotificationsPlugin.show(0, title, body, platform,
-          payload: data);
+      await prod.flutterLocalNotificationsPlugin
+          .show(0, title, body, platform, payload: data);
+    } else {
+      await main.flutterLocalNotificationsPlugin
+          .show(0, title, body, platform, payload: data);
     }
-
-
   }
 
   Future<void> setup(BuildContext context) async {
     mContext = context;
     var initializationSettingsAndroid =
-    AndroidInitializationSettings('@drawable/ic_notif');
+        AndroidInitializationSettings('@drawable/launch_background');
     var initializationSettingsIOs = IOSInitializationSettings();
     var initSetttings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOs);
@@ -119,13 +116,13 @@ class FirebaseMessagingService {
     } else if (F.appFlavor == Flavor.PRODUCTION) {
       prod.flutterLocalNotificationsPlugin.initialize(initSetttings,
           onSelectNotification: onSelectNotification);
-    }else{
+    } else {
       main.flutterLocalNotificationsPlugin.initialize(initSetttings,
           onSelectNotification: onSelectNotification);
     }
 
-    dev.flutterLocalNotificationsPlugin.initialize(initSetttings,
-        onSelectNotification: onSelectNotification);
+    dev.flutterLocalNotificationsPlugin
+        .initialize(initSetttings, onSelectNotification: onSelectNotification);
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -135,12 +132,12 @@ class FirebaseMessagingService {
     );
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     if (Platform.isIOS) {
       NotificationSettings settings =
-      await _firebaseMessaging.requestPermission(
+          await _firebaseMessaging.requestPermission(
         alert: true,
         announcement: false,
         badge: true,
@@ -171,8 +168,7 @@ class FirebaseMessagingService {
       print('Message data: ${message.data}');
 
       if (message.notification != null && Platform.isAndroid) {
-        print(
-            'Message also contained a notification: ${message.notification}');
+        print('Message also contained a notification: ${message.notification}');
         var title = message.notification?.title;
         var body = message.notification?.body;
         showNotification(title ?? "", body ?? "", json.encode(message.data));
@@ -184,8 +180,7 @@ class FirebaseMessagingService {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       if (message.data != null && message.data.length > 0) {
         print(
-            'Message foreground also contained a notification: ${message
-                .notification}');
+            'Message foreground also contained a notification: ${message.notification}');
         // onSelectNotification(json.encode(message.data));
       }
     });
@@ -251,14 +246,60 @@ class FirebaseMessagingService {
     //       if (target != null) {
     //         if (headerToken != null || headerToken != "") {
     //           if (target == "home") {
-    //             Navigator.push(
-    //                 navigatorKey.currentState.context,
-    //                 MaterialPageRoute(
-    //                     settings: RouteSettings(name: MainPage.routeName),
-    //                     builder: (context) =>
-    //                         MainPage(
-    //                             menuIndex: Menu.home,
-    //                             nextMenu: content ?? "")));
+    UserModel user = await AppSharedPreference.getUser();
+    if (F.appFlavor == Flavor.DEVELOPMENT) {
+
+      if (user.id != null && user.id != "") {
+        dev.aliceDev.getNavigatorKey()?.currentState?.pushNamedAndRemoveUntil(
+          RouteName.navBar,
+          (Route<dynamic> route) => false,
+          arguments: {'role': StringConstant.patient, 'initial_index': 0, 'is_from_notif': true},
+        );
+      } else {
+        dev.aliceDev.getNavigatorKey()?.currentState?.pushReplacementNamed(
+            RouteName.login,
+            arguments: {'token_expired': false, 'is_from_register': false});
+      }
+    } else if (F.appFlavor == Flavor.PRODUCTION) {
+      if (user.id != null || user.id != "") {
+        prod.aliceProd.getNavigatorKey()?.currentState?.pushNamedAndRemoveUntil(
+          RouteName.navBar,
+              (Route<dynamic> route) => false,
+          arguments: {'role': StringConstant.patient, 'initial_index': 0, 'is_from_notif': true},
+        );
+      } else {
+        prod.aliceProd.getNavigatorKey()?.currentState?.pushReplacementNamed(
+            RouteName.login,
+            arguments: {'token_expired': false, 'is_from_register': false});
+      }
+    } else {
+      if (user.id != null || user.id != "") {
+        if(F.appFlavor == Flavor.PRODUCTION){
+          prod.aliceProd.getNavigatorKey()?.currentState?.pushNamedAndRemoveUntil(
+            RouteName.navBar,
+                (Route<dynamic> route) => false,
+            arguments: {'role': StringConstant.patient, 'initial_index': 0, 'is_from_notif': true},
+          );
+        } else {
+          dev.aliceDev.getNavigatorKey()?.currentState?.pushNamedAndRemoveUntil(
+            RouteName.navBar,
+                (Route<dynamic> route) => false,
+            arguments: {'role': StringConstant.patient, 'initial_index': 0, 'is_from_notif': true},
+          );
+        }
+      } else {
+        if(F.appFlavor == Flavor.PRODUCTION){
+          prod.aliceProd.getNavigatorKey()?.currentState?.pushReplacementNamed(
+              RouteName.login,
+              arguments: {'token_expired': false, 'is_from_register': false});
+        }else {
+          dev.aliceDev.getNavigatorKey()?.currentState?.pushReplacementNamed(
+              RouteName.login,
+              arguments: {'token_expired': false, 'is_from_register': false});
+        }
+      }
+    }
+
     //           } else if (target == "store") {
     //             Navigator.push(
     //                 navigatorKey.currentState.context,
@@ -309,7 +350,7 @@ class FirebaseMessagingService {
     // Get any messages which caused the application to open from
     // a terminated state.
     RemoteMessage? initialMessage =
-    await FirebaseMessaging.instance.getInitialMessage();
+        await FirebaseMessaging.instance.getInitialMessage();
 
     var payload = initialMessage?.data;
     if (payload != null) {

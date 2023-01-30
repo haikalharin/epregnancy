@@ -1,4 +1,4 @@
-import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_default.dart';
 import 'package:PregnancyApp/pages/email_verification_page/email_verification_page.dart';
 import 'package:PregnancyApp/pages/signup_questionnaire_page/signup_questionnaire_page.dart';
 import 'package:flutter/material.dart';

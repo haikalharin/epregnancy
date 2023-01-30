@@ -43,7 +43,7 @@ abstract class FromChatPendingResponseLIst with _$FromChatPendingResponseLIst {
     required bool? isSuperAdmin,
     required bool? isVerified,
     required String? hospitalId,
-    required String? hospital,
+    required Hospital? hospital,
     required String? imageUrl,
     required String? coverUrl,
   }) = _FromChatPendingResponseLIst;

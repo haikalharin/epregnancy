@@ -11,7 +11,7 @@ _$_ChatPendingSendResponse _$$_ChatPendingSendResponseFromJson(
     _$_ChatPendingSendResponse(
       id: json['id'] as String?,
       fromId: json['from_id'] as String?,
-      toId: json['to_id'] as String?,
+      hospitalId: json['hospital_id'] as String?,
       message: json['message'] as String?,
       unreadCount: json['unread_count'] as int?,
       isRead: json['is_read'] as bool?,
@@ -37,7 +37,7 @@ Map<String, dynamic> _$$_ChatPendingSendResponseToJson(
     <String, dynamic>{
       'id': instance.id,
       'from_id': instance.fromId,
-      'to_id': instance.toId,
+      'hospital_id': instance.hospitalId,
       'message': instance.message,
       'unread_count': instance.unreadCount,
       'is_read': instance.isRead,
@@ -68,7 +68,9 @@ _$_ChatPendingFromSendResponse _$$_ChatPendingFromSendResponseFromJson(
       isSuperAdmin: json['is_super_admin'] as bool?,
       isVerified: json['is_verified'] as bool?,
       hospitalId: json['hospital_id'] as String?,
-      hospital: json['hospital'] as String?,
+      hospital: json['hospital'] == null
+          ? null
+          : HospitalModel.fromJson(json['hospital'] as Map<String, dynamic>),
       imageUrl: json['image_url'] as String?,
       coverUrl: json['cover_url'] as String?,
     );
@@ -89,7 +91,7 @@ Map<String, dynamic> _$$_ChatPendingFromSendResponseToJson(
       'is_super_admin': instance.isSuperAdmin,
       'is_verified': instance.isVerified,
       'hospital_id': instance.hospitalId,
-      'hospital': instance.hospital,
+      'hospital': instance.hospital?.toJson(),
       'image_url': instance.imageUrl,
       'cover_url': instance.coverUrl,
     };

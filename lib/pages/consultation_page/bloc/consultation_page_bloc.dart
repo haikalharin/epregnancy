@@ -46,6 +46,8 @@ class ConsultationPageBloc
       yield _mapConsultationDisposeEvent(event, state);
     } else if (event is ConsultationLikeSubmitted) {
       yield* _mapConsultationLikeSubmittedEvent(event, state);
+    } else if (event is ConsultationDeletePostEvent){
+      yield* _deletePostEvent(event, state);
     }
   }
 
@@ -130,6 +132,35 @@ class ConsultationPageBloc
         // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure, userModel: _userModel);
+      }
+    }
+  }
+
+  Stream<ConsultationPageState> _deletePostEvent(
+      ConsultationDeletePostEvent event,
+      ConsultationPageState state,
+      ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, type: 'deleting-post');
+    try {
+      ResponseModel response = await consultationRepository.deletePost(event.id!);
+
+      if (response.code == 200) {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess, type: 'delete-post-success');
+      } else {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure,
+            errorMessage: response.message);
+      }
+    } on LoginErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      if( a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+        // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     }
   }

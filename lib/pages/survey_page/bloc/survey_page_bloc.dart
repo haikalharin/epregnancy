@@ -61,11 +61,11 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
 
   Stream<SurveyPageState> _mapSurveyInitEventToState(
       SurveyInitEvent event, SurveyPageState state) async* {
-    var user = await AppSharedPreference.getUserRegister();
+    var user = await AppSharedPreference.getUser();
     List<dynamic> myBaby = [];
     var choice = 0;
     if (event.isUpdate) {
-      user = await AppSharedPreference.getUser();
+      // user = await AppSharedPreference.getUser();
       ResponseModel response = await userRepository.getBaby(user);
       myBaby = response.data;
       if (user.isPregnant == true) {
@@ -78,6 +78,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     }
     yield SurveyPageState(
         user: user,
+        page: 1,
         dataBaby: myBaby.isNotEmpty ? myBaby.last : BabyModelApi.empty(),
         choice: choice);
   }
@@ -126,7 +127,8 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      UserModel user = await AppSharedPreference.getUserRegister();
+      // UserModel user = await AppSharedPreference.getUserRegister();
+      UserModel user = await AppSharedPreference.getUser();
       if (event.isUpdate) {
         user = await AppSharedPreference.getUser();
       }
@@ -139,7 +141,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
 
       if (response.code == 200) {
         UserModel userModel = response.data;
-        await AppSharedPreference.setUserRegister(response.data);
+        // await AppSharedPreference.setUserRegister(response.data);
         if (event.isUpdate) {
           await AppSharedPreference.setUser(response.data);
         }
@@ -167,7 +169,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       UserModel user = event.isUpdate == false
-          ? await AppSharedPreference.getUserRegister()
+          ? await AppSharedPreference.getUser()
           : await AppSharedPreference.getUser();
       ResponseModel response = ResponseModel.dataEmpty();
       if (state.dataBaby?.id != "") {
@@ -176,12 +178,12 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
             name: state.name.value,
             lastMenstruationDate: state.date.value));
       } else {
-        String? userId;
-        if (user.id != null) {
-          userId = state.user?.id;
-        } else {
-          userId = state.user?.id;
-        }
+        String? userId = user.id;
+        // if (user.id != null) {
+        //   userId = state.user?.id;
+        // } else {
+        //   userId = state.user?.id;
+        // }
 
         response = await userRepository.saveQuestionerBaby(BabyModelApi(
             userId: userId,

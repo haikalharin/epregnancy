@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/model/user_example_model/user_example_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../flavors.dart';
-import '../../../main.dart';
+import '../../../main_default.dart';
 import '../../../utils/string_constans.dart';
 import '../../configurations/configurations.dart';
 import '../../remote/url/service_url.dart';
@@ -86,7 +86,7 @@ class HttpClient {
           headers: header,
         )
             .timeout(Duration(minutes: 2))
-            .interceptWithAlice(aliceDev);
+            .interceptWithAlice(aliceMain);
       }
 
     } else {
@@ -136,8 +136,7 @@ class HttpClient {
     debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
 
     String? token = await getToken();
-    String? cookie =
-        await AppSharedPreference.getString(AppSharedPreference.cookie);
+    String? cookie = await AppSharedPreference.getString(AppSharedPreference.cookie);
     if (cookie != null) {
       setCookieFromSession(cookie);
     }
@@ -151,7 +150,7 @@ class HttpClient {
             .post(
           _getParsedUrl(path),
           body: HttpUtil.encodeRequestBody(
-              json.encode(data), requestHeader![HttpConstants.contentType]!),
+              data, requestHeader![HttpConstants.contentType]!),
           headers: requestHeader,
         )
             .interceptWithAlice(aliceProd, body: data);
@@ -163,7 +162,7 @@ class HttpClient {
               json.encode(data), requestHeader![HttpConstants.contentType]!),
           headers: requestHeader,
         )
-            .interceptWithAlice(aliceDev, body: data);
+            .interceptWithAlice(aliceMain, body: data);
       }
       updateCookie(response);
     } else {
@@ -201,7 +200,7 @@ class HttpClient {
                 json.encode(data), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceDev, body: data);
+          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceMain, body: data);
     } else {
       response = await _client!.delete(
         _getParsedUrl(path),
@@ -240,7 +239,7 @@ class HttpClient {
                 json.encode(data), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceDev, body: data);
+          .interceptWithAlice(F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceMain, body: data);
     } else {
       response = await _client!.put(
         _getParsedUrl(path),

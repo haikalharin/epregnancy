@@ -1,11 +1,15 @@
 class StringConstant {
   static const imagenodata =
       'https://firebasestorage.googleapis.com/v0/b/epregnancy-2022.appspot.com/o/no-image-icon-23485.png?alt=media&token=0fdde983-b757-41f0-881f-162c3980be9f';
-  static const active = 'Username sudah terdaftar';
+  static const usernameActive = 'Username sudah terdaftar';
+  static const mobileActive = 'No telepon sudah terdaftar';
+  static const emailActive = 'Email sudah terdaftar';
+  static const available = 'Username tersedia';
   static const inActive = 'Username Available';
   static const pregnant = 'PREGNANT';
   static const notPregnant = 'NOT PREGNANT';
   static const postMaternity = 'POST MATERNITY';
+  static const babySitter = 'BABY SITTER';
   static const midwife = 'MIDWIFE';
   static const patient = 'PATIENT';
   static const typePersonal = 'PERSONAL';
@@ -13,12 +17,12 @@ class StringConstant {
   static const typeEventJadwalUmum = 'Jadwal Umum';
   static const typeEventJadwalPribadi = 'Jadwal Pribadi';
   static const poinActivity = 'Aktivitas Poin';
-  static const yourPoin = 'Poin Anda';
-  static const today = 'Hari ini';
-  static const dayCount = 'Hari ke-';
-  static const checkInText = 'Check-in untuk mendapatkan 10 poin';
-  static const checkInDone = 'Check-in lagi besok untuk dapatkan 10 poin';
-  static const titlePoin = 'Tukar poinmu sekarang';
+  static const yourPoin = 'Komunitaz Poin';
+  static const today = '10 Poin';
+  static const dayCount = '10 Poin';
+  static const checkInText = 'Klaim Poin hari ini';
+  static const checkInDone = 'Check-in lagi besok untuk klaim Poin';
+  static const titlePoin = 'Kamu bisa mendapatkan POIN dengan cara berikut';
   static const reedemPoin = 'Reedem Poin';
   static const consumeMedicine = 'medicine';
   static const visitHospital = 'appointment';
@@ -35,6 +39,8 @@ class StringConstant {
   static const amap = 'sebanyak-banyaknya ';
   static const point = 'Poin';
   static const claimPoint = 'Klaim Poin';
+  static const titleComingSoon =
+      'Ayo kumpulkan POIN dengan cara dibawah ini dan nantikan hadiah menarik dari kami';
 
   //chat
   static const baru = 'Baru';
@@ -57,7 +63,9 @@ class StringConstant {
   //profile
   static const profileChange = 'Ganti Profil';
   static const profilePregnantChange = 'Ganti Profil Kehamilan';
-  static const passwordChange = 'Ganti Kata Sandi';
+  static const passwordChange = 'Ubah Kata Sandi';
+  static const termAndCondition = 'Syarat dan ketentuan';
+  static const deleteAccount = 'Hapus Akun';
   static const logout = 'Keluar';
 
   //game
@@ -83,9 +91,19 @@ class StringConstant {
   static const termAndConditionUserHeader = 'term_and_condition_user_header';
   static const termAndConditionUserBody1 = 'term_and_condition_user_body_1';
   static const termAndConditionUserBody2 = 'term_and_condition_user_body_2';
-  static const termAndConditionMidwifeHeader = 'term_and_condition_midwife_header';
-  static const termAndConditionMidwifeBody1 = 'term_and_condition_midwife_body_1';
-  static const termAndConditionMidwifeBody2 = 'term_and_condition_midwife_body_2';
+  static const termAndConditionMidwifeHeader =
+      'term_and_condition_midwife_header';
+  static const termAndConditionMidwifeBody1 =
+      'term_and_condition_midwife_body_1';
+  static const termAndConditionMidwifeBody2 =
+      'term_and_condition_midwife_body_2';
   static const column1Disclaimer =
       "<p>Dokumen ini merupakan Syarat dan Ketentuan (&quot;Perjanjian&quot;) dan ketika disetujui oleh Anda dengan cara yang dijelaskan di bawah ini menjadi suatu kontrak yang mengikat secara hukum antara PT. Allianz Indonesia (&quot;kami&quot;), suatu perseroan terbatas yang didirikan berdasarkan hukum Indonesia, dan Anda.</p><p>Kami adalah penyedia Layanan (sebagaimana didefinisikan dalam Perjanjian ini) yang sah di Indonesia. Kondisi prasyarat bagi Anda untuk dapat mengakses, membeli, menggunakan atau mendaftar Layanan apa pun dari kami adalah Anda harus membaca dan menyetujui untuk terikat dengan setiap dan masing-masing syarat dan ketentuan yang terkandung dalam Perjanjian ini. Apabila Anda mengakses komponen Layanan apa pun atau menggunakan atau mendaftar Layanan dengan cara apa pun, kegiatan-kegiatan tersebut terhadap Anda akan secara tegas diartikan bahwa Anda telah membaca Perjanjian ini dan menyetujui untuk terikat dengan syarat dan ketentuan yang terkandung dalam Perjanjian ini.</p>";
+
+  //doesAndDonts
+  static const doesAndDontsHeaderUser = 'do_and_donts_header_user';
+  static const doesBodyUser = 'does_body_user';
+  static const dontsBodyUser = 'donts_body_user';
+  static const doesBodyMidwife = 'does_body_midwife';
+  static const dontsBodyMidewife = 'donts_body_midwife';
 }

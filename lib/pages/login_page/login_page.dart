@@ -1,11 +1,14 @@
-import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_default.dart';
+import 'package:PregnancyApp/main_development.dart';
 import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
+import 'package:PregnancyApp/pages/state_page/registration_success_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -27,10 +30,12 @@ const _horizontalPadding = 24.0;
 
 class LoginPage extends StatefulWidget {
   const LoginPage(
-      {Key? key, this.tokenExpired = false, this.isFromRegister = false})
+      {Key? key, this.tokenExpired = false, this.isFromRegister = false, this.passwordFromRegister, this.userFromRegister})
       : super(key: key);
   final bool tokenExpired;
   final bool isFromRegister;
+  final String? userFromRegister;
+  final String? passwordFromRegister;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -50,77 +55,89 @@ class _LoginPageState extends State<LoginPage> {
     getRemoteConfig();
 
     if (widget.tokenExpired == true) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) async {
-        await showDialog(
-          context: context,
-          barrierDismissible: true,
-          builder: (_) {
-            return WillPopScope(
-                child: Center(
-                  child: Container(
-                    width: 240.w,
-                    padding: EdgeInsets.all(20.w),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(4.w))),
-                    child: Material(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            widget.isFromRegister
-                                ? "Selamat!!!"
-                                : "Sesi Berakhir.",
-                            style: TextStyle(
-                                color: EpregnancyColors.blueDark,
-                                fontSize: 14.sp,
-                                fontFamily: "bold"),
-                          ),
-                          Padding(padding: EdgeInsets.only(top: 4.w)),
-                          Text(
-                            widget.isFromRegister
-                                ? "Registrasi Berhasil"
-                                : "Mohon maaf sesi Anda telah berakhir.",
-                            style: TextStyle(
-                              fontSize: 10.sp,
+      if (widget.isFromRegister) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) async {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return  RegistrationSuccessPage(
+              username: widget.userFromRegister,
+              password: widget.passwordFromRegister,
+            );
+          }));
+        });
+      } else {
+        WidgetsBinding.instance?.addPostFrameCallback((_) async {
+          await showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (_) {
+              return WillPopScope(
+                  child: Center(
+                    child: Container(
+                      width: 240.w,
+                      padding: EdgeInsets.all(20.w),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(4.w))),
+                      child: Material(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              widget.isFromRegister
+                                  ? "Selamat!!!"
+                                  : "Sesi Berakhir.",
+                              style: TextStyle(
+                                  color: EpregnancyColors.blueDark,
+                                  fontSize: 14.sp,
+                                  fontFamily: "bold"),
                             ),
-                          ),
-                          InkWell(
-                            child: Padding(
-                                padding:
-                                    EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
-                                child: SizedBox(
-                                  height: 46.w,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: FlatButton(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4.w)),
-                                      color: EpregnancyColors.blueDark,
-                                      disabledColor: Colors.grey,
-                                      child: Text('Oke',
-                                          style: TextStyle(
-                                              fontFamily: "bold",
-                                              fontSize: 13.sp,
-                                              color: Colors.white)),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      }),
-                                )),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          )
-                        ],
+                            Padding(padding: EdgeInsets.only(top: 4.w)),
+                            Text(
+                              widget.isFromRegister
+                                  ? "Registrasi Berhasil"
+                                  : "Mohon maaf sesi Anda telah berakhir.",
+                              style: TextStyle(
+                                fontSize: 10.sp,
+                              ),
+                            ),
+                            InkWell(
+                              child: Padding(
+                                  padding:
+                                  EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
+                                  child: SizedBox(
+                                    height: 46.w,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: FlatButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(4.w)),
+                                        color: EpregnancyColors.blueDark,
+                                        disabledColor: Colors.grey,
+                                        child: Text('Oke',
+                                            style: TextStyle(
+                                                fontFamily: "bold",
+                                                fontSize: 13.sp,
+                                                color: Colors.white)),
+                                        onPressed: () {
+                                          // Navigator.pop(context);
+                                          aliceDev.getNavigatorKey()?.currentState?.pop();
+                                        }),
+                                  )),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                onWillPop: () => Future.value(false));
-          },
-        );
-      });
+                  onWillPop: () => Future.value(false));
+            },
+          );
+        });
+      }
     }
   }
 
@@ -139,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
           child: BlocListener<LoginBloc, LoginState>(
               listener: (context, state) async {
@@ -202,21 +219,29 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     }
                   } else if (state.typeEvent == StringConstant.submitLogin) {
+                    // todo login success logic
                     if (state.userModel?.isPatient == true) {
                       if (state.userModel?.isAgree == true) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          RouteName.navBar,
-                          (Route<dynamic> route) => false,
-                          arguments: {
-                            'role': state.userModel?.isPatient == true
-                                ? StringConstant.patient
-                                : StringConstant.midwife,
-                            'initial_index': 0
-                          },
-                        );
+                        if (state.userModel!.totalLogin! > 1) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            RouteName.navBar,
+                            (Route<dynamic> route) => false,
+                            arguments: {
+                              'role': state.userModel?.isPatient == true
+                                  ? StringConstant.patient
+                                  : StringConstant.midwife,
+                              'initial_index': 0
+                            },
+                          );
+                        } else {
+                          Navigator.of(context).pushReplacementNamed(
+                              RouteName.surveyPageBaby,
+                              arguments: {"is_edit": false, "edit_name": false});
+                        }
                       } else {
-                        Navigator.of(context).pushNamedAndRemoveUntil(RouteName.disclaimer,
-                                (Route<dynamic> route) => false,
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            RouteName.disclaimer,
+                            (Route<dynamic> route) => false,
                             arguments: {
                               'user_id': state.userId,
                               'is_patient': state.userModel?.isPatient,
@@ -227,35 +252,35 @@ class _LoginPageState extends State<LoginPage> {
                       if (state.userModel?.isAgree == true) {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             RouteName.dashboardNakesPage,
-                                (Route<dynamic> route) => false,
+                            (Route<dynamic> route) => false,
                             arguments: {
                               'name': state.userModel?.name,
                               'image_url': state.userModel?.imageUrl,
                               'hospital_id': state.userModel?.hospitalId
                             });
                       } else {
-                        Navigator.of(context).pushNamedAndRemoveUntil(RouteName.disclaimer,
-                                (Route<dynamic> route) => false,
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            RouteName.disclaimer,
+                            (Route<dynamic> route) => false,
                             arguments: {
                               'user_id': state.userId,
                               'getIsPatient': state.userModel?.isPatient,
                               'from': "login"
                             });
                       }
-
                     }
                   }
                 }
               },
               child: Stack(
                 children: [
-                  Positioned.fill(
-                    child: Image.asset(
-                      "assets/ePregnancy_login_logo.png",
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.bottomLeft,
-                    ),
-                  ),
+                  // Positioned.fill(
+                  //   child: Image.asset(
+                  //     "assets/ePregnancy_login_logo.png",
+                  //     fit: BoxFit.fitWidth,
+                  //     alignment: Alignment.bottomLeft,
+                  //   ),
+                  // ),
                   Center(
                     child: BlocBuilder<LoginBloc, LoginState>(
                       builder: (context, state) {
@@ -268,6 +293,10 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 60),
                             // SizedBox(height: 120),
                             //_HeadingText(),
+                            Hero(
+                              tag: 'ibu',
+                                child: SvgPicture.asset("assets/img_login.svg")),
+                            SizedBox(height: 36.h),
                             Text(
                               "Selamat Datang",
                               style: TextStyle(
@@ -276,8 +305,9 @@ class _LoginPageState extends State<LoginPage> {
                                 fontSize: 40,
                               ),
                             ),
+                            SizedBox(height: 8.h),
                             Text(
-                              "Masuk dengan akun email/nomor handphone yang terdaftar",
+                              "Masuk dengan akun email atau nomor telepon seluler",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.normal,
@@ -285,19 +315,19 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             SizedBox(height: 20),
                             _UsernameInput(),
-                            SizedBox(height: 12),
+                            SizedBox(height: 16.h),
                             _PasswordInput(),
                             _ForgotPasswordButton(),
-                            SizedBox(height: 20),
+                            SizedBox(height: 0.h),
                             Container(
-                                height: 50,
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                height: 56,
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 child: ElevatedButton(
-                                  child: const Text('Login'),
+                                  child: const Text('Masuk'),
                                   onPressed: () {
                                     // dismiss active keyboard
-                                    FocusScopeNode currentFocus = FocusScope.of(context);
+                                    FocusScopeNode currentFocus =
+                                        FocusScope.of(context);
 
                                     if (!currentFocus.hasPrimaryFocus) {
                                       currentFocus.unfocus();
@@ -307,7 +337,10 @@ class _LoginPageState extends State<LoginPage> {
                                         .add(LoginSubmitted());
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      primary: EpregnancyColors.primer),
+                                      primary: EpregnancyColors.primer,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),),
                                 )),
                             // SizedBox(height: 10),
                             // Container(
@@ -330,8 +363,28 @@ class _LoginPageState extends State<LoginPage> {
                             //           primary: Colors.white,
                             //           onPrimary: Colors.black)),
                             // ),
-                            SizedBox(height: 12),
-                            _RegisterButton()
+                            SizedBox(height: 30.h),
+                            _RegisterButton(),
+                            SizedBox(height: 8.h,),
+                            Container(
+                                height: 56,
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: ElevatedButton(
+                                  child: Text('Daftar', style: TextStyle(color: EpregnancyColors.primer ),),
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(RouteName.signup);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    side: BorderSide(
+                                      width: 1.w,
+                                      color: EpregnancyColors.primer
+                                    ),
+                                    primary: EpregnancyColors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),),
+                                )),
                             // _PasswordTextField(),
                           ],
                         );
@@ -405,13 +458,17 @@ class _UsernameInput extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
-        return TextField(
+        return TextFormField(
           key: const Key('loginForm_usernameInput_textField'),
           onChanged: (username) =>
               Injector.resolve<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
-            labelText: 'E-mail/Nomor handphone',
+            labelText: 'E-mail / Nomor Telepon Seluler',
             errorText: state.username.invalid ? 'Silahkan isi username' : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.w),
+              borderSide: BorderSide(color: EpregnancyColors.primer),
+            ),
           ),
         );
       },
@@ -435,6 +492,7 @@ class _PasswordInputState extends State<_PasswordInput> {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
+          enableInteractiveSelection: false,
           key: const Key('loginForm_passwordInput_textField'),
           onChanged: (password) =>
               Injector.resolve<LoginBloc>().add(LoginPasswordChanged(password)),
@@ -442,6 +500,10 @@ class _PasswordInputState extends State<_PasswordInput> {
           decoration: InputDecoration(
             labelText: 'Kata Sandi',
             errorText: state.password.invalid ? 'Kata Sandi salah' : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.w),
+              borderSide: BorderSide(color: EpregnancyColors.primer),
+            ),
             suffixIcon: GestureDetector(
               onTap: () {
                 var _isHiddenTap = _isHiddenPassword == true ? false : true;
@@ -480,8 +542,8 @@ class _ForgotPasswordButton extends StatelessWidget {
               children: <Widget>[
                 TextButton(
                   child: Text(
-                    "Lupa Password?",
-                    style: TextStyle(color: EpregnancyColors.primer),
+                    "Lupa kata sandi ?",
+                    style: TextStyle(color: EpregnancyColors.primer, fontSize: 14.sp, fontWeight: FontWeight.w700),
                   ),
                   onPressed: () {
                     Navigator.of(context).pushNamed(RouteName.forgotPassword);
@@ -504,32 +566,33 @@ class _RegisterButton extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return Align(
-          alignment: Alignment.centerRight,
+          alignment: Alignment.centerLeft,
           child: Container(
             child: Column(
               children: <Widget>[
                 RichText(
                   textAlign: TextAlign.center,
-                  text: TextSpan(
+                  text:  TextSpan(
                     // Note: Styles for TextSpans must be explicitly defined.
                     // Child text spans will inherit styles from parent
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black,
+                    style:  TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: EpregnancyColors.primer,
                     ),
-                    children: [
-                      TextSpan(text: 'Belum punya akun? '),
-                      WidgetSpan(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(RouteName.signup);
-                          },
-                          child: const Text("Register",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: EpregnancyColors.primer)),
-                        ),
-                      )
+                    children: const [
+                      TextSpan(text: 'Belum punya akun ?'),
+                      // WidgetSpan(
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       Navigator.of(context).pushNamed(RouteName.signup);
+                      //     },
+                      //     child: const Text("Register",
+                      //         style: TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             color: EpregnancyColors.primer)),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),

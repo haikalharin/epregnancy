@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/login_model/login_model.dart';
@@ -7,6 +8,7 @@ import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
+import 'package:PregnancyApp/main_default.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -63,6 +65,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is LoginSubmittedWithNumberPhone) {
       yield* _mapLoginSubmittedLoginSubmittedWithNumberPhoneToState(
           event, state);
+    } else if (event is LoginSubmittedFromRegister){
+      yield* _mapLoginSubmittedFromRegisterToState(event, state);
     }
   }
 
@@ -151,8 +155,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       // temporary
+      var token;
+      if(Platform.isAndroid){
+         token = await firebaseService.messaging.getDeviceToken();
+      } else {
+         token = "ios";
+      }
       ResponseModel response = await userRepository.loginNonOtp(LoginModel(
-          username: state.username.value, password: state.password.value));
+          username: state.username.value, password: state.password.value, fcmToken: token));
       LoginResponseData? loginResponseData;
       if (response.code == 200) {
         loginResponseData = response.data;
@@ -165,13 +175,104 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         );
         await AppSharedPreference.setUser(_userModel);
         await AppSharedPreference.remove("_userRegister");
-        // await AppSharedPreference.setUser(userModel);
-        if(userModel.isMidwife == true && loginResponseData.user?.hospital != null) {
+        // await AppSharedPreference.setUser(userModel);no
+        if(loginResponseData.user?.hospital != null) {
           print('hospital model : ${loginResponseData.user?.hospital}');
           HospitalModel hospitalModel = HospitalModel(
               id: loginResponseData.user?.hospital?.id,
               alias: loginResponseData.user?.hospital?.alias,
-              name: loginResponseData.user?.name,
+              name: loginResponseData.user?.hospital?.name,
+              address: loginResponseData.user?.hospital?.address,
+              city: loginResponseData.user?.hospital?.city,
+              country: "",
+              postalCode: loginResponseData.user?.hospital?.postalCode,
+              phone: loginResponseData.user?.hospital?.phone,
+              email: loginResponseData.user?.hospital?.email,
+              latitude: 0.0,
+              longitude: 0.0, status: "",
+              imageUrl: loginResponseData.user?.hospital?.imageUrl,
+              coverUrl: "", isDelete: false, createdBy: "", createdFrom: "", createdDate: "", modifiedBy: "",
+              modifiedFrom: "", modifiedDate: "", pin: 0, pinValidStart: "", pinValidEnd: "");
+          await AppSharedPreference.setHospital(hospitalModel);
+        }
+
+        bool isActive = false;
+        if (userModel.isPatient == true) {
+          if (userModel.isHaveBaby != false ||
+              userModel.isPregnant != false ||
+              userModel.isPlanningPregnancy != false) {
+            isActive = true;
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionSuccess,
+                typeEvent: StringConstant.submitLogin,
+                userModel: userModel,
+                isActive: isActive);
+          } else {
+            yield state.copyWith(
+                submitStatus: FormzStatus.submissionSuccess,
+                typeEvent: StringConstant.submitLogin,
+                userModel: userModel,
+                isActive: isActive);
+          }
+        }else {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              typeEvent: StringConstant.submitLogin,
+              userModel: userModel, isActive: true);
+        }
+      } else if (response.code == 500) {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: "Maaf Terjadi Kesalahan, Silahkan Coba Lagi");
+      } else {
+        print('response message : ${response.message}');
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message);
+      }
+    } on LoginErrorException catch (e) {
+      print("login error exception" + e.toString());
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+    } on Exception catch (error) {
+      if( error is UnAuthorizeException) {
+        // AppSharedPreference.sessionExpiredEvent();
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: error.message);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
+    }
+  }
+
+  Stream<LoginState> _mapLoginSubmittedFromRegisterToState(
+      LoginSubmittedFromRegister event,
+      LoginState state,
+      ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    try {
+      // temporary
+      var token;
+      if(Platform.isAndroid){
+        token = await firebaseService.messaging.getDeviceToken();
+      } else {
+        token = "ios";
+      }
+      ResponseModel response = await userRepository.loginNonOtp(LoginModel(
+          username: event.username, password: event.password, fcmToken: token));
+      LoginResponseData? loginResponseData;
+      if (response.code == 200) {
+        loginResponseData = response.data;
+        // set jwt token
+        await AppSharedPreference.setString(AppSharedPreference.token, loginResponseData!.token!.accessToken!);
+        final ResponseModel<UserModel> userInfoResponse = await userRepository.getUserInfo();
+        UserModel _userModel = userInfoResponse.data;
+        UserModel userModel = _userModel.copyWith(
+          name: await aesDecryptor(_userModel.name),
+        );
+        await AppSharedPreference.setUser(_userModel);
+        await AppSharedPreference.remove("_userRegister");
+        // await AppSharedPreference.setUser(userModel);no
+        if(loginResponseData.user?.hospital != null) {
+          print('hospital model : ${loginResponseData.user?.hospital}');
+          HospitalModel hospitalModel = HospitalModel(
+              id: loginResponseData.user?.hospital?.id,
+              alias: loginResponseData.user?.hospital?.alias,
+              name: loginResponseData.user?.hospital?.name,
               address: loginResponseData.user?.hospital?.address,
               city: loginResponseData.user?.hospital?.city,
               country: "",
@@ -241,9 +342,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else {
         type = 'mobile';
       }
+      var data = {
+        'type': type,
+        'value':  state.userId,
+      };
       ResponseModel response = await userRepository
-          .requestOtp(OtpModel(value: state.userId, type: type));
-      OtpModel otpModel = response.data;
+          .requestOtp(data);
+      OtpModel otpModel = OtpModel(otp: "",type: type,value: state.userId);
       if (response.code == 200) {
         await AppSharedPreference.setOtp(otpModel);
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess);
@@ -273,10 +378,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final User? user = await GAuthentication.signInWithGoogle();
       if (user != null) {
         var data = user.email??"";
-        final response = await userRepository.checkUserExist(data);
+        final response = await userRepository.checkUserExist(data,"email");
         UserModel userModel = response.data;
         if (response.code == 200) {
-          if (response.message == StringConstant.active) {
+          if (response.message == StringConstant.emailActive) {
             if (userModel.isPregnant == true ||
                 userModel.isHaveBaby == true ||
                 userModel.isPlanningPregnancy == true) {

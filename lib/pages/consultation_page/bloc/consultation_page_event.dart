@@ -15,6 +15,14 @@ class ConsultationFetchEvent extends ConsultationPageEvent {
   List<Object> get props => [];
 }
 
+class ConsultationDeletePostEvent extends ConsultationPageEvent {
+  const ConsultationDeletePostEvent(this.id);
+  final String? id;
+
+  @override
+  List<Object> get props => [];
+}
+
 class ConsultationSubmittedEvent extends ConsultationPageEvent {
   const ConsultationSubmittedEvent();
 

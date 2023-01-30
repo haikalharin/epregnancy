@@ -74,7 +74,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.pregnancyapp"
-        minSdkVersion 19   //Copy this
+        minSdkVersion 21   //Copy this
         multiDexEnabled true
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()

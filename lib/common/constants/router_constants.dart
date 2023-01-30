@@ -37,6 +37,7 @@ class RouteName {
   static const gamesPage = '/gamesPage';
   static const webViewPage = '/webViewPage';
   static const changePasswordPage = '/changePasswordPage';
+  static const newPasswordPage = '/newPasswordPage';
   static const locationSelect = '/locationSelect';
   static const forgotPassword = '/forgotPassword';
   static const disclaimer = '/disclaimer';

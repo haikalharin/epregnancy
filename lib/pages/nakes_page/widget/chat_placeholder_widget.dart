@@ -6,10 +6,11 @@ import '../../../utils/epragnancy_color.dart';
 import '../../../utils/string_constans.dart';
 
 class ChatPlaceHolderWidget extends StatelessWidget {
-  ChatPlaceHolderWidget({Key? key, this.name, this.message, required this.unread, this.imageUrl}) : super(key: key);
+  ChatPlaceHolderWidget({Key? key, this.name, this.message, required this.unread, this.imageUrl, this.unreadCount}) : super(key: key);
   final String? name;
   final String? message;
   final String? imageUrl;
+  final String? unreadCount;
   bool unread = true;
 
   @override
@@ -46,7 +47,7 @@ class ChatPlaceHolderWidget extends StatelessWidget {
                 shape: BoxShape.circle
             ),
             child: Center(
-              child: Text('1', style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.w500),),
+              child: Text(unreadCount ?? "1", style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.w500),),
             )
           ) : const SizedBox.shrink(),
         ),

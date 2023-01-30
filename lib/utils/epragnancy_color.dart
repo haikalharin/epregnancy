@@ -3,7 +3,9 @@ import 'dart:ui';
 class EpregnancyColors {
   static const Color red = Color(0xFFD12B34);
   static const Color primer = Color(0xFF75B3EB);
+  static const Color bgPoin = Color(0xFF6EC4FA);
   static const Color primerSoft = Color(0xFFE1EEFA);
+  static const Color profileBg = Color(0xFFF7FAFE);
   static const Color primerSoft2 = Color(0xFFC5E3FF);
   static const Color greyBlue = Color(0xFFF1F6FB);
   static const Color yellow = Color(0xFFFCB01B);
@@ -39,5 +41,6 @@ class EpregnancyColors {
   static const Color gameGradient2 = Color(0XFFA59BE2);
 
   static const Color orange = Color(0XFFFF9C39);
+  static const Color purpleBg = Color(0XFF093894);
 
 }

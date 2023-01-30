@@ -58,9 +58,12 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
           await userRepository.changePhotoProfile(user.id ?? "", image);
 
       if (response.code == 200) {
-        await AppSharedPreference.setUser(response.data);
+        UserModel _userModel = response.data;
+        ResponseModel<UserModel> userGetInfo = await userRepository.getUserInfo();
+        await AppSharedPreference.setUser(userGetInfo.data);
+        UserModel userFromSession = await AppSharedPreference.getUser();
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess, user: response.data,type: "changePhoto");
+            submitStatus: FormzStatus.submissionSuccess, user: userFromSession, type: "changePhoto");
       }
     } on SurveyErrorException catch (e) {
       print(e);

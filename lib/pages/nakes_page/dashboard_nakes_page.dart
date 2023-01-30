@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
+import 'package:PregnancyApp/pages/nakes_page/full_qr_screen.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/chat_placeholder_widget.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/consultation_container.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
@@ -11,12 +12,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../article_page/list_shimmer_verticle.dart';
 import '../chat_page/bloc/chat_bloc/chat_bloc.dart';
 import '../home_page/list_article.dart';
+import '../home_page/tab_bar_event_page.dart';
 import 'bloc/chat_pending_bloc.dart';
 import 'package:flutter_countdown_timer/index.dart';
 
@@ -31,17 +34,20 @@ class DashBoardNakesPage extends StatefulWidget {
   State<DashBoardNakesPage> createState() => _DashBoardNakesPageState();
 }
 
-class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
+class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProviderStateMixin {
+
+  TabController? _tabController;
 
   @override
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
-    // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+    Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+    Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-    Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
     Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
-
+    Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -70,13 +76,9 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
           key: _refreshIndicatorKey,
           onRefresh: _handleRefresh,
           showChildOpacityTransition: false,
-          child: SingleChildScrollView(
-            child: Container(
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height,
-              child: ListView(
+          child: ListView(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                // physics: NeverScrollableScrollPhysics(),
                 // mainAxisAlignment: MainAxisAlignment.start,
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -178,7 +180,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
 
                   BlocBuilder<ChatPendingBloc, ChatPendingState>(
                       builder: (context, state) {
-                    if (state.chatPendingList?.length == 0 || state.chatPendingList == null) {
+                    if (state.lastChatResponse == null) {
                       return Container(
                         height: 100.h,
                         width: MediaQuery.of(context).size.width,
@@ -187,25 +189,19 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                         ),
                       );
                     } else {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount:
-                            (state.chatPendingList?.length ?? 0) >= 1 ? 1 : 0,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: (){
-                              Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': 'MIDWIFE', 'initial_index': 0});
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              child: ChatPlaceHolderWidget(
-                                  unread: false,
-                                  name: state.chatPendingList![index].from?.name,
-                                  message: state.chatPendingList![index].message),
-                            ),
-                          );
+                      return InkWell(
+                        onTap: (){
+                          Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': 'MIDWIFE', 'initial_index': 0});
                         },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: ChatPlaceHolderWidget(
+                              unread: false,
+                              name: state.lastChatResponse?.chat?.from?.name,
+                              message: state.lastChatResponse?.chat?.message,
+                              unreadCount: state.lastChatResponse?.unreadMessage.toString(),
+                          ),
+                        ),
                       );
                     }
                   }),
@@ -308,21 +304,37 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                           ],
                         ),
                       )),
+
                   BlocBuilder<HospitalBloc, HospitalState>(
                     builder: (context, state) {
                       if(state.type == 'fetch-hospital-success'){
                         return Container(
                           // height: 200.h,
-                            margin: EdgeInsets.only(left: 16.w, top: 10.h),
+                            margin: EdgeInsets.only(left: 16.w, top: 5.h, bottom: 20.h),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("Pin Check-in Pasien", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),),
-                                SizedBox(height: 20.h,),
-                                Center(
-                                  child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
+                                Text("QR Check-in Pasien", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),),
+                                SizedBox(height: 0.h,),
+                                // Center(
+                                //   child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
+                                // ),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  FullQrScreen(value: "KomunitAZ-${state.hospitals?[0].pin.toString()}",)));
+                                  },
+                                  child: Hero(
+                                    tag: 'qr-hero',
+                                    child: Center(
+                                      child: QrImage(
+                                        data: "KomunitAZ-${state.hospitals?[0].pin.toString()}",
+                                        version: QrVersions.auto,
+                                        size: 150.w,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                SizedBox(height: 20.h,),
+                                // SizedBox(height: 20.h,),
                                 Center(
                                   child: CountdownTimer(
                                     endTime: DateTime.parse(state.hospitals?[0].pinValidEnd ?? DateTime.now().toString()).millisecondsSinceEpoch,
@@ -343,11 +355,27 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
                         return Container();
                       }
                     },
-                  )
+                  ),
+
+                  Container(
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              height:
+                              MediaQuery.of(context).size.height - 200,
+                              child: TabBarEventPage(
+                                tabController: _tabController,
+                                dateTime: state.eventDate,
+                                isMidwife: true,
+                              )),
+                        ],
+                      )),
+
+                  SizedBox(height: 50.h,)
                 ],
-              ),
             ),
-          ),
         );
       }),
       floatingActionButton: Align(
@@ -386,7 +414,14 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> {
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             onPressed: () async {
-              Navigator.of(context).pushNamed(RouteName.chooseTypeEvent, arguments: 'MIDWIFE');
+              Navigator.of(context).pushNamed(RouteName.chooseTypeEvent, arguments: 'MIDWIFE').then((value) {
+                Injector.resolve<HomePageBloc>().add(
+                    EventFetchEvent(
+                        _tabController!.index == 0
+                            ? StringConstant.typePersonal
+                            :StringConstant.typePublic ,
+                        DateTime.now(), isMidwife: true));
+              });
             },
           ),
         ),

@@ -19,6 +19,7 @@ class EventPageState with FormzMixin {
   final TimeOfDay? timeNotfication;
   final FormzStatus? submitStatus;
   final String? errorMessage;
+  final bool? isTimeCorrect;
 
   EventPageState(
       {this.scheduleName = const MandatoryFieldValidator.pure(),
@@ -37,6 +38,7 @@ class EventPageState with FormzMixin {
       this.dateEnd,
       this.userModelFirebase,
       this.role,
+      this.isTimeCorrect = true,
       this.submitStatus = FormzStatus.pure,
       this.errorMessage});
 
@@ -56,6 +58,7 @@ class EventPageState with FormzMixin {
       List<NotificationModel>? listScheduleTime,
       DateTime? dateStart,
       DateTime? dateEnd,
+      bool? isTimeCorrect,
       TimeOfDay? time,
       TimeOfDay? timeNotfication,
       String? errorMessage}) {
@@ -76,6 +79,7 @@ class EventPageState with FormzMixin {
         dateStartString: dateStartString ?? this.dateStartString,
         dateEnd: dateEnd ?? this.dateEnd,
         role: role ?? this.role,
+        isTimeCorrect: isTimeCorrect ?? this.isTimeCorrect,
         dateEndString: dateEndString ?? this.dateEndString,
         userModelFirebase: userModelFirebase ?? this.userModelFirebase,
         errorMessage: errorMessage);

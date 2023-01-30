@@ -10,6 +10,8 @@ _$_EventModel _$$_EventModelFromJson(Map<String, dynamic> json) =>
     _$_EventModel(
       id: json['id'] as String?,
       userId: json['user_id'] as String?,
+      hospitalId: json['hospital_id'] as String?,
+      midwifeId: json['midwife_id'] as String?,
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
@@ -44,6 +46,8 @@ Map<String, dynamic> _$$_EventModelToJson(_$_EventModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'user_id': instance.userId,
+      'hospital_id': instance.hospitalId,
+      'midwife_id': instance.midwifeId,
       'user': instance.user,
       'type': instance.type,
       'title': instance.title,

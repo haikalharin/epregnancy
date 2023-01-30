@@ -10,7 +10,7 @@ import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
-import '../../main.dart';
+import '../../main_default.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';
@@ -100,11 +100,11 @@ class _SurveyPageState extends State<SurveyPage> {
                 if (widget.isEdit == true) {
                   Navigator.of(context).pushReplacementNamed(
                       RouteName.surveyPageBaby,
-                      arguments: widget.isEdit);
+                      arguments: {"is_edit": widget.isEdit, "edit_name": false});
                 } else{
                   Navigator.of(context).pushNamed(
                       RouteName.surveyPageBaby,
-                      arguments: widget.isEdit);
+                      arguments: {"is_edit": widget.isEdit, "edit_name": false});
                 }
               } else {
                 // todo handle edit
@@ -141,7 +141,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                 isFromRegister: true)),
                             (route) => false);
                   } else {
-                    aliceDev
+                    aliceMain
                         .getNavigatorKey()
                         ?.currentState
                         ?.pushAndRemoveUntil(

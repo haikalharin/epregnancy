@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math' as math;
 
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:toast/toast.dart';
 
@@ -56,16 +57,22 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
             if (widget.isPatient == true) {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                RouteName.navBar,
-                (Route<dynamic> route) => false,
-                arguments: {
-                  'role': state.userModel?.isPatient == true
-                      ? StringConstant.patient
-                      : StringConstant.midwife,
-                  'initial_index': 0
-                },
-              );
+              if (state.userModel!.totalLogin! > 1) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteName.navBar,
+                  (Route<dynamic> route) => false,
+                  arguments: {
+                    'role': state.userModel?.isPatient == true
+                        ? StringConstant.patient
+                        : StringConstant.midwife,
+                    'initial_index': 0
+                  },
+                );
+              } else {
+                Navigator.of(context).pushReplacementNamed(
+                    RouteName.surveyPageBaby,
+                    arguments: {"is_edit": false, "edit_name": false});
+              }
             } else {
               Navigator.of(context).pushNamedAndRemoveUntil(
                   RouteName.dashboardNakesPage, (Route<dynamic> route) => false,
@@ -95,28 +102,31 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                       children: [
                         Container(
                             child: Html(
-                                data: widget.isPatient == true
-                                    ? remoteConfigGetString(
-                                    StringConstant.termAndConditionUserHeader)
-                                    : remoteConfigGetString(
-                                    StringConstant.termAndConditionMidwifeHeader),))
+                          data: widget.isPatient == true
+                              ? remoteConfigGetString(
+                                  StringConstant.termAndConditionUserHeader)
+                              : remoteConfigGetString(
+                                  StringConstant.termAndConditionMidwifeHeader),
+                        ))
                       ],
                     ),
                   ),
                   Card1(widget.isPatient ?? true),
                   Card2(widget.isPatient ?? true),
-                  CheckboxListTile(
+                  widget.from == "account"
+                      ? Container()
+                      : CheckboxListTile(
                     activeColor: EpregnancyColors.primer,
-                    contentPadding: EdgeInsets.only(top: 10),
+                    contentPadding: EdgeInsets.only(top: 5.h),
                     title: Container(
-                      padding: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.only(top: 20.h),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
                               child: Text(
                             "Centang untuk menyetujui Syarat dan Ketentuan yang telah Anda baca dengan teliti.",
-                            style: TextStyle(color: EpregnancyColors.primer),
+                            style: TextStyle(color: EpregnancyColors.black),
                           )),
                         ],
                       ),
@@ -130,48 +140,56 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                     controlAffinity: ListTileControlAffinity
                         .leading, //  <-- leading Checkbox
                   ),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 10, bottom: 10),
-                          width: MediaQuery.of(context).size.width - 40,
-                          height: 50,
-                          child: RaisedButton(
-                            color: checkedValue == true
-                                ? EpregnancyColors.primer
-                                : Colors.grey.shade200,
-                            child: Padding(
-                              padding: EdgeInsets.zero,
-                              child: Text(
-                                "Saya Setuju",
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white),
+                  widget.from == "account"
+                      ? Container()
+                      : Container(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 10, bottom: 10),
+                                width: MediaQuery.of(context).size.width - 40,
+                                height: 50,
+                                child: RaisedButton(
+                                  color: checkedValue == true
+                                      ? EpregnancyColors.primer
+                                      : EpregnancyColors.primer
+                                          .withOpacity(0.25),
+                                  child: Padding(
+                                    padding: EdgeInsets.zero,
+                                    child: Text(
+                                      "Saya Setuju",
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white),
+                                    ),
+                                  ),
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12.w)),
+                                  ),
+                                  onPressed: () async {
+                                    if (checkedValue == true) {
+                                      if (widget.from == "login") {
+                                        Injector.resolve<DisclaimerPageBloc>()
+                                            .add(DisclaimerAddDataEvent());
+                                      } else {
+                                        Navigator.of(context).pushNamed(
+                                            RouteName.otpPage,
+                                            arguments: {
+                                              'username': widget.userId,
+                                              'from': "disclaimer"
+                                            }).then((value) {
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    }
+                                  },
+                                ),
                               ),
-                            ),
-                            elevation: 8,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(7)),
-                            ),
-                            onPressed: () async {
-                              if (checkedValue == true) {
-                                if (widget.from == "login") {
-                                  Injector.resolve<DisclaimerPageBloc>()
-                                      .add(DisclaimerAddDataEvent());
-                                } else {
-                                  Navigator.of(context).pushNamed(
-                                      RouteName.otpPage,
-                                      arguments: widget.userId);
-                                }
-                              }
-                            },
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             );
@@ -360,11 +378,11 @@ class _Card2State extends State<Card2> {
                     Padding(
                         padding: EdgeInsets.only(bottom: 10),
                         child: Html(
-                          data:widget.isPatient
+                          data: widget.isPatient
                               ? remoteConfigGetString(
-                              StringConstant.termAndConditionUserBody2)
+                                  StringConstant.termAndConditionUserBody2)
                               : remoteConfigGetString(
-                              StringConstant.termAndConditionMidwifeBody2),
+                                  StringConstant.termAndConditionMidwifeBody2),
                         )),
                   ],
                 ),

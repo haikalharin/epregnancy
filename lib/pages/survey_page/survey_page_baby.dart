@@ -16,7 +16,7 @@ import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
-import '../../main.dart';
+import '../../main_default.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';
@@ -24,8 +24,9 @@ import '../login_page/login_page.dart';
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPageBaby extends StatefulWidget {
-  const SurveyPageBaby({Key? key, this.isEdit = false}) : super(key: key);
+  const SurveyPageBaby({Key? key, this.isEdit = false, this.editName = false}) : super(key: key);
   final bool? isEdit;
+  final bool? editName;
 
   @override
   State<SurveyPageBaby> createState() => _SurveyPageBabyState();
@@ -43,6 +44,11 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
   void initState() {
     Injector.resolve<SurveyPageBloc>()
         .add(SurveyInitEvent(isUpdate: widget.isEdit ?? false));
+    if(widget.editName == true) {
+      Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(3));
+    } else {
+      Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(2));
+    }
     super.initState();
   }
 
@@ -70,26 +76,18 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
               );
             } else {
               // Navigator.of(context).pushNamed(RouteName.landingPage);
-              AppSharedPreference.remove(AppSharedPreference.user);
-              AppSharedPreference.remove(AppSharedPreference.userRegister);
-              AppSharedPreference.remove(AppSharedPreference.baby);
-              AppSharedPreference.remove(AppSharedPreference.baby);
-              AppSharedPreference.remove(AppSharedPreference.hospital);
-              AppSharedPreference.remove(AppSharedPreference.otp);
-              AppSharedPreference.remove(AppSharedPreference.token);
-              AppSharedPreference.remove(AppSharedPreference.cookie);
               if (F.appFlavor == Flavor.PRODUCTION) {
-                aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => const LoginPage(
-                            tokenExpired: true, isFromRegister: true)),
-                    (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteName.navBar,
+                      (Route<dynamic> route) => false,
+                  arguments: {'role': StringConstant.patient, 'initial_index': 0},
+                );
               } else {
-                aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => const LoginPage(
-                            tokenExpired: true, isFromRegister: true)),
-                    (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteName.navBar,
+                      (Route<dynamic> route) => false,
+                  arguments: {'role': StringConstant.patient, 'initial_index': 0},
+                );
               }
             }
             // Navigator.of(context).pushNamedAndRemoveUntil(
@@ -102,15 +100,26 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
           builder: (context, state) {
             return WillPopScope(
               onWillPop: () {
+                // todo handle back press device
                 if (state.page == 3) {
                   Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(2));
                   return Future.value(false);
                 } else if (state.page == 2) {
-                  Navigator.pop(context);
-                  return Future.value(true);
+                  // Navigator.pop(context);
+                  if(widget.isEdit == true) {
+                    Navigator.pop(context);
+                    return Future.value(true);
+                  } else {
+                    return Future.value(false);
+                  }
                 } else {
-                  Navigator.of(context).pushNamed(RouteName.signup);
-                  return Future.value(false);
+                  if(widget.isEdit == true) {
+                    Navigator.pop(context);
+                    return Future.value(true);
+                  } else {
+                    Navigator.of(context).pushNamed(RouteName.signup);
+                    return Future.value(false);
+                  }
                 }
               },
               child: Scaffold(
@@ -119,20 +128,31 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   elevation: 0.0,
                   backgroundColor: EpregnancyColors.primerSoft,
                   iconTheme: IconThemeData(color: Colors.black),
-                  leading: GestureDetector(
+                  leading: state.page == 3?GestureDetector(
                     child: const Icon(
                       Icons.arrow_back_ios,
                       color: Colors.black,
                     ),
                     onTap: () {
+                      // todo handle back
                       if (state.page == 3) {
                         Injector.resolve<SurveyPageBloc>()
                             .add(SurveyPageChanged(2));
                       } else if (state.page == 2) {
-                        Navigator.pop(context);
+                        if(widget.isEdit == true) {
+                          Navigator.pop(context);
+                        }
+                        // Navigator.pop(context);
+                      } else {
+                        if(widget.isEdit == true) {
+                          Navigator.pop(context);
+                        } else {
+                          // cannot back (new flow)
+                          // Navigator.of(context).pushNamed(RouteName.signup);
+                        }
                       }
                     },
-                  ),
+                  ): null,
                 ),
                 body: Container(
                   color: EpregnancyColors.primerSoft,
@@ -151,7 +171,8 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              "${state.page} dari 3",
+                              // note ada perubahan step
+                              "${state.page - 1} dari 2",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.grey,
@@ -179,7 +200,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                     child: Text(
                                       state.page == 3
                                           ? widget.isEdit == true
-                                              ? "simpan"
+                                              ? "Simpan"
                                               : "Selanjutnya"
                                           : "Selanjutnya",
                                       style: TextStyle(
@@ -206,6 +227,9 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                       Injector.resolve<SurveyPageBloc>().add(
                                           SurveyAddDataBabyEvent(
                                               isUpdate: widget.isEdit!));
+                                    } else if (state.page == 1 && state.name.valid) {
+                                      Injector.resolve<SurveyPageBloc>()
+                                          .add(SurveyPageChanged(2));
                                     }
                                   },
                                 ),

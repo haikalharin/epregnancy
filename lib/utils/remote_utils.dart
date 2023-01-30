@@ -18,6 +18,8 @@ dynamic getTokenExpiredArgument(dynamic result) => result['token_expired'];
 dynamic getIsFromRegisterArgument(dynamic result) => result['is_from_register'];
 
 dynamic getIsPatient(dynamic result) => result['is_patient'];
+dynamic getIsEdit(dynamic result) => result['is_edit'];
+dynamic getEditName(dynamic result) => result['edit_name'];
 
 dynamic getkey(dynamic result) => result['key'];
 
@@ -25,9 +27,15 @@ dynamic getInitialIndex(dynamic result) => result['initial_index'];
 
 dynamic getUserId(dynamic result) => result['user_id'];
 
+dynamic getIsFromNotif(dynamic result) => result['is_from_notif'];
+
+dynamic getUserName(dynamic result) => result['username'];
+
 dynamic getName(dynamic result) => result['name'];
 
 dynamic getFrom(dynamic result) => result['from'];
+
+dynamic getOtp(dynamic result) => result['otp'];
 
 dynamic getImageUrl(dynamic result) => result['image_url'];
 

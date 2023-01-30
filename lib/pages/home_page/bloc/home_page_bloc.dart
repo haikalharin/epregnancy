@@ -85,10 +85,19 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       List<EventModel> listEvent = [];
       if (event.type == StringConstant.typePersonal) {
-        responseModel = await eventRepository.fetchEvent(userId: person.id,isPublic: false );
+        print('midwife status : ${event.isMidwife}');
+        if(event.isMidwife == true){
+          responseModel = await eventRepository.fetchEventForMidwife(midwifeId: person.id, isPublic: false );
+        } else {
+          responseModel = await eventRepository.fetchEvent(userId: person.id,isPublic: false );
+        }
         listEvent = responseModel.data??[];
       } else {
-        responseModel = await eventRepository.fetchEvent(userId: person.id, isPublic: true);
+        if(event.isMidwife == true) {
+          responseModel = await eventRepository.fetchEventForMidwife(midwifeId: person.id, isPublic: true);
+        } else {
+          responseModel = await eventRepository.fetchEvent(userId: person.id, isPublic: true);
+        }
         listEvent = responseModel.data?? [];
       }
 
@@ -96,7 +105,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         listEvent = responseModel.data??[];
         listEventBeforeSort = await FunctionUtils.getCheckDate(listEvent: listEvent, date: event.date);
         var listEventFix = await FunctionUtils.sortDate(listEvent: listEventBeforeSort);
-        var outputFormat = DateFormat.yMMMMd('id');
+        var outputFormat = DateFormat.yMMMMEEEEd('id');
         var dateTimeString = outputFormat.format(event.date);
         if (listEvent.isNotEmpty) {
           if (event.type == StringConstant.typePublic) {
@@ -118,7 +127,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
               submitStatus: FormzStatus.submissionFailure);
         }
       } else {
-        var outputFormat = DateFormat.yMMMMd('id');
+        var outputFormat = DateFormat.yMMMMEEEEd('id');
         var dateTimeString = outputFormat.format(event.date);
         yield state.copyWith(
             eventDateString: dateTimeString,
@@ -134,7 +143,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
   }
 
@@ -152,10 +161,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       );
       // await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if(responseModel.code == 200) {
-        // await AppSharedPreference.setUserInfo(userInfo.data);
+        await AppSharedPreference.setUser(responseModel.data);
         await AppSharedPreference.setBool(AppSharedPreference.isShowGuide, false);
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned, user: userEntity);
+            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned, user: userEntity, tipe: "get-info-done");
       }
     } on HomeErrorException catch (e) {
       print(e);
@@ -164,7 +173,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString());
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString(), isNotHaveSession: true);
     }
   }
 
@@ -189,7 +198,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
   }
 
@@ -207,16 +216,18 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       var days = 0;
       var weeks = 0;
+      var myBaby = [];
 
 
       final UserModel user = await AppSharedPreference.getUser();
       ResponseModel response = await homeRepository.getBaby(user);
-      final myBaby = response.data;
-
+      if (response.code == 200) {
+        myBaby = response.data;
+      }
 
       BabyProgressModel babyProgressModel = BabyProgressModel.empty();
       if(myBaby.length != 0){
-      if (myBaby?.last.id != '') {
+      if (myBaby.last.id != '') {
           DateTime dateTimeCreatedAt =
               DateTime.parse(myBaby.last.lastMenstruationDate!);
           DateTime dateTimeNow = DateTime.now();
@@ -244,7 +255,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
               ? StringConstant.patient
               : StringConstant.midwife,
         );
-      } else {
+      } else if (response.code == 0){
+        await AppSharedPreference.sessionExpiredEvent();
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+      }else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     } on HomeErrorException catch (e) {
@@ -255,7 +269,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
   }
 //
@@ -285,7 +299,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if( a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
 
   }

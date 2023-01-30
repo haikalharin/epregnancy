@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:PregnancyApp/data/model/chat_model/chat_dialog_model.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
@@ -13,7 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../main.dart';
+import '../../main_default.dart';
 import '../../main_development.dart';
 import '../../pages/login_page/login_page.dart';
 import '../model/baby_model/baby_model.dart';
@@ -37,6 +38,7 @@ class AppSharedPreference {
   static const String bmSignature = "bm_signature";
   static const String checkIn = "checkin";
   static const String hospital = "hospital";
+  static const String dateTime = "dateTime";
   static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
   static const String newInstall = "new_install";
@@ -52,6 +54,25 @@ class AppSharedPreference {
   static remove(String key) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.remove(key);
+  }
+
+  static setShowDialogDoAndDonts(ChatDialogModel data) async {
+    String json = jsonEncode(data.toJson());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(dateTime, json);
+  }
+
+  static Future<ChatDialogModel?> getShowDialogDoAndDonts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? json = prefs.getString(dateTime);
+    if (json != null) {
+      Map<String, dynamic> map = jsonDecode(json);
+      ChatDialogModel chatDialogModel = ChatDialogModel.fromJson(map);
+      return chatDialogModel;
+    } else{
+      return ChatDialogModel.empty();
+    }
   }
 
   static Future<String?> getString(String key) async {
@@ -195,8 +216,10 @@ class AppSharedPreference {
       Map<String, dynamic> map = jsonDecode(decryptedJson);
       UserModel _userModel = UserModel.fromJson(map);
       UserModel userModel = _userModel.copyWith(
-        name: _userModel.name != null ?  await aesDecryptor(_userModel.name) : null,
-        id: _userModel.id != null ?  await aesDecryptor(_userModel.id) : null,
+        name: _userModel.name != null
+            ? await aesDecryptor(_userModel.name)
+            : null,
+        id: _userModel.id != null ? await aesDecryptor(_userModel.id) : null,
       );
       return userModel;
     } else {
@@ -309,10 +332,20 @@ class AppSharedPreference {
     await AppSharedPreference.remove(AppSharedPreference.otp);
     await AppSharedPreference.remove(AppSharedPreference.token);
     await AppSharedPreference.remove(AppSharedPreference.cookie);
-    if(F.appFlavor == Flavor.PRODUCTION){
-      aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
+    if (F.appFlavor == Flavor.PRODUCTION) {
+      aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => const LoginPage(
+                    tokenExpired: true,
+                  )),
+          (route) => false);
     } else {
-      aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginPage(tokenExpired: true,)), (route) => false);
+      aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => const LoginPage(
+                    tokenExpired: true,
+                  )),
+          (route) => false);
     }
     //navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (BuildContext context) => OnBoardingScreen(isHavePopUpMessage: "401",)));
   }

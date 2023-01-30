@@ -9,7 +9,7 @@ import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 
 import '../../common/injector/injector.dart';
-import '../../main.dart';
+import '../../main_default.dart';
 import '../../utils/epragnancy_color.dart';
 import 'bloc/article_bloc.dart';
 

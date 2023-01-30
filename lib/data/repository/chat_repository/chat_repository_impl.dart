@@ -4,6 +4,7 @@ import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dar
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
+import 'package:PregnancyApp/data/model/chat_model/last_chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/repository/chat_repository/chat_repository.dart';
@@ -118,6 +119,14 @@ class ChatRepositoryImpl extends ChatRepository {
   Future<int> endChat(String toId) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.endChat(toId);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<LastChatResponse>> lastChatDashboard() async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchLastChatDashboard();
     }
     throw NetworkConnectionException();
   }

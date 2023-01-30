@@ -41,7 +41,7 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
       RequestResendOtp event,
       OtpPageState state,
       ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, typeEvent:"sendOtp" );
     try {
       var type = '';
       if (event.userId!.contains('@')) {
@@ -49,8 +49,12 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
       } else {
         type = 'mobile';
       }
-      ResponseModel response = await userRepository.requestOtp(OtpModel(value: event.userId, type: type));
-      OtpModel otpModel = response.data;
+      var data = {
+        'type': type,
+        'value':  event.userId,
+      };
+      ResponseModel response = await userRepository.requestOtp(data);
+      OtpModel otpModel = OtpModel(otp: "",type: type,value: event.userId);
       if (response.code == 200) {
         await AppSharedPreference.setOtp(otpModel);
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, otpResendSuccess: true);
@@ -86,7 +90,7 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
             // await AppSharedPreference.setString(
             //     AppSharedPreference.token, userModel.token ?? '');
             yield state.copyWith(
-                submitStatus: FormzStatus.submissionSuccess, otpResendSuccess: false);
+                submitStatus: FormzStatus.submissionSuccess,otp: event.otp, otpResendSuccess: false);
         } else {
           yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
         }

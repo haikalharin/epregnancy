@@ -50,6 +50,9 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
       if (checkInResponse.code == 200) {
         pointEarn = checkInResponse.data.pointsEarned;
         int newTotalPoint = currentPoint + pointEarn;
+        print("current point : $currentPoint");
+        print("earned point : $pointEarn");
+        print("new total point : $newTotalPoint");
         _currentEntityList![state.todayIndex!].done = true;
 
         // sync point_model value in homescreen
@@ -74,22 +77,22 @@ class PoinBloc extends Bloc<PoinEvent, PoinState> {
     yield state.copyWith(
         status: FormzStatus.submissionInProgress, type: "check-in initial");
     try {
-      String? installDate =
-          await AppSharedPreference.getString(AppConstants.installDateKey);
-      DateTime startDate =
-          DateFormatter.dateFormatForCheckinFilter.parse(installDate ?? DateTime.now().toString());
-      String today =
-          DateFormatter.dateFormatForCheckinFilter.format(DateTime.now());
+      // String? installDate = await AppSharedPreference.getString(AppConstants.installDateKey);
+      var d = DateTime.now();
+      var weekDay = d.weekday;
+      String? installDate = d.subtract(Duration(days: weekDay - 1)).toString();
+      DateTime startDate = DateFormatter.dateFormatForCheckinFilter.parse(installDate);
+      String today = DateFormatter.dateFormatForCheckinFilter.format(DateTime.now());
       bool checkInDoneForToday = false;
       List<Checkin>? _checkIns = [];
       UserModel _userInfo = await AppSharedPreference.getUser();
-      _checkIns = _userInfo.checkins;
+      _checkIns = _userInfo.checkins ?? [];
 
       //generate 7 day from install date for hari ke checkin
       final _checkinDateList = List<CheckInEntity>.generate(7, (i) {
-        String _plusDate = DateFormatter.dateFormatForCheckinFilter
-            .format(startDate.add(Duration(days: i)));
-        bool hasCheckIn = _checkIns!.any((e) => e.date == _plusDate || e.day == i + 1);
+        String _plusDate = DateFormatter.dateFormatForCheckinFilter.format(startDate.add(Duration(days: i)));
+        // bool hasCheckIn = _checkIns!.any((e) => e.date == _plusDate || e.day == i + 1);
+        bool hasCheckIn = _checkIns!.any((e) => e.date == _plusDate);
         if (hasCheckIn) {
           return CheckInEntity(done: true, date: _plusDate, day: i + 1);
         } else {

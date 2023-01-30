@@ -103,27 +103,6 @@ class _ConsultationPageState extends State<ConsultationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            if(_hospitalModel?.name == ''){
-              Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                if(value != null){
-                  setState(() {
-                    _hospitalModel = value as HospitalModel?;
-                  });
-                }
-              });
-            } else {
-              showModalBottomSheet(context: context,
-                  isScrollControlled: false,
-                  builder: (context){
-                return PinCheckInPage();
-              });
-            }
-          },
-          icon: FaIcon(FontAwesomeIcons.calendarCheck),
-          label: Text("CheckIn Kunjungan")
-      ),
       backgroundColor: Colors.grey.shade200,
       body: BlocListener<ConsultationPageBloc, ConsultationPageState>(
         listener: (context, state) async {
@@ -133,7 +112,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                 content: Text("Gagal posting"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            if (state.type == 'update') {
+            if (state.type == 'update' || state.type == 'delete-post-success') {
               const snackBar = SnackBar(
                   content: Text("Berhasil"),
                   backgroundColor: EpregnancyColors.primer);
@@ -439,8 +418,8 @@ class _ConsultationPageState extends State<ConsultationPage> {
                   child: CircularProgressIndicator(),
                 ): ListForumWidget(
                   tipeAcara: 'Acara umum',
-                  listConsul:
-                  state.listConsultation?.reversed.toList() ?? [],
+                  listConsul: state.listConsultation?.reversed.toList() ?? [],
+                  userId: _userId,
                   psLikesCount: _psLikesCount,
                 )),
 
@@ -743,6 +722,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                       child: CircularProgressIndicator(),
                     ): ListForumWidget(
                       tipeAcara: 'Acara umum',
+                      userId: _userId,
                       listConsul:
                       state.listConsultation?.reversed.toList() ?? [],
                       psLikesCount: _psLikesCount,

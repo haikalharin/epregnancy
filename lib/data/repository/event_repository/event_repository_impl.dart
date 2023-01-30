@@ -24,6 +24,17 @@ class EventRepositoryImpl extends EventRepository {
   }
 
   @override
+  Future<ResponseModel<EventModel>> fetchEventForMidwife(
+      {String? midwifeId, bool? isPublic}) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel<EventModel> listEvent = await remoteDatasource
+          .fetchListEventForMidwife(midwifeId: midwifeId ?? '', isPublic: isPublic ?? false);
+      return listEvent;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
   Future<ResponseModel> saveEvent(EventModel eventModel) async {
     if (await networkInfo.isConnected) {
       ResponseModel response = await remoteDatasource.saveScheduleEventPersonal(eventModel);
@@ -34,6 +45,15 @@ class EventRepositoryImpl extends EventRepository {
 
   @override
   Future<ResponseModel> saveEventMedicineFromMidwife(EventModel eventModel) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response = await remoteDatasource.saveScheduleEventMedicineFromMidwife(eventModel);
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> saveEventMedicine(EventModel eventModel) async {
     if (await networkInfo.isConnected) {
       ResponseModel response = await remoteDatasource.saveScheduleEventMedicineFromMidwife(eventModel);
       return response;

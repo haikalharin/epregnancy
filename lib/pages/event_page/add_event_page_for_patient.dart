@@ -1,5 +1,5 @@
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
-import 'package:PregnancyApp/main.dart';
+import 'package:PregnancyApp/main_default.dart';
 import 'package:PregnancyApp/pages/event_page/patient_select_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +48,6 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
   String? consulForPatientType;
   UserModel? selectedUser;
 
-
   @override
   void initState() {
     setState(() {
@@ -67,50 +66,56 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
 
   void _showEventOption(BuildContext context) {
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         context: context,
         builder: (BuildContext bc) {
           return Container(
-              height: 150.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10)
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child:  Center(child: Text("Tipe Jadwal", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14.sp),),),
+            height: 180.h,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Text(
+                      "Tipe Jadwal",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.sp),
+                    ),
                   ),
-                  ListTile(
-                      leading: SvgPicture.asset(
-                        'assets/ic_health.svg',
-                        fit: BoxFit.fitHeight,
-                      ),
-                      title: Text('Kunjungan Puskesmas'),
-                      onTap: () async {
-                        // pickAndCropImageGallery();
-                        setState(() {
-                          consulForPatientType = StringConstant.visitHospital;
-                          Injector.resolve<EventPageBloc>().add(EventInitEvent(consulForPatientType ?? ""));
-                        });
-                        Navigator.pop(context);
-                      }),
-                  ListTile(
-                    leading: SvgPicture.asset('assets/ic_pills.svg'),
-                    title: Text('Konsumsi Obat'),
+                ),
+                ListTile(
+                    leading: SvgPicture.asset(
+                      'assets/ic_health.svg',
+                      fit: BoxFit.fitHeight,
+                    ),
+                    title: Text('Kunjungan Puskesmas'),
                     onTap: () async {
-                      // pickAndCropImageCamera();
+                      // pickAndCropImageGallery();
                       setState(() {
-                        consulForPatientType = StringConstant.consumeMedicine;
-                        Injector.resolve<EventPageBloc>().add(EventInitEvent(consulForPatientType ?? ""));
+                        consulForPatientType = StringConstant.visitHospital;
+                        Injector.resolve<EventPageBloc>()
+                            .add(EventInitEvent(consulForPatientType ?? ""));
                       });
                       Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
+                    }),
+                ListTile(
+                  leading: SvgPicture.asset('assets/ic_pills.svg'),
+                  title: Text('Konsumsi Obat'),
+                  onTap: () async {
+                    // pickAndCropImageCamera();
+                    setState(() {
+                      consulForPatientType = StringConstant.consumeMedicine;
+                      Injector.resolve<EventPageBloc>()
+                          .add(EventInitEvent(consulForPatientType ?? ""));
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
           );
         });
   }
@@ -120,12 +125,15 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
       margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
       padding: EdgeInsets.only(left: 8.w, bottom: 8.h),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey, width: 1))
-      ),
+          border: Border(bottom: BorderSide(color: Colors.grey, width: 1))),
       child: InkWell(
-        onTap: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const PatientSelectPage())).then((_selectedUser) {
-            if(_selectedUser != null){
+        onTap: () {
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PatientSelectPage()))
+              .then((_selectedUser) {
+            if (_selectedUser != null) {
               setState(() {
                 selectedUser = _selectedUser;
               });
@@ -139,12 +147,40 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
             children: [
               Row(
                 children: [
-                  SvgPicture.asset("assets/icCommunity.svg", color: Colors.black,),
-                  SizedBox(width: 10.w,),
-                  Text(selectedUser != null ? selectedUser!.name!  :"Nama peserta", style: TextStyle(color: EpregnancyColors.primer, fontSize: 12.sp),)
+                  SvgPicture.asset(
+                    "assets/icCommunity.svg",
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Text(
+                    selectedUser != null ? selectedUser!.name! : "Nama peserta",
+                    style: TextStyle(
+                        color: EpregnancyColors.primer, fontSize: 12.sp),
+                  )
                 ],
               ),
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios_rounded, color: EpregnancyColors.primer,))
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const PatientSelectPage()))
+                        .then((_selectedUser) {
+                      if (_selectedUser != null) {
+                        setState(() {
+                          selectedUser = _selectedUser;
+                        });
+                        print('selected user : ${selectedUser?.id}');
+                      }
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: EpregnancyColors.primer,
+                  ))
             ],
           ),
         ),
@@ -177,12 +213,14 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
                           Text(
                             "Tipe Jadwal",
                             style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700),
+                                fontSize: 12, fontWeight: FontWeight.w700),
                           ),
                           SizedBox(height: 8),
                           Text(
-                              consulForPatientType == StringConstant.visitHospital ? "Kunjungan Puskesmas" : "Konsumsi Obat",
+                              consulForPatientType ==
+                                      StringConstant.visitHospital
+                                  ? "Kunjungan Puskesmas"
+                                  : "Konsumsi Obat",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: EpregnancyColors.primer)),
@@ -203,9 +241,7 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
         ),
       ),
     );
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -285,9 +321,16 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
                         width: MediaQuery.of(context).size.width - 40,
                         height: 50,
                         child: RaisedButton(
-                          color: state.status.isValidated && selectedUser != null
-                              ? EpregnancyColors.primer
-                              : EpregnancyColors.primerSoft,
+                          color: widget.consulType ==
+                                      StringConstant.visitHospital ||
+                                  widget.consulType == StringConstant.other
+                              ? state.status.isValidated &&
+                                      state.isTimeCorrect == true
+                                  ? EpregnancyColors.primer
+                                  : EpregnancyColors.primerSoft
+                              : state.status.isValidated
+                                  ? EpregnancyColors.primer
+                                  : EpregnancyColors.primerSoft,
                           child: Padding(
                             padding: EdgeInsets.zero,
                             child: Text(
@@ -301,9 +344,24 @@ class _AddEventPageForPatientState extends State<AddEventPageForPatient> {
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           onPressed: () async {
-                            if (state.status.isValidated && selectedUser != null) {
-                              Injector.resolve<EventPageBloc>()
-                                  .add(EventAddSubmittedFromMidwife(selectedUser!));
+                            if (widget.consulType ==
+                                    StringConstant.visitHospital ||
+                                widget.consulType == StringConstant.other) {
+                              if (state.isTimeCorrect == true) {
+                                if (state.status.isValidated &&
+                                    selectedUser != null) {
+                                  Injector.resolve<EventPageBloc>().add(
+                                      EventAddSubmittedFromMidwife(
+                                          selectedUser!));
+                                }
+                              }
+                            } else {
+                              if (state.status.isValidated &&
+                                  selectedUser != null) {
+                                Injector.resolve<EventPageBloc>().add(
+                                    EventAddSubmittedFromMidwife(
+                                        selectedUser!));
+                              }
                             }
                           },
                         ),
@@ -949,7 +1007,9 @@ class _AddDateStartInput extends StatelessWidget {
           onTap: () async {
             var dateTime = await DatePickerUtils.getDate(
                     context, state.dateStart ?? DateTime.now(),
-                    fieldLabelText: "Date", endDate: state.dateEnd) ??
+                    fieldLabelText: "Date",
+                    endDate: state.dateEnd,
+                    firstDate: DateTime.now()) ??
                 DateTime.now();
             Injector.resolve<EventPageBloc>()
                 .add(EventDateStartChanged(dateTime));
@@ -1080,17 +1140,24 @@ class _AddTimeInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EventPageBloc, EventPageState>(
-      buildWhen: (previous, current) => previous.time != current.time,
+      buildWhen: (previous, current) => previous.time != current.time || previous.dateStart != current.dateStart,
       builder: (context, state) {
         return InkWell(
           onTap: () async {
-            TimeOfDay initialTime = state.time ?? TimeOfDay.now();
-            var pickedTime = await showTimePicker(
-              context: context,
-              initialTime: initialTime,
-            );
-            Injector.resolve<EventPageBloc>()
-                .add(EventTimeChanged(pickedTime ?? initialTime));
+            if (state.dateStart == null) {
+              var message = 'Silahkan pilih tanggal terlebih dahulu';
+              final snackBar =
+                  SnackBar(content: Text(message), backgroundColor: Colors.red);
+              Scaffold.of(context).showSnackBar(snackBar);
+            } else {
+              TimeOfDay initialTime = state.time ?? TimeOfDay.now();
+              var pickedTime = await showTimePicker(
+                context: context,
+                initialTime: initialTime,
+              );
+              Injector.resolve<EventPageBloc>()
+                  .add(EventTimeChanged(pickedTime ?? initialTime));
+            }
           },
           child: Container(
             child: Column(
@@ -1116,10 +1183,16 @@ class _AddTimeInput extends StatelessWidget {
                             Text(
                                 state.timeString.value != ""
                                     ? state.timeString.value
-                                    : "Pilih tanggal",
+                                    : "Pilih waktu",
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: EpregnancyColors.primer)),
+                            state.isTimeCorrect == false
+                                ? Text("Mohon pilih waktu yang akan datang",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: EpregnancyColors.red))
+                                : Container(),
                           ],
                         ),
                       ),

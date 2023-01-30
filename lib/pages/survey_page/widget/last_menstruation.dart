@@ -71,7 +71,7 @@ class _LastMenstruationState extends State<LastMenstruation> {
                             Container(
                               margin: EdgeInsets.only(left: 30, right: 30),
                               child: const Text(
-                                "Kapan hari terakhir haid Anda ?",
+                                "Kapan hari pertama haid terakhir Anda ?",
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.bold),
@@ -110,7 +110,7 @@ class _LastMenstruationState extends State<LastMenstruation> {
                                 margin:
                                     const EdgeInsets.only(left: 30, right: 30),
                                 child: DateTimeFormField(
-                                  lastDate: DateTime.now(),
+                                  lastDate: DateTime.now().add(const Duration(days: -8)),
                                   initialValue: state.date.valid
                                       ? DateTime.parse(state.date.value)
                                       : widget.baby?.id != ""

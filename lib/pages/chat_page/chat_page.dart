@@ -84,7 +84,7 @@ class _ChatPageState extends State<ChatPage> {
               List<ChatMessageEntity> chatMessageList = [];
               chatMessageList.add(
                   ChatMessageEntity(
-                      name: state.chatPendingSendResponse?.from?.hospital,
+                      name: state.chatPendingSendResponse?.from?.hospital?.name,
                       message: state.chatPendingSendResponse?.message,
                       dateTime: state.chatPendingSendResponse?.createdDate,
                       mine: state.chatPendingSendResponse?.fromId == widget.userId ? true: false
@@ -93,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
               Navigator.push(context, MaterialPageRoute(builder: (context) => NewChatRoom(
                 fromId: state.chatPendingSendResponse?.fromId,
                 toImageUrl: state.chatPendingSendResponse?.to?.imageUrl,
-                toId: state.chatPendingSendResponse?.toId,
+                toId: state.chatPendingSendResponse?.hospitalId,
                 chatMessageList: chatMessageList,
                 toName: state.chatPendingSendResponse?.to?.name ?? hospitalModel?.name ,
                 pendingChat: true,
@@ -367,7 +367,7 @@ class _ChatPageState extends State<ChatPage> {
                                 ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(
                                     fromId: userModel.id, hospitalId: _hospital.id, message: "Pantangan, saran atau mitos tentang kehamilan");
 
-                                Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest));
+                                Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest, firsTime: true));
                               },
                             ),
                           ),

@@ -53,6 +53,17 @@ class LoginPasswordChanged extends LoginEvent {
 class LoginSubmitted extends LoginEvent {
   const LoginSubmitted();
 }
+
+class LoginSubmittedFromRegister extends LoginEvent {
+  const LoginSubmittedFromRegister(this.username, this.password);
+
+  final String? username;
+  final String? password;
+
+  @override
+  List<Object> get props => [];
+}
+
 class LoginRequestOtp extends LoginEvent {
   const LoginRequestOtp();
 }
