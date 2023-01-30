@@ -424,6 +424,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                           child: CircularProgressIndicator(),
                         ): ListForumWidget(
                           tipeAcara: 'Acara umum',
+                          userId: _userId,
                           listConsul:
                           state.listConsultation?.reversed.toList() ?? [],
                           psLikesCount: _psLikesCount,
