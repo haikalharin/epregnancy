@@ -48,6 +48,7 @@ class ServiceUrl {
   static String listConsultation = '$consultation/list';
   static String postConsultation = '$consultation/create';
   static String addComment = '$consultation/';
+  static String deletePost = '$consultation/delete';
 
   //eventSchedule
   static String schedule = 'schedule';
@@ -80,6 +81,7 @@ class ServiceUrl {
   static String chatPendingList = '$chatPending/list';
   static String chatPendingListForNakes = '$chatPending/latest/';
   static String chatPendingSend = '$chatPending/send';
+  static String lastChat = '$chatPending/last-chat';
 
   //hospital
   static String hospital = 'hospital';

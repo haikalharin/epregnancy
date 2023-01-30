@@ -8,6 +8,7 @@ import 'package:flutter_alice/alice.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:intl/intl.dart';
 
 import '../../common/constants/router_constants.dart';
@@ -43,11 +44,23 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
     print('skip onboarding : $skipOnboarding');
   }
 
+  Future<void> checkForUpdate() async {
+    InAppUpdate.checkForUpdate().then((info) {
+      print("update info : $info");
+      if(info.updateAvailability == UpdateAvailability.updateAvailable){
+        InAppUpdate.performImmediateUpdate();
+      }
+    }).catchError((e) {
+      print("Error Perform Auto Update : $e");
+    });
+  }
+
   @override
   void initState() {
     getFirstInstall();
     Injector.resolve<SplashscreenBloc>().add(SplashscreenCheckUserExist());
     _initializeRemoteConfig();
+    checkForUpdate();
     super.initState();
   }
 

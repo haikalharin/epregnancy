@@ -180,7 +180,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
 
                   BlocBuilder<ChatPendingBloc, ChatPendingState>(
                       builder: (context, state) {
-                    if (state.chatPendingList?.length == 0 || state.chatPendingList == null) {
+                    if (state.lastChatResponse == null) {
                       return Container(
                         height: 100.h,
                         width: MediaQuery.of(context).size.width,
@@ -189,25 +189,19 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
                         ),
                       );
                     } else {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        // physics: const NeverScrollableScrollPhysics(),
-                        itemCount:
-                            (state.chatPendingList?.length ?? 0) >= 1 ? 1 : 0,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: (){
-                              Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': 'MIDWIFE', 'initial_index': 0});
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              child: ChatPlaceHolderWidget(
-                                  unread: false,
-                                  name: state.chatPendingList![index].from?.name,
-                                  message: state.chatPendingList![index].message),
-                            ),
-                          );
+                      return InkWell(
+                        onTap: (){
+                          Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': 'MIDWIFE', 'initial_index': 0});
                         },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: ChatPlaceHolderWidget(
+                              unread: false,
+                              name: state.lastChatResponse?.chat?.from?.name,
+                              message: state.lastChatResponse?.chat?.message,
+                              unreadCount: state.lastChatResponse?.unreadMessage.toString(),
+                          ),
+                        ),
                       );
                     }
                   }),

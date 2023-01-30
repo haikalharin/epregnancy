@@ -4,6 +4,7 @@ import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'flavors.dart';
@@ -110,6 +111,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _firebaseFuture = firebaseService
         .initializeFlutterFirebase(context);
+
   }
 
 
