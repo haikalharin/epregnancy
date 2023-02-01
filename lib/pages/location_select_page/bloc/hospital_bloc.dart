@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/members_model/members_summary_response.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/repository/hospital_repository/hospital_repository.dart';
 import 'package:PregnancyApp/utils/secure.dart';
@@ -9,6 +10,7 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
 import '../../../common/exceptions/server_error_exception.dart';
+import '../../../data/model/members_model/member.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 
@@ -28,6 +30,12 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       yield* _mapFetchHospitalByIdEvent(event, state);
     } else if (event is ChangeHospitalEvent){
       yield* _mapChangeHospital(event, state);
+    } else if (event is FetchMemberSummaryEvent) {
+      yield* _mapMembersSummaryEvent(event, state);
+    } else if (event is FetchMembersEvent) {
+      yield* _mapMembersEvent(event, state);
+    } else if (event is FetchMidwifesEvent){
+      yield* _mapMidwifesEvent(event, state);
     }
   }
 
@@ -47,6 +55,88 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       }
     } catch(e) {
       print('hospital failed : $e');
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+    }
+  }
+
+  Stream<HospitalState> _mapMembersSummaryEvent(
+      FetchMemberSummaryEvent event,
+      HospitalState state,
+      ) async* {
+    // yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-hospital', hospitals: []);
+    try {
+      final ResponseModel<MembersSummaryResponse> response = await hospitalRepository.fetchMembersSummary();
+      MembersSummaryResponse membersSummaryResponse = response.data;
+      if(response.code == 200) {
+        yield state.copyWith(status: FormzStatus.submissionSuccess, midwifeAmount: membersSummaryResponse.totalMidwife.toString(), patientAmount: membersSummaryResponse.totalPatient.toString());
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure, midwifeAmount: "0", patientAmount: "0");
+      }
+    } catch(e) {
+      print('hospital failed : $e');
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+    }
+  }
+
+  Stream<HospitalState> _mapMembersEvent(
+      FetchMembersEvent event,
+      HospitalState state,
+      ) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-member', members: []);
+    try {
+      final ResponseModel<Member> response = await hospitalRepository.fetchMembers(event.name ?? "", event.page ?? 0);
+      List<Member> _members = response.data ?? [];
+      List<Member> members = [];
+      for(var element in _members) {
+        Member? member = element.copyWith(
+          name: await aesDecryptor(element.name),
+        );
+        members.add(member);
+      }
+      if(response.code == 200) {
+        List<Member> allMembers = List<Member>.from(state.members ?? [])..addAll(members);
+        yield state.copyWith(status: FormzStatus.submissionSuccess, type: 'fetch-member-success', members: members, last: response.pagination?.last);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-member-failed');
+      }
+    } catch(e) {
+      print('members failed : $e');
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+    }
+  }
+
+  Stream<HospitalState> _mapMidwifesEvent(
+      FetchMidwifesEvent event,
+      HospitalState state,
+      ) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-midwifes', midwifes: []);
+    try {
+      final ResponseModel<Member> response = await hospitalRepository.fetchMidwifes(event.name ?? "", event.page ?? 0);
+      List<Member> _midwifes = response.data ?? [];
+      List<Member> midwifes = [];
+      for(var element in _midwifes) {
+        Member? member = element.copyWith(
+          name: await aesDecryptor(element.name),
+        );
+        midwifes.add(member);
+      }
+      if(response.code == 200) {
+        List<Member> allMembers = List<Member>.from(state.midwifes ?? [])..addAll(midwifes);
+        yield state.copyWith(status: FormzStatus.submissionSuccess, type: 'fetch-midwifes-success', midwifes: midwifes, last: response.pagination?.last);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-midwifes-failed');
+      }
+    } catch(e) {
+      print('midwifes failed : $e');
       if( e is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }

@@ -16,6 +16,7 @@ import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
+import 'package:PregnancyApp/data/model/members_model/members_summary_response.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -32,6 +33,7 @@ import '../model/article_model/article_model.dart';
 import '../model/baby_model_api/baby_Model_api.dart';
 import '../model/consultation_model/consultation_model.dart';
 import '../model/login_model/login_model.dart';
+import '../model/members_model/member.dart';
 import '../model/response_model/response_model.dart';
 import '../model/user_example_model/user_example_model.dart';
 import '../model/user_model_api/signup_quest_request.dart';
@@ -299,6 +301,36 @@ class RemoteDataSource {
     final response =
     await httpClient.get(ServiceUrl.listSchedule, queryParameters: qParams);
     return ResponseModel.fromJson(response, EventModel.fromJson);
+  }
+
+  Future<ResponseModel<Member>> fetchMembers(
+      {String name = '', int? page}) async {
+    Map<String, String> qParams = {
+      'name': name,
+      'isPregnant': "true",
+      'page': page.toString(),
+      'size': "10",
+      'sort': "name,asc",
+
+    };
+    final response =
+    await httpClient.get(ServiceUrl.patientUsers, queryParameters: qParams);
+    return ResponseModel.fromJson(response, Member.fromJson);
+  }
+
+  Future<ResponseModel<Member>> fetchMidwifes(
+      {String name = '', int? page}) async {
+    Map<String, String> qParams = {
+      'name': name,
+      'isPregnant': "true",
+      'page': page.toString(),
+      'size': "10",
+      'sort': "name,asc",
+
+    };
+    final response =
+    await httpClient.get(ServiceUrl.midwifeUsers, queryParameters: qParams);
+    return ResponseModel.fromJson(response, Member.fromJson);
   }
 
   Future<ResponseModel> saveScheduleEventPersonal(EventModel eventModel) async {
@@ -618,6 +650,11 @@ class RemoteDataSource {
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
+  }
+
+  Future<ResponseModel<MembersSummaryResponse>> getMembersSummary() async {
+    final response = await httpClient.get(ServiceUrl.userTotal);
+    return ResponseModel.fromJson(response, MembersSummaryResponse.fromJson);
   }
 
   Future<int> endChat(String toId) async {

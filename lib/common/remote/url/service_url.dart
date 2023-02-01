@@ -58,6 +58,13 @@ class ServiceUrl {
   static String createScheduleMedicineMw = '$schedule/create/medicine';
   static String deleteSchedule = '$schedule/delete';
 
+  //midwife
+  static String midwife = 'midwife';
+  static String userTotal = '$midwife/user-total';
+  static String patientUsers = '$midwife/patient-users';
+  static String midwifeUsers = '$midwife/midwife-users';
+
+
   //game
   static String game = 'game';
   static String gameList = '$game/list';

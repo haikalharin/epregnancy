@@ -15,6 +15,31 @@ class FetchHospitalsEvent extends HospitalEvent {
   List<Object> get props => [name ?? ''];
 }
 
+class FetchMembersEvent extends HospitalEvent {
+  const FetchMembersEvent(this.name, this.page);
+  final String? name;
+  final int? page;
+
+  @override
+  List<Object> get props => [name ?? ''];
+}
+
+class FetchMidwifesEvent extends HospitalEvent {
+  const FetchMidwifesEvent(this.name, this.page);
+  final String? name;
+  final int? page;
+
+  @override
+  List<Object> get props => [name ?? ''];
+}
+
+class FetchMemberSummaryEvent extends HospitalEvent {
+  const FetchMemberSummaryEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class FetchHospitalsByIdEvent extends HospitalEvent {
   const FetchHospitalsByIdEvent(this.id);
   final String? id;

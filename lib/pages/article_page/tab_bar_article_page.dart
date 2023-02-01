@@ -101,7 +101,7 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
                       Container(
                         margin:const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
                         child: const Tab(
-                          text: "Pengasuh Anak",
+                          text: "Pengasuhan Anak",
                         ),
                       ),
 

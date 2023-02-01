@@ -49,8 +49,9 @@ class StringConstant {
   static const archive = 'Arsip';
   static const onGoing = 'Sedang Berlangsung';
   static const consultation = 'Diskusi';
+  static const askMidwife = 'Tanya Bidan';
   static const newestIncomingMessage = 'Chat yang baru masuk';
-  static const seeAllConsulation = 'Lihat Semua Diskusi';
+  static const seeAllConsulation = 'Lihat Semua';
   static const topic = 'Topik';
 
   //article

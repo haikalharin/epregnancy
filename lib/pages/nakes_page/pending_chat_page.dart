@@ -58,6 +58,7 @@ class _PendingChatTabPageState extends State<PendingChatTabPage> {
                     child: ChatPlaceHolderWidget(
                         unread: false,
                         name: state.chatPendingList?[index].from?.name,
+                        dateTime: DateTime.parse(state.chatPendingList![index].createdDate!),
                         message: state.chatPendingList?[index].message
                     ),
                   ),

@@ -136,6 +136,7 @@ class _ArchiveNakesPageState extends State<ArchiveNakesPage> with AutomaticKeepA
                           child: ChatPlaceHolderWidget(
                               unread: true,
                               name: state.listArchiveChatByFrom![index]!.to?.name,
+                              dateTime: DateTime.parse(state.listArchiveChatByFrom![index]!.createdDate!),
                               message: state.listArchiveChatByFrom![index]!.message),
                         ),
                       );
@@ -175,6 +176,7 @@ class _ArchiveNakesPageState extends State<ArchiveNakesPage> with AutomaticKeepA
                           child: ChatPlaceHolderWidget(
                               unread: true,
                               name: state.listArchiveChatByFrom![index]!.to?.name,
+                              dateTime: DateTime.parse(state.listArchiveChatByFrom![index]!.createdDate!),
                               message: state.listArchiveChatByFrom![index]!.message),
                         );
                       },

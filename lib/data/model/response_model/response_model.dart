@@ -1,9 +1,12 @@
+import 'package:PregnancyApp/data/model/base_model/pagination.dart';
+
 class ResponseModel<T> {
   int? code;
   String? status;
   String? message;
   String? action;
   dynamic data;
+  Pagination? pagination;
 
   /// Pagination from Mas Aamiin
   int? total;
@@ -16,6 +19,7 @@ class ResponseModel<T> {
 
   ResponseModel({
     this.code,
+    this.pagination,
     this.status,
     this.message,
     this.action,
@@ -42,7 +46,9 @@ class ResponseModel<T> {
         data = fromJson(json['data']);
       }
     }
-
+    if(json["pagination"] != null){
+      pagination = Pagination.fromJson(json['pagination']);
+    }
     total = json['total'];
     perPage = json['per_page'];
     currentPage = json['current_page'];
@@ -60,6 +66,7 @@ class ResponseModel<T> {
     String? errorMessage,
     String? action,
     dynamic data,
+    Pagination? pagination,
     int? total,
     int? perPage,
     int? currentPage,
@@ -75,6 +82,7 @@ class ResponseModel<T> {
       action: action ?? this.action,
       data: data ?? this.data,
       total: total ?? this.total,
+      pagination: pagination ?? this.pagination,
       perPage: perPage ?? this.perPage,
       currentPage: currentPage ?? this.currentPage,
       lastPage: lastPage ?? this.lastPage,

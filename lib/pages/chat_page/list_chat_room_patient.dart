@@ -60,6 +60,7 @@ class _ListChatRoomPatientState extends State<ListChatRoomPatient> {
                     itemCount: state.listChatPending?.length,
                     itemBuilder: (context, index) {
                       return ChatPlaceHolderWidget(name: state.listChatPending?[index].from?.name,
+                      dateTime: DateTime.parse(state.listChatPending![index].createdDate!),
                       message: state.listChatPending?[index].message, unread: true,);
                     });
               } else {
