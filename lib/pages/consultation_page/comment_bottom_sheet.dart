@@ -17,6 +17,7 @@ class CommentBottomSheet extends StatefulWidget {
       {Key? key,
       required this.isLiked,
       required this.likesCount,
+      required this.userId,
       required this.commentCounts,
       this.consultationModel})
       : super(key: key);
@@ -24,6 +25,7 @@ class CommentBottomSheet extends StatefulWidget {
   final ValueNotifier<int> commentCounts;
   final ValueNotifier<bool> isLiked;
   final ConsultationModel? consultationModel;
+  final String? userId;
 
   @override
   State<CommentBottomSheet> createState() => _CommentBottomSheetState();
@@ -75,11 +77,13 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               flex: 1,
               child: BlocBuilder<CommentBloc, CommentState>(
                 builder: (context, state) {
+                  print('type : ${state.type}');
                   if (state.status == FormzStatus.submissionInProgress) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else if (state.status == FormzStatus.submissionSuccess) {
+                    print('list comment length : ${state.listComment?.length}');
                     if ((state.listComment?.length ?? 0) < 1) {
                       return const Center(
                         child: Text("Belum Ada Komentar"),
@@ -88,6 +92,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       return ListView.builder(
                           itemCount: state.listComment?.length,
                           itemBuilder: (context, index) {
+                            // print('comment user id : ${state.listComment?[index].user?.id}');
+                            // print('widget user id : ${widget.userId}');
                             return Padding(
                               padding:  EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
                               child: Row(
@@ -119,7 +125,17 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                       ),
                                     ),
-                                  )
+                                  ),
+                                  state.listComment?[index].user?.id == widget.userId ?
+                                  InkWell(
+                                        onTap: (){
+                                          // todo delete postingan
+                                          print("comment id : ${state.listComment?[index].id}");
+                                          Injector.resolve<CommentBloc>().add(DeleteCommentEvent(postId: state.listComment![index].id!));
+                                          widget.commentCounts.value += 1;
+
+                                        },
+                                        child: SvgPicture.asset('assets/icDelete.svg', color: Colors.black,)): const SizedBox.shrink(),
                                 ],
                               ),
                             );

@@ -11,9 +11,10 @@ import 'package:toast/toast.dart';
 import 'bloc/consultation_page_bloc.dart';
 
 class ForumEventSection extends StatefulWidget {
-  const ForumEventSection({Key? key, required this.consultationModel})
+  const ForumEventSection({Key? key, required this.consultationModel, required this.userId})
       : super(key: key);
   final ConsultationModel consultationModel;
+  final String? userId;
 
   @override
   State<ForumEventSection> createState() => _ForumEventSectionState();
@@ -116,6 +117,7 @@ class _ForumEventSectionState extends State<ForumEventSection> {
                               builder: (context) {
                                 return CommentBottomSheet(
                                     isLiked: isLiked,
+                                    userId: widget.userId,
                                     likesCount: likesCount,
                                     commentCounts: commentCounts,
                                     consultationModel: _consultationModel);
@@ -206,6 +208,7 @@ class _ForumEventSectionState extends State<ForumEventSection> {
                               builder: (context) {
                                 return CommentBottomSheet(
                                     isLiked: isLiked,
+                                    userId: widget.userId,
                                     likesCount: likesCount,
                                     commentCounts: commentCounts,
                                     consultationModel: _consultationModel);

@@ -254,7 +254,7 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                               width: MediaQuery.of(context).size.width - 40 * 2,
                               color: Colors.grey.shade200,
                             ),
-                            ForumEventSection(consultationModel: widget.listConsul[index])
+                            ForumEventSection(consultationModel: widget.listConsul[index], userId: widget.userId,)
                           ],
                         ),
                       );
