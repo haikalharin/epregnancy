@@ -99,6 +99,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
         },
         child: BlocBuilder<SurveyPageBloc, SurveyPageState>(
           builder: (context, state) {
+            print("state page : ${state.page}");
             return WillPopScope(
               onWillPop: () {
                 // todo handle back press device
@@ -130,13 +131,10 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   backgroundColor: EpregnancyColors.primerSoft,
                   iconTheme: IconThemeData(color: Colors.black),
                   leading: state.page == 3?GestureDetector(
-                    child: Visibility(
-                      visible: widget.fromRegister != null ? true : false,
-                      child: const Icon(
+                    child: const Icon(
                         Icons.arrow_back_ios,
                         color: Colors.black,
                       ),
-                    ),
                     onTap: () {
                       // todo handle back
                       if (state.page == 3) {
@@ -156,7 +154,19 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                         }
                       }
                     },
-                  ): null,
+                  ): widget.fromRegister != null ? SizedBox.shrink() : IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back_ios)),
+                  // widget.fromRegister == false ? const SizedBox.shrink() : GestureDetector(
+                  //   child: const Icon(
+                  //     Icons.arrow_back_ios,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onTap: () {
+                  //     // todo handle back
+                  //     if(widget.isEdit == true) {
+                  //       Navigator.pop(context);
+                  //     }
+                  //   },
+                  // ),
                 ),
                 body: Container(
                   color: EpregnancyColors.primerSoft,
