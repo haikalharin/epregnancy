@@ -42,6 +42,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+    Injector.resolve<ChatPendingBloc>().add(FetchLastChatEvent(widget.hospitalId));
     Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());

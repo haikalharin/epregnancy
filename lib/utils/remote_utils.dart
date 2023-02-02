@@ -20,6 +20,7 @@ dynamic getIsFromRegisterArgument(dynamic result) => result['is_from_register'];
 dynamic getIsPatient(dynamic result) => result['is_patient'];
 dynamic getIsEdit(dynamic result) => result['is_edit'];
 dynamic getEditName(dynamic result) => result['edit_name'];
+dynamic getFromRegister(dynamic result) => result['from_register'];
 
 dynamic getkey(dynamic result) => result['key'];
 

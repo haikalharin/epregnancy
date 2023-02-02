@@ -24,9 +24,10 @@ import '../login_page/login_page.dart';
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPageBaby extends StatefulWidget {
-  const SurveyPageBaby({Key? key, this.isEdit = false, this.editName = false}) : super(key: key);
+  const SurveyPageBaby({Key? key, this.isEdit = false, this.editName = false, this.fromRegister = false}) : super(key: key);
   final bool? isEdit;
   final bool? editName;
+  final bool? fromRegister;
 
   @override
   State<SurveyPageBaby> createState() => _SurveyPageBabyState();
@@ -129,9 +130,12 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   backgroundColor: EpregnancyColors.primerSoft,
                   iconTheme: IconThemeData(color: Colors.black),
                   leading: state.page == 3?GestureDetector(
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black,
+                    child: Visibility(
+                      visible: widget.fromRegister != null ? true : false,
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black,
+                      ),
                     ),
                     onTap: () {
                       // todo handle back

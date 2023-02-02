@@ -158,6 +158,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       var token;
       if(Platform.isAndroid){
          token = await firebaseService.messaging.getDeviceToken();
+         print("fcmTokenDevice : $token");
       } else {
          token = "ios";
       }

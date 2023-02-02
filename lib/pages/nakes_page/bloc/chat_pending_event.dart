@@ -7,6 +7,14 @@ abstract class ChatPendingEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class FetchLastChatEvent extends ChatPendingEvent {
+  const FetchLastChatEvent(this.hospitalId);
+  final String? hospitalId;
+
+  @override
+  List<Object> get props => [hospitalId ?? ""];
+}
+
 class FetchChatPendingByHospitalId extends ChatPendingEvent {
   const FetchChatPendingByHospitalId(this.hospitalId);
   final String? hospitalId;
