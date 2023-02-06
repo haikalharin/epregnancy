@@ -504,7 +504,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             key: widget.two ?? GlobalKey(),
                             title: 'Kunjungan ke Puskesmas',
                             description:
-                                '',
+                                'Dapatkan poin setiap kunjungan di sini',
                             child: Container(
                               margin: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 16.h),

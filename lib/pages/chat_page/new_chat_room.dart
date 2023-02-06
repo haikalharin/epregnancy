@@ -334,7 +334,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                   children: [
                                     Center(
                                       child: Text(
-                                        "Boleh dan tidak boleh dilakukan pada fitur \"Tanya Yuk\"",
+                                        "Boleh dan tidak boleh dilakukan pada fitur \"Tanya Bidan\"",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: EpregnancyColors.blueDark,
