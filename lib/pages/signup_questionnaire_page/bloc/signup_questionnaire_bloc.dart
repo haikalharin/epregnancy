@@ -176,6 +176,7 @@ class SignUpQuestionnaireBloc
 
               yield state.copyWith(
                   submitStatus: FormzStatus.submissionSuccess,
+                  dateValid: false,
                   userModel: response.data);
             } else {
             yield state.copyWith(
