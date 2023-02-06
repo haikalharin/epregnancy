@@ -409,7 +409,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                   dateFormat: DateFormat('dd / MM / yyyy'),
-                                  enabled: state.date.valid,
+                                  enabled: true,
                                   lastDate: DateTime.now(),
                                   mode: DateTimeFieldPickerMode.date,
                                   decoration: InputDecoration(
