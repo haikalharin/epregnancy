@@ -119,7 +119,7 @@ class SignUpQuestionnaireBloc
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      if (state.status.isValidated) {
+      if (state.status.isValidated && state.dateValid == true) {
         if (state.password.value == state.confirmPassword.value) {
           String email = "";
           String phoneNumber = "";
