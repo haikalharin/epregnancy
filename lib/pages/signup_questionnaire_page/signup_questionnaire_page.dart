@@ -409,7 +409,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                   dateFormat: DateFormat('dd / MM / yyyy'),
-                                  enabled: true,
+                                  enabled: state.date.valid,
                                   lastDate: DateTime.now(),
                                   mode: DateTimeFieldPickerMode.date,
                                   decoration: InputDecoration(
@@ -488,7 +488,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 child: ElevatedButton(
                                   onPressed: state.password.invalid ||
                                           state.confirmPassword.invalid ||
-                                          _passwordController.text.isEmpty
+                                          _passwordController.text.isEmpty || state.dateValid != true || state.firstName.invalid || state.secondName.invalid
                                       ? null
                                       : () async {
                                           Injector.resolve<

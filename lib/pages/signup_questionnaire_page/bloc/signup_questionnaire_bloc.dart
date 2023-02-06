@@ -105,8 +105,10 @@ class SignUpQuestionnaireBloc
     SignUpQuestionnaireState state,
   ) {
     final date = MandatoryFieldValidator.dirty(event.date);
+    print('date bloc : $date');
     return state.copyWith(
       date: date,
+      dateValid: true,
       submitStatus: Formz.validate([date]),
     );
   }
