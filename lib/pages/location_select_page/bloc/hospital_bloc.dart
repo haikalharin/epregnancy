@@ -4,6 +4,7 @@ import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/members_model/members_summary_response.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/repository/hospital_repository/hospital_repository.dart';
+import 'package:PregnancyApp/pages/members_page/members_page.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -90,7 +91,11 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       ) async* {
     yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-member', members: []);
     try {
-      final ResponseModel<Member> response = await hospitalRepository.fetchMembers(event.name ?? "", event.page ?? 0);
+      var sort = "asc";
+      if(event.sort == SortEnum.desc){
+        sort = "desc";
+      }
+      final ResponseModel<Member> response = await hospitalRepository.fetchMembers(event.name ?? "", event.page ?? 0,event.isPregnant?? true,event.sortBy??"name",sort);
       List<Member> _members = response.data ?? [];
       List<Member> members = [];
       for(var element in _members) {

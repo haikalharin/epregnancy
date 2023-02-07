@@ -304,13 +304,13 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<Member>> fetchMembers(
-      {String name = '', int? page}) async {
+      {String name = '', int? page, bool? isPregnant,String? sortBy, String? sort}) async {
     Map<String, String> qParams = {
       'name': name,
-      'isPregnant': "true",
+      'isPregnant':isPregnant.toString(),
       'page': page.toString(),
       'size': "10",
-      'sort': "name,asc",
+      'sort': "$sortBy,$sort",
 
     };
     final response =
