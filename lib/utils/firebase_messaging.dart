@@ -37,6 +37,10 @@ class FirebaseMessagingService {
   String linkUri = "", target = "", content = "";
   BuildContext? mContext;
 
+  Future<void> subscribeToTopic(String topic) async {
+    _firebaseMessaging.subscribeToTopic(topic);
+  }
+
   Future<bool> getFirebaseTopic(FirebaseTopicResponse response) async {
     try {
       List<bool> subscribe = [];
