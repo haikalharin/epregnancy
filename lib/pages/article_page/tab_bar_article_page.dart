@@ -32,7 +32,7 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
   @override
   void initState() {
     _tabController = TabController(
-        length: 4, vsync: this, initialIndex: widget.type == 'expiry' ? 1 : 0);
+        length: 3, vsync: this, initialIndex: widget.type == 'expiry' ? 1 : 0);
     TabBarArticlePage.reloadExpiry = true;
     super.initState();
   }
@@ -49,7 +49,7 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
 
     return Scaffold(
         body: DefaultTabController(
-          length: 4,
+          length: 3,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -98,12 +98,12 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
                           text: "Memiliki Bayi",
                         ),
                       ),
-                      Container(
-                        margin:const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                        child: const Tab(
-                          text: "Pengasuh Anak",
-                        ),
-                      ),
+                      // Container(
+                      //   margin:const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
+                      //   child: const Tab(
+                      //     text: "Pengasuh Anak",
+                      //   ),
+                      // ),
 
                     ],
                   ),
@@ -127,7 +127,7 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
                               ListArticleVertical(condition: StringConstant.pregnant,),
                               ListArticleVertical(condition: StringConstant.notPregnant,),
                               ListArticleVertical(condition: StringConstant.postMaternity,),
-                              ListArticleVertical(condition: StringConstant.babySitter,),
+                              // ListArticleVertical(condition: StringConstant.babySitter,),
                               // AcaraUmumPage(),
                             ]),
                       ),

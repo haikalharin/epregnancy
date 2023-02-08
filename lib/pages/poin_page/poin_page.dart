@@ -214,46 +214,46 @@ class _PoinPageState extends State<PoinPage> {
                       height: 10.h,
                     ),
 
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        // height: 150,
-                        width: MediaQuery.of(context).size.width * 0.90,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.w)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            //listview horizontal
-                            Container(
-                              child: Text(
-                                StringConstant.titleComingSoon,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              margin: EdgeInsets.only(left: 16.w,top: 24.h,right: 16.w,bottom: 24.w),
-                            ),
-                            Center(
-                              child: Container(
-                                width: 240.w,
-                                height: 160.h,
-                                margin: EdgeInsets.only(bottom: 50),
-                                child:Image.asset(
-                                  'assets/bg_coming_soon_redeem_point.png',
-                                  fit: BoxFit.fill,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.center,
+                    //   child: Container(
+                    //     // height: 150,
+                    //     width: MediaQuery.of(context).size.width * 0.90,
+                    //     decoration: BoxDecoration(
+                    //         color: Colors.white,
+                    //         borderRadius: BorderRadius.circular(10.w)),
+                    //     child: Column(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       children: [
+                    //         //listview horizontal
+                    //         Container(
+                    //           child: Text(
+                    //             StringConstant.titleComingSoon,
+                    //             textAlign: TextAlign.center,
+                    //             style: TextStyle(
+                    //                 color: Colors.black,
+                    //                 fontSize: 16.sp,
+                    //                 fontWeight: FontWeight.w700),
+                    //           ),
+                    //           margin: EdgeInsets.only(left: 16.w,top: 24.h,right: 16.w,bottom: 24.w),
+                    //         ),
+                    //         Center(
+                    //           child: Container(
+                    //             width: 240.w,
+                    //             height: 160.h,
+                    //             margin: EdgeInsets.only(bottom: 50),
+                    //             child:Image.asset(
+                    //               'assets/bg_coming_soon_redeem_point.png',
+                    //               fit: BoxFit.fill,
+                    //               width: MediaQuery.of(context).size.width,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
 
                     SizedBox(
                       height: 10.h,
