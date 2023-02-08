@@ -39,7 +39,7 @@ class ChatPlaceHolderWidget extends StatelessWidget {
             Text('Ibu Hamil', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.w500),)
           ],
           ),
-          trailing: !unread ? Container(
+          trailing: unreadCount != null ? Container(
             height: 16.h,
             width: 16.w,
             decoration: const BoxDecoration(
@@ -47,7 +47,7 @@ class ChatPlaceHolderWidget extends StatelessWidget {
                 shape: BoxShape.circle
             ),
             child: Center(
-              child: Text(unreadCount ?? "1", style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.w500),),
+              child: unreadCount != null ? Text(unreadCount ?? "1", style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.w500),) : const SizedBox.shrink(),
             )
           ) : const SizedBox.shrink(),
         ),
