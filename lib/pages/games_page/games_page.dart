@@ -61,7 +61,8 @@ class _GamesPageState extends State<GamesPage> {
                         return InkWell(
                           onTap: () {
                             basicLoadinDialog(context);
-                            Injector.resolve<GamesBloc>().add(PlayGameEvent(state.gamesResponse?[index].id));
+                            showAlertDialog(context);
+                            // Injector.resolve<GamesBloc>().add(PlayGameEvent(state.gamesResponse?[index].id));
                           },
                           child: Container(
                             height: 100.h,
@@ -93,3 +94,30 @@ class _GamesPageState extends State<GamesPage> {
       );
   }
 }
+
+showAlertDialog(BuildContext context) {
+  Widget cancelButton = FlatButton(
+    child: Text("Batal"),
+    onPressed: () => Navigator.of(context).pop(false),
+  );
+  Widget continueButton = FlatButton(
+    child: Text("Lanjutkan"),
+    onPressed: () {
+      Navigator.of(context).pop(true);
+    },
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Anda ingin keluar dari halaman ini?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
