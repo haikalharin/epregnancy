@@ -16,8 +16,11 @@ class FetchHospitalsEvent extends HospitalEvent {
 }
 
 class FetchMembersEvent extends HospitalEvent {
-  const FetchMembersEvent(this.name, this.page);
+  const FetchMembersEvent(this.name, this.page, {this.isPregnant, this.sortBy, this.sort});
   final String? name;
+  final bool? isPregnant;
+  final String? sortBy;
+  final SortEnum? sort;
   final int? page;
 
   @override
