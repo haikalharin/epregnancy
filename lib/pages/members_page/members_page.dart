@@ -1067,19 +1067,19 @@ class _MembersPageState extends State<MembersPage>
                                   if (filter1) {
                                     sort = SortEnum.desc;
                                   } else if (filter2) {
-                                    sortBy = "pregnancy_week";
+                                    sortBy = "pregnancyAgeWeek";
                                     sort = SortEnum.asc;
                                   } else if (filter3) {
-                                    sortBy = "pregnancy_week";
+                                    sortBy = "pregnancyAgeWeek";
                                     sort = SortEnum.desc;
                                   } else if (filter4) {
-                                    sortBy = "total_visit";
+                                    sortBy = "lastHospitalVisit";
                                     sort = SortEnum.desc;
                                   } else if (filter5) {
-                                    sortBy = "total_visit";
+                                    sortBy = "lastHospitalVisit";
                                     sort = SortEnum.asc;
                                   } else if (filter6) {
-                                    sortBy = "created_date";
+                                    sortBy = "createdDate";
                                     sort = SortEnum.asc;
                                   }
                                   Injector.resolve<HospitalBloc>().add(
