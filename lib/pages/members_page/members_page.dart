@@ -1080,7 +1080,7 @@ class _MembersPageState extends State<MembersPage>
                                     sort = SortEnum.asc;
                                   } else if (filter6) {
                                     sortBy = "createdDate";
-                                    sort = SortEnum.asc;
+                                    sort = SortEnum.desc;
                                   }
                                   Injector.resolve<HospitalBloc>().add(
                                       FetchMembersEvent("", 0,

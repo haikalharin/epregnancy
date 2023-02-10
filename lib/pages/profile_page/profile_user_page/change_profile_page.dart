@@ -20,7 +20,10 @@ class ChangeProfilePage extends StatefulWidget {
 
 class _ChangeProfilePageState extends State<ChangeProfilePage> {
   String? _getAge(String dob) {
-    DateTime birthday = DateTime.parse(dob);
+    DateTime birthday = DateTime.now();
+    if(dob != ""){
+      birthday = DateTime.parse(dob);
+    }
     DateDuration duration;
     duration = AgeCalculator.age(birthday);
     return duration.years.toString() + " tahun";
@@ -264,7 +267,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                           Text(
                             "Nama",
                             style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 12.sp),
+                                fontWeight: FontWeight.w400, fontSize: 10.sp),
                           ),
                           Row(
                             children: [
@@ -272,7 +275,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                                 state.user?.name ?? "",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 12.sp),
+                                    fontSize: 10.sp),
                               ),
                               IconButton(
                                     onPressed: () {},
@@ -295,15 +298,15 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                           Text(
                             "Umur",
                             style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 12.sp),
+                                fontWeight: FontWeight.w400, fontSize: 10.sp),
                           ),
                           Row(
                             children: [
                               Text(
-                                _getAge(state.user?.dob) ?? "",
+                                _getAge(state.user?.dob?? "") ?? "",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 12.sp),
+                                    fontSize: 10.sp),
                               ),
                                 IconButton(
                                     onPressed: () {},
@@ -326,18 +329,29 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                           Text(
                             "Ganti Profil Kehamilan",
                             style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 12.sp),
+                                fontWeight: FontWeight.w400, fontSize: 10.sp),
                           ),
-                          IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed(
-                                    RouteName.surveyPageBaby,
-                                    arguments: {"is_edit": true, "edit_name": false});
-                              },
-                              icon: Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: EpregnancyColors.grey,
-                              ))
+                          Row(
+                            children: [
+                              Text(
+                                "Kehamilan Minggu ke-${state.ageBabyInWeeks.toString()}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 10.sp),
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(
+                                        RouteName.surveyPageBaby,
+                                        arguments: {"is_edit": true, "edit_name": false});
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    color: EpregnancyColors.grey,
+                                  ))
+                            ],
+                          ),
+
                         ],
                       ),
                     ),

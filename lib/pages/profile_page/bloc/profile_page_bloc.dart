@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:PregnancyApp/data/model/baby_model_api/baby_Model_api.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -39,15 +40,27 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
     ProfilePageState state,
   ) async* {
     var _user = await AppSharedPreference.getUser();
-
-    yield ProfilePageState(user: _user);
+    BabyModelApi myBaby = await AppSharedPreference.getBabyData();
+    var weeks = 0;
+    var days = 0;
+    if (myBaby.id != '') {
+      DateTime dateTimeCreatedAt = DateTime.parse(myBaby.lastMenstruationDate!);
+      DateTime dateTimeNow = DateTime.now();
+      final differenceInDays = dateTimeNow.difference(dateTimeCreatedAt).inDays;
+      weeks = (differenceInDays / 7).floor();
+      days = (differenceInDays % 7).floor();
+      print('$differenceInDays');
+    }
+    yield ProfilePageState(
+        user: _user, baby: myBaby, ageBabyInWeeks: weeks, ageBabyInDay: days);
   }
 
   Stream<ProfilePageState> _mapChangePhotoProfileEventToState(
     ChangePhotoProfileEvent event,
     ProfilePageState state,
   ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, type: "updateProfile");
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress, type: "updateProfile");
     try {
       var user = await AppSharedPreference.getUser();
       Uint8List byte = await File(event.path).readAsBytes();
@@ -59,17 +72,21 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
 
       if (response.code == 200) {
         UserModel _userModel = response.data;
-        ResponseModel<UserModel> userGetInfo = await userRepository.getUserInfo();
+        ResponseModel<UserModel> userGetInfo =
+            await userRepository.getUserInfo();
         await AppSharedPreference.setUser(userGetInfo.data);
         UserModel userFromSession = await AppSharedPreference.getUser();
+
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess, user: userFromSession, type: "changePhoto");
+            submitStatus: FormzStatus.submissionSuccess,
+            user: userFromSession,
+            type: "changePhoto");
       }
     } on SurveyErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      if( a is UnAuthorizeException) {
+      if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

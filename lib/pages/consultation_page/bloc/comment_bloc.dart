@@ -12,7 +12,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/server_error_exception.dart';
-import '../../../data/model/games_model/play_game_response.dart';
 import '../../../data/model/user_model_api/user_model.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 
@@ -42,7 +41,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
     for(var element in event.listComment!){
       User? user = element.user?.copyWith(
-        name: await aesDecryptor(element.user?.name)
+        name: await aesDecryptor(element.user?.name),
         id: await aesDecryptor(element.user?.id)
       );
 

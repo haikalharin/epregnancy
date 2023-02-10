@@ -243,6 +243,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if (response.code == 200) {
         bool? _showGuide = await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
         print('show guide : $_showGuide');
+        await AppSharedPreference.setBabyData(myBaby.last);
         yield state.copyWith(
           submitStatus: FormzStatus.submissionSuccess,
           baby: myBaby,
