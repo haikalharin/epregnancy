@@ -192,6 +192,12 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
       }
 
       if (response.code == 200) {
+        if (event.isUpdate) {
+          await AppSharedPreference.setBabyData(BabyModelApi(
+              userId: user.id,
+              name: state.name.value,
+              lastMenstruationDate: state.date.value));
+        }
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess, type: 'submitBaby');
       } else {

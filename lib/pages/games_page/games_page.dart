@@ -6,6 +6,7 @@ import 'package:PregnancyApp/data/repository/home_repository/home_repository.dar
 import 'package:PregnancyApp/data/repository/home_repository/home_repository_impl.dart';
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
 import 'package:PregnancyApp/utils/basic_loading_dialog.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,6 @@ class GamesPage extends StatefulWidget {
 }
 
 class _GamesPageState extends State<GamesPage> {
-
   @override
   void initState() {
     Injector.resolve<GamesBloc>().add(const FetchGamesEvent());
@@ -37,87 +37,161 @@ class _GamesPageState extends State<GamesPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: const BtnBackIosStyle(),
-        title: Text(StringConstant.games, style: TextStyle(color: Colors.black, fontSize: 16.sp, fontWeight: FontWeight.w700),),
+        title: Text(
+          StringConstant.games,
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w700),
+        ),
       ),
       body: BlocListener<GamesBloc, GamesState>(
         listener: (context, state) {
-          if(state.type == 'play-game-success'){
+          if (state.type == 'play-game-success') {
             Navigator.pop(context);
-            Navigator.pushNamed(context, RouteName.webViewPage, arguments: {'game_url': state.playGameResponse?.url, 'game_name': state.playGameResponse?.name});
-          } else if (state.type == 'play-game-failed'){
+            Navigator.pushNamed(context, RouteName.webViewPage, arguments: {
+              'game_url': state.playGameResponse?.url,
+              'game_name': state.playGameResponse?.name
+            });
+          } else if (state.type == 'play-game-failed') {
             Navigator.pop(context);
             Toast.show("Game Gagal Dibuka, Mohon Coba Lagi!");
           }
         },
-        child: BlocBuilder<GamesBloc, GamesState>(
-          builder: (context, state) {
-            if(state.type == 'Load Data Success' || state.type == 'play-game-success' || state.type == 'play-game-failed') {
-              return Container(
-                  color: Colors.white,
-                  height: MediaQuery.of(context).size.height,
-                  child: ListView.builder(
-                      itemCount: state.gamesResponse?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            basicLoadinDialog(context);
-                            showAlertDialog(context);
-                            // Injector.resolve<GamesBloc>().add(PlayGameEvent(state.gamesResponse?[index].id));
-                          },
-                          child: Container(
-                            height: 100.h,
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                            decoration: BoxDecoration(
+        child: BlocBuilder<GamesBloc, GamesState>(builder: (context, state) {
+          if (state.type == 'Load Data Success' ||
+              state.type == 'play-game-success' ||
+              state.type == 'play-game-failed') {
+            return Container(
+                color: Colors.white,
+                height: MediaQuery.of(context).size.height,
+                child: ListView.builder(
+                    itemCount: state.gamesResponse?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          showAlertDialog(context, state, index);
+                        },
+                        child: Container(
+                          height: 100.h,
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 10.h),
+                          decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                    image: NetworkImage(state.gamesResponse![index].coverUrl!),
-                                    fit: BoxFit.fill
-                                )
-                            ),
-                            child: Column(
-                              children: [
-                                Text(state.gamesResponse![index].name ?? '', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold), )
-                              ],
-                            ),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      state.gamesResponse![index].coverUrl!),
+                                  fit: BoxFit.fill)),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: EpregnancyColors.white.withAlpha(150)),
+                                child: Text(
+                                  state.gamesResponse![index].name ?? '',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ],
                           ),
-                        );
-                      })
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
+                        ),
+                      );
+                    }));
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }),
       ),
-      );
+    );
   }
 }
 
-showAlertDialog(BuildContext context) {
+showAlertDialog(BuildContext context, GamesState state, int index) {
   Widget cancelButton = FlatButton(
-    child: Text("Batal"),
-    onPressed: () => Navigator.of(context).pop(false),
-  );
-  Widget continueButton = FlatButton(
-    child: Text("Lanjutkan"),
+    minWidth: 200.w,
+    height: 40.h,
+    shape: RoundedRectangleBorder(
+        side: BorderSide(
+            color: EpregnancyColors.primer, width: 1, style: BorderStyle.solid),
+        borderRadius: BorderRadius.circular(8.w)),
+    child: Container( child: Text("Kembali", textAlign: TextAlign.center,)),
     onPressed: () {
       Navigator.of(context).pop(true);
     },
   );
+  Widget continueButton = FlatButton(
+    height: 40.h,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.w)),
+    color: EpregnancyColors.primer,
+    textColor: EpregnancyColors.white,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+            child: Center(
+                child: Text(
+          "Lanjut Bermain",
+          textAlign: TextAlign.center,
+        ))),
+      ],
+    ),
+    onPressed: () async {
+      Navigator.of(context).pop(true);
+      basicLoadinDialog(context);
+      await Future.delayed(const Duration(seconds: 1));
+      Injector.resolve<GamesBloc>()
+          .add(PlayGameEvent(state.gamesResponse?[index].id));
+    },
+  );
   AlertDialog alert = AlertDialog(
-    title: Text("Anda ingin keluar dari halaman ini?"),
+    title: Column(
+      children: [
+        const Text(
+          "Pemakaian Kuota Internet",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+        ),
+        SizedBox(
+          height: 32.h,
+        ),
+        const Text(
+          "Memainkan games ini akan menggunakan Kuota Internet",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+        ),
+      ],
+    ),
     actions: [
-      cancelButton,
-      continueButton,
+      Container(
+        margin: EdgeInsets.only(left: 6.w, right: 6.w, bottom: 8.h),
+        width: MediaQuery.of(context).size.width - 20.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(flex: 1, child: cancelButton),
+            SizedBox(width: 8.h),
+            Flexible(flex: 1, child: continueButton),
+          ],
+        ),
+      ),
     ],
   );
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return alert;
+      return WillPopScope(
+          onWillPop: () {
+            return Future.value(false);
+          },
+          child: alert);
     },
   );
 }
-
