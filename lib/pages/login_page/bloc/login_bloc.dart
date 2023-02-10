@@ -163,7 +163,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
          token = "ios";
       }
       ResponseModel response = await userRepository.loginNonOtp(LoginModel(
-          username: state.username.value, password: state.password.value, fcmToken: token));
+          username: state.username.value, password: state.password.value, fcmToken: token ?? ""));
       LoginResponseData? loginResponseData;
       if (response.code == 200) {
         loginResponseData = response.data;
@@ -231,6 +231,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print("login error exception" + e.toString());
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (error) {
+      print("error login bloc : ${error.toString()}");
       if( error is UnAuthorizeException) {
         // AppSharedPreference.sessionExpiredEvent();
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: error.message);

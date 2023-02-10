@@ -348,40 +348,41 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   height: 1.5.h,
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  //todo change password
-                                  // Navigator.of(context)
-                                  //     .pushNamed(RouteName.surveyPageBaby, arguments: true);
-
-                                  Navigator.of(context).pushNamed(RouteName.disclaimer,
-                                      arguments: {'user_id': state.user?.id, 'from': "account"});
-                                },
-                                child: ListTile(
-                                  leading: Text(
-                                    StringConstant.termAndCondition,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  trailing: const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: EpregnancyColors.greyText,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10.h, horizontal: 10.w),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  height: 1.5.h,
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     //todo change password
+                              //     // Navigator.of(context)
+                              //     //     .pushNamed(RouteName.surveyPageBaby, arguments: true);
+                              //
+                              //     Navigator.of(context).pushNamed(RouteName.disclaimer,
+                              //         arguments: {'user_id': state.user?.id, 'from': "account"});
+                              //   },
+                              //   child: ListTile(
+                              //     leading: Text(
+                              //       StringConstant.termAndCondition,
+                              //       style: TextStyle(
+                              //           color: Colors.black,
+                              //           fontSize: 12.sp,
+                              //           fontWeight: FontWeight.w500),
+                              //     ),
+                              //     trailing: const Icon(
+                              //       Icons.arrow_forward_ios,
+                              //       color: EpregnancyColors.greyText,
+                              //     ),
+                              //   ),
+                              // ),
+                              // Padding(
+                              //   padding: EdgeInsets.symmetric(
+                              //       vertical: 10.h, horizontal: 10.w),
+                              //   child: Divider(
+                              //     color: Colors.grey,
+                              //     height: 1.5.h,
+                              //   ),
+                              // ),
                               InkWell(
                                 onTap: () {
                                   // todo delete account
+                                  Toast.show("Fitur ini akan segera hadir");
                                   // Navigator.of(context)
                                   //     .pushNamed(RouteName.changePasswordPage);
                                 },
@@ -418,7 +419,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   Text("KOMUNITAZ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 10.sp),),
                                   SizedBox(height: 5.h,),
                                   Text(
-                                    'App Versi 1.0.0',
+                                    'App Versi 1.0.3',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,
