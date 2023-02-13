@@ -9,6 +9,7 @@ abstract class HospitalEvent extends Equatable {
 
 class FetchHospitalsEvent extends HospitalEvent {
   const FetchHospitalsEvent(this.name);
+
   final String? name;
 
   @override
@@ -16,12 +17,19 @@ class FetchHospitalsEvent extends HospitalEvent {
 }
 
 class FetchMembersEvent extends HospitalEvent {
-  const FetchMembersEvent(this.name, this.page, {this.isPregnant, this.sortBy, this.sort});
+  const FetchMembersEvent(this.name, this.page,
+      {
+        this.isNextPage = false,
+        this.isLoadingBottom = true,
+        this.isPregnant, this.sortBy, this.sort});
+
   final String? name;
   final bool? isPregnant;
   final String? sortBy;
   final SortEnum? sort;
   final int? page;
+  final bool isNextPage;
+  final bool isLoadingBottom;
 
   @override
   List<Object> get props => [name ?? ''];
@@ -29,6 +37,7 @@ class FetchMembersEvent extends HospitalEvent {
 
 class FetchMidwifesEvent extends HospitalEvent {
   const FetchMidwifesEvent(this.name, this.page);
+
   final String? name;
   final int? page;
 
@@ -45,7 +54,17 @@ class FetchMemberSummaryEvent extends HospitalEvent {
 
 class FetchHospitalsByIdEvent extends HospitalEvent {
   const FetchHospitalsByIdEvent(this.id);
+
   final String? id;
+
+  @override
+  List<Object> get props => [];
+}
+
+class IsLoadingBottomEvent extends HospitalEvent {
+  const IsLoadingBottomEvent(this.isLoadingBottom);
+
+  final bool? isLoadingBottom;
 
   @override
   List<Object> get props => [];
@@ -53,6 +72,7 @@ class FetchHospitalsByIdEvent extends HospitalEvent {
 
 class ChangeHospitalEvent extends HospitalEvent {
   const ChangeHospitalEvent(this.id);
+
   final String? id;
 
   @override

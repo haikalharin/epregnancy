@@ -16,180 +16,294 @@ import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 
 part 'hospital_event.dart';
+
 part 'hospital_state.dart';
 
 class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
-  HospitalBloc(this.hospitalRepository, this.userRepository) : super(HospitalBlocInitialState());
+  HospitalBloc(this.hospitalRepository, this.userRepository)
+      : super(HospitalBlocInitialState());
   final HospitalRepository hospitalRepository;
   final UserRepository userRepository;
 
   @override
   Stream<HospitalState> mapEventToState(HospitalEvent event) async* {
-    if(event is FetchHospitalsEvent) {
+    if (event is FetchHospitalsEvent) {
       yield* _mapFetchHospitalEvent(event, state);
     } else if (event is FetchHospitalsByIdEvent) {
       yield* _mapFetchHospitalByIdEvent(event, state);
-    } else if (event is ChangeHospitalEvent){
+    } else if (event is IsLoadingBottomEvent) {
+      yield _mapIsLoadingBottomEvent(event, state);
+    }
+    else if (event is ChangeHospitalEvent) {
       yield* _mapChangeHospital(event, state);
     } else if (event is FetchMemberSummaryEvent) {
       yield* _mapMembersSummaryEvent(event, state);
     } else if (event is FetchMembersEvent) {
       yield* _mapMembersEvent(event, state);
-    } else if (event is FetchMidwifesEvent){
+    } else if (event is FetchMidwifesEvent) {
       yield* _mapMidwifesEvent(event, state);
     }
   }
 
-  Stream<HospitalState> _mapFetchHospitalEvent(
-      FetchHospitalsEvent event,
+  HospitalState _mapIsLoadingBottomEvent(
+      IsLoadingBottomEvent event,
       HospitalState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-hospital', hospitals: []);
-    try {
-      final ResponseModel<HospitalModel> response = await hospitalRepository.fetchHospitals(event.name ?? '');
+      ) {
+    return state.copyWith(
+      isLoadingBottom: event.isLoadingBottom,
+    );
+  }
 
-      if(response.code == 200) {
+  Stream<HospitalState> _mapFetchHospitalEvent(
+    FetchHospitalsEvent event,
+    HospitalState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress,
+        type: 'fetching-hospital',
+        hospitals: []);
+    try {
+      final ResponseModel<HospitalModel> response =
+          await hospitalRepository.fetchHospitals(event.name ?? '');
+
+      if (response.code == 200) {
         List<HospitalModel> _hospitalList = response.data ?? [];
-        yield state.copyWith(type: 'fetch-hospital-success', status: FormzStatus.submissionSuccess, hospitals: _hospitalList);
+        yield state.copyWith(
+            type: 'fetch-hospital-success',
+            status: FormzStatus.submissionSuccess,
+            hospitals: _hospitalList);
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-hospital-failed', hospitals: []);
+        yield state.copyWith(
+            status: FormzStatus.submissionFailure,
+            type: 'fetch-hospital-failed',
+            hospitals: []);
       }
-    } catch(e) {
+    } catch (e) {
       print('hospital failed : $e');
-      if( e is UnAuthorizeException) {
+      if (e is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+      yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          type: 'Fetch Data Error',
+          errorMessage: e.toString());
     }
   }
 
   Stream<HospitalState> _mapMembersSummaryEvent(
-      FetchMemberSummaryEvent event,
-      HospitalState state,
-      ) async* {
+    FetchMemberSummaryEvent event,
+    HospitalState state,
+  ) async* {
     // yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-hospital', hospitals: []);
     try {
-      final ResponseModel<MembersSummaryResponse> response = await hospitalRepository.fetchMembersSummary();
+      final ResponseModel<MembersSummaryResponse> response =
+          await hospitalRepository.fetchMembersSummary();
       MembersSummaryResponse membersSummaryResponse = response.data;
-      if(response.code == 200) {
-        yield state.copyWith(status: FormzStatus.submissionSuccess, midwifeAmount: membersSummaryResponse.totalMidwife.toString(), patientAmount: membersSummaryResponse.totalPatient.toString());
+      if (response.code == 200) {
+        yield state.copyWith(
+            status: FormzStatus.submissionSuccess,
+            midwifeAmount: membersSummaryResponse.totalMidwife.toString(),
+            patientAmount: membersSummaryResponse.totalPatient.toString());
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure, midwifeAmount: "0", patientAmount: "0");
+        yield state.copyWith(
+            status: FormzStatus.submissionFailure,
+            midwifeAmount: "0",
+            patientAmount: "0");
       }
-    } catch(e) {
+    } catch (e) {
       print('hospital failed : $e');
-      if( e is UnAuthorizeException) {
+      if (e is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+      yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          type: 'Fetch Data Error',
+          errorMessage: e.toString());
     }
   }
 
   Stream<HospitalState> _mapMembersEvent(
-      FetchMembersEvent event,
-      HospitalState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-member', members: []);
+    FetchMembersEvent event,
+    HospitalState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress,
+        type: 'fetching-member',
+        members: [],
+    isLoadingBottom: true);
     try {
       var sort = "asc";
-      if(event.sort == SortEnum.desc){
+      if (event.sort == SortEnum.desc) {
         sort = "desc";
       }
-      final ResponseModel<Member> response = await hospitalRepository.fetchMembers(event.name ?? "", event.page ?? 0,event.isPregnant?? true,event.sortBy??"name",sort);
+      ResponseModel response = ResponseModel.dataEmpty();
+      if(event.isNextPage){
+        yield state.copyWith(
+            status: FormzStatus.submissionInProgress,
+            type: 'get-next-page-member',
+            members: state.members);
+       response =
+        await hospitalRepository.fetchMembers(
+            event.name ?? "",
+            (state.page ?? 0) + 1,
+            event.isPregnant ?? true,
+            event.sortBy ?? "name",
+            sort);
+
+      } else {
+       response =
+        await hospitalRepository.fetchMembers(
+            event.name ?? "",
+            event.page ?? 0,
+            event.isPregnant ?? true,
+            event.sortBy ?? "name",
+            sort);
+      }
       List<Member> _members = response.data ?? [];
       List<Member> members = [];
-      for(var element in _members) {
+      if(event.isNextPage){
+        members = state.members??[];
+      }
+      for (var element in _members) {
         Member? member = element.copyWith(
           name: await aesDecryptor(element.name),
         );
         members.add(member);
       }
-      if(response.code == 200) {
-        List<Member> allMembers = List<Member>.from(state.members ?? [])..addAll(members);
-        yield state.copyWith(status: FormzStatus.submissionSuccess, type: 'fetch-member-success', members: members, last: response.pagination?.last);
+      if (response.code == 200) {
+        List<Member> allMembers = List<Member>.from(state.members ?? [])
+          ..addAll(members);
+        yield state.copyWith(
+            status: FormzStatus.submissionSuccess,
+            type: 'fetch-member-success',
+            members: members,
+            page: response.pagination?.totalPages,
+            last: response.pagination?.last,
+        isLoadingBottom: event.isLoadingBottom);
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-member-failed');
+        yield state.copyWith(
+            status: FormzStatus.submissionFailure, type: 'fetch-member-failed');
       }
-    } catch(e) {
+    } catch (e) {
       print('members failed : $e');
-      if( e is UnAuthorizeException) {
+      if (e is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+      yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          type: 'Fetch Data Error',
+          errorMessage: e.toString());
     }
   }
 
   Stream<HospitalState> _mapMidwifesEvent(
-      FetchMidwifesEvent event,
-      HospitalState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-midwifes', midwifes: []);
+    FetchMidwifesEvent event,
+    HospitalState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress,
+        type: 'fetching-midwifes',
+        midwifes: []);
     try {
-      final ResponseModel<Member> response = await hospitalRepository.fetchMidwifes(event.name ?? "", event.page ?? 0);
+      final ResponseModel<Member> response = await hospitalRepository
+          .fetchMidwifes(event.name ?? "", event.page ?? 0);
       List<Member> _midwifes = response.data ?? [];
       List<Member> midwifes = [];
-      for(var element in _midwifes) {
+      for (var element in _midwifes) {
         Member? member = element.copyWith(
           name: await aesDecryptor(element.name),
         );
         midwifes.add(member);
       }
-      if(response.code == 200) {
-        List<Member> allMembers = List<Member>.from(state.midwifes ?? [])..addAll(midwifes);
-        yield state.copyWith(status: FormzStatus.submissionSuccess, type: 'fetch-midwifes-success', midwifes: midwifes, last: response.pagination?.last);
+      if (response.code == 200) {
+        List<Member> allMembers = List<Member>.from(state.midwifes ?? [])
+          ..addAll(midwifes);
+        yield state.copyWith(
+            status: FormzStatus.submissionSuccess,
+            type: 'fetch-midwifes-success',
+            midwifes: midwifes,
+            last: response.pagination?.last);
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-midwifes-failed');
+        yield state.copyWith(
+            status: FormzStatus.submissionFailure,
+            type: 'fetch-midwifes-failed');
       }
-    } catch(e) {
+    } catch (e) {
       print('midwifes failed : $e');
-      if( e is UnAuthorizeException) {
+      if (e is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+      yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          type: 'Fetch Data Error',
+          errorMessage: e.toString());
     }
   }
 
   Stream<HospitalState> _mapFetchHospitalByIdEvent(
-      FetchHospitalsByIdEvent event,
-      HospitalState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-hospital', hospitals: []);
+    FetchHospitalsByIdEvent event,
+    HospitalState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress,
+        type: 'fetching-hospital',
+        hospitals: []);
     try {
-      final ResponseModel<HospitalModel> response = await hospitalRepository.fetchHospitalsById(event.id ?? '');
+      final ResponseModel<HospitalModel> response =
+          await hospitalRepository.fetchHospitalsById(event.id ?? '');
 
-      if(response.code == 200) {
+      if (response.code == 200) {
         List<HospitalModel> _hospitalList = response.data ?? [];
         await AppSharedPreference.setHospital(_hospitalList[0]);
-        yield state.copyWith(type: 'fetch-hospital-success', status: FormzStatus.submissionSuccess, hospitals: _hospitalList);
+        yield state.copyWith(
+            type: 'fetch-hospital-success',
+            status: FormzStatus.submissionSuccess,
+            hospitals: _hospitalList);
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetch-hospital-failed', hospitals: []);
+        yield state.copyWith(
+            status: FormzStatus.submissionFailure,
+            type: 'fetch-hospital-failed',
+            hospitals: []);
       }
-    } catch(e) {
-      if( e is UnAuthorizeException) {
+    } catch (e) {
+      if (e is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+      yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          type: 'Fetch Data Error',
+          errorMessage: e.toString());
     }
   }
 
   Stream<HospitalState> _mapChangeHospital(
-      ChangeHospitalEvent event,
-      HospitalState state,
-      ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'change-hospital');
+    ChangeHospitalEvent event,
+    HospitalState state,
+  ) async* {
+    yield state.copyWith(
+        status: FormzStatus.submissionInProgress, type: 'change-hospital');
     try {
-      final ResponseModel response = await userRepository.updateHospital(event.id ?? '');
+      final ResponseModel response =
+          await userRepository.updateHospital(event.id ?? '');
 
-      if(response.code == 200) {
-        yield state.copyWith(type: 'change-hospital-success', status: FormzStatus.submissionSuccess);
+      if (response.code == 200) {
+        yield state.copyWith(
+            type: 'change-hospital-success',
+            status: FormzStatus.submissionSuccess);
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'change-hospital-failed', hospitals: []);
+        yield state.copyWith(
+            status: FormzStatus.submissionFailure,
+            type: 'change-hospital-failed',
+            hospitals: []);
       }
-    } catch(e) {
-      if( e is UnAuthorizeException) {
+    } catch (e) {
+      if (e is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Change Hospital Error', errorMessage: e.toString());
+      yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          type: 'Change Hospital Error',
+          errorMessage: e.toString());
     }
   }
 }
