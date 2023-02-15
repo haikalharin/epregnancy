@@ -40,7 +40,7 @@ class ServiceUrl {
 
   //article
   static String article = 'article';
-  static String listArticle = '$article/list';
+  static String listArticle = '$article-list';
   static String readArticle = '$article/read';
 
   //consultation

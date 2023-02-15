@@ -20,7 +20,7 @@ class FetchMembersEvent extends HospitalEvent {
   const FetchMembersEvent(this.name, this.page,
       {
         this.isNextPage = false,
-        this.isLoadingBottom = true,
+        this.isSearch = false,
         this.isPregnant, this.sortBy, this.sort});
 
   final String? name;
@@ -29,7 +29,7 @@ class FetchMembersEvent extends HospitalEvent {
   final SortEnum? sort;
   final int? page;
   final bool isNextPage;
-  final bool isLoadingBottom;
+  final bool isSearch;
 
   @override
   List<Object> get props => [name ?? ''];
@@ -61,14 +61,7 @@ class FetchHospitalsByIdEvent extends HospitalEvent {
   List<Object> get props => [];
 }
 
-class IsLoadingBottomEvent extends HospitalEvent {
-  const IsLoadingBottomEvent(this.isLoadingBottom);
 
-  final bool? isLoadingBottom;
-
-  @override
-  List<Object> get props => [];
-}
 
 class ChangeHospitalEvent extends HospitalEvent {
   const ChangeHospitalEvent(this.id);

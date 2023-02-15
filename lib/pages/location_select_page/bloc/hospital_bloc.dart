@@ -31,8 +31,6 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       yield* _mapFetchHospitalEvent(event, state);
     } else if (event is FetchHospitalsByIdEvent) {
       yield* _mapFetchHospitalByIdEvent(event, state);
-    } else if (event is IsLoadingBottomEvent) {
-      yield _mapIsLoadingBottomEvent(event, state);
     }
     else if (event is ChangeHospitalEvent) {
       yield* _mapChangeHospital(event, state);
@@ -45,14 +43,7 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
     }
   }
 
-  HospitalState _mapIsLoadingBottomEvent(
-      IsLoadingBottomEvent event,
-      HospitalState state,
-      ) {
-    return state.copyWith(
-      isLoadingBottom: event.isLoadingBottom,
-    );
-  }
+
 
   Stream<HospitalState> _mapFetchHospitalEvent(
     FetchHospitalsEvent event,
@@ -129,8 +120,7 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
     yield state.copyWith(
         status: FormzStatus.submissionInProgress,
         type: 'fetching-member',
-        members: [],
-    isLoadingBottom: true);
+        members: []);
     try {
       var sort = "asc";
       if (event.sort == SortEnum.desc) {
@@ -145,7 +135,7 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
        response =
         await hospitalRepository.fetchMembers(
             event.name ?? "",
-            (state.page ?? 0) + 1,
+            state.page + 1,
             event.isPregnant ?? true,
             event.sortBy ?? "name",
             sort);
@@ -177,9 +167,13 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
             status: FormzStatus.submissionSuccess,
             type: 'fetch-member-success',
             members: members,
-            page: response.pagination?.totalPages,
-            last: response.pagination?.last,
-        isLoadingBottom: event.isLoadingBottom);
+            page: response.pagination?.number,
+            isSearch: event.isSearch,
+            isPregnant: event.isPregnant,
+            sort: event.sort,
+            sortBy: event.sortBy,
+            name: event.name,
+            lastPagePatient: response.pagination?.last);
       } else {
         yield state.copyWith(
             status: FormzStatus.submissionFailure, type: 'fetch-member-failed');
@@ -222,7 +216,7 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
             status: FormzStatus.submissionSuccess,
             type: 'fetch-midwifes-success',
             midwifes: midwifes,
-            last: response.pagination?.last);
+            lastPageMidwife: response.pagination?.last);
       } else {
         yield state.copyWith(
             status: FormzStatus.submissionFailure,
