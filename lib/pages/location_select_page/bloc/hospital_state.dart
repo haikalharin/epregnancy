@@ -9,9 +9,14 @@ class HospitalState {
   final List<HospitalModel>? hospitals;
   final List<Member>? members;
   final List<Member>? midwifes;
-  final bool last;
-  final bool isLoadingBottom;
-  final int? page;
+  final bool lastPagePatient;
+  final bool lastPageMidwife;
+  final bool isSearch;
+  final bool isPregnant;
+  final SortEnum? sort;
+  final String? sortBy;
+  final String? name;
+  final int page;
 
   HospitalState({
     this.hospitals,
@@ -21,8 +26,13 @@ class HospitalState {
     this.patientAmount,
     this.midwifeAmount,
     this.members,
-    this.last = false,
-    this.isLoadingBottom = true,
+    this.lastPagePatient = false,
+    this.lastPageMidwife = false,
+    this.isSearch = false,
+    this.isPregnant = true,
+    this.sort,
+    this.sortBy,
+    this.name,
     this.midwifes,
     this.page = 0,
   });
@@ -33,8 +43,13 @@ class HospitalState {
       String? errorMessage,
       String? patientAmount,
       String? midwifeAmount,
-      bool? last,
-      bool? isLoadingBottom,
+      bool? lastPagePatient,
+      bool? lastPageMidwife,
+      bool? isSearch,
+      bool? isPregnant,
+      SortEnum? sort,
+      String? sortBy,
+      String? name,
       List<Member>? members,
       List<Member>? midwifes,
       List<HospitalModel>? hospitals,
@@ -45,9 +60,13 @@ class HospitalState {
         patientAmount: patientAmount ?? this.patientAmount,
         midwifeAmount: midwifeAmount ?? this.midwifeAmount,
         errorMessage: errorMessage ?? this.errorMessage,
-        last: last ?? this.last,
-        isLoadingBottom: isLoadingBottom ?? this.isLoadingBottom,
+        lastPagePatient: lastPagePatient ?? this.lastPagePatient,
+        lastPageMidwife: lastPageMidwife ?? this.lastPageMidwife,
         page: page ?? this.page,
+        isSearch: isSearch ?? this.isSearch,
+        name: name ?? this.name,
+        sort: sort ?? this.sort,
+        sortBy: sortBy ?? this.sortBy,
         members: members ?? this.members,
         midwifes: midwifes ?? this.midwifes,
         hospitals: hospitals ?? this.hospitals);

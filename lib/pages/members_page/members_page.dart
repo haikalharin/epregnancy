@@ -55,11 +55,10 @@ class _MembersPageState extends State<MembersPage>
   bool condition2 = false;
 
   final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
-  GlobalKey<LiquidPullToRefreshState>();
+      GlobalKey<LiquidPullToRefreshState>();
 
   Future<void> _handleRefresh() async {
     Injector.resolve<HospitalBloc>().add(const FetchMembersEvent("", 0));
-
   }
 
   @override
@@ -133,6 +132,19 @@ class _MembersPageState extends State<MembersPage>
                                             textInputAction:
                                                 TextInputAction.search,
                                             onFieldSubmitted: (keyWord) {
+                                              _streamFilter.sink.add(true);
+                                              _streamCondition.sink.add(true);
+                                              setState(() {
+                                                resetFilter = false;
+                                                filter1 = false;
+                                                filter2 = false;
+                                                filter3 = false;
+                                                filter4 = false;
+                                                filter5 = false;
+                                                filter6 = false;
+                                                condition1 = false;
+                                                condition2 = false;
+                                              });
                                               Injector.resolve<HospitalBloc>()
                                                   .add(FetchMembersEvent(
                                                       _patientSearchTextController
@@ -165,7 +177,8 @@ class _MembersPageState extends State<MembersPage>
                                                           HospitalBloc>()
                                                       .add(
                                                           const FetchMembersEvent(
-                                                              "", 0));
+                                                              "", 0,
+                                                              isSearch: true));
 
                                                   // Injector.resolve<PatientSelectBloc>().add(FetchPatientEvent(''));
                                                 },
@@ -244,183 +257,191 @@ class _MembersPageState extends State<MembersPage>
                                 SizedBox(
                                   height: 1.h,
                                 ),
-                                Expanded(child:
-                                  LazyLoadScrollView(
-                                      isLoading: state.status ==
-                                              FormzStatus
-                                                  .submissionInProgress &&
-                                          state.type == "get-next-page-member",
-                                      onEndOfPage: () {
-                                        if (!state.last && state.isLoadingBottom) {
-                                          Injector.resolve<HospitalBloc>().add(
-                                              const FetchMembersEvent("", 0,
-                                                  isNextPage: true));
-                                          Injector.resolve<HospitalBloc>().add(
-                                              const IsLoadingBottomEvent(false));
-                                        }
-                                      },
-                                      child: Scrollbar(
-                                        child: LiquidPullToRefresh(
-                                          color: EpregnancyColors.primer,
-                                          key: _refreshIndicatorKey,
-                                          onRefresh: _handleRefresh,
-                                          showChildOpacityTransition: false,
-                                          child: ListView.builder(
-                                              itemCount:
-                                                  state.members?.length ?? 0,
-                                              itemBuilder: (context, index) {
-                                                return Container(
-                                                  padding: EdgeInsets.all(16.w),
-                                                  decoration: BoxDecoration(
-                                                    border: Border(
-                                                        top: BorderSide(
-                                                            color:
-                                                                EpregnancyColors
-                                                                    .borderGrey,
-                                                            width: 1.w),
-                                                        bottom: BorderSide(
-                                                            color:
-                                                                EpregnancyColors
-                                                                    .borderGrey,
-                                                            width: 0.3.w)),
-                                                  ),
-                                                  child: Row(
-                                                    children: [
-                                                      ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50.w),
-                                                        child: Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    right: 8.w),
-                                                            height: 40.h,
-                                                            width: 40.w,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .circle),
-                                                            child: state
-                                                                        .members![
-                                                                            index]
-                                                                        .imageUrl !=
-                                                                    null
-                                                                ? CircleAvatar(
-                                                                    backgroundImage: NetworkImage(
-                                                                        state
-                                                                            .members![
-                                                                                index]
-                                                                            .imageUrl!,
-                                                                        scale:
-                                                                            1.0),
-                                                                  )
-                                                                : ClipRRect(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                50.w),
-                                                                    child: Image
-                                                                        .asset(
-                                                                            'assets/dummies/dummy_avatar.png'),
-                                                                  )),
-                                                      ),
-                                                      // Container(
-                                                      //   height: 40.h, width: 40.w,
-                                                      //   margin: EdgeInsets.only(right: 8.w),
-                                                      //   decoration: BoxDecoration(
-                                                      //       shape: BoxShape.circle
-                                                      //   ),
-                                                      //   child: ClipRRect(
-                                                      //       borderRadius: BorderRadius.circular(50.h),
-                                                      //       child: Image.asset('assets/dummies/dummy_avatar.png')),
-                                                      // ),
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(state
-                                                                    .members?[
-                                                                        index]
-                                                                    .name ??
-                                                                ""),
-                                                            SizedBox(
-                                                              height: 5.h,
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                SvgPicture.asset(
-                                                                    'assets/icMom.svg'),
-                                                                SizedBox(
-                                                                  width: 5.w,
-                                                                ),
-                                                                Text(
-                                                                  'Kehamilan ${state.members?[index].pregnancyWeek.toString()} Minggu',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          10.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
+                                Expanded(
+                                  child: LazyLoadScrollView(
+                                    isLoading: state.status ==
+                                            FormzStatus.submissionInProgress &&
+                                        state.type == "get-next-page-member",
+                                    onEndOfPage: () {
+                                      if (!state.lastPagePatient) {
+                                        Injector.resolve<HospitalBloc>().add(
+                                            FetchMembersEvent(state.name, 0,
+                                                isNextPage: true,
+                                                isSearch: state.isSearch,
+                                                isPregnant: state.isPregnant,
+                                                sort: state.sort,
+                                                sortBy: state.sortBy));
+                                      }
+                                    },
+                                    child: Scrollbar(
+                                      child: LiquidPullToRefresh(
+                                        color: EpregnancyColors.primer,
+                                        key: _refreshIndicatorKey,
+                                        onRefresh: () async {
+                                              Injector.resolve<HospitalBloc>().add(
+                                                  FetchMembersEvent("", 0,
+                                                      isSearch: state.isSearch,
+                                                      isPregnant: state.isPregnant,
+                                                      sort: state.sort,
+                                                      sortBy: state.sortBy));
+                                        },
+                                        showChildOpacityTransition: false,
+                                        child: ListView.builder(
+                                            itemCount:
+                                                state.members?.length ?? 0,
+                                            itemBuilder: (context, index) {
+                                              return Container(
+                                                padding: EdgeInsets.all(16.w),
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                      top: BorderSide(
+                                                          color:
+                                                              EpregnancyColors
+                                                                  .borderGrey,
+                                                          width: 1.w),
+                                                      bottom: BorderSide(
+                                                          color:
+                                                              EpregnancyColors
+                                                                  .borderGrey,
+                                                          width: 0.3.w)),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.w),
+                                                      child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  right: 8.w),
+                                                          height: 40.h,
+                                                          width: 40.w,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle),
+                                                          child: state
+                                                                      .members![
+                                                                          index]
+                                                                      .imageUrl !=
+                                                                  null
+                                                              ? CircleAvatar(
+                                                                  backgroundImage: NetworkImage(
+                                                                      state
+                                                                          .members![
+                                                                              index]
+                                                                          .imageUrl!,
+                                                                      scale:
+                                                                          1.0),
                                                                 )
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Column(
+                                                              : ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50.w),
+                                                                  child: Image
+                                                                      .asset(
+                                                                          'assets/dummies/dummy_avatar.png'),
+                                                                )),
+                                                    ),
+                                                    // Container(
+                                                    //   height: 40.h, width: 40.w,
+                                                    //   margin: EdgeInsets.only(right: 8.w),
+                                                    //   decoration: BoxDecoration(
+                                                    //       shape: BoxShape.circle
+                                                    //   ),
+                                                    //   child: ClipRRect(
+                                                    //       borderRadius: BorderRadius.circular(50.h),
+                                                    //       child: Image.asset('assets/dummies/dummy_avatar.png')),
+                                                    // ),
+                                                    Expanded(
+                                                      child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
-                                                                .end,
+                                                                .start,
                                                         children: [
-                                                          state.members?[index]
-                                                                      .totalVisit ==
-                                                                  null
-                                                              ? const SizedBox
-                                                                  .shrink()
-                                                              : Text(
-                                                                  "${state.members?[index].totalVisit}x Kunjungan",
-                                                                  style: TextStyle(
-                                                                      color: EpregnancyColors
-                                                                          .greyText,
-                                                                      fontSize:
-                                                                          8.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
+                                                          Text(state
+                                                                  .members?[
+                                                                      index]
+                                                                  .name ??
+                                                              ""),
                                                           SizedBox(
                                                             height: 5.h,
                                                           ),
-                                                          state.members?[index]
-                                                                      .lastVisit ==
-                                                                  null
-                                                              ? const SizedBox
-                                                                  .shrink()
-                                                              : Text(
-                                                                  "Terakhir, ${DateFormatter.dateFormatChat.format(state.members![index].lastVisit!)}",
-                                                                  style: TextStyle(
-                                                                      color: EpregnancyColors
-                                                                          .greyText,
-                                                                      fontSize:
-                                                                          8.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
+                                                          Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  'assets/icMom.svg'),
+                                                              SizedBox(
+                                                                width: 5.w,
+                                                              ),
+                                                              Text(
+                                                                'Kehamilan ${state.members?[index].pregnancyWeek.toString()} Minggu',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        10.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }),
-                                        ),
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        state.members?[index]
+                                                                    .totalVisit ==
+                                                                null
+                                                            ? const SizedBox
+                                                                .shrink()
+                                                            : Text(
+                                                                "${state.members?[index].totalVisit}x Kunjungan",
+                                                                style: TextStyle(
+                                                                    color: EpregnancyColors
+                                                                        .greyText,
+                                                                    fontSize:
+                                                                        8.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              ),
+                                                        SizedBox(
+                                                          height: 5.h,
+                                                        ),
+                                                        state.members?[index]
+                                                                    .lastVisit ==
+                                                                null
+                                                            ? const SizedBox
+                                                                .shrink()
+                                                            : Text(
+                                                                "Terakhir, ${DateFormatter.dateFormatChat.format(state.members![index].lastVisit!)}",
+                                                                style: TextStyle(
+                                                                    color: EpregnancyColors
+                                                                        .greyText,
+                                                                    fontSize:
+                                                                        8.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            }),
                                       ),
                                     ),
-                                 )
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -1250,6 +1271,7 @@ class _LoadingBottom extends StatelessWidget {
       if (state.status == FormzStatus.submissionInProgress &&
           state.type == 'get-next-page-member') {
         return Container(
+            padding: EdgeInsets.symmetric(vertical: 8),
             color: Colors.white.withAlpha(90),
             child: Center(
                 child: CircularProgressIndicator(

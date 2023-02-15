@@ -127,7 +127,7 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
                               ListArticleVertical(condition: StringConstant.pregnant,),
                               ListArticleVertical(condition: StringConstant.notPregnant,),
                               ListArticleVertical(condition: StringConstant.postMaternity,),
-                              ListArticleVertical(condition: StringConstant.babySitter,),
+                              ListArticleVertical(condition: StringConstant.childcare,),
                               // AcaraUmumPage(),
                             ]),
                       ),
