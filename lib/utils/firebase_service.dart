@@ -45,5 +45,7 @@ class FirebaseService {
 
     await messaging.handleMessageFromTerminatedState(context);
     await messaging.setup(context);
+    await messaging.subscribeToTopic("all");
+
   }
 }

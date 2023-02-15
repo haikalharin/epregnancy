@@ -48,7 +48,7 @@ class _PoinCardSectionState extends State<PoinCardSection> {
                     children: [
                       Container(
                           margin: EdgeInsets.only(left: 16),
-                          child: Text(
+                          child: const Text(
                             yourPoin,
                             style: TextStyle(
                                 fontSize: 14,
