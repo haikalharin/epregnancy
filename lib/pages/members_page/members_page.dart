@@ -490,7 +490,11 @@ class _MembersPageState extends State<MembersPage>
                                     BoxConstraints(maxWidth: 40, maxHeight: 21),
                                 suffixIcon: InkWell(
                                   onTap: () {
-                                    _midwifeSearchTextController.clear();
+                                    _midwifeSearchTextController
+                                        .clear();
+                                    Injector.resolve<HospitalBloc>().add(
+                                        const FetchMidwifesEvent("", 0));
+                                    // _midwifeSearchTextController.clear();
                                     // Injector.resolve<PatientSelectBloc>().add(FetchPatientEvent(''));
                                   },
                                   child: Container(
