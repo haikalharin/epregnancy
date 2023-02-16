@@ -19,7 +19,9 @@ import '../../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../utils/secure.dart';
 import '../../../utils/string_constans.dart';
+import '../../members_page/members_page.dart';
 
 part 'article_event.dart';
 
@@ -41,6 +43,7 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
     }
   }
 
+
   ArticlePageState _mapArticleBackEventToState(
     ArticleBackEvent event,
     ArticlePageState state,
@@ -54,31 +57,66 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
     ArticleFetchEvent event,
     ArticlePageState state,
   ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress,
+        type: 'fetching-article',
+    keyword: '');
     try {
-      var category = "";
+      var category = '';
       if (event.condition == StringConstant.pregnant) {
-        category = "Kehamilan";
+        category = "kehamilan";
       } else if (event.condition == StringConstant.notPregnant) {
-        category = "Tidak Hamil";
+        category = "tidak hamil";
       } else if (event.condition == StringConstant.postMaternity) {
-        category = "Memiliki Bayi";
+        category = "memiliki bayi";
+      } else if (event.condition == StringConstant.childcare) {
+        category = "pengasuhan anak";
       }
-      final List<ArticleModel> listArticle =
-          await articleRepository.fetchArticle(
-              isSearch: event.isSearch,
-              keyword: event.keyword,
-              category: category);
-      if (listArticle.isNotEmpty) {
+      var sort = 'asc';
+      if (event.sort == SortEnum.desc) {
+        sort = 'desc';
+      }
+
+      ResponseModel response = ResponseModel.dataEmpty();
+      if (event.isNextPage) {
+        if (event.isSearch) {
+          category = '';
+        }
         yield state.copyWith(
-            listArticle: listArticle,
+            submitStatus: FormzStatus.submissionInProgress,
+            type: 'get-next-page-article',
+            listArticle: state.listArticle,isSearch: state.isSearch, keyword: event.keyword);
+        response = await articleRepository.fetchArticle(
+         state.page + 1, sort, event.sortBy ?? 'createdDate',
+            title: event.keyword, category: category);
+      } else {
+        response = await articleRepository.fetchArticle(
+            event.page ?? 0, sort, event.sortBy ?? 'createdDate',
+            title: event.keyword, category: category);
+      }
+      List<ArticleModel> listArticle = response.data ?? [];
+      List<ArticleModel> listArticleFix = [];
+      if (event.isNextPage) {
+        listArticleFix = state.listArticle ?? [];
+      }
+      for (var element in listArticle) {
+        listArticleFix.add(element);
+      }
+
+      if (listArticleFix.isNotEmpty) {
+        yield state.copyWith(
+            listArticle: listArticleFix,
             submitStatus: FormzStatus.submissionSuccess,
-            isSearch: event.isSearch);
+            page: response.pagination?.number,
+            last: response.pagination?.last,
+            isSearch: event.isSearch,
+            keyword: event.keyword);
       } else {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,
             listArticle: [],
-            isSearch: event.isSearch);
+            isSearch: event.isSearch,
+            keyword: event.keyword);
       }
     } on ArticleErrorException catch (e) {
       print(e);

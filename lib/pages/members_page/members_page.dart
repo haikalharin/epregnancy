@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../common/injector/injector.dart';
@@ -48,8 +50,16 @@ class _MembersPageState extends State<MembersPage>
   bool filter4 = false;
   bool filter5 = false;
   bool filter6 = false;
+  bool resetFilter = false;
   bool condition1 = false;
   bool condition2 = false;
+
+  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
+      GlobalKey<LiquidPullToRefreshState>();
+
+  Future<void> _handleRefresh() async {
+    Injector.resolve<HospitalBloc>().add(const FetchMembersEvent("", 0));
+  }
 
   @override
   void initState() {
@@ -92,389 +102,502 @@ class _MembersPageState extends State<MembersPage>
             tabs: _tabs,
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
-          children: <Widget>[
-            // anggota tab
-            Stack(
-              children: [
-                Container(
-                  // padding: EdgeInsets.all(16.w),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: Container(
-                                margin: EdgeInsets.all(16.w),
-                                height: 40.h,
-                                child: TextFormField(
-                                  controller: _patientSearchTextController,
-                                  textInputAction: TextInputAction.search,
-                                  onFieldSubmitted: (keyWord) {
-                                    Injector.resolve<HospitalBloc>().add(
-                                        FetchMembersEvent(
-                                            _patientSearchTextController.text,
-                                            0));
-                                  },
-                                  decoration: InputDecoration(
-                                    prefixIconConstraints: BoxConstraints(
-                                        maxHeight: 35, maxWidth: 35),
-                                    prefixText: '',
-                                    prefixIcon: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 8.w, right: 8.w),
-                                      child: Icon(
-                                        Icons.search,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    suffixIconConstraints: BoxConstraints(
-                                        maxWidth: 40, maxHeight: 21),
-                                    suffixIcon: InkWell(
-                                      onTap: () {
-                                        _patientSearchTextController.clear();
-                                        Injector.resolve<HospitalBloc>().add(
-                                            const FetchMembersEvent("", 0));
+        body: BlocBuilder<HospitalBloc, HospitalState>(
+          builder: (context, state) {
+            return TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                // anggota tab
+                Stack(
+                  children: [
+                    Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            // padding: EdgeInsets.all(16.w),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        flex: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.all(16.w),
+                                          height: 40.h,
+                                          child: TextFormField(
+                                            controller:
+                                                _patientSearchTextController,
+                                            textInputAction:
+                                                TextInputAction.search,
+                                            onFieldSubmitted: (keyWord) {
+                                              _streamFilter.sink.add(true);
+                                              _streamCondition.sink.add(true);
+                                              setState(() {
+                                                resetFilter = false;
+                                                filter1 = false;
+                                                filter2 = false;
+                                                filter3 = false;
+                                                filter4 = false;
+                                                filter5 = false;
+                                                filter6 = false;
+                                                condition1 = false;
+                                                condition2 = false;
+                                              });
+                                              Injector.resolve<HospitalBloc>()
+                                                  .add(FetchMembersEvent(
+                                                      _patientSearchTextController
+                                                          .text,
+                                                      0));
+                                            },
+                                            decoration: InputDecoration(
+                                              prefixIconConstraints:
+                                                  BoxConstraints(
+                                                      maxHeight: 35,
+                                                      maxWidth: 35),
+                                              prefixText: '',
+                                              prefixIcon: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 8.w, right: 8.w),
+                                                child: Icon(
+                                                  Icons.search,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              suffixIconConstraints:
+                                                  BoxConstraints(
+                                                      maxWidth: 40,
+                                                      maxHeight: 21),
+                                              suffixIcon: InkWell(
+                                                onTap: () {
+                                                  _patientSearchTextController
+                                                      .clear();
+                                                  Injector.resolve<
+                                                          HospitalBloc>()
+                                                      .add(
+                                                          const FetchMembersEvent(
+                                                              "", 0,
+                                                              isSearch: true));
 
-                                        // Injector.resolve<PatientSelectBloc>().add(FetchPatientEvent(''));
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            shape: BoxShape.circle),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.close,
-                                            color: Colors.white,
-                                            size: 12,
+                                                  // Injector.resolve<PatientSelectBloc>().add(FetchPatientEvent(''));
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.black,
+                                                      shape: BoxShape.circle),
+                                                  child: Center(
+                                                    child: Icon(
+                                                      Icons.close,
+                                                      color: Colors.white,
+                                                      size: 12,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              contentPadding: EdgeInsets.only(
+                                                  top: 5.h,
+                                                  left: 20.w,
+                                                  right: 20.w),
+                                              hintText: "Cari Nama...",
+                                              fillColor: Colors.white,
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                  color:
+                                                      EpregnancyColors.primer,
+                                                ),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                  color: EpregnancyColors
+                                                      .borderGrey,
+                                                  width: 2.0,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    contentPadding: EdgeInsets.only(
-                                        top: 5.h, left: 20.w, right: 20.w),
-                                    hintText: "Cari Nama...",
-                                    fillColor: Colors.white,
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        color: EpregnancyColors.primer,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        color: EpregnancyColors.borderGrey,
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                _showPicker(context);
-                              },
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only( right: 8.w),
-                                    child: Text(
-                                      "Filter",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(right: 16),
-                                    width: 20,
-                                    height: 20,
-                                    child: Icon(Icons.filter_list_sharp),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Expanded(child: BlocBuilder<HospitalBloc, HospitalState>(
-                        builder: (context, state) {
-                          return ListView.builder(
-                              itemCount: state.members?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: EdgeInsets.all(16.w),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                        top: BorderSide(
-                                            color: EpregnancyColors.borderGrey,
-                                            width: 1.w),
-                                        bottom: BorderSide(
-                                            color: EpregnancyColors.borderGrey,
-                                            width: 0.3.w)),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(50.w),
-                                        child: Container(
-                                            margin: EdgeInsets.only(right: 8.w),
-                                            height: 40.h,
-                                            width: 40.w,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle),
-                                            child: state.members![index]
-                                                        .imageUrl !=
-                                                    null
-                                                ? CircleAvatar(
-                                                    backgroundImage:
-                                                        NetworkImage(
-                                                            state
-                                                                .members![index]
-                                                                .imageUrl!,
-                                                            scale: 1.0),
-                                                  )
-                                                : ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50.w),
-                                                    child: Image.asset(
-                                                        'assets/dummies/dummy_avatar.png'),
-                                                  )),
-                                      ),
-                                      // Container(
-                                      //   height: 40.h, width: 40.w,
-                                      //   margin: EdgeInsets.only(right: 8.w),
-                                      //   decoration: BoxDecoration(
-                                      //       shape: BoxShape.circle
-                                      //   ),
-                                      //   child: ClipRRect(
-                                      //       borderRadius: BorderRadius.circular(50.h),
-                                      //       child: Image.asset('assets/dummies/dummy_avatar.png')),
-                                      // ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                      InkWell(
+                                        onTap: () {
+                                          _showPicker(context);
+                                        },
+                                        child: Row(
                                           children: [
-                                            Text(state.members?[index].name ??
-                                                ""),
-                                            SizedBox(
-                                              height: 5.h,
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(right: 8.w),
+                                              child: Text(
+                                                "Filter",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16.sp,
+                                                    fontWeight:
+                                                        FontWeight.w300),
+                                              ),
                                             ),
-                                            Row(
-                                              children: [
-                                                SvgPicture.asset(
-                                                    'assets/icMom.svg'),
-                                                SizedBox(
-                                                  width: 5.w,
-                                                ),
-                                                Text(
-                                                  'Kehamilan ${state.members?[index].pregnancyWeek.toString()} Minggu',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 10.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                )
-                                              ],
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(right: 16),
+                                              width: 20,
+                                              height: 20,
+                                              child:
+                                                  Icon(Icons.filter_list_sharp),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          state.members?[index].totalVisit ==
-                                                  null
-                                              ? const SizedBox.shrink()
-                                              : Text(
-                                                  "${state.members?[index].totalVisit}x Kunjungan",
-                                                  style: TextStyle(
-                                                      color: EpregnancyColors
-                                                          .greyText,
-                                                      fontSize: 8.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                          SizedBox(
-                                            height: 5.h,
-                                          ),
-                                          state.members?[index].lastVisit ==
-                                                  null
-                                              ? const SizedBox.shrink()
-                                              : Text(
-                                                  "Terakhir, ${DateFormatter.dateFormatChat.format(state.members![index].lastVisit!)}",
-                                                  style: TextStyle(
-                                                      color: EpregnancyColors
-                                                          .greyText,
-                                                      fontSize: 8.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                        ],
-                                      ),
+                                      )
                                     ],
                                   ),
-                                );
-                              });
-                        },
-                      ))
-                    ],
-                  ),
-                ),
-                _Loading()
-              ],
-            ),
-            // midwife tab
-            Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(16.w),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 40.h,
-                        child: TextFormField(
-                          controller: _midwifeSearchTextController,
-                          textInputAction: TextInputAction.search,
-                          focusNode: keyboardFocusNode,
-                          onFieldSubmitted: (keyWord) {
-                            // Injector.resolve<PatientSelectBloc>().add(FetchPatientEvent(keyWord));
-                            Injector.resolve<HospitalBloc>().add(
-                                FetchMidwifesEvent(
-                                    _midwifeSearchTextController.text, 0));
-                          },
-                          decoration: InputDecoration(
-                            prefixIconConstraints:
-                                BoxConstraints(maxHeight: 35, maxWidth: 35),
-                            prefixText: '',
-                            prefixIcon: Padding(
-                              padding: EdgeInsets.only(left: 8.w, right: 8.w),
-                              child: Icon(
-                                Icons.search,
-                                color: Colors.black,
-                              ),
+                                ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Expanded(
+                                  child: LazyLoadScrollView(
+                                    isLoading: state.status ==
+                                            FormzStatus.submissionInProgress &&
+                                        state.type == "get-next-page-member",
+                                    onEndOfPage: () {
+                                      if (!state.lastPagePatient) {
+                                        Injector.resolve<HospitalBloc>().add(
+                                            FetchMembersEvent(state.name, 0,
+                                                isNextPage: true,
+                                                isSearch: state.isSearch,
+                                                isPregnant: state.isPregnant,
+                                                sort: state.sort,
+                                                sortBy: state.sortBy));
+                                      }
+                                    },
+                                    child: Scrollbar(
+                                      child: LiquidPullToRefresh(
+                                        color: EpregnancyColors.primer,
+                                        key: _refreshIndicatorKey,
+                                        onRefresh: () async {
+                                              Injector.resolve<HospitalBloc>().add(
+                                                  FetchMembersEvent("", 0,
+                                                      isSearch: state.isSearch,
+                                                      isPregnant: state.isPregnant,
+                                                      sort: state.sort,
+                                                      sortBy: state.sortBy));
+                                        },
+                                        showChildOpacityTransition: false,
+                                        child: ListView.builder(
+                                            itemCount:
+                                                state.members?.length ?? 0,
+                                            itemBuilder: (context, index) {
+                                              return Container(
+                                                padding: EdgeInsets.all(16.w),
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                      top: BorderSide(
+                                                          color:
+                                                              EpregnancyColors
+                                                                  .borderGrey,
+                                                          width: 1.w),
+                                                      bottom: BorderSide(
+                                                          color:
+                                                              EpregnancyColors
+                                                                  .borderGrey,
+                                                          width: 0.3.w)),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.w),
+                                                      child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  right: 8.w),
+                                                          height: 40.h,
+                                                          width: 40.w,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle),
+                                                          child: state
+                                                                      .members![
+                                                                          index]
+                                                                      .imageUrl !=
+                                                                  null
+                                                              ? CircleAvatar(
+                                                                  backgroundImage: NetworkImage(
+                                                                      state
+                                                                          .members![
+                                                                              index]
+                                                                          .imageUrl!,
+                                                                      scale:
+                                                                          1.0),
+                                                                )
+                                                              : ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50.w),
+                                                                  child: Image
+                                                                      .asset(
+                                                                          'assets/dummies/dummy_avatar.png'),
+                                                                )),
+                                                    ),
+                                                    // Container(
+                                                    //   height: 40.h, width: 40.w,
+                                                    //   margin: EdgeInsets.only(right: 8.w),
+                                                    //   decoration: BoxDecoration(
+                                                    //       shape: BoxShape.circle
+                                                    //   ),
+                                                    //   child: ClipRRect(
+                                                    //       borderRadius: BorderRadius.circular(50.h),
+                                                    //       child: Image.asset('assets/dummies/dummy_avatar.png')),
+                                                    // ),
+                                                    Expanded(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(state
+                                                                  .members?[
+                                                                      index]
+                                                                  .name ??
+                                                              ""),
+                                                          SizedBox(
+                                                            height: 5.h,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  'assets/icMom.svg'),
+                                                              SizedBox(
+                                                                width: 5.w,
+                                                              ),
+                                                              Text(
+                                                                'Kehamilan ${state.members?[index].pregnancyWeek.toString()} Minggu',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        10.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        state.members?[index]
+                                                                    .totalVisit ==
+                                                                null
+                                                            ? const SizedBox
+                                                                .shrink()
+                                                            : Text(
+                                                                "${state.members?[index].totalVisit}x Kunjungan",
+                                                                style: TextStyle(
+                                                                    color: EpregnancyColors
+                                                                        .greyText,
+                                                                    fontSize:
+                                                                        8.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              ),
+                                                        SizedBox(
+                                                          height: 5.h,
+                                                        ),
+                                                        state.members?[index]
+                                                                    .lastVisit ==
+                                                                null
+                                                            ? const SizedBox
+                                                                .shrink()
+                                                            : Text(
+                                                                "Terakhir, ${DateFormatter.dateFormatChat.format(state.members![index].lastVisit!)}",
+                                                                style: TextStyle(
+                                                                    color: EpregnancyColors
+                                                                        .greyText,
+                                                                    fontSize:
+                                                                        8.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                            suffixIconConstraints:
-                                BoxConstraints(maxWidth: 40, maxHeight: 21),
-                            suffixIcon: InkWell(
-                              onTap: () {
-                                _midwifeSearchTextController.clear();
-                                // Injector.resolve<PatientSelectBloc>().add(FetchPatientEvent(''));
+                          ),
+                        ),
+                        (state.status == FormzStatus.submissionInProgress &&
+                                state.type == 'get-next-page-member')
+                            ? _LoadingBottom()
+                            : Container()
+                      ],
+                    ),
+                    _Loading()
+                  ],
+                ),
+                // midwife tab
+                Stack(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(16.w),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 40.h,
+                            child: TextFormField(
+                              controller: _midwifeSearchTextController,
+                              textInputAction: TextInputAction.search,
+                              focusNode: keyboardFocusNode,
+                              onFieldSubmitted: (keyWord) {
+                                // Injector.resolve<PatientSelectBloc>().add(FetchPatientEvent(keyWord));
+                                Injector.resolve<HospitalBloc>().add(
+                                    FetchMidwifesEvent(
+                                        _midwifeSearchTextController.text, 0));
                               },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    shape: BoxShape.circle),
-                                child: Center(
+                              decoration: InputDecoration(
+                                prefixIconConstraints:
+                                    BoxConstraints(maxHeight: 35, maxWidth: 35),
+                                prefixText: '',
+                                prefixIcon: Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 8.w, right: 8.w),
                                   child: Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                    size: 12,
+                                    Icons.search,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                suffixIconConstraints:
+                                    BoxConstraints(maxWidth: 40, maxHeight: 21),
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    _midwifeSearchTextController.clear();
+                                    // Injector.resolve<PatientSelectBloc>().add(FetchPatientEvent(''));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        shape: BoxShape.circle),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.only(
+                                    top: 5.h, left: 20.w, right: 20.w),
+                                hintText: "Cari Nama...",
+                                fillColor: Colors.white,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: EpregnancyColors.primer,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: EpregnancyColors.borderGrey,
+                                    width: 2.0,
                                   ),
                                 ),
                               ),
                             ),
-                            contentPadding: EdgeInsets.only(
-                                top: 5.h, left: 20.w, right: 20.w),
-                            hintText: "Cari Nama...",
-                            fillColor: Colors.white,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: EpregnancyColors.primer,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: EpregnancyColors.borderGrey,
-                                width: 2.0,
-                              ),
-                            ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      BlocBuilder<HospitalBloc, HospitalState>(
-                        builder: (context, state) {
-                          return Expanded(
-                              child: ListView.builder(
-                                  itemCount: state.midwifes?.length ?? 0,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      padding: EdgeInsets.all(16.w),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                            top: BorderSide(
-                                                color:
-                                                    EpregnancyColors.borderGrey,
-                                                width: 1.w),
-                                            bottom: BorderSide(
-                                                color:
-                                                    EpregnancyColors.borderGrey,
-                                                width:
-                                                    index == 3 ? 0.3.w : 1.w)),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 8.w),
-                                                height: 40.h,
-                                                width: 40.w,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle),
-                                                child: state.midwifes![index]
-                                                            .imageUrl !=
-                                                        null
-                                                    ? CircleAvatar(
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                                state
-                                                                    .midwifes![
-                                                                        index]
-                                                                    .imageUrl!,
-                                                                scale: 1.0),
-                                                      )
-                                                    : Image.asset(
-                                                        'assets/dummies/dummy_avatar.png')),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          BlocBuilder<HospitalBloc, HospitalState>(
+                            builder: (context, state) {
+                              return Expanded(
+                                  child: ListView.builder(
+                                      itemCount: state.midwifes?.length ?? 0,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          padding: EdgeInsets.all(16.w),
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                                top: BorderSide(
+                                                    color: EpregnancyColors
+                                                        .borderGrey,
+                                                    width: 1.w),
+                                                bottom: BorderSide(
+                                                    color: EpregnancyColors
+                                                        .borderGrey,
+                                                    width: index == 3
+                                                        ? 0.3.w
+                                                        : 1.w)),
                                           ),
-                                          Center(
-                                            child: Text(
-                                                "${state.midwifes?[index].name}"),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }));
-                        },
-                      )
-                    ],
-                  ),
+                                          child: Row(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        right: 8.w),
+                                                    height: 40.h,
+                                                    width: 40.w,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle),
+                                                    child: state
+                                                                .midwifes![
+                                                                    index]
+                                                                .imageUrl !=
+                                                            null
+                                                        ? CircleAvatar(
+                                                            backgroundImage:
+                                                                NetworkImage(
+                                                                    state
+                                                                        .midwifes![
+                                                                            index]
+                                                                        .imageUrl!,
+                                                                    scale: 1.0),
+                                                          )
+                                                        : Image.asset(
+                                                            'assets/dummies/dummy_avatar.png')),
+                                              ),
+                                              Center(
+                                                child: Text(
+                                                    "${state.midwifes?[index].name}"),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }));
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    _Loading()
+                  ],
                 ),
-                _Loading()
               ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -527,15 +650,20 @@ class _MembersPageState extends State<MembersPage>
                                 _streamFilter.sink.add(true);
                                 _streamCondition.sink.add(true);
                                 setState(() {
+                                  resetFilter = false;
                                   filter1 = false;
                                   filter2 = false;
                                   filter3 = false;
                                   filter4 = false;
                                   filter5 = false;
                                   filter6 = false;
-                                  condition1 =false;
-                                  condition2 =false;
+                                  condition1 = false;
+                                  condition2 = false;
                                 });
+                                Injector.resolve<HospitalBloc>()
+                                    .add(const FetchMembersEvent("", 0));
+                                Navigator.pop(context);
+                                keyboardFocusNode.unfocus();
                               },
                               child: Text(
                                 "Atur Ulang",
@@ -1026,80 +1154,89 @@ class _MembersPageState extends State<MembersPage>
                       ],
                     ),
                   ),
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Align(
-                          alignment: Alignment(0, 1),
-                          child: Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 10),
-                            width: MediaQuery.of(context).size.width - 40,
-                            height: 50,
-                            child: RaisedButton(
-                              color: EpregnancyColors.primer,
-                              child: Padding(
-                                padding: EdgeInsets.zero,
-                                child: Text(
-                                  "Terapkan",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
+                  StreamBuilder<bool>(
+                      stream: _streamFilter.stream,
+                      builder: (context, snapshot) {
+                        return Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Align(
+                                alignment: Alignment(0, 1),
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                                  width: MediaQuery.of(context).size.width - 40,
+                                  height: 50,
+                                  child: RaisedButton(
+                                    color: (filter1 ||
+                                            filter2 ||
+                                            filter3 ||
+                                            filter4 ||
+                                            filter5 ||
+                                            filter6)
+                                        ? EpregnancyColors.primer
+                                        : EpregnancyColors.primerSoft2,
+                                    child: Padding(
+                                      padding: EdgeInsets.zero,
+                                      child: Text(
+                                        "Terapkan",
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white),
+                                      ),
+                                    ),
+                                    elevation: 8,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(7)),
+                                    ),
+                                    onPressed: () async {
+                                      bool isPregnant = true;
+                                      if (condition2) {
+                                        isPregnant = false;
+                                      }
+                                      if (filter1 ||
+                                          filter2 ||
+                                          filter3 ||
+                                          filter4 ||
+                                          filter5 ||
+                                          filter6 ||
+                                          resetFilter) {
+                                        var sortBy = "name";
+                                        var sort = SortEnum.asc;
+                                        if (filter1) {
+                                          sort = SortEnum.desc;
+                                        } else if (filter2) {
+                                          sortBy = "lastBaby.pregnancyAgeWeek";
+                                          sort = SortEnum.asc;
+                                        } else if (filter3) {
+                                          sortBy = "lastBaby.pregnancyAgeWeek";
+                                          sort = SortEnum.desc;
+                                        } else if (filter4) {
+                                          sortBy = "totalHospitalVisit";
+                                          sort = SortEnum.desc;
+                                        } else if (filter5) {
+                                          sortBy = "totalHospitalVisit";
+                                          sort = SortEnum.asc;
+                                        } else if (filter6) {
+                                          sortBy = "createdDate";
+                                          sort = SortEnum.desc;
+                                        }
+                                        Injector.resolve<HospitalBloc>().add(
+                                            FetchMembersEvent("", 0,
+                                                sortBy: sortBy,
+                                                isPregnant: isPregnant,
+                                                sort: sort));
+                                        Navigator.pop(context);
+                                        keyboardFocusNode.unfocus();
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
-                              elevation: 8,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(7)),
-                              ),
-                              onPressed: () async {
-                                bool isPregnant = true;
-                                if (condition2) {
-                                  isPregnant = false;
-                                }
-                                if (filter1 ||
-                                    filter2 ||
-                                    filter3 ||
-                                    filter4 ||
-                                    filter5 ||
-                                    filter6) {
-                                  var sortBy = "name";
-                                  var sort = SortEnum.asc;
-                                  if (filter1) {
-                                    sort = SortEnum.desc;
-                                  } else if (filter2) {
-                                    sortBy = "pregnancyAgeWeek";
-                                    sort = SortEnum.asc;
-                                  } else if (filter3) {
-                                    sortBy = "pregnancyAgeWeek";
-                                    sort = SortEnum.desc;
-                                  } else if (filter4) {
-                                    sortBy = "lastHospitalVisit";
-                                    sort = SortEnum.desc;
-                                  } else if (filter5) {
-                                    sortBy = "lastHospitalVisit";
-                                    sort = SortEnum.asc;
-                                  } else if (filter6) {
-                                    sortBy = "createdDate";
-                                    sort = SortEnum.desc;
-                                  }
-                                  Injector.resolve<HospitalBloc>().add(
-                                      FetchMembersEvent("", 0,
-                                          sortBy: sortBy,
-                                          isPregnant: isPregnant,
-                                          sort: sort));
-                                } else {
-                                  Injector.resolve<HospitalBloc>()
-                                      .add(const FetchMembersEvent("", 0));
-                                }
-                                Navigator.pop(context);
-                                keyboardFocusNode.unfocus();
-                              },
-                            ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        );
+                      }),
                 ],
               ),
             ),
@@ -1112,8 +1249,29 @@ class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HospitalBloc, HospitalState>(builder: (context, state) {
-      if (state.status == FormzStatus.submissionInProgress) {
+      if (state.status == FormzStatus.submissionInProgress &&
+          state.type == 'fetching-member') {
         return Container(
+            color: Colors.white.withAlpha(90),
+            child: Center(
+                child: CircularProgressIndicator(
+              color: EpregnancyColors.primer,
+            )));
+      } else {
+        return Text("");
+      }
+    });
+  }
+}
+
+class _LoadingBottom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HospitalBloc, HospitalState>(builder: (context, state) {
+      if (state.status == FormzStatus.submissionInProgress &&
+          state.type == 'get-next-page-member') {
+        return Container(
+            padding: EdgeInsets.symmetric(vertical: 8),
             color: Colors.white.withAlpha(90),
             child: Center(
                 child: CircularProgressIndicator(

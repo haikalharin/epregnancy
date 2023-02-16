@@ -9,28 +9,64 @@ class HospitalState {
   final List<HospitalModel>? hospitals;
   final List<Member>? members;
   final List<Member>? midwifes;
-  final bool? last;
+  final bool lastPagePatient;
+  final bool lastPageMidwife;
+  final bool isSearch;
+  final bool isPregnant;
+  final SortEnum? sort;
+  final String? sortBy;
+  final String? name;
+  final int page;
 
-  HospitalState(
-      {this.hospitals, this.type, this.status, this.errorMessage, this.patientAmount, this.midwifeAmount, this.members, this.last, this.midwifes});
+  HospitalState({
+    this.hospitals,
+    this.type,
+    this.status,
+    this.errorMessage,
+    this.patientAmount,
+    this.midwifeAmount,
+    this.members,
+    this.lastPagePatient = false,
+    this.lastPageMidwife = false,
+    this.isSearch = false,
+    this.isPregnant = true,
+    this.sort,
+    this.sortBy,
+    this.name,
+    this.midwifes,
+    this.page = 0,
+  });
 
   HospitalState copyWith(
       {FormzStatus? status,
-        String? type,
-        String? errorMessage,
-        String? patientAmount,
-        String? midwifeAmount,
-        bool? last,
-        List<Member>? members,
-        List<Member>? midwifes,
-        List<HospitalModel>? hospitals}) {
+      String? type,
+      String? errorMessage,
+      String? patientAmount,
+      String? midwifeAmount,
+      bool? lastPagePatient,
+      bool? lastPageMidwife,
+      bool? isSearch,
+      bool? isPregnant,
+      SortEnum? sort,
+      String? sortBy,
+      String? name,
+      List<Member>? members,
+      List<Member>? midwifes,
+      List<HospitalModel>? hospitals,
+      int? page}) {
     return HospitalState(
         type: type ?? this.type,
         status: status ?? this.status,
         patientAmount: patientAmount ?? this.patientAmount,
         midwifeAmount: midwifeAmount ?? this.midwifeAmount,
         errorMessage: errorMessage ?? this.errorMessage,
-        last: last ?? this.last,
+        lastPagePatient: lastPagePatient ?? this.lastPagePatient,
+        lastPageMidwife: lastPageMidwife ?? this.lastPageMidwife,
+        page: page ?? this.page,
+        isSearch: isSearch ?? this.isSearch,
+        name: name ?? this.name,
+        sort: sort ?? this.sort,
+        sortBy: sortBy ?? this.sortBy,
         members: members ?? this.members,
         midwifes: midwifes ?? this.midwifes,
         hospitals: hospitals ?? this.hospitals);
