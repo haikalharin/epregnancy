@@ -93,6 +93,12 @@ dependencies:
   root_detector: ^0.0.6
   in_app_update: ^3.0.0
 
+  #audio feature
+  audio_video_progress_bar: ^1.0.0
+  just_audio: ^0.9.30
+  just_audio_background: ^0.0.1-beta.7
+  audio_session: ^0.1.13
+
   #flavor for environment management
 #  flutter_flavor: ^3.1.1
 
@@ -209,6 +215,7 @@ flutter:
     - assets/dummies/
     - assets/onboarding/
     - assets/lottie/
+    - assets/audio/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

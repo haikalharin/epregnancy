@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
+import 'package:PregnancyApp/pages/audio_page/playlist_page/playlist_page.dart';
 import 'package:PregnancyApp/pages/change_password_page/change_password_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/article_page/dashboard_article.dart';
@@ -26,6 +27,8 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 
 import '../common/constants/router_constants.dart';
+import '../pages/audio_page/audio_main_page.dart';
+import '../pages/audio_page/audio_player_page/audio_player_page.dart';
 import '../pages/chat_page/chat_page.dart';
 import '../pages/chat_page/chat_room.dart';
 import '../pages/event_page/add_event_page_for_patient.dart';
@@ -149,7 +152,15 @@ class Routes {
       case RouteName.signUpQuestionnairePage:
         return MaterialPageRoute(
             builder: (_) => const SignUpQuestionnairePage());
-
+      case RouteName.audio:
+        return MaterialPageRoute(
+            builder: (_) => const AudioMainPage());
+      case RouteName.playlist:
+        return MaterialPageRoute(
+            builder: (_) => const PlaylistPage());
+      case RouteName.audioPlayer:
+        return MaterialPageRoute(
+            builder: (_) => const AudioPlayerPage());
       case RouteName.changePasswordPage:
         return MaterialPageRoute(builder: (_) => const ChangePasswordPage());
       case RouteName.newPasswordPage:
