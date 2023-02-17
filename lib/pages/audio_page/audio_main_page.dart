@@ -91,37 +91,40 @@ class _AudioMainPageState extends State<AudioMainPage> {
           ],
         )
       ),
-      bottomSheet: SizedBox(
-        height: 100.h,
-        child: Column(
-          children: [
-            Hero(
-              tag: 'music-player',
-              child: Material(
-                child: InkWell(
-                  onTap: (){
-                    Navigator.pushNamed(context, RouteName.audioPlayer);
-                  },
-                  child: SizedBox(
-                      height: 80.h,
-                      // color: Colors.red,
-                      width: MediaQuery.of(context).size.width,
-                      child: BottomSheetPlayer()
+      bottomSheet: Visibility(
+        visible: playerDev.playing,
+        child: SizedBox(
+          height: 100.h,
+          child: Column(
+            children: [
+              Hero(
+                tag: 'music-player',
+                child: Material(
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.pushNamed(context, RouteName.audioPlayer);
+                    },
+                    child: SizedBox(
+                        height: 80.h,
+                        // color: Colors.red,
+                        width: MediaQuery.of(context).size.width,
+                        child: BottomSheetPlayer()
+                    ),
                   ),
                 ),
               ),
-            ),
-            ProgressBar(
-              progress: _position ?? Duration.zero,
-              buffered: _buffer ?? Duration.zero,
-              total: _duration ?? const Duration(milliseconds: 0),
-              thumbRadius: 1,
-              timeLabelTextStyle: const TextStyle(color: Colors.white),
-              onSeek: (duration) {
-                playerDev.seek(duration);
-              },
-            ),
-          ],
+              ProgressBar(
+                progress: _position ?? Duration.zero,
+                buffered: _buffer ?? Duration.zero,
+                total: _duration ?? const Duration(milliseconds: 0),
+                thumbRadius: 1,
+                timeLabelTextStyle: const TextStyle(color: Colors.white),
+                onSeek: (duration) {
+                  playerDev.seek(duration);
+                },
+              ),
+            ],
+          ),
         ),
       )
     );

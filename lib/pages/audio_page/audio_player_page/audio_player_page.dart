@@ -24,6 +24,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
   Duration? _duration;
   Duration? _buffer;
   Duration? _position;
+  bool shuffleActive = false;
 
   @override
   void initState() {
@@ -32,6 +33,15 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
     // playerDev.setAsset("assets/audio/al_fatihah.mp3");
     // playerDev.setAudioSource(playlist,
     //     initialIndex: 0, initialPosition: Duration.zero);
+
+    playerDev.shuffleModeEnabledStream.listen((shuffle) {
+      if(mounted){
+        setState(() {
+          shuffleActive = shuffle;
+        });
+      }
+    });
+
     playerDev.playerStateStream.listen((state) {
       if (state.playing) {
         if (mounted) {
@@ -199,9 +209,24 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SvgPicture.asset(
-                      'assets/icShuffle.svg',
-                      color: EpregnancyColors.primer,
+                    InkWell(
+                      onTap: (){
+                        if(playerDev.shuffleModeEnabled){
+                          playerDev.setShuffleModeEnabled(false);
+                          setState(() {
+                            shuffleActive = false;
+                          });
+                        } else {
+                          playerDev.setShuffleModeEnabled(true);
+                          setState(() {
+                            shuffleActive = true;
+                          });
+                        }
+                      },
+                      child: SvgPicture.asset(
+                        'assets/icShuffle.svg',
+                        color: shuffleActive ? EpregnancyColors.primer : EpregnancyColors.grey,
+                      ),
                     ),
                     InkWell(
                       onTap: (){
@@ -240,8 +265,17 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
                         'assets/icSkip.svg',
                       ),
                     ),
-                    SvgPicture.asset(
-                      'assets/icRepeat.svg',
+                    InkWell(
+                      onTap: (){
+                        if(playerDev.loopMode == LoopMode.all){
+                          playerDev.setLoopMode(LoopMode.one);
+                        } else {
+                          playerDev.setLoopMode(LoopMode.all);
+                        }
+                      },
+                      child: SvgPicture.asset(
+                        'assets/icRepeat.svg', color: playerDev.loopMode == LoopMode.one ? EpregnancyColors.primer : EpregnancyColors.grey ,
+                      ),
                     ),
                   ],
                 ),
