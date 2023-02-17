@@ -316,7 +316,7 @@ class RemoteDataSource {
       'name': name,
       'isPregnant': isPregnant.toString(),
       'page': page.toString(),
-      'size': "5",
+      'size': "10",
       'sort': "$sortBy,$sort",
     };
     final response =
@@ -649,7 +649,7 @@ class RemoteDataSource {
       'title': title,
       'category': category,
       'page': page.toString(),
-      'size': "4",
+      'size': "10",
       'sort': "$sortBy,$sort",
     };
     final response =
