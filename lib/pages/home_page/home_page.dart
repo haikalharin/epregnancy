@@ -85,6 +85,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
+  _scrollToBottom() {
+    _scrollControler.jumpTo(_scrollControler.position.maxScrollExtent);
+  }
+
   void start() {
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());

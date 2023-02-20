@@ -52,6 +52,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
   final GlobalKey _three = GlobalKey();
   final GlobalKey _four = GlobalKey();
   final GlobalKey _five = GlobalKey();
+  final GlobalKey _six = GlobalKey();
   BuildContext? myContext;
   TabController? controller;
   int indexSelected = 0;
@@ -73,7 +74,9 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         _isFirstLaunch().then((result) {
           if (result) {
             ShowCaseWidget.of(myContext ?? context)
-                .startShowCase([_one, _two, _three, _four, _five]);
+                .startShowCase([_one, _two, _three, _four, _five,_six]);
+            ShowCaseWidget.of(myContext ?? context)
+          .enableAutoScroll = true;
           }
         });
       });
@@ -82,7 +85,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         _isFirstLaunch().then((result) {
           if (result) {
             ShowCaseWidget.of(myContext ?? context)
-                .startShowCase([_two, _four, _five]);
+                .startShowCase([_two, _five, _six]);
           }
         });
       });
@@ -193,14 +196,25 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
               ),
             ),
           ),
-          icon: ClipRRect(
-            borderRadius: BorderRadius.circular(0),
-            child:SvgPicture.asset(
-              'assets/icMusic.svg',
-              width: 30,
-              color: EpregnancyColors.greyDarkFontColor,
-              height: 30,
-              fit: BoxFit.cover,
+          icon:Showcase.withWidget(
+            key: _four,
+            title: 'Audio',
+            description:
+            'Kumpulan audio Murotal untuk ibu dan bayi ',
+            height: 100,
+            width: 100,
+            shapeBorder: const CircleBorder(),
+            radius: const BorderRadius.all(Radius.circular(150)),
+            container: null,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(0),
+              child:SvgPicture.asset(
+                'assets/icMusic.svg',
+                width: 30,
+                color: EpregnancyColors.greyDarkFontColor,
+                height: 30,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
@@ -216,7 +230,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
             ),
           ),
           icon: Showcase.withWidget(
-            key: _four,
+            key: _five,
             title: 'E-konsultasi dan Komunitas',
             description:
                 'Komunikasikan dan diskusikan masalah, keluhan dan saran Anda dengan mudah kepada Profesional dan Komunitas',
@@ -250,7 +264,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
             ),
           ),
           icon: Showcase.withWidget(
-            key: _five,
+            key: _six,
             title: 'Profil dan Pengaturan',
             description:
                 'Ubah foto, kata sandi dan atur profil kehamilan Anda dalam satu menu pengaturan',

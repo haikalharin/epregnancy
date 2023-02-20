@@ -122,7 +122,6 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
                         // margin: EdgeInsets.only(top: 20),
                         child: TabBarView(
                             controller: _tabController,
-                            physics: const NeverScrollableScrollPhysics(),
                             children:  [
                               ListArticleVertical(condition: StringConstant.pregnant,),
                               ListArticleVertical(condition: StringConstant.notPregnant,),
