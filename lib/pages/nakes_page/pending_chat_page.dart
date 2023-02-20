@@ -20,55 +20,53 @@ class PendingChatTabPage extends StatefulWidget {
 class _PendingChatTabPageState extends State<PendingChatTabPage> {
   String? _userId;
 
-
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
     return BlocBuilder<ChatPendingBloc, ChatPendingState>(
-      builder: (context, state) {
-        if (state.chatPendingList?.length == 0) {
-          return const EmptyChatListPage();
-        } else {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: ListView.builder(
-              shrinkWrap: true,
-              // physics: const NeverScrollableScrollPhysics(),
-              itemCount: state.chatPendingList?.length,
-              itemBuilder: (context, index){
-                return InkWell(
-                  onTap: (){
-                    showDialog(
-                        context: context,
-                        builder: (context) => Dialog(
+        builder: (context, state) {
+      if (state.chatPendingList?.length == 0) {
+        return const EmptyChatListPage();
+      } else {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: ListView.builder(
+            shrinkWrap: true,
+            // physics: const NeverScrollableScrollPhysics(),
+            itemCount: state.chatPendingList?.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0)
-                          ),
+                              borderRadius: BorderRadius.circular(16.0)),
                           child: StartConsulationDialog(
                             name: state.chatPendingList?[index].from?.name,
-                            hospitalId: state.chatPendingList?[index].hospitalId,
+                            hospitalId:
+                                state.chatPendingList?[index].hospitalId,
                             fromId: state.chatPendingList?[index].fromId,
                             userId: _userId,
-                          )
-                        )
-                    );
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: ChatPlaceHolderWidget(
-                        unread: false,
-                        name: state.chatPendingList?[index].from?.name,
-                        dateTime: DateTime.parse(state.chatPendingList![index].createdDate!),
-                        message: state.chatPendingList?[index].message
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        }
+                          )));
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: ChatPlaceHolderWidget(
+                      unread: false,
+                      name: state.chatPendingList?[index].from?.name,
+                      dateTime: DateTime.parse(state.chatPendingList !=null
+                          ? state.chatPendingList![index].createdDate ??
+                              "0000-00-00 00:00:00"
+                          : "0000-00-00 00:00:00"),
+                      message: state.chatPendingList?[index].message),
+                ),
+              );
+            },
+          ),
+        );
       }
-    );
+    });
   }
 
   void getUserId() async {
