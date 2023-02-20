@@ -88,6 +88,7 @@ dependencies:
   age_calculator: ^1.0.0
   mobile_scanner: ^1.1.2
   qr_flutter: ^4.0.0
+  firebase_analytics: ^9.3.8
   #blur from recent app
   secure_content: ^0.0.11
   root_detector: ^0.0.6

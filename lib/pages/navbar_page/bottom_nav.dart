@@ -13,6 +13,7 @@ import '../../data/firebase/event/event_user.dart';
 import '../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
+import '../../utils/firebase_analytics.dart';
 import '../../utils/string_constans.dart';
 import '../event_page/add_event_page.dart';
 import '../home_page/logout_page.dart';
@@ -286,6 +287,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
   Widget _buildWidgetBody() {
     switch (indexSelected) {
       case 0:
+        FirebaseAnalyticsService().setCurrentScreen("home_page_user");
         return HomePage(
           isFromNotif: widget.isFromNotif,
           userId: widget.userId,
@@ -295,11 +297,13 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         );
       case 1:
         // return AddEventPage();
+        FirebaseAnalyticsService().setCurrentScreen("consultation_page_user");
         return ConsultationPage(
           role: widget.role,
         );
 
       case 2:
+        FirebaseAnalyticsService().setCurrentScreen("profile_page_user");
         return ProfileUserPage();
       default:
         return Container();

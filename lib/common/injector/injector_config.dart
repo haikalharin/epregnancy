@@ -27,6 +27,7 @@ import 'package:PregnancyApp/pages/pin_checkin/bloc/pin_checkin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
 import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
+import 'package:PregnancyApp/utils/firebase_analytics.dart';
 import 'package:PregnancyApp/utils/firebase_messaging.dart';
 import 'package:kiwi/kiwi.dart';
 
@@ -113,6 +114,7 @@ abstract class InjectorConfig {
   void _configureRepositories();
 
   @Register.factory(RemoteDataSource)
+  @Register.factory(FirebaseAnalyticsService)
   void _configureDataSources();
 
   @Register.singleton(HttpClient)
