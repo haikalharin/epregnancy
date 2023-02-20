@@ -20,6 +20,7 @@ import '../../data/firebase/g_authentication.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
+import '../../utils/firebase_analytics.dart';
 import '../../utils/string_constans.dart';
 import '../home_page/home_page.dart';
 import '../signup_page/bloc/signup_bloc.dart';
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     getRemoteConfig();
-
+    FirebaseAnalyticsService().setCurrentScreen("login_page");
     if (widget.tokenExpired == true) {
       if (widget.isFromRegister) {
         WidgetsBinding.instance?.addPostFrameCallback((_) async {

@@ -5,8 +5,10 @@ import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
+import 'package:PregnancyApp/utils/firebase_analytics.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -223,6 +225,7 @@ class _MyAppState extends State<MyApp> {
                             title: 'Komunitaz',
                             home: SplashscreenPage(),
                             onGenerateRoute: Routes.generateRoute,
+                            navigatorObservers: <NavigatorObserver>[FirebaseAnalyticsService.observer],
                             localizationsDelegates: const [
                               GlobalMaterialLocalizations.delegate,
                               GlobalWidgetsLocalizations.delegate,
