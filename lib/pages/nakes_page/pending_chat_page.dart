@@ -25,7 +25,8 @@ class _PendingChatTabPageState extends State<PendingChatTabPage> {
     ToastContext().init(context);
     return BlocBuilder<ChatPendingBloc, ChatPendingState>(
         builder: (context, state) {
-      if (state.chatPendingList?.length == 0) {
+      if (state.chatPendingList?.length == 0 ||
+          state.chatPendingList?.length == null) {
         return const EmptyChatListPage();
       } else {
         return Scaffold(
@@ -55,7 +56,7 @@ class _PendingChatTabPageState extends State<PendingChatTabPage> {
                   child: ChatPlaceHolderWidget(
                       unread: false,
                       name: state.chatPendingList?[index].from?.name,
-                      dateTime: DateTime.parse(state.chatPendingList !=null
+                      dateTime: DateTime.parse(state.chatPendingList != null
                           ? state.chatPendingList![index].createdDate ??
                               "0000-00-00 00:00:00"
                           : "0000-00-00 00:00:00"),
