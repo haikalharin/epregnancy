@@ -1,9 +1,11 @@
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
+import 'package:PregnancyApp/pages/audio_page/audio_main_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard_midwife.dart';
 import 'package:PregnancyApp/pages/consultation_page/consultation_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/login_example_page.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
+import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,11 +47,11 @@ class NavbarPage extends StatefulWidget {
 }
 
 class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
-  GlobalKey _one = GlobalKey();
-  GlobalKey _two = GlobalKey();
-  GlobalKey _three = GlobalKey();
-  GlobalKey _four = GlobalKey();
-  GlobalKey _five = GlobalKey();
+  final GlobalKey _one = GlobalKey();
+  final GlobalKey _two = GlobalKey();
+  final GlobalKey _three = GlobalKey();
+  final GlobalKey _four = GlobalKey();
+  final GlobalKey _five = GlobalKey();
   BuildContext? myContext;
   TabController? controller;
   int indexSelected = 0;
@@ -177,32 +179,33 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
             ),
           ),
         ),
-        // BottomNavigationBarItem(
-        //   label: "Favorit",
-        //   activeIcon: ClipRRect(
-        //     borderRadius: BorderRadius.circular(0),
-        //     child: ClipRRect(
-        //       borderRadius: BorderRadius.circular(0),
-        //       child:SvgPicture.asset(
-        //         'assets/ic_favorit_bar.svg',
-        //         width: 30,
-        //         height: 30,
-        //         fit: BoxFit.cover,
-        //       ),
-        //     ),
-        //   ),
-        //   icon: ClipRRect(
-        //     borderRadius: BorderRadius.circular(0),
-        //     child:SvgPicture.asset(
-        //       'assets/ic_favorit_bar.svg',
-        //       width: 30,
-        //       height: 30,
-        //       fit: BoxFit.cover,
-        //     ),
-        //   ),
-        // ),
         BottomNavigationBarItem(
-          label: "Ruang Diskusi",
+          label: " Audio ",
+          activeIcon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(0),
+              child:SvgPicture.asset(
+                'assets/icMusic.svg',
+                width: 30,
+                height: 30,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          icon: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child:SvgPicture.asset(
+              'assets/icMusic.svg',
+              width: 30,
+              color: EpregnancyColors.greyDarkFontColor,
+              height: 30,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        BottomNavigationBarItem(
+          label: "Diskusi",
           activeIcon: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: SvgPicture.asset(
@@ -296,13 +299,16 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           three: _three,
         );
       case 1:
+        FirebaseAnalyticsService().setCurrentScreen("audio_page_user");
+        return const AudioMainPage();
+      case 2:
         // return AddEventPage();
         FirebaseAnalyticsService().setCurrentScreen("consultation_page_user");
         return ConsultationPage(
           role: widget.role,
         );
 
-      case 2:
+      case 3:
         FirebaseAnalyticsService().setCurrentScreen("profile_page_user");
         return ProfileUserPage();
       default:

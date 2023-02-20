@@ -188,9 +188,13 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
                                    )
                                  ),
                                ),
-                               Icon(
+                               IconButton(onPressed: (){
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => MembersPage(
+                                   puskesmasName: hospitalModel?.name ?? "-",
+                                 )));
+                               }, icon: Icon(
                                  Icons.arrow_forward_ios_rounded, color: EpregnancyColors.grey,
-                               )
+                               ))
                              ],
                            )
                        ),

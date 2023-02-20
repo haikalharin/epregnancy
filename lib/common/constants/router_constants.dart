@@ -41,5 +41,8 @@ class RouteName {
   static const locationSelect = '/locationSelect';
   static const forgotPassword = '/forgotPassword';
   static const disclaimer = '/disclaimer';
+  static const audio = '/audio';
+  static const playlist = '/playlist';
+  static const audioPlayer = '/audioPlayer';
 
 }

@@ -7,11 +7,14 @@ import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/firebase_analytics.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:root_detector/root_detector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
@@ -66,7 +69,6 @@ import 'package:provider/provider.dart';
 // void main() => runApp(MyApp());
 SharedPreferences? sharedPreferences;
 FirebaseService firebaseServiceUtils = FirebaseService();
-
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -83,10 +85,17 @@ Future<void> main() async {
 
   // Bloc.observer = SimpleBlocObserver();
   await Configurations().setConfigurationValues(config.devEnvironment);
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
   runApp(MyApp());
 }
 
 final Alice aliceDev = Alice(showNotification: true, darkTheme: true);
+final AudioPlayer playerDev = AudioPlayer();
+
 
 class MyApp extends StatefulWidget {
   @override
@@ -96,11 +105,65 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late Future<void> _firebaseFuture;
 
+
+  // final playlist =
+  //     ConcatenatingAudioSource(useLazyPreparation: true, children: [
+  //   AudioSource.asset("assets/audio/al_fatihah.mp3",
+  //       tag: const MediaItem(title: 'Al-Fatihah', id: "1", album: "Murottal"))
+  // ]);
+
+  final playlist = ConcatenatingAudioSource(children: [
+    // AudioSource.uri(Uri.parse("assets/audio/al_fatihah.mp3"),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/1676521634982-al-fatihah.mp3"), tag: MediaItem(
+        title: 'Al-Fatihah',
+        id: "1",
+        artist: "Al-Fatihah",
+        album: "Murottal",
+        artUri: Uri.parse(
+            "https://lh3.googleusercontent.com/-kxVDXfXqEXA/YVsZmqZ-GQI/AAAAAAABe1c/gY88VU3gT50-ww0zDs0oG5MzeZizDzd2QCLcBGAsYHQ/w1200-h630-p-k-no-nu/image.png"))),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/1676522085298-yusuf.mp3"), tag: MediaItem(
+        title: 'Al-Yusuf',
+        id: "2",
+        artist: "Al-Yusuf",
+        album: "Murottal",
+        artUri: Uri.parse(
+            "https://lh3.googleusercontent.com/-kxVDXfXqEXA/YVsZmqZ-GQI/AAAAAAABe1c/gY88VU3gT50-ww0zDs0oG5MzeZizDzd2QCLcBGAsYHQ/w1200-h630-p-k-no-nu/image.png"))),
+    // AudioSource.uri(Uri.parse("https://ia801408.us.archive.org/11/items/Raad-Al_Kurdi/001.mp3"),
+    //     tag: MediaItem(
+    //         title: 'Al-Fatihah',
+    //         id: "1",
+    //         artist: "Al-Fatihah",
+    //         album: "Murottal",
+    //         artUri: Uri.parse(
+    //             "https://lh3.googleusercontent.com/-kxVDXfXqEXA/YVsZmqZ-GQI/AAAAAAABe1c/gY88VU3gT50-ww0zDs0oG5MzeZizDzd2QCLcBGAsYHQ/w1200-h630-p-k-no-nu/image.png")))
+  ]);
+
+  Future<void> _init() async {
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration.music());
+    // Listen to errors during playback.
+    playerDev.playbackEventStream.listen((event) {},
+        onError: (Object e, StackTrace stackTrace) {
+          print('A stream error occurred: $e');
+        });
+    try {
+      await playerDev.setAudioSource(playlist);
+    } catch (e, stackTrace) {
+      // Catch load errors: 404, invalid url ...
+      print("Error loading playlist: $e");
+      print(stackTrace);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
+    _init();
     initPlatformState();
+    playerDev.setLoopMode(LoopMode.all);
+    // playerDev.setAsset("assets/audio/al_fatihah.mp3");
+    // // playerDev.setAudioSource(playlist,
+    // //     initialIndex: 0, initialPosition: Duration.zero);
     _firebaseFuture = firebaseServiceUtils.initializeFlutterFirebase(context);
   }
 
@@ -135,7 +198,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   final RouteObserver<PageRoute> _routeObserver = RouteObserver();
-
 
   @override
   Widget build(BuildContext context) {
