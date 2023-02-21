@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 #dev
-version: 1.0.37-dev+58
+version: 1.0.37-dev+59
 
 #prod
 #version: 1.0.2+5
@@ -216,7 +216,6 @@ flutter:
     - assets/dummies/
     - assets/onboarding/
     - assets/lottie/
-    - assets/audio/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
