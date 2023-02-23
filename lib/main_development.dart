@@ -112,20 +112,21 @@ class _MyAppState extends State<MyApp> {
 
   final playlist = ConcatenatingAudioSource(children: [
     // AudioSource.uri(Uri.parse("assets/audio/al_fatihah.mp3"),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/1676521634982-al-fatihah.mp3"), tag: MediaItem(
-        title: 'Al-Fatihah',
-        id: "1",
-        artist: "Al-Fatihah",
-        album: "Murottal",
-        artUri: Uri.parse(
-            "https://lh3.googleusercontent.com/-kxVDXfXqEXA/YVsZmqZ-GQI/AAAAAAABe1c/gY88VU3gT50-ww0zDs0oG5MzeZizDzd2QCLcBGAsYHQ/w1200-h630-p-k-no-nu/image.png"))),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/1676522085298-yusuf.mp3"), tag: MediaItem(
-        title: 'Al-Yusuf',
-        id: "2",
-        artist: "Al-Yusuf",
-        album: "Murottal",
-        artUri: Uri.parse(
-            "https://lh3.googleusercontent.com/-kxVDXfXqEXA/YVsZmqZ-GQI/AAAAAAABe1c/gY88VU3gT50-ww0zDs0oG5MzeZizDzd2QCLcBGAsYHQ/w1200-h630-p-k-no-nu/image.png"))),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-19-21.mp3"), tag: const MediaItem(
+        title: 'Surat-Maryam-19-21.',
+        id: "0",
+        artist: "Surat-Maryam-19-21",
+        album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"), tag: const MediaItem(
+      title: 'Surat-Maryam-4-5.',
+      id: "1",
+      artist: "Surat-Maryam-4-5",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"), tag: const MediaItem(
+      title: 'Surat-Maryam-4-5.',
+      id: "1",
+      artist: "Surat-Maryam-4-5",
+      album: "Murottal",)),
     // AudioSource.uri(Uri.parse("https://ia801408.us.archive.org/11/items/Raad-Al_Kurdi/001.mp3"),
     //     tag: MediaItem(
     //         title: 'Al-Fatihah',
