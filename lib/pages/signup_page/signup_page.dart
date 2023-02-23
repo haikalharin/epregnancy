@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:PregnancyApp/common/configurations/configurations.dart';
 import 'package:PregnancyApp/common/constants/regex_constants.dart';
 import 'package:PregnancyApp/main_default.dart';
@@ -20,6 +22,7 @@ import '../../common/validators/phone_validator.dart';
 import '../../utils/string_constans.dart';
 import 'bloc/signup_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tap_to_dismiss_keyboard/tap_to_dismiss_keyboard.dart';
 
 const _horizontalPadding = 24.0;
 var _signUpWithEmail = false;
@@ -79,174 +82,182 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: true,
-      body: SafeArea(
-          child: BlocListener<SignupBloc, SignupState>(
-              listener: (context, state) async {
-                if (state.submitStatus == FormzStatus.submissionFailure) {
-                  var snackBar = SnackBar(
-                      content: Text(state.errorMessage != null
-                          ? state.errorMessage!
-                          : 'failed'),
-                      backgroundColor: Colors.red);
-                  Scaffold.of(context).showSnackBar(snackBar);
-                } else if (state.submitStatus ==
-                    FormzStatus.submissionSuccess) {
-                  if (state.isExist == true) {
-                    if (state.isSurvey == true) {
-                      var snackBar = SnackBar(
-                          content: Text("Akun Telah Terdaftar"),
-                          backgroundColor: Colors.red);
-                      Injector.resolve<SignupBloc>().add(SignupInitEvent());
-                      Scaffold.of(context).showSnackBar(snackBar);
+    return TapToDissmissKeyboard(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: true,
+        body: SafeArea(
+            child: BlocListener<SignupBloc, SignupState>(
+                listener: (context, state) async {
+                  if (state.submitStatus == FormzStatus.submissionFailure) {
+                    var snackBar = SnackBar(
+                        content: Text(state.errorMessage != null
+                            ? state.errorMessage!
+                            : 'failed'),
+                        backgroundColor: Colors.red);
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  } else if (state.submitStatus ==
+                      FormzStatus.submissionSuccess) {
+                    if (state.isExist == true) {
+                      if (state.isSurvey == true) {
+                        var snackBar = SnackBar(
+                            content: Text("Akun Telah Terdaftar"),
+                            backgroundColor: Colors.red);
+                        Injector.resolve<SignupBloc>().add(SignupInitEvent());
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      } else {
+                        Navigator.of(context)
+                            .pushNamed(RouteName.surveyPage, arguments: false);
+                      }
                     } else {
-                      Navigator.of(context)
-                          .pushNamed(RouteName.surveyPage, arguments: false);
-                    }
-                  } else {
-                    if (state.type == 'toDisclaimer') {
-                      Navigator.of(context).pushNamed(RouteName.disclaimer,
-                          arguments: {'user_id': state.userId, 'from': "signUp"});
-                    } else {
-                      // Navigator.of(context).pushNamed(RouteName.otpPage, arguments: state.userId);
+                      if (state.type == 'toDisclaimer') {
+                        Navigator.of(context).pushNamed(RouteName.disclaimer,
+                            arguments: {'user_id': state.userId, 'from': "signUp"});
+                      } else {
+                        // Navigator.of(context).pushNamed(RouteName.otpPage, arguments: state.userId);
+                      }
                     }
                   }
-                }
-              },
-              child: Stack(
-                children: [
-                  Center(
-                    child: BlocBuilder<SignupBloc, SignupState>(
-                      builder: (context, state) {
-                        if (isEdit) {
-                          _controllerEmail.text = "";
-                          _controllerPhone.text = "";
-                          isEdit = false;
-                        }
+                },
+                child: Stack(
+                  children: [
+                    Center(
+                      child: BlocBuilder<SignupBloc, SignupState>(
+                        builder: (context, state) {
+                          if (isEdit) {
+                            _controllerEmail.text = "";
+                            _controllerPhone.text = "";
+                            isEdit = false;
+                          }
 
-                        return ListView(
-                          physics: const ClampingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: _horizontalPadding,
-                          ),
-                          children: [
-                            Hero(
-                              tag: 'ibu',
-                              child: Image.asset(
-                                "assets/signup_background.png",
-                                alignment: Alignment.center,
-                                height: 280,
-                              ),
+                          return ListView(
+                            physics: const ClampingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: _horizontalPadding,
                             ),
-                            // Image.asset(
-                            //   'assets/signup_background.png',
-                            // ),
-                            Text(
-                              "Selamat Datang",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 38,
+                            children: [
+                              Platform.isIOS ? Align(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(onPressed: (){
+                                  Navigator.pop(context);
+                                }, icon: const Icon(Icons.arrow_back_ios)),
+                              ) : const SizedBox.shrink(),
+                              Hero(
+                                tag: 'ibu',
+                                child: Image.asset(
+                                  "assets/signup_background.png",
+                                  alignment: Alignment.center,
+                                  height: 280,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 10),
-                            state.email.value.length < 1 ||
-                                    state.email ==
-                                        EmailAddressUsernameValidator.pure()
-                                ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                      Text(
-                                        "Daftar dengan akun telepon seluler",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 18),
-                                      ),
-                                      SizedBox(height: 20),
-                                      _PhoneNumberInput(_controllerPhone, phoneIsFocus),
-                                      // Text(
-                                      //   "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
-                                      //   textAlign: TextAlign.center,
-                                      //   style: TextStyle(
-                                      //       color: Colors.grey,
-                                      //       fontWeight: FontWeight.normal,
-                                      //       fontSize: 12),
-                                      // ),
-                                      SizedBox(height: 10),
-                                    ],
-                                  )
-                                : Container(),
+                              // Image.asset(
+                              //   'assets/signup_background.png',
+                              // ),
+                              Text(
+                                "Selamat Datang",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 38,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              state.email.value.length < 1 ||
+                                      state.email ==
+                                          EmailAddressUsernameValidator.pure()
+                                  ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                        Text(
+                                          "Daftar dengan akun telepon seluler",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 18),
+                                        ),
+                                        SizedBox(height: 20),
+                                        _PhoneNumberInput(_controllerPhone, phoneIsFocus),
+                                        // Text(
+                                        //   "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
+                                        //   textAlign: TextAlign.center,
+                                        //   style: TextStyle(
+                                        //       color: Colors.grey,
+                                        //       fontWeight: FontWeight.normal,
+                                        //       fontSize: 12),
+                                        // ),
+                                        SizedBox(height: 10),
+                                      ],
+                                    )
+                                  : Container(),
 
-                            state.phoneNumber.value.length <= 2 ||
-                                    state.email == PhoneValidator.pure()
-                                ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: state.email.value.isNotEmpty ? 0: 30),
-                                      Text(
-                                        state.email.value.isNotEmpty ? "Daftar dengan akun email" : "Atau daftar dengan akun email",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 18),
-                                      ),
-                                      SizedBox(height: 30),
-                                      // Text(
-                                      //   "Email",
-                                      //   style: TextStyle(
-                                      //       color: Colors.black,
-                                      //       fontWeight: FontWeight.bold,
-                                      //       fontSize: 16),
-                                      // ),
-                                      // SizedBox(height: 10),
-                                      _EmailInput(_controllerEmail, emailIsFocus),
-                                      SizedBox(height: 50),
-                                    ],
-                                  )
-                                : Container(),
-                            // _PasswordTextField(),
-                          ],
-                        );
-                      },
+                              state.phoneNumber.value.length <= 2 ||
+                                      state.email == PhoneValidator.pure()
+                                  ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(height: state.email.value.isNotEmpty ? 0: 30),
+                                        Text(
+                                          state.email.value.isNotEmpty ? "Daftar dengan akun email" : "Atau daftar dengan akun email",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 18),
+                                        ),
+                                        SizedBox(height: 30),
+                                        // Text(
+                                        //   "Email",
+                                        //   style: TextStyle(
+                                        //       color: Colors.black,
+                                        //       fontWeight: FontWeight.bold,
+                                        //       fontSize: 16),
+                                        // ),
+                                        // SizedBox(height: 10),
+                                        _EmailInput(_controllerEmail, emailIsFocus),
+                                        SizedBox(height: 50),
+                                      ],
+                                    )
+                                  : Container(),
+                              // _PasswordTextField(),
+                            ],
+                          );
+                        },
+                      ),
                     ),
+                    _Loading(),
+                  ],
+                ))),
+        bottomNavigationBar: BlocBuilder<SignupBloc, SignupState>(
+          builder: (context, state){
+            return Container(
+              margin: EdgeInsets.all(24.w),
+              child: ElevatedButton(
+                onPressed: state.phoneNumber.valid || state.email.valid ? () async {
+              Injector.resolve<SignupBloc>()
+                  .add(SignupSubmitted());
+              isEdit = true;
+              FocusScope.of(context).unfocus();                                //
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => OtpPage()),
+              // );
+              } : null,
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Text("Daftar", style: TextStyle(fontSize: 14.sp),),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(50, 50),
+                  primary: EpregnancyColors.primer,
+                  onSurface: EpregnancyColors.primer.withOpacity(0.25),
+                  onPrimary: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  _Loading(),
-                ],
-              ))),
-      bottomNavigationBar: BlocBuilder<SignupBloc, SignupState>(
-        builder: (context, state){
-          return Container(
-            margin: EdgeInsets.all(24.w),
-            child: ElevatedButton(
-              onPressed: state.phoneNumber.valid || state.email.valid ? () async {
-            Injector.resolve<SignupBloc>()
-                .add(SignupSubmitted());
-            isEdit = true;
-            FocusScope.of(context).unfocus();                                //
-            // Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => OtpPage()),
-            // );
-            } : null,
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Text("Daftar", style: TextStyle(fontSize: 14.sp),),
-              ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(50, 50),
-                primary: EpregnancyColors.primer,
-                onSurface: EpregnancyColors.primer.withOpacity(0.25),
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

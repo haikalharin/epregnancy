@@ -1307,6 +1307,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  tap_to_dismiss_keyboard:
+    dependency: "direct dev"
+    description:
+      name: tap_to_dismiss_keyboard
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   term_glyph:
     dependency: transitive
     description:
