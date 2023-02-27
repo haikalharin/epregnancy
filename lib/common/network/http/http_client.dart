@@ -150,7 +150,7 @@ class HttpClient {
             .post(
           _getParsedUrl(path),
           body: HttpUtil.encodeRequestBody(
-              data, requestHeader![HttpConstants.contentType]!),
+             json.encode(data), requestHeader![HttpConstants.contentType]!),
           headers: requestHeader,
         )
             .interceptWithAlice(aliceProd, body: data);

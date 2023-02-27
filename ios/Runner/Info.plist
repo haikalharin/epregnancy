@@ -20,6 +20,12 @@
     <string>$(FLUTTER_BUILD_NAME)</string>
     <key>CFBundleSignature</key>
     <string>????</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Use for QR Scanner Feature</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>Use for schedule feature</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Used for Accessing Gallery to Change Profile Picture</string>
     <key>CFBundleURLTypes</key>
     <array>
       <dict>

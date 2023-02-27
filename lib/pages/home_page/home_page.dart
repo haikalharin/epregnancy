@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
+import 'package:PregnancyApp/flavors.dart';
 import 'package:PregnancyApp/pages/home_page/baby_section_widget.dart';
 import 'package:PregnancyApp/pages/home_page/game_card_section.dart';
 import 'package:PregnancyApp/pages/home_page/poin_card_section.dart';
@@ -15,6 +16,7 @@ import 'package:PregnancyApp/pages/poin_page/widget/poin_placeholder.dart';
 import 'package:PregnancyApp/utils/date_picker.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:PregnancyApp/utils/web_socket_chat_channel.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +26,7 @@ import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:toast/toast.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -81,6 +84,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    if(F.appFlavor == Flavor.DEVELOPMENT){
+      subscribeFcmTopic();
+    }
     start();
     super.initState();
   }
@@ -124,6 +130,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return Scaffold(
         backgroundColor: Colors.grey.shade200,
         floatingActionButton: AnimatedSwitcher(
@@ -215,6 +222,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             alignment: Alignment.centerRight,
                                             child: InkWell(
                                               onTap: () {
+                                                Toast.show("Fitur ini akan segera hadir");
                                                 // Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
                                                 //   if (value != null) {
                                                 //     setState(() {

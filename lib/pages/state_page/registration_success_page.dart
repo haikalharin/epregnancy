@@ -59,7 +59,7 @@ class _RegistrationSuccessPageState extends State<RegistrationSuccessPage> {
                 } else {
                   Navigator.of(context).pushReplacementNamed(
                       RouteName.surveyPageBaby,
-                      arguments: {"is_edit": false, "edit_name": false});
+                      arguments: {"is_edit": false, "edit_name": false, "from_register": true});
                 }
               } else {
                 Navigator.of(context).pushNamedAndRemoveUntil(

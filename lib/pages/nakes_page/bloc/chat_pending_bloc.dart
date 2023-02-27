@@ -20,18 +20,20 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
 
   @override
   Stream<ChatPendingState> mapEventToState(ChatPendingEvent event) async* {
-    if(event is FetchChatPendingByHospitalId) {
-      yield* _mapFetchChatPendingEvent(event, state);
+    if(event is FetchLastChatEvent) {
+      yield* _mapFetchLastChatEvent(event, state);
     } else if (event is RespondPendingChat) {
       yield* _mapRespondPendingChat(event, state);
+    } else if(event is FetchChatPendingByHospitalId){
+      yield* _mapFetchChatPendingByHospitalIdEvent(event, state);
     }
   }
 
-  Stream<ChatPendingState> _mapFetchChatPendingEvent(
-      FetchChatPendingByHospitalId event,
+  Stream<ChatPendingState> _mapFetchLastChatEvent(
+      FetchLastChatEvent event,
       ChatPendingState state,
       ) async* {
-    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-chat-pending-loading', lastChatResponse: null);
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-last-chat-loading', lastChatResponse: null);
     try {
 
       ResponseModel<LastChatResponse> _lastChat = await chatRepository.lastChatDashboard();
@@ -68,13 +70,70 @@ class ChatPendingBloc extends Bloc<ChatPendingEvent, ChatPendingState> {
         // }
         print('unread count : ${_lastChatResponse.unreadMessage}');
 
-        yield state.copyWith(type: 'fetching-chat-pending-success',
+        yield state.copyWith(type: 'fetching-last-chat-success',
             status: FormzStatus.submissionSuccess,
             lastChatResponse: _lastChatResponse);
       } else {
-        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetching-chat-pending-failed', lastChatResponse: null);}
+        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetching-last-chat-failed', lastChatResponse: null);}
 
       } catch(e) {
+      if( e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(status: FormzStatus.submissionFailure, type: 'Fetch Data Error', errorMessage: e.toString());
+    }
+  }
+
+  Stream<ChatPendingState> _mapFetchChatPendingByHospitalIdEvent(
+      FetchChatPendingByHospitalId event,
+      ChatPendingState state,
+      ) async* {
+    yield state.copyWith(status: FormzStatus.submissionInProgress, type: 'fetching-chat-pending-loading', lastChatResponse: null);
+    try {
+
+      // ResponseModel<LastChatResponse> _lastChat = await chatRepository.lastChatDashboard();
+      // print('last chat response : ${_lastChat.code}');
+      // if(_lastChat.code == 200) {
+      //   print('last chat success');
+      //   LastChatResponse lastChatResponse = _lastChat.data;
+      //   print('unread count up : ${lastChatResponse.unreadMessage}');
+
+        // From? _form = lastChatResponse.chat?.from?.copyWith(
+        //   name: await aesDecryptor(lastChatResponse.chat?.from?.name),
+        // );
+
+        // From? from = _form;
+
+        // Chat chat = Chat(message: lastChatResponse.chat?.message, from: from, createdDate: lastChatResponse.chat?.createdDate);
+
+        // LastChatResponse _lastChatResponse = LastChatResponse(unreadMessage: lastChatResponse.unreadMessage, chat: chat);
+        ResponseModel<ChatPendingResponseList> response = await chatRepository.fetchChatPendingListByHospitalId(event.hospitalId ?? '');
+        List<ChatPendingResponseList> _chatPendingList = response.data ?? [];
+        List<ChatPendingResponseList> chatPendingList = [];
+        if(response.code == 200){
+
+        if(_chatPendingList.length != 0){
+          for(var element in _chatPendingList){
+            FromChatPendingResponseLIst? from = element.from?.copyWith(
+              name: await aesDecryptor(element.from?.name)
+            );
+
+            ChatPendingResponseList pending = element.copyWith(
+              from: from,
+            );
+
+            chatPendingList.add(pending);
+          }
+        }
+        // print('unread count : ${_lastChatResponse.unreadMessage}');
+
+        yield state.copyWith(type: 'fetching-chat-pending-success',
+            status: FormzStatus.submissionSuccess,
+            chatPendingList: chatPendingList);
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionFailure, type: 'fetching-chat-pending-failed', lastChatResponse: null);}
+
+    } catch(e) {
       if( e is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 import '../../common/injector/injector.dart';
@@ -107,45 +108,39 @@ class ArticleDetailPage extends StatelessWidget {
                               ],
                             ),
                           ),
+                          Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Text(
+                                  article!.title ?? '',
+                                  maxLines: 5,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.clip,
+                              ),
+                          ),
                           Expanded(
                             child: Container(
-                              margin: EdgeInsets.only(top: 10),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      article!.title ?? '',
-                                      maxLines: 5,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                      overflow: TextOverflow.visible,
+                                margin: EdgeInsets.only(top: 20, bottom: 10),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                        child: Icon(
+                                      Icons.access_time,
+                                      size: 18,
+                                    )),
+                                    SizedBox(
+                                      width: 5,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                    Container(
+                                        child: Text(
+                                      outputDate,
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black),
+                                    )),
+                                  ],
+                                )),
                           ),
-                          Container(
-                              margin: EdgeInsets.only(top: 15, bottom: 10),
-                              child: Row(
-                                children: [
-                                  Container(
-                                      child: Icon(
-                                    Icons.access_time,
-                                    size: 18,
-                                  )),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                      child: Text(
-                                    outputDate,
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.black),
-                                  )),
-                                ],
-                              )),
                         ],
                       ),
                     ),
@@ -178,10 +173,10 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final Widget _widget;
 
   @override
-  double get minExtent => 120;
+  double get minExtent => 120.h;
 
   @override
-  double get maxExtent => 120;
+  double get maxExtent => 120.h;
 
   @override
   Widget build(

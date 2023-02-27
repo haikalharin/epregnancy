@@ -82,32 +82,35 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      // height: 20.h,
-                      width: 200.w,
-                      child: TabBar(
-                        controller: _tabController,
-                        physics: NeverScrollableScrollPhysics(),
-                        unselectedLabelStyle: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.normal),
-                        labelStyle: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w700),
-                        unselectedLabelColor: EpregnancyColors.greyDark,
-                        labelColor: EpregnancyColors.primer,
-                        labelPadding: EdgeInsets.only(top: 0, bottom: 0),
-                        indicator: const UnderlineTabIndicator(
-                          borderSide: BorderSide(
-                              width: 3.0, color: EpregnancyColors.primer),
-                          insets: EdgeInsets.symmetric(
-                              horizontal: 0.0, vertical: 0),
-                        ),
-                        tabs: const [
-                          Tab(text: "Jadwal Pribadi"),
-                          Tab(
-                            text: "Jadwal Umum",
+                    Expanded(
+                      child: Container(
+                        // height: 20.h,
+                        margin: EdgeInsets.only(right: 10.h),
+                        width: 200.w,
+                        child: TabBar(
+                          controller: _tabController,
+                          physics: NeverScrollableScrollPhysics(),
+                          unselectedLabelStyle: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.normal),
+                          labelStyle: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w700),
+                          unselectedLabelColor: EpregnancyColors.greyDark,
+                          labelColor: EpregnancyColors.primer,
+                          labelPadding: EdgeInsets.only(top: 0, bottom: 0),
+                          indicator: const UnderlineTabIndicator(
+                            borderSide: BorderSide(
+                                width: 3.0, color: EpregnancyColors.primer),
+                            insets: EdgeInsets.symmetric(
+                                horizontal: 0.0, vertical: 0),
                           ),
+                          tabs: const [
+                            Tab(text: "Jadwal Pribadi"),
+                            Tab(
+                              text: "Jadwal Umum",
+                            ),
 
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     BlocBuilder<HomePageBloc, HomePageState>(

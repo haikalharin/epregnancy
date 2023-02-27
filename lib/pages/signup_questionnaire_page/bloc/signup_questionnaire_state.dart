@@ -8,6 +8,7 @@ class SignUpQuestionnaireState with FormzMixin {
   final PasswordValidator password;
   final ConfirmPasswordValidator confirmPassword;
   final MandatoryFieldValidator date;
+  final bool? dateValid;
   final FormzStatus submitStatus;
   final String? errorMessage;
 
@@ -17,6 +18,7 @@ class SignUpQuestionnaireState with FormzMixin {
       this.password = const PasswordValidator.pure(),
       this.confirmPassword = const ConfirmPasswordValidator.pure(''),
       this.date = const MandatoryFieldValidator.pure(),
+      this.dateValid,
       this.userModelFirebase,
         this.userModel,
         this.submitStatus = FormzStatus.pure,
@@ -31,6 +33,7 @@ class SignUpQuestionnaireState with FormzMixin {
       PasswordValidator? password,
       ConfirmPasswordValidator? confirmPassword,
       MandatoryFieldValidator? date,
+      bool? dateValid,
       String? errorMessage}) {
     return SignUpQuestionnaireState(
         submitStatus: submitStatus ?? this.submitStatus,
@@ -39,6 +42,7 @@ class SignUpQuestionnaireState with FormzMixin {
         password: password ?? this.password,
         confirmPassword: confirmPassword ?? this.confirmPassword,
         date: date ?? this.date,
+        dateValid: dateValid ?? this.dateValid,
         userModelFirebase: userModelFirebase ?? this.userModelFirebase,
         userModel: userModel ?? this.userModel,
         errorMessage: errorMessage);

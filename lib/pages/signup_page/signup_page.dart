@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:PregnancyApp/common/configurations/configurations.dart';
 import 'package:PregnancyApp/common/constants/regex_constants.dart';
 import 'package:PregnancyApp/main_default.dart';
@@ -23,6 +25,7 @@ import '../../utils/firebase_analytics.dart';
 import '../../utils/string_constans.dart';
 import 'bloc/signup_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tap_to_dismiss_keyboard/tap_to_dismiss_keyboard.dart';
 
 const _horizontalPadding = 24.0;
 var _signUpWithEmail = false;
@@ -151,6 +154,12 @@ class _SignUpPageState extends State<SignUpPage> {
                               horizontal: _horizontalPadding,
                             ),
                             children: [
+                              Platform.isIOS ? Align(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(onPressed: (){
+                                  Navigator.pop(context);
+                                }, icon: const Icon(Icons.arrow_back_ios)),
+                              ) : const SizedBox.shrink(),
                               Hero(
                                 tag: 'ibu',
                                 child: Image.asset(
@@ -175,9 +184,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       state.email ==
                                           EmailAddressUsernameValidator.pure()
                                   ? Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                         Text(
                                           "Daftar dengan akun telepon seluler",
                                           style: TextStyle(
@@ -186,8 +194,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                               fontSize: 18),
                                         ),
                                         SizedBox(height: 20),
-                                        _PhoneNumberInput(
-                                            _controllerPhone, phoneIsFocus),
+                                        _PhoneNumberInput(_controllerPhone, phoneIsFocus),
                                         // Text(
                                         //   "Kamu akan menerima verifikasi SMS untuk masuk ke akun",
                                         //   textAlign: TextAlign.center,
@@ -204,17 +211,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               state.phoneNumber.value.length <= 2 ||
                                       state.email == PhoneValidator.pure()
                                   ? Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                            height: state.email.value.isNotEmpty
-                                                ? 0
-                                                : 30),
+                                        SizedBox(height: state.email.value.isNotEmpty ? 0: 30),
                                         Text(
-                                          state.email.value.isNotEmpty
-                                              ? "Daftar dengan akun email"
-                                              : "Atau daftar dengan akun email",
+                                          state.email.value.isNotEmpty ? "Daftar dengan akun email" : "Atau daftar dengan akun email",
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.normal,
@@ -229,8 +230,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         //       fontSize: 16),
                                         // ),
                                         // SizedBox(height: 10),
-                                        _EmailInput(
-                                            _controllerEmail, emailIsFocus),
+                                        _EmailInput(_controllerEmail, emailIsFocus),
                                         SizedBox(height: 50),
                                       ],
                                     )
@@ -245,27 +245,23 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ))),
         bottomNavigationBar: BlocBuilder<SignupBloc, SignupState>(
-          builder: (context, state) {
+          builder: (context, state){
             return Container(
               margin: EdgeInsets.all(24.w),
               child: ElevatedButton(
-                onPressed: state.phoneNumber.valid || state.email.valid
-                    ? () async {
-                        Injector.resolve<SignupBloc>().add(SignupSubmitted());
-                        isEdit = true;
-                        FocusScope.of(context).unfocus(); //
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => OtpPage()),
-                        // );
-                      }
-                    : null,
+                onPressed: state.phoneNumber.valid || state.email.valid ? () async {
+              Injector.resolve<SignupBloc>()
+                  .add(SignupSubmitted());
+              isEdit = true;
+              FocusScope.of(context).unfocus();                                //
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => OtpPage()),
+              // );
+              } : null,
                 child: Padding(
                   padding: EdgeInsets.all(16.w),
-                  child: Text(
-                    "Daftar",
-                    style: TextStyle(fontSize: 14.sp),
-                  ),
+                  child: Text("Daftar", style: TextStyle(fontSize: 14.sp),),
                 ),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(50, 50),

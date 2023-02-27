@@ -1072,7 +1072,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                             // todo handel pending send
                                             if ((chatMessageList?.length ??
                                                     0) >=
-                                                8) {
+                                                9) {
                                               Toast.show(
                                                   'Silahkan tunggu nakes merespon chat anda sebelum mengirim chat baru',
                                                   duration: 3,
@@ -1176,7 +1176,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                           });
                                         } else {
                                           if ((chatMessageList?.length ?? 0) >=
-                                              8) {
+                                              9) {
                                             Toast.show(
                                                 'Silahkan tunggu nakes merespon chat anda sebelum mengirim chat baru',
                                                 duration: 3,

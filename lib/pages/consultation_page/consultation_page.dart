@@ -108,8 +108,8 @@ class _ConsultationPageState extends State<ConsultationPage> {
         listener: (context, state) async {
           print('state consultation : ${state.type}');
           if (state.submitStatus == FormzStatus.submissionFailure) {
-            const snackBar = SnackBar(
-                content: Text("Gagal posting"), backgroundColor: Colors.red);
+            SnackBar snackBar = SnackBar(
+                content: Text("Gagal posting ${state.errorMessage}"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
             if (state.type == 'update' || state.type == 'delete-post-success') {

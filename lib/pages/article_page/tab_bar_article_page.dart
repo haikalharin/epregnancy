@@ -32,7 +32,7 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
   @override
   void initState() {
     _tabController = TabController(
-        length: 4, vsync: this, initialIndex: widget.type == 'expiry' ? 1 : 0);
+        length: 3, vsync: this, initialIndex: widget.type == 'expiry' ? 1 : 0);
     TabBarArticlePage.reloadExpiry = true;
     super.initState();
   }
@@ -49,7 +49,7 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
 
     return Scaffold(
         body: DefaultTabController(
-          length: 4,
+          length: 3,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

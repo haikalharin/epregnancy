@@ -105,8 +105,10 @@ class SignUpQuestionnaireBloc
     SignUpQuestionnaireState state,
   ) {
     final date = MandatoryFieldValidator.dirty(event.date);
+    print('date bloc : $date');
     return state.copyWith(
       date: date,
+      dateValid: true,
       submitStatus: Formz.validate([date]),
     );
   }
@@ -117,7 +119,7 @@ class SignUpQuestionnaireBloc
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      if (state.status.isValidated) {
+      if (state.status.isValidated && state.dateValid == true) {
         if (state.password.value == state.confirmPassword.value) {
           String email = "";
           String phoneNumber = "";
@@ -174,6 +176,7 @@ class SignUpQuestionnaireBloc
 
               yield state.copyWith(
                   submitStatus: FormzStatus.submissionSuccess,
+                  dateValid: false,
                   userModel: response.data);
             } else {
             yield state.copyWith(

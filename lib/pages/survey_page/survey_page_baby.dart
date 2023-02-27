@@ -24,9 +24,10 @@ import '../login_page/login_page.dart';
 import 'bloc/survey_page_bloc.dart';
 
 class SurveyPageBaby extends StatefulWidget {
-  const SurveyPageBaby({Key? key, this.isEdit = false, this.editName = false}) : super(key: key);
+  const SurveyPageBaby({Key? key, this.isEdit = false, this.editName = false, this.fromRegister = false}) : super(key: key);
   final bool? isEdit;
   final bool? editName;
+  final bool? fromRegister;
 
   @override
   State<SurveyPageBaby> createState() => _SurveyPageBabyState();
@@ -98,6 +99,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
         },
         child: BlocBuilder<SurveyPageBloc, SurveyPageState>(
           builder: (context, state) {
+            print("state page : ${state.page}");
             return WillPopScope(
               onWillPop: () {
                 // todo handle back press device
@@ -130,9 +132,9 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   iconTheme: IconThemeData(color: Colors.black),
                   leading: state.page == 3?GestureDetector(
                     child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black,
-                    ),
+                        Icons.arrow_back_ios,
+                        color: Colors.black,
+                      ),
                     onTap: () {
                       // todo handle back
                       if (state.page == 3) {
@@ -152,7 +154,19 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                         }
                       }
                     },
-                  ): null,
+                  ): widget.fromRegister != null ? SizedBox.shrink() : IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back_ios)),
+                  // widget.fromRegister == false ? const SizedBox.shrink() : GestureDetector(
+                  //   child: const Icon(
+                  //     Icons.arrow_back_ios,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onTap: () {
+                  //     // todo handle back
+                  //     if(widget.isEdit == true) {
+                  //       Navigator.pop(context);
+                  //     }
+                  //   },
+                  // ),
                 ),
                 body: Container(
                   color: EpregnancyColors.primerSoft,
