@@ -13,11 +13,13 @@ import 'package:formz/formz.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../../data/firebase/g_authentication.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../utils/function_utils.dart';
 import '../../survey_page/bloc/survey_page_bloc.dart';
 import '../bloc/profile_page_bloc.dart';
 
@@ -38,7 +40,6 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
 
   void onRefresh() async {
     Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
-
   }
 
   @override
@@ -146,8 +147,10 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   child: Container(
                                     height: 80.h,
                                     width: 80.w,
-                                    margin: EdgeInsets.only(right: 10.w, top: 10.w, bottom: 10.h),
-                                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                                    margin: EdgeInsets.only(
+                                        right: 10.w, top: 10.w, bottom: 10.h),
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle),
                                     child: state.user?.imageUrl != null
                                         ? Container(
                                             // width: 62,
@@ -184,13 +187,20 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   ),
                                 ),
                                 Container(
-                                    width: MediaQuery.of(context).size.width / 2.1,
+                                    width:
+                                        MediaQuery.of(context).size.width / 2.1,
                                     margin: EdgeInsets.only(bottom: 18.h),
-                                    child: BtnPrimary(text: "Ubah Data Diri", function: (){
-                                      // print("user name : ${state.user?.name}");
-                                      // _showPicker(context);
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangeProfilePage()));
-                                    }))
+                                    child: BtnPrimary(
+                                        text: "Ubah Data Diri",
+                                        function: () {
+                                          // print("user name : ${state.user?.name}");
+                                          // _showPicker(context);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const ChangeProfilePage()));
+                                        }))
                               ],
                             ),
                           ),
@@ -199,16 +209,16 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                           visible: true,
                           child: Container(
                             width: MediaQuery.of(context).size.width - 40,
-                            padding: EdgeInsets.only(left: 20, right: 0, top: 20, bottom: 5),
+                            padding: EdgeInsets.only(
+                                left: 20, right: 0, top: 20, bottom: 5),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Colors.grey.shade200,
-                                width: 1.5.h
-                              ),
+                                  color: Colors.grey.shade200, width: 1.5.h),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             // color: Colors.greenAccent,
-                            margin: EdgeInsets.only(left: 20, right: 20, bottom: 5.h),
+                            margin: EdgeInsets.only(
+                                left: 20, right: 20, bottom: 5.h),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -241,8 +251,11 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                           ),
                                         ),
                                         Container(
-                                          width: MediaQuery.of(context).size.width - 200,
-                                          margin:  EdgeInsets.only(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              200,
+                                          margin: EdgeInsets.only(
                                               left: 10, right: 10, top: 5.h),
                                           child: Text(
                                             "Bagikan kode dengan teman Anda dan dapatkan 100 poin",
@@ -258,8 +271,10 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   ],
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(right: 20, top: 10.h, bottom: 10.h),
-                                  width: MediaQuery.of(context).size.width - 100,
+                                  margin: EdgeInsets.only(
+                                      right: 20, top: 10.h, bottom: 10.h),
+                                  width:
+                                      MediaQuery.of(context).size.width - 100,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12.w),
                                       color: EpregnancyColors.primerSoft),
@@ -279,21 +294,29 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                             style: TextStyle(
                                                 fontSize: 12.sp,
                                                 fontWeight: FontWeight.w700,
-                                                color: EpregnancyColors.blueDark),
+                                                color:
+                                                    EpregnancyColors.blueDark),
                                             maxLines: 3,
                                           ),
                                         ),
                                         InkWell(
                                             onTap: () {
-                                              FlutterClipboard.copy(state.user?.referralCode ?? "")
+                                              FlutterClipboard.copy(state
+                                                          .user?.referralCode ??
+                                                      "")
                                                   .then((value) {
                                                 const snackBar = SnackBar(
-                                                    content: Text("Berhasil dicopy"),
-                                                    backgroundColor: EpregnancyColors.primer);
-                                                Scaffold.of(context).showSnackBar(snackBar);
+                                                    content:
+                                                        Text("Berhasil dicopy"),
+                                                    backgroundColor:
+                                                        EpregnancyColors
+                                                            .primer);
+                                                Scaffold.of(context)
+                                                    .showSnackBar(snackBar);
                                               });
                                             },
-                                            child: SvgPicture.asset("assets/icCopy.svg"))
+                                            child: SvgPicture.asset(
+                                                "assets/icCopy.svg"))
                                       ],
                                     ),
                                   ),
@@ -354,12 +377,54 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   // Navigator.of(context)
                                   //     .pushNamed(RouteName.surveyPageBaby, arguments: true);
 
-                                  Navigator.of(context).pushNamed(RouteName.disclaimer,
-                                      arguments: {'user_id': state.user?.id, 'from': "account"});
+                                  Navigator.of(context).pushNamed(
+                                      RouteName.disclaimer,
+                                      arguments: {
+                                        'user_id': state.user?.id,
+                                        'from': "account"
+                                      });
                                 },
                                 child: ListTile(
                                   leading: Text(
                                     StringConstant.termAndCondition,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  trailing: const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: EpregnancyColors.greyText,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10.h, horizontal: 10.w),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 1.5.h,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  final Uri emailLaunchUri = Uri(
+                                    scheme: 'mailto',
+                                    path: StringConstant.emailCsUser,
+                                    query:
+                                        encodeQueryParameters(<String, String>{
+                                      'subject':
+                                          'Pertanyaan/Feedback untuk Komunitaz',
+                                      'body':
+                                          'Halo, saya punya pertanyaan .....',
+                                    }),
+                                  );
+
+                                  launchUrl(emailLaunchUri);
+                                },
+                                child: ListTile(
+                                  leading: Text(
+                                    StringConstant.feedback,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 12.sp,
@@ -405,7 +470,8 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                         Container(
                           // color: Colors.white,
                           width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 5.h),
                           margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
                           height: 100.h,
                           child: Row(
@@ -414,9 +480,19 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                               Column(
                                 children: [
                                   Image.asset("assets/icApp.png"),
-                                  SizedBox(height: 5.h,),
-                                  Text("KOMUNITAZ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 10.sp),),
-                                  SizedBox(height: 5.h,),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  Text(
+                                    "KOMUNITAZ",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 10.sp),
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
                                   Text(
                                     'App Versi 1.0.0',
                                     style: TextStyle(
@@ -433,7 +509,8 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   child: InkWell(
                                     onTap: () async {
                                       //
-                                      await GAuthentication.signOut(context: context);
+                                      await GAuthentication.signOut(
+                                          context: context);
                                       // await AppSharedPreference.clear();
                                       await AppSharedPreference.remove(
                                           AppSharedPreference.user);
@@ -445,7 +522,8 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                           AppSharedPreference.baby);
                                       await AppSharedPreference.remove(
                                           AppSharedPreference.hospital);
-                                      await AppSharedPreference.remove(AppSharedPreference.otp);
+                                      await AppSharedPreference.remove(
+                                          AppSharedPreference.otp);
                                       await AppSharedPreference.remove(
                                           AppSharedPreference.token);
                                       await AppSharedPreference.remove(
@@ -454,7 +532,8 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                     },
                                     child: Row(
                                       children: [
-                                        SvgPicture.asset('assets/icLogoutNakes.svg'),
+                                        SvgPicture.asset(
+                                            'assets/icLogoutNakes.svg'),
                                         SizedBox(
                                           width: 5.w,
                                         ),

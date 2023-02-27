@@ -66,6 +66,7 @@ class StringConstant {
   static const profilePregnantChange = 'Ganti Profil Kehamilan';
   static const passwordChange = 'Ubah Kata Sandi';
   static const termAndCondition = 'Syarat dan ketentuan';
+  static const feedback = 'Hubungi kami';
   static const deleteAccount = 'Hapus Akun';
   static const logout = 'Keluar';
 
@@ -107,4 +108,8 @@ class StringConstant {
   static const dontsBodyUser = 'donts_body_user';
   static const doesBodyMidwife = 'does_body_midwife';
   static const dontsBodyMidewife = 'donts_body_midwife';
+
+  //contact
+  static const emailCsUser = 'cs.komunitaz@allianz.co.id';
+  static const emailCsBidan = 'csbidan.komunitaz@allianz.co.id';
 }

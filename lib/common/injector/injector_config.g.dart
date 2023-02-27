@@ -66,7 +66,8 @@ class _$InjectorConfig extends InjectorConfig {
   void _configureDataSources() {
     final KiwiContainer container = KiwiContainer();
     container
-        .registerFactory((c) => RemoteDataSource(httpClient: c<HttpClient>()));
+      ..registerFactory((c) => RemoteDataSource(httpClient: c<HttpClient>()))
+      ..registerFactory((c) => FirebaseAnalyticsService());
   }
 
   @override

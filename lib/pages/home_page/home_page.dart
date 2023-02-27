@@ -31,6 +31,7 @@ import '../../data/firebase/g_authentication.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../env.dart';
 import '../../utils/epragnancy_color.dart';
+import '../../utils/firebase_analytics.dart';
 import '../login_page/login_page.dart';
 import '../pin_checkin/pin_checkin_page.dart';
 import 'bloc/home_page_bloc.dart';
@@ -82,6 +83,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     start();
     super.initState();
+  }
+
+  _scrollToBottom() {
+    _scrollControler.jumpTo(_scrollControler.position.maxScrollExtent);
   }
 
   void start() {
