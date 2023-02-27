@@ -98,12 +98,12 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
                           text: "Memiliki Bayi",
                         ),
                       ),
-                      // Container(
-                      //   margin:const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                      //   child: const Tab(
-                      //     text: "Pengasuh Anak",
-                      //   ),
-                      // ),
+                      Container(
+                        margin:const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
+                        child: const Tab(
+                          text: "Pengasuhan Anak",
+                        ),
+                      ),
 
                     ],
                   ),
@@ -122,12 +122,11 @@ class _TabBarArticlePageState extends State<TabBarArticlePage>
                         // margin: EdgeInsets.only(top: 20),
                         child: TabBarView(
                             controller: _tabController,
-                            physics: const NeverScrollableScrollPhysics(),
                             children:  [
                               ListArticleVertical(condition: StringConstant.pregnant,),
                               ListArticleVertical(condition: StringConstant.notPregnant,),
                               ListArticleVertical(condition: StringConstant.postMaternity,),
-                              // ListArticleVertical(condition: StringConstant.babySitter,),
+                              ListArticleVertical(condition: StringConstant.childcare,),
                               // AcaraUmumPage(),
                             ]),
                       ),

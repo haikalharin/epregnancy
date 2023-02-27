@@ -63,6 +63,15 @@ class ConsultationRepositoryImpl extends ConsultationRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel> deletePostComment(String id) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.deleteComment(id);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
 
 
 

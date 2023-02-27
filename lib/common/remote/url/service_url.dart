@@ -40,7 +40,7 @@ class ServiceUrl {
 
   //article
   static String article = 'article';
-  static String listArticle = '$article/list';
+  static String listArticle = '$article-list';
   static String readArticle = '$article/read';
 
   //consultation
@@ -49,6 +49,7 @@ class ServiceUrl {
   static String postConsultation = '$consultation/create';
   static String addComment = '$consultation/';
   static String deletePost = '$consultation/delete';
+  static String deletePostComment = '$consultation-comments/';
 
   //eventSchedule
   static String schedule = 'schedule';
@@ -57,6 +58,13 @@ class ServiceUrl {
   static String createScheduleAppointmentMw = '$schedule/create/appointment';
   static String createScheduleMedicineMw = '$schedule/create/medicine';
   static String deleteSchedule = '$schedule/delete';
+
+  //midwife
+  static String midwife = 'midwife';
+  static String userTotal = '$midwife/user-total';
+  static String patientUsers = '$midwife/patient-users';
+  static String midwifeUsers = '$midwife/midwife-users';
+
 
   //game
   static String game = 'game';

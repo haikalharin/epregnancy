@@ -106,3 +106,10 @@ String convertImageToBase64(String filePath) {
   String base64Image = base64Encode(imageBytes);
   return base64Image;
 }
+
+String? encodeQueryParameters(Map<String, String> params) {
+  return params.entries
+      .map((MapEntry<String, String> e) =>
+  '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+      .join('&');
+}

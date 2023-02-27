@@ -13,7 +13,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       isPatient: json['is_patient'] as bool?,
       isMidwife: json['is_midwife'] as bool?,
       name: json['name'] as String?,
-      dob: json['dob'],
+      dob: json['dob'] as String?,
       username: json['username'] as String?,
       email: json['email'] as String?,
       mobile: json['mobile'] as String?,

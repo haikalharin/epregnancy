@@ -46,7 +46,7 @@ class _BabyNameState extends State<BabyName> {
     return BlocBuilder<SurveyPageBloc, SurveyPageState>(
       buildWhen: (previous, current) => previous.name.value != current.name.value,
   builder: (context, state) {
-    return ListView(
+    return Column(
       children: [
         Container(
           height: 160,

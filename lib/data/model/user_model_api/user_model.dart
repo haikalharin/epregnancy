@@ -27,7 +27,7 @@ abstract class UserModel with _$UserModel {
     @JsonKey(includeIfNull: true)
     String? name,
     @JsonKey(includeIfNull: true)
-    dynamic dob,
+    String? dob,
     @JsonKey(includeIfNull: true)
     String? username,
     @JsonKey(includeIfNull: true)

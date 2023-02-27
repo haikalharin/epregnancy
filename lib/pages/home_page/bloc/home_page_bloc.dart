@@ -184,11 +184,20 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     yield state.copyWith(
         submitStatus: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
-      List<ArticleModel> lisArticleFix = [];
-      final List<ArticleModel> lisArticle = await articleRepository.fetchArticle();
-      if (lisArticle.isNotEmpty) {
+
+      final ResponseModel responseModel = await articleRepository.fetchArticle(0,'asc','createdDate');
+      List<ArticleModel> listArticle = responseModel.data ?? [];
+      List<ArticleModel> listArticleFix = [];
+      // if(event.isNextPage){
+      //   members = state.members??[];
+      // }
+      for (var element in listArticle) {
+        listArticleFix.add(element);
+      }
+      if (responseModel.data.isNotEmpty) {
+
         yield state.copyWith(
-            listArticle: lisArticle, submitStatus: FormzStatus.submissionSuccess);
+            listArticle: listArticleFix, submitStatus: FormzStatus.submissionSuccess);
       }
     } on HomeErrorException catch (e) {
       print(e);
@@ -243,6 +252,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if (response.code == 200) {
         bool? _showGuide = await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
         print('show guide : $_showGuide');
+        await AppSharedPreference.setBabyData(myBaby.last);
         yield state.copyWith(
           submitStatus: FormzStatus.submissionSuccess,
           baby: myBaby,

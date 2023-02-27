@@ -69,13 +69,13 @@ import 'common/injector/injector_config.dart';
 import 'env.dart' as config;
 import 'pages/login_page/bloc/login_bloc.dart';
 import 'pages/login_page/login_page.dart';
+import 'utils/firebase_analytics.dart';
 import 'utils/simple_bloc_observer.dart';
 import 'package:flutter_alice/alice.dart';
 
 // void main() => runApp(MyApp());
 SharedPreferences? sharedPreferences;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
-
 FirebaseService firebaseService = FirebaseService();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -132,6 +132,7 @@ class _MyAppState extends State<MyApp> {
                     child: MaterialApp(
                       debugShowCheckedModeBanner: false,
                       navigatorKey: aliceProd.getNavigatorKey(),
+                      navigatorObservers: <NavigatorObserver>[FirebaseAnalyticsService.observer],
                       title: 'Komunitaz',
                       home: SplashscreenPage(),
                       onGenerateRoute: Routes.generateRoute,

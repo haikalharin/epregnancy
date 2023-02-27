@@ -43,7 +43,7 @@ class _LastMenstruationState extends State<LastMenstruation> {
   Widget build(BuildContext context) {
     return BlocBuilder<SurveyPageBloc, SurveyPageState>(
       builder: (context, state) {
-        return ListView(
+        return Column(
           children: [
             Container(
               height: 160,
@@ -111,6 +111,7 @@ class _LastMenstruationState extends State<LastMenstruation> {
                                     const EdgeInsets.only(left: 30, right: 30),
                                 child: DateTimeFormField(
                                   lastDate: DateTime.now().add(const Duration(days: -8)),
+                                  initialEntryMode: DatePickerEntryMode.calendarOnly,
                                   initialValue: state.date.valid
                                       ? DateTime.parse(state.date.value)
                                       : widget.baby?.id != ""

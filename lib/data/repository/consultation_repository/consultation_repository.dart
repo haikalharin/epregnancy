@@ -8,5 +8,6 @@ abstract class ConsultationRepository {
   Future <ResponseModel> postConsultation(ConsultationModel consultationModel);
   Future <ResponseModel> likeConsultation(String id, bool isLike);
   Future <ResponseModel> deletePost(String id);
+  Future <ResponseModel> deletePostComment(String id);
   Future <ResponseModel> addComment(String postId, String comment);
 }

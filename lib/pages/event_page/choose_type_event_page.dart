@@ -87,11 +87,9 @@ class _ChooseTypeEventPageState extends State<ChooseTypeEventPage> {
                             children: [
                               Container(
                                 margin: EdgeInsets.only(left: 30),
-                                child: Text(
-                                  widget.role == "MIDWIFE"
-                                      ? "Buat Jadwal Baru"
-                                      : "Buat Jadwal Baru",
-                                  style: const TextStyle(
+                                child: const Text(
+                                  "Buat Jadwal Baru",
+                                  style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold),
                                 ),

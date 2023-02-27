@@ -9,7 +9,7 @@ class StringConstant {
   static const pregnant = 'PREGNANT';
   static const notPregnant = 'NOT PREGNANT';
   static const postMaternity = 'POST MATERNITY';
-  static const babySitter = 'BABY SITTER';
+  static const childcare = 'CHILDCARE';
   static const midwife = 'MIDWIFE';
   static const patient = 'PATIENT';
   static const typePersonal = 'PERSONAL';
@@ -49,8 +49,9 @@ class StringConstant {
   static const archive = 'Arsip';
   static const onGoing = 'Sedang Berlangsung';
   static const consultation = 'Diskusi';
+  static const askMidwife = 'Tanya Bidan';
   static const newestIncomingMessage = 'Chat yang baru masuk';
-  static const seeAllConsulation = 'Lihat Semua Diskusi';
+  static const seeAllConsulation = 'Lihat Semua';
   static const topic = 'Topik';
 
   //article
@@ -65,6 +66,7 @@ class StringConstant {
   static const profilePregnantChange = 'Ganti Profil Kehamilan';
   static const passwordChange = 'Ubah Kata Sandi';
   static const termAndCondition = 'Syarat dan ketentuan';
+  static const feedback = 'Hubungi kami';
   static const deleteAccount = 'Hapus Akun';
   static const logout = 'Keluar';
 
@@ -106,4 +108,8 @@ class StringConstant {
   static const dontsBodyUser = 'donts_body_user';
   static const doesBodyMidwife = 'does_body_midwife';
   static const dontsBodyMidewife = 'donts_body_midwife';
+
+  //contact
+  static const emailCsUser = 'cs.komunitaz@allianz.co.id';
+  static const emailCsBidan = 'csbidan.komunitaz@allianz.co.id';
 }

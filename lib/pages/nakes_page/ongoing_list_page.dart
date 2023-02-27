@@ -106,6 +106,7 @@ class _OngoingListPageState extends State<OngoingListPage> {
                     child: ChatPlaceHolderWidget(
                         unread: false,
                         name: state.listChatOngoing![index].from?.name,
+                        dateTime: DateTime.parse(state.listChatOngoing![index].createdDate!),
                         message: state.listChatOngoing![index].message),
                   ),
                 );

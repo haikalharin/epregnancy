@@ -1,5 +1,7 @@
 
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/members_model/member.dart';
+import 'package:PregnancyApp/data/model/members_model/members_summary_response.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 
 import '../../../common/exceptions/network_connection_exception.dart';
@@ -25,6 +27,30 @@ class HospitalRepositoryImpl extends HospitalRepository {
   Future<ResponseModel<HospitalModel>> fetchHospitalsById(String id) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchHospitalsById(id);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<MembersSummaryResponse>> fetchMembersSummary() async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.getMembersSummary();
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<Member>> fetchMembers(String name, int page, bool isPregnant,String sortBy, String sort) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchMembers(name: name, page: page,isPregnant: isPregnant,sortBy: sortBy,sort: sort);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<Member>> fetchMidwifes(String name, int page) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchMidwifes(name: name, page: page);
     }
     throw NetworkConnectionException();
   }

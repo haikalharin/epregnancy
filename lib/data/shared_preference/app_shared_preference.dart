@@ -18,6 +18,7 @@ import '../../main_default.dart';
 import '../../main_development.dart';
 import '../../pages/login_page/login_page.dart';
 import '../model/baby_model/baby_model.dart';
+import '../model/baby_model_api/baby_Model_api.dart';
 import '../model/baby_progress_model/baby_progress_model.dart';
 import '../model/person_model/person_model.dart';
 import '../model/user_example_model/user_example_model.dart';
@@ -304,6 +305,26 @@ class AppSharedPreference {
   static Future<void> setPerson(PersonModel person) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('person', json.encode(person.toJson()));
+  }
+
+  static Future<BabyModelApi> getBabyData() async {
+    BabyModelApi? baby = BabyModelApi.empty();
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    try {
+      String? personString = pref.getString('babyData');
+      if (personString != null) {
+        Map<String, dynamic> personJson = json.decode(personString);
+        baby = BabyModelApi.fromJson(personJson);
+      }
+    } catch (e) {
+      print(e);
+    }
+    return baby!;
+  }
+
+  static Future<void> setBabyData(BabyModelApi baby) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('babyData', json.encode(baby.toJson()));
   }
 
   static setOtp(OtpModel data) async {

@@ -5,7 +5,9 @@ import 'package:PregnancyApp/common/constants/regex_constants.dart';
 import 'package:PregnancyApp/main_default.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +21,7 @@ import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
 import '../../common/validators/email_address_username_validator.dart';
 import '../../common/validators/phone_validator.dart';
+import '../../utils/firebase_analytics.dart';
 import '../../utils/string_constans.dart';
 import 'bloc/signup_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,6 +52,14 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void initState() {
+    FirebaseAnalyticsService().setCurrentScreen("register_page");
+    FirebaseAnalyticsService().sendAnalyticsEvent(
+      "current_screen_custom",
+      data: <String, dynamic>{
+        'page': 'register_page',
+      },
+    );
+
     Injector.resolve<SignupBloc>().add(SignupInitEvent());
     _phoneFocusNode.addListener(_onFocusPhoneNumberChange);
     _emailFocusNode.addListener(_onFocusEmailChange);
@@ -82,7 +93,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return TapToDissmissKeyboard(
+    return WillPopScope(
+      onWillPop: () {
+        FirebaseAnalyticsService().setCurrentScreen("login_page");
+        return Future.value(true);
+      },
       child: Scaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
@@ -112,7 +127,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     } else {
                       if (state.type == 'toDisclaimer') {
                         Navigator.of(context).pushNamed(RouteName.disclaimer,
-                            arguments: {'user_id': state.userId, 'from': "signUp"});
+                            arguments: {
+                              'user_id': state.userId,
+                              'from': "signUp"
+                            });
                       } else {
                         // Navigator.of(context).pushNamed(RouteName.otpPage, arguments: state.userId);
                       }
@@ -280,6 +298,7 @@ class _Loading extends StatelessWidget {
 
 class _EmailInput extends StatelessWidget {
   _EmailInput(this._controllerEmail, this.emailFocus);
+
   bool? emailFocus;
   final TextEditingController _controllerEmail;
 
@@ -317,7 +336,9 @@ class _EmailInput extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.w),
             ),
             label: const Text('Email'),
-            labelStyle: emailFocus ?? false ? TextStyle(fontSize: 14.sp) : TextStyle(fontSize: 14.sp, color: EpregnancyColors.greyText),
+            labelStyle: emailFocus ?? false
+                ? TextStyle(fontSize: 14.sp)
+                : TextStyle(fontSize: 14.sp, color: EpregnancyColors.greyText),
             errorText: state.email.invalid ? 'Format e-mail salah' : null,
           ),
         );
@@ -328,13 +349,15 @@ class _EmailInput extends StatelessWidget {
 
 class _PhoneNumberInput extends StatelessWidget {
   _PhoneNumberInput(this._controllerPhone, this.phoneFocusNode);
+
   bool? phoneFocusNode;
   final TextEditingController _controllerPhone;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignupBloc, SignupState>(
-      buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
+      buildWhen: (previous, current) =>
+          previous.phoneNumber != current.phoneNumber,
       builder: (context, state) {
         return TextField(
           maxLength: 13,
@@ -373,13 +396,19 @@ class _PhoneNumberInput extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.w),
             ),
             prefixIcon: Container(
-              // padding: EdgeInsets.only(left: 10.w, top: 10.h),
-              height: 20.h,
+                // padding: EdgeInsets.only(left: 10.w, top: 10.h),
+                height: 20.h,
                 width: 20.w,
                 padding: EdgeInsets.only(left: 10.w, bottom: 1.5.h),
-                child: Center(child: Text("+62", style: TextStyle(color: Colors.black, fontSize: 14.sp),))),
+                child: Center(
+                    child: Text(
+                  "+62",
+                  style: TextStyle(color: Colors.black, fontSize: 14.sp),
+                ))),
             label: const Text("Nomor Handphone"),
-            labelStyle: phoneFocusNode ?? false ? TextStyle(fontSize: 14.sp) : TextStyle(fontSize: 14.sp, color: EpregnancyColors.greyText),
+            labelStyle: phoneFocusNode ?? false
+                ? TextStyle(fontSize: 14.sp)
+                : TextStyle(fontSize: 14.sp, color: EpregnancyColors.greyText),
             errorText: state.phoneNumber.invalid ? 'Format nomor salah' : null,
           ),
         );

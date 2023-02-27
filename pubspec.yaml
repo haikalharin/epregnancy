@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 #dev
-#version: 1.0.39-dev+52
+version: 1.0.37-dev+59
 
 #prod
 version: 1.0.3+6
@@ -88,10 +88,17 @@ dependencies:
   age_calculator: ^1.0.0
   mobile_scanner: ^1.1.2
   qr_flutter: ^4.0.0
+  firebase_analytics: ^9.3.8
   #blur from recent app
   secure_content: ^0.0.11
   root_detector: ^0.0.6
   in_app_update: ^3.0.0
+
+  #audio feature
+  audio_video_progress_bar: ^1.0.0
+  just_audio: ^0.9.30
+  just_audio_background: ^0.0.1-beta.7
+  audio_session: ^0.1.13
 
   #flavor for environment management
 #  flutter_flavor: ^3.1.1

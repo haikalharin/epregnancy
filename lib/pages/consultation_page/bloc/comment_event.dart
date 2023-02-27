@@ -19,6 +19,17 @@ class AddCommentEvent extends CommentEvent {
   List<Object> get props => [];
 }
 
+class DeleteCommentEvent extends CommentEvent {
+  const DeleteCommentEvent({required this.postId, this.listComment});
+
+  final String postId;
+  final List<Comment>? listComment;
+
+  @override
+  List<Object> get props => [];
+}
+
+
 class CommentEventInitialized extends CommentEvent {
   const CommentEventInitialized({this.listComment});
 

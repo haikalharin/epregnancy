@@ -5,11 +5,16 @@ import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
+import 'package:PregnancyApp/utils/firebase_analytics.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
+import 'package:audio_session/audio_session.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:root_detector/root_detector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
@@ -64,7 +69,8 @@ import 'package:provider/provider.dart';
 // void main() => runApp(MyApp());
 SharedPreferences? sharedPreferences;
 FirebaseService firebaseServiceUtils = FirebaseService();
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
@@ -79,10 +85,17 @@ Future<void> main() async {
 
   // Bloc.observer = SimpleBlocObserver();
   await Configurations().setConfigurationValues(config.devEnvironment);
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
   runApp(MyApp());
 }
 
 final Alice aliceDev = Alice(showNotification: true, darkTheme: true);
+final AudioPlayer playerDev = AudioPlayer();
+
 
 class MyApp extends StatefulWidget {
   @override
@@ -92,13 +105,67 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late Future<void> _firebaseFuture;
 
+
+  // final playlist =
+  //     ConcatenatingAudioSource(useLazyPreparation: true, children: [
+  //   AudioSource.asset("assets/audio/al_fatihah.mp3",
+  //       tag: const MediaItem(title: 'Al-Fatihah', id: "1", album: "Murottal"))
+  // ]);
+
+  final playlist = ConcatenatingAudioSource(children: [
+    // AudioSource.uri(Uri.parse("assets/audio/al_fatihah.mp3"),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-19-21.mp3"), tag: const MediaItem(
+        title: 'Surat-Maryam-19-21.',
+        id: "0",
+        artist: "Surat-Maryam-19-21",
+        album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"), tag: const MediaItem(
+      title: 'Surat-Maryam-4-5.',
+      id: "1",
+      artist: "Surat-Maryam-4-5",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"), tag: const MediaItem(
+      title: 'Surat-Maryam-4-5.',
+      id: "1",
+      artist: "Surat-Maryam-4-5",
+      album: "Murottal",)),
+    // AudioSource.uri(Uri.parse("https://ia801408.us.archive.org/11/items/Raad-Al_Kurdi/001.mp3"),
+    //     tag: MediaItem(
+    //         title: 'Al-Fatihah',
+    //         id: "1",
+    //         artist: "Al-Fatihah",
+    //         album: "Murottal",
+    //         artUri: Uri.parse(
+    //             "https://lh3.googleusercontent.com/-kxVDXfXqEXA/YVsZmqZ-GQI/AAAAAAABe1c/gY88VU3gT50-ww0zDs0oG5MzeZizDzd2QCLcBGAsYHQ/w1200-h630-p-k-no-nu/image.png")))
+  ]);
+
+  Future<void> _init() async {
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration.music());
+    // Listen to errors during playback.
+    playerDev.playbackEventStream.listen((event) {},
+        onError: (Object e, StackTrace stackTrace) {
+          print('A stream error occurred: $e');
+        });
+    try {
+      await playerDev.setAudioSource(playlist);
+    } catch (e, stackTrace) {
+      // Catch load errors: 404, invalid url ...
+      print("Error loading playlist: $e");
+      print(stackTrace);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _init();
     initPlatformState();
-    _firebaseFuture = firebaseServiceUtils
-        .initializeFlutterFirebase(context);
-
+    playerDev.setLoopMode(LoopMode.all);
+    // playerDev.setAsset("assets/audio/al_fatihah.mp3");
+    // // playerDev.setAudioSource(playlist,
+    // //     initialIndex: 0, initialPosition: Duration.zero);
+    _firebaseFuture = firebaseServiceUtils.initializeFlutterFirebase(context);
   }
 
   String _isRooted = 'Unknown';
@@ -112,7 +179,7 @@ class _MyAppState extends State<MyApp> {
       ).then((value) {
         setState(() {
           _isRooted = value.toString();
-          if(_isRooted == "true"){
+          if (_isRooted == "true") {
             exit(0);
           }
         });
@@ -138,7 +205,7 @@ class _MyAppState extends State<MyApp> {
     return FutureBuilder(
       future: Future.wait([_firebaseFuture]),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return  ScreenUtilInit(
+        return ScreenUtilInit(
             designSize: const Size(360, 690),
             minTextAdapt: true,
             splitScreenMode: true,
@@ -147,49 +214,50 @@ class _MyAppState extends State<MyApp> {
                   providers: _getProviders(),
                   child: OverlaySupport.global(
                     child: Portal(
-                      child: Provider.value(
-                        value: _routeObserver,
-                        child: SecureWidget(
-                          isSecure: false,
-                          builder: (BuildContext context, void Function() onInit, void Function() onDispose) {
-                            return  MaterialApp(
-                                  debugShowCheckedModeBanner: false,
-                                  navigatorKey: aliceDev.getNavigatorKey(),
-                                  title: 'Komunitaz',
-                                  home: SplashscreenPage(),
-                                  onGenerateRoute: Routes.generateRoute,
-                                  localizationsDelegates: const [
-                                    GlobalMaterialLocalizations.delegate,
-                                    GlobalWidgetsLocalizations.delegate,
-                                    GlobalCupertinoLocalizations.delegate,
-                                  ],
-                                );
-                          },
-                          overlayWidgetBuilder: (context) => BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child:  SizedBox(
-                              child: Center(
-                                child: Image.asset("assets/ic_launcher.png"),
-                              ),
+                        child: Provider.value(
+                      value: _routeObserver,
+                      child: SecureWidget(
+                        isSecure: false,
+                        builder: (BuildContext context, void Function() onInit,
+                            void Function() onDispose) {
+                          return MaterialApp(
+                            debugShowCheckedModeBanner: false,
+                            navigatorKey: aliceDev.getNavigatorKey(),
+                            title: 'Komunitaz',
+                            home: SplashscreenPage(),
+                            onGenerateRoute: Routes.generateRoute,
+                            navigatorObservers: <NavigatorObserver>[FirebaseAnalyticsService.observer],
+                            localizationsDelegates: const [
+                              GlobalMaterialLocalizations.delegate,
+                              GlobalWidgetsLocalizations.delegate,
+                              GlobalCupertinoLocalizations.delegate,
+                            ],
+                          );
+                        },
+                        overlayWidgetBuilder: (context) => BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: SizedBox(
+                            child: Center(
+                              child: Image.asset("assets/ic_launcher.png"),
                             ),
                           ),
-                          appSwitcherMenuColor: EpregnancyColors.primer,
-                          protectInAppSwitcherMenu: true,
                         ),
-                        // child: MaterialApp(
-                        //   debugShowCheckedModeBanner: false,
-                        //   navigatorKey: aliceDev.getNavigatorKey(),
-                        //   title: 'Komunitaz',
-                        //   home: SplashscreenPage(),
-                        //   onGenerateRoute: Routes.generateRoute,
-                        //   localizationsDelegates: const [
-                        //     GlobalMaterialLocalizations.delegate,
-                        //     GlobalWidgetsLocalizations.delegate,
-                        //     GlobalCupertinoLocalizations.delegate,
-                        //   ],
-                        // ),
-                      )
-                    ),
+                        appSwitcherMenuColor: EpregnancyColors.primer,
+                        protectInAppSwitcherMenu: true,
+                      ),
+                      // child: MaterialApp(
+                      //   debugShowCheckedModeBanner: false,
+                      //   navigatorKey: aliceDev.getNavigatorKey(),
+                      //   title: 'Komunitaz',
+                      //   home: SplashscreenPage(),
+                      //   onGenerateRoute: Routes.generateRoute,
+                      //   localizationsDelegates: const [
+                      //     GlobalMaterialLocalizations.delegate,
+                      //     GlobalWidgetsLocalizations.delegate,
+                      //     GlobalCupertinoLocalizations.delegate,
+                      //   ],
+                      // ),
+                    )),
                   ));
             });
       },
@@ -251,12 +319,14 @@ class _MyAppState extends State<MyApp> {
                 Injector.container.resolve<ForgotPasswordPageBloc>()),
         BlocProvider<PinCheckInBloc>(
             create: (context) => Injector.container.resolve<PinCheckInBloc>()),
-    BlocProvider<DisclaimerPageBloc>(
-        create: (context) => Injector.container.resolve<DisclaimerPageBloc>()),
-    BlocProvider<PatientSelectBloc>(
-        create: (context) => Injector.container.resolve<PatientSelectBloc>()),
-    BlocProvider<CommentBloc>(
-        create: (context) => Injector.container.resolve<CommentBloc>()),
+        BlocProvider<DisclaimerPageBloc>(
+            create: (context) =>
+                Injector.container.resolve<DisclaimerPageBloc>()),
+        BlocProvider<PatientSelectBloc>(
+            create: (context) =>
+                Injector.container.resolve<PatientSelectBloc>()),
+        BlocProvider<CommentBloc>(
+            create: (context) => Injector.container.resolve<CommentBloc>()),
       ];
 }
 

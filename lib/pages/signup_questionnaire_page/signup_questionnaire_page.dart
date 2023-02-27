@@ -408,6 +408,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
                                   ),
+                                  initialEntryMode: DatePickerEntryMode.calendarOnly,
                                   dateFormat: DateFormat('dd / MM / yyyy'),
                                   enabled: true,
                                   lastDate: DateTime.now(),

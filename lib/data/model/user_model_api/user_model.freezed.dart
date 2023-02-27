@@ -33,7 +33,7 @@ mixin _$UserModel {
   @JsonKey(includeIfNull: true)
   String? get name => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
-  dynamic get dob => throw _privateConstructorUsedError;
+  String? get dob => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
   String? get username => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
@@ -106,7 +106,7 @@ abstract class $UserModelCopyWith<$Res> {
       @JsonKey(includeIfNull: true)
           String? name,
       @JsonKey(includeIfNull: true)
-          dynamic dob,
+          String? dob,
       @JsonKey(includeIfNull: true)
           String? username,
       @JsonKey(includeIfNull: true)
@@ -226,7 +226,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
       dob: dob == freezed
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as String?,
       username: username == freezed
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -365,7 +365,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       @JsonKey(includeIfNull: true)
           String? name,
       @JsonKey(includeIfNull: true)
-          dynamic dob,
+          String? dob,
       @JsonKey(includeIfNull: true)
           String? username,
       @JsonKey(includeIfNull: true)
@@ -489,7 +489,7 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
       dob: dob == freezed
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as String?,
       username: username == freezed
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -677,7 +677,7 @@ class _$_UserModel implements _UserModel {
   final String? name;
   @override
   @JsonKey(includeIfNull: true)
-  final dynamic dob;
+  final String? dob;
   @override
   @JsonKey(includeIfNull: true)
   final String? username;
@@ -892,7 +892,7 @@ abstract class _UserModel implements UserModel {
       @JsonKey(includeIfNull: true)
           final String? name,
       @JsonKey(includeIfNull: true)
-          final dynamic dob,
+          final String? dob,
       @JsonKey(includeIfNull: true)
           final String? username,
       @JsonKey(includeIfNull: true)
@@ -962,7 +962,7 @@ abstract class _UserModel implements UserModel {
   String? get name => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
-  dynamic get dob => throw _privateConstructorUsedError;
+  String? get dob => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
   String? get username => throw _privateConstructorUsedError;

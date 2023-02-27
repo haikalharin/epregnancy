@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../common/constants/router_constants.dart';
 import '../../../data/firebase/g_authentication.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../utils/function_utils.dart';
 
 class ProfileNakesPage extends StatelessWidget {
   const ProfileNakesPage({Key? key, this.name, this.imageUrl}) : super(key: key);
@@ -61,6 +63,45 @@ class ProfileNakesPage extends StatelessWidget {
                 trailing: const Icon(Icons.arrow_forward_ios, color: EpregnancyColors.greyText,),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: 10.h, horizontal: 10.w),
+              child: Divider(
+                color: Colors.grey,
+                height: 1.5.h,
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                final Uri emailLaunchUri = Uri(
+                  scheme: 'mailto',
+                  path: StringConstant.emailCsBidan,
+                  query:
+                  encodeQueryParameters(<String, String>{
+                    'subject':
+                    'Pertanyaan/Feedback untuk Komunitaz',
+                    'body':
+                    'Halo, saya punya pertanyaan .....',
+                  }),
+                );
+
+                launchUrl(emailLaunchUri);
+              },
+              child: ListTile(
+                leading: Text(
+                  StringConstant.feedback,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: EpregnancyColors.greyText,
+                ),
+              ),
+            ),
+
           ],
         ),
       ),

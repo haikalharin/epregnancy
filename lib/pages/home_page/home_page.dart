@@ -34,6 +34,7 @@ import '../../data/firebase/g_authentication.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../env.dart';
 import '../../utils/epragnancy_color.dart';
+import '../../utils/firebase_analytics.dart';
 import '../login_page/login_page.dart';
 import '../pin_checkin/pin_checkin_page.dart';
 import 'bloc/home_page_bloc.dart';
@@ -90,9 +91,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void subscribeFcmTopic() async {
-    await FirebaseMessaging.instance.subscribeToTopic("/topics/all");
+  _scrollToBottom() {
+    _scrollControler.jumpTo(_scrollControler.position.maxScrollExtent);
   }
+
   void start() {
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
@@ -514,8 +516,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ? Showcase(
                             key: widget.two ?? GlobalKey(),
                             title: 'Kunjungan ke Puskesmas',
-                            description:
-                                'Dapatkan poin setiap kunjungan di sini',
+                            description: 'Dapatkan poin setiap kunjungan di sini',
                             child: Container(
                               margin: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 16.h),

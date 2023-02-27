@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
+import 'package:PregnancyApp/pages/members_page/members_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/full_qr_screen.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/chat_placeholder_widget.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/consultation_container.dart';
@@ -16,6 +17,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../data/model/hospital_model/hospital_model.dart';
+import '../../data/shared_preference/app_shared_preference.dart';
 import '../article_page/list_shimmer_verticle.dart';
 import '../chat_page/bloc/chat_bloc/chat_bloc.dart';
 import '../home_page/list_article.dart';
@@ -47,9 +50,21 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
     Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
     Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
+    Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
     Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
+    getHospital();
+  }
+  HospitalModel? hospitalModel;
+
+  void getHospital() async {
+    HospitalModel _hospitalModel = await AppSharedPreference.getHospital();
+    if(_hospitalModel != null && mounted){
+      setState(() {
+        hospitalModel = _hospitalModel;
+      });
+    }
   }
 
   final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
@@ -123,118 +138,217 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
                   SizedBox(
                     height: 16.h,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Text(
-                      StringConstant.consultation,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16.sp),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        BlocBuilder<ChatPendingBloc, ChatPendingState>(
-                            builder: (context, state) {
-                          return ConsultationContainer(
-                            consultationEnum: ConsultationEnum.newest,
-                            value: state.chatPendingList?.length ?? 0,
-                            role: 'MIDWIFE',
-                          );
-                        }),
-                        SizedBox(
-                          width: 20.w,
-                        ),
-                        BlocBuilder<ChatBloc, ChatState>(
-                            builder: (context, state) {
-                              print('ongoing : ${state.listChatOngoing?.length}');
-                          return ConsultationContainer(
-                              consultationEnum: ConsultationEnum.onGoing,
-                              value: state.listChatOngoing?.length ?? 0,
-                              role: 'MIDWIFE');
-                        })
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Text(
-                      StringConstant.newestIncomingMessage,
-                      style: TextStyle(
-                          color: EpregnancyColors.blackBack,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
 
-                  // hardcoded ui
+                  // total pasien box
+                 Container(
+                   color: EpregnancyColors.primerSoft,
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Container(
+                           margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                           decoration: BoxDecoration(
+                             color: Colors.white,
+                             borderRadius: BorderRadius.circular(8.w)
+                           ),
+                           child: Row(
+                             children: [
+                               Container(
+                                 decoration: BoxDecoration(
+                                     shape: BoxShape.circle,
+                                     color: EpregnancyColors.primerSoft
+                                 ),
+                                 height: 40.h,
+                                 width: 40.w,
+                                 child: Center(
+                                   child: Icon(Icons.groups_rounded, color: EpregnancyColors.primer,),
+                                 ),
+                               ),
+                               Expanded(
+                                 child: InkWell(
+                                   onTap: (){
+                                     Navigator.push(context, MaterialPageRoute(builder: (context) => MembersPage(
+                                       puskesmasName: hospitalModel?.name ?? "-",
+                                     )));
+                                   },
+                                   child: BlocBuilder<HospitalBloc, HospitalState>(
+                                     builder: (context, state) {
+                                       return Container(
+                                         padding: EdgeInsets.only(left: 8.w),
+                                         child: Column(
+                                           crossAxisAlignment: CrossAxisAlignment.start,
+                                           children: [
+                                             Text(hospitalModel?.name ?? "-", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10.sp),),
+                                             SizedBox(height: 5.h,),
+                                             Text("${state.patientAmount ?? "-"} Anggota  •  ${state.midwifeAmount ?? "-"} Bidan ", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp),)
+                                           ],
+                                         ),
+                                       );
+                                     },
+                                   )
+                                 ),
+                               ),
+                               IconButton(onPressed: (){
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => MembersPage(
+                                   puskesmasName: hospitalModel?.name ?? "-",
+                                 )));
+                               }, icon: Icon(
+                                 Icons.arrow_forward_ios_rounded, color: EpregnancyColors.grey,
+                               ))
+                             ],
+                           )
+                       ),
+                       // start tanya bidan box
+                       Card(
+                         shape: RoundedRectangleBorder(
+                           borderRadius: BorderRadius.circular(8.w),
+                         ),
+                         margin: EdgeInsets.symmetric(horizontal: 16.w),
+                         child:Container(
+                           padding: EdgeInsets.only(top: 16.w),
+                           decoration: BoxDecoration(
+                               color: Colors.white,
+                               borderRadius: BorderRadius.circular(8.w)
+                           ),
+                           child: Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Container(
+                                 color: Colors.white,
+                                 padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                 child: Text(
+                                   StringConstant.askMidwife,
+                                   style: TextStyle(
+                                       color: Colors.black,
+                                       fontWeight: FontWeight.w700,
+                                       fontSize: 16.sp),
+                                 ),
+                               ),
+                               Container(
+                                 color: Colors.white,
+                                 height: 16.h,
+                               ),
+                               Container(
+                                 color: Colors.white,
+                                 padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                 child: Row(
+                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                   children: [
+                                     BlocBuilder<ChatPendingBloc, ChatPendingState>(
+                                         builder: (context, state) {
+                                           return ConsultationContainer(
+                                             consultationEnum: ConsultationEnum.newest,
+                                             value: state.chatPendingList?.length ?? 0,
+                                             role: 'MIDWIFE',
+                                           );
+                                         }),
+                                     SizedBox(
+                                       width: 20.w,
+                                     ),
+                                     BlocBuilder<ChatBloc, ChatState>(
+                                         builder: (context, state) {
+                                           print('ongoing : ${state.listChatOngoing?.length}');
+                                           return ConsultationContainer(
+                                               consultationEnum: ConsultationEnum.onGoing,
+                                               value: state.listChatOngoing?.length ?? 0,
+                                               role: 'MIDWIFE');
+                                         })
+                                   ],
+                                 ),
+                               ),
+                               // Container(
+                               //   color: Colors.white,
+                               //   height: 10.h,
+                               // ),
+                               // Container(
+                               //   color: Colors.white,
+                               //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+                               //   child: Text(
+                               //     StringConstant.newestIncomingMessage,
+                               //     style: TextStyle(
+                               //         color: EpregnancyColors.blackBack,
+                               //         fontSize: 12.sp,
+                               //         fontWeight: FontWeight.w500),
+                               //   ),
+                               // ),
 
-                  BlocBuilder<ChatPendingBloc, ChatPendingState>(
-                      builder: (context, state) {
-                    if (state.lastChatResponse == null) {
-                      return Container(
-                        height: 100.h,
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: Text("Belum Ada Chat Baru"),
-                        ),
-                      );
-                    } else {
-                      return InkWell(
-                        onTap: (){
-                          Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': 'MIDWIFE', 'initial_index': 0});
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          child: ChatPlaceHolderWidget(
-                              unread: false,
-                              name: state.lastChatResponse?.chat?.from?.name,
-                              message: state.lastChatResponse?.chat?.message,
-                              unreadCount: state.lastChatResponse?.unreadMessage.toString(),
-                          ),
-                        ),
-                      );
-                    }
-                  }),
-                  // Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  //   child: ChatPlaceHolderWidget( unread: false,),
-                  // ),
-                  // Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  //   child: ChatPlaceHolderWidget(unread: true,),
-                  // ),
+                               // hardcoded ui
 
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(RouteName.navBar,
-                            arguments: {
-                              'role': 'MIDWIFE',
-                              'initial_index': 0,
-                              'user_id': state.user?.id ?? ''
-                            });
-                      },
-                      child: Center(
-                        child: Text(
-                          StringConstant.seeAllConsulation,
-                          style: TextStyle(
-                              color: EpregnancyColors.greyDarkFontColor),
-                        ),
-                      ),
-                    ),
-                  ),
+                               BlocBuilder<ChatPendingBloc, ChatPendingState>(
+                                   builder: (context, state) {
+                                     if (state.lastChatResponse == null) {
+                                       return Container(
+                                         height: 100.h,
+                                         width: MediaQuery.of(context).size.width,
+                                         child: Center(
+                                           child: Text("Belum Ada Chat Baru"),
+                                         ),
+                                       );
+                                     } else {
+                                       return InkWell(
+                                         onTap: (){
+                                           Navigator.of(context).pushNamed(RouteName.navBar, arguments: {'role': 'MIDWIFE', 'initial_index': 0});
+                                         },
+                                         child: Padding(
+                                           padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                           child: ChatPlaceHolderWidget(
+                                             unread: false,
+                                             name: state.lastChatResponse?.chat?.from?.name,
+                                             message: state.lastChatResponse?.chat?.message,
+                                             dateTime: state.lastChatResponse?.chat?.createdDate,
+                                             unreadCount: state.lastChatResponse?.unreadMessage.toString(),
+                                           ),
+                                         ),
+                                       );
+                                     }
+                                   }),
+                               // Padding(
+                               //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+                               //   child: ChatPlaceHolderWidget( unread: false,),
+                               // ),
+                               // Padding(
+                               //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+                               //   child: ChatPlaceHolderWidget(unread: true,),
+                               // ),
+
+                               Container(
+                                 padding: const EdgeInsets.all(8.0),
+                                 decoration: BoxDecoration(
+                                   color: Colors.white,
+                                   borderRadius: BorderRadius.circular(8.w)
+                                 ),
+                                 child: InkWell(
+                                   onTap: () {
+                                     Navigator.of(context).pushNamed(RouteName.navBar,
+                                         arguments: {
+                                           'role': 'MIDWIFE',
+                                           'initial_index': 0,
+                                           'user_id': state.user?.id ?? ''
+                                         });
+                                   },
+                                   child: Center(
+                                     child: Text(
+                                       StringConstant.seeAllConsulation,
+                                       style: TextStyle(
+                                           color: EpregnancyColors.primer, fontWeight: FontWeight.w700, fontSize: 12.sp),
+                                     ),
+                                   ),
+                                 ),
+                               ),
+                             ],
+                           ),
+                         ),
+                       ),
+                       Container(
+                         decoration: BoxDecoration(
+                           borderRadius: BorderRadius.circular(8.w)
+                         ),
+                         height: 16.h,)
+                     ],
+                   ),
+                 ),
+                  // end tanya bidan box
 
                   // artikel section
                   Container(
