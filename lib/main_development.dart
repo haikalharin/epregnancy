@@ -120,14 +120,59 @@ class _MyAppState extends State<MyApp> {
         artist: "Surat-Maryam-19-21",
         album: "Murottal",)),
     LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"), tag: const MediaItem(
-      title: 'Surat-Maryam-4-5.',
+      title: 'Surat-Maryam-4-5',
       id: "1",
       artist: "Surat-Maryam-4-5",
       album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"), tag: const MediaItem(
-      title: 'Surat-Maryam-4-5.',
-      id: "1",
-      artist: "Surat-Maryam-4-5",
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-luqman-14.mp3"), tag: const MediaItem(
+      title: 'Surat-Luqman',
+      id: "2",
+      artist: "Surat-Luqman",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-ibrahim-40.mp3"), tag: const MediaItem(
+      title: 'Surat-Ibrahim-40',
+      id: "3",
+      artist: "Surat-Ibrahim-40",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-as-saffat-100.mp3"), tag: const MediaItem(
+      title: 'Surat-As-Saffat-100',
+      id: "4",
+      artist: "Surat-As-Saffat-100",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-muminun-12-14.mp3"), tag: const MediaItem(
+      title: 'Surat-Al-Muminun-12-14',
+      id: "5",
+      artist: "Surat-Al-Muminun-12-14",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-38.mp3"), tag: const MediaItem(
+      title: 'Surat-Al-Imran-38',
+      id: "6",
+      artist: "Surat-Al-Imran-38",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-36.mp3"), tag: const MediaItem(
+      title: 'Surat-Al-Imran-36',
+      id: "7",
+      artist: "Surat-Al-Imran-36",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-35.mp3"), tag: const MediaItem(
+      title: 'Surat-Al-Imran-35',
+      id: "8",
+      artist: "Surat-Al-Imran-35",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-furqan-74.mp3"), tag: const MediaItem(
+      title: 'Surat-Al-Furqan-74',
+      id: "9",
+      artist: "Surat-Al-Furqan-74",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-fatihah.mp3"), tag: const MediaItem(
+      title: 'Surat-Al-Fatihah',
+      id: "10",
+      artist: "Surat-Al-Fatihah",
+      album: "Murottal",)),
+    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-araf-54.mp3"), tag: const MediaItem(
+      title: 'Surat-Al-Araf-54',
+      id: "11",
+      artist: "Surat-Al-Araf-54",
       album: "Murottal",)),
     // AudioSource.uri(Uri.parse("https://ia801408.us.archive.org/11/items/Raad-Al_Kurdi/001.mp3"),
     //     tag: MediaItem(

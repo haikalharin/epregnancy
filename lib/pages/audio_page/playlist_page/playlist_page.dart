@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
 import 'package:PregnancyApp/pages/audio_page/audio_player_page/audio_player_page.dart';
+import 'package:PregnancyApp/pages/audio_page/widgets/item_playlist.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -129,107 +130,19 @@ class _PlaylistPageState extends State<PlaylistPage> {
               ListView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  InkWell(
-                    onTap: (){
-                      if(playerDev.currentIndex == 0 && playerDev.playing){
-                        playerDev.pause();
-                      } else {
-                        playerDev.seek(Duration.zero, index: 0);
-                        playerDev.play();
-                      }
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.w)
-                      ),
-                      elevation: 2,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(13.w),
-                              decoration: BoxDecoration(
-                                  color: EpregnancyColors.primerSoft2,
-                                  borderRadius: BorderRadius.circular(8.w)),
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  'assets/icMusic.svg',
-                                  color: EpregnancyColors.primer,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10.w,),
-                            Expanded(child: Text(
-                              "Al-Fatihah", style: TextStyle(color: Colors.black, fontSize: 14.sp, fontWeight: FontWeight.w700),
-                            )),
-                            InkWell(
-                              onTap: (){
-                                if(playerDev.currentIndex == 0 && playerDev.playing){
-                                  playerDev.pause();
-                                } else {
-                                  playerDev.seek(Duration.zero, index: 0);
-                                  playerDev.play();
-                                }
-                              },
-                                child: SvgPicture.asset(playerDev.currentIndex == 0 && playerDev.playing ? "assets/icPause.svg" : "assets/icPlay.svg"))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: (){
-                      if(playerDev.currentIndex == 1 && playerDev.playing){
-                        playerDev.pause();
-                      } else {
-                        playerDev.seek(Duration.zero, index: 1);
-                        playerDev.play();
-                      }
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.w)
-                      ),
-                      elevation: 2,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(13.w),
-                              decoration: BoxDecoration(
-                                  color: EpregnancyColors.primerSoft2,
-                                  borderRadius: BorderRadius.circular(8.w)),
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  'assets/icMusic.svg',
-                                  color: EpregnancyColors.primer,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10.w,),
-                            Expanded(child: Text(
-                              "Al-Yusuf", style: TextStyle(color: Colors.black, fontSize: 14.sp, fontWeight: FontWeight.w700),
-                            )),
-                        InkWell(
-                          onTap: (){
-                            if(playerDev.currentIndex == 1 && playerDev.playing){
-                              playerDev.pause();
-                            } else {
-                              playerDev.seek(Duration.zero, index: 1);
-                              playerDev.play();
-                            }
-                          },
-                            child: SvgPicture.asset(playerDev.currentIndex == 1 && playerDev.playing ? "assets/icPause.svg" : "assets/icPlay.svg"))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                children:  [
+                  ItemPlayList(title: "Surat-Maryam-19-21", index: 0),
+                  ItemPlayList(title: "Surat-Maryam-4-5", index: 1),
+                  ItemPlayList(title: "Surat-Luqman", index: 2),
+                  ItemPlayList(title: "Surat-Ibrahim-40", index: 3),
+                  ItemPlayList(title: "Surat-As-Saffat-100", index: 4),
+                  ItemPlayList(title: "Surat-Al-Muminun-12-14", index: 5),
+                  ItemPlayList(title: "Surat-Al-Imran-38", index: 6),
+                  ItemPlayList(title: "Surat-Al-Imran-36", index: 7),
+                  ItemPlayList(title: "Surat-Al-Imran-35", index: 8),
+                  ItemPlayList(title: "Surat-Al-Furqan-74", index: 9),
+                  ItemPlayList(title: "Surat-Al-Fatihah", index: 10),
+                  ItemPlayList(title: "Surat-Al-Araf-54", index: 11),
                   // MusicCard(),
                   // MusicCard(),
                 ],
