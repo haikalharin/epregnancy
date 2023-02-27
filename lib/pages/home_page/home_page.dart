@@ -82,6 +82,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isExpanded = false;
   final ScrollController _scrollControler = ScrollController();
 
+  void subscribeFcmTopic() async {
+    FirebaseMessaging.instance.subscribeToTopic("topics/all");
+  }
+
+
   @override
   void initState() {
     if(F.appFlavor == Flavor.DEVELOPMENT){
