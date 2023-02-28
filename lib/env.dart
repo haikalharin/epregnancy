@@ -23,7 +23,9 @@ final Map<String, dynamic> devEnvironment = <String, dynamic>{
   'consumerSecret': 'cs_51a47e2d054bfe8df212b12048cd6f65c6463529',
   'berita':'  http://ds-onlineadvertising.com/syariah/info.php',
   'mode': 'prod', //dev or prod
-  'isShowChucker': true, //dev or prod
+  'isShowChucker': true,
+  'countly_server_url': 'http://idazl0320.srv.allianz/analytics', //dev or prod
+  'countly_app_key': 'b910097583621b92a6d8b4ff3db27b17186674b1',//dev or prod
 };
 
 final Map<String, dynamic> environment = <String, dynamic>{
@@ -38,6 +40,8 @@ final Map<String, dynamic> environment = <String, dynamic>{
   'berita':'  http://ds-onlineadvertising.com/syariah/info.php',
   'mode': 'prod', //dev or prod
   'isShowChucker': true, //dev or prod
+  'countly_server_url': 'http://idazl0320.srv.allianz/analytics', //dev or prod
+  'countly_app_key': 'b910097583621b92a6d8b4ff3db27b17186674b1', //dev or prod
 };
 
 // url web

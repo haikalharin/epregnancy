@@ -4,6 +4,7 @@ import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
+import 'package:PregnancyApp/utils/countly_analytics.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/firebase_analytics.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
@@ -206,6 +207,10 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _init();
     initPlatformState();
+    // MyButton(text: 'Get Device Id Type', color: 'green', onPressed: getDeviceIDType),
+    // MyButton(text: 'Begin Session', color: 'green', onPressed: beginSession),
+    // MyButton(text: 'Update Session', color: 'green', onPressed: updateSession),
+    CountlyAnalyticsService(context).setInitCountly();
     playerDev.setLoopMode(LoopMode.all);
     // playerDev.setAsset("assets/audio/al_fatihah.mp3");
     // // playerDev.setAudioSource(playlist,

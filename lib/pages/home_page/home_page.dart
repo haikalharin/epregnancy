@@ -16,6 +16,7 @@ import 'package:PregnancyApp/pages/poin_page/widget/poin_placeholder.dart';
 import 'package:PregnancyApp/utils/date_picker.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:PregnancyApp/utils/web_socket_chat_channel.dart';
+import 'package:countly_flutter/countly_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +97,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     if (F.appFlavor == Flavor.DEVELOPMENT) {
       // subscribeFcmTopic();
     }
+
+    Countly.recordView("loginPage");
     start();
     super.initState();
   }

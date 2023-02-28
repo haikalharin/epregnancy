@@ -9,6 +9,8 @@ class Configurations {
   static String _consumerSecret = DefaultConfig.consumerSecret;
   static String _mode = DefaultConfig.mode;
   static bool _isShowChucker = DefaultConfig.isShowChucker;
+  static String _countlyServerUrl = DefaultConfig.countlyServerUrl;
+  static String _countlyAppKey = DefaultConfig.countlyAppKey;
 
   Future<void> setConfigurationValues(Map<String, dynamic> value) async {
     _host = value['host'] ?? DefaultConfig.host;
@@ -21,6 +23,10 @@ class Configurations {
     _consumerKey = value['consumerKey'] ?? DefaultConfig.consumerKey.toString();
     _consumerSecret =
         value['consumerSecret'] ?? DefaultConfig.consumerSecret.toString();
+    _countlyServerUrl =
+        value['countly_server_url'] ?? DefaultConfig.countlyServerUrl.toString();
+    _countlyAppKey =
+        value['countly_app_key'] ?? DefaultConfig.countlyAppKey.toString();
   }
 
   static String get host => _host;
@@ -38,4 +44,8 @@ class Configurations {
   static String get consumerKey => _consumerKey;
 
   static String get consumerSecret => _consumerSecret;
+
+  static String get countlyServerUrl => _countlyServerUrl;
+
+  static String get countlyAppKey => _countlyAppKey;
 }

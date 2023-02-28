@@ -2,6 +2,8 @@ import 'package:PregnancyApp/main_default.dart';
 import 'package:PregnancyApp/main_development.dart';
 import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
 import 'package:PregnancyApp/pages/state_page/registration_success_page.dart';
+import 'package:PregnancyApp/utils/countly_analytics.dart';
+import 'package:countly_flutter/countly_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,6 +57,9 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     getRemoteConfig();
     FirebaseAnalyticsService().setCurrentScreen("login_page");
+    Countly.recordView("loginPage");
+    CountlyAnalyticsService(context).getDeviceIDType();
+    CountlyAnalyticsService(context).basicEvent( {'key': 'Login_page', 'count': 1});
     if (widget.tokenExpired == true) {
       if (widget.isFromRegister) {
         WidgetsBinding.instance?.addPostFrameCallback((_) async {
