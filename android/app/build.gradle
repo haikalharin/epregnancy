@@ -114,5 +114,9 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation("com.google.firebase:firebase-iid")
+    implementation 'ly.count.android:sdk:22.09.0'
+    implementation 'com.google.firebase:firebase-messaging:23.1.1'
+
 
 }

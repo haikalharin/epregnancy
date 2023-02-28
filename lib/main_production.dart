@@ -1,6 +1,7 @@
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
+import 'package:PregnancyApp/utils/countly_analytics.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -109,6 +110,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    CountlyAnalyticsService(context).setInitCountly();
     _firebaseFuture = firebaseService
         .initializeFlutterFirebase(context);
 

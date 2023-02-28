@@ -9,6 +9,8 @@ class DefaultConfig {
   static const wpUrl = '';
   static const mode = 'prod';
   static const isShowChucker = false;
+  static const countlyServerUrl = '';
+  static const countlyAppKey = '';
 }
 
 enum HttpClientEnum { http, dio, retrofit }
