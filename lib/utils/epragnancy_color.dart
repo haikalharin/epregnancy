@@ -33,6 +33,7 @@ class EpregnancyColors {
   static const Color redText = Color(0xFFF14336);
   static const Color greyDarkFontColor = Color(0xFF7A7E80);
   static const Color greyChatBubble = Color(0xFFF7F7F7);
+  static const Color pink = Color(0xFFFABFD1);
 
   //border
   static const Color borderGrey = Color(0xFFE9E9E9);

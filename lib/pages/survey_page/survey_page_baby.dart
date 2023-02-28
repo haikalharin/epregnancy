@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/baby_model/new_baby_model.dart';
 import 'package:PregnancyApp/flavors.dart';
 import 'package:PregnancyApp/main_development.dart';
 import 'package:PregnancyApp/main_production.dart';
@@ -177,11 +178,11 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                           state.page == 2
                               ? LastMenstruation(
                             isEdit: widget.isEdit,
-                            baby: state.dataBaby ?? BabyModelApi.empty(),
+                            baby: state.dataBaby ?? const NewBabyModel(),
                           )
                               : BabyName(
                               isEdit: widget.isEdit,
-                              baby: state.dataBaby ?? BabyModelApi.empty()),
+                              baby: state.dataBaby ?? const NewBabyModel()),
                           Container(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,

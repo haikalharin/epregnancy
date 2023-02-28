@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/baby_model/new_baby_model.dart';
 import 'package:PregnancyApp/data/model/baby_model_api/baby_Model_api.dart';
 import 'package:date_field/date_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +19,7 @@ class LastMenstruation extends StatefulWidget {
     this.baby,
   }) : super(key: key);
   final bool? isEdit;
-  BabyModelApi? baby;
+  NewBabyModel? baby;
 
   @override
   State<LastMenstruation> createState() => _LastMenstruationState();
@@ -32,7 +33,7 @@ class _LastMenstruationState extends State<LastMenstruation> {
     isEdit = widget.isEdit!;
     if (widget.isEdit == true) {
       Injector.resolve<SurveyPageBloc>()
-          .add(SurveyDateChanged(widget.baby!.lastMenstruationDate!));
+          .add(SurveyDateChanged(widget.baby?.baby?.lastMenstruationDate??"0000-00-00"));
 
       isEdit = false;
     }
@@ -114,10 +115,10 @@ class _LastMenstruationState extends State<LastMenstruation> {
                                   initialEntryMode: DatePickerEntryMode.calendarOnly,
                                   initialValue: state.date.valid
                                       ? DateTime.parse(state.date.value)
-                                      : widget.baby?.id != ""
+                                      : (widget.baby?.baby?.id != "" || widget.baby?.baby?.id != null)
                                           ? DateTime.parse(widget
-                                                  .baby!.lastMenstruationDate ??
-                                              "00-00-00")
+                                                  .baby?.baby?.lastMenstruationDate ??
+                                              "0000-00-00")
                                           : null,
                                   dateFormat: DateFormat('dd/MM/yyyy'),
                                   mode: DateTimeFieldPickerMode.date,

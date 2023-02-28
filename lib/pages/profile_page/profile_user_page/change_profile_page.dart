@@ -331,25 +331,30 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                             style: TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 10.sp),
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                "Kehamilan Minggu ke-${state.ageBabyInWeeks.toString()}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 10.sp),
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pushNamed(
-                                        RouteName.surveyPageBaby,
-                                        arguments: {"is_edit": true, "edit_name": false});
-                                  },
-                                  icon: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: EpregnancyColors.grey,
-                                  ))
-                            ],
+                          InkWell(
+                            onTap: (){
+                              Navigator.of(context).pushNamed(
+                                  RouteName.surveyPageBaby,
+                                  arguments: {"is_edit": true, "edit_name": false});
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Kehamilan Minggu ke-${state.ageBabyInWeeks.toString()}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10.sp),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+
+                                    },
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: EpregnancyColors.grey,
+                                    ))
+                              ],
+                            ),
                           ),
 
                         ],

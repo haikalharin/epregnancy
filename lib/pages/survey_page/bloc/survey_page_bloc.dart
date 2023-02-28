@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:PregnancyApp/data/model/baby_model/baby_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/signup_quest_request.dart';
-import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
-import 'package:PregnancyApp/utils/secure.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -14,13 +11,11 @@ import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/survey_error_exception.dart';
 import '../../../common/validators/mandatory_field_validator.dart';
-import '../../../data/firebase/event/event_user.dart';
+import '../../../data/model/baby_model/new_baby_model.dart' as newBaby;
 import '../../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../../data/model/user_model_api/user_model.dart';
-import '../../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
-import '../../../utils/string_constans.dart';
 
 part 'survey_page_event.dart';
 
@@ -62,7 +57,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
   Stream<SurveyPageState> _mapSurveyInitEventToState(
       SurveyInitEvent event, SurveyPageState state) async* {
     var user = await AppSharedPreference.getUser();
-    List<dynamic> myBaby = [];
+    newBaby.NewBabyModel myBaby = const newBaby.NewBabyModel();
     var choice = 0;
     if (event.isUpdate) {
       // user = await AppSharedPreference.getUser();
@@ -79,7 +74,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     yield SurveyPageState(
         user: user,
         page: 1,
-        dataBaby: myBaby.isNotEmpty ? myBaby.last : BabyModelApi.empty(),
+        dataBaby: myBaby.baby != null ? myBaby : const newBaby.NewBabyModel(),
         choice: choice);
   }
 
@@ -172,9 +167,9 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
           ? await AppSharedPreference.getUser()
           : await AppSharedPreference.getUser();
       ResponseModel response = ResponseModel.dataEmpty();
-      if (state.dataBaby?.id != "") {
+      if (state.dataBaby?.baby?.id != "" || state.dataBaby?.baby?.id != null) {
         response = await userRepository.updateQuestionerBaby(BabyModelApi(
-            id: state.dataBaby?.id,
+            id: state.dataBaby?.baby?.id,
             name: state.name.value,
             lastMenstruationDate: state.date.value));
       } else {
@@ -193,10 +188,11 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
 
       if (response.code == 200) {
         if (event.isUpdate) {
-          await AppSharedPreference.setBabyData(BabyModelApi(
-              userId: user.id,
-              name: state.name.value,
-              lastMenstruationDate: state.date.value));
+          await AppSharedPreference.setBabyDataNew(newBaby.NewBabyModel(
+              baby: newBaby.Baby(
+                  userId: user.id,
+                  name: state.name.value,
+                  lastMenstruationDate: state.date.value)));
         }
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess, type: 'submitBaby');

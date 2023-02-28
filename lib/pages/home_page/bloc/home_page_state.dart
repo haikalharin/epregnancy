@@ -3,8 +3,7 @@ part of 'home_page_bloc.dart';
 class HomePageState with FormzMixin {
   final UserModel? user;
   final String? role;
-  final List<dynamic>? baby;
-  final BabyProgressModel? babyProgressModel;
+  final NewBabyModel? baby;
   final FormzStatus? submitStatus;
   final String? tipe;
   final String? days;
@@ -23,7 +22,6 @@ class HomePageState with FormzMixin {
   HomePageState({this.user,
     this.role,
     this.baby,
-    this.babyProgressModel,
     this.submitStatus = FormzStatus.pure,
     this.listArticle,
     this.listEvent,
@@ -42,8 +40,7 @@ class HomePageState with FormzMixin {
   HomePageState copyWith({FormzStatus? submitStatus,
     UserModel? user,
     String? role,
-    List<dynamic>? baby,
-    BabyProgressModel? babyProgressModel,
+    NewBabyModel? baby,
     List<ArticleModel>? listArticle,
     List<EventModel>? listEvent,
     List<EventModel>? listEventPersonal,
@@ -63,7 +60,6 @@ class HomePageState with FormzMixin {
         role: role ?? this.role,
         baby: baby ?? this.baby,
         showGuide: showGuide ?? this.showGuide,
-        babyProgressModel: babyProgressModel ?? this.babyProgressModel,
         listArticle: listArticle ?? this.listArticle,
         listEvent: listEvent ?? this.listEvent,
         listEventPersonal: listEventPersonal ?? this.listEventPersonal,
