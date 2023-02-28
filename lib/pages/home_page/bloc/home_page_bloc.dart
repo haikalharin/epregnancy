@@ -26,6 +26,7 @@ import '../../../common/exceptions/server_error_exception.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/article_model/article_model.dart';
 import '../../../data/model/baby_model/baby_model.dart';
+import '../../../data/model/baby_model/new_baby_model.dart';
 import '../../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../../data/model/baby_progress_model/baby_progress_model.dart';
 import '../../../data/model/user_info/user_info.dart';
@@ -39,7 +40,9 @@ part 'home_page_event.dart';
 part 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
-  HomePageBloc(this.homeRepository, this.userRepository, this.eventRepository, this.articleRepository) : super(HomePageInitial());
+  HomePageBloc(this.homeRepository, this.userRepository, this.eventRepository,
+      this.articleRepository)
+      : super(HomePageInitial());
 
   final HomeRepository homeRepository;
   final UserRepository userRepository;
@@ -60,7 +63,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapEventFetchEventToState(event, state);
     } else if (event is PointFetchEvent) {
       yield* _mapPointFetchEventToState(event, state);
-    }  else if (event is HomeEventDeleteSchedule) {
+    } else if (event is HomeEventDeleteSchedule) {
       yield* _mapHomeEventDeleteScheduleToState(event, state);
     }
   }
@@ -77,7 +80,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     EventFetchEvent event,
     HomePageState state,
   ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress,tipe: "listEvent");
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress, tipe: "listEvent");
     try {
       List<EventModel> listEventBeforeSort = [];
       ResponseModel<EventModel> responseModel = ResponseModel();
@@ -86,25 +90,31 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       List<EventModel> listEvent = [];
       if (event.type == StringConstant.typePersonal) {
         print('midwife status : ${event.isMidwife}');
-        if(event.isMidwife == true){
-          responseModel = await eventRepository.fetchEventForMidwife(midwifeId: person.id, isPublic: false );
+        if (event.isMidwife == true) {
+          responseModel = await eventRepository.fetchEventForMidwife(
+              midwifeId: person.id, isPublic: false);
         } else {
-          responseModel = await eventRepository.fetchEvent(userId: person.id,isPublic: false );
+          responseModel = await eventRepository.fetchEvent(
+              userId: person.id, isPublic: false);
         }
-        listEvent = responseModel.data??[];
+        listEvent = responseModel.data ?? [];
       } else {
-        if(event.isMidwife == true) {
-          responseModel = await eventRepository.fetchEventForMidwife(midwifeId: person.id, isPublic: true);
+        if (event.isMidwife == true) {
+          responseModel = await eventRepository.fetchEventForMidwife(
+              midwifeId: person.id, isPublic: true);
         } else {
-          responseModel = await eventRepository.fetchEvent(userId: person.id, isPublic: true);
+          responseModel = await eventRepository.fetchEvent(
+              userId: person.id, isPublic: true);
         }
-        listEvent = responseModel.data?? [];
+        listEvent = responseModel.data ?? [];
       }
 
       if (listEvent.isNotEmpty) {
-        listEvent = responseModel.data??[];
-        listEventBeforeSort = await FunctionUtils.getCheckDate(listEvent: listEvent, date: event.date);
-        var listEventFix = await FunctionUtils.sortDate(listEvent: listEventBeforeSort);
+        listEvent = responseModel.data ?? [];
+        listEventBeforeSort = await FunctionUtils.getCheckDate(
+            listEvent: listEvent, date: event.date);
+        var listEventFix =
+            await FunctionUtils.sortDate(listEvent: listEventBeforeSort);
         var outputFormat = DateFormat.yMMMMEEEEd('id');
         var dateTimeString = outputFormat.format(event.date);
         if (listEvent.isNotEmpty) {
@@ -140,52 +150,62 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      if( a is UnAuthorizeException) {
+      if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
   }
 
   Stream<HomePageState> _mapPointFetchEventToState(
-      PointFetchEvent event,
+    PointFetchEvent event,
     HomePageState state,
   ) async* {
     yield state.copyWith(
-        submitStatus: FormzStatus.submissionInProgress, tipe: "fetchtotalPoint");
+        submitStatus: FormzStatus.submissionInProgress,
+        tipe: "fetchtotalPoint");
     try {
-      final ResponseModel<UserModel> responseModel = await userRepository.getUserInfo();
+      final ResponseModel<UserModel> responseModel =
+          await userRepository.getUserInfo();
       UserModel userInfo = responseModel.data;
-      UserModel userEntity = userInfo.copyWith(
-        name: await aesDecryptor(userInfo.name)
-      );
+      UserModel userEntity =
+          userInfo.copyWith(name: await aesDecryptor(userInfo.name));
       // await AppSharedPreference.remove(AppSharedPreference.checkIn);
-      if(responseModel.code == 200) {
+      if (responseModel.code == 200) {
         await AppSharedPreference.setUser(responseModel.data);
-        await AppSharedPreference.setBool(AppSharedPreference.isShowGuide, false);
+        await AppSharedPreference.setBool(
+            AppSharedPreference.isShowGuide, false);
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess, totalPointsEarned: userInfo.totalpointsEarned, user: userEntity, tipe: "get-info-done");
+            submitStatus: FormzStatus.submissionSuccess,
+            totalPointsEarned: userInfo.totalpointsEarned,
+            user: userEntity,
+            tipe: "get-info-done");
       }
     } on HomeErrorException catch (e) {
       print(e);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
-      if( a is UnAuthorizeException) {
+      if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: a.toString(), isNotHaveSession: true);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure,
+          errorMessage: a.toString(),
+          isNotHaveSession: true);
     }
   }
 
   Stream<HomePageState> _mapArticleFetchEventToState(
-      ArticleFetchEvent event,
-      HomePageState state,
-      ) async* {
+    ArticleFetchEvent event,
+    HomePageState state,
+  ) async* {
     yield state.copyWith(
         submitStatus: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
-
-      final ResponseModel responseModel = await articleRepository.fetchArticle(0,'asc','createdDate');
+      final ResponseModel responseModel =
+          await articleRepository.fetchArticle(0, 'asc', 'createdDate');
       List<ArticleModel> listArticle = responseModel.data ?? [];
       List<ArticleModel> listArticleFix = [];
       // if(event.isNextPage){
@@ -195,19 +215,20 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         listArticleFix.add(element);
       }
       if (responseModel.data.isNotEmpty) {
-
         yield state.copyWith(
-            listArticle: listArticleFix, submitStatus: FormzStatus.submissionSuccess);
+            listArticle: listArticleFix,
+            submitStatus: FormzStatus.submissionSuccess);
       }
     } on HomeErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      if( a is UnAuthorizeException) {
+      if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
   }
 
@@ -220,55 +241,47 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     HomeFetchDataEvent event,
     HomePageState state,
   ) async* {
-    yield state.copyWith(
-        submitStatus: FormzStatus.submissionInProgress);
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       var days = 0;
       var weeks = 0;
-      var myBaby = [];
-
+      NewBabyModel myBaby = const NewBabyModel();
 
       final UserModel user = await AppSharedPreference.getUser();
       ResponseModel response = await homeRepository.getBaby(user);
       if (response.code == 200) {
         myBaby = response.data;
-      }
-
-      BabyProgressModel babyProgressModel = BabyProgressModel.empty();
-      if(myBaby.length != 0){
-      if (myBaby.last.id != '') {
+        if (myBaby.baby!.id != '' || myBaby.baby!.id != null ) {
           DateTime dateTimeCreatedAt =
-              DateTime.parse(myBaby.last.lastMenstruationDate!);
+          DateTime.parse(myBaby.baby!.lastMenstruationDate??"0000-00-00");
           DateTime dateTimeNow = DateTime.now();
           final differenceInDays =
               dateTimeNow.difference(dateTimeCreatedAt).inDays;
           weeks = (differenceInDays / 7).floor();
           days = (differenceInDays % 7).floor();
-          babyProgressModel = await EventUser.checkBabyProgress(weeks.toString());
           print('$differenceInDays');
-        }}
-      babyProgressModel = await EventUser.checkBabyProgress(weeks.toString());
-      // final UserRolesModelFirebase role = await AppSharedPreference.getUserRoleFirebase();
-      if (response.code == 200) {
-        bool? _showGuide = await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
+        }
+        bool? _showGuide =
+            await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
         print('show guide : $_showGuide');
-        await AppSharedPreference.setBabyData(myBaby.last);
+        await AppSharedPreference.setBabyDataNew(myBaby);
         yield state.copyWith(
           submitStatus: FormzStatus.submissionSuccess,
           baby: myBaby,
           days: days.toString(),
           weeks: weeks.toString(),
-          babyProgressModel: babyProgressModel,
           user: user,
           showGuide: _showGuide ?? true,
           role: user.isPatient == true
               ? StringConstant.patient
               : StringConstant.midwife,
         );
-      } else if (response.code == 0){
+      } else if (response.code == 0) {
         await AppSharedPreference.sessionExpiredEvent();
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
-      }else {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure,
+            isNotHaveSession: true);
+      } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     } on HomeErrorException catch (e) {
@@ -276,42 +289,41 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      if( a is UnAuthorizeException) {
+      if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
   }
+
 //
 
   Stream<HomePageState> _mapHomeEventDeleteScheduleToState(
-      HomeEventDeleteSchedule event,
-      HomePageState state,
-      ) async* {
+    HomeEventDeleteSchedule event,
+    HomePageState state,
+  ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-
       final response = await eventRepository.deleteEvent(event.id);
 
-      if (response.code == 200){
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, tipe: "deleteSchedule");
-      } else{
+      if (response.code == 200) {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess,
+            tipe: "deleteSchedule");
+      } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
-
-
-
     } on EventErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       print(a);
-      if( a is UnAuthorizeException) {
+      if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
     }
-
   }
-
 }

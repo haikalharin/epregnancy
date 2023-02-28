@@ -1,406 +1,334 @@
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../utils/epragnancy_color.dart';
+import '../../utils/image_utils.dart';
 
 class BabySectionWidget extends StatelessWidget {
-  const BabySectionWidget({Key? key, this.one, required this.state}) : super(key: key);
+   BabySectionWidget({Key? key, this.one, required this.state, required this.tooltipController,required this.psTriggerTooltip})
+      : super(key: key);
   final GlobalKey? one;
   final HomePageState state;
+  final  JustTheController tooltipController;
+   final PublishSubject<bool> psTriggerTooltip;
+    var duration = 0;
 
+  Path defaultTailBuilder( Offset tip, Offset point2, Offset point3) {
+    return Path()
+      ..moveTo(tip.dx , tip.dy)
+      ..lineTo(point2.dx , point2.dy)
+      ..lineTo(point3.dx, point3.dy)
+      ..close();
+  }
   @override
   Widget build(BuildContext context) {
-    return state.showGuide! ? Showcase(
-      key: one?? GlobalKey(),
-      title: 'Selamat datang !',
-      description: 'Anda akan dengan mudah mengetahui fase kehamilan dengan gambar interaktif yang menunjukkan kondisi janin Anda',
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius:
-            BorderRadius.circular(15.0),
-            color: EpregnancyColors.primer),
-        margin: EdgeInsets.only(
-            left: 20, right: 20),
-        child: Container(
-          margin: EdgeInsets.only(
-              left: 30, right: 30),
-          padding: EdgeInsets.only(
-              top: 20, bottom: 20),
-          child: Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
-            children: [
-              state.baby != null
-                  ? Container(
-                  margin: EdgeInsets.only(
-                      bottom: 10),
-                  child: Text(
-                    state.baby!.length !=
-                        0
-                        ? state.baby!.first.name!
-                        : "",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color:
-                        Colors.white,
-                        fontWeight:
-                        FontWeight
-                            .bold),
-                    maxLines: 3,
-                  ))
-                  : Container(),
-              Row(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
-                mainAxisAlignment:
-                MainAxisAlignment
-                    .spaceBetween,
-                children: [
-                  state.babyProgressModel !=
-                      null
-                      ? Container(
-                    // margin: EdgeInsets.only(left: 50, right: 50),
-                    child: FadeInImage(
-                      placeholder:
-                      AssetImage(
-                          'assets/ic_no_photo.png'),
-                      image: NetworkImage(state
-                          .babyProgressModel!
-                          .iconUrl!),
-                      width: 60.w,
-                      height: 60.h,
-                      fit: BoxFit.fill,
-                      imageErrorBuilder:
-                          (context,
-                          error,
-                          stackTrace) {
-                        return Image
-                            .asset(
-                          'assets/ic_no_photo.png',
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit
-                              .cover,
-                        );
-                      },
-                    ),
-                  )
-                      : Container(
-                    width: 60,
-                    height: 60,
-                  ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment
-                          .start,
+    return state.showGuide!
+        ? Showcase(
+            key: one ?? GlobalKey(),
+            title: 'Selamat datang !',
+            description:
+                'Anda akan dengan mudah mengetahui fase kehamilan dengan gambar interaktif yang menunjukkan kondisi janin Anda',
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.w),
+                  color: EpregnancyColors.white),
+              margin: EdgeInsets.only(left: 20, right: 20),
+              child: Container(
+                margin: EdgeInsets.only(left: 16, right: 8),
+                padding: EdgeInsets.only(top: 10.h, bottom: 0.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          child: Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment
-                                .start,
-                            mainAxisAlignment:
-                            MainAxisAlignment
-                                .spaceBetween,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(
-                                      bottom:
-                                      10),
-                                  width:
-                                  150.w,
-                                  child: Text(
-                                    state.babyProgressModel !=
-                                        null
-                                        ? state
-                                        .babyProgressModel!
-                                        .title!
-                                        : '',
-                                    style: TextStyle(
-                                        fontSize:
-                                        14,
-                                        color: Colors
-                                            .white,
-                                        fontWeight:
-                                        FontWeight.bold),
-                                    maxLines:
-                                    5,
-                                  )),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              // Container(
-                              //   child:
-                              //       const Icon(
-                              //     Icons
-                              //         .arrow_forward_ios,
-                              //     color: Colors
-                              //         .white,
-                              //   ),
-                              // ),
-                            ],
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: EpregnancyColors.pink),
+                          padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          child: Text(
+                            "Minggu ke- ${state.baby?.baby?.pregnancyAgeWeek}",
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Container(
-                            margin: EdgeInsets
-                                .only(
-                                bottom:
-                                10),
-                            width: 200,
-                            child: Text(
-                              state.babyProgressModel !=
-                                  null
-                                  ? state
-                                  .babyProgressModel!
-                                  .condition!
-                                  : '',
-                              style: TextStyle(
-                                  fontSize:
-                                  12,
-                                  color: Colors
-                                      .white),
-                              maxLines: 3,
-                            )),
-                        Container(
-                            margin: EdgeInsets
-                                .only(
-                                bottom:
-                                20),
-                            child: Text(
-                              state.weeks !=
-                                  null
-                                  ? "${state.weeks} Minggu ${state.days} Hari"
-                                  : '',
-                              style: TextStyle(
-                                  fontSize:
-                                  12,
-                                  color: Colors
-                                      .white,
-                                  fontWeight:
-                                  FontWeight
-                                      .bold),
-                            )),
-                        // InkWell(
-                        //   onTap: (){
-                        //     Navigator.of(
-                        //         context)
-                        //         .pushNamed(
-                        //         RouteName
-                        //             .surveyPageBaby,
-                        //         arguments:
-                        //         true);
-                        //   },
-                        //   child: Container(
-                        //       decoration: BoxDecoration(
-                        //           borderRadius:
-                        //           BorderRadius
-                        //               .circular(
-                        //               6.0),
-                        //           color: Colors
-                        //               .white),
-                        //       child: Container(
-                        //         width: 210,
-                        //         height: 30,
-                        //         child: Center(
-                        //           child:
-                        //           Container(
-                        //             child:
-                        //             const Text(
-                        //               "Ubah Profil Kehamilan ",
-                        //               style: TextStyle(
-                        //                   fontSize:
-                        //                   14,
-                        //                   color:
-                        //                   EpregnancyColors.primer),
-                        //               maxLines:
-                        //               3,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       )),
-                        // ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                child: const Text(
+                                  'Lihat Detail',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: EpregnancyColors.primer,
+                                      fontWeight: FontWeight.bold),
+                                  maxLines: 3,
+                                )),
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 16,
+                                  color: EpregnancyColors.grey,
+                                ))
+                          ],
+                        )
                       ],
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: Text(
+                              DateFormat('dd MMM').format(DateTime.now()),
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 3,
+                            ))
+                      ],
+                    ),
+                    state.baby != null
+                        ? JustTheTooltip(
+                      controller: tooltipController,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 16),
+                        child: Center(
+                          child: Container(
+                            // margin: EdgeInsets.only(left: 50, right: 50),
+                            child: FadeInImage(
+                              placeholder:
+                              AssetImage('assets/ic_no_photo.png'),
+                              image: NetworkImage(
+                                  state.baby!.illustrationImage ?? ""),
+                              fit: BoxFit.fill,
+                              imageErrorBuilder:
+                                  (context, error, stackTrace) {
+                                return Image.asset(
+                                    'assets/ic_no_photo.png',
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      content:  Container(
+                        padding: EdgeInsets.all(8.0),
+
+                        color: EpregnancyColors.primer,
+                        child: const Text(
+                          'Bacon ipsum dolor amet kevin turducken brisket pastrami, salami ribeye spare ribs tri-tip sirloin shoulder venison shank burgdoggen chicken pork belly. Short loin filet mignon shoulder rump beef ribs meatball kevin.',
+                        ),
+                      ),
+                    )
+                        : SizedBox(
+                      width: 60.w,
+                      height: 60.w,
+                    ),
+                    Center(
+                      child: Container(
+                          margin: EdgeInsets.only(bottom: 16, top: 16),
+                          child: RichText(
+                              text: TextSpan(
+                                  text: 'Prakiraan Kelahiran: ',
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      color: EpregnancyColors.black),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: DateFormat('dd MMMM yyyy')
+                                            .format(DateTime.now()),
+                                        style: const TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: EpregnancyColors.black))
+                                  ]))),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        : Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.w),
+                color: EpregnancyColors.white),
+            margin: EdgeInsets.only(left: 20, right: 20),
+            child: Container(
+              margin: EdgeInsets.only(left: 16, right: 8),
+              padding: EdgeInsets.only(top: 10.h, bottom: 0.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: EpregnancyColors.pink),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        child: Text(
+                          "Minggu ke- ${state.baby?.baby?.pregnancyAgeWeek}",
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              child: const Text(
+                            'Lihat Detail',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: EpregnancyColors.primer,
+                                fontWeight: FontWeight.bold),
+                            maxLines: 3,
+                          )),
+                          IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 16,
+                                color: EpregnancyColors.grey,
+                              ))
+                        ],
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            DateFormat('dd MMM').format(DateTime.now()),
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                            maxLines: 3,
+                          ))
+                    ],
+                  ),
+                  state.baby != null
+                      ? Stack(
+                        children: [
+                          InkWell(onTap: (){
+                            tooltipController.hideTooltip(immediately: true);
+                          },
+                            child: Container(
+                              margin: EdgeInsets.only(top: 16),
+                              child: Center(
+                                child: Container(
+                                  // margin: EdgeInsets.only(left: 50, right: 50),
+                                  child: FadeInImage(
+                                    width: 200,
+                                    height: 200,
+                                    placeholder:
+                                    AssetImage('assets/ic_no_photo.png'),
+                                    image: NetworkImage(ImageUtils.imageNetwork(state.baby!.illustrationImage ?? "")),
+                                    fit: BoxFit.fill,
+                                    imageErrorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Image.asset(
+                                          'assets/ic_no_photo.png',
+                                          width: 200,
+                                          height: 200,
+                                          fit: BoxFit.cover);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          StreamBuilder<bool>(
+                              stream: psTriggerTooltip.stream,
+                            builder: (context, snapshot) {
+                              return Container(
+                                height: 200,
+                                alignment: Alignment(0.3,-0.5),
+                                child: JustTheTooltip(
+                                  barrierDismissible: false,
+                                  isModal: true,
+                                  backgroundColor: EpregnancyColors.primer,
+                                  preferredDirection:AxisDirection.up,
+                                  controller: tooltipController,
+                                  child: Container(
+                                    height: 0,
+                                    width: 0,
+                                    child: Material(
+                                      color: Colors.grey.shade800,
+                                      shape: const CircleBorder(),
+                                      elevation: 4.0,
+                                    ),
+                                  ),
+                                  content:  Container(
+                                    padding: EdgeInsets.symmetric(vertical: 8,horizontal: 6),
+                                    width: 150,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child:  Text(
+                                        state.baby?.textFromBaby??"",
+                                        style: TextStyle(color: EpregnancyColors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          ),
+                        ],
+                      )
+                      : SizedBox(
+                          width: 60.w,
+                          height: 60.w,
+                        ),
+                  Center(
+                    child: Container(
+                        margin: EdgeInsets.only(bottom: 16, top: 16),
+                        child: RichText(
+                            text: TextSpan(
+                                text: 'Prakiraan Kelahiran: ',
+                                style: const TextStyle(
+                                    fontSize: 13,
+                                    color: EpregnancyColors.black),
+                                children: <TextSpan>[
+                              TextSpan(
+                                  text: DateFormat('dd MMMM yyyy')
+                                      .format(DateTime.now()),
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: EpregnancyColors.black))
+                            ]))),
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-      ),
-    ) : Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.w),
-          color: EpregnancyColors.primer),
-      margin: EdgeInsets.only(left: 20, right: 20),
-      child: Container(
-        margin: EdgeInsets.only(left: 30, right: 30),
-        padding: EdgeInsets.only(top: 10.h, bottom: 0.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            state.baby != null
-                ? Container(margin: EdgeInsets.only(bottom: 10),
-                child: Text(state.baby!.length != 0 ? state.baby!.first.name! : "",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color:
-                      Colors.white,
-                      fontWeight:
-                      FontWeight
-                          .bold),
-                  maxLines: 3,
-                ))
-                : Container(),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                state.babyProgressModel != null ? Container(
-                  // margin: EdgeInsets.only(left: 50, right: 50),
-                  child: FadeInImage(
-                    placeholder: AssetImage('assets/ic_no_photo.png'),
-                    image: NetworkImage(state.babyProgressModel!.iconUrl!),
-                    width: 60.w,
-                    height: 60.h,
-                    fit: BoxFit.fill,
-                    imageErrorBuilder: (context, error, stackTrace) {
-                      return Image.asset('assets/ic_no_photo.png', width: 60, height: 60, fit: BoxFit.cover);
-                    },
-                  ),
-                )
-                    : SizedBox(
-                  width: 60.w,
-                  height: 60.w,
-                ),
-                SizedBox(width: 20.w,),
-                Container(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(margin: EdgeInsets.only(bottom: 10),
-                                width: 150.w,
-                                child: Text(
-                                  state.babyProgressModel != null ? state.babyProgressModel!.title! : '',
-                                  style: TextStyle(
-                                      fontSize:
-                                      14,
-                                      color: Colors
-                                          .white,
-                                      fontWeight:
-                                      FontWeight.bold),
-                                  maxLines:
-                                  5,
-                                )),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            // Container(
-                            //   child:
-                            //       const Icon(
-                            //     Icons
-                            //         .arrow_forward_ios,
-                            //     color: Colors
-                            //         .white,
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                          margin: EdgeInsets
-                              .only(
-                              bottom:
-                              10),
-                          width: 200,
-                          child: Text(
-                            state.babyProgressModel !=
-                                null
-                                ? state
-                                .babyProgressModel!
-                                .condition!
-                                : '',
-                            style: TextStyle(
-                                fontSize:
-                                12,
-                                color: Colors
-                                    .white),
-                            maxLines: 3,
-                          )),
-                      Container(
-                          margin: EdgeInsets
-                              .only(
-                              bottom:
-                              20),
-                          child: Text(
-                            state.weeks !=
-                                null
-                                ? "${state.weeks} Minggu ${state.days} Hari"
-                                : '',
-                            style: TextStyle(
-                                fontSize:
-                                12,
-                                color: Colors
-                                    .white,
-                                fontWeight:
-                                FontWeight
-                                    .bold),
-                          )),
-                      // InkWell(
-                      //   onTap: (){
-                      //     Navigator.of(
-                      //         context)
-                      //         .pushNamed(
-                      //         RouteName
-                      //             .surveyPageBaby,
-                      //         arguments:
-                      //         true);
-                      //   },
-                      //   child: Container(
-                      //       decoration: BoxDecoration(
-                      //           borderRadius:
-                      //           BorderRadius
-                      //               .circular(
-                      //               6.0),
-                      //           color: Colors
-                      //               .white),
-                      //       child: Container(
-                      //         width: 210,
-                      //         height: 30,
-                      //         child: Center(
-                      //           child:
-                      //           Container(
-                      //             child:
-                      //             const Text(
-                      //               "Ubah Profil Kehamilan ",
-                      //               style: TextStyle(
-                      //                   fontSize:
-                      //                   14,
-                      //                   color:
-                      //                   EpregnancyColors.primer),
-                      //               maxLines:
-                      //               3,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       )),
-                      // ),
-                    ],
-                  ),
-                ),
-              ],
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

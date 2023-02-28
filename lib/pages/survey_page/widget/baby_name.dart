@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/baby_model/new_baby_model.dart';
 import 'package:date_field/date_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class BabyName extends StatefulWidget {
    BabyName({Key? key, this.isEdit = false, this.baby}) : super(key: key);
    bool? isEdit;
 
-  final BabyModelApi? baby;
+  final NewBabyModel? baby;
 
   @override
   State<BabyName> createState() => _BabyNameState();
@@ -29,9 +30,9 @@ class _BabyNameState extends State<BabyName> {
   void initState() {
     isEdit = widget.isEdit!;
     if(isEdit == true){
-      _value.text = widget.baby!.name!;
+      _value.text = widget.baby?.baby?.name??"";
       Injector.resolve<SurveyPageBloc>()
-          .add(SurveyBabysNameChanged(widget.baby!.name!));
+          .add(SurveyBabysNameChanged(widget.baby?.baby?.name??""));
       setState(() {
         isEdit =false;
       });

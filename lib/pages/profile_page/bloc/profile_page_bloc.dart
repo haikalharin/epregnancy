@@ -12,6 +12,7 @@ import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/exceptions/survey_error_exception.dart';
+import '../../../data/model/baby_model/new_baby_model.dart';
 import '../../../data/model/consultation_model/consultation_model.dart';
 import '../../../data/model/response_model/response_model.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
@@ -40,15 +41,15 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
     ProfilePageState state,
   ) async* {
     var _user = await AppSharedPreference.getUser();
-    BabyModelApi myBaby = await AppSharedPreference.getBabyData();
+    NewBabyModel myBaby = await AppSharedPreference.getBabyDataNew();
     var weeks = 0;
     var days = 0;
-    if (myBaby.id != '') {
-      DateTime dateTimeCreatedAt = DateTime.parse(myBaby.lastMenstruationDate!);
+    if (myBaby.baby?.id != null || myBaby.baby?.id != '') {
+      DateTime dateTimeCreatedAt = DateTime.parse(myBaby.baby!.lastMenstruationDate!);
       DateTime dateTimeNow = DateTime.now();
       final differenceInDays = dateTimeNow.difference(dateTimeCreatedAt).inDays;
-      weeks = (differenceInDays / 7).floor();
-      days = (differenceInDays % 7).floor();
+      weeks = (differenceInDays / 7).ceil();
+      days = (differenceInDays % 7).ceil();
       print('$differenceInDays');
     }
     yield ProfilePageState(
