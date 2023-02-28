@@ -2,7 +2,7 @@ part of 'profile_page_bloc.dart';
 
 class ProfilePageState with FormzMixin {
   final UserModel? user;
-  final BabyModelApi? baby;
+  final NewBabyModel? baby;
   final int? ageBabyInWeeks;
   final int? ageBabyInDay;
   final FormzStatus? submitStatus;
@@ -21,7 +21,7 @@ class ProfilePageState with FormzMixin {
   ProfilePageState copyWith(
       {FormzStatus? submitStatus,
       UserModel? user,
-      BabyModelApi? baby,
+      NewBabyModel? baby,
       int? ageBabyInWeeks,
       int? ageBabyInDay,
       String? errorMessage,

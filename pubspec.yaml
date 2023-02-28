@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.37-dev+59
 
 #prod
-version: 1.0.3+6
+#version: 1.0.3+6
 
 #prod for test
 #version: 1.0.1+3

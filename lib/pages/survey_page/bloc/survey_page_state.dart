@@ -2,7 +2,7 @@ part of 'survey_page_bloc.dart';
 
 class SurveyPageState with FormzMixin {
   final UserModel? user;
-  final BabyModelApi? dataBaby;
+  final newBaby.NewBabyModel? dataBaby;
   final int page;
   final int choice;
   final MandatoryFieldValidator name;
@@ -28,7 +28,7 @@ class SurveyPageState with FormzMixin {
         MandatoryFieldValidator? name,
         MandatoryFieldValidator? date,
         UserModel? user,
-        BabyModelApi? dataBaby,
+        newBaby.NewBabyModel? dataBaby,
         int? page,
         int? choice,
         String? type,

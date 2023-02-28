@@ -25,7 +25,6 @@ import '../../utils/firebase_analytics.dart';
 import '../../utils/string_constans.dart';
 import 'bloc/signup_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tap_to_dismiss_keyboard/tap_to_dismiss_keyboard.dart';
 
 const _horizontalPadding = 24.0;
 var _signUpWithEmail = false;

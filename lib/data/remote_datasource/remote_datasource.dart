@@ -30,6 +30,7 @@ import '../../common/network/http/http_client.dart';
 import '../../common/remote/url/service_url.dart';
 import '../../utils/remote_utils.dart';
 import '../model/article_model/article_model.dart';
+import '../model/baby_model/new_baby_model.dart';
 import '../model/baby_model_api/baby_Model_api.dart';
 import '../model/consultation_model/consultation_model.dart';
 import '../model/login_model/login_model.dart';
@@ -177,7 +178,7 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel> getBaby(UserModel UserModel) async {
+  Future<ResponseModel> getListBaby(UserModel UserModel) async {
     try {
       Map<String, String> qParams = {'user_id': '${UserModel.id}'};
       final response =
@@ -187,6 +188,17 @@ class RemoteDataSource {
       return ResponseModel.dataEmpty();
     }
   }
+
+ Future<ResponseModel> getBaby(UserModel UserModel) async {
+    try {
+      final response =
+          await httpClient.get(ServiceUrl.myBaby);
+      return ResponseModel.fromJson(response, NewBabyModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
 
   Future<ResponseModel> requestOtp(Map data) async {
     try {
