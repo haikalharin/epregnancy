@@ -78,7 +78,7 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
             ShowCaseWidget.of(myContext ?? context)
           .enableAutoScroll = true;
           }
-        });
+        }).then((value) => (result){});
       });
     } else {
       WidgetsBinding.instance?.addPostFrameCallback((_) {

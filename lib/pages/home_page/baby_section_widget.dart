@@ -113,36 +113,73 @@ class BabySectionWidget extends StatelessWidget {
                       ],
                     ),
                     state.baby != null
-                        ? JustTheTooltip(
-                      controller: tooltipController,
-                      child: Container(
-                        margin: EdgeInsets.only(top: 16),
-                        child: Center(
+                        ? Stack(
+                      children: [
+                        InkWell(onTap: (){
+                          tooltipController.hideTooltip(immediately: true);
+                        },
                           child: Container(
-                            // margin: EdgeInsets.only(left: 50, right: 50),
-                            child: FadeInImage(
-                              placeholder: AssetImage('assets/ic_no_photo.png'),
-                              image: NetworkImage(
-                                  state.baby!.illustrationImage ?? ""),
-                              fit: BoxFit.fill,
-                              imageErrorBuilder:
-                                  (context, error, stackTrace) {
-                                return Container(
-                                  child: const Center(child: CircularProgressIndicator()),
-                                );
-                              },
+                            margin: EdgeInsets.only(top: 16),
+                            child: Center(
+                              child: Container(
+                                // margin: EdgeInsets.only(left: 50, right: 50),
+                                child: FadeInImage(
+                                  width: 200,
+                                  height: 200,
+                                  placeholder:
+                                  AssetImage('assets/ic_no_photo.png'),
+                                  image: NetworkImage(ImageUtils.imageNetwork(state.baby!.illustrationImage ?? "")),
+                                  fit: BoxFit.fill,
+                                  imageErrorBuilder:
+                                      (context, error, stackTrace) {
+                                    return Image.asset(
+                                        'assets/ic_no_photo.png',
+                                        width: 200,
+                                        height: 200,
+                                        fit: BoxFit.cover);
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      content:  Container(
-                        padding: EdgeInsets.all(8.0),
-
-                        color: EpregnancyColors.primer,
-                        child: const Text(
-                          'Bacon ipsum dolor amet kevin turducken brisket pastrami, salami ribeye spare ribs tri-tip sirloin shoulder venison shank burgdoggen chicken pork belly. Short loin filet mignon shoulder rump beef ribs meatball kevin.',
+                        StreamBuilder<bool>(
+                            stream: psTriggerTooltip.stream,
+                            builder: (context, snapshot) {
+                              return Container(
+                                height: 200,
+                                alignment: Alignment(0.3,-0.5),
+                                child: JustTheTooltip(
+                                  barrierDismissible: false,
+                                  isModal: true,
+                                  backgroundColor: EpregnancyColors.primer,
+                                  preferredDirection:AxisDirection.up,
+                                  controller: tooltipController,
+                                  child: Container(
+                                    height: 0,
+                                    width: 0,
+                                    child: Material(
+                                      color: Colors.grey.shade800,
+                                      shape: const CircleBorder(),
+                                      elevation: 4.0,
+                                    ),
+                                  ),
+                                  content:  Container(
+                                    padding: EdgeInsets.symmetric(vertical: 8,horizontal: 6),
+                                    width: 150,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child:  Text(
+                                        state.baby?.textFromBaby??"",
+                                        style: TextStyle(color: EpregnancyColors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
                         ),
-                      ),
+                      ],
                     )
                         : SizedBox(
                       width: 60.w,
