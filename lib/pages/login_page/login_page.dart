@@ -57,7 +57,6 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     getRemoteConfig();
     FirebaseAnalyticsService().setCurrentScreen("login_page");
-    Countly.recordView("loginPage");
     CountlyAnalyticsService(context).getDeviceIDType();
     CountlyAnalyticsService(context).basicEvent( {'key': 'Login_page', 'count': 1});
     if (widget.tokenExpired == true) {

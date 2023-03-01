@@ -92,8 +92,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     if (F.appFlavor == Flavor.DEVELOPMENT) {
       // subscribeFcmTopic();
     }
-
-    Countly.recordView("loginPage");
     start();
     super.initState();
   }
