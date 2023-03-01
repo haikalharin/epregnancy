@@ -21,6 +21,8 @@ class NewBabyModel with _$NewBabyModel {
     String? textFromBaby,
     @JsonKey(name: 'illustration_image',includeIfNull: true)
     String? illustrationImage,
+    @JsonKey(name: 'size_illustration_image',includeIfNull: true)
+    String? sizeIllustrationImage,
     @JsonKey(name: 'size_description',includeIfNull: true)
     String? sizeDescription,
     @JsonKey(includeIfNull: true)

@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/pages/home_page/baby_tracker_detail_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -64,26 +65,34 @@ class BabySectionWidget extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                                child: const Text(
-                                  'Lihat Detail',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: EpregnancyColors.primer,
-                                      fontWeight: FontWeight.bold),
-                                  maxLines: 3,
-                                )),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 16,
-                                  color: EpregnancyColors.grey,
-                                ))
-                          ],
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => BabyTrackerDetail(newBabyModel: state.baby)));
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  child: const Text(
+                                    'Lihat Detail',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: EpregnancyColors.primer,
+                                        fontWeight: FontWeight.bold),
+                                    maxLines: 3,
+                                  )),
+                              IconButton(
+                                  onPressed: () {
+                                    print("clicked lihat detail");
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => BabyTrackerDetail(newBabyModel: state.baby)));
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 16,
+                                    color: EpregnancyColors.grey,
+                                  ))
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -112,18 +121,15 @@ class BabySectionWidget extends StatelessWidget {
                           child: Container(
                             // margin: EdgeInsets.only(left: 50, right: 50),
                             child: FadeInImage(
-                              placeholder:
-                              AssetImage('assets/ic_no_photo.png'),
+                              placeholder: AssetImage('assets/ic_no_photo.png'),
                               image: NetworkImage(
                                   state.baby!.illustrationImage ?? ""),
                               fit: BoxFit.fill,
                               imageErrorBuilder:
                                   (context, error, stackTrace) {
-                                return Image.asset(
-                                    'assets/ic_no_photo.png',
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover);
+                                return Container(
+                                  child: const Center(child: CircularProgressIndicator()),
+                                );
                               },
                             ),
                           ),
@@ -195,26 +201,33 @@ class BabySectionWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                              child: const Text(
-                            'Lihat Detail',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: EpregnancyColors.primer,
-                                fontWeight: FontWeight.bold),
-                            maxLines: 3,
-                          )),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 16,
-                                color: EpregnancyColors.grey,
-                              ))
-                        ],
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => BabyTrackerDetail(newBabyModel: state.baby)));
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                child: const Text(
+                              'Lihat Detail',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: EpregnancyColors.primer,
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 3,
+                            )),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BabyTrackerDetail(newBabyModel: state.baby)));
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 16,
+                                  color: EpregnancyColors.grey,
+                                ))
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -240,11 +253,11 @@ class BabySectionWidget extends StatelessWidget {
                           InkWell(onTap: (){
                             tooltipController.hideTooltip(immediately: true);
                           },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 16),
-                              child: Center(
-                                child: Container(
-                                  // margin: EdgeInsets.only(left: 50, right: 50),
+                            child: Hero(
+                              tag: "baby-illustration",
+                              child: Container(
+                                margin: EdgeInsets.only(top: 16),
+                                child: Center(
                                   child: FadeInImage(
                                     width: 200,
                                     height: 200,

@@ -131,18 +131,28 @@ class _PlaylistPageState extends State<PlaylistPage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 children:  [
-                  ItemPlayList(title: "Surat-Maryam-19-21", index: 0),
-                  ItemPlayList(title: "Surat-Maryam-4-5", index: 1),
-                  ItemPlayList(title: "Surat-Luqman", index: 2),
-                  ItemPlayList(title: "Surat-Ibrahim-40", index: 3),
-                  ItemPlayList(title: "Surat-As-Saffat-100", index: 4),
-                  ItemPlayList(title: "Surat-Al-Muminun-12-14", index: 5),
-                  ItemPlayList(title: "Surat-Al-Imran-38", index: 6),
-                  ItemPlayList(title: "Surat-Al-Imran-36", index: 7),
-                  ItemPlayList(title: "Surat-Al-Imran-35", index: 8),
-                  ItemPlayList(title: "Surat-Al-Furqan-74", index: 9),
-                  ItemPlayList(title: "Surat-Al-Fatihah", index: 10),
-                  ItemPlayList(title: "Surat-Al-Araf-54", index: 11),
+                  ItemPlayList(title: "1. Surat Al-Fatihah", index: 0),
+                  ItemPlayList(title: "2. Surat Al-Imran ayat 35", index: 1),
+                  ItemPlayList(title: "3. Surat Al-Imran ayat 36", index: 2),
+                  ItemPlayList(title: "4. Surat Al-Imran ayat 38", index: 3),
+                  ItemPlayList(title: """5. Surat Al-A'raf ayat 54""", index: 4),
+                  ItemPlayList(title: "6. Surat Ibrahim ayat 40", index: 5),
+                  ItemPlayList(title: "7. Surat Maryam ayat 4-5", index: 6),
+                  ItemPlayList(title: "8. Surat Maryam ayat 19-21", index: 7),
+                  ItemPlayList(title: """9. Surat Al-Mu'minun ayat 12-14""", index: 8),
+                  ItemPlayList(title: "10. Surat Al-Furqan ayat 74", index: 9),
+                  ItemPlayList(title: "11. Surat Luqman ayat 14", index: 10),
+                  ItemPlayList(title: "Surat As-Saffat ayat 100", index: 11),
+
+
+
+
+
+
+
+
+
+
                   // MusicCard(),
                   // MusicCard(),
                 ],

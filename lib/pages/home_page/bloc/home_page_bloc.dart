@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:PregnancyApp/data/firebase/event/event_event.dart';
+import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
@@ -57,7 +58,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield _mapHomeInitEventToState(event, state);
     } else if (event is HomeEventDateChanged) {
       yield _mapHomeEventDateChangedEventToState(event, state);
-    } else if (event is ArticleFetchEvent) {
+    } else if (event is ArticleHomeFetchEvent) {
       yield* _mapArticleFetchEventToState(event, state);
     } else if (event is EventFetchEvent) {
       yield* _mapEventFetchEventToState(event, state);
@@ -65,6 +66,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapPointFetchEventToState(event, state);
     } else if (event is HomeEventDeleteSchedule) {
       yield* _mapHomeEventDeleteScheduleToState(event, state);
+    } else if(event is FetchSimpleTipEvent){
+      yield* _mapFetchSimpleTips(event, state);
     }
   }
 
@@ -197,8 +200,43 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
   }
 
+  Stream<HomePageState> _mapFetchSimpleTips(
+      FetchSimpleTipEvent event,
+      HomePageState state,
+      ) async* {
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-simple-tips");
+    try {
+      final ResponseModel<SimpleTipResponse> responseModel = await articleRepository.getSimpleTip();
+      print("data simple tip : ${responseModel.data.toString()}");
+      SimpleTipResponse simpleTipResponse = responseModel.data;
+
+      if (responseModel.code == 200) {
+        yield state.copyWith(
+            simpleTipResponse: simpleTipResponse,
+            tipe: 'simple-tip-success',
+            submitStatus: FormzStatus.submissionSuccess);
+      } else {
+        yield state.copyWith(
+            simpleTipResponse: null,
+            tipe: 'simple-tip-failed',
+            submitStatus: FormzStatus.submissionFailure);
+      }
+    } on HomeErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      if (a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+    }
+  }
+
   Stream<HomePageState> _mapArticleFetchEventToState(
-    ArticleFetchEvent event,
+      ArticleHomeFetchEvent event,
     HomePageState state,
   ) async* {
     yield state.copyWith(
