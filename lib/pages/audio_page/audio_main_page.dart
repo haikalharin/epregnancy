@@ -81,7 +81,7 @@ class _AudioMainPageState extends State<AudioMainPage> {
                           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),),
                       SizedBox(height: 10.h,),
                       Text("Menyejukan, menenangkan hati dan mengajak bayi untuk lebih dekat dengan nasihat Allah dalam Al-Quran", style: TextStyle(
-                         fontWeight: FontWeight.w300, fontSize: 12.sp, color: EpregnancyColors.greyDarkFontColor
+                         fontWeight: FontWeight.w500, fontSize: 12.sp, color: EpregnancyColors.black
                         ),),
                     ],
                   ),

@@ -10,6 +10,7 @@ class HomePageState with FormzMixin {
   final String? weeks;
   final String? eventDateString;
   final DateTime? eventDate;
+  final SimpleTipResponse? simpleTipResponse;
   final List<ArticleModel>? listArticle;
   final List<EventModel>? listEvent;
   final List<EventModel>? listEventPersonal;
@@ -24,6 +25,7 @@ class HomePageState with FormzMixin {
     this.baby,
     this.submitStatus = FormzStatus.pure,
     this.listArticle,
+    this.simpleTipResponse,
     this.listEvent,
     this.listEventPersonal,
     this.tipe,
@@ -41,6 +43,7 @@ class HomePageState with FormzMixin {
     UserModel? user,
     String? role,
     NewBabyModel? baby,
+    SimpleTipResponse? simpleTipResponse,
     List<ArticleModel>? listArticle,
     List<EventModel>? listEvent,
     List<EventModel>? listEventPersonal,
@@ -59,6 +62,7 @@ class HomePageState with FormzMixin {
         user: user ?? this.user,
         role: role ?? this.role,
         baby: baby ?? this.baby,
+        simpleTipResponse: simpleTipResponse ?? this.simpleTipResponse,
         showGuide: showGuide ?? this.showGuide,
         listArticle: listArticle ?? this.listArticle,
         listEvent: listEvent ?? this.listEvent,

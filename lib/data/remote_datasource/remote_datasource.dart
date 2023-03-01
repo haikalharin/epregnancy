@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_list_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dart';
@@ -686,10 +687,15 @@ class RemoteDataSource {
   Future<ResponseModel> readArticle(String id) async {
     try {
       final response = await httpClient.get(ServiceUrl.readArticle + "/$id");
-      return ResponseModel.fromJson(response, UserModel.fromJson);
+      return ResponseModel.fromJson(response, ArticleModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
+  }
+
+  Future<ResponseModel<SimpleTipResponse>> getSimpleTip() async {
+    final response = await httpClient.get(ServiceUrl.simpleTip);
+    return ResponseModel.fromJson(response, SimpleTipResponse.fromJson);
   }
 
   Future<ResponseModel<MembersSummaryResponse>> getMembersSummary() async {

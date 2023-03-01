@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/data/model/article_model/article_model.dart';
+import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
@@ -35,6 +36,14 @@ class ArticleRepositoryImpl extends ArticleRepository {
   Future<ResponseModel> readArticle(String id) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.readArticle(id);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<SimpleTipResponse>> getSimpleTip() async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.getSimpleTip();
     }
     throw NetworkConnectionException();
   }

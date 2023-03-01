@@ -26,6 +26,8 @@ mixin _$NewBabyModel {
   String? get textFromBaby => throw _privateConstructorUsedError;
   @JsonKey(name: 'illustration_image', includeIfNull: true)
   String? get illustrationImage => throw _privateConstructorUsedError;
+  @JsonKey(name: 'size_illustration_image', includeIfNull: true)
+  String? get sizeIllustrationImage => throw _privateConstructorUsedError;
   @JsonKey(name: 'size_description', includeIfNull: true)
   String? get sizeDescription => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
@@ -55,6 +57,8 @@ abstract class $NewBabyModelCopyWith<$Res> {
           String? textFromBaby,
       @JsonKey(name: 'illustration_image', includeIfNull: true)
           String? illustrationImage,
+      @JsonKey(name: 'size_illustration_image', includeIfNull: true)
+          String? sizeIllustrationImage,
       @JsonKey(name: 'size_description', includeIfNull: true)
           String? sizeDescription,
       @JsonKey(includeIfNull: true)
@@ -82,6 +86,7 @@ class _$NewBabyModelCopyWithImpl<$Res> implements $NewBabyModelCopyWith<$Res> {
     Object? baby = freezed,
     Object? textFromBaby = freezed,
     Object? illustrationImage = freezed,
+    Object? sizeIllustrationImage = freezed,
     Object? sizeDescription = freezed,
     Object? length = freezed,
     Object? weight = freezed,
@@ -100,6 +105,10 @@ class _$NewBabyModelCopyWithImpl<$Res> implements $NewBabyModelCopyWith<$Res> {
       illustrationImage: illustrationImage == freezed
           ? _value.illustrationImage
           : illustrationImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sizeIllustrationImage: sizeIllustrationImage == freezed
+          ? _value.sizeIllustrationImage
+          : sizeIllustrationImage // ignore: cast_nullable_to_non_nullable
               as String?,
       sizeDescription: sizeDescription == freezed
           ? _value.sizeDescription
@@ -150,6 +159,8 @@ abstract class _$$_NewBabyModelCopyWith<$Res>
           String? textFromBaby,
       @JsonKey(name: 'illustration_image', includeIfNull: true)
           String? illustrationImage,
+      @JsonKey(name: 'size_illustration_image', includeIfNull: true)
+          String? sizeIllustrationImage,
       @JsonKey(name: 'size_description', includeIfNull: true)
           String? sizeDescription,
       @JsonKey(includeIfNull: true)
@@ -181,6 +192,7 @@ class __$$_NewBabyModelCopyWithImpl<$Res>
     Object? baby = freezed,
     Object? textFromBaby = freezed,
     Object? illustrationImage = freezed,
+    Object? sizeIllustrationImage = freezed,
     Object? sizeDescription = freezed,
     Object? length = freezed,
     Object? weight = freezed,
@@ -199,6 +211,10 @@ class __$$_NewBabyModelCopyWithImpl<$Res>
       illustrationImage: illustrationImage == freezed
           ? _value.illustrationImage
           : illustrationImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sizeIllustrationImage: sizeIllustrationImage == freezed
+          ? _value.sizeIllustrationImage
+          : sizeIllustrationImage // ignore: cast_nullable_to_non_nullable
               as String?,
       sizeDescription: sizeDescription == freezed
           ? _value.sizeDescription
@@ -234,6 +250,8 @@ class _$_NewBabyModel implements _NewBabyModel {
           this.textFromBaby,
       @JsonKey(name: 'illustration_image', includeIfNull: true)
           this.illustrationImage,
+      @JsonKey(name: 'size_illustration_image', includeIfNull: true)
+          this.sizeIllustrationImage,
       @JsonKey(name: 'size_description', includeIfNull: true)
           this.sizeDescription,
       @JsonKey(includeIfNull: true)
@@ -258,6 +276,9 @@ class _$_NewBabyModel implements _NewBabyModel {
   @JsonKey(name: 'illustration_image', includeIfNull: true)
   final String? illustrationImage;
   @override
+  @JsonKey(name: 'size_illustration_image', includeIfNull: true)
+  final String? sizeIllustrationImage;
+  @override
   @JsonKey(name: 'size_description', includeIfNull: true)
   final String? sizeDescription;
   @override
@@ -275,7 +296,7 @@ class _$_NewBabyModel implements _NewBabyModel {
 
   @override
   String toString() {
-    return 'NewBabyModel(baby: $baby, textFromBaby: $textFromBaby, illustrationImage: $illustrationImage, sizeDescription: $sizeDescription, length: $length, weight: $weight, growthDescription: $growthDescription, symptomDescription: $symptomDescription)';
+    return 'NewBabyModel(baby: $baby, textFromBaby: $textFromBaby, illustrationImage: $illustrationImage, sizeIllustrationImage: $sizeIllustrationImage, sizeDescription: $sizeDescription, length: $length, weight: $weight, growthDescription: $growthDescription, symptomDescription: $symptomDescription)';
   }
 
   @override
@@ -288,6 +309,8 @@ class _$_NewBabyModel implements _NewBabyModel {
                 .equals(other.textFromBaby, textFromBaby) &&
             const DeepCollectionEquality()
                 .equals(other.illustrationImage, illustrationImage) &&
+            const DeepCollectionEquality()
+                .equals(other.sizeIllustrationImage, sizeIllustrationImage) &&
             const DeepCollectionEquality()
                 .equals(other.sizeDescription, sizeDescription) &&
             const DeepCollectionEquality().equals(other.length, length) &&
@@ -305,6 +328,7 @@ class _$_NewBabyModel implements _NewBabyModel {
       const DeepCollectionEquality().hash(baby),
       const DeepCollectionEquality().hash(textFromBaby),
       const DeepCollectionEquality().hash(illustrationImage),
+      const DeepCollectionEquality().hash(sizeIllustrationImage),
       const DeepCollectionEquality().hash(sizeDescription),
       const DeepCollectionEquality().hash(length),
       const DeepCollectionEquality().hash(weight),
@@ -330,6 +354,8 @@ abstract class _NewBabyModel implements NewBabyModel {
           final String? textFromBaby,
       @JsonKey(name: 'illustration_image', includeIfNull: true)
           final String? illustrationImage,
+      @JsonKey(name: 'size_illustration_image', includeIfNull: true)
+          final String? sizeIllustrationImage,
       @JsonKey(name: 'size_description', includeIfNull: true)
           final String? sizeDescription,
       @JsonKey(includeIfNull: true)
@@ -353,6 +379,9 @@ abstract class _NewBabyModel implements NewBabyModel {
   @override
   @JsonKey(name: 'illustration_image', includeIfNull: true)
   String? get illustrationImage => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'size_illustration_image', includeIfNull: true)
+  String? get sizeIllustrationImage => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'size_description', includeIfNull: true)
   String? get sizeDescription => throw _privateConstructorUsedError;

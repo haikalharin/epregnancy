@@ -47,7 +47,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     Injector.resolve<ChatPendingBloc>().add(FetchLastChatEvent(widget.hospitalId));
     Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
-    Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
+    Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
     Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
     Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
@@ -72,7 +72,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage> with TickerProv
 
   Future<void> _handleRefresh() async {
     // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
-    Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
+    Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
     Injector.resolve<ChatPendingBloc>()
         .add(FetchChatPendingByHospitalId(widget.hospitalId));

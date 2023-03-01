@@ -168,7 +168,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         color: Colors.white,
-        height: 150.h,
+        height: 160.h,
         child: BottomAppBar(
             elevation: 0,
             child: Column(

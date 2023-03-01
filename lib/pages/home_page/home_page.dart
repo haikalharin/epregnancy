@@ -38,6 +38,8 @@ import '../../data/shared_preference/app_shared_preference.dart';
 import '../../env.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/firebase_analytics.dart';
+import '../article_page/article_detail_page.dart';
+import '../article_page/bloc/article_bloc.dart';
 import '../login_page/login_page.dart';
 import '../pin_checkin/pin_checkin_page.dart';
 import 'bloc/home_page_bloc.dart';
@@ -87,6 +89,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isExpanded = false;
   final ScrollController _scrollControler = ScrollController();
 
+  void subscribeFcmTopic() async {
+    FirebaseMessaging.instance.subscribeToTopic("topics/all");
+  }
+
+
   @override
   void initState() {
     if (F.appFlavor == Flavor.DEVELOPMENT) {
@@ -102,8 +109,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   void start() {
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
-    Injector.resolve<HomePageBloc>().add(ArticleFetchEvent());
-    Injector.resolve<HomePageBloc>().add(PointFetchEvent());
+    Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
+    Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
+    Injector.resolve<HomePageBloc>().add(const PointFetchEvent());
     Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
     _tabController = TabController(length: 2, vsync: this);
     getHospitalFromLocal();
@@ -680,18 +688,46 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 4.h,
+                                      height: 10.h,
                                     ),
+                                    // todo simple tip
                                     Text(
-                                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque laoreet pulvinar mi sit amet tincidunt. Sed maximus, orci sed euismod eleifend.  Sed maximus, orci sed euismod eleifend",
+                                      state.simpleTipResponse?.tips ?? "",
                                       style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w400),
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500),
                                       textAlign: TextAlign.center,
                                     ),
                                     SizedBox(
                                       height: 16.h,
+                                    ),
+                                    BlocListener<ArticlePageBloc, ArticlePageState>(
+                                        listener: (context, state){
+                                          if(state.articleModel != null && state.submitStatus == FormzStatus.submissionSuccess ){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailPage(
+                                              article: state.articleModel,
+                                            )));
+                                          }
+                                        },
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: InkWell(
+                                          onTap: (){
+                                            Injector.resolve<ArticlePageBloc>().add(
+                                                ArticleReadEvent(state.simpleTipResponse?.articleId ?? ""));
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              Text("Baca Artikel", style: TextStyle(color: EpregnancyColors.primer, fontSize: 12.sp, fontWeight: FontWeight.w700),),
+                                              SizedBox(width: 10.w,),
+                                              Icon(Icons.arrow_forward_ios_rounded, color: EpregnancyColors.primer, size: 14.w,)
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
