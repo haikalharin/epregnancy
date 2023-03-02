@@ -3,7 +3,7 @@ part of 'article_bloc.dart';
 class ArticlePageState with FormzMixin {
   final List<ArticleModel>? listArticle;
   final ArticleModel? articleModel;
-  final FormzStatus submitStatus;
+  final FormzStatus? submitStatus;
   final String? errorMessage;
   final String? type;
   final bool? isSearch;
@@ -34,11 +34,11 @@ class ArticlePageState with FormzMixin {
       String? keyword,
       String? errorMessage}) {
     return ArticlePageState(
-        submitStatus: submitStatus ?? this.submitStatus,
+        submitStatus: submitStatus,
         articleModel: articleModel ?? this.articleModel,
         listArticle: listArticle ?? this.listArticle,
         isSearch: isSearch ?? this.isSearch,
-        type: type ?? this.type,
+        type: type,
         last: last ?? this.last,
         page: page ?? this.page,
         keyword: keyword ?? this.keyword,

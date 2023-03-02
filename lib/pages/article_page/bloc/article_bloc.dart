@@ -139,7 +139,7 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
       final ResponseModel response =
           await articleRepository.readArticle(event.id);
       if (response.code == 200) {
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, articleModel: response.data);
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "success-read-tips", articleModel: response.data);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure, articleModel: null);
       }
