@@ -142,7 +142,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   ItemPlayList(title: """9. Surat Al-Mu'minun ayat 12-14""", index: 8),
                   ItemPlayList(title: "10. Surat Al-Furqan ayat 74", index: 9),
                   ItemPlayList(title: "11. Surat Luqman ayat 14", index: 10),
-                  ItemPlayList(title: "Surat As-Saffat ayat 100", index: 11),
+                  ItemPlayList(title: "12. Surat As-Saffat ayat 100", index: 11),
 
 
 

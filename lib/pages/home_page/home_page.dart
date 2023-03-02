@@ -105,11 +105,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     FirebaseMessaging.instance.subscribeToTopic("topics/all");
   }
 
+
   @override
   void initState() {
     if (F.appFlavor == Flavor.DEVELOPMENT) {
       // subscribeFcmTopic();
     }
+
+    Countly.recordView("loginPage");
     start();
     super.initState();
   }
@@ -593,274 +596,270 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         : Container(),
                                   ],
                                 ),
-                                state.showGuide == true
-                                    ? Showcase(
-                                        key: widget.two ?? GlobalKey(),
-                                        title: 'Tips',
-                                        description:
-                                            'Dapatkan info dan tips kehamilan',
-                                        child: Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 16.h),
-                                          padding: EdgeInsets.all(16.w),
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                  color: EpregnancyColors.white),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.w)),
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: 20,
-                                                width: 20,
-                                                // margin: EdgeInsets.only(left: 50, right: 50),
-                                                child: SvgPicture.asset(
-                                                  'assets/ic_tips.svg',
-                                                  height: 20,
-                                                  width: 20,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 4.h,
-                                              ),
-                                              Text(
-                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque laoreet pulvinar mi sit amet tincidunt. Sed maximus, orci sed euismod eleifend.  Sed maximus, orci sed euismod eleifend",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 11.sp,
-                                                    fontWeight: FontWeight.w400),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              SizedBox(
-                                                height: 16.h,
-                                              ),
-                                            ],
-                                          ),
-                                        ))
-                                    : Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 16.h),
-                                        padding: EdgeInsets.all(16.w),
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            border: Border.all(
-                                                color: EpregnancyColors.white),
-                                            borderRadius:
-                                                BorderRadius.circular(8.w)),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              height: 20,
-                                              width: 20,
-                                              // margin: EdgeInsets.only(left: 50, right: 50),
-                                              child: SvgPicture.asset(
-                                                'assets/ic_tips.svg',
-                                                height: 20,
-                                                width: 20,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 10.h,
-                                            ),
-                                            // todo simple tip
-                                            Text(
-                                              state.simpleTipResponse?.tips ?? "",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            SizedBox(
-                                              height: 16.h,
-                                            ),
-                                            BlocListener<ArticlePageBloc,
-                                                ArticlePageState>(
-                                              listener: (context, state) {
-                                                if (state.articleModel != null &&
-                                                    state.submitStatus ==
-                                                        FormzStatus
-                                                            .submissionSuccess && state.type == 'success-read-tips') {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ArticleDetailPage(
-                                                                article: state
-                                                                    .articleModel,
-                                                              )));
-                                                }
-                                              },
-                                              child: Align(
-                                                alignment: Alignment.bottomRight,
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    Injector.resolve<
-                                                            ArticlePageBloc>()
-                                                        .add(ArticleReadEvent(state
-                                                                .simpleTipResponse
-                                                                ?.articleId ??
-                                                            ""));
-                                                  },
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        "Baca Artikel",
-                                                        style: TextStyle(
-                                                            color:
-                                                                EpregnancyColors
-                                                                    .primer,
-                                                            fontSize: 12.sp,
-                                                            fontWeight:
-                                                                FontWeight.w700),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10.w,
-                                                      ),
-                                                      Icon(
-                                                        Icons
-                                                            .arrow_forward_ios_rounded,
-                                                        color: EpregnancyColors
-                                                            .primer,
-                                                        size: 14.w,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                              ])),
+                      // update baby section
+                      // checkin section
+
+                      state.showGuide == true
+                          ? Showcase(
+                              key: widget.two ?? GlobalKey(),
+                              title: 'Tips',
+                              description: 'Dapatkan info dan tips kehamilan',
+                              child: Container(
+                                color: EpregnancyColors.primerSoft,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 16.h),
+                                  padding: EdgeInsets.all(16.w),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: EpregnancyColors.white),
+                                      borderRadius: BorderRadius.circular(8.w)),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 20,
+                                        width: 20,
+                                        // margin: EdgeInsets.only(left: 50, right: 50),
+                                        child: SvgPicture.asset(
+                                          'assets/ic_tips.svg',
+                                          height: 20,
+                                          width: 20,
                                         ),
                                       ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          left: 20, right: 20, bottom: 8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              child: const Text(
-                                            "Artikel Untuk Anda",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700),
-                                          )),
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.of(context).pushNamed(
-                                                  RouteName.dashboardArticle);
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Text(
+                                        state.simpleTipResponse?.tips ?? "",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w500),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(
+                                        height: 16.h,
+                                      ),
+                                      BlocListener<ArticlePageBloc, ArticlePageState>(
+                                        listener: (context, state){
+                                          if(state.articleModel != null && state.submitStatus == FormzStatus.submissionSuccess ){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailPage(
+                                              article: state.articleModel,
+                                            )));
+                                          }
+                                        },
+                                        child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: InkWell(
+                                            onTap: (){
+                                              Injector.resolve<ArticlePageBloc>().add(
+                                                  ArticleReadEvent(state.simpleTipResponse?.articleId ?? ""));
                                             },
-                                            child: Container(
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                      margin: EdgeInsets.only(
-                                                          right: 5),
-                                                      child: Text(
-                                                        "Artikel lainnya",
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.grey),
-                                                      )),
-                                                  Container(
-                                                    child: const Icon(
-                                                      Icons.arrow_forward_ios,
-                                                      size: 20,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                Text("Baca Artikel", style: TextStyle(color: EpregnancyColors.primer, fontSize: 12.sp, fontWeight: FontWeight.w700),),
+                                                SizedBox(width: 10.w,),
+                                                Icon(Icons.arrow_forward_ios_rounded, color: EpregnancyColors.primer, size: 14.w,)
+                                              ],
                                             ),
                                           ),
-                                        ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),)
+                          : Container(
+                              color: EpregnancyColors.primerSoft,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 16.h),
+                                padding: EdgeInsets.all(16.w),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: EpregnancyColors.white),
+                                    borderRadius: BorderRadius.circular(8.w)),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 20,
+                                      width: 20,
+                                      // margin: EdgeInsets.only(left: 50, right: 50),
+                                      child: SvgPicture.asset(
+                                        'assets/ic_tips.svg',
+                                        height: 20,
+                                        width: 20,
                                       ),
                                     ),
-                                    Row(
-                                      children: [
-                                        state.submitStatus ==
-                                                    FormzStatus
-                                                        .submissionInProgress &&
-                                                state.tipe == 'listArticle'
-                                            ? Expanded(child: ListShimmer())
-                                            : Expanded(
-                                                child: ListArticle(
-                                                listArticle:
-                                                    state.listArticle ?? [],
-                                              ))
-                                      ],
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+
+                                    Text(
+                                      state.simpleTipResponse?.tips ?? "",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: 16.h,
+                                    ),
+                                    BlocListener<ArticlePageBloc, ArticlePageState>(
+                                        listener: (context, state){
+                                          if(state.articleModel != null && state.submitStatus == FormzStatus.submissionSuccess ){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailPage(
+                                              article: state.articleModel,
+                                            )));
+                                          }
+                                        },
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: InkWell(
+                                          onTap: (){
+                                            Injector.resolve<ArticlePageBloc>().add(
+                                                ArticleReadEvent(state.simpleTipResponse?.articleId ?? ""));
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              Text("Baca Artikel", style: TextStyle(color: EpregnancyColors.primer, fontSize: 12.sp, fontWeight: FontWeight.w700),),
+                                              SizedBox(width: 10.w,),
+                                              Icon(Icons.arrow_forward_ios_rounded, color: EpregnancyColors.primer, size: 14.w,)
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                state.showGuide == true
-                                    ? Showcase(
-                                        key: widget.three ?? GlobalKey(),
-                                        title: 'Kumpulkan Poin',
-                                        description:
-                                            'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, RouteName.poinPage,
-                                                arguments:
-                                                    state.totalPointsEarned ?? 0);
-                                          },
-                                          child: PoinCardSection(
-                                              point:
-                                                  state.totalPointsEarned ?? 0),
-                                        ))
-                                    : InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, RouteName.poinPage,
-                                              arguments:
-                                                  state.totalPointsEarned ?? 0);
-                                        },
-                                        child: PoinCardSection(
-                                            point: state.totalPointsEarned ?? 0)),
-                                // Games Section
-                                const GameCardSection(),
-
+                              ),
+                            ),
+                      Container(
+                          // height: 200,
+                          color: Colors.white,
+                          child: Container(
+                            padding: EdgeInsets.only(top: 10, bottom: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Container(
-                                    color: Colors.white,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height -
-                                                200,
-                                            child: TabBarEventPage(
-                                              tabController: _tabController,
-                                              dateTime: state.eventDate,
-                                              isMidwife: false,
-                                            )),
-                                      ],
-                                    )),
+                                  padding: EdgeInsets.only(
+                                      left: 20, right: 20, bottom: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                          child: const Text(
+                                        "Artikel Untuk Anda",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700),
+                                      )),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                              RouteName.dashboardArticle);
+                                        },
+                                        child: Container(
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                  margin:
+                                                      EdgeInsets.only(right: 5),
+                                                  child: Text(
+                                                    "Artikel lainnya",
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.grey),
+                                                  )),
+                                              Container(
+                                                child: const Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  size: 20,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    state.submitStatus ==
+                                                FormzStatus
+                                                    .submissionInProgress &&
+                                            state.tipe == 'listArticle'
+                                        ? Expanded(child: ListShimmer())
+                                        : Expanded(
+                                            child: ListArticle(
+                                            listArticle:
+                                                state.listArticle ?? [],
+                                          ))
+                                  ],
+                                ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+                          )),
+                      state.showGuide == true
+                          ? Showcase(
+                              key: widget.three ?? GlobalKey(),
+                              title: 'Kumpulkan Poin',
+                              description:
+                                  'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RouteName.poinPage,
+                                      arguments: state.totalPointsEarned ?? 0);
+                                },
+                                child: PoinCardSection(
+                                    point: state.totalPointsEarned ?? 0),
+                              ))
+                          : InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, RouteName.poinPage,
+                                    arguments: state.totalPointsEarned ?? 0);
+                              },
+                              child: PoinCardSection(
+                                  point: state.totalPointsEarned ?? 0)),
+                      // Games Section
+                      const GameCardSection(),
+
+                      Container(
+                          color: Colors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  height:
+                                      MediaQuery.of(context).size.height - 200,
+                                  child: TabBarEventPage(
+                                    tabController: _tabController,
+                                    dateTime: state.eventDate,
+                                    isMidwife: false,
+                                  )),
+                            ],
+                          )),
+                    ],
+                  ),
+                );
+              },
             ),
-          ),
-        );
+          )),
+    );
   }
 }

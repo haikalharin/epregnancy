@@ -114,12 +114,14 @@ class _LastMenstruationState extends State<LastMenstruation> {
                                   lastDate: DateTime.now().add(const Duration(days: -8)),
                                   initialEntryMode: DatePickerEntryMode.calendarOnly,
                                   initialValue: state.date.valid
-                                      ? DateTime.parse(state.date.value)
+                                      // ? DateTime.parse(state.date.value)
+                                      ? DateTime.now().add(const Duration(days: -8))
                                       : (widget.baby?.baby?.id != "" || widget.baby?.baby?.id != null)
                                           ? DateTime.parse(widget
                                                   .baby?.baby?.lastMenstruationDate ??
                                               "0000-00-00")
                                           : null,
+                                  initialDate: DateTime.parse("1900-01-01"),
                                   dateFormat: DateFormat('dd/MM/yyyy'),
                                   mode: DateTimeFieldPickerMode.date,
                                   decoration: InputDecoration(
