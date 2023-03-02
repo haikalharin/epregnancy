@@ -690,7 +690,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             }
                                           },
                                           child: state.simpleTipResponse
-                                                      ?.articleId ==
+                                                      ?.articleId !=
                                                   null
                                               ? Align(
                                                   alignment:

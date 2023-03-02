@@ -289,7 +289,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       ResponseModel response = await homeRepository.getBaby(user);
       if (response.code == 200) {
         myBaby = response.data;
-        if (myBaby.baby!.id != '' || myBaby.baby!.id != null ) {
+        if (myBaby.baby != null ) {
           DateTime dateTimeCreatedAt =
           DateTime.parse(myBaby.baby!.lastMenstruationDate??"0000-00-00");
           DateTime dateTimeNow = DateTime.now();
