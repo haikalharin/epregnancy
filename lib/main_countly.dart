@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:math';
 
 // ignore: depend_on_referenced_packages
-import 'package:countly_flutter/countly_config.dart';
+import  'package:countly_flutter/countly_config.dart';
 // ignore: depend_on_referenced_packages
 import 'package:countly_flutter/countly_flutter.dart';
 import 'package:flutter/material.dart';
