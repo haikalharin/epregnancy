@@ -111,6 +111,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     CountlyAnalyticsService(context).setInitCountly();
+    CountlyAnalyticsService(context).setDeviceIDType();
+
     _firebaseFuture = firebaseService
         .initializeFlutterFirebase(context);
 

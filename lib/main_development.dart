@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/firebase_analytics.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:countly_flutter/countly_flutter.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +93,10 @@ Future<void> main() async {
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   );
-  runApp(MyApp());
+  runZonedGuarded<Future<void>>(() async {
+    runApp(MyApp());
+  }, Countly.recordDartError);
+
 }
 
 final Alice aliceDev = Alice(showNotification: true, darkTheme: true);
@@ -211,6 +216,7 @@ class _MyAppState extends State<MyApp> {
     // MyButton(text: 'Begin Session', color: 'green', onPressed: beginSession),
     // MyButton(text: 'Update Session', color: 'green', onPressed: updateSession),
     CountlyAnalyticsService(context).setInitCountly();
+    CountlyAnalyticsService(context).setDeviceIDType();
     playerDev.setLoopMode(LoopMode.all);
     // playerDev.setAsset("assets/audio/al_fatihah.mp3");
     // // playerDev.setAudioSource(playlist,

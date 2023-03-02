@@ -147,11 +147,11 @@ class _ListArticleBody extends StatelessWidget {
                 onTap: () {
                   Injector.resolve<ArticlePageBloc>().add(
                       ArticleReadEvent(state.listArticle![index].id ?? ""));
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ArticleDetailPage(
-                              article: state.listArticle![index])));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => ArticleDetailPage(
+                  //             article: state.listArticle![index])));
                 },
                 child: Container(
                   height: 150,

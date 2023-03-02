@@ -27,8 +27,6 @@ class ListArticle extends StatelessWidget {
     return Container(
       height: 150.h,
       width: 170.w,
-      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-      decoration: BoxDecoration(color: Colors.white),
       child: listArticle!.isEmpty
           ? Container(margin: EdgeInsets.only(), child: Container())
           : ListView.builder(
@@ -44,15 +42,15 @@ class ListArticle extends StatelessWidget {
                         Injector.resolve<ArticlePageBloc>().add(
                             ArticleReadEvent(listArticle?[index].id ?? ""));
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ArticleDetailPage(
-                                    article: listArticle?[index])));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ArticleDetailPage(
+                        //             article: listArticle?[index])));
                       },
                       child: Container(
                         height: 150.h,
-                        margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+                        margin: EdgeInsets.only(left: 16, right: 16, top: 10),
                         decoration: listArticle![index].imageUrl != null &&
                                 listArticle![index].imageUrl != ""
                             ? BoxDecoration(

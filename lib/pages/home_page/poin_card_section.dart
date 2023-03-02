@@ -19,7 +19,7 @@ class _PoinCardSectionState extends State<PoinCardSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+
       child: Container(
         // decoration: BoxDecoration(
         //   border: Border.all(

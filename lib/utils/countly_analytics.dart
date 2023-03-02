@@ -16,11 +16,12 @@ class CountlyAnalyticsService {
   final _messangerKey = GlobalKey<ScaffoldMessengerState>();
   final bool _enableManualSession = false;
   final ratingIdController = TextEditingController();
+  CountlyConfig config = CountlyConfig('', '');
   // final bool isManualSession = true;
 
 
-  Future<void> setInitCountly() async {
-    Countly.isInitialized().then((bool isInitialized) async {
+  void setInitCountly() {
+    Countly.isInitialized().then((bool isInitialized) {
       if (!isInitialized) {
         Countly.pushTokenType(Countly.messagingMode[
             'TEST']!); // Set messaging mode for push notifications
@@ -43,7 +44,7 @@ class CountlyAnalyticsService {
             '{cid:"[PROVIDED_CAMPAIGN_ID]", cuid:"[PROVIDED_CAMPAIGN_USER_ID]"}';
         var SERVER_URL = Configurations.countlyServerUrl;
         var APP_KEY = Configurations.countlyAppKey;
-        CountlyConfig config = CountlyConfig(SERVER_URL, APP_KEY)
+        config = CountlyConfig(SERVER_URL, APP_KEY)
           ..enableCrashReporting() // Enable crash reporting to report unhandled crashes to Countly
           ..setRequiresConsent(
               true) // Set that consent should be required for features to work.
@@ -84,10 +85,7 @@ class CountlyAnalyticsService {
           ..setHttpPostForced(
               false);
 
-        Map<String, dynamic> _deviceData = <String, dynamic>{};
-        final deviceInfoPlugin = DeviceInfoPlugin();
-        _deviceData = _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
-        config.setDeviceId(_deviceData['id']);
+
 
         // Set to 'true' if you want HTTP POST to be used for all requests
         if (_enableManualSession) {
@@ -474,6 +472,15 @@ class CountlyAnalyticsService {
     DeviceIdType? deviceIdType = await Countly.getDeviceIDType();
 
     log('######$deviceIdType#######');
+
+  }
+
+Future<void> setDeviceIDType() async {
+    Map<String, dynamic> _deviceData = <String, dynamic>{};
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    _deviceData = _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+    config.setDeviceId(_deviceData['id']);
+
 
   }
 
