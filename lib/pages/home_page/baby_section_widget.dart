@@ -166,7 +166,7 @@ class BabySectionWidget extends StatelessWidget {
                                   builder: (context, snapshot) {
                                     return Container(
                                       height: 200,
-                                      alignment: Alignment(0.3, -0.5),
+                                      alignment: Alignment(0.3, -0.52),
                                       child: JustTheTooltip(
                                         barrierDismissible: false,
                                         isModal: true,
@@ -353,7 +353,7 @@ class BabySectionWidget extends StatelessWidget {
                                 builder: (context, snapshot) {
                                   return Container(
                                     height: 200,
-                                    alignment: Alignment(0.3, -0.3),
+                                    alignment: Alignment(0.3, -0.52),
                                     child: JustTheTooltip(
                                       barrierDismissible: false,
                                       isModal: true,

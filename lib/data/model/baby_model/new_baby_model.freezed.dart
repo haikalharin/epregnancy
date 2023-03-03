@@ -31,9 +31,9 @@ mixin _$NewBabyModel {
   @JsonKey(name: 'size_description', includeIfNull: true)
   String? get sizeDescription => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
-  int? get length => throw _privateConstructorUsedError;
+  double? get length => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
-  int? get weight => throw _privateConstructorUsedError;
+  double? get weight => throw _privateConstructorUsedError;
   @JsonKey(name: 'growth_description', includeIfNull: true)
   String? get growthDescription => throw _privateConstructorUsedError;
   @JsonKey(name: 'symptom_description', includeIfNull: true)
@@ -62,9 +62,9 @@ abstract class $NewBabyModelCopyWith<$Res> {
       @JsonKey(name: 'size_description', includeIfNull: true)
           String? sizeDescription,
       @JsonKey(includeIfNull: true)
-          int? length,
+          double? length,
       @JsonKey(includeIfNull: true)
-          int? weight,
+          double? weight,
       @JsonKey(name: 'growth_description', includeIfNull: true)
           String? growthDescription,
       @JsonKey(name: 'symptom_description', includeIfNull: true)
@@ -117,11 +117,11 @@ class _$NewBabyModelCopyWithImpl<$Res> implements $NewBabyModelCopyWith<$Res> {
       length: length == freezed
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       weight: weight == freezed
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       growthDescription: growthDescription == freezed
           ? _value.growthDescription
           : growthDescription // ignore: cast_nullable_to_non_nullable
@@ -164,9 +164,9 @@ abstract class _$$_NewBabyModelCopyWith<$Res>
       @JsonKey(name: 'size_description', includeIfNull: true)
           String? sizeDescription,
       @JsonKey(includeIfNull: true)
-          int? length,
+          double? length,
       @JsonKey(includeIfNull: true)
-          int? weight,
+          double? weight,
       @JsonKey(name: 'growth_description', includeIfNull: true)
           String? growthDescription,
       @JsonKey(name: 'symptom_description', includeIfNull: true)
@@ -223,11 +223,11 @@ class __$$_NewBabyModelCopyWithImpl<$Res>
       length: length == freezed
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       weight: weight == freezed
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       growthDescription: growthDescription == freezed
           ? _value.growthDescription
           : growthDescription // ignore: cast_nullable_to_non_nullable
@@ -283,10 +283,10 @@ class _$_NewBabyModel implements _NewBabyModel {
   final String? sizeDescription;
   @override
   @JsonKey(includeIfNull: true)
-  final int? length;
+  final double? length;
   @override
   @JsonKey(includeIfNull: true)
-  final int? weight;
+  final double? weight;
   @override
   @JsonKey(name: 'growth_description', includeIfNull: true)
   final String? growthDescription;
@@ -359,9 +359,9 @@ abstract class _NewBabyModel implements NewBabyModel {
       @JsonKey(name: 'size_description', includeIfNull: true)
           final String? sizeDescription,
       @JsonKey(includeIfNull: true)
-          final int? length,
+          final double? length,
       @JsonKey(includeIfNull: true)
-          final int? weight,
+          final double? weight,
       @JsonKey(name: 'growth_description', includeIfNull: true)
           final String? growthDescription,
       @JsonKey(name: 'symptom_description', includeIfNull: true)
@@ -387,10 +387,10 @@ abstract class _NewBabyModel implements NewBabyModel {
   String? get sizeDescription => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
-  int? get length => throw _privateConstructorUsedError;
+  double? get length => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
-  int? get weight => throw _privateConstructorUsedError;
+  double? get weight => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'growth_description', includeIfNull: true)
   String? get growthDescription => throw _privateConstructorUsedError;

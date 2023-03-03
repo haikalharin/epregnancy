@@ -26,9 +26,9 @@ class NewBabyModel with _$NewBabyModel {
     @JsonKey(name: 'size_description',includeIfNull: true)
     String? sizeDescription,
     @JsonKey(includeIfNull: true)
-    int? length,
+    double? length,
     @JsonKey(includeIfNull: true)
-    int? weight,
+    double? weight,
     @JsonKey(name: 'growth_description',includeIfNull: true)
     String? growthDescription,
     @JsonKey(name: 'symptom_description',includeIfNull: true)
