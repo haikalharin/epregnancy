@@ -16,11 +16,7 @@ class PasswordValidator extends FormzInput<String, PasswordValidationError> {
     }
 
     if (RegExp(RegexConstants.validPasswordlRegex).hasMatch(value)) {
-      if (!RegExp(RegexConstants.validPasswordSameWordRegex).hasMatch(value)) {
         return null;
-      } else{
-        return PasswordValidationError.invalid;
-      }
     }else{
       return PasswordValidationError.invalid;
     }
