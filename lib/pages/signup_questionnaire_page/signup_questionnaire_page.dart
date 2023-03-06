@@ -260,7 +260,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                             builder: (context) {
                                               // if(RegExp(RegexConstants.validPasswordlRegex).hasMatch(passwordText ?? "")) {
                                               if ((passwordText?.length ?? 0) >=
-                                                  8) {
+                                                  6) {
                                                 return Icon(
                                                   Icons.check_circle_rounded,
                                                   color:
@@ -280,7 +280,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                             width: 8.w,
                                           ),
                                           Text(
-                                            "Minimal 8 karakter dan maksimal 128 karakter",
+                                            "Minimal 6 karakter dan maksimal 128 karakter",
                                             style: TextStyle(
                                                 fontSize: 11.sp,
                                                 fontWeight: FontWeight.w300),
@@ -314,7 +314,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                                "Setidaknya memiliki 1 huruf besar, 1 huruf kecil dan 1 angka dan 1 simbol",
+                                                "Setidaknya memiliki 1 huruf dan 1 angka",
                                                 style: TextStyle(
                                                     fontSize: 11.sp,
                                                     fontWeight:

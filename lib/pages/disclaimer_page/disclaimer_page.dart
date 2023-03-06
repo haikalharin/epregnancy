@@ -174,14 +174,16 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                                         Injector.resolve<DisclaimerPageBloc>()
                                             .add(DisclaimerAddDataEvent());
                                       } else {
-                                        Navigator.of(context).pushNamed(
-                                            RouteName.otpPage,
-                                            arguments: {
-                                              'username': widget.userId,
-                                              'from': "disclaimer"
-                                            }).then((value) {
-                                          Navigator.pop(context);
-                                        });
+                                        Navigator.of(context)
+                                            .pushNamed(RouteName.signUpQuestionnairePage);
+                                        // Navigator.of(context).pushNamed(
+                                        //     RouteName.otpPage,
+                                        //     arguments: {
+                                        //       'username': widget.userId,
+                                        //       'from': "disclaimer"
+                                        //     }).then((value) {
+                                        //   Navigator.pop(context);
+                                        // });
                                       }
                                     }
                                   },

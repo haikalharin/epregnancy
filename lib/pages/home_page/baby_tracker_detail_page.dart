@@ -235,7 +235,7 @@ class _BabyTrackerDetailState extends State<BabyTrackerDetail> {
                               height: 5.h,
                             ),
                             Text(
-                              "± ${(widget.newBabyModel?.weight ?? 0) / 100} kg",
+                              "± ${(widget.newBabyModel?.weight ?? 0) / 1000} kg",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
