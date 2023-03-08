@@ -7,6 +7,7 @@ class EpregnancyColors {
   static const Color primerSoft = Color(0xFFE1EEFA);
   static const Color profileBg = Color(0xFFF7FAFE);
   static const Color primerSoft2 = Color(0xFFC5E3FF);
+  static const Color whiteBlue = Color(0xFFE7F4FF);
   static const Color greyBlue = Color(0xFFF1F6FB);
   static const Color yellow = Color(0xFFFCB01B);
   static const Color black = Color(0xFF1D1F1E);

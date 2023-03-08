@@ -9,7 +9,7 @@ class ConfirmPasswordValidator extends FormzInput<String, ConfirmPasswordValidat
 
   @override
   ConfirmPasswordValidationError? validator(String value) {
-    return value.length >= 8 && value == pass
+    return value.length >= 6 && value == pass
         ? null
         : ConfirmPasswordValidationError.empty;
   }

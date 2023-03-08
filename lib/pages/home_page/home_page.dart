@@ -479,7 +479,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         decoration: const BoxDecoration(
                             gradient: LinearGradient(
                                 colors: [
-                              EpregnancyColors.primer,
+                              EpregnancyColors.whiteBlue,
                               Colors.white,
                               Colors.white
                             ],

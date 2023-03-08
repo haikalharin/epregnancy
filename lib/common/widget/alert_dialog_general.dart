@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/epragnancy_color.dart';
 
-AlertDialogOneButton(
+AlertDialogGeneral(
   BuildContext context, {
   String title = "",
   String subTitle = "",
