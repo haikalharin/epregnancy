@@ -33,6 +33,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
   final TextEditingController _passwordController = TextEditingController();
   String? passwordText;
 
+
   void _showDialog(Widget child) {
     showCupertinoModalPopup<void>(
         context: context,
@@ -59,6 +60,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
       onWillPop: () {
         Navigator.pop(context);
         Navigator.pop(context);
+        Injector.resolve<SignUpQuestionnaireBloc>()
+            .add(const SignupInitEvent());
         return Future.value(true);
       },
       child: Scaffold(
@@ -87,6 +90,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
           },
           child: BlocBuilder<SignUpQuestionnaireBloc, SignUpQuestionnaireState>(
             builder: (context, state) {
+              print('dateValid: ${state.dateValid}');
               return SingleChildScrollView(
                 child: Stack(
                   children: [
@@ -95,6 +99,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                         SizedBox(height: 30),
                         GestureDetector(
                           onTap: () {
+                            Injector.resolve<SignUpQuestionnaireBloc>()
+                                .add(const SignupInitEvent());
                             Navigator.pop(context);
                             Navigator.pop(context);
                           },
@@ -537,9 +543,12 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
 class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // state.password.invalid ||
+    //     state.confirmPassword.invalid ||
+    //     _passwordController.text.isEmpty || state.dateValid != true || state.firstName.invalid || state.secondName.invalid
     return BlocBuilder<SignUpQuestionnaireBloc, SignUpQuestionnaireState>(
         builder: (context, state) {
-      if (state.submitStatus == FormzStatus.submissionInProgress) {
+          if (state.submitStatus == FormzStatus.submissionInProgress) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

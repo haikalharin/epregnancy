@@ -35,6 +35,7 @@ import '../chat_page/event/event_chat_room.dart';
 import '../home_page/list_event.dart';
 import 'bloc/consultation_page_bloc.dart';
 import 'list_forum.dart';
+import 'package:tap_to_dismiss_keyboard/tap_to_dismiss_keyboard.dart';
 
 class ConsultationPage extends StatefulWidget {
   const ConsultationPage({Key? key, this.role}) : super(key: key);
@@ -101,330 +102,333 @@ class _ConsultationPageState extends State<ConsultationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey.shade200,
-      body: BlocListener<ConsultationPageBloc, ConsultationPageState>(
-        listener: (context, state) async {
-          print('state consultation : ${state.type}');
-          if (state.submitStatus == FormzStatus.submissionFailure) {
-            SnackBar snackBar = SnackBar(
-                content: Text("Gagal posting ${state.errorMessage}"), backgroundColor: Colors.red);
-            Scaffold.of(context).showSnackBar(snackBar);
-          } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            if (state.type == 'update' || state.type == 'delete-post-success') {
-              const snackBar = SnackBar(
-                  content: Text("Berhasil"),
-                  backgroundColor: EpregnancyColors.primer);
+    return TapToDissmissKeyboard(
+      child: Scaffold(
+        // todo dismiss keyboard
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.grey.shade200,
+        body: BlocListener<ConsultationPageBloc, ConsultationPageState>(
+          listener: (context, state) async {
+            print('state consultation : ${state.type}');
+            if (state.submitStatus == FormzStatus.submissionFailure) {
+              SnackBar snackBar = SnackBar(
+                  content: Text("Gagal posting ${state.errorMessage}"), backgroundColor: Colors.red);
               Scaffold.of(context).showSnackBar(snackBar);
-              await Future.delayed(const Duration(seconds: 1));
-              onRefresh();
-              FocusScope.of(context).requestFocus(FocusNode());
+            } else if (state.submitStatus == FormzStatus.submissionSuccess) {
+              if (state.type == 'update' || state.type == 'delete-post-success') {
+                const snackBar = SnackBar(
+                    content: Text("Berhasil"),
+                    backgroundColor: EpregnancyColors.primer);
+                Scaffold.of(context).showSnackBar(snackBar);
+                await Future.delayed(const Duration(seconds: 1));
+                onRefresh();
+                FocusScope.of(context).requestFocus(FocusNode());
+              }
             }
-          }
-        },
-        child: BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
-          builder: (context, state) {
-            var _height = MediaQuery.of(context).size.height;
-            print('width : $_height');
-            return NestedScrollView(
-              headerSliverBuilder: (context, innerBoxScrolled) {
-                return <Widget>[
-                  SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      pinned: true,
-                      snap: false,
-                      floating: false,
-                      backgroundColor: Colors.white,
-                      expandedHeight: _height <= 820 && _height >= 680  ? MediaQuery.of(context).size.height * 0.35 : MediaQuery.of(context).size.height * 0.29,
-                      flexibleSpace: FlexibleSpaceBar(
-                        centerTitle: true,
-                        collapseMode: CollapseMode.pin,
-                        title: Text(innerBoxScrolled ? "Diskusi" : "", style: TextStyle(color: Colors.black),),
-                        background: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 20),
+          },
+          child: BlocBuilder<ConsultationPageBloc, ConsultationPageState>(
+            builder: (context, state) {
+              var _height = MediaQuery.of(context).size.height;
+              print('width : $_height');
+              return NestedScrollView(
+                headerSliverBuilder: (context, innerBoxScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        pinned: true,
+                        snap: false,
+                        floating: false,
+                        backgroundColor: Colors.white,
+                        expandedHeight: _height <= 820 && _height >= 680  ? MediaQuery.of(context).size.height * 0.35 : MediaQuery.of(context).size.height * 0.29,
+                        flexibleSpace: FlexibleSpaceBar(
+                          centerTitle: true,
+                          collapseMode: CollapseMode.pin,
+                          title: Text(innerBoxScrolled ? "Diskusi" : "", style: TextStyle(color: Colors.black),),
+                          background: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Diskusi",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold)),
+                                      InkWell(
+                                          onTap: () {
+                                            // todo manage routes
+                                            Navigator.push(context, MaterialPageRoute
+                                              (builder: (context) => ArchiveConsultationPatientPage(userId: _userId!,)));
+                                          },
+                                          child: SvgPicture.asset(
+                                              'assets/icArchive.svg'))
+                                    ],
+                                  )),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(
+                                    bottom: 10, right: 20, left: 20),
                                 child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("Diskusi",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold)),
-                                    InkWell(
-                                        onTap: () {
-                                          // todo manage routes
-                                          Navigator.push(context, MaterialPageRoute
-                                            (builder: (context) => ArchiveConsultationPatientPage(userId: _userId!,)));
-                                        },
-                                        child: SvgPicture.asset(
-                                            'assets/icArchive.svg'))
-                                  ],
-                                )),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.only(
-                                  bottom: 10, right: 20, left: 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: EpregnancyColors.primer,
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: EpregnancyColors.primer,
+                                          ),
+                                          borderRadius:
+                                          BorderRadius.circular(15.0),
                                         ),
-                                        borderRadius:
-                                        BorderRadius.circular(15.0),
+                                        child: FlatButton(
+                                          minWidth: MediaQuery.of(context)
+                                              .size
+                                              .width /
+                                              4,
+                                          padding: EdgeInsets.only(
+                                              top: 20,
+                                              bottom: 20,
+                                              right: 10,
+                                              left: 10),
+                                          onPressed: () async {
+                                            // new method for hubungi profesional
+                                            if(_hospitalModel?.name == ''){
+                                              Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                                if(value != null){
+                                                  setState(() {
+                                                    _hospitalModel = value as HospitalModel?;
+                                                  });
+                                                }
+                                              });
+                                            } else {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          InitialConsultationLoadPage(userId: _userId??'',)));
+                                            }
+                                          },
+                                          child: Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Image.asset(
+                                                    'assets/icon-hubungi-profesional.png',
+                                                    height: 25),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                widget.role == "PATIENT"
+                                                    ? Text(
+                                                  "Tanya Bidan",
+                                                  style: TextStyle(
+                                                      fontSize: 12),
+                                                )
+                                                    : Text(
+                                                  "Cek Diskusi",
+                                                  style: TextStyle(
+                                                      fontSize: 12),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      child: FlatButton(
-                                        minWidth: MediaQuery.of(context)
-                                            .size
-                                            .width /
-                                            4,
-                                        padding: EdgeInsets.only(
-                                            top: 20,
-                                            bottom: 20,
-                                            right: 10,
-                                            left: 10),
-                                        onPressed: () async {
-                                          // new method for hubungi profesional
-                                          if(_hospitalModel?.name == ''){
-                                            Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                              if(value != null){
-                                                setState(() {
-                                                  _hospitalModel = value as HospitalModel?;
-                                                });
-                                              }
-                                            });
-                                          } else {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        InitialConsultationLoadPage(userId: _userId??'',)));
-                                          }
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // tanya ke komunitas wording
+                              // Padding(
+                              //   padding: EdgeInsets.only(left: 16.w, top: 20.h),
+                              //     child: Text('Tanya ke komunitas untuk dapatkan 200 Poin',style: TextStyle(color: EpregnancyColors.primer, fontWeight: FontWeight.w700, fontSize: 12.sp),)),
+                              Container(
+                                  margin: EdgeInsets.only(
+                                      top: 20,
+                                      bottom: 20,
+                                      left: 20,
+                                      right: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      state.userModel?.imageUrl != null?  Container(
+                                        // width: 62,
+
+                                        child: ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(40),
+                                          child: FadeInImage(
+                                            placeholder: const AssetImage(
+                                                'assets/ic_no_photo.png'),
+                                            image: NetworkImage(state.userModel?.imageUrl??
+                                                ""),
+                                            width: 40,
+                                            height: 40,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ):Container(
+                                        // width: 62,
+
+                                        child: ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(40),
+                                          child: const FadeInImage(
+                                            placeholder: AssetImage(
+                                                'assets/ic_no_photo.png'),
+                                            image: AssetImage(
+                                                'assets/ic_no_photo.png'),
+                                            width: 40,
+                                            height: 40,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            width: 260,
+                                            margin: EdgeInsets.all(4),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey.shade200,
+                                              borderRadius:
+                                              BorderRadius.circular(12),
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                imagePath != ""
+                                                    ? InkWell(
+                                                  onLongPress: () {
+                                                    _showPickerDelete(
+                                                        context);
+                                                  },
+                                                  child: Container(
+                                                      margin:
+                                                      const EdgeInsets
+                                                          .only(
+                                                          left: 0,
+                                                          right: 0,
+                                                          bottom:
+                                                          10,
+                                                          top: 10),
+                                                      child: Image.file(
+                                                        File(
+                                                            imagePath ??
+                                                                ""),
+                                                        height: 70,
+                                                      )),
+                                                )
+                                                    : Container(),
+                                                TextField(
+                                                  controller: _controller,
+                                                  maxLines: 5,
+                                                  autofocus: false,
+                                                  minLines: 1,
+                                                  decoration:
+                                                  const InputDecoration(
+                                                    // prefixIcon: Image(image: image),
+                                                    hintText:
+                                                    'Tanya ke komunitas...',
+                                                    border: InputBorder.none,
+                                                    isDense: true,
+                                                  ),
+                                                  textInputAction: TextInputAction.send,
+                                                  onSubmitted: (val){
+                                                    Injector.resolve<
+                                                        ConsultationPageBloc>()
+                                                        .add(
+                                                        ConsultationSubmittedEvent());
+                                                  },
+                                                  onChanged: (value) {
+                                                    Injector.resolve<
+                                                        ConsultationPageBloc>()
+                                                        .add(
+                                                        ConsultationDescriptionChanged(
+                                                            value));
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          // Container(
+                                          //   width: 100,
+                                          //   height: 30,
+                                          //   decoration: BoxDecoration(
+                                          //       borderRadius:
+                                          //           BorderRadius.circular(
+                                          //               10.0),
+                                          //       color:
+                                          //           EpregnancyColors.primer),
+                                          //   child: FlatButton(
+                                          //     minWidth: MediaQuery.of(context)
+                                          //             .size
+                                          //             .width /
+                                          //         5,
+                                          //     onPressed: () {
+                                          //       Injector.resolve<
+                                          //               ConsultationPageBloc>()
+                                          //           .add(
+                                          //               ConsultationSubmittedEvent());
+                                          //     },
+                                          //     child: Container(
+                                          //       child: Text(
+                                          //         "Kirim",
+                                          //         style: TextStyle(
+                                          //             color: Colors.white),
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                        ],
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          _showPicker(context);
                                         },
                                         child: Container(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Image.asset(
-                                                  'assets/icon-hubungi-profesional.png',
-                                                  height: 25),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              widget.role == "PATIENT"
-                                                  ? Text(
-                                                "Tanya Bidan",
-                                                style: TextStyle(
-                                                    fontSize: 12),
-                                              )
-                                                  : Text(
-                                                "Cek Diskusi",
-                                                style: TextStyle(
-                                                    fontSize: 12),
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              )
-                                            ],
-                                          ),
-                                        ),
+                                            margin: EdgeInsets.only(),
+                                            child: Image.asset('assets/icPictureColor.png')),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // tanya ke komunitas wording
-                            // Padding(
-                            //   padding: EdgeInsets.only(left: 16.w, top: 20.h),
-                            //     child: Text('Tanya ke komunitas untuk dapatkan 200 Poin',style: TextStyle(color: EpregnancyColors.primer, fontWeight: FontWeight.w700, fontSize: 12.sp),)),
-                            Container(
-                                margin: EdgeInsets.only(
-                                    top: 20,
-                                    bottom: 20,
-                                    left: 20,
-                                    right: 20),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    state.userModel?.imageUrl != null?  Container(
-                                      // width: 62,
+                                    ],
+                                  )),
+                              Divider(),
+                            ],
+                          ),
+                        )
+                    ),
 
-                                      child: ClipRRect(
-                                        borderRadius:
-                                        BorderRadius.circular(40),
-                                        child: FadeInImage(
-                                          placeholder: const AssetImage(
-                                              'assets/ic_no_photo.png'),
-                                          image: NetworkImage(state.userModel?.imageUrl??
-                                              ""),
-                                          width: 40,
-                                          height: 40,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ):Container(
-                                      // width: 62,
+                  ];
+                }, body: Container(
+                  child: state.listConsultation?.length == 0 ? const Center(
+                    child: CircularProgressIndicator(),
+                  ): ListForumWidget(
+                    tipeAcara: 'Acara umum',
+                    listConsul: state.listConsultation?.reversed.toList() ?? [],
+                    userId: _userId,
+                    psLikesCount: _psLikesCount,
+                  )),
 
-                                      child: ClipRRect(
-                                        borderRadius:
-                                        BorderRadius.circular(40),
-                                        child: const FadeInImage(
-                                          placeholder: AssetImage(
-                                              'assets/ic_no_photo.png'),
-                                          image: AssetImage(
-                                              'assets/ic_no_photo.png'),
-                                          width: 40,
-                                          height: 40,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          width: 260,
-                                          margin: EdgeInsets.all(4),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.shade200,
-                                            borderRadius:
-                                            BorderRadius.circular(12),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              imagePath != ""
-                                                  ? InkWell(
-                                                onLongPress: () {
-                                                  _showPickerDelete(
-                                                      context);
-                                                },
-                                                child: Container(
-                                                    margin:
-                                                    const EdgeInsets
-                                                        .only(
-                                                        left: 0,
-                                                        right: 0,
-                                                        bottom:
-                                                        10,
-                                                        top: 10),
-                                                    child: Image.file(
-                                                      File(
-                                                          imagePath ??
-                                                              ""),
-                                                      height: 70,
-                                                    )),
-                                              )
-                                                  : Container(),
-                                              TextField(
-                                                controller: _controller,
-                                                maxLines: 5,
-                                                autofocus: false,
-                                                minLines: 1,
-                                                decoration:
-                                                const InputDecoration(
-                                                  // prefixIcon: Image(image: image),
-                                                  hintText:
-                                                  'Tanya ke komunitas...',
-                                                  border: InputBorder.none,
-                                                  isDense: true,
-                                                ),
-                                                textInputAction: TextInputAction.send,
-                                                onSubmitted: (val){
-                                                  Injector.resolve<
-                                                      ConsultationPageBloc>()
-                                                      .add(
-                                                      ConsultationSubmittedEvent());
-                                                },
-                                                onChanged: (value) {
-                                                  Injector.resolve<
-                                                      ConsultationPageBloc>()
-                                                      .add(
-                                                      ConsultationDescriptionChanged(
-                                                          value));
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        // Container(
-                                        //   width: 100,
-                                        //   height: 30,
-                                        //   decoration: BoxDecoration(
-                                        //       borderRadius:
-                                        //           BorderRadius.circular(
-                                        //               10.0),
-                                        //       color:
-                                        //           EpregnancyColors.primer),
-                                        //   child: FlatButton(
-                                        //     minWidth: MediaQuery.of(context)
-                                        //             .size
-                                        //             .width /
-                                        //         5,
-                                        //     onPressed: () {
-                                        //       Injector.resolve<
-                                        //               ConsultationPageBloc>()
-                                        //           .add(
-                                        //               ConsultationSubmittedEvent());
-                                        //     },
-                                        //     child: Container(
-                                        //       child: Text(
-                                        //         "Kirim",
-                                        //         style: TextStyle(
-                                        //             color: Colors.white),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                      ],
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        _showPicker(context);
-                                      },
-                                      child: Container(
-                                          margin: EdgeInsets.only(),
-                                          child: Image.asset('assets/icPictureColor.png')),
-                                    ),
-                                  ],
-                                )),
-                            Divider(),
-                          ],
-                        ),
-                      )
-                  ),
-
-                ];
-              }, body: Container(
-                child: state.listConsultation?.length == 0 ? const Center(
-                  child: CircularProgressIndicator(),
-                ): ListForumWidget(
-                  tipeAcara: 'Acara umum',
-                  listConsul: state.listConsultation?.reversed.toList() ?? [],
-                  userId: _userId,
-                  psLikesCount: _psLikesCount,
-                )),
-
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -754,9 +758,16 @@ class _ConsultationPageState extends State<ConsultationPage> {
       if (croppedFile != null) {
         Injector.resolve<ConsultationPageBloc>()
             .add(ConsultationImageChanged(croppedFile.path));
+
+        Injector.resolve<
+            ConsultationPageBloc>()
+            .add(
+            ConsultationDescriptionChanged(
+                " "));
         setState(() {
           imagePath = croppedFile.path;
         });
+
       }
     }
   }
@@ -779,6 +790,12 @@ class _ConsultationPageState extends State<ConsultationPage> {
       if (croppedFile != null) {
         Injector.resolve<ConsultationPageBloc>()
             .add(ConsultationImageChanged(croppedFile.path));
+
+        Injector.resolve<
+            ConsultationPageBloc>()
+            .add(
+            ConsultationDescriptionChanged(
+                " "));
         setState(() {
           imagePath = croppedFile.path;
         });
