@@ -42,18 +42,14 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
   ) async* {
     var _user = await AppSharedPreference.getUser();
     NewBabyModel myBaby = await AppSharedPreference.getBabyDataNew();
-    var weeks = 0;
-    var days = 0;
+    var pregnancyAgeWeek = 0;
+    var pregnancyAgeDay = 0;
     if (myBaby.baby?.id != null || myBaby.baby?.id != '') {
-      DateTime dateTimeCreatedAt = DateTime.parse(myBaby.baby!.lastMenstruationDate!);
-      DateTime dateTimeNow = DateTime.now();
-      final differenceInDays = dateTimeNow.difference(dateTimeCreatedAt).inDays;
-      weeks = (differenceInDays / 7).ceil();
-      days = (differenceInDays % 7).ceil();
-      print('$differenceInDays');
+      pregnancyAgeWeek = myBaby.baby?.pregnancyAgeWeek??0;
+      pregnancyAgeDay = myBaby.baby?.pregnancyAgeDay??0;
     }
     yield ProfilePageState(
-        user: _user, baby: myBaby, ageBabyInWeeks: weeks, ageBabyInDay: days);
+        user: _user, baby: myBaby, ageBabyInWeeks: pregnancyAgeWeek, ageBabyInDay: pregnancyAgeDay);
   }
 
   Stream<ProfilePageState> _mapChangePhotoProfileEventToState(

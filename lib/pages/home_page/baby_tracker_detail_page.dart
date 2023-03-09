@@ -90,7 +90,7 @@ class _BabyTrackerDetailState extends State<BabyTrackerDetail> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.fromLTRB(16.w,16.w,16.w,8.w),
                 child: Text(
                   "Perkembangan Bayi dalam Rahim",
                   style: TextStyle(
@@ -99,7 +99,7 @@ class _BabyTrackerDetailState extends State<BabyTrackerDetail> {
                       fontSize: 16.sp),
                 ),
               ),
-              Html(data: widget.newBabyModel?.growthDescription)
+              Container( margin:EdgeInsets.symmetric(horizontal: 10),child: Html(data: widget.newBabyModel?.growthDescription))
             ],
           ),
           // page ukuran
@@ -235,7 +235,7 @@ class _BabyTrackerDetailState extends State<BabyTrackerDetail> {
                               height: 5.h,
                             ),
                             Text(
-                              "± ${(widget.newBabyModel?.weight ?? 0) / 100} kg",
+                              "± ${(widget.newBabyModel?.weight ?? 0) / 1000} kg",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,

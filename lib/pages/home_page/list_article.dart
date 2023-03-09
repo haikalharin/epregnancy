@@ -42,11 +42,11 @@ class ListArticle extends StatelessWidget {
                         Injector.resolve<ArticlePageBloc>().add(
                             ArticleReadEvent(listArticle?[index].id ?? ""));
 
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => ArticleDetailPage(
-                        //             article: listArticle?[index])));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ArticleDetailPage(
+                                    article: listArticle?[index])));
                       },
                       child: Container(
                         height: 150.h,

@@ -281,23 +281,17 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   ) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
-      var days = 0;
-      var weeks = 0;
+      var pregnancyAgeDay = 0;
+      var pregnancyAgeWeek = 0;
       NewBabyModel myBaby = const NewBabyModel();
 
       final UserModel user = await AppSharedPreference.getUser();
       ResponseModel response = await homeRepository.getBaby(user);
       if (response.code == 200) {
         myBaby = response.data;
-        if (myBaby.baby!.id != '' || myBaby.baby!.id != null ) {
-          DateTime dateTimeCreatedAt =
-          DateTime.parse(myBaby.baby!.lastMenstruationDate??"0000-00-00");
-          DateTime dateTimeNow = DateTime.now();
-          final differenceInDays =
-              dateTimeNow.difference(dateTimeCreatedAt).inDays;
-          weeks = (differenceInDays / 7).floor();
-          days = (differenceInDays % 7).floor();
-          print('$differenceInDays');
+        if (myBaby.baby != null ) {
+          pregnancyAgeWeek = myBaby.baby?.pregnancyAgeWeek??0;
+          pregnancyAgeDay = myBaby.baby?.pregnancyAgeDay??0;
         }
         bool? _showGuide =
             await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
@@ -306,8 +300,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         yield state.copyWith(
           submitStatus: FormzStatus.submissionSuccess,
           baby: myBaby,
-          days: days.toString(),
-          weeks: weeks.toString(),
+          days: pregnancyAgeDay.toString(),
+          weeks: pregnancyAgeWeek.toString(),
           user: user,
           showGuide: _showGuide ?? true,
           role: user.isPatient == true

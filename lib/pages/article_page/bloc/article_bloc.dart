@@ -43,7 +43,6 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
     }
   }
 
-
   ArticlePageState _mapArticleBackEventToState(
     ArticleBackEvent event,
     ArticlePageState state,
@@ -60,7 +59,7 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
     yield state.copyWith(
         submitStatus: FormzStatus.submissionInProgress,
         type: 'fetching-article',
-    keyword: '');
+        keyword: '');
     try {
       var category = '';
       if (event.condition == StringConstant.pregnant) {
@@ -85,9 +84,11 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionInProgress,
             type: 'get-next-page-article',
-            listArticle: state.listArticle,isSearch: state.isSearch, keyword: event.keyword);
+            listArticle: state.listArticle,
+            isSearch: state.isSearch,
+            keyword: event.keyword);
         response = await articleRepository.fetchArticle(
-         state.page + 1, sort, event.sortBy ?? 'createdDate',
+            state.page + 1, sort, event.sortBy ?? 'createdDate',
             title: event.keyword, category: category);
       } else {
         response = await articleRepository.fetchArticle(
@@ -139,9 +140,20 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
       final ResponseModel response =
           await articleRepository.readArticle(event.id);
       if (response.code == 200) {
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "success-read-tips", articleModel: response.data);
+        if (event.isFromTips) {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              type: "success-read-tips",
+              articleModel: response.data);
+        } else {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              type: "success-read-article",
+              articleModel: response.data);
+        }
       } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, articleModel: null);
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure, articleModel: null);
       }
     } on ArticleErrorException catch (e) {
       print(e);

@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
+import '../../common/constants/regex_constants.dart';
 import '../../common/services/auth_service.dart';
 import '../../utils/string_constans.dart';
 import '../signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
@@ -35,6 +36,7 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
   bool _isHiddenCurrentPassword = true;
   bool _isHiddenNewPassword = true;
   bool _isHiddenConfirmNewPassword = true;
+  String? passwordText;
 
   @override
   void dispose() {
@@ -168,6 +170,9 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                               children: [
                                 TextField(
                                   onChanged: (value) {
+                                    setState(() {
+                                      passwordText = value;
+                                    });
                                     Injector.resolve<ChangePasswordBloc>()
                                         .add(ChangeNewPasswordChanged(value));
                                   },
@@ -203,28 +208,90 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                                     ),
                                   ),
                                 ),
-                                state.newPassword.invalid
-                                    ? Container(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: const [
-                                            Text(
-                                              StringConstant.alertPassword1,
-                                              style:
-                                                  TextStyle(color: Colors.red),
-                                            ),
-                                            Text(StringConstant.alertPassword2,
-                                                style: TextStyle(
-                                                    color: Colors.red)),
-                                            Text(StringConstant.alertPassword3,
-                                                style: TextStyle(
-                                                    color: Colors.red))
-                                          ],
-                                        ),
-                                      )
-                                    : Container()
                               ],
+                            ),
+                            Material(
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.w)),
+                              child: Container(
+                                padding: EdgeInsets.all(16.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4.w),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Builder(
+                                          builder: (context) {
+                                            // if(RegExp(RegexConstants.validPasswordlRegex).hasMatch(passwordText ?? "")) {
+                                            if ((passwordText?.length ?? 0) >=
+                                                6) {
+                                              return Icon(
+                                                Icons.check_circle_rounded,
+                                                color: EpregnancyColors.primer,
+                                                size: 14.sp,
+                                              );
+                                            } else {
+                                              return Icon(
+                                                Icons.check_circle_rounded,
+                                                color: EpregnancyColors.grey,
+                                                size: 14.sp,
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: 8.w,
+                                        ),
+                                        Text(
+                                          "Minimal 6 karakter dan maksimal 128 karakter",
+                                          style: TextStyle(
+                                              fontSize: 11.sp,
+                                              fontWeight: FontWeight.w300),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Builder(builder: (context) {
+                                          if (RegExp(RegexConstants
+                                              .validPasswordlRegex)
+                                              .hasMatch(passwordText ?? "")) {
+                                            return Icon(
+                                              Icons.check_circle_rounded,
+                                              color: EpregnancyColors.primer,
+                                              size: 14.sp,
+                                            );
+                                          } else {
+                                            return Icon(
+                                              Icons.check_circle_rounded,
+                                              color: EpregnancyColors.grey,
+                                              size: 14.sp,
+                                            );
+                                          }
+                                        }),
+                                        SizedBox(
+                                          width: 8.w,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                              "Setidaknya memiliki 1 huruf dan 1 angka ",
+                                              style: TextStyle(
+                                                  fontSize: 11.sp,
+                                                  fontWeight: FontWeight.w300)),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
                             SizedBox(height: 20),
                             Text(

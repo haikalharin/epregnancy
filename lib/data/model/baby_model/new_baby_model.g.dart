@@ -15,8 +15,8 @@ _$_NewBabyModel _$$_NewBabyModelFromJson(Map<String, dynamic> json) =>
       illustrationImage: json['illustration_image'] as String?,
       sizeIllustrationImage: json['size_illustration_image'] as String?,
       sizeDescription: json['size_description'] as String?,
-      length: json['length'] as int?,
-      weight: json['weight'] as int?,
+      length: (json['length'] as num?)?.toDouble(),
+      weight: (json['weight'] as num?)?.toDouble(),
       growthDescription: json['growth_description'] as String?,
       symptomDescription: json['symptom_description'] as String?,
     );

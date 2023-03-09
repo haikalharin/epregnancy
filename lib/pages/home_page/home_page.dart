@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final tooltipController = JustTheController();
   final PublishSubject<bool> _psTriggerTooltip = PublishSubject();
   final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
-  GlobalKey<LiquidPullToRefreshState>();
+      GlobalKey<LiquidPullToRefreshState>();
 
   Future<void> _handleRefresh() async {
     if (F.appFlavor == Flavor.DEVELOPMENT) {
@@ -87,7 +87,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     start();
     super.initState();
   }
-
 
   void getHospitalFromLocal() async {
     HospitalModel _hospital = await AppSharedPreference.getHospital();
@@ -105,14 +104,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     FirebaseMessaging.instance.subscribeToTopic("topics/all");
   }
 
-
   @override
   void initState() {
     if (F.appFlavor == Flavor.DEVELOPMENT) {
       // subscribeFcmTopic();
     }
-
-    Countly.recordView("loginPage");
     start();
     super.initState();
   }
@@ -166,593 +162,594 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     ToastContext().init(context);
     return InkWell(
-        child:Scaffold(
-            backgroundColor: EpregnancyColors.white,
-            floatingActionButton: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: ClipRRect(
-                key: ValueKey<bool>(isExpanded),
-                borderRadius: BorderRadius.circular(isExpanded ? 10.w : 10.w),
-                child: FloatingActionButton.extended(
-                  backgroundColor: EpregnancyColors.primer,
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(RouteName.chooseTypeEvent);
-                  },
-                  icon: isExpanded ? FaIcon(FontAwesomeIcons.plus) : null,
-                  label: isExpanded
-                      ? const Text("Tambah Jadwal")
-                      : const FaIcon(FontAwesomeIcons.plus),
-                  shape: RoundedRectangleBorder(),
-                ),
-              ),
+      child: Scaffold(
+        backgroundColor: EpregnancyColors.white,
+        floatingActionButton: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: ClipRRect(
+            key: ValueKey<bool>(isExpanded),
+            borderRadius: BorderRadius.circular(isExpanded ? 10.w : 10.w),
+            child: FloatingActionButton.extended(
+              backgroundColor: EpregnancyColors.primer,
+              onPressed: () {
+                Navigator.of(context).pushNamed(RouteName.chooseTypeEvent);
+              },
+              icon: isExpanded ? FaIcon(FontAwesomeIcons.plus) : null,
+              label: isExpanded
+                  ? const Text("Tambah Jadwal")
+                  : const FaIcon(FontAwesomeIcons.plus),
+              shape: RoundedRectangleBorder(),
             ),
-            body:  BlocListener<HomePageBloc, HomePageState>(
-              listener: (context, state) {
-                if (state.submitStatus == FormzStatus.submissionSuccess) {
-                  if (state.user?.babies?.length != 0 &&
-                      state.tipe == "get-info-done") {
-                    if (state.user?.babies?.first.name == "" ||
-                        state.user?.babies?.first.name == null) {
-                      setState(() {
-                        showEditBaby = true;
-                      });
-                    }
-                  }
-                } else if (state.submitStatus == FormzStatus.submissionFailure &&
-                    state.isNotHaveSession == true) {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => const LoginPage(
+          ),
+        ),
+        body: BlocListener<HomePageBloc, HomePageState>(
+          listener: (context, state) {
+            if (state.submitStatus == FormzStatus.submissionSuccess) {
+              if (state.user?.babies?.length != 0 &&
+                  state.tipe == "get-info-done") {
+                if (state.user?.babies?.first.name == "" ||
+                    state.user?.babies?.first.name == null) {
+                  setState(() {
+                    showEditBaby = true;
+                  });
+                }
+              }
+            } else if (state.submitStatus == FormzStatus.submissionFailure &&
+                state.isNotHaveSession == true) {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const LoginPage(
                             tokenExpired: true,
                           )),
-                          (route) => false);
-                }
-              },
-              child: BlocBuilder<HomePageBloc, HomePageState>(
-                builder: (context, state) {
-                  String? name = state.user != null ? state.user!.name : "";
-                  return  Container(
-                    color: EpregnancyColors.white,
-                    child: LiquidPullToRefresh(
-                      color: EpregnancyColors.primer,
-                      key: _refreshIndicatorKey,
-                      onRefresh: _handleRefresh,
-                      showChildOpacityTransition: false,
-                      child: ListView(
-                        controller: _scrollControler,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            color: EpregnancyColors.white,
-                            margin: EdgeInsets.only(bottom: 12, top: 12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                      left: 16.w,
-                                      right: 50,
-                                    ),
-                                    child: Text("Halo, $name",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: EpregnancyColors.primer),
-                                        textAlign: TextAlign.start),
-                                  ),
+                  (route) => false);
+            }
+          },
+          child: BlocBuilder<HomePageBloc, HomePageState>(
+            builder: (context, state) {
+              String? name = state.user != null ? state.user!.name : "";
+              return Container(
+                color: EpregnancyColors.white,
+                child: LiquidPullToRefresh(
+                  color: EpregnancyColors.primer,
+                  key: _refreshIndicatorKey,
+                  onRefresh: _handleRefresh,
+                  showChildOpacityTransition: false,
+                  child: ListView(
+                    controller: _scrollControler,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: EpregnancyColors.white,
+                        margin: EdgeInsets.only(bottom: 12, top: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  left: 16.w,
+                                  right: 50,
                                 ),
-                                // app bar action section
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2.5,
-                                  // alignment: Alignment.centerRight,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                            left: 0.w, right: 10.w),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                if (_hospitalModel?.name == '') {
-                                                  Navigator.pushNamed(
-                                                          context,
-                                                          RouteName
-                                                              .locationSelect)
-                                                      .then((value) {
-                                                    if (value != null) {
-                                                      setState(() {
-                                                        _hospitalModel = value
-                                                            as HospitalModel?;
-                                                      });
-                                                    }
-                                                  });
-                                                } else {
-                                                  // todo implement barcode scanner
-                                                  Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const QrScanner()))
-                                                      .then((value) {
-                                                    // todo handel pin checkin from barcode
-                                                    print("scan result : $value");
-                                                  });
-                                                  // showModalBottomSheet(
-                                                  //     context: context,
-                                                  //     isScrollControlled: false,
-                                                  //     builder: (context) {
-                                                  //       return PinCheckInPage();
-                                                  //     });
-                                                }
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal: 16),
-                                                child: Icon(
-                                                  Icons.qr_code,
-                                                  color: EpregnancyColors.primer,
-                                                  size: 23.w,
-                                                ),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                Toast.show(
-                                                    "Fitur ini akan segera hadir");
-                                                // Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                                //   if (value != null) {
-                                                //     setState(() {
-                                                //       _hospitalModel = value
-                                                //           as HospitalModel?;
-                                                //     });
-                                                //   }
-                                                // });
-                                              },
-                                              child: Container(
-                                                child: Icon(
-                                                  Icons.notifications,
-                                                  color: EpregnancyColors.primer,
-                                                  size: 23.w,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10.w,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                // _hospitalModel?.name != ""
-                                //     ? Expanded(
-                                //         child: SizedBox(
-                                //           width: MediaQuery.of(context)
-                                //                   .size
-                                //                   .width /
-                                //               2.5,
-                                //           // alignment: Alignment.centerRight,
-                                //           child: Align(
-                                //             alignment:
-                                //                 Alignment.centerRight,
-                                //             child: InkWell(
-                                //               onTap: () {
-                                //                 // todo puskesmas select
-                                //                 if (_hospitalModel
-                                //                         ?.name ==
-                                //                     "") {
-                                //                   Navigator.pushNamed(
-                                //                           context,
-                                //                           RouteName
-                                //                               .locationSelect)
-                                //                       .then((value) {
-                                //                     if (value != null) {
-                                //                       setState(() {
-                                //                         _hospitalModel =
-                                //                             value
-                                //                                 as HospitalModel?;
-                                //                       });
-                                //                     }
-                                //                   });
-                                //                 }
-                                //               },
-                                //               child: Align(
-                                //                 alignment: Alignment
-                                //                     .centerRight,
-                                //                 child: Container(
-                                //                   margin:
-                                //                       EdgeInsets.only(
-                                //                           left: 0.w,
-                                //                           right: 10.w,
-                                //                           bottom: 20),
-                                //                   child: Row(
-                                //                     mainAxisSize:
-                                //                         MainAxisSize
-                                //                             .max,
-                                //                     crossAxisAlignment:
-                                //                         CrossAxisAlignment
-                                //                             .end,
-                                //                     mainAxisAlignment:
-                                //                         MainAxisAlignment
-                                //                             .end,
-                                //                     children: [
-                                //                       SvgPicture.asset(
-                                //                           'assets/icLocation.svg'),
-                                //                       SizedBox(
-                                //                         width: 10.w,
-                                //                       ),
-                                //                       Expanded(
-                                //                         child: Text(
-                                //                           _hospitalModel
-                                //                                   ?.name ??
-                                //                               'Pilih Puskesmas',
-                                //                           style: TextStyle(
-                                //                               color: Colors
-                                //                                   .black),
-                                //                           // textAlign: TextAlign.right,
-                                //                           overflow:
-                                //                               TextOverflow
-                                //                                   .visible,
-                                //                         ),
-                                //                       ),
-                                //                     ],
-                                //                   ),
-                                //                 ),
-                                //               ),
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       )
-                                //     : SizedBox(
-                                //         width: MediaQuery.of(context)
-                                //                 .size
-                                //                 .width /
-                                //             2.5,
-                                //         // alignment: Alignment.centerRight,
-                                //         child: Align(
-                                //           alignment:
-                                //               Alignment.centerRight,
-                                //           child: InkWell(
-                                //             onTap: () {
-                                //               Navigator.pushNamed(
-                                //                       context,
-                                //                       RouteName
-                                //                           .locationSelect)
-                                //                   .then((value) {
-                                //                 if (value != null) {
-                                //                   setState(() {
-                                //                     _hospitalModel = value
-                                //                         as HospitalModel?;
-                                //                   });
-                                //                 }
-                                //               });
-                                //             },
-                                //             child: Align(
-                                //               alignment:
-                                //                   Alignment.centerRight,
-                                //               child: Container(
-                                //                 margin: EdgeInsets.only(
-                                //                     left: 0.w,
-                                //                     right: 10.w,
-                                //                     bottom: 20),
-                                //                 child: Row(
-                                //                   mainAxisSize:
-                                //                       MainAxisSize.max,
-                                //                   crossAxisAlignment:
-                                //                       CrossAxisAlignment
-                                //                           .end,
-                                //                   mainAxisAlignment:
-                                //                       MainAxisAlignment
-                                //                           .end,
-                                //                   children: [
-                                //                     SvgPicture.asset(
-                                //                         'assets/icLocation.svg'),
-                                //                     SizedBox(
-                                //                       width: 10.w,
-                                //                     ),
-                                //                     Expanded(
-                                //                       child: Text(
-                                //                         'Pilih Puskesmas',
-                                //                         style: TextStyle(
-                                //                             color: Colors
-                                //                                 .black),
-                                //                         // textAlign: TextAlign.right,
-                                //                         overflow:
-                                //                             TextOverflow
-                                //                                 .visible,
-                                //                       ),
-                                //                     ),
-                                //                   ],
-                                //                 ),
-                                //               ),
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       )
-                              ],
+                                child: Text("Halo, $name",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: EpregnancyColors.primer),
+                                    textAlign: TextAlign.start),
+                              ),
                             ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 20),
-                            decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [
-                                  EpregnancyColors.primer,
-                                  Colors.white,
-                                  Colors.white
-                                ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter)),
-                            child: Column(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Visibility(
-                                      visible: showEditBaby,
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                              RouteName.surveyPageBaby,
-                                              arguments: {
-                                                "is_edit": true,
-                                                "edit_name": true
-                                              }).then((value) {
-                                            print("sukses edit baby name");
-                                            Injector.resolve<HomePageBloc>()
-                                                .add(HomeFetchDataEvent());
-                                          });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 10.h),
-                                          padding: EdgeInsets.only(
-                                              top: 16.w,
-                                              bottom: 16.w,
-                                              left: 12.w,
-                                              right: 12.w),
-                                          decoration: BoxDecoration(
-                                              color: EpregnancyColors.greyBlue,
-                                              borderRadius:
-                                                  BorderRadius.circular(8.w)),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                  "assets/icStroller.svg"),
-                                              SizedBox(
-                                                width: 10.w,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Profil Bayi",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  EpregnancyColors
-                                                                      .blueDark,
-                                                              fontWeight:
-                                                                  FontWeight.w700,
-                                                              fontSize: 12.sp),
-                                                        ),
-                                                        InkWell(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                showEditBaby =
-                                                                    false;
-                                                              });
-                                                            },
-                                                            child: Icon(
-                                                                Icons.close,
-                                                                color:
-                                                                    EpregnancyColors
-                                                                        .primer)),
-                                                      ],
-                                                    ),
-                                                    Text(
-                                                      "Anda bisa mengisi nama bayi di profil\ndengan klik spanduk ini",
-                                                      style: TextStyle(
-                                                          color: EpregnancyColors
-                                                              .blueDark,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 12.sp),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
+                            // app bar action section
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2.5,
+                              // alignment: Alignment.centerRight,
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Container(
+                                    margin:
+                                        EdgeInsets.only(left: 0.w, right: 10.w),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            if (_hospitalModel?.name == '') {
+                                              Navigator.pushNamed(context,
+                                                      RouteName.locationSelect)
+                                                  .then((value) {
+                                                if (value != null) {
+                                                  setState(() {
+                                                    _hospitalModel =
+                                                        value as HospitalModel?;
+                                                  });
+                                                }
+                                              });
+                                            } else {
+                                              // todo implement barcode scanner
+                                              Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const QrScanner()))
+                                                  .then((value) {
+                                                // todo handel pin checkin from barcode
+                                                print("scan result : $value");
+                                              });
+                                              // showModalBottomSheet(
+                                              //     context: context,
+                                              //     isScrollControlled: false,
+                                              //     builder: (context) {
+                                              //       return PinCheckInPage();
+                                              //     });
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            child: Icon(
+                                              Icons.qr_code,
+                                              color: EpregnancyColors.primer,
+                                              size: 23.w,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    state.user?.isPregnant == true &&
-                                            state.user?.babies?.length != 0
-                                        ? BabySectionWidget(
-                                            state: state,
-                                            one: widget.one,
-                                            tooltipController: tooltipController,
-                                            psTriggerTooltip: _psTriggerTooltip)
-                                        : Container(),
-                                  ],
-                                ),
-                              ])),
-                      // update baby section
-                      // checkin section
-
-                      state.showGuide == true
-                          ? Showcase(
-                              key: widget.two ?? GlobalKey(),
-                              title: 'Tips',
-                              description: 'Dapatkan info dan tips kehamilan',
-                              child: Container(
-                                color: EpregnancyColors.primerSoft,
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 16.h),
-                                  padding: EdgeInsets.all(16.w),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: EpregnancyColors.white),
-                                      borderRadius: BorderRadius.circular(8.w)),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        height: 20,
-                                        width: 20,
-                                        // margin: EdgeInsets.only(left: 50, right: 50),
-                                        child: SvgPicture.asset(
-                                          'assets/ic_tips.svg',
-                                          height: 20,
-                                          width: 20,
+                                        InkWell(
+                                          onTap: () {
+                                            Toast.show(
+                                                "Fitur ini akan segera hadir");
+                                            // Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                            //   if (value != null) {
+                                            //     setState(() {
+                                            //       _hospitalModel = value
+                                            //           as HospitalModel?;
+                                            //     });
+                                            //   }
+                                            // });
+                                          },
+                                          child: Container(
+                                            child: Icon(
+                                              Icons.notifications,
+                                              color: EpregnancyColors.primer,
+                                              size: 23.w,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Text(
-                                        state.simpleTipResponse?.tips ?? "",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      SizedBox(
-                                        height: 16.h,
-                                      ),
-                                      BlocListener<ArticlePageBloc, ArticlePageState>(
-                                        listener: (context, state){
-                                          if(state.articleModel != null && state.submitStatus == FormzStatus.submissionSuccess ){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailPage(
-                                              article: state.articleModel,
-                                            )));
-                                          }
-                                        },
-                                        child: Align(
-                                          alignment: Alignment.bottomRight,
-                                          child: InkWell(
-                                            onTap: (){
-                                              Injector.resolve<ArticlePageBloc>().add(
-                                                  ArticleReadEvent(state.simpleTipResponse?.articleId ?? ""));
-                                            },
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.end,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                            // _hospitalModel?.name != ""
+                            //     ? Expanded(
+                            //         child: SizedBox(
+                            //           width: MediaQuery.of(context)
+                            //                   .size
+                            //                   .width /
+                            //               2.5,
+                            //           // alignment: Alignment.centerRight,
+                            //           child: Align(
+                            //             alignment:
+                            //                 Alignment.centerRight,
+                            //             child: InkWell(
+                            //               onTap: () {
+                            //                 // todo puskesmas select
+                            //                 if (_hospitalModel
+                            //                         ?.name ==
+                            //                     "") {
+                            //                   Navigator.pushNamed(
+                            //                           context,
+                            //                           RouteName
+                            //                               .locationSelect)
+                            //                       .then((value) {
+                            //                     if (value != null) {
+                            //                       setState(() {
+                            //                         _hospitalModel =
+                            //                             value
+                            //                                 as HospitalModel?;
+                            //                       });
+                            //                     }
+                            //                   });
+                            //                 }
+                            //               },
+                            //               child: Align(
+                            //                 alignment: Alignment
+                            //                     .centerRight,
+                            //                 child: Container(
+                            //                   margin:
+                            //                       EdgeInsets.only(
+                            //                           left: 0.w,
+                            //                           right: 10.w,
+                            //                           bottom: 20),
+                            //                   child: Row(
+                            //                     mainAxisSize:
+                            //                         MainAxisSize
+                            //                             .max,
+                            //                     crossAxisAlignment:
+                            //                         CrossAxisAlignment
+                            //                             .end,
+                            //                     mainAxisAlignment:
+                            //                         MainAxisAlignment
+                            //                             .end,
+                            //                     children: [
+                            //                       SvgPicture.asset(
+                            //                           'assets/icLocation.svg'),
+                            //                       SizedBox(
+                            //                         width: 10.w,
+                            //                       ),
+                            //                       Expanded(
+                            //                         child: Text(
+                            //                           _hospitalModel
+                            //                                   ?.name ??
+                            //                               'Pilih Puskesmas',
+                            //                           style: TextStyle(
+                            //                               color: Colors
+                            //                                   .black),
+                            //                           // textAlign: TextAlign.right,
+                            //                           overflow:
+                            //                               TextOverflow
+                            //                                   .visible,
+                            //                         ),
+                            //                       ),
+                            //                     ],
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       )
+                            //     : SizedBox(
+                            //         width: MediaQuery.of(context)
+                            //                 .size
+                            //                 .width /
+                            //             2.5,
+                            //         // alignment: Alignment.centerRight,
+                            //         child: Align(
+                            //           alignment:
+                            //               Alignment.centerRight,
+                            //           child: InkWell(
+                            //             onTap: () {
+                            //               Navigator.pushNamed(
+                            //                       context,
+                            //                       RouteName
+                            //                           .locationSelect)
+                            //                   .then((value) {
+                            //                 if (value != null) {
+                            //                   setState(() {
+                            //                     _hospitalModel = value
+                            //                         as HospitalModel?;
+                            //                   });
+                            //                 }
+                            //               });
+                            //             },
+                            //             child: Align(
+                            //               alignment:
+                            //                   Alignment.centerRight,
+                            //               child: Container(
+                            //                 margin: EdgeInsets.only(
+                            //                     left: 0.w,
+                            //                     right: 10.w,
+                            //                     bottom: 20),
+                            //                 child: Row(
+                            //                   mainAxisSize:
+                            //                       MainAxisSize.max,
+                            //                   crossAxisAlignment:
+                            //                       CrossAxisAlignment
+                            //                           .end,
+                            //                   mainAxisAlignment:
+                            //                       MainAxisAlignment
+                            //                           .end,
+                            //                   children: [
+                            //                     SvgPicture.asset(
+                            //                         'assets/icLocation.svg'),
+                            //                     SizedBox(
+                            //                       width: 10.w,
+                            //                     ),
+                            //                     Expanded(
+                            //                       child: Text(
+                            //                         'Pilih Puskesmas',
+                            //                         style: TextStyle(
+                            //                             color: Colors
+                            //                                 .black),
+                            //                         // textAlign: TextAlign.right,
+                            //                         overflow:
+                            //                             TextOverflow
+                            //                                 .visible,
+                            //                       ),
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top: 20),
+                        decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: [
+                              EpregnancyColors.primer,
+                              Colors.white,
+                              Colors.white
+                            ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter)),
+                        child: Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Visibility(
+                                  visible: showEditBaby,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                          RouteName.surveyPageBaby,
+                                          arguments: {
+                                            "is_edit": true,
+                                            "edit_name": true
+                                          }).then((value) {
+                                        print("sukses edit baby name");
+                                        Injector.resolve<HomePageBloc>()
+                                            .add(HomeFetchDataEvent());
+                                      });
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10.h),
+                                      padding: EdgeInsets.only(
+                                          top: 16.w,
+                                          bottom: 16.w,
+                                          left: 12.w,
+                                          right: 12.w),
+                                      decoration: BoxDecoration(
+                                          color: EpregnancyColors.greyBlue,
+                                          borderRadius:
+                                              BorderRadius.circular(8.w)),
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                              "assets/icStroller.svg"),
+                                          SizedBox(
+                                            width: 10.w,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Text("Baca Artikel", style: TextStyle(color: EpregnancyColors.primer, fontSize: 12.sp, fontWeight: FontWeight.w700),),
-                                                SizedBox(width: 10.w,),
-                                                Icon(Icons.arrow_forward_ios_rounded, color: EpregnancyColors.primer, size: 14.w,)
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Profil Bayi",
+                                                      style: TextStyle(
+                                                          color:
+                                                              EpregnancyColors
+                                                                  .blueDark,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 12.sp),
+                                                    ),
+                                                    InkWell(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            showEditBaby =
+                                                                false;
+                                                          });
+                                                        },
+                                                        child: Icon(Icons.close,
+                                                            color:
+                                                                EpregnancyColors
+                                                                    .primer)),
+                                                  ],
+                                                ),
+                                                Text(
+                                                  "Anda bisa mengisi nama bayi di profil\ndengan klik spanduk ini",
+                                                  style: TextStyle(
+                                                      color: EpregnancyColors
+                                                          .blueDark,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 12.sp),
+                                                )
                                               ],
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),)
-                          : Container(
-                              color: EpregnancyColors.primerSoft,
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 16.h),
-                                padding: EdgeInsets.all(16.w),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: EpregnancyColors.white),
-                                    borderRadius: BorderRadius.circular(8.w)),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      // margin: EdgeInsets.only(left: 50, right: 50),
-                                      child: SvgPicture.asset(
-                                        'assets/ic_tips.svg',
-                                        height: 20,
-                                        width: 20,
+                                state.user?.isPregnant == true &&
+                                        state.user?.babies?.length != 0
+                                    ? BabySectionWidget(
+                                        state: state,
+                                        one: widget.one,
+                                        tooltipController: tooltipController,
+                                        psTriggerTooltip: _psTriggerTooltip)
+                                    : Container(),
+                              ],
+                            ),
+                            state.showGuide == true
+                                ? Showcase(
+                                    key: widget.two ?? GlobalKey(),
+                                    title: 'Tips',
+                                    description:
+                                        'Dapatkan info dan tips kehamilan',
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 16.h),
+                                      padding: EdgeInsets.all(16.w),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: EpregnancyColors.white),
+                                          borderRadius:
+                                              BorderRadius.circular(8.w)),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            height: 20,
+                                            width: 20,
+                                            // margin: EdgeInsets.only(left: 50, right: 50),
+                                            child: SvgPicture.asset(
+                                              'assets/ic_tips.svg',
+                                              height: 20,
+                                              width: 20,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 4.h,
+                                          ),
+                                          Text(
+                                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque laoreet pulvinar mi sit amet tincidunt. Sed maximus, orci sed euismod eleifend.  Sed maximus, orci sed euismod eleifend",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 11.sp,
+                                                fontWeight: FontWeight.w400),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 16.h,
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-
-                                    Text(
-                                      state.simpleTipResponse?.tips ?? "",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w500),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    SizedBox(
-                                      height: 16.h,
-                                    ),
-                                    BlocListener<ArticlePageBloc, ArticlePageState>(
-                                        listener: (context, state){
-                                          if(state.articleModel != null && state.submitStatus == FormzStatus.submissionSuccess ){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailPage(
-                                              article: state.articleModel,
-                                            )));
-                                          }
-                                        },
-                                      child: Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: InkWell(
-                                          onTap: (){
-                                            Injector.resolve<ArticlePageBloc>().add(
-                                                ArticleReadEvent(state.simpleTipResponse?.articleId ?? ""));
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            children: [
-                                              Text("Baca Artikel", style: TextStyle(color: EpregnancyColors.primer, fontSize: 12.sp, fontWeight: FontWeight.w700),),
-                                              SizedBox(width: 10.w,),
-                                              Icon(Icons.arrow_forward_ios_rounded, color: EpregnancyColors.primer, size: 14.w,)
-                                            ],
+                                    ))
+                                : Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 16.h),
+                                    padding: EdgeInsets.all(16.w),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: EpregnancyColors.white),
+                                        borderRadius:
+                                            BorderRadius.circular(8.w)),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: 20,
+                                          width: 20,
+                                          // margin: EdgeInsets.only(left: 50, right: 50),
+                                          child: SvgPicture.asset(
+                                            'assets/ic_tips.svg',
+                                            height: 20,
+                                            width: 20,
                                           ),
                                         ),
-                                      ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        // todo simple tip
+                                        Text(
+                                          state.simpleTipResponse?.tips ?? "",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          height: 16.h,
+                                        ),
+                                        BlocListener<ArticlePageBloc,
+                                            ArticlePageState>(
+                                          listener: (context, state) {
+                                            if (state.articleModel != null &&
+                                                state.submitStatus ==
+                                                    FormzStatus
+                                                        .submissionSuccess &&
+                                                state.type ==
+                                                    'success-read-tips') {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ArticleDetailPage(
+                                                            article: state
+                                                                .articleModel,
+                                                          )));
+                                            }
+                                          },
+                                          child: state.simpleTipResponse
+                                                      ?.articleId !=
+                                                  null
+                                              ? Align(
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Injector.resolve<
+                                                              ArticlePageBloc>()
+                                                          .add(ArticleReadEvent(
+                                                              state.simpleTipResponse
+                                                                      ?.articleId ??
+                                                                  "",
+                                                              isFromTips:
+                                                                  true));
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          "Baca Artikel",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  EpregnancyColors
+                                                                      .primer,
+                                                              fontSize: 12.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10.w,
+                                                        ),
+                                                        Icon(
+                                                          Icons
+                                                              .arrow_forward_ios_rounded,
+                                                          color:
+                                                              EpregnancyColors
+                                                                  .primer,
+                                                          size: 14.w,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                      Container(
-                          // height: 200,
-                          color: Colors.white,
-                          child: Container(
-                            padding: EdgeInsets.only(top: 10, bottom: 20),
-                            child: Column(
+                                  ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   padding: EdgeInsets.only(
-                                      left: 20, right: 20, bottom: 20),
+                                      left: 20, right: 20, bottom: 8),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -813,53 +810,61 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 ),
                               ],
                             ),
-                          )),
-                      state.showGuide == true
-                          ? Showcase(
-                              key: widget.three ?? GlobalKey(),
-                              title: 'Kumpulkan Poin',
-                              description:
-                                  'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, RouteName.poinPage,
-                                      arguments: state.totalPointsEarned ?? 0);
-                                },
-                                child: PoinCardSection(
-                                    point: state.totalPointsEarned ?? 0),
-                              ))
-                          : InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(context, RouteName.poinPage,
-                                    arguments: state.totalPointsEarned ?? 0);
-                              },
-                              child: PoinCardSection(
-                                  point: state.totalPointsEarned ?? 0)),
-                      // Games Section
-                      const GameCardSection(),
+                            state.showGuide == true
+                                ? Showcase(
+                                    key: widget.three ?? GlobalKey(),
+                                    title: 'Kumpulkan Poin',
+                                    description:
+                                        'Raih kesempatan menukarkan Poin untuk hadiah menarik dengan check-in setiap harinya',
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, RouteName.poinPage,
+                                            arguments:
+                                                state.totalPointsEarned ?? 0);
+                                      },
+                                      child: PoinCardSection(
+                                          point: state.totalPointsEarned ?? 0),
+                                    ))
+                                : InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, RouteName.poinPage,
+                                          arguments:
+                                              state.totalPointsEarned ?? 0);
+                                    },
+                                    child: PoinCardSection(
+                                        point: state.totalPointsEarned ?? 0)),
+                            // Games Section
+                            const GameCardSection(),
 
-                      Container(
-                          color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  height:
-                                      MediaQuery.of(context).size.height - 200,
-                                  child: TabBarEventPage(
-                                    tabController: _tabController,
-                                    dateTime: state.eventDate,
-                                    isMidwife: false,
-                                  )),
-                            ],
-                          )),
+                            Container(
+                                color: Colors.white,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        height:
+                                            MediaQuery.of(context).size.height -
+                                                200,
+                                        child: TabBarEventPage(
+                                          tabController: _tabController,
+                                          dateTime: state.eventDate,
+                                          isMidwife: false,
+                                        )),
+                                  ],
+                                )),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ));
-              },
-            ),
-          )),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }
