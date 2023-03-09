@@ -515,7 +515,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                     height: 5.h,
                                   ),
                                   Text(
-                                    'App Versi 1.0.3',
+                                    'App Versi 1.0.0',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,

@@ -113,7 +113,7 @@ class ProfileNakesPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('App Versi 1.0.3', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),),
+            Text('App Versi 1.0.0', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),),
             InkWell(
               onTap: ()async {
                 //
