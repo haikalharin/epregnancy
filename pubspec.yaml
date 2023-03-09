@@ -24,7 +24,8 @@ version: 1.0.2-stg+6
 
 #prod
 #version: 1.0.3+6
-
+#ios
+#version: 1.0.0+2
 #prod for test
 #version: 1.0.1+3
 
