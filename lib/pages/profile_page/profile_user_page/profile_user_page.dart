@@ -419,7 +419,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   Text("KOMUNITAZ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 10.sp),),
                                   SizedBox(height: 5.h,),
                                   Text(
-                                    'App Versi 1.0.3',
+                                    'App Versi 1.0.0',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,
