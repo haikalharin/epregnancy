@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../utils/epragnancy_color.dart';
@@ -45,7 +46,14 @@ class BabySectionWidget extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.w),
-                  color: EpregnancyColors.white),
+                  color: EpregnancyColors.white,
+                  boxShadow: [
+              BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            )]),
               margin: EdgeInsets.only(left: 20, right: 20),
               child: Container(
                 margin: EdgeInsets.only(left: 16, right: 8),
@@ -140,13 +148,11 @@ class BabySectionWidget extends StatelessWidget {
                                   child: Container(
                                     margin: EdgeInsets.only(top: 16),
                                     child: Center(
-                                      child: FadeInImage(
-                                        placeholder: AssetImage(
-                                            'assets/ic_no_photo.png'),
-                                        image: NetworkImage(
-                                            ImageUtils.imageNetwork(
-                                                state.baby!.illustrationImage ??
-                                                    "")),
+                                      child: FadeInImage.memoryNetwork(
+                                        placeholder:kTransparentImage,
+                                        image:  ImageUtils.imageNetwork(
+                                            state.baby!.illustrationImage ??
+                                                ""),
                                         fit: BoxFit.fill,
                                         imageErrorBuilder:
                                             (context, error, stackTrace) {
@@ -231,9 +237,16 @@ class BabySectionWidget extends StatelessWidget {
             ),
           )
         : Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.w),
-                color: EpregnancyColors.white),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.w),
+          color: EpregnancyColors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            )]),
             margin: EdgeInsets.only(left: 20, right: 20),
             child: Container(
               margin: EdgeInsets.only(left: 16, right: 8),
@@ -327,13 +340,11 @@ class BabySectionWidget extends StatelessWidget {
                                 child: Container(
                                   margin: EdgeInsets.only(top: 16),
                                   child: Center(
-                                    child: FadeInImage(
-                                      placeholder:
-                                          AssetImage('assets/ic_no_photo.png'),
-                                      image: NetworkImage(
-                                          ImageUtils.imageNetwork(
-                                              state.baby!.illustrationImage ??
-                                                  "")),
+                                    child:  FadeInImage.memoryNetwork(
+                                      placeholder:kTransparentImage,
+                                      image:   ImageUtils.imageNetwork(
+                                          state.baby!.illustrationImage ??
+                                              ""),
                                       fit: BoxFit.fill,
                                       imageErrorBuilder:
                                           (context, error, stackTrace) {

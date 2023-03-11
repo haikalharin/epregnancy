@@ -182,10 +182,14 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   stream: _streamSurvey.stream,
                   builder: (context, snapshot) {
                     return snapshot.data == true? Container(
-                      color: EpregnancyColors.primerSoft,
                       child: Stack(
                         children: [
                           Container(
+                            decoration: BoxDecoration(
+                                color: EpregnancyColors.primerSoft,
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/bg_survey_baby.png'),fit: BoxFit.cover)),
                             child: ListView(
                               children: [
                                 state.page == 2
@@ -197,6 +201,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                     isEdit: widget.isEdit,
                                     baby: state.dataBaby ?? const NewBabyModel()),
                                 Container(
+                                  margin: EdgeInsets.only(top: 200),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
@@ -308,9 +313,11 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                     ],
                                   ),
                                 ),
+
                               ],
                             ),
                           ),
+
                           _Loading(),
                         ],
                       ),

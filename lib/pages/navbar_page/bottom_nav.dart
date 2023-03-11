@@ -111,13 +111,13 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
       myContext = context;
       return WillPopScope(
         onWillPop: () async {
-          // bool? result = await _showMyDialog(context);
-          // result ??= false;
-          // return result;
+
           if (widget.role == StringConstant.midwife) {
             return true;
           } else {
-            return false;
+            bool? result = await _showMyDialog(context);
+            result ??= false;
+            return result;
           }
         },
         child: widget.role == StringConstant.midwife
