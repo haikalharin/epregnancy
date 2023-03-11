@@ -45,6 +45,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                               color: Colors.black,
                               fontWeight: FontWeight.w700,
                               fontSize: 22.sp),
+                          textAlign: TextAlign.center,
                         ),
                   state.isGetPoint == true
                       ? Text(
@@ -60,6 +61,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                               color: Colors.black,
                               fontWeight: FontWeight.w700,
                               fontSize: 22.sp),
+                          textAlign: TextAlign.center,
                         ),
                 ],
               ),

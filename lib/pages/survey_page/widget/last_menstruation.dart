@@ -37,7 +37,7 @@ class _LastMenstruationState extends State<LastMenstruation> {
   Widget build(BuildContext context) {
     return BlocBuilder<SurveyPageBloc, SurveyPageState>(
       builder: (context, state) {
-        return Column(
+        return  Column(
           children: [
             Container(
               height: 160,
@@ -50,13 +50,12 @@ class _LastMenstruationState extends State<LastMenstruation> {
               ),
             ),
             Container(
-              color: EpregnancyColors.primerSoft,
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     margin: EdgeInsets.only(bottom: 30, top: 10),
-                    color: EpregnancyColors.primerSoft,
                     child: Center(
                       child: Container(
                         child: Column(

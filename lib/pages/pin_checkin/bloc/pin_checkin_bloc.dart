@@ -6,6 +6,7 @@ import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_info/user_info.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
+import 'package:PregnancyApp/data/model/visit_hospital_model/visit_hospital_model.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -42,9 +43,10 @@ class PinCheckInBloc extends Bloc<PinCheckInEvent, PinCheckInState> {
     try {
       HospitalModel? hospitalModel = await AppSharedPreference.getHospital();
       ResponseModel response = await userRepository.checkInWithPin(hospitalModel.id!, event.pin!);
+      VisitHospitalModel data = response.data ?? const VisitHospitalModel();
       if (response.code == 200) {
         yield state.copyWith(
-          submitStatus: FormzStatus.submissionSuccess,isGetPoint: response.data['is_get_point']);
+          submitStatus: FormzStatus.submissionSuccess,isGetPoint: data.isGetPoint);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }

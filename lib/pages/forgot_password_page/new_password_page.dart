@@ -203,7 +203,7 @@ class _NewPasswordPage extends State<NewPasswordPage> {
                                             builder: (context) {
                                               // if(RegExp(RegexConstants.validPasswordlRegex).hasMatch(passwordText ?? "")) {
                                               if ((passwordText?.length ?? 0) >=
-                                                  6) {
+                                                  6 && (passwordText?.length ?? 0) <= 128 ) {
                                                 return Icon(
                                                   Icons.check_circle_rounded,
                                                   color: EpregnancyColors.primer,
