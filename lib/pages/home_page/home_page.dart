@@ -34,6 +34,7 @@ import 'package:toast/toast.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../common/widget/primary_btn.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../env.dart';
@@ -225,17 +226,69 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  left: 16.w,
-                                  right: 50,
-                                ),
-                                child: Text("Halo, $name",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: EpregnancyColors.primer),
-                                    textAlign: TextAlign.start),
-                              ),
+                              child: state.baby != null &&
+                                      state.baby?.baby?.name != ''
+                                  ? Container(
+                                      margin: EdgeInsets.only(
+                                        left: 16.w,
+                                        right: 50,
+                                      ),
+                                      child: Text(
+                                          "Halo, ${state.baby?.baby?.name}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: EpregnancyColors.primer),
+                                          textAlign: TextAlign.start),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        print("Beri nama bayi");
+                                        Navigator.of(context).pushNamed(
+                                            RouteName.surveyPageBaby,
+                                            arguments: {
+                                              "is_edit": true,
+                                              "edit_name": true
+                                            });
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                            left: 16.w, right: 60.w),
+                                        padding: EdgeInsets.only(left: 16.w),
+                                        decoration: BoxDecoration(
+                                          color: EpregnancyColors.primer,
+                                          border: Border.all(
+                                            color: EpregnancyColors.primer,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                                child: const Text(
+                                              'Beri nama bayi',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: EpregnancyColors.white,
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 3,
+                                            )),
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                  Icons
+                                                      .arrow_forward_ios_rounded,
+                                                  size: 16,
+                                                  color: EpregnancyColors.white,
+                                                ))
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                             ),
                             // app bar action section
                             SizedBox(
@@ -606,11 +659,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               BorderRadius.circular(8.w),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.2),
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
                                               spreadRadius: 5,
                                               blurRadius: 7,
-                                              offset: Offset(0, 3), // changes position of shadow
-                                            )]),
+                                              offset: Offset(0,
+                                                  3), // changes position of shadow
+                                            )
+                                          ]),
                                       child: Column(
                                         children: [
                                           Container(
@@ -655,8 +711,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             color: Colors.grey.withOpacity(0.2),
                                             spreadRadius: 5,
                                             blurRadius: 7,
-                                            offset: Offset(0, 3), // changes position of shadow
-                                          )]),
+                                            offset: Offset(0,
+                                                3), // changes position of shadow
+                                          )
+                                        ]),
                                     child: Column(
                                       children: [
                                         Container(
