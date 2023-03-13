@@ -60,7 +60,7 @@ class SignUpQuestionnaireBloc
     final password = PasswordValidator.dirty("");
     final confirmPassword = ConfirmPasswordValidator.dirty(
         "", "");
-    return SignUpQuestionnaireState(dateValid: false, firstName: reset, secondName: reset, password: password, confirmPassword: confirmPassword);
+    return SignUpQuestionnaireState(dateValid: false, firstName: reset, secondName: reset, password: password, confirmPassword: confirmPassword, date: reset);
   }
 
   SignUpQuestionnaireState _mapSignupFirstnameChangedToState(
