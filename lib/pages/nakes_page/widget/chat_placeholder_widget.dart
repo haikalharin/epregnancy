@@ -47,8 +47,7 @@ class ChatPlaceHolderWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(DateFormatter.dateFormatChat
-                          .format(DateTime.now()), style: TextStyle(color: Colors.grey, fontSize: 8.sp, fontWeight: FontWeight.w500)),
+                    dateBuilder(context),
                     SizedBox(height: 5.h,),
                     Container(
                       height: 16.h,
@@ -85,5 +84,18 @@ class ChatPlaceHolderWidget extends StatelessWidget {
       ],
     );
 
+  }
+
+  Widget dateBuilder(BuildContext context) {
+    DateTime currentDate = DateTime.now();
+    String cd = DateFormatter.dateFormatChat.format(currentDate);
+    String usedDate = DateFormatter.dateFormatChat.format(dateTime ?? DateTime.now());
+    if(cd == usedDate){
+      return Text(DateFormatter.dateFormatChatToday
+          .format(dateTime ?? DateTime.now()), style: TextStyle(color: Colors.grey, fontSize: 8.sp, fontWeight: FontWeight.w500));
+    } else {
+    return Text(DateFormatter.dateFormatChat
+        .format(dateTime ?? DateTime.now()), style: TextStyle(color: Colors.grey, fontSize: 8.sp, fontWeight: FontWeight.w500));
+    }
   }
 }
