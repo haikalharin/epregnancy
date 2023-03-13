@@ -75,7 +75,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  F.appFlavor = Flavor.DEVELOPMENT;
+  F.appFlavor = Flavor.STAGING;
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
@@ -84,7 +84,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Bloc.observer = SimpleBlocObserver();
-  await Configurations().setConfigurationValues(config.devEnvironment);
+  await Configurations().setConfigurationValues(config.stagingEnvironment);
   await JustAudioBackground.init(
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
@@ -96,8 +96,8 @@ Future<void> main() async {
 
 }
 
-final Alice aliceDev = Alice(showNotification: true, darkTheme: true);
-final AudioPlayer playerDev = AudioPlayer();
+final Alice aliceStaging = Alice(showNotification: true, darkTheme: true);
+final AudioPlayer playerStaging = AudioPlayer();
 
 
 class MyApp extends StatefulWidget {
@@ -191,12 +191,12 @@ class _MyAppState extends State<MyApp> {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
     // Listen to errors during playback.
-    playerDev.playbackEventStream.listen((event) {},
+    playerStaging.playbackEventStream.listen((event) {},
         onError: (Object e, StackTrace stackTrace) {
           print('A stream error occurred: $e');
         });
     try {
-      await playerDev.setAudioSource(playlist);
+      await playerStaging.setAudioSource(playlist);
     } catch (e, stackTrace) {
       // Catch load errors: 404, invalid url ...
       print("Error loading playlist: $e");
@@ -209,16 +209,16 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _init();
     initPlatformState();
-    // MyButton(text: 'Get Device Id Type', color: 'green', onPressed: getDeviceIDType),
+    // MyButton(text: 'Get Stagingice Id Type', color: 'green', onPressed: getDeviceIDType),
     // MyButton(text: 'Begin Session', color: 'green', onPressed: beginSession),
     // MyButton(text: 'Update Session', color: 'green', onPressed: updateSession),
     CountlyAnalyticsService(context).setInitCountly();
     CountlyAnalyticsService(context).setDeviceIDType();
-    playerDev.setLoopMode(LoopMode.all);
-    // playerDev.setAsset("assets/audio/al_fatihah.mp3");
-    // // playerDev.setAudioSource(playlist,
+    playerStaging.setLoopMode(LoopMode.all);
+    // playerStaging.setAsset("assets/audio/al_fatihah.mp3");
+    // // playerStaging.setAudioSource(playlist,
     // //     initialIndex: 0, initialPosition: Duration.zero);
-    _firebaseFuture = FirebaseService().initializeFlutterFirebase(context);
+    _firebaseFuture =  FirebaseService().initializeFlutterFirebase(context);
   }
 
   String _isRooted = 'Unknown';
@@ -275,7 +275,7 @@ class _MyAppState extends State<MyApp> {
                             void Function() onDispose) {
                           return MaterialApp(
                             debugShowCheckedModeBanner: false,
-                            navigatorKey: aliceDev.getNavigatorKey(),
+                            navigatorKey: aliceStaging.getNavigatorKey(),
                             title: 'Komunitaz',
                             home: SplashscreenPage(),
                             onGenerateRoute: Routes.generateRoute,
@@ -300,7 +300,7 @@ class _MyAppState extends State<MyApp> {
                       ),
                       // child: MaterialApp(
                       //   debugShowCheckedModeBanner: false,
-                      //   navigatorKey: aliceDev.getNavigatorKey(),
+                      //   navigatorKey: aliceStaging.getNavigatorKey(),
                       //   title: 'Komunitaz',
                       //   home: SplashscreenPage(),
                       //   onGenerateRoute: Routes.generateRoute,

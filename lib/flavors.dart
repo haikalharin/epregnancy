@@ -1,6 +1,7 @@
 enum Flavor {
   DEVELOPMENT,
   PRODUCTION,
+  STAGING
 }
 
 class F {
@@ -14,6 +15,8 @@ class F {
         return 'Komunitaz dev';
       case Flavor.PRODUCTION:
         return 'Komunitaz';
+      case Flavor.STAGING:
+        return 'Komunitaz staging';
       default:
         return 'title';
     }

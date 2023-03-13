@@ -46,7 +46,7 @@ abstract class UserModel with _$UserModel {
     String? imageUrl,
     @JsonKey(name: 'hospital_id', includeIfNull: false)
     String? hospitalId,
-    HospitalModel? hospitalModel,
+    HospitalModel? hospital,
     @JsonKey(name:'cover_url',includeIfNull: true)
     dynamic coverUrl,
     @JsonKey(name:'is_verified',includeIfNull: true)

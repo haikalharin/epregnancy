@@ -77,7 +77,6 @@ import 'package:flutter_alice/alice.dart';
 // void main() => runApp(MyApp());
 SharedPreferences? sharedPreferences;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
-FirebaseService firebaseService = FirebaseService();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
@@ -113,7 +112,7 @@ class _MyAppState extends State<MyApp> {
     CountlyAnalyticsService(context).setInitCountly();
     CountlyAnalyticsService(context).setDeviceIDType();
 
-    _firebaseFuture = firebaseService
+    _firebaseFuture = FirebaseService()
         .initializeFlutterFirebase(context);
 
   }

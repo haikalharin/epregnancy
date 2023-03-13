@@ -38,9 +38,7 @@ class HttpClient {
 
   Uri _getParsedUrl(String path, {Map<String, String>? queryParameters}) {
     String h = host!;
-    String _subHost = F.appFlavor == Flavor.DEVELOPMENT
-        ? devEnvironment["sub_host"] + "/"
-        : environment["sub_host"] + "/";
+    String _subHost = Configurations.sub_host+ "/";
     String finalPath = _subHost + path;
     if (h.contains("//")) {
       h = h.split("//")[1];
