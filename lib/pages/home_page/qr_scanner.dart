@@ -92,6 +92,7 @@ class _QrScannerState extends State<QrScanner> {
             height: MediaQuery.of(context).size.height,
             child: Stack(
               children: [
+
                 MobileScanner(
                     allowDuplicates: false,
                     controller: cameraController,

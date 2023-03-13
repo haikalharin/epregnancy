@@ -39,6 +39,7 @@ import '../model/members_model/member.dart';
 import '../model/response_model/response_model.dart';
 import '../model/user_example_model/user_example_model.dart';
 import '../model/user_model_api/signup_quest_request.dart';
+import '../model/visit_hospital_model/visit_hospital_model.dart';
 
 class RemoteDataSource {
   final HttpClient httpClient;
@@ -223,7 +224,7 @@ class RemoteDataSource {
     try {
       final response = await httpClient
           .post(ServiceUrl.hospitalVisit + hospitalId, {"pin": pin});
-      return ResponseModel.fromJson(response, HospitalModel.fromJson);
+      return ResponseModel.fromJson(response, VisitHospitalModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }

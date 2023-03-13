@@ -60,14 +60,12 @@ class _BabyNameState extends State<BabyName> {
           ),
         ),
         Container(
-          color: EpregnancyColors.primerSoft,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 margin:
                 EdgeInsets.only(bottom: 30, top: 10),
-                color: EpregnancyColors.primerSoft,
                 child: Center(
                   child: Container(
                     child: Column(

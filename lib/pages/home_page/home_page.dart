@@ -479,7 +479,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         decoration: const BoxDecoration(
                             gradient: LinearGradient(
                                 colors: [
-                              EpregnancyColors.primer,
+                              EpregnancyColors.whiteBlue,
                               Colors.white,
                               Colors.white
                             ],
@@ -603,7 +603,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           border: Border.all(
                                               color: EpregnancyColors.white),
                                           borderRadius:
-                                              BorderRadius.circular(8.w)),
+                                              BorderRadius.circular(8.w),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 5,
+                                              blurRadius: 7,
+                                              offset: Offset(0, 3), // changes position of shadow
+                                            )]),
                                       child: Column(
                                         children: [
                                           Container(
@@ -642,7 +649,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         border: Border.all(
                                             color: EpregnancyColors.white),
                                         borderRadius:
-                                            BorderRadius.circular(8.w)),
+                                            BorderRadius.circular(8.w),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            spreadRadius: 5,
+                                            blurRadius: 7,
+                                            offset: Offset(0, 3), // changes position of shadow
+                                          )]),
                                     child: Column(
                                       children: [
                                         Container(
