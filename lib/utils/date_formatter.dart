@@ -13,5 +13,6 @@ class DateFormatter {
 
   static  DateFormat dateFormatWithSpace =  DateFormat('d MMMM yyyy');
   static  DateFormat dateFormatChat =  DateFormat('d MMM yyyy');
+  static  DateFormat dateFormatChatToday =  DateFormat('hh:mm');
 
 }
