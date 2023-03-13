@@ -57,7 +57,10 @@ class SignUpQuestionnaireBloc
     print("secondName : ${state.secondName.value}");
     print("dateValid : ${state.dateValid}");
     final reset = MandatoryFieldValidator.dirty("");
-    return SignUpQuestionnaireState(dateValid: false, firstName: reset, secondName: reset);
+    final password = PasswordValidator.dirty("");
+    final confirmPassword = ConfirmPasswordValidator.dirty(
+        "", "");
+    return SignUpQuestionnaireState(dateValid: false, firstName: reset, secondName: reset, password: password, confirmPassword: confirmPassword);
   }
 
   SignUpQuestionnaireState _mapSignupFirstnameChangedToState(
