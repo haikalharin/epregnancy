@@ -52,7 +52,7 @@ mixin _$UserModel {
   String? get imageUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'hospital_id', includeIfNull: false)
   String? get hospitalId => throw _privateConstructorUsedError;
-  HospitalModel? get hospitalModel => throw _privateConstructorUsedError;
+  HospitalModel? get hospital => throw _privateConstructorUsedError;
   @JsonKey(name: 'cover_url', includeIfNull: true)
   dynamic get coverUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -125,7 +125,7 @@ abstract class $UserModelCopyWith<$Res> {
           String? imageUrl,
       @JsonKey(name: 'hospital_id', includeIfNull: false)
           String? hospitalId,
-      HospitalModel? hospitalModel,
+      HospitalModel? hospital,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           dynamic coverUrl,
       @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -153,7 +153,7 @@ abstract class $UserModelCopyWith<$Res> {
       @JsonKey(name: 'fcm_token', includeIfNull: true)
           String? fcmToken});
 
-  $HospitalModelCopyWith<$Res>? get hospitalModel;
+  $HospitalModelCopyWith<$Res>? get hospital;
   $LastItemRedeemedCopyWith<$Res>? get lastItemRedeemed;
 }
 
@@ -183,7 +183,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? totalpointsRedeemed = freezed,
     Object? imageUrl = freezed,
     Object? hospitalId = freezed,
-    Object? hospitalModel = freezed,
+    Object? hospital = freezed,
     Object? coverUrl = freezed,
     Object? isVerified = freezed,
     Object? isPregnant = freezed,
@@ -263,9 +263,9 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
           ? _value.hospitalId
           : hospitalId // ignore: cast_nullable_to_non_nullable
               as String?,
-      hospitalModel: hospitalModel == freezed
-          ? _value.hospitalModel
-          : hospitalModel // ignore: cast_nullable_to_non_nullable
+      hospital: hospital == freezed
+          ? _value.hospital
+          : hospital // ignore: cast_nullable_to_non_nullable
               as HospitalModel?,
       coverUrl: coverUrl == freezed
           ? _value.coverUrl
@@ -323,13 +323,13 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
   }
 
   @override
-  $HospitalModelCopyWith<$Res>? get hospitalModel {
-    if (_value.hospitalModel == null) {
+  $HospitalModelCopyWith<$Res>? get hospital {
+    if (_value.hospital == null) {
       return null;
     }
 
-    return $HospitalModelCopyWith<$Res>(_value.hospitalModel!, (value) {
-      return _then(_value.copyWith(hospitalModel: value));
+    return $HospitalModelCopyWith<$Res>(_value.hospital!, (value) {
+      return _then(_value.copyWith(hospital: value));
     });
   }
 
@@ -384,7 +384,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
           String? imageUrl,
       @JsonKey(name: 'hospital_id', includeIfNull: false)
           String? hospitalId,
-      HospitalModel? hospitalModel,
+      HospitalModel? hospital,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           dynamic coverUrl,
       @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -413,7 +413,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
           String? fcmToken});
 
   @override
-  $HospitalModelCopyWith<$Res>? get hospitalModel;
+  $HospitalModelCopyWith<$Res>? get hospital;
   @override
   $LastItemRedeemedCopyWith<$Res>? get lastItemRedeemed;
 }
@@ -446,7 +446,7 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? totalpointsRedeemed = freezed,
     Object? imageUrl = freezed,
     Object? hospitalId = freezed,
-    Object? hospitalModel = freezed,
+    Object? hospital = freezed,
     Object? coverUrl = freezed,
     Object? isVerified = freezed,
     Object? isPregnant = freezed,
@@ -526,9 +526,9 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
           ? _value.hospitalId
           : hospitalId // ignore: cast_nullable_to_non_nullable
               as String?,
-      hospitalModel: hospitalModel == freezed
-          ? _value.hospitalModel
-          : hospitalModel // ignore: cast_nullable_to_non_nullable
+      hospital: hospital == freezed
+          ? _value.hospital
+          : hospital // ignore: cast_nullable_to_non_nullable
               as HospitalModel?,
       coverUrl: coverUrl == freezed
           ? _value.coverUrl
@@ -622,7 +622,7 @@ class _$_UserModel implements _UserModel {
           this.imageUrl,
       @JsonKey(name: 'hospital_id', includeIfNull: false)
           this.hospitalId,
-      this.hospitalModel,
+      this.hospital,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           this.coverUrl,
       @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -706,7 +706,7 @@ class _$_UserModel implements _UserModel {
   @JsonKey(name: 'hospital_id', includeIfNull: false)
   final String? hospitalId;
   @override
-  final HospitalModel? hospitalModel;
+  final HospitalModel? hospital;
   @override
   @JsonKey(name: 'cover_url', includeIfNull: true)
   final dynamic coverUrl;
@@ -777,7 +777,7 @@ class _$_UserModel implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalLogin: $totalLogin, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospitalModel: $hospitalModel, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
+    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalLogin: $totalLogin, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospital: $hospital, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
   }
 
   @override
@@ -806,8 +806,7 @@ class _$_UserModel implements _UserModel {
             const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
             const DeepCollectionEquality()
                 .equals(other.hospitalId, hospitalId) &&
-            const DeepCollectionEquality()
-                .equals(other.hospitalModel, hospitalModel) &&
+            const DeepCollectionEquality().equals(other.hospital, hospital) &&
             const DeepCollectionEquality().equals(other.coverUrl, coverUrl) &&
             const DeepCollectionEquality()
                 .equals(other.isVerified, isVerified) &&
@@ -850,7 +849,7 @@ class _$_UserModel implements _UserModel {
         const DeepCollectionEquality().hash(totalpointsRedeemed),
         const DeepCollectionEquality().hash(imageUrl),
         const DeepCollectionEquality().hash(hospitalId),
-        const DeepCollectionEquality().hash(hospitalModel),
+        const DeepCollectionEquality().hash(hospital),
         const DeepCollectionEquality().hash(coverUrl),
         const DeepCollectionEquality().hash(isVerified),
         const DeepCollectionEquality().hash(isPregnant),
@@ -911,7 +910,7 @@ abstract class _UserModel implements UserModel {
           final String? imageUrl,
       @JsonKey(name: 'hospital_id', includeIfNull: false)
           final String? hospitalId,
-      final HospitalModel? hospitalModel,
+      final HospitalModel? hospital,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           final dynamic coverUrl,
       @JsonKey(name: 'is_verified', includeIfNull: true)
@@ -991,7 +990,7 @@ abstract class _UserModel implements UserModel {
   @JsonKey(name: 'hospital_id', includeIfNull: false)
   String? get hospitalId => throw _privateConstructorUsedError;
   @override
-  HospitalModel? get hospitalModel => throw _privateConstructorUsedError;
+  HospitalModel? get hospital => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'cover_url', includeIfNull: true)
   dynamic get coverUrl => throw _privateConstructorUsedError;

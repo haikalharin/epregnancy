@@ -1,5 +1,7 @@
 import 'package:PregnancyApp/main_default.dart';
 import 'package:PregnancyApp/main_development.dart';
+import 'package:PregnancyApp/main_production.dart';
+import 'package:PregnancyApp/main_staging.dart';
 import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
 import 'package:PregnancyApp/pages/state_page/registration_success_page.dart';
 import 'package:PregnancyApp/utils/countly_analytics.dart';
@@ -21,6 +23,7 @@ import '../../common/services/auth_service.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
+import '../../flavors.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/firebase_analytics.dart';
 import '../../utils/string_constans.dart';
@@ -33,7 +36,11 @@ const _horizontalPadding = 24.0;
 
 class LoginPage extends StatefulWidget {
   const LoginPage(
-      {Key? key, this.tokenExpired = false, this.isFromRegister = false, this.passwordFromRegister, this.userFromRegister})
+      {Key? key,
+      this.tokenExpired = false,
+      this.isFromRegister = false,
+      this.passwordFromRegister,
+      this.userFromRegister})
       : super(key: key);
   final bool tokenExpired;
   final bool isFromRegister;
@@ -58,12 +65,13 @@ class _LoginPageState extends State<LoginPage> {
     getRemoteConfig();
     FirebaseAnalyticsService().setCurrentScreen("login_page");
     CountlyAnalyticsService(context).getDeviceIDType();
-    CountlyAnalyticsService(context).basicEvent( {'key': 'Login_page', 'count': 1});
+    CountlyAnalyticsService(context)
+        .basicEvent({'key': 'Login_page', 'count': 1});
     if (widget.tokenExpired == true) {
       if (widget.isFromRegister) {
         WidgetsBinding.instance?.addPostFrameCallback((_) async {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return  RegistrationSuccessPage(
+            return RegistrationSuccessPage(
               username: widget.userFromRegister,
               password: widget.passwordFromRegister,
             );
@@ -109,14 +117,14 @@ class _LoginPageState extends State<LoginPage> {
                             InkWell(
                               child: Padding(
                                   padding:
-                                  EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
+                                      EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
                                   child: SizedBox(
                                     height: 46.w,
                                     width: MediaQuery.of(context).size.width,
                                     child: FlatButton(
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(4.w)),
+                                                BorderRadius.circular(4.w)),
                                         color: EpregnancyColors.blueDark,
                                         disabledColor: Colors.grey,
                                         child: Text('Oke',
@@ -126,7 +134,30 @@ class _LoginPageState extends State<LoginPage> {
                                                 color: Colors.white)),
                                         onPressed: () {
                                           // Navigator.pop(context);
-                                          aliceDev.getNavigatorKey()?.currentState?.pop();
+                                          if (F.appFlavor ==
+                                              Flavor.PRODUCTION) {
+                                            aliceProd
+                                                .getNavigatorKey()
+                                                ?.currentState
+                                                ?.pop();
+                                          } else if (F.appFlavor ==
+                                              Flavor.DEVELOPMENT) {
+                                            aliceDev
+                                                .getNavigatorKey()
+                                                ?.currentState
+                                                ?.pop();
+                                          }else if (F.appFlavor ==
+                                              Flavor.STAGING) {
+                                            aliceStaging
+                                                .getNavigatorKey()
+                                                ?.currentState
+                                                ?.pop();
+                                          } else{
+                                            aliceMain
+                                                .getNavigatorKey()
+                                                ?.currentState
+                                                ?.pop();
+                                          }
                                         }),
                                   )),
                               onTap: () {
@@ -241,7 +272,10 @@ class _LoginPageState extends State<LoginPage> {
                         } else {
                           Navigator.of(context).pushReplacementNamed(
                               RouteName.surveyPageBaby,
-                              arguments: {"is_edit": false, "edit_name": false});
+                              arguments: {
+                                "is_edit": false,
+                                "edit_name": false
+                              });
                         }
                       } else {
                         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -299,8 +333,9 @@ class _LoginPageState extends State<LoginPage> {
                             // SizedBox(height: 120),
                             //_HeadingText(),
                             Hero(
-                              tag: 'ibu',
-                                child: SvgPicture.asset("assets/img_login.svg")),
+                                tag: 'ibu',
+                                child:
+                                    SvgPicture.asset("assets/img_login.svg")),
                             SizedBox(height: 36.h),
                             Text(
                               "Selamat Datang",
@@ -342,10 +377,11 @@ class _LoginPageState extends State<LoginPage> {
                                         .add(LoginSubmitted());
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      primary: EpregnancyColors.primer,
+                                    primary: EpregnancyColors.primer,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
-                                    ),),
+                                    ),
+                                  ),
                                 )),
                             // SizedBox(height: 10),
                             // Container(
@@ -370,25 +406,32 @@ class _LoginPageState extends State<LoginPage> {
                             // ),
                             SizedBox(height: 30.h),
                             _RegisterButton(),
-                            SizedBox(height: 8.h,),
+                            SizedBox(
+                              height: 8.h,
+                            ),
                             Container(
                                 height: 56,
                                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 child: ElevatedButton(
-                                  child: Text('Daftar', style: TextStyle(color: EpregnancyColors.primer ),),
+                                  child: Text(
+                                    'Daftar',
+                                    style: TextStyle(
+                                        color: EpregnancyColors.primer),
+                                  ),
                                   onPressed: () {
-                                    Navigator.of(context).pushNamed(RouteName.signup);
+                                    Navigator.of(context)
+                                        .pushNamed(RouteName.signup);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 0,
                                     side: BorderSide(
-                                      width: 1.w,
-                                      color: EpregnancyColors.primer
-                                    ),
+                                        width: 1.w,
+                                        color: EpregnancyColors.primer),
                                     primary: EpregnancyColors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
-                                    ),),
+                                    ),
+                                  ),
                                 )),
                             // _PasswordTextField(),
                           ],
@@ -548,7 +591,10 @@ class _ForgotPasswordButton extends StatelessWidget {
                 TextButton(
                   child: Text(
                     "Lupa kata sandi ?",
-                    style: TextStyle(color: EpregnancyColors.primer, fontSize: 14.sp, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                        color: EpregnancyColors.primer,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w700),
                   ),
                   onPressed: () {
                     Navigator.of(context).pushNamed(RouteName.forgotPassword);
@@ -577,10 +623,10 @@ class _RegisterButton extends StatelessWidget {
               children: <Widget>[
                 RichText(
                   textAlign: TextAlign.center,
-                  text:  TextSpan(
+                  text: TextSpan(
                     // Note: Styles for TextSpans must be explicitly defined.
                     // Child text spans will inherit styles from parent
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       color: EpregnancyColors.primer,

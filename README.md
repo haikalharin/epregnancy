@@ -7,5 +7,14 @@ flutter run --flavor development -t lib/main_development.dart
 flutter run --flavor production -t lib/main_production.dart
 
 build apk
+//prod
+flutter build apk --release --flavor production -t lib/main_production.dart
+flutter build apk --debug --flavor production -t lib/main_production.dart
+
+//dev
 flutter build apk --release --flavor development -t lib/main_development.dart
 flutter build apk --debug --flavor development -t lib/main_development.dart
+
+//staging
+flutter build apk --release --flavor staging -t lib/main_staging.dart
+flutter build apk --debug --flavor staging -t lib/main_staging.dart

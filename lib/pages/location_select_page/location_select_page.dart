@@ -27,7 +27,7 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
 
   void getHospitalFromLocal() async {
     HospitalModel _hospital = await AppSharedPreference.getHospital();
-    if(_hospital != null && mounted){
+    if (_hospital != null && mounted) {
       setState(() {
         _hospitalModel = _hospital;
       });
@@ -35,11 +35,12 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
   }
 
   void getBpjsStatus() async {
-    bool? _haveBpjs = await AppSharedPreference.getBool(AppSharedPreference.haveBpjsorKis);
-    if(_haveBpjs != null && mounted){
+    bool? _haveBpjs =
+        await AppSharedPreference.getBool(AppSharedPreference.haveBpjsorKis);
+    if (_haveBpjs != null && mounted) {
       setState(() {
         haveBpjs = _haveBpjs;
-        if(haveBpjs){
+        if (haveBpjs) {
           bpjsValue = 1;
         } else {
           bpjsValue = 0;
@@ -47,7 +48,6 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
       });
     }
   }
-
 
   @override
   void initState() {
@@ -110,13 +110,18 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                  LocationListPage(currentHospital: _hospitalModel?.name,))).then((value) {
-                    if(value != null){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LocationListPage(
+                                currentHospital: _hospitalModel?.name,
+                              ))).then((value) {
+                    if (value != null) {
                       setState(() {
                         _hospitalModel = value;
                       });
-                      Injector.resolve<HospitalBloc>().add(ChangeHospitalEvent(_hospitalModel?.id));
+                      Injector.resolve<HospitalBloc>()
+                          .add(ChangeHospitalEvent(_hospitalModel?.id));
                     }
                   });
                 },
@@ -134,7 +139,9 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        _hospitalModel?.name == '' ? 'Pilih Puskesmas': _hospitalModel!.name!,
+                       _hospitalModel?.name == ''
+                                ? 'Pilih Puskesmas'
+                                : _hospitalModel!.name ?? '',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.sp,
@@ -161,14 +168,13 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
                 ),
               ),
               Container(
-                margin:
-                EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                 padding: EdgeInsets.only(
-                    left: 20.w, right:9.w, top: 5.h, bottom: 5.h),
+                    left: 20.w, right: 9.w, top: 5.h, bottom: 5.h),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      color: EpregnancyColors.borderGrey, width: 1),
+                  border:
+                      Border.all(color: EpregnancyColors.borderGrey, width: 1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,7 +183,7 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
                     Radio(
                       value: 1,
                       groupValue: bpjsValue,
-                      onChanged: (val){
+                      onChanged: (val) {
                         setState(() {
                           bpjsValue = (val as int?)!;
                           haveBpjs = true;
@@ -188,14 +194,13 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
                 ),
               ),
               Container(
-                margin:
-                EdgeInsets.symmetric(horizontal: 16.w, vertical: 0.h),
+                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 0.h),
                 padding: EdgeInsets.only(
                     left: 20.w, right: 9.w, top: 5.h, bottom: 5.h),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      color: EpregnancyColors.borderGrey, width: 1),
+                  border:
+                      Border.all(color: EpregnancyColors.borderGrey, width: 1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,7 +209,7 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
                     Radio(
                       value: 0,
                       groupValue: bpjsValue,
-                      onChanged: (val){
+                      onChanged: (val) {
                         setState(() {
                           bpjsValue = (val as int?)!;
                           haveBpjs = false;
@@ -227,15 +232,21 @@ class _LocationSelectPageState extends State<LocationSelectPage> {
                 style:
                     TextStyle(color: EpregnancyColors.white, fontSize: 14.sp),
               ),
-              onPressed: _hospitalModel?.name == '' ? null : () async{
-                // todo save to local
-                await AppSharedPreference.setHospital(_hospitalModel!);
-                await AppSharedPreference.setBool(AppSharedPreference.haveBpjsorKis, haveBpjs);
-                Navigator.pop(context, _hospitalModel);
-              },
+              onPressed: _hospitalModel?.name == ''
+                  ? null
+                  : () async {
+                      // todo save to local
+                      await AppSharedPreference.setHospital(_hospitalModel!);
+                      await AppSharedPreference.setBool(
+                          AppSharedPreference.haveBpjsorKis, haveBpjs);
+                      Navigator.pop(context, _hospitalModel);
+                    },
               style: ButtonStyle(
-
-                  backgroundColor: _hospitalModel?.name == '' ? MaterialStateProperty.all<Color>(EpregnancyColors.greyText) :  MaterialStateProperty.all<Color>(EpregnancyColors.primer),
+                  backgroundColor: _hospitalModel?.name == ''
+                      ? MaterialStateProperty.all<Color>(
+                          EpregnancyColors.greyText)
+                      : MaterialStateProperty.all<Color>(
+                          EpregnancyColors.primer),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
