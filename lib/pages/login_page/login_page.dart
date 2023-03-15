@@ -19,6 +19,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/configurations/configurations.dart';
+import '../../common/network/http/http_client.dart';
 import '../../common/services/auth_service.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
@@ -62,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    HttpClient().isRefresh =false;
     getRemoteConfig();
     FirebaseAnalyticsService().setCurrentScreen("login_page");
     CountlyAnalyticsService(context).getDeviceIDType();

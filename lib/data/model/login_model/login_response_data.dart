@@ -23,6 +23,7 @@ abstract class Token with _$Token {
     required String? id,
     required String? userId,
     required String? accessToken,
+    required String? refreshToken,
     required String? type,
     required String? expiration,
     required String? issuedAt,

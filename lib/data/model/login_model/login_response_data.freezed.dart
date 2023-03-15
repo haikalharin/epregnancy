@@ -218,6 +218,7 @@ mixin _$Token {
   String? get id => throw _privateConstructorUsedError;
   String? get userId => throw _privateConstructorUsedError;
   String? get accessToken => throw _privateConstructorUsedError;
+  String? get refreshToken => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
   String? get expiration => throw _privateConstructorUsedError;
   String? get issuedAt => throw _privateConstructorUsedError;
@@ -237,6 +238,7 @@ abstract class $TokenCopyWith<$Res> {
       {String? id,
       String? userId,
       String? accessToken,
+      String? refreshToken,
       String? type,
       String? expiration,
       String? issuedAt,
@@ -257,6 +259,7 @@ class _$TokenCopyWithImpl<$Res> implements $TokenCopyWith<$Res> {
     Object? id = freezed,
     Object? userId = freezed,
     Object? accessToken = freezed,
+    Object? refreshToken = freezed,
     Object? type = freezed,
     Object? expiration = freezed,
     Object? issuedAt = freezed,
@@ -275,6 +278,10 @@ class _$TokenCopyWithImpl<$Res> implements $TokenCopyWith<$Res> {
       accessToken: accessToken == freezed
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      refreshToken: refreshToken == freezed
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String?,
       type: type == freezed
           ? _value.type
@@ -309,6 +316,7 @@ abstract class _$$_TokenCopyWith<$Res> implements $TokenCopyWith<$Res> {
       {String? id,
       String? userId,
       String? accessToken,
+      String? refreshToken,
       String? type,
       String? expiration,
       String? issuedAt,
@@ -330,6 +338,7 @@ class __$$_TokenCopyWithImpl<$Res> extends _$TokenCopyWithImpl<$Res>
     Object? id = freezed,
     Object? userId = freezed,
     Object? accessToken = freezed,
+    Object? refreshToken = freezed,
     Object? type = freezed,
     Object? expiration = freezed,
     Object? issuedAt = freezed,
@@ -348,6 +357,10 @@ class __$$_TokenCopyWithImpl<$Res> extends _$TokenCopyWithImpl<$Res>
       accessToken: accessToken == freezed
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      refreshToken: refreshToken == freezed
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String?,
       type: type == freezed
           ? _value.type
@@ -381,6 +394,7 @@ class _$_Token with DiagnosticableTreeMixin implements _Token {
       {required this.id,
       required this.userId,
       required this.accessToken,
+      required this.refreshToken,
       required this.type,
       required this.expiration,
       required this.issuedAt,
@@ -397,6 +411,8 @@ class _$_Token with DiagnosticableTreeMixin implements _Token {
   @override
   final String? accessToken;
   @override
+  final String? refreshToken;
+  @override
   final String? type;
   @override
   final String? expiration;
@@ -409,7 +425,7 @@ class _$_Token with DiagnosticableTreeMixin implements _Token {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Token(id: $id, userId: $userId, accessToken: $accessToken, type: $type, expiration: $expiration, issuedAt: $issuedAt, isExpired: $isExpired, isDelete: $isDelete)';
+    return 'Token(id: $id, userId: $userId, accessToken: $accessToken, refreshToken: $refreshToken, type: $type, expiration: $expiration, issuedAt: $issuedAt, isExpired: $isExpired, isDelete: $isDelete)';
   }
 
   @override
@@ -420,6 +436,7 @@ class _$_Token with DiagnosticableTreeMixin implements _Token {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('accessToken', accessToken))
+      ..add(DiagnosticsProperty('refreshToken', refreshToken))
       ..add(DiagnosticsProperty('type', type))
       ..add(DiagnosticsProperty('expiration', expiration))
       ..add(DiagnosticsProperty('issuedAt', issuedAt))
@@ -436,6 +453,8 @@ class _$_Token with DiagnosticableTreeMixin implements _Token {
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality()
                 .equals(other.accessToken, accessToken) &&
+            const DeepCollectionEquality()
+                .equals(other.refreshToken, refreshToken) &&
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality()
                 .equals(other.expiration, expiration) &&
@@ -451,6 +470,7 @@ class _$_Token with DiagnosticableTreeMixin implements _Token {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(accessToken),
+      const DeepCollectionEquality().hash(refreshToken),
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(expiration),
       const DeepCollectionEquality().hash(issuedAt),
@@ -473,6 +493,7 @@ abstract class _Token implements Token {
       {required final String? id,
       required final String? userId,
       required final String? accessToken,
+      required final String? refreshToken,
       required final String? type,
       required final String? expiration,
       required final String? issuedAt,
@@ -487,6 +508,8 @@ abstract class _Token implements Token {
   String? get userId => throw _privateConstructorUsedError;
   @override
   String? get accessToken => throw _privateConstructorUsedError;
+  @override
+  String? get refreshToken => throw _privateConstructorUsedError;
   @override
   String? get type => throw _privateConstructorUsedError;
   @override
