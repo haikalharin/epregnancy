@@ -8,6 +8,7 @@ import 'package:PregnancyApp/data/repository/user_repository/user_repository.dar
 import 'package:PregnancyApp/env.dart';
 import 'package:PregnancyApp/main_development.dart';
 import 'package:PregnancyApp/main_production.dart';
+import 'package:PregnancyApp/main_staging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/core/alice_http_extensions.dart';
 import 'package:http/http.dart';
@@ -54,6 +55,35 @@ class HttpClient {
     return Uri.https(h, finalPath, queryParameters);
   }
 
+  Future<Response?> getAccess(String path,
+      {Map<String, String>? queryParameters}) async {
+    late Response response;
+    if (Configurations.isShowChucker == true) {
+      response = await _client!
+          .get(
+            _getParsedUrl(path, queryParameters: queryParameters),
+            headers: header,
+          )
+          .timeout(Duration(minutes: 2))
+          .interceptWithAlice(
+              F.appFlavor == Flavor.PRODUCTION
+                  ? aliceProd
+                  : F.appFlavor == Flavor.STAGING
+                      ? aliceStaging
+                      : aliceDev,
+              body: path);
+    } else {
+      response = await _client!
+          .get(
+            _getParsedUrl(path, queryParameters: queryParameters),
+            headers: header,
+          )
+          .timeout(Duration(minutes: 2));
+    }
+
+    return response;
+  }
+
   dynamic get(String path, {Map<String, String>? queryParameters}) async {
     debugPrint('>>>>>>> [GET] ${_getParsedUrl(path)}');
 
@@ -70,93 +100,102 @@ class HttpClient {
     // TODO DO NOT USE THIS STATIC TOKEN FOR PROD
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
-    late Response response;
-    if (Configurations.isShowChucker == true) {
-      if (F.appFlavor == Flavor.PRODUCTION) {
-        response = await _client!
-            .get(
-              _getParsedUrl(path, queryParameters: queryParameters),
-              headers: header,
-            )
-            .timeout(Duration(minutes: 2))
-            .interceptWithAlice(aliceProd);
-      } else {
-        response = await _client!
-            .get(
-              _getParsedUrl(path, queryParameters: queryParameters),
-              headers: header,
-            )
-            .timeout(Duration(minutes: 2))
-            .interceptWithAlice(aliceMain);
-      }
-    } else {
+    Response? response =
+        await getAccess(path, queryParameters: queryParameters);
+    var responseData = HttpUtil.getResponse(response ?? Response('', 0));
+
+    if (responseData is UnAuthorizeException) {
       response = await _client!
           .get(
-            _getParsedUrl(path, queryParameters: queryParameters),
+            _getParsedUrl(ServiceUrl.login, queryParameters: queryParameters),
             headers: header,
           )
           .timeout(Duration(minutes: 2));
-    }
-    var data = HttpUtil.getResponse(response);
-    if (data is UnAuthorizeException) {
-      response = await _client!
-          .get(
-        _getParsedUrl(ServiceUrl.login, queryParameters: queryParameters),
-        headers: header,
-      )
-          .timeout(Duration(minutes: 2));
+
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       String? newToken = dataResponse['data']['token']['access_token'];
       header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
-      await AppSharedPreference.setString(AppSharedPreference.token,'');
+      await AppSharedPreference.setString(AppSharedPreference.token, '');
+
       String? cookie =
-      await AppSharedPreference.getString(AppSharedPreference.cookie);
+          await AppSharedPreference.getString(AppSharedPreference.cookie);
       print('cookie : $cookie');
       if (cookie != null) {
         setCookieFromSession(cookie);
       }
-      response = await _client!
-          .get(
-            _getParsedUrl(path, queryParameters: queryParameters),
-            headers: header,
-          )
-          .timeout(Duration(minutes: 2));
-      data = HttpUtil.getResponse(response);
+
+      response = await getAccess(path, queryParameters: queryParameters);
+      responseData = HttpUtil.getResponse(response ?? Response('', 0));
     }
-    return data;
+    return responseData;
   }
 
-  Future<Response?> downloadFile(String path) async {
+  Future<Response?> downloadAccess(String path) async {
     late Response response;
     if (Configurations.isShowChucker == true) {
-      if (F.appFlavor == Flavor.PRODUCTION) {
-        response = await _client!
-            .get(
-              _getParsedUrl(path),
-              headers: header,
-            )
-            .interceptWithAlice(aliceProd, body: path);
-      } else {
-        response = await _client!
-            .get(
-              _getParsedUrl(path),
-              headers: header,
-            )
-            .interceptWithAlice(aliceMain, body: path);
-      }
+      response = await _client!
+          .get(
+            _getParsedUrl(path),
+            headers: header,
+          )
+          .interceptWithAlice(
+              F.appFlavor == Flavor.PRODUCTION
+                  ? aliceProd
+                  : F.appFlavor == Flavor.STAGING
+                      ? aliceStaging
+                      : aliceDev,
+              body: path);
     } else {
       response = await _client!.get(
         _getParsedUrl(path),
         headers: header,
       );
     }
-    return response.statusCode == 201 ? response : null;
+
+    return response;
+  }
+
+  Future<Response?> downloadFile(String path) async {
+    Response? response = await downloadAccess(path);
+    return response?.statusCode == 201 ? response : null;
+  }
+
+  dynamic postAccess(String path, dynamic data,
+      {Map<String, String>? overrideHeader}) async {
+    final Map<String, String>? requestHeader = overrideHeader ?? header;
+    late Response response;
+    if (Configurations.isShowChucker == true) {
+      response = await _client!
+          .post(
+            _getParsedUrl(path),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(data), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
+          .interceptWithAlice(
+              F.appFlavor == Flavor.PRODUCTION
+                  ? aliceProd
+                  : F.appFlavor == Flavor.STAGING
+                      ? aliceStaging
+                      : aliceDev,
+              body: data);
+
+      updateCookie(response);
+    } else {
+      response = await _client!.post(
+        _getParsedUrl(path),
+        body: HttpUtil.encodeRequestBody(
+            json.encode(data), requestHeader![HttpConstants.contentType]!),
+        headers: requestHeader,
+      );
+      updateCookie(response);
+    }
+
+    return response;
   }
 
   dynamic post(String path, dynamic data,
       {Map<String, String>? overrideHeader}) async {
-    final Map<String, String>? requestHeader = overrideHeader ?? header;
-
     debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
     debugPrint('>>>>>>> [HEADER] ${header.toString()}');
     debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
@@ -170,54 +209,16 @@ class HttpClient {
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
-    late Response response;
-    if (Configurations.isShowChucker == true) {
-      if (F.appFlavor == Flavor.PRODUCTION) {
-        response = await _client!
-            .post(
-              _getParsedUrl(path),
-              body: HttpUtil.encodeRequestBody(json.encode(data),
-                  requestHeader![HttpConstants.contentType]!),
-              headers: requestHeader,
-            )
-            .interceptWithAlice(aliceProd, body: data);
-      } else {
-        response = await _client!
-            .post(
-              _getParsedUrl(path),
-              body: HttpUtil.encodeRequestBody(json.encode(data),
-                  requestHeader![HttpConstants.contentType]!),
-              headers: requestHeader,
-            )
-            .interceptWithAlice(aliceMain, body: data);
-      }
-      updateCookie(response);
-    } else {
-      response = await _client!.post(
-        _getParsedUrl(path),
-        body: HttpUtil.encodeRequestBody(
-            json.encode(data), requestHeader![HttpConstants.contentType]!),
-        headers: requestHeader,
-      );
-      updateCookie(response);
-    }
+    Response? response =
+        await postAccess(path, data, overrideHeader: overrideHeader);
+    var responseData = HttpUtil.getResponse(response ?? Response('', 0));
 
-    return HttpUtil.getResponse(response);
+    return responseData;
   }
 
-  dynamic delete(String path, dynamic data,
+  dynamic deleteAccess(String path, dynamic data,
       {Map<String, String>? overrideHeader}) async {
     final Map<String, String>? requestHeader = overrideHeader ?? header;
-
-    debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
-    debugPrint('>>>>>>> [HEADER] ${header.toString()}');
-    debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
-
-    String? token = await getToken();
-
-    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
-    // TODO REMOVE THIS JUST FOR DEV PURPOSE
-    // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     late Response response;
     if (Configurations.isShowChucker == true) {
       response = await _client!
@@ -228,7 +229,11 @@ class HttpClient {
             headers: requestHeader,
           )
           .interceptWithAlice(
-              F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceMain,
+              F.appFlavor == Flavor.PRODUCTION
+                  ? aliceProd
+                  : F.appFlavor == Flavor.STAGING
+                      ? aliceStaging
+                      : aliceDev,
               body: data);
     } else {
       response = await _client!.delete(
@@ -238,12 +243,60 @@ class HttpClient {
         headers: requestHeader,
       );
     }
-    return HttpUtil.getResponse(response);
+    return response;
+  }
+
+  dynamic delete(String path, dynamic data,
+      {Map<String, String>? overrideHeader}) async {
+    debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
+    debugPrint('>>>>>>> [HEADER] ${header.toString()}');
+    debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
+
+    String? token = await getToken();
+
+    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+    // TODO REMOVE THIS JUST FOR DEV PURPOSE
+    // header![HttpHeaders.authorizationHeader] = AppConstants.token;
+    Response? response =
+        await postAccess(path, data, overrideHeader: overrideHeader);
+    var responseData = HttpUtil.getResponse(response ?? Response('', 0));
+
+    return responseData;
+  }
+
+  dynamic putAccess(String path, dynamic data,
+      {Map<String, String>? overrideHeader}) async {
+    final Map<String, String>? requestHeader = overrideHeader ?? header;
+    late Response response;
+    if (Configurations.isShowChucker == true) {
+      response = await _client!
+          .put(
+            _getParsedUrl(path),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(data), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
+          .interceptWithAlice(
+              F.appFlavor == Flavor.PRODUCTION
+                  ? aliceProd
+                  : F.appFlavor == Flavor.STAGING
+                      ? aliceStaging
+                      : aliceDev,
+              body: data);
+    } else {
+      response = await _client!.put(
+        _getParsedUrl(path),
+        body: HttpUtil.encodeRequestBody(
+            json.encode(data), requestHeader![HttpConstants.contentType]!),
+        headers: requestHeader,
+      );
+    }
+
+    return response;
   }
 
   dynamic put(String path, dynamic data,
       {Map<String, String>? overrideHeader}) async {
-    final Map<String, String>? requestHeader = overrideHeader ?? header;
 
     debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
     debugPrint('>>>>>>> [HEADER] ${header.toString()}');
@@ -259,28 +312,11 @@ class HttpClient {
       setCookieFromSession(cookie);
     }
 
-    late Response response;
-    if (Configurations.isShowChucker == true) {
-      response = await _client!
-          .put(
-            _getParsedUrl(path),
-            body: HttpUtil.encodeRequestBody(
-                json.encode(data), requestHeader![HttpConstants.contentType]!),
-            headers: requestHeader,
-          )
-          .interceptWithAlice(
-              F.appFlavor == Flavor.PRODUCTION ? aliceProd : aliceMain,
-              body: data);
-    } else {
-      response = await _client!.put(
-        _getParsedUrl(path),
-        body: HttpUtil.encodeRequestBody(
-            json.encode(data), requestHeader![HttpConstants.contentType]!),
-        headers: requestHeader,
-      );
-    }
+    Response? response =
+    await postAccess(path, data, overrideHeader: overrideHeader);
+    var responseData = HttpUtil.getResponse(response ?? Response('', 0));
 
-    return HttpUtil.getResponse(response);
+    return responseData;
   }
 
   Future<String?> getToken() async {
