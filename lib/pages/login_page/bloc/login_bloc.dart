@@ -169,6 +169,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         loginResponseData = response.data;
         // set jwt token
         await AppSharedPreference.setString(AppSharedPreference.token, loginResponseData!.token!.accessToken!);
+        await AppSharedPreference.setLoginModelResponse(loginResponseData);
         final ResponseModel<UserModel> userInfoResponse = await userRepository.getUserInfo();
         UserModel _userModel = userInfoResponse.data;
         UserModel userModel = _userModel.copyWith(
@@ -261,6 +262,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         loginResponseData = response.data;
         // set jwt token
         await AppSharedPreference.setString(AppSharedPreference.token, loginResponseData!.token!.accessToken!);
+        await AppSharedPreference.setLoginModelResponse(loginResponseData);
         final ResponseModel<UserModel> userInfoResponse = await userRepository.getUserInfo();
         UserModel _userModel = userInfoResponse.data;
         UserModel userModel = _userModel.copyWith(

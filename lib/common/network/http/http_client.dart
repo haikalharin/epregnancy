@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:PregnancyApp/common/constants/app_constants.dart';
+import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
@@ -28,8 +29,11 @@ import 'http_util.dart';
 class HttpClient {
   Client? _client;
   String? host = Configurations.host;
+  String? token = '';
+  String? refreshToken = '';
   Map<String, String>? header;
   bool cookieFromSp = true;
+  bool isRefresh = false;
 
   HttpClient() {
     _client = Client();
@@ -86,8 +90,7 @@ class HttpClient {
 
   dynamic get(String path, {Map<String, String>? queryParameters}) async {
     debugPrint('>>>>>>> [GET] ${_getParsedUrl(path)}');
-
-    String? token = await getToken();
+    token = await getToken();
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
 
     String? cookie =
@@ -104,18 +107,37 @@ class HttpClient {
         await getAccess(path, queryParameters: queryParameters);
     var responseData = HttpUtil.getResponse(response ?? Response('', 0));
 
-    if (responseData is UnAuthorizeException) {
+    if (responseData['code'] == 404 ||
+        responseData['code'] == 403 ||
+        responseData['code'] == 401) {
+      Map<String, String> body = {};
+      LoginResponseData data = await AppSharedPreference.getLoginResponse();
+      body = {
+        'access_token': data.token?.accessToken ?? '',
+        'refresh_token': data.token?.refreshToken ?? ''
+      };
+
+      final Map<String, String>? requestHeader = header;
       response = await _client!
-          .get(
-            _getParsedUrl(ServiceUrl.login, queryParameters: queryParameters),
-            headers: header,
+          .post(
+            _getParsedUrl(ServiceUrl.refreshToken),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(body), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
           )
           .timeout(Duration(minutes: 2));
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
-      String? newToken = dataResponse['data']['token']['access_token'];
-      header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
-      await AppSharedPreference.setString(AppSharedPreference.token, '');
+      if (dataResponse['code'] == 200) {
+        isRefresh = true;
+        String? newToken = dataResponse['data']['token']['access_token'];
+        token = newToken;
+        refreshToken = dataResponse['data']['token']['refresh_token'];
+        await AppSharedPreference.setString(
+            AppSharedPreference.token, newToken ?? '');
+        await AppSharedPreference.setLoginResponse(dataResponse['data']);
+        header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
+      }
 
       String? cookie =
           await AppSharedPreference.getString(AppSharedPreference.cookie);
@@ -200,7 +222,10 @@ class HttpClient {
     debugPrint('>>>>>>> [HEADER] ${header.toString()}');
     debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
 
-    String? token = await getToken();
+    token = await getToken();
+
+    header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+
     String? cookie =
         await AppSharedPreference.getString(AppSharedPreference.cookie);
     if (cookie != null) {
@@ -212,6 +237,49 @@ class HttpClient {
     Response? response =
         await postAccess(path, data, overrideHeader: overrideHeader);
     var responseData = HttpUtil.getResponse(response ?? Response('', 0));
+
+    if (responseData['code'] == 404 ||
+        responseData['code'] == 403 ||
+        responseData['code'] == 401) {
+      Map<String, String> body = {};
+      LoginResponseData data = await AppSharedPreference.getLoginResponse();
+      body = {
+        'access_token': data.token?.accessToken ?? '',
+        'refresh_token': data.token?.refreshToken ?? ''
+      };
+
+      final Map<String, String>? requestHeader = header;
+      response = await _client!
+          .post(
+            _getParsedUrl(ServiceUrl.refreshToken),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(body), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
+          .timeout(Duration(minutes: 2));
+
+      Map<String, dynamic> dataResponse = jsonDecode(response.body);
+      if (dataResponse['code'] == 200) {
+        isRefresh = true;
+        String? newToken = dataResponse['data']['token']['access_token'];
+        token = newToken;
+        refreshToken = dataResponse['data']['token']['refresh_token'];
+        await AppSharedPreference.setString(
+            AppSharedPreference.token, newToken ?? '');
+        await AppSharedPreference.setLoginResponse(dataResponse['data']);
+        header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
+      }
+
+      String? cookie =
+          await AppSharedPreference.getString(AppSharedPreference.cookie);
+      print('cookie : $cookie');
+      if (cookie != null) {
+        setCookieFromSession(cookie);
+      }
+
+      response = await postAccess(path, data, overrideHeader: overrideHeader);
+      responseData = HttpUtil.getResponse(response ?? Response('', 0));
+    }
 
     return responseData;
   }
@@ -252,14 +320,57 @@ class HttpClient {
     debugPrint('>>>>>>> [HEADER] ${header.toString()}');
     debugPrint('>>>>>>> [DATA] ${json.encode(data).toString()}');
 
-    String? token = await getToken();
-
+    token = await getToken();
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
+
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     Response? response =
-        await postAccess(path, data, overrideHeader: overrideHeader);
+        await delete(path, data, overrideHeader: overrideHeader);
     var responseData = HttpUtil.getResponse(response ?? Response('', 0));
+
+    if (responseData['code'] == 404 ||
+        responseData['code'] == 403 ||
+        responseData['code'] == 401) {
+      Map<String, String> body = {};
+
+      LoginResponseData data = await AppSharedPreference.getLoginResponse();
+      body = {
+        'access_token': data.token?.accessToken ?? '',
+        'refresh_token': data.token?.refreshToken ?? ''
+      };
+
+      final Map<String, String>? requestHeader = header;
+      response = await _client!
+          .post(
+            _getParsedUrl(ServiceUrl.refreshToken),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(body), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
+          .timeout(Duration(minutes: 2));
+
+      Map<String, dynamic> dataResponse = jsonDecode(response.body);
+      if (dataResponse['code'] == 200) {
+        isRefresh = true;
+        String? newToken = dataResponse['data']['token']['access_token'];
+        token = newToken;
+        refreshToken = dataResponse['data']['token']['refresh_token'];
+        await AppSharedPreference.setString(
+            AppSharedPreference.token, newToken ?? '');
+        await AppSharedPreference.setLoginResponse(dataResponse['data']);
+        header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
+      }
+
+      String? cookie =
+          await AppSharedPreference.getString(AppSharedPreference.cookie);
+      print('cookie : $cookie');
+      if (cookie != null) {
+        setCookieFromSession(cookie);
+      }
+      response = await deleteAccess(path, data, overrideHeader: overrideHeader);
+      responseData = HttpUtil.getResponse(response ?? Response('', 0));
+    }
 
     return responseData;
   }
@@ -297,12 +408,11 @@ class HttpClient {
 
   dynamic put(String path, dynamic data,
       {Map<String, String>? overrideHeader}) async {
-
     debugPrint('>>>>>>> [POST] ${_getParsedUrl(path)}');
     debugPrint('>>>>>>> [HEADER] ${header.toString()}');
     debugPrint('>>>>>>> [DATA] ${data.toString()}');
 
-    String? token = await getToken();
+    token = await getToken();
 
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
 
@@ -313,8 +423,52 @@ class HttpClient {
     }
 
     Response? response =
-    await postAccess(path, data, overrideHeader: overrideHeader);
+        await putAccess(path, data, overrideHeader: overrideHeader);
     var responseData = HttpUtil.getResponse(response ?? Response('', 0));
+
+    if (responseData['code'] == 404 ||
+        responseData['code'] == 403 ||
+        responseData['code'] == 401) {
+      Map<String, String> body = {};
+
+      LoginResponseData data = await AppSharedPreference.getLoginResponse();
+      body = {
+        'access_token': data.token?.accessToken ?? '',
+        'refresh_token': data.token?.refreshToken ?? ''
+      };
+
+      final Map<String, String>? requestHeader = header;
+      response = await _client!
+          .post(
+            _getParsedUrl(ServiceUrl.refreshToken),
+            body: HttpUtil.encodeRequestBody(
+                json.encode(body), requestHeader![HttpConstants.contentType]!),
+            headers: requestHeader,
+          )
+          .timeout(Duration(minutes: 2));
+
+      Map<String, dynamic> dataResponse = jsonDecode(response.body);
+      if (dataResponse['code'] == 200) {
+        isRefresh = true;
+        String? newToken = dataResponse['data']['token']['access_token'];
+        token = newToken;
+        refreshToken = dataResponse['data']['token']['refresh_token'];
+        await AppSharedPreference.setString(
+            AppSharedPreference.token, newToken ?? '');
+        await AppSharedPreference.setLoginResponse(dataResponse['data']);
+        header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
+      }
+
+      String? cookie =
+          await AppSharedPreference.getString(AppSharedPreference.cookie);
+      print('cookie : $cookie');
+      if (cookie != null) {
+        setCookieFromSession(cookie);
+      }
+
+      response = await putAccess(path, data, overrideHeader: overrideHeader);
+      responseData = HttpUtil.getResponse(response ?? Response('', 0));
+    }
 
     return responseData;
   }

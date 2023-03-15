@@ -126,6 +126,7 @@ class ProfileNakesPage extends StatelessWidget {
                 AppSharedPreference.remove(AppSharedPreference.hospital);
                 AppSharedPreference.remove(AppSharedPreference.otp);
                 AppSharedPreference.remove(AppSharedPreference.token);
+                AppSharedPreference.remove(AppSharedPreference.loginResponse);
                 AppSharedPreference.remove(AppSharedPreference.cookie);
                 _showMyDialog(context);
 

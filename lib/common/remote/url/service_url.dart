@@ -18,9 +18,11 @@ class ServiceUrl {
   static String updateQuestioner = '$user/update';
   static String forgotPassword = '$user/forgot-password';
 
+
   //auth
   static String auth = 'auth';
   static String newLogin = '$auth/login';
+  static String refreshToken = '$auth/refresh';
 
 
   static String checkUserExist = '$user/check-availability';

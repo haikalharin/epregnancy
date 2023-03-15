@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:PregnancyApp/data/model/chat_model/chat_dialog_model.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
@@ -32,6 +33,7 @@ class AppSharedPreference {
   static const String _userFirebase = "user";
   static const String _usernameRegister = "_usernameRegister";
   static const String userRegister = "_userRegister";
+  static const String loginResponse = "_loginResponse";
   static const String role = "role";
   static const String baby = "baby";
   static const String babyProgress = "babyProfress";
@@ -72,7 +74,7 @@ class AppSharedPreference {
       Map<String, dynamic> map = jsonDecode(json);
       ChatDialogModel chatDialogModel = ChatDialogModel.fromJson(map);
       return chatDialogModel;
-    } else{
+    } else {
       return ChatDialogModel.empty();
     }
   }
@@ -303,6 +305,60 @@ class AppSharedPreference {
     return person!;
   }
 
+  static Future<LoginResponseData> getLoginResponse() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(loginResponse);
+    if (json != null) {
+      Map<String, dynamic> map = jsonDecode(json);
+      return LoginResponseData.fromJson(map);
+    } else {
+      return const LoginResponseData(
+          user: UserLogin(
+              id: '',
+              name: '',
+              dob: '',
+              username: '',
+              status: '',
+              createdDate: '',
+              modifiedDate: '',
+              email: '',
+              mobile: '',
+              imageUrl: '',
+              hospitalId: '',
+              hospital: HospitalLogin(
+                  id: '',
+                  alias: '',
+                  name: '',
+                  address: '',
+                  city: '',
+                  postalCode: '',
+                  phone: '',
+                  email: '',
+                  imageUrl: '')),
+          token: Token(
+              id: '',
+              userId: '',
+              accessToken: '',
+              refreshToken: '',
+              type: '',
+              expiration: '',
+              issuedAt: '',
+              isExpired: false,
+              isDelete: false));
+    }
+  }
+  static setLoginModelResponse(LoginResponseData data) async {
+    String json = jsonEncode(data);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(loginResponse, json);
+  }
+
+  static setLoginResponse(Map<String,dynamic> data) async {
+    String json = jsonEncode(data);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(loginResponse, json);
+  }
+
   static Future<void> setPerson(PersonModel person) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('person', json.encode(person.toJson()));
@@ -342,6 +398,7 @@ class AppSharedPreference {
     }
     return baby!;
   }
+
   static Future<void> setBabyDataNew(NewBabyModel baby) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('babyDataNew', json.encode(baby.toJson()));

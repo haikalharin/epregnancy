@@ -40,9 +40,7 @@ class HttpUtil {
           json.decode(response.body),
         );
       case 401 :
-        return throw UnAuthorizeException(
-          json.decode(response.body),
-        );
+        return _getSuccessResponse(response);
       default:
         return _getSuccessResponse(response);
     }
