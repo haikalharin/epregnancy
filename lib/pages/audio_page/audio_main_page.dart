@@ -29,7 +29,7 @@ class _AudioMainPageState extends State<AudioMainPage> {
         width: MediaQuery.of(context).size.width,
         decoration:  const BoxDecoration(
           gradient: LinearGradient(
-            colors: [EpregnancyColors.whiteBlue, Colors.white, Colors.white],
+            colors: [EpregnancyColors.primerSoft2, Colors.white, Colors.white],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter
           )

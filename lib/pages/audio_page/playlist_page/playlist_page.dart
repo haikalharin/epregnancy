@@ -47,7 +47,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
         decoration: const BoxDecoration(
             gradient: LinearGradient(
-                colors: [EpregnancyColors.primer, Colors.white, Colors.white],
+                colors: [EpregnancyColors.primerSoft2, Colors.white, Colors.white],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter)),
         child: SingleChildScrollView(

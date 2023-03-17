@@ -241,60 +241,63 @@ class _Card1State extends State<Card1> {
             //   ),
             // ),
 
-            ScrollOnExpand(
-              scrollOnExpand: true,
-              scrollOnCollapse: false,
-              child: ExpandablePanel(
-                controller: additionalInfoController,
-                theme: const ExpandableThemeData(
-                    headerAlignment: ExpandablePanelHeaderAlignment.center,
-                    tapBodyToCollapse: true,
-                    iconSize: 30),
-                header: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      "Layanan",
-                      style: TextStyle(
-                          color: EpregnancyColors.primer,
-                          fontWeight: FontWeight.bold),
-                      // style: Theme.of(context).textTheme.body2,
-                    )),
-                collapsed: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 1,
-                  color: Colors.grey.shade300,
+            Visibility(
+              visible: false,
+              child: ScrollOnExpand(
+                scrollOnExpand: true,
+                scrollOnCollapse: false,
+                child: ExpandablePanel(
+                  controller: additionalInfoController,
+                  theme: const ExpandableThemeData(
+                      headerAlignment: ExpandablePanelHeaderAlignment.center,
+                      tapBodyToCollapse: true,
+                      iconSize: 30),
+                  header: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "Layanan",
+                        style: TextStyle(
+                            color: EpregnancyColors.primer,
+                            fontWeight: FontWeight.bold),
+                        // style: Theme.of(context).textTheme.body2,
+                      )),
+                  collapsed: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 1,
+                    color: Colors.grey.shade300,
+                  ),
+                  expanded: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // for (var _ in Iterable.generate(5))
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 1,
+                        color: Colors.grey.shade300,
+                        margin: EdgeInsets.only(bottom: 10),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Html(
+                            data: widget.isPatient
+                                ? remoteConfigGetString(
+                                    StringConstant.termAndConditionUserBody1)
+                                : remoteConfigGetString(
+                                    StringConstant.termAndConditionMidwifeBody1),
+                          )),
+                    ],
+                  ),
+                  builder: (_, collapsed, expanded) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                      child: Expandable(
+                        collapsed: collapsed,
+                        expanded: expanded,
+                        theme: const ExpandableThemeData(crossFadePoint: 0),
+                      ),
+                    );
+                  },
                 ),
-                expanded: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // for (var _ in Iterable.generate(5))
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 1,
-                      color: Colors.grey.shade300,
-                      margin: EdgeInsets.only(bottom: 10),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Html(
-                          data: widget.isPatient
-                              ? remoteConfigGetString(
-                                  StringConstant.termAndConditionUserBody1)
-                              : remoteConfigGetString(
-                                  StringConstant.termAndConditionMidwifeBody1),
-                        )),
-                  ],
-                ),
-                builder: (_, collapsed, expanded) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    child: Expandable(
-                      collapsed: collapsed,
-                      expanded: expanded,
-                      theme: const ExpandableThemeData(crossFadePoint: 0),
-                    ),
-                  );
-                },
               ),
             ),
           ],
@@ -342,60 +345,63 @@ class _Card2State extends State<Card2> {
             //   ),
             // ),
 
-            ScrollOnExpand(
-              scrollOnExpand: true,
-              scrollOnCollapse: false,
-              child: ExpandablePanel(
-                controller: additionalInfoController,
-                theme: const ExpandableThemeData(
-                    headerAlignment: ExpandablePanelHeaderAlignment.center,
-                    tapBodyToCollapse: true,
-                    iconSize: 30),
-                header: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      "Informasi yang dibagikan",
-                      style: TextStyle(
-                          color: EpregnancyColors.primer,
-                          fontWeight: FontWeight.bold),
-                      // style: Theme.of(context).textTheme.body2,
-                    )),
-                collapsed: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 1,
-                  color: Colors.grey.shade300,
+            Visibility(
+              visible: false,
+              child: ScrollOnExpand(
+                scrollOnExpand: true,
+                scrollOnCollapse: false,
+                child: ExpandablePanel(
+                  controller: additionalInfoController,
+                  theme: const ExpandableThemeData(
+                      headerAlignment: ExpandablePanelHeaderAlignment.center,
+                      tapBodyToCollapse: true,
+                      iconSize: 30),
+                  header: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "Informasi yang dibagikan",
+                        style: TextStyle(
+                            color: EpregnancyColors.primer,
+                            fontWeight: FontWeight.bold),
+                        // style: Theme.of(context).textTheme.body2,
+                      )),
+                  collapsed: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 1,
+                    color: Colors.grey.shade300,
+                  ),
+                  expanded: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // for (var _ in Iterable.generate(5))
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 1,
+                        color: Colors.grey.shade300,
+                        margin: EdgeInsets.only(bottom: 10),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Html(
+                            data: widget.isPatient
+                                ? remoteConfigGetString(
+                                    StringConstant.termAndConditionUserBody2)
+                                : remoteConfigGetString(
+                                    StringConstant.termAndConditionMidwifeBody2),
+                          )),
+                    ],
+                  ),
+                  builder: (_, collapsed, expanded) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                      child: Expandable(
+                        collapsed: collapsed,
+                        expanded: expanded,
+                        theme: const ExpandableThemeData(crossFadePoint: 0),
+                      ),
+                    );
+                  },
                 ),
-                expanded: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // for (var _ in Iterable.generate(5))
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 1,
-                      color: Colors.grey.shade300,
-                      margin: EdgeInsets.only(bottom: 10),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Html(
-                          data: widget.isPatient
-                              ? remoteConfigGetString(
-                                  StringConstant.termAndConditionUserBody2)
-                              : remoteConfigGetString(
-                                  StringConstant.termAndConditionMidwifeBody2),
-                        )),
-                  ],
-                ),
-                builder: (_, collapsed, expanded) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    child: Expandable(
-                      collapsed: collapsed,
-                      expanded: expanded,
-                      theme: const ExpandableThemeData(crossFadePoint: 0),
-                    ),
-                  );
-                },
               ),
             ),
           ],

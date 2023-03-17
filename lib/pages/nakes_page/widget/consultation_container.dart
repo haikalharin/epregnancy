@@ -46,10 +46,11 @@ class ConsultationContainer extends StatelessWidget {
                 consultationEnum == ConsultationEnum.newest
                     ? StringConstant.baru
                     : StringConstant.onGoing,
+                maxLines: 2,
                 style: TextStyle(
                     color: EpregnancyColors.blackBack,
                     fontWeight: FontWeight.w500,
-                    fontSize: 10.sp,
+                    fontSize: 9.sp,
                     height: 1.5),
               )),
               Expanded(

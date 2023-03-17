@@ -83,23 +83,6 @@ class _GamesPageState extends State<GamesPage> {
                                   image: NetworkImage(
                                       state.gamesResponse![index].coverUrl!),
                                   fit: BoxFit.fill)),
-                          child: Column(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: EpregnancyColors.white.withAlpha(150)),
-                                child: Text(
-                                  state.gamesResponse![index].name ?? '',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            ],
-                          ),
                         ),
                       );
                     }));
