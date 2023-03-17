@@ -395,6 +395,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 end: Alignment.bottomCenter)),
                         child: Column(
                           children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                state.user?.isPregnant == true &&
+                                        state.user?.babies?.length != 0
+                                    ? BabySectionWidget(
+                                        state: state,
+                                        one: widget.one,
+                                        tooltipController: tooltipController,
+                                        psTriggerTooltip: _psTriggerTooltip)
+                                    : Container(),
+                              ],
+                            ),
                             state.showGuide == true
                                 ? Showcase(
                                     key: widget.two ?? GlobalKey(),

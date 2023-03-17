@@ -187,16 +187,16 @@ class _ListForumWidgetState extends State<ListForumWidget> {
                                           ),
                                         ),
 
-                                        // widget.listConsul[index].userId == widget.userId ?
-                                        // InkWell(
-                                        //   onTap: (){
-                                        //     // todo delete postingan
-                                        //     Injector.resolve<ConsultationPageBloc>().add(ConsultationDeletePostEvent(widget.listConsul[index].id));
-                                        //     // print("post id : ${widget.listConsul[index].id}");
-                                        //   },
-                                        //     child: SvgPicture.asset('assets/icDelete.svg', color: Colors.black,)): const SizedBox.shrink(),
+                                        widget.listConsul[index].userId == widget.userId ?
+                                        InkWell(
+                                          onTap: (){
+                                            // todo delete postingan
+                                            Injector.resolve<ConsultationPageBloc>().add(ConsultationDeletePostEvent(widget.listConsul[index].id));
+                                            // print("post id : ${widget.listConsul[index].id}");
+                                          },
+                                            child: SvgPicture.asset('assets/icDelete.svg', color: Colors.black,)): const SizedBox.shrink(),
 
-                                        // Icon(Icons.ios_share)
+                                        Icon(Icons.ios_share)
                                       ],
                                     ),
                                   ),

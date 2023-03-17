@@ -125,7 +125,13 @@ class HttpClient {
                 json.encode(body), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .timeout(Duration(minutes: 2));
+          .timeout(Duration(minutes: 2)).interceptWithAlice(
+          F.appFlavor == Flavor.PRODUCTION
+              ? aliceProd
+              : F.appFlavor == Flavor.STAGING
+              ? aliceStaging
+              : aliceDev,
+          body: path);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -137,17 +143,20 @@ class HttpClient {
             AppSharedPreference.token, newToken ?? '');
         await AppSharedPreference.setLoginResponse(dataResponse['data']);
         header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
-      }
+        String? cookie =
+            await AppSharedPreference.getString(AppSharedPreference.cookie);
+        print('cookie : $cookie');
+        if (cookie != null) {
+          setCookieFromSession(cookie);
+        }
 
-      String? cookie =
-          await AppSharedPreference.getString(AppSharedPreference.cookie);
-      print('cookie : $cookie');
-      if (cookie != null) {
-        setCookieFromSession(cookie);
+        response = await getAccess(path, queryParameters: queryParameters);
+        responseData = HttpUtil.getResponse(response ?? Response('', 0));
+      } else if (dataResponse['code'] == 401) {
+        responseData = UnAuthorizeException(
+          json.decode(response.body),
+        );
       }
-
-      response = await getAccess(path, queryParameters: queryParameters);
-      responseData = HttpUtil.getResponse(response ?? Response('', 0));
     }
     return responseData;
   }
@@ -256,7 +265,13 @@ class HttpClient {
                 json.encode(body), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .timeout(Duration(minutes: 2));
+          .timeout(Duration(minutes: 2)).interceptWithAlice(
+          F.appFlavor == Flavor.PRODUCTION
+              ? aliceProd
+              : F.appFlavor == Flavor.STAGING
+              ? aliceStaging
+              : aliceDev,
+          body: path);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -268,17 +283,21 @@ class HttpClient {
             AppSharedPreference.token, newToken ?? '');
         await AppSharedPreference.setLoginResponse(dataResponse['data']);
         header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
-      }
 
-      String? cookie =
-          await AppSharedPreference.getString(AppSharedPreference.cookie);
-      print('cookie : $cookie');
-      if (cookie != null) {
-        setCookieFromSession(cookie);
-      }
+        String? cookie =
+            await AppSharedPreference.getString(AppSharedPreference.cookie);
+        print('cookie : $cookie');
+        if (cookie != null) {
+          setCookieFromSession(cookie);
+        }
 
-      response = await postAccess(path, data, overrideHeader: overrideHeader);
-      responseData = HttpUtil.getResponse(response ?? Response('', 0));
+        response = await postAccess(path, data, overrideHeader: overrideHeader);
+        responseData = HttpUtil.getResponse(response ?? Response('', 0));
+      } else if (dataResponse['code'] == 401) {
+        responseData = UnAuthorizeException(
+          json.decode(response.body),
+        );
+      }
     }
 
     return responseData;
@@ -348,7 +367,13 @@ class HttpClient {
                 json.encode(body), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .timeout(Duration(minutes: 2));
+          .timeout(Duration(minutes: 2)).interceptWithAlice(
+          F.appFlavor == Flavor.PRODUCTION
+              ? aliceProd
+              : F.appFlavor == Flavor.STAGING
+              ? aliceStaging
+              : aliceDev,
+          body: path);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -360,16 +385,21 @@ class HttpClient {
             AppSharedPreference.token, newToken ?? '');
         await AppSharedPreference.setLoginResponse(dataResponse['data']);
         header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
-      }
 
-      String? cookie =
-          await AppSharedPreference.getString(AppSharedPreference.cookie);
-      print('cookie : $cookie');
-      if (cookie != null) {
-        setCookieFromSession(cookie);
+        String? cookie =
+            await AppSharedPreference.getString(AppSharedPreference.cookie);
+        print('cookie : $cookie');
+        if (cookie != null) {
+          setCookieFromSession(cookie);
+        }
+        response =
+            await deleteAccess(path, data, overrideHeader: overrideHeader);
+        responseData = HttpUtil.getResponse(response ?? Response('', 0));
+      } else if (dataResponse['code'] == 401) {
+        responseData = UnAuthorizeException(
+          json.decode(response.body),
+        );
       }
-      response = await deleteAccess(path, data, overrideHeader: overrideHeader);
-      responseData = HttpUtil.getResponse(response ?? Response('', 0));
     }
 
     return responseData;
@@ -445,7 +475,13 @@ class HttpClient {
                 json.encode(body), requestHeader![HttpConstants.contentType]!),
             headers: requestHeader,
           )
-          .timeout(Duration(minutes: 2));
+          .timeout(Duration(minutes: 2)).interceptWithAlice(
+          F.appFlavor == Flavor.PRODUCTION
+              ? aliceProd
+              : F.appFlavor == Flavor.STAGING
+              ? aliceStaging
+              : aliceDev,
+          body: path);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -457,17 +493,20 @@ class HttpClient {
             AppSharedPreference.token, newToken ?? '');
         await AppSharedPreference.setLoginResponse(dataResponse['data']);
         header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
-      }
+        String? cookie =
+            await AppSharedPreference.getString(AppSharedPreference.cookie);
+        print('cookie : $cookie');
+        if (cookie != null) {
+          setCookieFromSession(cookie);
+        }
 
-      String? cookie =
-          await AppSharedPreference.getString(AppSharedPreference.cookie);
-      print('cookie : $cookie');
-      if (cookie != null) {
-        setCookieFromSession(cookie);
+        response = await putAccess(path, data, overrideHeader: overrideHeader);
+        responseData = HttpUtil.getResponse(response ?? Response('', 0));
+      } else if (dataResponse['code'] == 401) {
+        responseData = UnAuthorizeException(
+          json.decode(response.body),
+        );
       }
-
-      response = await putAccess(path, data, overrideHeader: overrideHeader);
-      responseData = HttpUtil.getResponse(response ?? Response('', 0));
     }
 
     return responseData;
