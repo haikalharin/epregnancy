@@ -9,10 +9,10 @@ class DateFormatter {
   static DateFormat monthOnly = DateFormat.MMMM('id');
 
 
-  static  DateFormat dateFormatHistory =  DateFormat('dd MMM yyyy . hh:mm');
+  static  DateFormat dateFormatHistory =  DateFormat('dd MMM yyyy . HH:mm');
 
   static  DateFormat dateFormatWithSpace =  DateFormat('d MMMM yyyy');
   static  DateFormat dateFormatChat =  DateFormat('d MMM yyyy');
-  static  DateFormat dateFormatChatToday =  DateFormat('hh:mm');
+  static  DateFormat dateFormatChatToday =  DateFormat('HH:mm');
 
 }
