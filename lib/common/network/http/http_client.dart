@@ -243,6 +243,8 @@ class HttpClient {
     header![HttpHeaders.authorizationHeader] = 'Bearer $token';
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
+
+    // todo fix refresh token
     Response? response =
         await postAccess(path, data, overrideHeader: overrideHeader);
     var responseData = HttpUtil.getResponse(response ?? Response('', 0));
@@ -251,10 +253,10 @@ class HttpClient {
         responseData['code'] == 403 ||
         responseData['code'] == 401) {
       Map<String, String> body = {};
-      LoginResponseData data = await AppSharedPreference.getLoginResponse();
+      LoginResponseData loginData = await AppSharedPreference.getLoginResponse();
       body = {
-        'access_token': data.token?.accessToken ?? '',
-        'refresh_token': data.token?.refreshToken ?? ''
+        'access_token': loginData.token?.accessToken ?? '',
+        'refresh_token': loginData.token?.refreshToken ?? ''
       };
 
       final Map<String, String>? requestHeader = header;
@@ -284,6 +286,7 @@ class HttpClient {
         await AppSharedPreference.setLoginResponse(dataResponse['data']);
         header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
 
+        // post cookie
         String? cookie =
             await AppSharedPreference.getString(AppSharedPreference.cookie);
         print('cookie : $cookie');
@@ -345,7 +348,7 @@ class HttpClient {
     // TODO REMOVE THIS JUST FOR DEV PURPOSE
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
     Response? response =
-        await delete(path, data, overrideHeader: overrideHeader);
+        await deleteAccess(path, data, overrideHeader: overrideHeader);
     var responseData = HttpUtil.getResponse(response ?? Response('', 0));
 
     if (responseData['code'] == 404 ||
@@ -353,10 +356,10 @@ class HttpClient {
         responseData['code'] == 401) {
       Map<String, String> body = {};
 
-      LoginResponseData data = await AppSharedPreference.getLoginResponse();
+      LoginResponseData loginData = await AppSharedPreference.getLoginResponse();
       body = {
-        'access_token': data.token?.accessToken ?? '',
-        'refresh_token': data.token?.refreshToken ?? ''
+        'access_token': loginData.token?.accessToken ?? '',
+        'refresh_token': loginData.token?.refreshToken ?? ''
       };
 
       final Map<String, String>? requestHeader = header;
@@ -377,6 +380,7 @@ class HttpClient {
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
+
         isRefresh = true;
         String? newToken = dataResponse['data']['token']['access_token'];
         token = newToken;
