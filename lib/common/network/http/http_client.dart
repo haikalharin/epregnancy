@@ -131,7 +131,7 @@ class HttpClient {
               : F.appFlavor == Flavor.STAGING
               ? aliceStaging
               : aliceDev,
-          body: path);
+          body: body);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -271,7 +271,7 @@ class HttpClient {
               : F.appFlavor == Flavor.STAGING
               ? aliceStaging
               : aliceDev,
-          body: path);
+          body: body);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -373,7 +373,7 @@ class HttpClient {
               : F.appFlavor == Flavor.STAGING
               ? aliceStaging
               : aliceDev,
-          body: path);
+          body: body);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -481,7 +481,7 @@ class HttpClient {
               : F.appFlavor == Flavor.STAGING
               ? aliceStaging
               : aliceDev,
-          body: path);
+          body: body);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
