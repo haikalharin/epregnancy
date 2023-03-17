@@ -46,42 +46,6 @@
       "client_info": {
         "mobilesdk_app_id": "1:1088754075559:android:e3a7de535c735be5fe5882",
         "android_client_info": {
-          "package_name": "co.id.az.komunitaz.dev"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAyAUb34zPv2yFYc9nlqRGNWzhib72OX1o"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1088754075559-3aq0ucvvh2t51njb8kavi5foku92efvl.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1088754075559-5ff8dod4c93tc129f99sk127mjkpm5e1.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.pregnancyApp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1088754075559:android:7ef672d7edb7fc54fe5882",
-        "android_client_info": {
           "package_name": "co.id.az.komunitaz.staging"
         }
       },

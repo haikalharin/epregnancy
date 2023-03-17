@@ -78,7 +78,7 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
     try {
       UserModel? userModel = await AppSharedPreference.getUserRegister();
       OtpModel? otpModel = await AppSharedPreference.getOtp();
-      if(Configurations.mode == StringConstant.prod) {
+
         bool isActive = false;
         ResponseModel response =
         await userRepository.verifyOtp(
@@ -94,11 +94,6 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
         } else {
           yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
         }
-      } else{
-        yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess,
-            userInfo:userModel);
-      }
     } on OtpErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

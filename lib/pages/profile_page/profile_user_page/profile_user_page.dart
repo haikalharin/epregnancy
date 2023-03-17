@@ -17,6 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
+import '../../../common/network/http/http_client.dart';
 import '../../../data/firebase/g_authentication.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../utils/function_utils.dart';
@@ -509,7 +510,6 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   alignment: Alignment.bottomRight,
                                   child: InkWell(
                                     onTap: () async {
-                                      //
                                       await GAuthentication.signOut(
                                           context: context);
                                       // await AppSharedPreference.clear();
@@ -527,6 +527,8 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                           AppSharedPreference.otp);
                                       await AppSharedPreference.remove(
                                           AppSharedPreference.token);
+                                      await AppSharedPreference.remove(
+                                          AppSharedPreference.loginResponse);
                                       await AppSharedPreference.remove(
                                           AppSharedPreference.cookie);
                                       _showMyDialog(context);

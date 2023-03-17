@@ -169,6 +169,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         loginResponseData = response.data;
         // set jwt token
         await AppSharedPreference.setString(AppSharedPreference.token, loginResponseData!.token!.accessToken!);
+        await AppSharedPreference.setLoginModelResponse(loginResponseData);
         final ResponseModel<UserModel> userInfoResponse = await userRepository.getUserInfo();
         UserModel _userModel = userInfoResponse.data;
         UserModel userModel = _userModel.copyWith(
@@ -177,24 +178,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await AppSharedPreference.setUser(_userModel);
         await AppSharedPreference.remove("_userRegister");
         // await AppSharedPreference.setUser(userModel);no
-        if(loginResponseData.user?.hospital != null) {
-          print('hospital model : ${loginResponseData.user?.hospital}');
-          HospitalModel hospitalModel = HospitalModel(
-              id: loginResponseData.user?.hospital?.id,
-              alias: loginResponseData.user?.hospital?.alias,
-              name: loginResponseData.user?.hospital?.name,
-              address: loginResponseData.user?.hospital?.address,
-              city: loginResponseData.user?.hospital?.city,
+        if(_userModel.hospital != null) {
+          print('hospital model : ${_userModel.hospital}');
+          HospitalModel hospital = HospitalModel(
+              id:_userModel.hospital?.id,
+              alias: _userModel.hospital?.alias,
+              name: _userModel.hospital?.name,
+              address: _userModel.hospital?.address,
+              city: _userModel.hospital?.city,
               country: "",
-              postalCode: loginResponseData.user?.hospital?.postalCode,
-              phone: loginResponseData.user?.hospital?.phone,
-              email: loginResponseData.user?.hospital?.email,
+              postalCode: _userModel.hospital?.postalCode,
+              phone: _userModel.hospital?.phone,
+              email: _userModel.hospital?.email,
               latitude: 0.0,
               longitude: 0.0, status: "",
-              imageUrl: loginResponseData.user?.hospital?.imageUrl,
+              imageUrl:_userModel.hospital?.imageUrl,
               coverUrl: "", isDelete: false, createdBy: "", createdFrom: "", createdDate: "", modifiedBy: "",
               modifiedFrom: "", modifiedDate: "", pin: 0, pinValidStart: "", pinValidEnd: "");
-          await AppSharedPreference.setHospital(hospitalModel);
+          await AppSharedPreference.setHospital(hospital);
         }
 
         bool isActive = false;
@@ -261,6 +262,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         loginResponseData = response.data;
         // set jwt token
         await AppSharedPreference.setString(AppSharedPreference.token, loginResponseData!.token!.accessToken!);
+        await AppSharedPreference.setLoginModelResponse(loginResponseData);
         final ResponseModel<UserModel> userInfoResponse = await userRepository.getUserInfo();
         UserModel _userModel = userInfoResponse.data;
         UserModel userModel = _userModel.copyWith(
@@ -271,7 +273,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         // await AppSharedPreference.setUser(userModel);no
         if(loginResponseData.user?.hospital != null) {
           print('hospital model : ${loginResponseData.user?.hospital}');
-          HospitalModel hospitalModel = HospitalModel(
+          HospitalModel hospital = HospitalModel(
               id: loginResponseData.user?.hospital?.id,
               alias: loginResponseData.user?.hospital?.alias,
               name: loginResponseData.user?.hospital?.name,
@@ -286,7 +288,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               imageUrl: loginResponseData.user?.hospital?.imageUrl,
               coverUrl: "", isDelete: false, createdBy: "", createdFrom: "", createdDate: "", modifiedBy: "",
               modifiedFrom: "", modifiedDate: "", pin: 0, pinValidStart: "", pinValidEnd: "");
-          await AppSharedPreference.setHospital(hospitalModel);
+          await AppSharedPreference.setHospital(hospital);
         }
 
         bool isActive = false;

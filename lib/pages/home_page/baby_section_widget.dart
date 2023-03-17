@@ -140,7 +140,7 @@ class BabySectionWidget extends StatelessWidget {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  tooltipController.hideTooltip(
+                                  tooltipController.showTooltip(
                                       immediately: true);
                                 },
                                 child: Hero(
@@ -332,7 +332,7 @@ class BabySectionWidget extends StatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
-                                tooltipController.hideTooltip(
+                                tooltipController.showTooltip(
                                     immediately: true);
                               },
                               child: Hero(

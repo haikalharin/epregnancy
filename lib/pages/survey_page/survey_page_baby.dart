@@ -114,7 +114,12 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
               onWillPop: () {
                 // todo handle back press device
                 if (state.page == 3) {
-                  Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(2));
+                  if(widget.editName == true){
+                    Navigator.pop(context);
+                  }else {
+                    Injector.resolve<SurveyPageBloc>()
+                        .add(SurveyPageChanged(2));
+                  }
                   return Future.value(false);
                 } else if (state.page == 2) {
                   // Navigator.pop(context);
@@ -148,8 +153,12 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                     onTap: () {
                       // todo handle back
                       if (state.page == 3) {
-                        Injector.resolve<SurveyPageBloc>()
-                            .add(SurveyPageChanged(2));
+                        if(widget.editName == true){
+                          Navigator.pop(context);
+                        }else {
+                          Injector.resolve<SurveyPageBloc>()
+                              .add(SurveyPageChanged(2));
+                        }
                       } else if (state.page == 2) {
                         if(widget.isEdit == true) {
                           Navigator.pop(context);

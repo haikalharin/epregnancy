@@ -34,6 +34,7 @@ import 'package:toast/toast.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../common/widget/primary_btn.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../env.dart';
@@ -225,17 +226,69 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  left: 16.w,
-                                  right: 50,
-                                ),
-                                child: Text("Halo, $name",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: EpregnancyColors.primer),
-                                    textAlign: TextAlign.start),
-                              ),
+                              child: state.baby != null &&
+                                      state.baby?.baby?.name != ''
+                                  ? Container(
+                                      margin: EdgeInsets.only(
+                                        left: 16.w,
+                                        right: 50,
+                                      ),
+                                      child: Text(
+                                          "Halo, ${state.baby?.baby?.name}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: EpregnancyColors.primer),
+                                          textAlign: TextAlign.start),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        print("Beri nama bayi");
+                                        Navigator.of(context).pushNamed(
+                                            RouteName.surveyPageBaby,
+                                            arguments: {
+                                              "is_edit": true,
+                                              "edit_name": true
+                                            });
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                            left: 16.w, right: 60.w),
+                                        padding: EdgeInsets.only(left: 16.w),
+                                        decoration: BoxDecoration(
+                                          color: EpregnancyColors.primer,
+                                          border: Border.all(
+                                            color: EpregnancyColors.primer,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                                child: const Text(
+                                              'Beri nama bayi',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: EpregnancyColors.white,
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 3,
+                                            )),
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                  Icons
+                                                      .arrow_forward_ios_rounded,
+                                                  size: 16,
+                                                  color: EpregnancyColors.white,
+                                                ))
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                             ),
                             // app bar action section
                             SizedBox(
@@ -326,151 +379,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 ),
                               ),
                             )
-                            // _hospitalModel?.name != ""
-                            //     ? Expanded(
-                            //         child: SizedBox(
-                            //           width: MediaQuery.of(context)
-                            //                   .size
-                            //                   .width /
-                            //               2.5,
-                            //           // alignment: Alignment.centerRight,
-                            //           child: Align(
-                            //             alignment:
-                            //                 Alignment.centerRight,
-                            //             child: InkWell(
-                            //               onTap: () {
-                            //                 // todo puskesmas select
-                            //                 if (_hospitalModel
-                            //                         ?.name ==
-                            //                     "") {
-                            //                   Navigator.pushNamed(
-                            //                           context,
-                            //                           RouteName
-                            //                               .locationSelect)
-                            //                       .then((value) {
-                            //                     if (value != null) {
-                            //                       setState(() {
-                            //                         _hospitalModel =
-                            //                             value
-                            //                                 as HospitalModel?;
-                            //                       });
-                            //                     }
-                            //                   });
-                            //                 }
-                            //               },
-                            //               child: Align(
-                            //                 alignment: Alignment
-                            //                     .centerRight,
-                            //                 child: Container(
-                            //                   margin:
-                            //                       EdgeInsets.only(
-                            //                           left: 0.w,
-                            //                           right: 10.w,
-                            //                           bottom: 20),
-                            //                   child: Row(
-                            //                     mainAxisSize:
-                            //                         MainAxisSize
-                            //                             .max,
-                            //                     crossAxisAlignment:
-                            //                         CrossAxisAlignment
-                            //                             .end,
-                            //                     mainAxisAlignment:
-                            //                         MainAxisAlignment
-                            //                             .end,
-                            //                     children: [
-                            //                       SvgPicture.asset(
-                            //                           'assets/icLocation.svg'),
-                            //                       SizedBox(
-                            //                         width: 10.w,
-                            //                       ),
-                            //                       Expanded(
-                            //                         child: Text(
-                            //                           _hospitalModel
-                            //                                   ?.name ??
-                            //                               'Pilih Puskesmas',
-                            //                           style: TextStyle(
-                            //                               color: Colors
-                            //                                   .black),
-                            //                           // textAlign: TextAlign.right,
-                            //                           overflow:
-                            //                               TextOverflow
-                            //                                   .visible,
-                            //                         ),
-                            //                       ),
-                            //                     ],
-                            //                   ),
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       )
-                            //     : SizedBox(
-                            //         width: MediaQuery.of(context)
-                            //                 .size
-                            //                 .width /
-                            //             2.5,
-                            //         // alignment: Alignment.centerRight,
-                            //         child: Align(
-                            //           alignment:
-                            //               Alignment.centerRight,
-                            //           child: InkWell(
-                            //             onTap: () {
-                            //               Navigator.pushNamed(
-                            //                       context,
-                            //                       RouteName
-                            //                           .locationSelect)
-                            //                   .then((value) {
-                            //                 if (value != null) {
-                            //                   setState(() {
-                            //                     _hospitalModel = value
-                            //                         as HospitalModel?;
-                            //                   });
-                            //                 }
-                            //               });
-                            //             },
-                            //             child: Align(
-                            //               alignment:
-                            //                   Alignment.centerRight,
-                            //               child: Container(
-                            //                 margin: EdgeInsets.only(
-                            //                     left: 0.w,
-                            //                     right: 10.w,
-                            //                     bottom: 20),
-                            //                 child: Row(
-                            //                   mainAxisSize:
-                            //                       MainAxisSize.max,
-                            //                   crossAxisAlignment:
-                            //                       CrossAxisAlignment
-                            //                           .end,
-                            //                   mainAxisAlignment:
-                            //                       MainAxisAlignment
-                            //                           .end,
-                            //                   children: [
-                            //                     SvgPicture.asset(
-                            //                         'assets/icLocation.svg'),
-                            //                     SizedBox(
-                            //                       width: 10.w,
-                            //                     ),
-                            //                     Expanded(
-                            //                       child: Text(
-                            //                         'Pilih Puskesmas',
-                            //                         style: TextStyle(
-                            //                             color: Colors
-                            //                                 .black),
-                            //                         // textAlign: TextAlign.right,
-                            //                         overflow:
-                            //                             TextOverflow
-                            //                                 .visible,
-                            //                       ),
-                            //                     ),
-                            //                   ],
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       )
                           ],
                         ),
                       ),
@@ -490,94 +398,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Visibility(
-                                  visible: showEditBaby,
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).pushNamed(
-                                          RouteName.surveyPageBaby,
-                                          arguments: {
-                                            "is_edit": true,
-                                            "edit_name": true
-                                          }).then((value) {
-                                        print("sukses edit baby name");
-                                        Injector.resolve<HomePageBloc>()
-                                            .add(HomeFetchDataEvent());
-                                      });
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10.h),
-                                      padding: EdgeInsets.only(
-                                          top: 16.w,
-                                          bottom: 16.w,
-                                          left: 12.w,
-                                          right: 12.w),
-                                      decoration: BoxDecoration(
-                                          color: EpregnancyColors.greyBlue,
-                                          borderRadius:
-                                              BorderRadius.circular(8.w)),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                              "assets/icStroller.svg"),
-                                          SizedBox(
-                                            width: 10.w,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      "Profil Bayi",
-                                                      style: TextStyle(
-                                                          color:
-                                                              EpregnancyColors
-                                                                  .blueDark,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: 12.sp),
-                                                    ),
-                                                    InkWell(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            showEditBaby =
-                                                                false;
-                                                          });
-                                                        },
-                                                        child: Icon(Icons.close,
-                                                            color:
-                                                                EpregnancyColors
-                                                                    .primer)),
-                                                  ],
-                                                ),
-                                                Text(
-                                                  "Anda bisa mengisi nama bayi di profil\ndengan klik spanduk ini",
-                                                  style: TextStyle(
-                                                      color: EpregnancyColors
-                                                          .blueDark,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 12.sp),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
                                 state.user?.isPregnant == true &&
                                         state.user?.babies?.length != 0
                                     ? BabySectionWidget(
@@ -606,11 +426,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               BorderRadius.circular(8.w),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.2),
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
                                               spreadRadius: 5,
                                               blurRadius: 7,
-                                              offset: Offset(0, 3), // changes position of shadow
-                                            )]),
+                                              offset: Offset(0,
+                                                  3), // changes position of shadow
+                                            )
+                                          ]),
                                       child: Column(
                                         children: [
                                           Container(
@@ -655,8 +478,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             color: Colors.grey.withOpacity(0.2),
                                             spreadRadius: 5,
                                             blurRadius: 7,
-                                            offset: Offset(0, 3), // changes position of shadow
-                                          )]),
+                                            offset: Offset(0,
+                                                3), // changes position of shadow
+                                          )
+                                        ]),
                                     child: Column(
                                       children: [
                                         Container(

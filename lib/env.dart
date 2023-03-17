@@ -15,6 +15,8 @@
 final Map<String, dynamic> devEnvironment = <String, dynamic>{
   'host': 'https://igbeyewo.allianz.co.id/',
   'sub_host': '/di/epregnancy/api',
+  'host_vpn': 'https://digitalinovation.dev.azlife.com/',
+  'sub_host_vpn': '/epregnancy/api/uat',
   'websockets': 'wss://igbeyewo.allianz.co.id/di/epregnancy/api/user/',
   'image_host': 'https://image.tmdb.org/t/p/',
   'http_client': 'https',
@@ -22,8 +24,9 @@ final Map<String, dynamic> devEnvironment = <String, dynamic>{
   'consumerKey': 'ck_015ecefc9ecedf3fb4208d7945173ff6bf498728',
   'consumerSecret': 'cs_51a47e2d054bfe8df212b12048cd6f65c6463529',
   'berita':'  http://ds-onlineadvertising.com/syariah/info.php',
-  'mode': 'prod', //dev or prod
+  'mode': 'dev', //dev or prod
   'isShowChucker': true,
+  'isVpn': false,
   'countly_server_url': 'http://idazl0320.srv.allianz/analytics', //dev or prod
   'countly_app_key': 'b910097583621b92a6d8b4ff3db27b17186674b1',//dev or prod
 };
@@ -44,6 +47,24 @@ final Map<String, dynamic> environment = <String, dynamic>{
   'countly_app_key': 'b910097583621b92a6d8b4ff3db27b17186674b1', //dev or prod
 };
 
+final Map<String, dynamic> stagingEnvironment = <String, dynamic>{
+  'host': 'https://igbeyewo.allianz.co.id/',
+  'sub_host': '/di/epregnancy/uat/api',
+  'host_vpn': 'https://digitalinovation.dev.azlife.com/',
+  'sub_host_vpn': '/epregnancy/api/uat',
+  'websockets': 'wss://igbeyewo.allianz.co.id/di/epregnancy/api/user/',
+  'image_host': 'https://image.tmdb.org/t/p/',
+  'http_client': 'https',
+  'wpUrl': 'http://192.168.64.2/panjistore',
+  'consumerKey': 'ck_015ecefc9ecedf3fb4208d7945173ff6bf498728',
+  'consumerSecret': 'cs_51a47e2d054bfe8df212b12048cd6f65c6463529',
+  'berita':'  http://ds-onlineadvertising.com/syariah/info.php',
+  'mode': 'staging', //dev or prod
+  'isShowChucker': true,
+  'isVpn': false,
+  'countly_server_url': 'http://idazl0320.srv.allianz/analytics', //dev or prod
+  'countly_app_key': 'b910097583621b92a6d8b4ff3db27b17186674b1',//dev or prod
+};
 // url web
 // http://192.168.88.39/thekoi/
 // 'wpUrl': 'http://kantor.pkp.co.id/thekoi/index.php',

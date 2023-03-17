@@ -1,9 +1,9 @@
-
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 import '../flavors.dart';
 import '../main_development.dart' as dev;
 import '../main_production.dart' as prod;
+import 'firebase_service.dart';
 
 dynamic getDataValue(dynamic result) => result;
 
@@ -18,8 +18,11 @@ dynamic getTokenExpiredArgument(dynamic result) => result['token_expired'];
 dynamic getIsFromRegisterArgument(dynamic result) => result['is_from_register'];
 
 dynamic getIsPatient(dynamic result) => result['is_patient'];
+
 dynamic getIsEdit(dynamic result) => result['is_edit'];
+
 dynamic getEditName(dynamic result) => result['edit_name'];
+
 dynamic getFromRegister(dynamic result) => result['from_register'];
 
 dynamic getkey(dynamic result) => result['key'];
@@ -68,21 +71,9 @@ String getFormattedUrl(String? url, Map<String, String>? variables) {
 }
 
 String remoteConfigGetString(String key) {
-  if(F.appFlavor == Flavor.PRODUCTION){
-    return prod.firebaseService.remoteConfig.getString(key);
-  } else {
-    var data =  dev.firebaseServiceUtils.remoteConfig.getString(key);
-    print(data);
-    return dev.firebaseServiceUtils.remoteConfig.getString(key);
-  }
+  return FirebaseService().remoteConfig.getString(key);
 }
 
 int remoteConfigGetInt(FirebaseRemoteConfig remoteConfig, String key) {
-  if(F.appFlavor == Flavor.PRODUCTION){
-    return prod.firebaseService.remoteConfig.getInt(key);
-  } else {
-    return dev.firebaseServiceUtils.remoteConfig.getInt(key);
-  }
+    return FirebaseService().remoteConfig.getInt(key);
 }
-
-

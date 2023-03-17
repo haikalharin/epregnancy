@@ -22,6 +22,7 @@ import '../main_default.dart';
 import '../main_development.dart' as dev;
 import '../main_default.dart' as main;
 import '../main_production.dart' as prod;
+import '../main_staging.dart' as staging;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -101,6 +102,9 @@ class FirebaseMessagingService {
     } else if (F.appFlavor == Flavor.PRODUCTION) {
       await prod.flutterLocalNotificationsPlugin
           .show(0, title, body, platform, payload: data);
+    }else if (F.appFlavor == Flavor.STAGING) {
+      await staging.flutterLocalNotificationsPlugin
+          .show(0, title, body, platform, payload: data);
     } else {
       await main.flutterLocalNotificationsPlugin
           .show(0, title, body, platform, payload: data);
@@ -119,6 +123,9 @@ class FirebaseMessagingService {
           onSelectNotification: onSelectNotification);
     } else if (F.appFlavor == Flavor.PRODUCTION) {
       prod.flutterLocalNotificationsPlugin.initialize(initSetttings,
+          onSelectNotification: onSelectNotification);
+    } else if (F.appFlavor == Flavor.STAGING) {
+      staging.flutterLocalNotificationsPlugin.initialize(initSetttings,
           onSelectNotification: onSelectNotification);
     } else {
       main.flutterLocalNotificationsPlugin.initialize(initSetttings,
