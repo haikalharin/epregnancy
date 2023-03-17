@@ -5,6 +5,7 @@ import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import '../../../common/constants/router_constants.dart';
@@ -51,6 +52,25 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
+      bottomNavigationBar: Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+        child: ElevatedButton(
+          onPressed: () async {
+            Injector.resolve<ForgotPasswordPageBloc>()
+                .add(const ForgotPasswordSubmitted());
+          },
+          child: Text("Kirim"),
+          style: ElevatedButton.styleFrom(
+            primary: EpregnancyColors.primer,
+            onPrimary: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+        ),
+      ),
       body: BlocListener<ForgotPasswordPageBloc, ForgotPasswordPageState>(
         listener: (context, state) async {
           if (state.submitStatus == FormzStatus.submissionFailure) {
@@ -127,15 +147,6 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                                   fontSize: 14),
                             ),
                             SizedBox(height: 30),
-                            const Text(
-                              "Email / Nomor Telepon",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-
-                            ),
-                            SizedBox(height: 10),
                             TextField(
                               controller: userNameController,
                               onChanged: (value) {
@@ -150,33 +161,16 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                               },
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(color: Colors.grey[500]),
+                                label: Text("Email"),
                                 hintText:
-                                    'Contoh : email@mail.com / 0857646...',
+                                    'email@mail.com',
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(4.w),
                                 ),
                               ),
                             ),
                             SizedBox(height: 30),
                           ],
-                        ),
-                      ),
-                      Container(
-                        height: 60,
-                        width: 350,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            Injector.resolve<ForgotPasswordPageBloc>()
-                                .add(const ForgotPasswordSubmitted());
-                          },
-                          child: Text("Kirim"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            onPrimary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
                         ),
                       ),
                       SizedBox(height: 20),

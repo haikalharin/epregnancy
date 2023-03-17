@@ -109,7 +109,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
           print('state consultation : ${state.type}');
           if (state.submitStatus == FormzStatus.submissionFailure) {
             SnackBar snackBar = SnackBar(
-                content: Text("Gagal posting ${state.errorMessage}"), backgroundColor: Colors.red);
+                content: Text("Terjadi Kesalahan ${state.errorMessage}"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
             if (state.type == 'update' || state.type == 'delete-post-success') {
