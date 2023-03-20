@@ -152,7 +152,7 @@ class HttpClient {
 
         response = await getAccess(path, queryParameters: queryParameters);
         responseData = HttpUtil.getResponse(response ?? Response('', 0));
-      } else if (dataResponse['code'] == 401) {
+      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 401) {
         responseData = UnAuthorizeException(
           json.decode(response.body),
         );
@@ -296,7 +296,7 @@ class HttpClient {
 
         response = await postAccess(path, data, overrideHeader: overrideHeader);
         responseData = HttpUtil.getResponse(response ?? Response('', 0));
-      } else if (dataResponse['code'] == 401) {
+      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 403) {
         responseData = UnAuthorizeException(
           json.decode(response.body),
         );
@@ -399,7 +399,7 @@ class HttpClient {
         response =
             await deleteAccess(path, data, overrideHeader: overrideHeader);
         responseData = HttpUtil.getResponse(response ?? Response('', 0));
-      } else if (dataResponse['code'] == 401) {
+      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 403) {
         responseData = UnAuthorizeException(
           json.decode(response.body),
         );
@@ -506,7 +506,7 @@ class HttpClient {
 
         response = await putAccess(path, data, overrideHeader: overrideHeader);
         responseData = HttpUtil.getResponse(response ?? Response('', 0));
-      } else if (dataResponse['code'] == 401) {
+      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 403) {
         responseData = UnAuthorizeException(
           json.decode(response.body),
         );
