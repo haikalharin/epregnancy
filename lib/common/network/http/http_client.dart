@@ -132,6 +132,7 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+      updateCookie(response);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -275,6 +276,8 @@ class HttpClient {
               : aliceDev,
           body: body);
 
+      updateCookie(response);
+
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
         isRefresh = true;
@@ -377,6 +380,8 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+
+      updateCookie(response);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -486,6 +491,8 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+
+      updateCookie(response);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
