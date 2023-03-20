@@ -29,13 +29,6 @@ class _LastMenstruationState extends State<LastMenstruation> {
 
   @override
   void initState() {
-    isEdit = widget.isEdit!;
-    if (widget.isEdit == true) {
-      Injector.resolve<SurveyPageBloc>()
-          .add(SurveyDateChanged(widget.baby!.lastMenstruationDate!));
-
-      isEdit = false;
-    }
     super.initState();
   }
 
@@ -43,7 +36,7 @@ class _LastMenstruationState extends State<LastMenstruation> {
   Widget build(BuildContext context) {
     return BlocBuilder<SurveyPageBloc, SurveyPageState>(
       builder: (context, state) {
-        return ListView(
+        return  Column(
           children: [
             Container(
               height: 160,
@@ -56,13 +49,12 @@ class _LastMenstruationState extends State<LastMenstruation> {
               ),
             ),
             Container(
-              color: EpregnancyColors.primerSoft,
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     margin: EdgeInsets.only(bottom: 30, top: 10),
-                    color: EpregnancyColors.primerSoft,
                     child: Center(
                       child: Container(
                         child: Column(
@@ -110,13 +102,15 @@ class _LastMenstruationState extends State<LastMenstruation> {
                                 margin:
                                     const EdgeInsets.only(left: 30, right: 30),
                                 child: DateTimeFormField(
-                                  lastDate: DateTime.now().add(const Duration(days: -8)),
+                                  lastDate: DateTime.now()
+                                      .add(const Duration(days: -8)),
+                                  initialEntryMode:
+                                      DatePickerEntryMode.calendarOnly,
                                   initialValue: state.date.valid
                                       ? DateTime.parse(state.date.value)
-                                      : widget.baby?.id != ""
+                                      : widget.baby?.id != "" && widget.baby?.lastMenstruationDate != null
                                           ? DateTime.parse(widget
-                                                  .baby!.lastMenstruationDate ??
-                                              "00-00-00")
+                                                  .baby!.lastMenstruationDate??"")
                                           : null,
                                   dateFormat: DateFormat('dd/MM/yyyy'),
                                   mode: DateTimeFieldPickerMode.date,

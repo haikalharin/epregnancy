@@ -227,9 +227,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       BabyProgressModel babyProgressModel = BabyProgressModel.empty();
       if(myBaby.length != 0){
-      if (myBaby.last.id != '') {
+      if (myBaby.last.id != '' && myBaby.last.lastMenstruationDate != null ) {
           DateTime dateTimeCreatedAt =
-              DateTime.parse(myBaby.last.lastMenstruationDate!);
+              DateTime.parse(myBaby.last.lastMenstruationDate??"0000-00-00 00:00:00");
           DateTime dateTimeNow = DateTime.now();
           final differenceInDays =
               dateTimeNow.difference(dateTimeCreatedAt).inDays;

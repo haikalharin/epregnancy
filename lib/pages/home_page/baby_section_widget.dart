@@ -13,7 +13,7 @@ class BabySectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return state.showGuide! ? Showcase(
+    return state.showGuide??false ? Showcase(
       key: one?? GlobalKey(),
       title: 'Selamat datang !',
       description: 'Anda akan dengan mudah mengetahui fase kehamilan dengan gambar interaktif yang menunjukkan kondisi janin Anda',

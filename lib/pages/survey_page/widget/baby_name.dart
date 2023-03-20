@@ -29,7 +29,7 @@ class _BabyNameState extends State<BabyName> {
   void initState() {
     isEdit = widget.isEdit!;
     if(isEdit == true){
-      _value.text = widget.baby!.name!;
+      _value.text = widget.baby!.name??"";
       Injector.resolve<SurveyPageBloc>()
           .add(SurveyBabysNameChanged(widget.baby!.name!));
       setState(() {
@@ -46,7 +46,7 @@ class _BabyNameState extends State<BabyName> {
     return BlocBuilder<SurveyPageBloc, SurveyPageState>(
       buildWhen: (previous, current) => previous.name.value != current.name.value,
   builder: (context, state) {
-    return ListView(
+    return Column(
       children: [
         Container(
           height: 160,
@@ -59,14 +59,12 @@ class _BabyNameState extends State<BabyName> {
           ),
         ),
         Container(
-          color: EpregnancyColors.primerSoft,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 margin:
                 EdgeInsets.only(bottom: 30, top: 10),
-                color: EpregnancyColors.primerSoft,
                 child: Center(
                   child: Container(
                     child: Column(

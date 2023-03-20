@@ -19,6 +19,8 @@ import '../../common/services/auth_service.dart';
 import '../../data/firebase/g_authentication.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
+import '../../flavors.dart';
+import '../../main_production.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/string_constans.dart';
 import '../home_page/home_page.dart';
@@ -121,7 +123,24 @@ class _LoginPageState extends State<LoginPage> {
                                                 color: Colors.white)),
                                         onPressed: () {
                                           // Navigator.pop(context);
-                                          aliceDev.getNavigatorKey()?.currentState?.pop();
+                                          if (F.appFlavor ==
+                                              Flavor.PRODUCTION) {
+                                            aliceProd
+                                                .getNavigatorKey()
+                                                ?.currentState
+                                                ?.pop();
+                                          } else if (F.appFlavor ==
+                                              Flavor.DEVELOPMENT) {
+                                            aliceDev
+                                                .getNavigatorKey()
+                                                ?.currentState
+                                                ?.pop();
+                                          }else{
+                                            aliceMain
+                                                .getNavigatorKey()
+                                                ?.currentState
+                                                ?.pop();
+                                          }
                                         }),
                                   )),
                               onTap: () {

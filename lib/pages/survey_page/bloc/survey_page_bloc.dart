@@ -61,26 +61,60 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
 
   Stream<SurveyPageState> _mapSurveyInitEventToState(
       SurveyInitEvent event, SurveyPageState state) async* {
-    var user = await AppSharedPreference.getUser();
-    List<dynamic> myBaby = [];
-    var choice = 0;
-    if (event.isUpdate) {
-      // user = await AppSharedPreference.getUser();
+    try {
+      var user = await AppSharedPreference.getUser();
+      List<dynamic> listBaby = [];
+      var choice = 0;
       ResponseModel response = await userRepository.getBaby(user);
-      myBaby = response.data;
-      if (user.isPregnant == true) {
-        choice = 1;
-      } else if (user.isPlanningPregnancy == true) {
-        choice = 2;
-      } else if (user.isHaveBaby == true) {
-        choice = 3;
+      listBaby = response.data ?? BabyModelApi.empty();
+      BabyModelApi myBaby =
+          listBaby.isNotEmpty ? listBaby.last : BabyModelApi.empty();
+      if (event.isUpdate && response.data != null) {
+        // user = await AppSharedPreference.getUser();
+
+        if (user.isPregnant == true) {
+          choice = 1;
+        } else if (user.isPlanningPregnancy == true) {
+          choice = 2;
+        } else if (user.isHaveBaby == true) {
+          choice = 3;
+        }
       }
+      if (response.code == 200) {
+        if (event.isUpdate && response.data != null) {
+          yield SurveyPageState(
+              submitStatus: FormzStatus.submissionSuccess,
+              type: 'init-data-survey',
+              user: user,
+              page: 1,
+              date: MandatoryFieldValidator.dirty(
+                  myBaby.lastMenstruationDate ?? ""),
+              dataBaby:
+                  listBaby.isNotEmpty ? listBaby.last : BabyModelApi.empty(),
+              choice: choice);
+        } else {
+          yield SurveyPageState(
+              submitStatus: FormzStatus.submissionSuccess,
+              type: 'init-data-survey',
+              user: user,
+              page: 1,
+              choice: choice);
+        }
+      } else {
+        yield SurveyPageState(
+            submitStatus: FormzStatus.submissionSuccess,
+            type: 'init-data-survey',
+            user: user,
+            page: 1,
+            choice: choice);
+      }
+    } on SurveyErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
-    yield SurveyPageState(
-        user: user,
-        page: 1,
-        dataBaby: myBaby.isNotEmpty ? myBaby.last : BabyModelApi.empty(),
-        choice: choice);
   }
 
   SurveyPageState _mapSurveySurveyChoiceToState(
@@ -172,7 +206,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
           ? await AppSharedPreference.getUser()
           : await AppSharedPreference.getUser();
       ResponseModel response = ResponseModel.dataEmpty();
-      if (state.dataBaby?.id != "") {
+      if (state.dataBaby?.id != "" && state.dataBaby?.id != null)  {
         response = await userRepository.updateQuestionerBaby(BabyModelApi(
             id: state.dataBaby?.id,
             name: state.name.value,

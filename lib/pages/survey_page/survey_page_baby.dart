@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -36,10 +37,12 @@ class SurveyPageBaby extends StatefulWidget {
 class _SurveyPageBabyState extends State<SurveyPageBaby> {
   bool isChoice1 = false;
   bool isChoice2 = false;
+  bool isDisplay = false;
   Color color1 = Colors.black;
   Color color2 = Colors.black;
   int val = -1;
   int val2 = -1;
+  final PublishSubject<bool> _streamSurvey = PublishSubject();
 
   @override
   void initState() {
@@ -95,6 +98,12 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
             //                 RouteName.homeScreen,
             //                 ModalRoute.withName(RouteName.homeScreen),
             //               );
+          }  else if (state.submitStatus == FormzStatus.submissionSuccess &&
+              state.type == 'init-data-survey') {
+            if (_streamSurvey != null) {
+              _streamSurvey.sink.add(true);
+               isDisplay = true;
+            }
           }
         },
         child: BlocBuilder<SurveyPageBloc, SurveyPageState>(
@@ -104,7 +113,12 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
               onWillPop: () {
                 // todo handle back press device
                 if (state.page == 3) {
-                  Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(2));
+                  if(widget.editName == true){
+                    Navigator.pop(context);
+                  }else {
+                    Injector.resolve<SurveyPageBloc>()
+                        .add(SurveyPageChanged(2));
+                  }
                   return Future.value(false);
                 } else if (state.page == 2) {
                   // Navigator.pop(context);
@@ -125,7 +139,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                 }
               },
               child: Scaffold(
-                resizeToAvoidBottomInset: false,
+                resizeToAvoidBottomInset: true,
                 appBar: AppBar(
                   elevation: 0.0,
                   backgroundColor: EpregnancyColors.primerSoft,
@@ -138,8 +152,12 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                     onTap: () {
                       // todo handle back
                       if (state.page == 3) {
-                        Injector.resolve<SurveyPageBloc>()
-                            .add(SurveyPageChanged(2));
+                        if(widget.editName == true){
+                          Navigator.pop(context);
+                        }else {
+                          Injector.resolve<SurveyPageBloc>()
+                              .add(SurveyPageChanged(2));
+                        }
                       } else if (state.page == 2) {
                         if(widget.isEdit == true) {
                           Navigator.pop(context);
@@ -168,133 +186,148 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                   //   },
                   // ),
                 ),
-                body: Container(
-                  color: EpregnancyColors.primerSoft,
-                  child: Stack(
-                    children: [
-                      state.page == 2
-                          ? LastMenstruation(
-                              isEdit: widget.isEdit,
-                              baby: state.dataBaby ?? BabyModelApi.empty(),
-                            )
-                          : BabyName(
-                              isEdit: widget.isEdit,
-                              baby: state.dataBaby ?? BabyModelApi.empty()),
-                      Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              // note ada perubahan step
-                              "${state.page - 1} dari 2",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12),
-                            ),
-                            Align(
-                              alignment: Alignment(0, 1),
-                              child: Container(
-                                margin: EdgeInsets.only(top: 10, bottom: 10),
-                                width: MediaQuery.of(context).size.width - 40,
-                                height: 50,
-                                child: RaisedButton(
-                                  color: state.page == 2
-                                      ? state.date.valid
-                                          ? EpregnancyColors.primer
-                                          : EpregnancyColors.primerSoft2
-                                      : state.page == 3
-                                          ? state.name.valid
-                                              ? EpregnancyColors.primer
-                                              : EpregnancyColors.primerSoft2
-                                          : EpregnancyColors.primerSoft2,
-                                  child: Padding(
-                                    padding: EdgeInsets.zero,
-                                    child: Text(
-                                      state.page == 3
-                                          ? widget.isEdit == true
-                                              ? "Simpan"
-                                              : "Selanjutnya"
-                                          : "Selanjutnya",
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white),
-                                    ),
-                                  ),
-                                  elevation: 8,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(7)),
-                                  ),
-                                  onPressed: () async {
-                                    if (state.page == 2 && state.date.valid) {
-                                      Injector.resolve<SurveyPageBloc>()
-                                          .add(SurveyPageChanged(3));
-                                    } else if (state.page == 3 &&
-                                        state.name.valid) {
-                                      Injector.resolve<SurveyPageBloc>()
-                                          .add(SurveyAddDataEvent(
-                                          true,
-                                          false,
-                                          false,
-                                          widget.isEdit!));
-                                      Injector.resolve<SurveyPageBloc>().add(
-                                          SurveyAddDataBabyEvent(
-                                              isUpdate: widget.isEdit!));
-                                    } else if (state.page == 1 && state.name.valid) {
-                                      Injector.resolve<SurveyPageBloc>()
-                                          .add(SurveyPageChanged(2));
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                            state.page == 3
-                                ? Align(
-                                    alignment: Alignment(0, 1),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.only(top: 10, bottom: 10),
-                                      width: MediaQuery.of(context).size.width -
-                                          40,
-                                      height: 50,
-                                      child: RaisedButton(
-                                        color: EpregnancyColors.primer,
-                                        child: Padding(
-                                          padding: EdgeInsets.zero,
-                                          child: Text(
-                                            "Lewati",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.white),
+                body: StreamBuilder<bool>(
+                  stream: _streamSurvey.stream,
+                  builder: (context, snapshot) {
+                    return snapshot.data == true? Container(
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: EpregnancyColors.primerSoft),
+                            child: ListView(
+                              children: [
+                                state.page == 2
+                                    ? LastMenstruation(
+                                  isEdit: widget.isEdit,
+                                  baby: state.dataBaby ??  BabyModelApi.empty(),
+                                )
+                                    : BabyName(
+                                    isEdit: widget.isEdit,
+                                    baby: state.dataBaby ??  BabyModelApi.empty()),
+                                Container(
+                                  margin: EdgeInsets.only(top: 200),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        // note ada perubahan step
+                                        "${state.page - 1} dari 2",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 12),
+                                      ),
+                                      Align(
+                                        alignment: Alignment(0, 1),
+                                        child: Container(
+                                          margin: EdgeInsets.only(top: 10, bottom: 10),
+                                          width: MediaQuery.of(context).size.width - 40,
+                                          height: 50,
+                                          child: RaisedButton(
+                                            color: state.page == 2
+                                                ? state.date.valid
+                                                ? EpregnancyColors.primer
+                                                : EpregnancyColors.primerSoft2
+                                                : state.page == 3
+                                                ? state.name.valid
+                                                ? EpregnancyColors.primer
+                                                : EpregnancyColors.primerSoft2
+                                                : EpregnancyColors.primerSoft2,
+                                            child: Padding(
+                                              padding: EdgeInsets.zero,
+                                              child: Text(
+                                                state.page == 3
+                                                    ? widget.isEdit == true
+                                                    ? "Simpan"
+                                                    : "Selanjutnya"
+                                                    : "Selanjutnya",
+                                                style: TextStyle(
+                                                    fontSize: 16, color: Colors.white),
+                                              ),
+                                            ),
+                                            elevation: 8,
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(7)),
+                                            ),
+                                            onPressed: () async {
+                                              if (state.page == 2 && state.date.valid) {
+                                                Injector.resolve<SurveyPageBloc>()
+                                                    .add(SurveyPageChanged(3));
+                                              } else if (state.page == 3 &&
+                                                  state.name.valid) {
+                                                Injector.resolve<SurveyPageBloc>()
+                                                    .add(SurveyAddDataEvent(
+                                                    true,
+                                                    false,
+                                                    false,
+                                                    widget.isEdit!));
+                                                Injector.resolve<SurveyPageBloc>().add(
+                                                    SurveyAddDataBabyEvent(
+                                                        isUpdate: widget.isEdit!));
+                                              } else if (state.page == 1 && state.name.valid) {
+                                                Injector.resolve<SurveyPageBloc>()
+                                                    .add(SurveyPageChanged(2));
+                                              }
+                                            },
                                           ),
                                         ),
-                                        elevation: 8,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(7)),
-                                        ),
-                                        onPressed: () async {
-                                          Injector.resolve<SurveyPageBloc>()
-                                              .add(SurveyAddDataEvent(
+                                      ),
+                                      state.page == 3
+                                          ? Align(
+                                        alignment: Alignment(0, 1),
+                                        child: Container(
+                                          margin:
+                                          EdgeInsets.only(top: 10, bottom: 10),
+                                          width: MediaQuery.of(context).size.width -
+                                              40,
+                                          height: 50,
+                                          child: RaisedButton(
+                                            color: EpregnancyColors.primer,
+                                            child: Padding(
+                                              padding: EdgeInsets.zero,
+                                              child: Text(
+                                                "Lewati",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            elevation: 8,
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(7)),
+                                            ),
+                                            onPressed: () async {
+                                              Injector.resolve<SurveyPageBloc>()
+                                                  .add(SurveyAddDataEvent(
                                                   true,
                                                   false,
                                                   false,
                                                   widget.isEdit!));
-                                          Injector.resolve<SurveyPageBloc>()
-                                              .add(SurveyAddDataBabyEvent(
+                                              Injector.resolve<SurveyPageBloc>()
+                                                  .add(SurveyAddDataBabyEvent(
                                                   isUpdate: widget.isEdit!));
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                : Container(),
-                          ],
-                        ),
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                          : Container(),
+                                    ],
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ),
+
+                          _Loading(),
+                        ],
                       ),
-                      _Loading()
-                    ],
-                  ),
+                    ) :Container();
+                  }
                 ),
               ),
             );
