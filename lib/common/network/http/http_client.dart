@@ -132,6 +132,7 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+      updateCookie(response);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -274,6 +275,7 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+      updateCookie(response);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -286,7 +288,7 @@ class HttpClient {
         await AppSharedPreference.setLoginResponse(dataResponse['data']);
         header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
 
-        // post cookie
+
         String? cookie =
             await AppSharedPreference.getString(AppSharedPreference.cookie);
         print('cookie : $cookie');
@@ -377,6 +379,7 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+      updateCookie(response);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
@@ -486,6 +489,7 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+      updateCookie(response);
 
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
