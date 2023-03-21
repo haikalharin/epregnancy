@@ -10,6 +10,7 @@ import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/flavors.dart';
 import 'package:PregnancyApp/main_production.dart';
+import 'package:PregnancyApp/main_staging.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -437,7 +438,14 @@ class AppSharedPreference {
                     tokenExpired: true,
                   )),
           (route) => false);
-    } else {
+    } else if(F.appFlavor == Flavor.STAGING) {
+      aliceStaging.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => const LoginPage(
+                tokenExpired: true,
+              )),
+              (route) => false);
+    }else {
       aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) => const LoginPage(

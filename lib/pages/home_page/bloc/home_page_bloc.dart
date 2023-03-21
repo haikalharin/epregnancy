@@ -157,7 +157,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false);
     }
   }
 
@@ -196,7 +196,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(
           submitStatus: FormzStatus.submissionFailure,
           errorMessage: a.toString(),
-          isNotHaveSession: true);
+          isNotHaveSession: false);
     }
   }
 
@@ -231,7 +231,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false);
     }
   }
 
@@ -266,7 +266,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false);
     }
   }
 
@@ -312,7 +312,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await AppSharedPreference.sessionExpiredEvent();
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,
-            isNotHaveSession: true);
+            isNotHaveSession: false);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
@@ -325,7 +325,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false);
     }
   }
 
@@ -355,7 +355,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: true);
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false);
     }
   }
 }

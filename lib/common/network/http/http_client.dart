@@ -153,7 +153,7 @@ class HttpClient {
 
         response = await getAccess(path, queryParameters: queryParameters);
         responseData = HttpUtil.getResponse(response ?? Response('', 0));
-      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 401) {
+      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 403) {
         responseData = UnAuthorizeException(
           json.decode(response.body),
         );
