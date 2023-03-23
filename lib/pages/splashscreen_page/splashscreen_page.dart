@@ -1,6 +1,7 @@
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
 import 'package:PregnancyApp/utils/web_socket_chat_channel.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:intl/intl.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
@@ -18,6 +21,80 @@ import 'bloc/splash_screen_bloc.dart';
 import 'package:intl/intl_standalone.dart';
 
 late final FirebaseRemoteConfig remoteConfig;
+final playlist = ConcatenatingAudioSource(children: [
+  // AudioSource.uri(Uri.parse("assets/audio/al_fatihah.mp3"),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-fatihah.mp3"), tag: const MediaItem(
+    title: 'Surat Al-Fatihah',
+    id: "0",
+    artist: "Surat Al-Fatihah",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-35.mp3"), tag: const MediaItem(
+    title: 'Surat Al-Imran ayat 35',
+    id: "1",
+    artist: "Surat Al-Imran ayat 35",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-36.mp3"), tag: const MediaItem(
+    title: 'Surat Al-Imran ayat 36',
+    id: "2",
+    artist: "Surat Al-Imran ayat 36",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-38.mp3"), tag: const MediaItem(
+    title: 'Surat Al-Imran ayat 38',
+    id: "3",
+    artist: "Surat Al-Imran ayat 38",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-araf-54.mp3"), tag: const MediaItem(
+    title: """Surat Al-A'raf ayat 54""",
+    id: "4",
+    artist: """Surat Al-A'raf ayat 54""",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-ibrahim-40.mp3"), tag: const MediaItem(
+    title: 'Surat Ibrahim ayat 40',
+    id: "5",
+    artist: "Surat Ibrahim ayat 40",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"), tag: const MediaItem(
+    title: 'Surat Maryam ayat 4-5',
+    id: "6",
+    artist: "Surat Maryam ayat 4-5",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-19-21.mp3"), tag: const MediaItem(
+    title: 'Surat Maryam ayat 19-21.',
+    id: "7",
+    artist: "Surat Maryam ayat 19-21",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-muminun-12-14.mp3"), tag: const MediaItem(
+    title: """Surat Al-Mu'minun ayat 12-14""",
+    id: "8",
+    artist: "Surat Al-Mu'minun ayat 12-14",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-furqan-74.mp3"), tag: const MediaItem(
+    title: 'Surat Al-Furqan ayat 74',
+    id: "9",
+    artist: "Surat Al-Furqan ayat 74",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-luqman-14.mp3"), tag: const MediaItem(
+    title: 'Surat Luqman ayat 14',
+    id: "10",
+    artist: "Surat Luqman ayat 14",
+    album: "Murottal",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-as-saffat-100.mp3"), tag: const MediaItem(
+    title: 'Surat As-Saffat ayat 100',
+    id: "11",
+    artist: "Surat As-Saffat ayat 100",
+    album: "Murottal",)),
+  // AudioSource.uri(Uri.parse("https://ia801408.us.archive.org/11/items/Raad-Al_Kurdi/001.mp3"),
+  //     tag: MediaItem(
+  //         title: 'Al-Fatihah',
+  //         id: "1",
+  //         artist: "Al-Fatihah",
+  //         album: "Murottal",
+  //         artUri: Uri.parse(
+  //             "https://lh3.googleusercontent.com/-kxVDXfXqEXA/YVsZmqZ-GQI/AAAAAAABe1c/gY88VU3gT50-ww0zDs0oG5MzeZizDzd2QCLcBGAsYHQ/w1200-h630-p-k-no-nu/image.png")))
+]);
+
+final AudioPlayer playerDev = AudioPlayer();
+
 
 class SplashscreenPage extends StatefulWidget {
   const SplashscreenPage({Key? key}) : super(key: key);
@@ -55,8 +132,28 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
     });
   }
 
+
+  Future<void> _init() async {
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration.music());
+    // Listen to errors during playback.
+    playerDev.playbackEventStream.listen((event) {},
+        onError: (Object e, StackTrace stackTrace) {
+          print('A stream error occurred: $e');
+        });
+    try {
+      await playerDev.setAudioSource(playlist);
+    } catch (e, stackTrace) {
+      // Catch load errors: 404, invalid url ...
+      print("Error loading playlist: $e");
+      print(stackTrace);
+    }
+  }
+
   @override
   void initState() {
+    _init();
+    playerDev.setLoopMode(LoopMode.all);
     getFirstInstall();
     Injector.resolve<SplashscreenBloc>().add(SplashscreenCheckUserExist());
     _initializeRemoteConfig();

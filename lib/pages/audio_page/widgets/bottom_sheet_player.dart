@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 
 import '../../../main_development.dart';
 import '../../../utils/epragnancy_color.dart';
+import '../../splashscreen_page/splashscreen_page.dart';
 
 class BottomSheetPlayer extends StatefulWidget {
   const BottomSheetPlayer({Key? key}) : super(key: key);

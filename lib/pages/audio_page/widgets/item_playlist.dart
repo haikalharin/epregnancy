@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../main_development.dart';
 import '../../../utils/epragnancy_color.dart';
+import '../../splashscreen_page/splashscreen_page.dart';
 
 class ItemPlayList extends StatefulWidget {
   const ItemPlayList({Key? key, required this.title, required this.index}) : super(key: key);

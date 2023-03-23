@@ -10,6 +10,7 @@ import 'package:just_audio/just_audio.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../main_development.dart';
 import '../../../utils/epragnancy_color.dart';
+import '../../splashscreen_page/splashscreen_page.dart';
 import '../widgets/bottom_sheet_player.dart';
 import '../widgets/music_card.dart';
 

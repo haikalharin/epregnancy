@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_audio/just_audio.dart';
+import '../../splashscreen_page/splashscreen_page.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
 import '../../../common/injector/injector.dart';
-import '../../../main_development.dart';
 import '../../../utils/epragnancy_color.dart';
 import '../../../utils/firebase_messaging.dart';
 
