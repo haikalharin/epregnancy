@@ -161,9 +161,8 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                               },
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(color: Colors.grey[500]),
-                                label: Text("Email"),
-                                hintText:
-                                    'email@mail.com',
+                                label: Text("Nomor Handphone / Email"),
+                                // hintText: 'email@mail.com',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(4.w),
                                 ),

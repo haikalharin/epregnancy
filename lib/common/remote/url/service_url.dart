@@ -8,6 +8,7 @@ class ServiceUrl {
   static String user = 'user';
   static String userInfo = '$user/info';
   static String userList = '$user/list';
+  static String biodata = '$user/biodata';
   static String checkIn = '$user/checkin/';
   static String pointHistory = '$user/points-history';
   static String login = '$auth/login';

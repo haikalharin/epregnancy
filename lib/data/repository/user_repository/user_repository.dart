@@ -37,6 +37,7 @@ abstract class UserRepository {
 
   Future loginWithGoogle();
   Future<ResponseModel> login(LoginModel loginModel);
+  Future<ResponseModel> biodataView(String password);
   Future<ResponseModel> loginNonOtp(LoginModel loginModel);
 
   Future<ResponseModel<UserModel>> getUserInfo();

@@ -172,8 +172,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       final ResponseModel<UserModel> responseModel =
           await userRepository.getUserInfo();
       UserModel userInfo = responseModel.data;
-      UserModel userEntity =
-          userInfo.copyWith(name: await aesDecryptor(userInfo.name));
+      UserModel userEntity = userInfo.copyWith(name: await aesDecryptor(userInfo.name));
       // await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if (responseModel.code == 200) {
         await AppSharedPreference.setUser(responseModel.data);

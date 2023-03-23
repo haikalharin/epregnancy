@@ -31,6 +31,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       isPregnant: json['is_pregnant'] as bool?,
       isPlanningPregnancy: json['is_planning_pregnancy'] as bool?,
       isHaveBaby: json['is_have_baby'] as bool?,
+      lastBiodataView: json['last_biodata_view'] as String?,
       status: json['status'],
       gamificationpoints: (json['gamificationpoints'] as List<dynamic>?)
           ?.map((e) => Gamificationpoint.fromJson(e as Map<String, dynamic>))
@@ -84,6 +85,7 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) {
   val['is_pregnant'] = instance.isPregnant;
   val['is_planning_pregnancy'] = instance.isPlanningPregnancy;
   val['is_have_baby'] = instance.isHaveBaby;
+  val['last_biodata_view'] = instance.lastBiodataView;
   val['status'] = instance.status;
   val['gamificationpoints'] = instance.gamificationpoints;
   val['redeemHistory'] = instance.redeemHistory;

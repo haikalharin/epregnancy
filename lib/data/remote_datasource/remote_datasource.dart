@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
+import 'package:PregnancyApp/data/model/biodata_model/biodata_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_list_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_send_request.dart';
@@ -416,6 +417,18 @@ class RemoteDataSource {
       };
       final response = await httpClient.delete(ServiceUrl.deletePost, data);
       return ResponseModel.fromJson(response, EventModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> biodataView(String password) async {
+    try {
+      Map<String, String> data = {
+        'password': password,
+      };
+      final response = await httpClient.post(ServiceUrl.biodata, data);
+      return ResponseModel.fromJson(response, BiodataResponse.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }

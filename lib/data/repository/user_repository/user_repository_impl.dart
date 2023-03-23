@@ -247,4 +247,13 @@ class UserRepositoryImpl extends UserRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel> biodataView(String password) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.biodataView(password);
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+
 }

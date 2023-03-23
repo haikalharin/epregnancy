@@ -225,8 +225,22 @@ class AppSharedPreference {
             ? await aesDecryptor(_userModel.name)
             : null,
         id: _userModel.id != null ? await aesDecryptor(_userModel.id) : null,
+        email: _userModel.email != null ? await aesDecryptor(_userModel.email) : null,
       );
       return userModel;
+    } else {
+      return const UserModel();
+    }
+  }
+
+  static Future<UserModel> getUserWithoutDecrypt() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(user);
+    if (json != null) {
+      String decryptedJson = decrypty(json);
+      Map<String, dynamic> map = jsonDecode(decryptedJson);
+      UserModel _userModel = UserModel.fromJson(map);
+      return _userModel;
     } else {
       return const UserModel();
     }
