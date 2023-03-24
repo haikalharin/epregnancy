@@ -139,7 +139,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                             ),
                             SizedBox(height: 10),
                             const Text(
-                              "Silahkan isi email untuk mendapatkan tautan verifikasi dan masukan OTP",
+                              "Silahkan isi nomor handphone / email untuk mendapatkan tautan verifikasi dan masukan OTP",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   color: Colors.black,
