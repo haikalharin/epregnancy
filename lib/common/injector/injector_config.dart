@@ -40,6 +40,7 @@ import '../../pages/change_password_page/bloc/change_password_bloc.dart';
 import '../../pages/consultation_page/bloc/comment_bloc.dart';
 import '../../pages/consultation_page/bloc/consultation_page_bloc.dart';
 import '../../pages/login_page/bloc/login_bloc.dart';
+import '../../pages/new_born_page/bloc/new_born_page_bloc.dart';
 import '../../pages/profile_page/bloc/profile_page_bloc.dart';
 import '../../pages/signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import '../../pages/splashscreen_page/bloc/splash_screen_bloc.dart';
@@ -102,6 +103,7 @@ abstract class InjectorConfig {
   @Register.singleton(DisclaimerPageBloc)
   @Register.singleton(PatientSelectBloc)
   @Register.singleton(CommentBloc)
+  @Register.singleton(NewBornPageBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)

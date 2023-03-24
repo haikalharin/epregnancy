@@ -414,52 +414,50 @@ class BabySectionWidget extends StatelessWidget {
                                       color: EpregnancyColors.black))
                             ]))),
                   ),
-                  InkWell(
-                    onTap: () {
-                      print("Beri nama bayi");
-                      Navigator.of(context).pushNamed(
-                          RouteName.surveyPageBaby,
-                          arguments: {
-                            "is_edit": true,
-                            "edit_name": true
-                          });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                          left: 16.w, right: 60.w,bottom: 16),
-                      padding: EdgeInsets.only(left: 16.w),
-                      decoration: BoxDecoration(
-                        color: EpregnancyColors.primer,
-                        border: Border.all(
+                  Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                            RouteName.questionerNewBorn,
+                            arguments: false);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width/1.5,
+                        margin: EdgeInsets.only(bottom: 16),
+                        padding: EdgeInsets.only(left: 20.w,right: 20.w),
+                        decoration: BoxDecoration(
                           color: EpregnancyColors.primer,
+                          border: Border.all(
+                            color: EpregnancyColors.primer,
+                          ),
+                          borderRadius:
+                          BorderRadius.circular(10.0),
                         ),
-                        borderRadius:
-                        BorderRadius.circular(10.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.center,
-                        crossAxisAlignment:
-                        CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                              child: const Text(
-                                'Beri nama bayi',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: EpregnancyColors.white,
-                                    fontWeight: FontWeight.bold),
-                                maxLines: 3,
-                              )),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons
-                                    .arrow_forward_ios_rounded,
-                                size: 16,
-                                color: EpregnancyColors.white,
-                              ))
-                        ],
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment:
+                          CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                child: const Text(
+                                  'Perbarui status kehamilan',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: EpregnancyColors.white,
+                                      fontWeight: FontWeight.bold),
+                                  maxLines: 3,
+                                )),
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons
+                                      .arrow_forward_ios_rounded,
+                                  size: 16,
+                                  color: EpregnancyColors.white,
+                                ))
+                          ],
+                        ),
                       ),
                     ),
                   ),

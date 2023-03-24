@@ -5,6 +5,7 @@ import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
+import 'package:PregnancyApp/pages/new_born_page/bloc/new_born_page_bloc.dart';
 import 'package:PregnancyApp/utils/countly_analytics.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/firebase_analytics.dart';
@@ -70,7 +71,8 @@ import 'package:flutter_portal/flutter_portal.dart';
 import 'package:provider/provider.dart';
 
 // void main() => runApp(MyApp());
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
@@ -93,12 +95,10 @@ Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
     runApp(MyApp());
   }, Countly.recordDartError);
-
 }
 
 final Alice aliceStaging = Alice(showNotification: true, darkTheme: true);
 final AudioPlayer playerStaging = AudioPlayer();
-
 
 class MyApp extends StatefulWidget {
   @override
@@ -108,7 +108,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late Future<void> _firebaseFuture;
 
-
   // final playlist =
   //     ConcatenatingAudioSource(useLazyPreparation: true, children: [
   //   AudioSource.asset("assets/audio/al_fatihah.mp3",
@@ -117,66 +116,114 @@ class _MyAppState extends State<MyApp> {
 
   final playlist = ConcatenatingAudioSource(children: [
     // AudioSource.uri(Uri.parse("assets/audio/al_fatihah.mp3"),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-fatihah.mp3"), tag: const MediaItem(
-      title: 'Surat Al-Fatihah',
-      id: "0",
-      artist: "Surat Al-Fatihah",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-35.mp3"), tag: const MediaItem(
-      title: 'Surat Al-Imran ayat 35',
-      id: "1",
-      artist: "Surat Al-Imran ayat 35",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-36.mp3"), tag: const MediaItem(
-      title: 'Surat Al-Imran ayat 36',
-      id: "2",
-      artist: "Surat Al-Imran ayat 36",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-38.mp3"), tag: const MediaItem(
-      title: 'Surat Al-Imran ayat 38',
-      id: "3",
-      artist: "Surat Al-Imran ayat 38",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-araf-54.mp3"), tag: const MediaItem(
-      title: """Surat Al-A'raf ayat 54""",
-      id: "4",
-      artist: """Surat Al-A'raf ayat 54""",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-ibrahim-40.mp3"), tag: const MediaItem(
-      title: 'Surat Ibrahim ayat 40',
-      id: "5",
-      artist: "Surat Ibrahim ayat 40",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"), tag: const MediaItem(
-      title: 'Surat Maryam ayat 4-5',
-      id: "6",
-      artist: "Surat Maryam ayat 4-5",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-19-21.mp3"), tag: const MediaItem(
-        title: 'Surat Maryam ayat 19-21.',
-        id: "7",
-        artist: "Surat Maryam ayat 19-21",
-        album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-muminun-12-14.mp3"), tag: const MediaItem(
-      title: """Surat Al-Mu'minun ayat 12-14""",
-      id: "8",
-      artist: "Surat Al-Mu'minun ayat 12-14",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-furqan-74.mp3"), tag: const MediaItem(
-      title: 'Surat Al-Furqan ayat 74',
-      id: "9",
-      artist: "Surat Al-Furqan ayat 74",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-luqman-14.mp3"), tag: const MediaItem(
-      title: 'Surat Luqman ayat 14',
-      id: "10",
-      artist: "Surat Luqman ayat 14",
-      album: "Murottal",)),
-    LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-as-saffat-100.mp3"), tag: const MediaItem(
-      title: 'Surat As-Saffat ayat 100',
-      id: "11",
-      artist: "Surat As-Saffat ayat 100",
-      album: "Murottal",)),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-fatihah.mp3"),
+        tag: const MediaItem(
+          title: 'Surat Al-Fatihah',
+          id: "0",
+          artist: "Surat Al-Fatihah",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-35.mp3"),
+        tag: const MediaItem(
+          title: 'Surat Al-Imran ayat 35',
+          id: "1",
+          artist: "Surat Al-Imran ayat 35",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-36.mp3"),
+        tag: const MediaItem(
+          title: 'Surat Al-Imran ayat 36',
+          id: "2",
+          artist: "Surat Al-Imran ayat 36",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-38.mp3"),
+        tag: const MediaItem(
+          title: 'Surat Al-Imran ayat 38',
+          id: "3",
+          artist: "Surat Al-Imran ayat 38",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-araf-54.mp3"),
+        tag: const MediaItem(
+          title: """Surat Al-A'raf ayat 54""",
+          id: "4",
+          artist: """Surat Al-A'raf ayat 54""",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-ibrahim-40.mp3"),
+        tag: const MediaItem(
+          title: 'Surat Ibrahim ayat 40',
+          id: "5",
+          artist: "Surat Ibrahim ayat 40",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"),
+        tag: const MediaItem(
+          title: 'Surat Maryam ayat 4-5',
+          id: "6",
+          artist: "Surat Maryam ayat 4-5",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-19-21.mp3"),
+        tag: const MediaItem(
+          title: 'Surat Maryam ayat 19-21.',
+          id: "7",
+          artist: "Surat Maryam ayat 19-21",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-muminun-12-14.mp3"),
+        tag: const MediaItem(
+          title: """Surat Al-Mu'minun ayat 12-14""",
+          id: "8",
+          artist: "Surat Al-Mu'minun ayat 12-14",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-furqan-74.mp3"),
+        tag: const MediaItem(
+          title: 'Surat Al-Furqan ayat 74',
+          id: "9",
+          artist: "Surat Al-Furqan ayat 74",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-luqman-14.mp3"),
+        tag: const MediaItem(
+          title: 'Surat Luqman ayat 14',
+          id: "10",
+          artist: "Surat Luqman ayat 14",
+          album: "Murottal",
+        )),
+    LockCachingAudioSource(
+        Uri.parse(
+            "https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-as-saffat-100.mp3"),
+        tag: const MediaItem(
+          title: 'Surat As-Saffat ayat 100',
+          id: "11",
+          artist: "Surat As-Saffat ayat 100",
+          album: "Murottal",
+        )),
     // AudioSource.uri(Uri.parse("https://ia801408.us.archive.org/11/items/Raad-Al_Kurdi/001.mp3"),
     //     tag: MediaItem(
     //         title: 'Al-Fatihah',
@@ -193,8 +240,8 @@ class _MyAppState extends State<MyApp> {
     // Listen to errors during playback.
     playerStaging.playbackEventStream.listen((event) {},
         onError: (Object e, StackTrace stackTrace) {
-          print('A stream error occurred: $e');
-        });
+      print('A stream error occurred: $e');
+    });
     try {
       await playerStaging.setAudioSource(playlist);
     } catch (e, stackTrace) {
@@ -218,7 +265,7 @@ class _MyAppState extends State<MyApp> {
     // playerStaging.setAsset("assets/audio/al_fatihah.mp3");
     // // playerStaging.setAudioSource(playlist,
     // //     initialIndex: 0, initialPosition: Duration.zero);
-    _firebaseFuture =  FirebaseService().initializeFlutterFirebase(context);
+    _firebaseFuture = FirebaseService().initializeFlutterFirebase(context);
   }
 
   String _isRooted = 'Unknown';
@@ -279,7 +326,9 @@ class _MyAppState extends State<MyApp> {
                             title: 'Komunitaz',
                             home: SplashscreenPage(),
                             onGenerateRoute: Routes.generateRoute,
-                            navigatorObservers: <NavigatorObserver>[FirebaseAnalyticsService.observer],
+                            navigatorObservers: <NavigatorObserver>[
+                              FirebaseAnalyticsService.observer
+                            ],
                             localizationsDelegates: const [
                               GlobalMaterialLocalizations.delegate,
                               GlobalWidgetsLocalizations.delegate,
@@ -380,6 +429,8 @@ class _MyAppState extends State<MyApp> {
                 Injector.container.resolve<PatientSelectBloc>()),
         BlocProvider<CommentBloc>(
             create: (context) => Injector.container.resolve<CommentBloc>()),
+        BlocProvider<NewBornPageBloc>(
+            create: (context) => Injector.container.resolve<NewBornPageBloc>()),
       ];
 }
 

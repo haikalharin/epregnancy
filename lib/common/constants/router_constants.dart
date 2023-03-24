@@ -44,5 +44,6 @@ class RouteName {
   static const audio = '/audio';
   static const playlist = '/playlist';
   static const audioPlayer = '/audioPlayer';
+  static const questionerNewBorn = '/questionerNewBorn';
 
 }

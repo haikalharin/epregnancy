@@ -243,7 +243,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         submitStatus: FormzStatus.submissionInProgress, tipe: "listArticle");
     try {
       final ResponseModel responseModel =
-          await articleRepository.fetchArticle(0, 'asc', 'createdDate');
+          await articleRepository.fetchArticle(0, 'desc', 'createdDate');
       List<ArticleModel> listArticle = responseModel.data ?? [];
       List<ArticleModel> listArticleFix = [];
       // if(event.isNextPage){
