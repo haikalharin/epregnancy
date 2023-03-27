@@ -197,7 +197,7 @@ class UserRepositoryImpl extends UserRepository {
     throw NetworkConnectionException();
   }
   @override
-  Future<ResponseModel<UserModel>> checkUserExist(String user, String type) async {
+  Future<ResponseModel> checkUserExist(String user, String type) async {
     if(await networkInfo.isConnected){
       return remoteDatasource.checkUserExist(user,type);
     }

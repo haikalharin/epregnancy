@@ -201,7 +201,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                           var _user = await AppSharedPreference.getUser();
                                           DateTime cdt = DateTime.now();
                                           DateTime lastBiodataView = DateTime.parse(_user.lastBiodataView ?? DateTime.now().toString());
-                                          DateTime lastBiodateViewDateTime = lastBiodataView.add(Duration(hours: F.appFlavor == Flavor.DEVELOPMENT ?  -1 : 0));
+                                          DateTime lastBiodateViewDateTime = lastBiodataView.add(Duration(hours: F.appFlavor == Flavor.PRODUCTION ?  0 : -1));
                                           Duration diff = cdt.difference(lastBiodateViewDateTime);
                                           print("last biodata view : $lastBiodateViewDateTime");
                                           print("date time now : $cdt");

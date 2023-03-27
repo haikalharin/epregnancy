@@ -58,8 +58,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
         margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
         child: ElevatedButton(
           onPressed: () async {
-            Injector.resolve<ForgotPasswordPageBloc>()
-                .add(const ForgotPasswordSubmitted());
+            Injector.resolve<ForgotPasswordPageBloc>().add(const ForgotPasswordSubmitted());
           },
           child: Text("Kirim"),
           style: ElevatedButton.styleFrom(
