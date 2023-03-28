@@ -246,13 +246,10 @@ class HttpClient {
     // header![HttpHeaders.authorizationHeader] = AppConstants.token;
 
     // todo fix refresh token
-    Response? response =
-        await postAccess(path, data, overrideHeader: overrideHeader);
+    Response? response = await postAccess(path, data, overrideHeader: overrideHeader);
     var responseData = HttpUtil.getResponse(response ?? Response('', 0));
 
-    if (responseData['code'] == 404 ||
-        responseData['code'] == 403 ||
-        responseData['code'] == 401) {
+    if (responseData['code'] == 404 || responseData['code'] == 403 || responseData['code'] == 401) {
       Map<String, String> body = {};
       LoginResponseData loginData = await AppSharedPreference.getLoginResponse();
       body = {

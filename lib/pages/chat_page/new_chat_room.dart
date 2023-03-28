@@ -644,8 +644,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                           onPressed: () {
                             basicLoadinDialog(context);
                             if (widget.isNakes!) {
-                              Injector.resolve<ChatBloc>()
-                                  .add(EndChatEvent(toId));
+                              Injector.resolve<ChatBloc>().add(EndChatEvent(toId));
                               // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
                             } else {
                               Injector.resolve<ChatBloc>()
