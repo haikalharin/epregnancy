@@ -44,7 +44,7 @@ abstract class UserRepository {
 
   Future<ResponseModel<CheckinResponse>> hitCheckIn(String day);
   Future<ResponseModel<PointHistory>> fetchPointHistory();
-  Future<ResponseModel<UserModel>> checkUserExist(String user, String type);
+  Future<ResponseModel> checkUserExist(String user, String type);
 
   logout();
 }

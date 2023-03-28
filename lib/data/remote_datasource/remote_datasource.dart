@@ -40,6 +40,7 @@ import '../model/members_model/member.dart';
 import '../model/response_model/response_model.dart';
 import '../model/user_example_model/user_example_model.dart';
 import '../model/user_model_api/signup_quest_request.dart';
+import '../model/user_model_api/user_availability_response.dart';
 import '../model/visit_hospital_model/visit_hospital_model.dart';
 
 class RemoteDataSource {
@@ -231,13 +232,13 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel<UserModel>> checkUserExist(
+  Future<ResponseModel> checkUserExist(
       String user, String type) async {
     try {
       Map<String, String> data = {type: user};
       final response =
           await httpClient.post("${ServiceUrl.checkUserExist}/$type", data);
-      return ResponseModel.fromJson(response, UserModel.fromJson);
+      return ResponseModel.fromJson(response, UserAvailabilityResponse.fromJson);
     } catch (e) {
       return ResponseModel(data: const UserModel());
     }

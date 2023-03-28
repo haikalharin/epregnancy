@@ -71,6 +71,7 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
     }
 
     ResponseModel response = await userRepository.biodataView(event.password);
+
     if(response.code == 200){
       BiodataResponse biodataResponse = response.data;
       var _updateUser = _user.copyWith(lastBiodataView: biodataResponse.lastBiodataView.toString());
