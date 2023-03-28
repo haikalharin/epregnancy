@@ -14,6 +14,7 @@ import '../../../common/exceptions/login_error_exception.dart';
 import '../../../common/validators/email_address_username_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/otp_model/otp_model.dart';
+import '../../../data/model/user_model_api/user_availability_response.dart';
 import '../../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../utils/string_constans.dart';
@@ -91,7 +92,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           type = "mobile";
         }
         final response = await userRepository.checkUserExist(data, type);
-        UserModel userModel = response.data;
+        UserAvailabilityResponse userModel = response.data;
         if (response.code == 200) {
           if (response.message == StringConstant.mobileActive ||
               response.message == StringConstant.emailActive) {
