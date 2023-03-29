@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:PregnancyApp/pages/audio_page/bloc/audio_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
@@ -380,6 +381,8 @@ class _MyAppState extends State<MyApp> {
                 Injector.container.resolve<PatientSelectBloc>()),
         BlocProvider<CommentBloc>(
             create: (context) => Injector.container.resolve<CommentBloc>()),
+    BlocProvider<AudioBloc>(
+        create: (context) => Injector.container.resolve<AudioBloc>()),
       ];
 }
 

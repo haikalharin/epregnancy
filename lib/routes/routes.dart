@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
 import 'package:PregnancyApp/pages/audio_page/playlist_page/playlist_page.dart';
+import 'package:PregnancyApp/pages/audio_page/playlist_page/playlist_page_musik.dart';
 import 'package:PregnancyApp/pages/change_password_page/change_password_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/article_page/dashboard_article.dart';
@@ -158,6 +159,9 @@ class Routes {
       case RouteName.playlist:
         return MaterialPageRoute(
             builder: (_) => const PlaylistPage());
+      case RouteName.playlistMusic:
+        return MaterialPageRoute(
+            builder: (_) => const PlaylistPageMusic());
       case RouteName.audioPlayer:
         return MaterialPageRoute(
             builder: (_) => const AudioPlayerPage());

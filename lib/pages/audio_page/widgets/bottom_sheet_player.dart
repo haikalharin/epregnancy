@@ -57,7 +57,7 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
             ),
             SizedBox(width: 10.w,),
             Expanded(child: Text(
-              "${playerDev.sequenceState?.currentSource?.tag?.title ?? "Al-Fatihah"}", style: TextStyle(color: Colors.black, fontSize: 14.sp, fontWeight: FontWeight.w700),
+              "${playerDev.sequenceState?.currentSource?.tag?.title ?? ""}", style: TextStyle(color: Colors.black, fontSize: 14.sp, fontWeight: FontWeight.w700),
             )),
             InkWell(
               onTap: (){

@@ -18,14 +18,14 @@ import '../bloc/audio_bloc.dart';
 import '../widgets/bottom_sheet_player.dart';
 import '../widgets/music_card.dart';
 
-class PlaylistPage extends StatefulWidget {
-  const PlaylistPage({Key? key}) : super(key: key);
+class PlaylistPageMusic extends StatefulWidget {
+  const PlaylistPageMusic({Key? key}) : super(key: key);
 
   @override
-  State<PlaylistPage> createState() => _PlaylistPageState();
+  State<PlaylistPageMusic> createState() => _PlaylistPageMusicState();
 }
 
-class _PlaylistPageState extends State<PlaylistPage> {
+class _PlaylistPageMusicState extends State<PlaylistPageMusic> {
 
 
 
@@ -37,7 +37,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
         elevation: 0,
         leading: const BtnBackIosStyle(),
         title: Text(
-          "Murottal",
+          "Musik Kehamilan",
           maxLines: 3,
           textAlign: TextAlign.start,
           style: TextStyle(
@@ -59,16 +59,18 @@ class _PlaylistPageState extends State<PlaylistPage> {
           child: Column(
             children: [
               Hero(
-                  tag: 'img-banner',
+                  tag: 'musik-kehamilan',
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.w),
-                    child: Image.asset("assets/music_murottal.png"),
+                    child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Image.asset("assets/musik_image.png", fit: BoxFit.fitWidth,)),
                   )),
               SizedBox(
                 height: 10.h,
               ),
               Text(
-                "Menyejukan, menenangkan hati dan mengajak bayi untuk lebih dekat dengan nasihat Allah dalam Al-Quran",
+                "Membantu Bunda lebih santai, bahagia dan menstimulasi perkembangan otak bayi\n",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14.sp,
@@ -107,14 +109,16 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       builder: (context, state) {
                         return InkWell(
                           onTap: () async {
+                            String? currentPlaylist = await AppSharedPreference.getString(AppSharedPreference.playlist);
+
                             if(playerDev.playing){
                               playerDev.pause();
                             } else {
-                              if(state.currentPlaylist == "Murottal"){
+                              if(state.currentPlaylist == "Music"){
                                 playerDev.play();
                               } else {
-                                Injector.resolve<AudioBloc>().add(const AudioEventChangePlaylist("Murottal"));
-                                await playerDev.setAudioSource(playlist);
+                                Injector.resolve<AudioBloc>().add(const AudioEventChangePlaylist("Music"));
+                                await playerDev.setAudioSource(playlistMusic);
                                 await playerDev.seek(Duration.zero, index: 0);
                                 playerDev.play();
                               }
@@ -146,30 +150,19 @@ class _PlaylistPageState extends State<PlaylistPage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 children:  [
-                  ItemPlayList(title: "1. Surat Al-Fatihah", index: 0, playlist: "Murottal"),
-                  ItemPlayList(title: "2. Surat Al-Imran ayat 35", index: 1, playlist: "Murottal",),
-                  ItemPlayList(title: "3. Surat Al-Imran ayat 36", index: 2, playlist: "Murottal",),
-                  ItemPlayList(title: "4. Surat Al-Imran ayat 38", index: 3, playlist: "Murottal",),
-                  ItemPlayList(title: """5. Surat Al-A'raf ayat 54""", index: 4, playlist: "Murottal"),
-                  ItemPlayList(title: "6. Surat Ibrahim ayat 40", index: 5, playlist: "Murottal"),
-                  ItemPlayList(title: "7. Surat Maryam ayat 4-5", index: 6, playlist: "Murottal"),
-                  ItemPlayList(title: "8. Surat Maryam ayat 19-21", index: 7, playlist: "Murottal"),
-                  ItemPlayList(title: """9. Surat Al-Mu'minun ayat 12-14""", index: 8, playlist: "Murottal"),
-                  ItemPlayList(title: "10. Surat Al-Furqan ayat 74", index: 9, playlist: "Murottal"),
-                  ItemPlayList(title: "11. Surat Luqman ayat 14", index: 10, playlist: "Murottal"),
-                  ItemPlayList(title: "12. Surat As-Saffat ayat 100", index: 11, playlist: "Murottal"),
-
-
-
-
-
-
-
-
-
-
-                  // MusicCard(),
-                  // MusicCard(),
+                  ItemPlayList(title: "Before I Met You", index: 0, playlist: "Music"),
+                  ItemPlayList(title: "First Love", index: 1, playlist: "Music"),
+                  ItemPlayList(title: "Light of My Life", index: 2, playlist: "Music"),
+                  ItemPlayList(title: "Little Miracle", index: 3, playlist: "Music"),
+                  ItemPlayList(title: "Message of Love", index: 4, playlist: "Music"),
+                  ItemPlayList(title: "New Chapter", index: 5, playlist: "Music"),
+                  ItemPlayList(title: "Pure Hapiness", index: 6, playlist: "Music"),
+                  ItemPlayList(title: "Sweet Dream", index: 7, playlist: "Music"),
+                  ItemPlayList(title: "Sweet Moment", index: 8, playlist: "Music"),
+                  ItemPlayList(title: "Tiny Kiss", index: 9, playlist: "Music"),
+                  SizedBox(
+                    height: 100.h,
+                  ),
                 ],
               )
             ],
@@ -220,12 +213,15 @@ class _PlaylistPageState extends State<PlaylistPage> {
   Duration? _position;
   bool shuffleActive = false;
 
-
   void _getCurrentPlaylist() async {
     String? _currentPlaylist = await AppSharedPreference.getString(AppSharedPreference.playlist);
-    setState(() {
-      currentPlaylist = _currentPlaylist;
-    });
+    if(mounted){
+      setState(() {
+        currentPlaylist = _currentPlaylist;
+      });
+    }
+
+    print("current playlist : $currentPlaylist");
   }
 
   String? currentPlaylist;
@@ -233,8 +229,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   void initState() {
     super.initState();
-
     _getCurrentPlaylist();
+
+
 
     playerDev.shuffleModeEnabledStream.listen((shuffle) {
       if(mounted){
