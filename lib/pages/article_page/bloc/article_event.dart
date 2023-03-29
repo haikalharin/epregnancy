@@ -14,7 +14,7 @@ class ArticleFetchEvent extends ArticlePageEvent {
       this.isSearch = false,
       this.isNextPage = false,
       this.sortBy = 'createdDate',
-      this.sort = SortEnum.asc});
+      this.sort = SortEnum.desc});
 
   final String? sortBy;
   final SortEnum? sort;
