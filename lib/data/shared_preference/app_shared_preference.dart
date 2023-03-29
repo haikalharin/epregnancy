@@ -50,6 +50,7 @@ class AppSharedPreference {
   static const String isFirstLaunch = "isFirstLaunch";
   static const String isShowGuide = "show_guide";
   static const String cookie = "cookie";
+  static const String playlist = "playlist";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

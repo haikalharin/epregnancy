@@ -17,6 +17,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../main_development.dart' as dev;
+import '../audio_page/bloc/audio_bloc.dart';
 import 'bloc/splash_screen_bloc.dart';
 import 'package:intl/intl_standalone.dart';
 
@@ -95,74 +96,56 @@ final playlist = ConcatenatingAudioSource(children: [
 
 final playlistMusic = ConcatenatingAudioSource(children: [
   // AudioSource.uri(Uri.parse("assets/audio/al_fatihah.mp3"),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/before-i-met-you.wav"), tag: const MediaItem(
+    title: 'Before I Met You',
+    id: "0",
+    artist: "Before I Met You",
+    album: "Music",)),
   LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/first-love.wav"), tag: const MediaItem(
     title: 'First Love',
-    id: "0",
-    artist: "First Love",
-    album: "Musik Kehamilan",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-35.mp3"), tag: const MediaItem(
-    title: 'Surat Al-Imran ayat 35',
     id: "1",
-    artist: "Surat Al-Imran ayat 35",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-36.mp3"), tag: const MediaItem(
-    title: 'Surat Al-Imran ayat 36',
-    id: "2",
-    artist: "Surat Al-Imran ayat 36",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-imran-38.mp3"), tag: const MediaItem(
-    title: 'Surat Al-Imran ayat 38',
+    artist: "First Love",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/light-of-my-life.wav"), tag: const MediaItem(
+    title: 'Light of My Life',
     id: "3",
-    artist: "Surat Al-Imran ayat 38",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-araf-54.mp3"), tag: const MediaItem(
-    title: """Surat Al-A'raf ayat 54""",
+    artist: "Light of My Life",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/little-miracle.wav"), tag: const MediaItem(
+    title: "Little Miracle",
     id: "4",
-    artist: """Surat Al-A'raf ayat 54""",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-ibrahim-40.mp3"), tag: const MediaItem(
-    title: 'Surat Ibrahim ayat 40',
+    artist: "Little Miracle",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/message-of-love.wav"), tag: const MediaItem(
+    title: 'Message of Love',
     id: "5",
-    artist: "Surat Ibrahim ayat 40",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-4-5.mp3"), tag: const MediaItem(
-    title: 'Surat Maryam ayat 4-5',
+    artist: "Message of Love",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/new-chapter.wav"), tag: const MediaItem(
+    title: 'New Chapter',
     id: "6",
-    artist: "Surat Maryam ayat 4-5",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-maryam-19-21.mp3"), tag: const MediaItem(
-    title: 'Surat Maryam ayat 19-21.',
+    artist: "New Chapter",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/pure-happines.wav"), tag: const MediaItem(
+    title: "Pure Happiness",
     id: "7",
-    artist: "Surat Maryam ayat 19-21",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-muminun-12-14.mp3"), tag: const MediaItem(
-    title: """Surat Al-Mu'minun ayat 12-14""",
+    artist: "Pure Hapiness",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/sweet-dream.wav"), tag: const MediaItem(
+    title: 'Sweet Dream',
     id: "8",
-    artist: "Surat Al-Mu'minun ayat 12-14",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-al-furqan-74.mp3"), tag: const MediaItem(
-    title: 'Surat Al-Furqan ayat 74',
-    id: "9",
-    artist: "Surat Al-Furqan ayat 74",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-luqman-14.mp3"), tag: const MediaItem(
-    title: 'Surat Luqman ayat 14',
+    artist: "Sweet Dream",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/sweet-moment.wav"), tag: const MediaItem(
+    title: 'Sweet Moment',
     id: "10",
-    artist: "Surat Luqman ayat 14",
-    album: "Murottal",)),
-  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/surat-as-saffat-100.mp3"), tag: const MediaItem(
-    title: 'Surat As-Saffat ayat 100',
+    artist: "Sweet Moment",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/tiny-kiss.wav"), tag: const MediaItem(
+    title: 'Tiny Kiss',
     id: "11",
-    artist: "Surat As-Saffat ayat 100",
-    album: "Murottal",)),
-  // AudioSource.uri(Uri.parse("https://ia801408.us.archive.org/11/items/Raad-Al_Kurdi/001.mp3"),
-  //     tag: MediaItem(
-  //         title: 'Al-Fatihah',
-  //         id: "1",
-  //         artist: "Al-Fatihah",
-  //         album: "Murottal",
-  //         artUri: Uri.parse(
-  //             "https://lh3.googleusercontent.com/-kxVDXfXqEXA/YVsZmqZ-GQI/AAAAAAABe1c/gY88VU3gT50-ww0zDs0oG5MzeZizDzd2QCLcBGAsYHQ/w1200-h630-p-k-no-nu/image.png")))
+    artist: "Tiny Kiss",
+    album: "Music",)),
 ]);
 
 final AudioPlayer playerDev = AudioPlayer();
@@ -215,6 +198,9 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
         });
     try {
       await playerDev.setAudioSource(playlist);
+      await AppSharedPreference.setString(AppSharedPreference.playlist, "Murottal");
+      Injector.resolve<AudioBloc>().add(const AudioEventChangePlaylist("Murottal"));
+
     } catch (e, stackTrace) {
       // Catch load errors: 404, invalid url ...
       print("Error loading playlist: $e");
