@@ -142,7 +142,7 @@ class _ItemPlayListState extends State<ItemPlayList> {
                           }
                         }
                       },
-                      child: SvgPicture.asset(playerDev.currentIndex == widget.index && playerDev.playing ? "assets/icPause.svg" : "assets/icPlay.svg"))
+                      child: SvgPicture.asset(playerDev.currentIndex == widget.index && playerDev.playing && state.currentPlaylist == widget.playlist ? "assets/icPause.svg" : "assets/icPlay.svg"))
                 ],
               ),
             ),
