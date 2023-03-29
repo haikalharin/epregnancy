@@ -71,9 +71,9 @@ class ArticlePageBloc extends Bloc<ArticlePageEvent, ArticlePageState> {
       } else if (event.condition == StringConstant.childcare) {
         category = "pengasuhan anak";
       }
-      var sort = 'asc';
-      if (event.sort == SortEnum.desc) {
-        sort = 'desc';
+      var sort = 'desc';
+      if (event.sort == SortEnum.asc) {
+        sort = 'asc';
       }
 
       ResponseModel response = ResponseModel.dataEmpty();
