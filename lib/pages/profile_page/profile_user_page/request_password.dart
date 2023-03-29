@@ -31,6 +31,7 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
     return Stack(
       children: [
         Scaffold(
+          resizeToAvoidBottomInset: true,
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
@@ -60,9 +61,9 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
               child: Form(
                 key: _formKey,
                 autovalidateMode: _autovalidateMode,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: ListView(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
                         child: SvgPicture.asset("assets/icKeyCircle.svg")),

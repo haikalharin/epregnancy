@@ -224,6 +224,7 @@ class AppSharedPreference {
         name: _userModel.name != null
             ? await aesDecryptor(_userModel.name)
             : null,
+        mobile:  _userModel.mobile != null ? await aesDecryptor(_userModel.mobile) : null ,
         id: _userModel.id != null ? await aesDecryptor(_userModel.id) : null,
         email: _userModel.email != null ? await aesDecryptor(_userModel.email) : null,
       );
