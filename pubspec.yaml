@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 #version: 1.0.41-dev+76
 
 #staging
-version: 1.0.2-stg+3
+version: 1.0.4-stg+5
 
 #prod
 #version: 1.0.3+6
