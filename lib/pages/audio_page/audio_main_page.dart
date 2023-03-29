@@ -35,8 +35,8 @@ class _AudioMainPageState extends State<AudioMainPage> {
             end: Alignment.bottomCenter
           )
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Audio", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 22.sp),),
             SizedBox(height: 10.h,),
