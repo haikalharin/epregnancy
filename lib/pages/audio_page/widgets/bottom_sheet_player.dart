@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../main_development.dart';
 import '../../../utils/epragnancy_color.dart';
@@ -43,17 +44,16 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              padding: EdgeInsets.all(13.w),
-              decoration: BoxDecoration(
-                  color: EpregnancyColors.primerSoft2,
-                  borderRadius: BorderRadius.circular(8.w)),
-              child: Center(
-                child: SvgPicture.asset(
-                  'assets/icMusic.svg',
-                  color: EpregnancyColors.primer,
-                ),
-              ),
+            Lottie.asset("assets/lottie/audio_lottie.json",
+             delegates: LottieDelegates(
+               values: [
+                 ValueDelegate.color(
+                   // keyPath order: ['layer name', 'group name', 'shape name']
+                   const ['layers', '**', '**'],
+                   value: Colors.red,
+                 ),
+               ],
+             )
             ),
             SizedBox(width: 10.w,),
             Expanded(child: Text(

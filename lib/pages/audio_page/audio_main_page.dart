@@ -59,6 +59,7 @@ class _AudioMainPageState extends State<AudioMainPage> {
             ),
             SizedBox(height: 10.h,),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: InkWell(
