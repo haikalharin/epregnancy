@@ -467,10 +467,10 @@ class HttpClient {
         responseData['code'] == 401) {
       Map<String, String> body = {};
 
-      LoginResponseData data = await AppSharedPreference.getLoginResponse();
+      LoginResponseData loginData = await AppSharedPreference.getLoginResponse();
       body = {
-        'access_token': data.token?.accessToken ?? '',
-        'refresh_token': data.token?.refreshToken ?? ''
+        'access_token': loginData.token?.accessToken ?? '',
+        'refresh_token': loginData.token?.refreshToken ?? ''
       };
 
       final Map<String, String>? requestHeader = header;
