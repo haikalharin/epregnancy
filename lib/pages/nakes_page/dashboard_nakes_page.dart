@@ -46,7 +46,8 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
   @override
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
-    Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+    Injector.resolve<HomePageBloc>()
+        .add(const HomeFetchDataEvent(isMidwife: true));
     Injector.resolve<ChatPendingBloc>()
         .add(FetchLastChatEvent(widget.hospitalId));
     Injector.resolve<ChatPendingBloc>()
@@ -77,14 +78,35 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
       GlobalKey<LiquidPullToRefreshState>();
 
   Future<void> _handleRefresh() async {
-    Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
-    Injector.resolve<ChatPendingBloc>().add(FetchLastChatEvent(widget.hospitalId));
-    Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
-    Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
-    Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-    Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
-    Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
-    Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
+    Future.delayed(const Duration(seconds: 1), () {
+      Injector.resolve<HomePageBloc>()
+          .add(const HomeFetchDataEvent(isMidwife: true));
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      Injector.resolve<ChatPendingBloc>()
+          .add(FetchLastChatEvent(widget.hospitalId));
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      Injector.resolve<ChatPendingBloc>()
+          .add(FetchChatPendingByHospitalId(widget.hospitalId));
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      Injector.resolve<HospitalBloc>()
+          .add(FetchHospitalsByIdEvent(widget.hospitalId));
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      Injector.resolve<HomePageBloc>()
+          .add(HomeEventDateChanged(DateTime.now()));
+    });
   }
 
   @override
@@ -530,7 +552,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                 endTime: endTime,
                                 widgetBuilder: (context, time) {
                                   return Text(
-                                    "Akan Expired Pada ${time?.min.toString().padLeft(2, "0")} : ${time?.sec.toString().padLeft(2, "0")}",
+                                    "Akan Expired Pada ${time?.min != null ? time?.min.toString().padLeft(2, "0") : "00"} : ${time?.sec != null ? time?.sec.toString().padLeft(2, "0") : "00"}",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   );

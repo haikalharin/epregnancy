@@ -10,7 +10,7 @@ part 'user_availability_response.g.dart';
 
 @freezed
 class UserAvailabilityResponse with _$UserAvailabilityResponse {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true,includeIfNull: true)
   const factory UserAvailabilityResponse({
     final String? id,
     final String? name,
