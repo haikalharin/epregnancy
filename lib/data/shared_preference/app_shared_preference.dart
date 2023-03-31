@@ -14,10 +14,13 @@ import 'package:PregnancyApp/main_staging.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../common/injector/injector.dart';
 import '../../main_default.dart';
 import '../../main_development.dart';
+import '../../pages/location_select_page/bloc/hospital_bloc.dart';
 import '../../pages/login_page/login_page.dart';
 import '../model/baby_model/baby_model.dart';
 import '../model/baby_model/new_baby_model.dart';
@@ -446,6 +449,8 @@ class AppSharedPreference {
     await AppSharedPreference.remove(AppSharedPreference.otp);
     await AppSharedPreference.remove(AppSharedPreference.token);
     await AppSharedPreference.remove(AppSharedPreference.cookie);
+    Injector.resolve<HospitalBloc>()
+        .add(const HospitalDispose());
     if (F.appFlavor == Flavor.PRODUCTION) {
       aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(

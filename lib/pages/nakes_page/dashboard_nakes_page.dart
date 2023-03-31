@@ -46,24 +46,14 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
   @override
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
-    Injector.resolve<HomePageBloc>()
-        .add(const HomeFetchDataEvent(isMidwife: true));
-    Injector.resolve<ChatPendingBloc>()
-        .add(FetchLastChatEvent(widget.hospitalId));
-    Injector.resolve<ChatPendingBloc>()
-        .add(FetchChatPendingByHospitalId(widget.hospitalId));
-    Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
-    Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-    Injector.resolve<HospitalBloc>()
-        .add(FetchHospitalsByIdEvent(widget.hospitalId));
-    Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
-    Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
+    _handleRefresh();
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
     getHospital();
   }
 
   HospitalModel? hospitalModel;
+  int endtime =0;
 
   void getHospital() async {
     HospitalModel _hospitalModel = await AppSharedPreference.getHospital();
@@ -78,35 +68,36 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
       GlobalKey<LiquidPullToRefreshState>();
 
   Future<void> _handleRefresh() async {
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       Injector.resolve<HomePageBloc>()
           .add(const HomeFetchDataEvent(isMidwife: true));
     });
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 1800), () {
       Injector.resolve<ChatPendingBloc>()
           .add(FetchLastChatEvent(widget.hospitalId));
     });
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 2200), () {
       Injector.resolve<ChatPendingBloc>()
           .add(FetchChatPendingByHospitalId(widget.hospitalId));
     });
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 2600), () {
       Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
     });
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 3000), () {
       Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
     });
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 3400), () {
       Injector.resolve<HospitalBloc>()
           .add(FetchHospitalsByIdEvent(widget.hospitalId));
     });
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 3800), () {
       Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
     });
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 4000), () {
       Injector.resolve<HomePageBloc>()
           .add(HomeEventDateChanged(DateTime.now()));
     });
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -493,80 +484,77 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                   )),
 
               BlocBuilder<HospitalBloc, HospitalState>(
+                // buildWhen: (previous, current) => previous.hospitals?[0].pinValidEnd != current.hospitals?[0].pinValidEnd,
                 builder: (context, state) {
                   if (state.type == 'fetch-hospital-success') {
-                    int endTime = (F.appFlavor == Flavor.STAGING ||
-                            F.appFlavor == Flavor.DEVELOPMENT)
-                        ? DateTime.parse(state.hospitals?[0].pinValidEnd ??
-                                DateTime.now().toString())
-                            .subtract(const Duration(hours: 1))
-                            .millisecondsSinceEpoch
-                        : DateTime.parse(state.hospitals?[0].pinValidEnd ??
-                                DateTime.now().toString())
-                            .millisecondsSinceEpoch;
                     return Container(
-                        // height: 200.h,
-                        margin:
-                            EdgeInsets.only(left: 16.w, top: 5.h, bottom: 20.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "QR Check-in Pasien",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.sp),
-                            ),
-                            SizedBox(
-                              height: 0.h,
-                            ),
-                            // Center(
-                            //   child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
-                            // ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => FullQrScreen(
-                                              value:
-                                                  "KomunitAZ-${state.hospitals?[0].pin.toString()}",
-                                            )));
-                              },
-                              child: Hero(
-                                tag: 'qr-hero',
-                                child: Center(
-                                  child: QrImage(
-                                    data:
-                                        "KomunitAZ-${state.hospitals?[0].pin.toString()}",
-                                    version: QrVersions.auto,
-                                    size: 150.w,
+                            // height: 200.h,
+                            margin: EdgeInsets.only(
+                                left: 16.w, top: 5.h, bottom: 20.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "QR Check-in Pasien",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp),
+                                ),
+                                SizedBox(
+                                  height: 0.h,
+                                ),
+                                // Center(
+                                //   child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
+                                // ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                FullQrScreen(
+                                                  value:
+                                                      "KomunitAZ-${state.hospitals?[0].pin.toString()}",
+                                                )));
+                                  },
+                                  child: Hero(
+                                    tag: 'qr-hero',
+                                    child: Center(
+                                      child: QrImage(
+                                        data:
+                                            "KomunitAZ-${state.hospitals?[0].pin.toString()}",
+                                        version: QrVersions.auto,
+                                        size: 150.w,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            // SizedBox(height: 20.h,),
-                            Center(
-                              child: CountdownTimer(
-                                endTime: endTime,
-                                widgetBuilder: (context, time) {
-                                  return Text(
-                                    "Akan Expired Pada ${time?.min != null ? time?.min.toString().padLeft(2, "0") : "00"} : ${time?.sec != null ? time?.sec.toString().padLeft(2, "0") : "00"}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  );
-                                },
-                                // todo data valid start & end ngaco di response
-                                onEnd: () {
-                                  Injector.resolve<HospitalBloc>().add(
-                                      FetchHospitalsByIdEvent(
-                                          widget.hospitalId));
-                                },
-                              ),
-                            )
-                          ],
-                        ));
+                                // SizedBox(height: 20.h,),
+                                Center(
+                                  child: CountdownTimer(
+                                    endTime:DateTime.parse(state.hospitals?[0].pinValidEnd ??
+                                                    DateTime.now().toString())
+                                                .add(const Duration(seconds: 10))
+                                                .millisecondsSinceEpoch,
+                                    widgetBuilder: (context, time) {
+                                      return Text(
+                                        "Akan Expired Pada ${time?.min != null ? time?.min.toString().padLeft(2, "0") : "00"} : ${time?.sec != null ? time?.sec.toString().padLeft(2, "0") : "00"}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      );
+                                    },
+                                    // todo data valid start & end ngaco di response
+                                    onEnd: () {
+                                      Injector.resolve<HospitalBloc>().add(
+                                          FetchHospitalsByIdEvent(
+                                              widget.hospitalId));
+                                    },
+                                  ),
+                                )
+                              ],
+                            ));
+
                   } else {
                     return Container();
                   }
