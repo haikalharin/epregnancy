@@ -665,7 +665,9 @@ class _MembersPageState extends State<MembersPage>
                                   condition2 = false;
                                 });
                                 Injector.resolve<HospitalBloc>()
-                                    .add(const FetchMembersEvent("", 0));
+                                    .add(const FetchMembersEvent("", 0,  sortBy: "name",
+                                    isPregnant: true,
+                                    sort: SortEnum.asc));
                                 Navigator.pop(context);
                                 keyboardFocusNode.unfocus();
                               },

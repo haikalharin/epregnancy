@@ -27,12 +27,15 @@ class _ListEventWidgetState extends State<ListEventWidget> {
 
   @override
   void initState() {
-    Injector.resolve<HomePageBloc>().add(EventFetchEvent(
-        widget.tipeAcara == StringConstant.typeEventJadwalUmum
-            ? StringConstant.typePublic
-            : StringConstant.typePersonal,
-        widget.dateTime ?? DateTime.now()));
-    super.initState();
+    Future.delayed(const Duration(milliseconds: 1400), ()
+    {
+      Injector.resolve<HomePageBloc>().add(EventFetchEvent(
+          widget.tipeAcara == StringConstant.typeEventJadwalUmum
+              ? StringConstant.typePublic
+              : StringConstant.typePersonal,
+          widget.dateTime ?? DateTime.now()));
+      super.initState();
+    });
   }
 
   // final String nextMenu, content;

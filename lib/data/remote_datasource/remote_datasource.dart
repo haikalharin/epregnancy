@@ -61,7 +61,7 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<LoginResponseData>> login(LoginModel loginModel) async {
-    final response = await httpClient.post(ServiceUrl.newLogin, loginModel);
+    final response = await httpClient.postLogin(ServiceUrl.newLogin, loginModel);
 
     return ResponseModel<LoginResponseData>.fromJson(
         response, LoginResponseData.fromJson);

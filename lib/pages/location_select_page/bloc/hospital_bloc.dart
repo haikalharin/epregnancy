@@ -31,8 +31,9 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       yield* _mapFetchHospitalEvent(event, state);
     } else if (event is FetchHospitalsByIdEvent) {
       yield* _mapFetchHospitalByIdEvent(event, state);
-    }
-    else if (event is ChangeHospitalEvent) {
+    } else if (event is HospitalDispose) {
+      yield _mapHospitalDispose(event, state);
+    } else if (event is ChangeHospitalEvent) {
       yield* _mapChangeHospital(event, state);
     } else if (event is FetchMemberSummaryEvent) {
       yield* _mapMembersSummaryEvent(event, state);
@@ -43,7 +44,12 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
     }
   }
 
-
+  HospitalState _mapHospitalDispose(
+      HospitalDispose event,
+      HospitalState state,
+      ) {
+    return HospitalState();
+  }
 
   Stream<HospitalState> _mapFetchHospitalEvent(
     FetchHospitalsEvent event,
@@ -127,22 +133,19 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
         sort = "desc";
       }
       ResponseModel response = ResponseModel.dataEmpty();
-      if(event.isNextPage){
+      if (event.isNextPage) {
         yield state.copyWith(
             status: FormzStatus.submissionInProgress,
             type: 'get-next-page-member',
             members: state.members);
-       response =
-        await hospitalRepository.fetchMembers(
+        response = await hospitalRepository.fetchMembers(
             event.name ?? "",
             state.page + 1,
             event.isPregnant ?? true,
             event.sortBy ?? "name",
             sort);
-
       } else {
-       response =
-        await hospitalRepository.fetchMembers(
+        response = await hospitalRepository.fetchMembers(
             event.name ?? "",
             event.page ?? 0,
             event.isPregnant ?? true,
@@ -151,8 +154,8 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
       }
       List<Member> _members = response.data ?? [];
       List<Member> members = [];
-      if(event.isNextPage){
-        members = state.members??[];
+      if (event.isNextPage) {
+        members = state.members ?? [];
       }
       for (var element in _members) {
         Member? member = element.copyWith(

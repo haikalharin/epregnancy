@@ -71,3 +71,11 @@ class ChangeHospitalEvent extends HospitalEvent {
   @override
   List<Object> get props => [];
 }
+
+class HospitalDispose extends HospitalEvent {
+  const HospitalDispose();
+
+
+  @override
+  List<Object> get props => [];
+}
