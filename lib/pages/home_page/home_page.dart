@@ -107,12 +107,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    if (F.appFlavor == Flavor.DEVELOPMENT) {
-      // subscribeFcmTopic();
+    if (F.appFlavor != Flavor.PRODUCTION) {
+      subscribeFcmTopic();
     }
     start();
     super.initState();
   }
+
 
   _scrollToBottom() {
     _scrollControler.jumpTo(_scrollControler.position.maxScrollExtent);

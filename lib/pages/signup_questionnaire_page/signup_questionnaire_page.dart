@@ -91,6 +91,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
           child: BlocBuilder<SignUpQuestionnaireBloc, SignUpQuestionnaireState>(
             builder: (context, state) {
               print('dateValid: ${state.dateValid}');
+              print("firstName : ${state.firstName.value}");
+              print("secondName : ${state.secondName.value}");
               return SingleChildScrollView(
                 child: Stack(
                   children: [
@@ -495,7 +497,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 child: ElevatedButton(
                                   onPressed: state.password.invalid ||
                                           state.confirmPassword.invalid ||
-                                          _passwordController.text.isEmpty || state.dateValid != true || state.firstName.invalid || state.secondName.invalid
+                                          _passwordController.text.isEmpty || state.dateValid != true || state.firstName.value == "" || state.firstName.invalid || state.secondName.invalid || state.secondName.value == ""
                                       ? null
                                       : () async {
                                           Injector.resolve<
