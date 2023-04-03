@@ -79,7 +79,7 @@ class _AudioMainPageState extends State<AudioMainPage> {
                               tag: 'musik-kehamilan',
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.w),
-                                  child: Image.asset('assets/musik_image.png', height: 100.h, width: 150.w, fit: BoxFit.fill,)),
+                                  child: Image.asset('assets/musik_image.png', height: 100.h, width: 150.w, fit: BoxFit.contain,)),
                             ),
                             SizedBox(height: 10.h,),
                             Text("Musik Kehamilan", maxLines: 3, textAlign: TextAlign.start,
@@ -112,7 +112,7 @@ class _AudioMainPageState extends State<AudioMainPage> {
                             tag: 'img-banner',
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.w),
-                                child: Image.asset('assets/music_murottal.png', height: 100.h, width: 150.w, fit: BoxFit.fill,)),
+                                child: Image.asset('assets/music_murottal.png', height: 100.h, width: 150.w, fit: BoxFit.contain,)),
                           ),
                           SizedBox(height: 10.h,),
                           Text("Murottal", maxLines: 3, textAlign: TextAlign.start,

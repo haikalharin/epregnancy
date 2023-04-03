@@ -76,25 +76,12 @@ class _ItemPlayListState extends State<ItemPlayList> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.w)
             ),
-            elevation: 2,
+            elevation: 1,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+              padding: EdgeInsets.symmetric(vertical: 27.h, horizontal: 16.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(13.w),
-                    decoration: BoxDecoration(
-                        color: EpregnancyColors.primerSoft2,
-                        borderRadius: BorderRadius.circular(8.w)),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'assets/icMusic.svg',
-                        color: EpregnancyColors.primer,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10.w,),
                   Expanded(child: Text(
                     widget.title ?? "", style: TextStyle(color: Colors.black, fontSize: 14.sp, fontWeight: FontWeight.w700),
                   )),

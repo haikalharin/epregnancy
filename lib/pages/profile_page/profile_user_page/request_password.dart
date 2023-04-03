@@ -60,9 +60,7 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
               child: Form(
                 key: _formKey,
                 autovalidateMode: _autovalidateMode,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: ListView(
                   children: [
                     Center(
                         child: SvgPicture.asset("assets/icKeyCircle.svg")),
@@ -91,7 +89,7 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
                       enableInteractiveSelection: false,
                       autovalidateMode: AutovalidateMode.disabled,
                       validator: (val) {
-                        if (val == null || val.isEmpty) {
+                        if (val == null) {
                           return "Password Tidak Boleh Kosong";
                         }
                         return null;
