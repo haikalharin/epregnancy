@@ -535,9 +535,15 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                   child: CountdownTimer(
                                     endTime:DateTime.parse(state.hospitals?[0].pinValidEnd ??
                                                     DateTime.now().toString())
-                                                .add(const Duration(seconds: 10))
                                                 .millisecondsSinceEpoch,
                                     widgetBuilder: (context, time) {
+                                      print("pin valid value : ${state.hospitals?[0].pin}");
+                                      print("hospital id : ${state.hospitals?[0].id}");
+                                      print("pin valid end : ${state.hospitals?[0].pinValidEnd}");
+                                      // print("date valid end : ${DateTime.parse(state.hospitals?[0].pinValidEnd ??
+                                      //     DateTime.now().toString())
+                                      //     .add(const Duration(seconds: 10))
+                                      //     .millisecondsSinceEpoch}");
                                       return Text(
                                         "Akan Expired Pada ${time?.min != null ? time?.min.toString().padLeft(2, "0") : "00"} : ${time?.sec != null ? time?.sec.toString().padLeft(2, "0") : "00"}",
                                         style: TextStyle(
@@ -545,10 +551,12 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                       );
                                     },
                                     // todo data valid start & end ngaco di response
-                                    onEnd: () {
-                                      Injector.resolve<HospitalBloc>().add(
-                                          FetchHospitalsByIdEvent(
-                                              widget.hospitalId));
+                                    onEnd: () async {
+                                      Future.delayed(const Duration(seconds: 2), (){
+                                        Injector.resolve<HospitalBloc>().add(
+                                            FetchHospitalsByIdEvent(
+                                                widget.hospitalId));
+                                      });
                                     },
                                   ),
                                 )
@@ -556,7 +564,13 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                             ));
 
                   } else {
-                    return Container();
+                    return Container(
+                      height: 100.h,
+                      width: 100.w,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
                   }
                 },
               ),
