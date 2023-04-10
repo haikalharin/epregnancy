@@ -12,7 +12,9 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../common/injector/injector.dart';
 import '../../main_default.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/epragnancy_color.dart';
+import '../../utils/string_constans.dart';
 import 'bloc/article_bloc.dart';
 
 class ListArticleVertical extends StatefulWidget {
@@ -43,6 +45,20 @@ class _ListArticleVerticalState extends State<ListArticleVertical> {
     if (widget.isSearch == false) {
       Injector.resolve<ArticlePageBloc>()
           .add(ArticleFetchEvent(widget.condition ?? "", 0));
+    }
+
+    if(widget.condition == StringConstant.pregnant){
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'Artikel_page-tab_kehamilan', 'count': 1});
+    } else if (widget.condition == StringConstant.notPregnant) {
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'Artikel_page-tab_tidak_hamil', 'count': 1});
+    }else if (widget.condition == StringConstant.postMaternity) {
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'Artikel_page-tab_memiliki_bayi', 'count': 1});
+    }else if (widget.condition == StringConstant.childcare) {
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'Artikel_page-tab_pengasuhan_anak', 'count': 1});
     }
 
     super.initState();

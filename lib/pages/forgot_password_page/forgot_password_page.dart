@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/string_constans.dart';
 import '../change_password_page/bloc/change_password_bloc.dart';
 import '../signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
@@ -42,6 +43,8 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
 
   @override
   void initState() {
+    CountlyAnalyticsService(context)
+        .basicEvent({'key': 'Lupa_kata_sandi_page', 'count': 1});
     userNameController.clear();
     Injector.resolve<ForgotPasswordPageBloc>().add(ForgotPasswordInitEvent());
     super.initState();
@@ -58,6 +61,8 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
         margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
         child: ElevatedButton(
           onPressed: () async {
+            CountlyAnalyticsService(context)
+                .basicEvent({'key': 'Lupa_kata_sandi_page_button_kirim', 'count': 1});
             Injector.resolve<ForgotPasswordPageBloc>().add(const ForgotPasswordSubmitted());
           },
           child: Text("Kirim"),

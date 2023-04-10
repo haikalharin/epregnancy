@@ -19,6 +19,7 @@ import '../../common/injector/injector.dart';
 import '../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
 import '../../main_default.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';
@@ -47,11 +48,16 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
 
   @override
   void initState() {
+
     Injector.resolve<SurveyPageBloc>()
         .add(SurveyInitEvent(isUpdate: widget.isEdit ?? false));
     if(widget.editName == true) {
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'Siapa_nama_bayi_welcome_page', 'count': 1});
       Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(3));
     } else {
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'Kapan_hari_haid_pertama_welcome_page', 'count': 1});
       Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(2));
     }
     super.initState();
@@ -190,6 +196,18 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                 body: StreamBuilder<bool>(
                   stream: _streamSurvey.stream,
                   builder: (context, snapshot) {
+                    if(state.page == 3){
+                      if(widget.isEdit == true){
+                        CountlyAnalyticsService(context)
+                            .basicEvent({'key': 'Siapa_nama_bayi_welcome_page_button_simpan', 'count': 1});
+                    }else{
+                      CountlyAnalyticsService(context)
+                          .basicEvent({'key': 'Kapan_hari_haid_pertama_welcome_page_button_selanjutnya', 'count': 1});
+                      Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(2));
+                    }}else{
+                      CountlyAnalyticsService(context)
+                          .basicEvent({'key': 'Siapa_nama_bayi_welcome_page_button_selanjutnya', 'count': 1});
+                    }
                     return snapshot.data == true? Container(
                       child: Stack(
                         children: [

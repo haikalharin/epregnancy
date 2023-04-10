@@ -10,10 +10,11 @@ import 'package:showcaseview/showcaseview.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../common/constants/router_constants.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/image_utils.dart';
 
-class BabySectionWidget extends StatelessWidget {
+class BabySectionWidget extends StatefulWidget {
   BabySectionWidget(
       {Key? key,
       this.one,
@@ -25,6 +26,12 @@ class BabySectionWidget extends StatelessWidget {
   final HomePageState state;
   final JustTheController tooltipController;
   final PublishSubject<bool> psTriggerTooltip;
+
+  @override
+  State<BabySectionWidget> createState() => _BabySectionWidgetState();
+}
+
+class _BabySectionWidgetState extends State<BabySectionWidget> {
   var duration = 0;
 
   Path defaultTailBuilder(Offset tip, Offset point2, Offset point3) {
@@ -36,10 +43,17 @@ class BabySectionWidget extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    CountlyAnalyticsService(context)
+        .basicEvent({'key': 'Tumbnail_baby_tracker_home_page', 'count': 1});
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return state.showGuide!
+    return widget.state.showGuide!
         ? Showcase(
-            key: one ?? GlobalKey(),
+            key: widget.one ?? GlobalKey(),
             title: 'Selamat datang !',
             description:
                 'Anda akan dengan mudah mengetahui fase kehamilan dengan gambar interaktif yang menunjukkan kondisi janin Anda',
@@ -72,7 +86,7 @@ class BabySectionWidget extends StatelessWidget {
                           padding:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           child: Text(
-                            "Minggu ke- ${state.baby?.baby?.pregnancyAgeWeek}",
+                            "Minggu ke- ${widget.state.baby?.baby?.pregnancyAgeWeek}",
                             style: TextStyle(
                                 fontSize: 10,
                                 color: Colors.white,
@@ -85,7 +99,7 @@ class BabySectionWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => BabyTrackerDetail(
-                                        newBabyModel: state.baby)));
+                                        newBabyModel: widget.state.baby)));
                           },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -107,7 +121,7 @@ class BabySectionWidget extends StatelessWidget {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 BabyTrackerDetail(
-                                                    newBabyModel: state.baby)));
+                                                    newBabyModel: widget.state.baby)));
                                   },
                                   icon: const Icon(
                                     Icons.arrow_forward_ios_rounded,
@@ -135,12 +149,12 @@ class BabySectionWidget extends StatelessWidget {
                             ))
                       ],
                     ),
-                    state.baby != null
+                    widget.state.baby != null
                         ? Stack(
                             children: [
                               InkWell(
                                 onTap: () {
-                                  tooltipController.showTooltip(
+                                  widget.tooltipController.showTooltip(
                                       immediately: true);
                                 },
                                 child: Hero(
@@ -151,7 +165,7 @@ class BabySectionWidget extends StatelessWidget {
                                       child: FadeInImage.memoryNetwork(
                                         placeholder:kTransparentImage,
                                         image:  ImageUtils.imageNetwork(
-                                            state.baby!.illustrationImage ??
+                                            widget.state.baby!.illustrationImage ??
                                                 ""),
                                         fit: BoxFit.fill,
                                         imageErrorBuilder:
@@ -168,7 +182,7 @@ class BabySectionWidget extends StatelessWidget {
                                 ),
                               ),
                               StreamBuilder<bool>(
-                                  stream: psTriggerTooltip.stream,
+                                  stream: widget.psTriggerTooltip.stream,
                                   builder: (context, snapshot) {
                                     return Container(
                                       height: 200,
@@ -179,7 +193,7 @@ class BabySectionWidget extends StatelessWidget {
                                         backgroundColor:
                                             EpregnancyColors.primer,
                                         preferredDirection: AxisDirection.up,
-                                        controller: tooltipController,
+                                        controller: widget.tooltipController,
                                         child: Container(
                                           height: 0,
                                           width: 0,
@@ -196,7 +210,7 @@ class BabySectionWidget extends StatelessWidget {
                                           child: Padding(
                                             padding: EdgeInsets.all(8.0),
                                             child: Text(
-                                              state.baby?.textFromBaby ?? "",
+                                              widget.state.baby?.textFromBaby ?? "",
                                               style: TextStyle(
                                                   color:
                                                       EpregnancyColors.white),
@@ -265,7 +279,7 @@ class BabySectionWidget extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         child: Text(
-                          "Minggu ke- ${state.baby?.baby?.pregnancyAgeWeek}",
+                          "Minggu ke- ${widget.state.baby?.baby?.pregnancyAgeWeek}",
                           style: TextStyle(
                               fontSize: 10,
                               color: Colors.white,
@@ -278,7 +292,7 @@ class BabySectionWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => BabyTrackerDetail(
-                                      newBabyModel: state.baby)));
+                                      newBabyModel: widget.state.baby)));
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -299,7 +313,7 @@ class BabySectionWidget extends StatelessWidget {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               BabyTrackerDetail(
-                                                  newBabyModel: state.baby)));
+                                                  newBabyModel: widget.state.baby)));
                                 },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_rounded,
@@ -327,12 +341,12 @@ class BabySectionWidget extends StatelessWidget {
                           ))
                     ],
                   ),
-                  state.baby != null
+                  widget.state.baby != null
                       ? Stack(
                           children: [
                             InkWell(
                               onTap: () {
-                                tooltipController.showTooltip(
+                                widget.tooltipController.showTooltip(
                                     immediately: true);
                               },
                               child: Hero(
@@ -343,7 +357,7 @@ class BabySectionWidget extends StatelessWidget {
                                     child:  FadeInImage.memoryNetwork(
                                       placeholder:kTransparentImage,
                                       image:   ImageUtils.imageNetwork(
-                                          state.baby!.illustrationImage ??
+                                          widget.state.baby!.illustrationImage ??
                                               ""),
                                       fit: BoxFit.fill,
                                       imageErrorBuilder:
@@ -360,7 +374,7 @@ class BabySectionWidget extends StatelessWidget {
                               ),
                             ),
                             StreamBuilder<bool>(
-                                stream: psTriggerTooltip.stream,
+                                stream: widget.psTriggerTooltip.stream,
                                 builder: (context, snapshot) {
                                   return Container(
                                     height: 200,
@@ -370,7 +384,7 @@ class BabySectionWidget extends StatelessWidget {
                                       isModal: true,
                                       backgroundColor: EpregnancyColors.primer,
                                       preferredDirection: AxisDirection.up,
-                                      controller: tooltipController,
+                                      controller: widget.tooltipController,
                                       child: Container(
                                         height: 0,
                                         width: 0,
@@ -387,7 +401,7 @@ class BabySectionWidget extends StatelessWidget {
                                         child: Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text(
-                                            state.baby?.textFromBaby ?? "",
+                                            widget.state.baby?.textFromBaby ?? "",
                                             style: TextStyle(
                                                 color: EpregnancyColors.white),
                                           ),
@@ -414,7 +428,7 @@ class BabySectionWidget extends StatelessWidget {
                                 children: <TextSpan>[
                               TextSpan(
                                   text: DateFormat('dd MMMM yyyy')
-                                      .format(state.baby?.baby?.pregnancyAgeEstimatedBirth??DateTime.now()),
+                                      .format(widget.state.baby?.baby?.pregnancyAgeEstimatedBirth??DateTime.now()),
                                   style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,

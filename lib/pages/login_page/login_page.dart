@@ -65,10 +65,10 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     HttpClient().isRefresh =false;
     getRemoteConfig();
-    FirebaseAnalyticsService().setCurrentScreen("login_page");
+    FirebaseAnalyticsService().setCurrentScreen("Login_Register_page");
     CountlyAnalyticsService(context).getDeviceIDType();
     CountlyAnalyticsService(context)
-        .basicEvent({'key': 'Login_page', 'count': 1});
+        .basicEvent({'key': 'Login_Register_page', 'count': 1});
     if (widget.tokenExpired == true) {
       if (widget.isFromRegister) {
         WidgetsBinding.instance?.addPostFrameCallback((_) async {
@@ -421,6 +421,8 @@ class _LoginPageState extends State<LoginPage> {
                                         color: EpregnancyColors.primer),
                                   ),
                                   onPressed: () {
+                                    CountlyAnalyticsService(context)
+                                        .basicEvent({'key': 'Login_Registration_page_button_Daftar', 'count': 1});
                                     Navigator.of(context)
                                         .pushNamed(RouteName.signup);
                                   },
@@ -599,6 +601,8 @@ class _ForgotPasswordButton extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                   ),
                   onPressed: () {
+                    CountlyAnalyticsService(context)
+                        .basicEvent({'key': 'Login_Registration_page_button_lupa_kata_sandi', 'count': 1});
                     Navigator.of(context).pushNamed(RouteName.forgotPassword);
                   },
                 ),

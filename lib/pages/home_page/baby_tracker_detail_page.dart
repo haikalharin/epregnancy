@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
+import '../../utils/countly_analytics.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/image_utils.dart';
 
@@ -19,11 +20,28 @@ class BabyTrackerDetail extends StatefulWidget {
   State<BabyTrackerDetail> createState() => _BabyTrackerDetailState();
 }
 
-class _BabyTrackerDetailState extends State<BabyTrackerDetail> {
+class _BabyTrackerDetailState extends State<BabyTrackerDetail>  with TickerProviderStateMixin {
+  TabController? _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 3, vsync: this);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    if(_tabController?.index == 0){
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'Detail_bayi_dan_bunda-Perkembangan_bayi_page', 'count': 1});
+
+    } else if(_tabController?.index == 1){
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'Detail_bayi_dan_bunda-Ukuran_bayi_page', 'count': 1});
+    } else{
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'Detail_bayi_dan_bunda-Perubahan_bunda_page', 'count': 1});
+    }
     return DefaultTabController(
-      initialIndex: 0,
       length: 3,
       child: Scaffold(
         appBar: AppBar(
@@ -50,6 +68,7 @@ class _BabyTrackerDetailState extends State<BabyTrackerDetail> {
                   color: Colors.white
                 ),
                 child:  TabBar(
+                    controller: _tabController,
                     isScrollable: false,
                     unselectedLabelColor: EpregnancyColors.greyDarkFontColor,
                     labelColor: EpregnancyColors.primer,
@@ -68,7 +87,9 @@ class _BabyTrackerDetailState extends State<BabyTrackerDetail> {
               ),
             ),
             Expanded(
-              child: TabBarView(children: <Widget>[
+              child: TabBarView(
+                  controller: _tabController,
+                  children: <Widget>[
                 // page perkembangan
                 ListView(
                   children: [

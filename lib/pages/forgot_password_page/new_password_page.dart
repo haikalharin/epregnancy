@@ -15,6 +15,7 @@ import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/constants/regex_constants.dart';
 import '../../common/services/auth_service.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/string_constans.dart';
 import '../signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,6 +39,13 @@ class _NewPasswordPage extends State<NewPasswordPage> {
   bool _isHiddenConfirmNewPassword = true;
   final TextEditingController _passwordController = TextEditingController();
   String? passwordText;
+
+  @override
+  void initState() {
+    CountlyAnalyticsService(context)
+        .basicEvent({'key': 'Kata_sandi_baru_page', 'count': 1});
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -332,6 +340,8 @@ class _NewPasswordPage extends State<NewPasswordPage> {
                             width: MediaQuery.of(context).size.width,
                             child: ElevatedButton(
                               onPressed: () async {
+                                CountlyAnalyticsService(context)
+                                    .basicEvent({'key': 'Kata_sandi_baru_page_button_konfirmasi_kata_sandi', 'count': 1});
                                 print(
                                     'state confirm password value : ${state.confirmPassword.value}');
                                 if (state.confirmPassword != null &&
