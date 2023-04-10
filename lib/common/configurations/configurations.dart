@@ -10,6 +10,7 @@ class Configurations {
   static String _consumerSecret = DefaultConfig.consumerSecret;
   static String _mode = DefaultConfig.mode;
   static bool _isShowChucker = DefaultConfig.isShowChucker;
+  static bool _isVpn = DefaultConfig.isVpn;
   static String _countlyServerUrl = DefaultConfig.countlyServerUrl;
   static String _countlyAppKey = DefaultConfig.countlyAppKey;
 
@@ -33,6 +34,7 @@ class Configurations {
         DefaultConfig.countlyServerUrl.toString();
     _countlyAppKey =
         value['countly_app_key'] ?? DefaultConfig.countlyAppKey.toString();
+    _isVpn = value['isVpn'] ?? DefaultConfig.isVpn;
   }
 
   static String get host => _host;
@@ -42,6 +44,8 @@ class Configurations {
   static String get mode => _mode;
 
   static bool get isShowChucker => _isShowChucker;
+
+  static bool get isVpn => _isVpn;
 
   static String get imageHost => _imageHost;
 

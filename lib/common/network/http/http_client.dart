@@ -275,6 +275,7 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+      updateCookie(response);
 
       updateCookie(response);
 
@@ -289,7 +290,7 @@ class HttpClient {
         await AppSharedPreference.setLoginResponse(dataResponse['data']);
         header![HttpHeaders.authorizationHeader] = 'Bearer $newToken';
 
-        // post cookie
+
         String? cookie =
             await AppSharedPreference.getString(AppSharedPreference.cookie);
         print('cookie : $cookie');
@@ -380,6 +381,7 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+      updateCookie(response);
 
       updateCookie(response);
 
@@ -491,6 +493,7 @@ class HttpClient {
               ? aliceStaging
               : aliceDev,
           body: body);
+      updateCookie(response);
 
       updateCookie(response);
 

@@ -15,6 +15,7 @@ import '../../data/firebase/event/event_user.dart';
 import '../../data/model/user_model_firebase/user_model_firebase.dart';
 import '../../data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/firebase_analytics.dart';
 import '../../utils/string_constans.dart';
 import '../event_page/add_event_page.dart';
@@ -305,6 +306,8 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
     switch (indexSelected) {
       case 0:
         FirebaseAnalyticsService().setCurrentScreen("home_page_user");
+        CountlyAnalyticsService(context)
+            .basicEvent({'key': 'home_page_user', 'count': 1});
         return HomePage(
           isFromNotif: widget.isFromNotif,
           userId: widget.userId,
@@ -314,16 +317,22 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
         );
       case 1:
         FirebaseAnalyticsService().setCurrentScreen("audio_page_user");
+        CountlyAnalyticsService(context)
+            .basicEvent({'key': 'audio_page_user', 'count': 1});
         return const AudioMainPage();
       case 2:
         // return AddEventPage();
         FirebaseAnalyticsService().setCurrentScreen("consultation_page_user");
+        CountlyAnalyticsService(context)
+            .basicEvent({'key': 'consultation_page_user', 'count': 1});
         return ConsultationPage(
           role: widget.role,
         );
 
       case 3:
         FirebaseAnalyticsService().setCurrentScreen("profile_page_user");
+        CountlyAnalyticsService(context)
+            .basicEvent({'key': 'profile_page_user', 'count': 1});
         return ProfileUserPage();
       default:
         return Container();
