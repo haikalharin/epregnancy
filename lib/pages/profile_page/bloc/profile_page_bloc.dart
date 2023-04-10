@@ -13,6 +13,7 @@ import 'package:meta/meta.dart';
 import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/exceptions/survey_error_exception.dart';
 import '../../../data/model/baby_model/new_baby_model.dart';
+import '../../../data/model/biodata_model/biodata_response.dart';
 import '../../../data/model/consultation_model/consultation_model.dart';
 import '../../../data/model/response_model/response_model.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
@@ -33,6 +34,8 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
       yield* _mapChangePhotoProfileEventToState(event, state);
     } else if (event is InitialProfileEvent) {
       yield* _mapInitialProfileEventToState(event, state);
+    } else if (event is BiodataViewEvent) {
+      yield* _mapBiodataViewEvent(event, state);
     }
   }
 
@@ -52,6 +55,32 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
         user: _user, baby: myBaby, ageBabyInWeeks: pregnancyAgeWeek, ageBabyInDay: pregnancyAgeDay);
   }
 
+  Stream<ProfilePageState> _mapBiodataViewEvent(
+      BiodataViewEvent event,
+      ProfilePageState state,
+      ) async* {
+    yield ProfilePageState(submitStatus: FormzStatus.submissionInProgress);
+    var _user = await AppSharedPreference.getUserWithoutDecrypt();
+    var user = await AppSharedPreference.getUser();
+    NewBabyModel myBaby = await AppSharedPreference.getBabyDataNew();
+    var pregnancyAgeWeek = 0;
+    var pregnancyAgeDay = 0;
+    if (myBaby.baby?.id != null || myBaby.baby?.id != '') {
+      pregnancyAgeWeek = myBaby.baby?.pregnancyAgeWeek ?? 0;
+      pregnancyAgeDay = myBaby.baby?.pregnancyAgeDay ?? 0;
+    }
+
+    ResponseModel response = await userRepository.biodataView(event.password);
+    if(response.code == 200){
+      BiodataResponse biodataResponse = response.data;
+      var _updateUser = _user.copyWith(lastBiodataView: biodataResponse.lastBiodataView.toString());
+      await AppSharedPreference.setUser(_updateUser);
+      yield ProfilePageState(user: user, baby: myBaby, ageBabyInWeeks: pregnancyAgeWeek, ageBabyInDay: pregnancyAgeDay, submitStatus: FormzStatus.submissionSuccess);
+    } else {
+      yield ProfilePageState(user: user, baby: myBaby, ageBabyInWeeks: pregnancyAgeWeek, ageBabyInDay: pregnancyAgeDay, errorMessage: response.message, submitStatus: FormzStatus.submissionFailure);
+    }
+  }
+
   Stream<ProfilePageState> _mapChangePhotoProfileEventToState(
     ChangePhotoProfileEvent event,
     ProfilePageState state,
@@ -64,13 +93,11 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
       String imgBase64 = base64.encode(byte);
       var image = "data:image/png;base64,$imgBase64";
 
-      ResponseModel response =
-          await userRepository.changePhotoProfile(user.id ?? "", image);
+      ResponseModel response = await userRepository.changePhotoProfile(user.id ?? "", image);
 
       if (response.code == 200) {
         UserModel _userModel = response.data;
-        ResponseModel<UserModel> userGetInfo =
-            await userRepository.getUserInfo();
+        ResponseModel<UserModel> userGetInfo = await userRepository.getUserInfo();
         await AppSharedPreference.setUser(userGetInfo.data);
         UserModel userFromSession = await AppSharedPreference.getUser();
 

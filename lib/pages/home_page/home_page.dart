@@ -423,11 +423,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           border: Border.all(
                                               color: EpregnancyColors.white),
                                           borderRadius:
-                                              BorderRadius.circular(8.w),
+                                          BorderRadius.circular(8.w),
                                           boxShadow: [
                                             BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
+                                              color: Colors.grey.withOpacity(0.2),
                                               spreadRadius: 5,
                                               blurRadius: 7,
                                               offset: Offset(0,
@@ -447,22 +446,95 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             ),
                                           ),
                                           SizedBox(
-                                            height: 4.h,
+                                            height: 10.h,
                                           ),
+                                          // todo simple tip
                                           Text(
-                                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque laoreet pulvinar mi sit amet tincidunt. Sed maximus, orci sed euismod eleifend.  Sed maximus, orci sed euismod eleifend",
+                                            state.simpleTipResponse?.tips ?? "",
                                             style: TextStyle(
                                                 color: Colors.black,
-                                                fontSize: 11.sp,
-                                                fontWeight: FontWeight.w400),
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w500),
                                             textAlign: TextAlign.center,
                                           ),
                                           SizedBox(
                                             height: 16.h,
                                           ),
+                                          BlocListener<ArticlePageBloc,
+                                              ArticlePageState>(
+                                            listener: (context, state) {
+                                              if (state.articleModel != null &&
+                                                  state.submitStatus ==
+                                                      FormzStatus
+                                                          .submissionSuccess &&
+                                                  state.type ==
+                                                      'success-read-tips') {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ArticleDetailPage(
+                                                              article: state
+                                                                  .articleModel,
+                                                            )));
+                                              }
+                                            },
+                                            child: state.simpleTipResponse
+                                                ?.articleId !=
+                                                null
+                                                ? Align(
+                                              alignment:
+                                              Alignment.bottomRight,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Injector.resolve<
+                                                      ArticlePageBloc>()
+                                                      .add(ArticleReadEvent(
+                                                      state.simpleTipResponse
+                                                          ?.articleId ??
+                                                          "",
+                                                      isFromTips:
+                                                      true));
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .end,
+                                                  children: [
+                                                    Text(
+                                                      "Baca Artikel",
+                                                      style: TextStyle(
+                                                          color:
+                                                          EpregnancyColors
+                                                              .primer,
+                                                          fontSize: 12.sp,
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w700),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10.w,
+                                                    ),
+                                                    Icon(
+                                                      Icons
+                                                          .arrow_forward_ios_rounded,
+                                                      color:
+                                                      EpregnancyColors
+                                                          .primer,
+                                                      size: 14.w,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                                : Container(),
+                                          ),
                                         ],
                                       ),
-                                    ))
+                                    ),
+                            )
                                 : Container(
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 16.h),

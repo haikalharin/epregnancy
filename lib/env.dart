@@ -52,7 +52,7 @@ final Map<String, dynamic> stagingEnvironment = <String, dynamic>{
   'sub_host': '/di/epregnancy/uat/api',
   'host_vpn': 'https://digitalinovation.dev.azlife.allianz.co.id/',
   'sub_host_vpn': '/epregnancy/api/uat',
-  'websockets': 'wss://igbeyewo.allianz.co.id/di/epregnancy/api/user/',
+  'websockets': 'wss://igbeyewo.allianz.co.id/di/epregnancy/uat/api/user/',
   'image_host': 'https://image.tmdb.org/t/p/',
   'http_client': 'https',
   'wpUrl': 'http://192.168.64.2/panjistore',

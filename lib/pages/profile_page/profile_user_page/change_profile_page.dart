@@ -12,7 +12,8 @@ import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 
 class ChangeProfilePage extends StatefulWidget {
-  const ChangeProfilePage({Key? key}) : super(key: key);
+  const ChangeProfilePage({Key? key, this.withPassword = false}) : super(key: key);
+  final bool withPassword;
 
   @override
   State<ChangeProfilePage> createState() => _ChangeProfilePageState();
@@ -105,266 +106,332 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: const BtnBackIosStyle(),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            "Ubah Data Diri",
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
-                fontSize: 14.sp),
+    return WillPopScope(
+      onWillPop: (){
+        if(widget.withPassword){
+          Navigator.pop(context);
+          Navigator.pop(context);
+        } else {
+          Navigator.pop(context);
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios, color: Colors.black,),
+              onPressed: (){
+                if(widget.withPassword){
+                  Navigator.pop(context, 'back');
+                  Navigator.pop(context, 'back');
+                } else {
+                  Navigator.pop(context, 'back');
+                }
+              },
+            ),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            title: Text(
+              "Ubah Data Diri",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14.sp),
+            ),
           ),
-        ),
-        body: BlocListener<ProfilePageBloc, ProfilePageState>(
-          listener: (context, state) {
-            // todo listener
-          },
-          child: BlocBuilder<ProfilePageBloc, ProfilePageState>(
-            builder: (context, state) {
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // avatar
-                    Center(
-                      child: Container(
-                          height: 80.h,
-                          width: 80.w,
-                          margin: EdgeInsets.only(
-                              right: 10.w, top: 10.w, bottom: 10.h),
-                          decoration:
-                              const BoxDecoration(shape: BoxShape.circle),
-                          child: state.user?.imageUrl != null
-                              ? Stack(
-                                  overflow: Overflow.visible,
-                                  children: [
-                                    Container(
-                                      // width: 62,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(40),
-                                        child: FadeInImage(
-                                          placeholder: const AssetImage(
-                                              'assets/ic_no_photo_blue.png'),
-                                          image: NetworkImage(
-                                              state.user?.imageUrl ?? ""),
-                                          width: 80.w,
-                                          height: 80.h,
-                                          fit: BoxFit.cover,
+          body: BlocListener<ProfilePageBloc, ProfilePageState>(
+            listener: (context, state) {
+              // todo listener
+            },
+            child: BlocBuilder<ProfilePageBloc, ProfilePageState>(
+              builder: (context, state) {
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // avatar
+                      Center(
+                        child: Container(
+                            height: 80.h,
+                            width: 80.w,
+                            margin: EdgeInsets.only(
+                                right: 10.w, top: 10.w, bottom: 10.h),
+                            decoration:
+                                const BoxDecoration(shape: BoxShape.circle),
+                            child: state.user?.imageUrl != null
+                                ? Stack(
+                                    overflow: Overflow.visible,
+                                    children: [
+                                      Container(
+                                        // width: 62,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(40),
+                                          child: FadeInImage(
+                                            placeholder: const AssetImage(
+                                                'assets/ic_no_photo_blue.png'),
+                                            image: NetworkImage(
+                                                state.user?.imageUrl ?? ""),
+                                            width: 80.w,
+                                            height: 80.h,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Positioned(
-                                      bottom: 10,
-                                      right: -10,
-                                      child: InkWell(
-                                        onTap: () {
-                                          _showPicker(context);
-                                        },
-                                        child: Container(
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.w),
-                                            child: Icon(
-                                              Icons.camera_alt,
-                                              color: EpregnancyColors.primer,
-                                              size: 15.w,
-                                            ),
-                                          ),
-                                          decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(
-                                                50,
+                                      Positioned(
+                                        bottom: 10,
+                                        right: -10,
+                                        child: InkWell(
+                                          onTap: () {
+                                            _showPicker(context);
+                                          },
+                                          child: Container(
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8.w),
+                                              child: Icon(
+                                                Icons.camera_alt,
+                                                color: EpregnancyColors.primer,
+                                                size: 15.w,
                                               ),
                                             ),
-                                            color: EpregnancyColors.primerSoft2,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Stack(
-                                  overflow: Overflow.visible,
-                                  children: [
-                                    Container(
-                                      // width: 62,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(40),
-                                        child: FadeInImage(
-                                          placeholder: AssetImage(
-                                              'assets/ic_no_photo_blue.png'),
-                                          image: AssetImage(
-                                              'assets/ic_no_photo_blue.png'),
-                                          width: 80.h,
-                                          height: 80.h,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 10,
-                                      right: -10,
-                                      child: InkWell(
-                                        onTap: () {
-                                          _showPicker(context);
-                                        },
-                                        child: Container(
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.w),
-                                            child: Icon(
-                                              Icons.camera_alt,
-                                              color: EpregnancyColors.primer,
-                                              size: 15.w,
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                  50,
+                                                ),
+                                              ),
+                                              color: EpregnancyColors.primerSoft2,
                                             ),
                                           ),
-                                          decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(
-                                                50,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Stack(
+                                    overflow: Overflow.visible,
+                                    children: [
+                                      Container(
+                                        // width: 62,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(40),
+                                          child: FadeInImage(
+                                            placeholder: AssetImage(
+                                                'assets/ic_no_photo_blue.png'),
+                                            image: AssetImage(
+                                                'assets/ic_no_photo_blue.png'),
+                                            width: 80.h,
+                                            height: 80.h,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 10,
+                                        right: -10,
+                                        child: InkWell(
+                                          onTap: () {
+                                            _showPicker(context);
+                                          },
+                                          child: Container(
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8.w),
+                                              child: Icon(
+                                                Icons.camera_alt,
+                                                color: EpregnancyColors.primer,
+                                                size: 15.w,
                                               ),
                                             ),
-                                            color: EpregnancyColors.primerSoft2,
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                  50,
+                                                ),
+                                              ),
+                                              color: EpregnancyColors.primerSoft2,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )),
-                    ),
-                    Center(
-                      child: Text(
-                        "Ubah foto profil",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700),
+                                    ],
+                                  )),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(left: 16.w, top: 16.h, bottom: 8.h),
-                      child: Text(
-                        "Data Diri dan Keluarga",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w700),
+                      Center(
+                        child: Text(
+                          "Ubah foto profil",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                      decoration: BoxDecoration(
+                      Padding(
+                        padding:
+                            EdgeInsets.only(left: 16.w, top: 16.h, bottom: 8.h),
+                        child: Text(
+                          "Data Diri",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          // border: Border(bottom: BorderSide(color: ))
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Nama",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 10.sp),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  state.user?.name ?? "",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10.sp),
+                                ),
+                                IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: Colors.white
+                                      )),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
                         color: Colors.white,
-                        // border: Border(bottom: BorderSide(color: ))
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Umur",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 10.sp),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  _getAge(state.user?.dob?? "") ?? "",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10.sp),
+                                ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: Colors.white,
+                                      )),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Nama",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 10.sp),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                state.user?.name ?? "",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 10.sp),
-                              ),
-                              IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      color: Colors.white
-                                    )),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Umur",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 10.sp),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                _getAge(state.user?.dob?? "") ?? "",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 10.sp),
-                              ),
+                      Container(
+                        color: Colors.white,
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Email",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 10.sp),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  state.user?.email ?? "",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10.sp),
+                                ),
                                 IconButton(
                                     onPressed: () {},
                                     icon: Icon(
                                       Icons.arrow_forward_ios_rounded,
                                       color: Colors.white,
                                     )),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Ganti Profil Kehamilan",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 10.sp),
-                          ),
-                          InkWell(
-                            onTap: (){
-                              Navigator.of(context).pushNamed(
-                                  RouteName.surveyPageBaby,
-                                  arguments: {"is_edit": true, "edit_name": false});
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Kehamilan Minggu ke-${state.ageBabyInWeeks.toString()}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 10.sp),
-                                ),
-                                IconButton(
-                                    onPressed: () {
-
-                                    },
-                                    icon: Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      color: EpregnancyColors.grey,
-                                    ))
                               ],
-                            ),
-                          ),
-
-                        ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ));
+
+
+                      Padding(
+                        padding:
+                        EdgeInsets.only(left: 16.w, top: 16.h, bottom: 8.h),
+                        child: Text(
+                          "Kehamilan dan Anak",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+
+                      Container(
+                        color: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Data Kehamilan",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 10.sp),
+                            ),
+                            InkWell(
+                              onTap: (){
+                                Navigator.of(context).pushNamed(
+                                    RouteName.surveyPageBaby,
+                                    arguments: {"is_edit": true, "edit_name": false});
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Kehamilan Minggu ke-${state.ageBabyInWeeks.toString()}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 10.sp),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: EpregnancyColors.grey,
+                                      ))
+                                ],
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          )),
+    );
   }
 }

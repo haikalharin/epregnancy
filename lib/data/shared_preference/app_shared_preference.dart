@@ -10,6 +10,7 @@ import 'package:PregnancyApp/data/model/room_model/room_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/flavors.dart';
 import 'package:PregnancyApp/main_production.dart';
+import 'package:PregnancyApp/main_staging.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ class AppSharedPreference {
   static const String isFirstLaunch = "isFirstLaunch";
   static const String isShowGuide = "show_guide";
   static const String cookie = "cookie";
+  static const String playlist = "playlist";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -223,9 +225,24 @@ class AppSharedPreference {
         name: _userModel.name != null
             ? await aesDecryptor(_userModel.name)
             : null,
+        mobile:  _userModel.mobile != null ? await aesDecryptor(_userModel.mobile) : null ,
         id: _userModel.id != null ? await aesDecryptor(_userModel.id) : null,
+        email: _userModel.email != null ? await aesDecryptor(_userModel.email) : null,
       );
       return userModel;
+    } else {
+      return const UserModel();
+    }
+  }
+
+  static Future<UserModel> getUserWithoutDecrypt() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString(user);
+    if (json != null) {
+      String decryptedJson = decrypty(json);
+      Map<String, dynamic> map = jsonDecode(decryptedJson);
+      UserModel _userModel = UserModel.fromJson(map);
+      return _userModel;
     } else {
       return const UserModel();
     }
@@ -437,7 +454,14 @@ class AppSharedPreference {
                     tokenExpired: true,
                   )),
           (route) => false);
-    } else {
+    } else if(F.appFlavor == Flavor.STAGING) {
+      aliceStaging.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => const LoginPage(
+                tokenExpired: true,
+              )),
+              (route) => false);
+    }else {
       aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) => const LoginPage(

@@ -57,6 +57,8 @@ abstract class UserModel with _$UserModel {
     bool? isPlanningPregnancy,
     @JsonKey(name:'is_have_baby',includeIfNull: true)
     bool? isHaveBaby,
+    @JsonKey(name: 'last_biodata_view', includeIfNull: true)
+    String? lastBiodataView,
     @JsonKey(includeIfNull: true)
     dynamic status,
     @JsonKey(includeIfNull: true)

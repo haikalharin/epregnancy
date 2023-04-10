@@ -25,3 +25,11 @@ class InitialProfileEvent extends ProfilePageEvent {
   @override
   List<Object> get props => [];
 }
+
+class BiodataViewEvent extends ProfilePageEvent {
+  const BiodataViewEvent(this.password);
+  final String password;
+
+  @override
+  List<Object> get props => [];
+}

@@ -63,6 +63,8 @@ mixin _$UserModel {
   bool? get isPlanningPregnancy => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_have_baby', includeIfNull: true)
   bool? get isHaveBaby => throw _privateConstructorUsedError;
+  @JsonKey(name: 'last_biodata_view', includeIfNull: true)
+  String? get lastBiodataView => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
   dynamic get status => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
@@ -136,6 +138,8 @@ abstract class $UserModelCopyWith<$Res> {
           bool? isPlanningPregnancy,
       @JsonKey(name: 'is_have_baby', includeIfNull: true)
           bool? isHaveBaby,
+      @JsonKey(name: 'last_biodata_view', includeIfNull: true)
+          String? lastBiodataView,
       @JsonKey(includeIfNull: true)
           dynamic status,
       @JsonKey(includeIfNull: true)
@@ -189,6 +193,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? isPregnant = freezed,
     Object? isPlanningPregnancy = freezed,
     Object? isHaveBaby = freezed,
+    Object? lastBiodataView = freezed,
     Object? status = freezed,
     Object? gamificationpoints = freezed,
     Object? redeemHistory = freezed,
@@ -287,6 +292,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
           ? _value.isHaveBaby
           : isHaveBaby // ignore: cast_nullable_to_non_nullable
               as bool?,
+      lastBiodataView: lastBiodataView == freezed
+          ? _value.lastBiodataView
+          : lastBiodataView // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -395,6 +404,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
           bool? isPlanningPregnancy,
       @JsonKey(name: 'is_have_baby', includeIfNull: true)
           bool? isHaveBaby,
+      @JsonKey(name: 'last_biodata_view', includeIfNull: true)
+          String? lastBiodataView,
       @JsonKey(includeIfNull: true)
           dynamic status,
       @JsonKey(includeIfNull: true)
@@ -452,6 +463,7 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? isPregnant = freezed,
     Object? isPlanningPregnancy = freezed,
     Object? isHaveBaby = freezed,
+    Object? lastBiodataView = freezed,
     Object? status = freezed,
     Object? gamificationpoints = freezed,
     Object? redeemHistory = freezed,
@@ -550,6 +562,10 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
           ? _value.isHaveBaby
           : isHaveBaby // ignore: cast_nullable_to_non_nullable
               as bool?,
+      lastBiodataView: lastBiodataView == freezed
+          ? _value.lastBiodataView
+          : lastBiodataView // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -633,6 +649,8 @@ class _$_UserModel implements _UserModel {
           this.isPlanningPregnancy,
       @JsonKey(name: 'is_have_baby', includeIfNull: true)
           this.isHaveBaby,
+      @JsonKey(name: 'last_biodata_view', includeIfNull: true)
+          this.lastBiodataView,
       @JsonKey(includeIfNull: true)
           this.status,
       @JsonKey(includeIfNull: true)
@@ -723,6 +741,9 @@ class _$_UserModel implements _UserModel {
   @JsonKey(name: 'is_have_baby', includeIfNull: true)
   final bool? isHaveBaby;
   @override
+  @JsonKey(name: 'last_biodata_view', includeIfNull: true)
+  final String? lastBiodataView;
+  @override
   @JsonKey(includeIfNull: true)
   final dynamic status;
   final List<Gamificationpoint>? _gamificationpoints;
@@ -777,7 +798,7 @@ class _$_UserModel implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalLogin: $totalLogin, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospital: $hospital, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
+    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalLogin: $totalLogin, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospital: $hospital, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, lastBiodataView: $lastBiodataView, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
   }
 
   @override
@@ -816,6 +837,8 @@ class _$_UserModel implements _UserModel {
                 .equals(other.isPlanningPregnancy, isPlanningPregnancy) &&
             const DeepCollectionEquality()
                 .equals(other.isHaveBaby, isHaveBaby) &&
+            const DeepCollectionEquality()
+                .equals(other.lastBiodataView, lastBiodataView) &&
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality()
                 .equals(other._gamificationpoints, _gamificationpoints) &&
@@ -855,6 +878,7 @@ class _$_UserModel implements _UserModel {
         const DeepCollectionEquality().hash(isPregnant),
         const DeepCollectionEquality().hash(isPlanningPregnancy),
         const DeepCollectionEquality().hash(isHaveBaby),
+        const DeepCollectionEquality().hash(lastBiodataView),
         const DeepCollectionEquality().hash(status),
         const DeepCollectionEquality().hash(_gamificationpoints),
         const DeepCollectionEquality().hash(_redeemHistory),
@@ -921,6 +945,8 @@ abstract class _UserModel implements UserModel {
           final bool? isPlanningPregnancy,
       @JsonKey(name: 'is_have_baby', includeIfNull: true)
           final bool? isHaveBaby,
+      @JsonKey(name: 'last_biodata_view', includeIfNull: true)
+          final String? lastBiodataView,
       @JsonKey(includeIfNull: true)
           final dynamic status,
       @JsonKey(includeIfNull: true)
@@ -1006,6 +1032,9 @@ abstract class _UserModel implements UserModel {
   @override
   @JsonKey(name: 'is_have_baby', includeIfNull: true)
   bool? get isHaveBaby => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'last_biodata_view', includeIfNull: true)
+  String? get lastBiodataView => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
   dynamic get status => throw _privateConstructorUsedError;

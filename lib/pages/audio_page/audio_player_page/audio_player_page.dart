@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_audio/just_audio.dart';
+import '../../splashscreen_page/splashscreen_page.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
 import '../../../common/injector/injector.dart';
-import '../../../main_development.dart';
 import '../../../utils/epragnancy_color.dart';
 import '../../../utils/firebase_messaging.dart';
 
@@ -158,7 +158,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
                 decoration: BoxDecoration(
                     color: EpregnancyColors.primer,
                     borderRadius: BorderRadius.circular(8.w)),
-                child: SvgPicture.asset("assets/icMusic.svg",
+                child: buffering ? SizedBox(height: 50.h, width: 50.w, child: const CircularProgressIndicator(color: Colors.white),) : SvgPicture.asset("assets/icMusic.svg",
                     color: Colors.white, height: 50.h, width: 50.w),
               ),
             ),
@@ -289,31 +289,49 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
   }
 
   Widget buildPlayButton(BuildContext context){
-    if(buffering){
-      return Container(
-        padding: EdgeInsets.all(13.w),
-        decoration: BoxDecoration(
-            color: EpregnancyColors.primerSoft2,
-            borderRadius: BorderRadius.circular(8.w)),
-        child:const Center(
-          child: CircularProgressIndicator()
+    return Container(
+      padding: EdgeInsets.all(13.w),
+      decoration: BoxDecoration(
+          color: EpregnancyColors.primerSoft2,
+          borderRadius: BorderRadius.circular(8.w)),
+      child: Center(
+        child: SvgPicture.asset(
+          isPlaying
+              ? 'assets/icPause.svg'
+              : 'assets/icPlay.svg',
+          color: EpregnancyColors.primer,
         ),
-      );
-    } else {
-      return Container(
-        padding: EdgeInsets.all(13.w),
-        decoration: BoxDecoration(
-            color: EpregnancyColors.primerSoft2,
-            borderRadius: BorderRadius.circular(8.w)),
-        child: Center(
-          child: SvgPicture.asset(
-            isPlaying
-                ? 'assets/icPause.svg'
-                : 'assets/icPlay.svg',
-            color: EpregnancyColors.primer,
-          ),
-        ),
-      );
-    }
+      ),
+    );
+    // if(buffering){
+    //   return Container(
+    //     padding: EdgeInsets.all(13.w),
+    //     decoration: BoxDecoration(
+    //         color: EpregnancyColors.primerSoft2,
+    //         borderRadius: BorderRadius.circular(8.w)),
+    //     child: Center(
+    //       child: Container(
+    //         height: 10.h,
+    //         width: 10.w,
+    //         child: CircularProgressIndicator(),
+    //       )
+    //     ),
+    //   );
+    // } else {
+    //   return Container(
+    //     padding: EdgeInsets.all(13.w),
+    //     decoration: BoxDecoration(
+    //         color: EpregnancyColors.primerSoft2,
+    //         borderRadius: BorderRadius.circular(8.w)),
+    //     child: Center(
+    //       child: SvgPicture.asset(
+    //         isPlaying
+    //             ? 'assets/icPause.svg'
+    //             : 'assets/icPlay.svg',
+    //         color: EpregnancyColors.primer,
+    //       ),
+    //     ),
+    //   );
+    // }
   }
 }

@@ -153,7 +153,7 @@ class HttpClient {
 
         response = await getAccess(path, queryParameters: queryParameters);
         responseData = HttpUtil.getResponse(response ?? Response('', 0));
-      } else if (dataResponse['code'] == 401) {
+      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 403) {
         responseData = UnAuthorizeException(
           json.decode(response.body),
         );
@@ -277,6 +277,8 @@ class HttpClient {
           body: body);
       updateCookie(response);
 
+      updateCookie(response);
+
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
         isRefresh = true;
@@ -298,7 +300,7 @@ class HttpClient {
 
         response = await postAccess(path, data, overrideHeader: overrideHeader);
         responseData = HttpUtil.getResponse(response ?? Response('', 0));
-      } else if (dataResponse['code'] == 401) {
+      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 403) {
         responseData = UnAuthorizeException(
           json.decode(response.body),
         );
@@ -381,6 +383,8 @@ class HttpClient {
           body: body);
       updateCookie(response);
 
+      updateCookie(response);
+
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
 
@@ -402,7 +406,7 @@ class HttpClient {
         response =
             await deleteAccess(path, data, overrideHeader: overrideHeader);
         responseData = HttpUtil.getResponse(response ?? Response('', 0));
-      } else if (dataResponse['code'] == 401) {
+      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 403) {
         responseData = UnAuthorizeException(
           json.decode(response.body),
         );
@@ -491,6 +495,8 @@ class HttpClient {
           body: body);
       updateCookie(response);
 
+      updateCookie(response);
+
       Map<String, dynamic> dataResponse = jsonDecode(response.body);
       if (dataResponse['code'] == 200) {
         isRefresh = true;
@@ -510,7 +516,7 @@ class HttpClient {
 
         response = await putAccess(path, data, overrideHeader: overrideHeader);
         responseData = HttpUtil.getResponse(response ?? Response('', 0));
-      } else if (dataResponse['code'] == 401) {
+      } else if (dataResponse['code'] == 401 || dataResponse['code'] == 403) {
         responseData = UnAuthorizeException(
           json.decode(response.body),
         );

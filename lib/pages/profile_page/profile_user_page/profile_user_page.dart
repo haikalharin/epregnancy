@@ -1,6 +1,7 @@
 import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
 import 'package:PregnancyApp/common/widget/primary_btn.dart';
 import 'package:PregnancyApp/pages/profile_page/profile_user_page/change_profile_page.dart';
+import 'package:PregnancyApp/pages/profile_page/profile_user_page/request_password.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
 import 'package:clipboard/clipboard.dart';
@@ -20,6 +21,7 @@ import '../../../common/injector/injector.dart';
 import '../../../common/network/http/http_client.dart';
 import '../../../data/firebase/g_authentication.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../../flavors.dart';
 import '../../../utils/function_utils.dart';
 import '../../survey_page/bloc/survey_page_bloc.dart';
 import '../bloc/profile_page_bloc.dart';
@@ -193,14 +195,31 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                     margin: EdgeInsets.only(bottom: 18.h),
                                     child: BtnPrimary(
                                         text: "Ubah Data Diri",
-                                        function: () {
+                                        function: () async {
                                           // print("user name : ${state.user?.name}");
                                           // _showPicker(context);
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const ChangeProfilePage()));
+                                          var _user = await AppSharedPreference.getUser();
+                                          DateTime cdt = DateTime.now();
+                                          DateTime lastBiodataView = DateTime.parse(_user.lastBiodataView ?? DateTime.now().toString());
+                                          DateTime lastBiodateViewDateTime = lastBiodataView.add(Duration(hours: F.appFlavor == Flavor.DEVELOPMENT ?  -1 : 0));
+                                          Duration diff = cdt.difference(lastBiodateViewDateTime);
+                                          print("last biodata view : $lastBiodateViewDateTime");
+                                          print("date time now : $cdt");
+                                          print("diff in minutes : ${diff.inMinutes}");
+                                          if(diff.inMinutes >= 15){
+                                            Navigator.of(context).push( MaterialPageRoute(
+                                                builder: (BuildContext context) {
+                                                  return const  RequestPasswordPage();
+                                                },
+                                                fullscreenDialog: true
+                                            ));
+                                          } else {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                    const ChangeProfilePage()));
+                                          }
                                         }))
                               ],
                             ),

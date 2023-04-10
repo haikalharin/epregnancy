@@ -39,7 +39,7 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => DisclaimerPageBloc(c<UserRepository>()))
       ..registerSingleton((c) => PatientSelectBloc(c<UserRepository>()))
       ..registerSingleton((c) => CommentBloc(c<ConsultationRepository>()))
-      ..registerSingleton((c) => NewBornPageBloc(c<UserRepository>()));
+      ..registerSingleton((c) => AudioBloc());
   }
 
   @override
