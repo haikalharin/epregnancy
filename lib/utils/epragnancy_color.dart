@@ -37,6 +37,7 @@ class EpregnancyColors {
   static const Color pink = Color(0xFFFABFD1);
   static const Color borderPink = Color(0xFFFABFD1);
   static const Color pinkDark = Color(0xFFFF4A7F);
+  static const Color jingga = Color(0xFFEA7A00);
 
   //border
   static const Color borderGrey = Color(0xFFE9E9E9);

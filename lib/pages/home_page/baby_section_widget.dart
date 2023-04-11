@@ -421,9 +421,9 @@ class BabySectionWidget extends StatelessWidget {
                             RouteName.questionerNewBorn,
                             arguments: false);
                       },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width/1.5,
-                        margin: EdgeInsets.only(bottom: 16),
+                      child:int.parse(state.weeks!) >= 37? Container(
+                        // width: MediaQuery.of(context).size.width/1.,
+                        margin: EdgeInsets.only(bottom: 16,right: 32,left: 32),
                         padding: EdgeInsets.only(left: 20.w,right: 20.w),
                         decoration: BoxDecoration(
                           color: EpregnancyColors.primer,
@@ -458,7 +458,7 @@ class BabySectionWidget extends StatelessWidget {
                                 ))
                           ],
                         ),
-                      ),
+                      ):Container(),
                     ),
                   ),
                 ],

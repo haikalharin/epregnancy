@@ -45,6 +45,7 @@ import '../article_page/bloc/article_bloc.dart';
 import '../login_page/login_page.dart';
 import '../pin_checkin/pin_checkin_page.dart';
 import 'bloc/home_page_bloc.dart';
+import 'child_section_widget.dart';
 import 'list_article.dart';
 import 'list_shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -215,11 +215,14 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                                             children: [
                                               InkWell(
                                                 onTap: () {
-                                                  Injector.resolve<
-                                                          NewBornPageBloc>()
-                                                      .add(const NewBornChoice(
-                                                          1));
+                                                // todo handle choise yes route to input child data
 
+
+
+
+
+
+                                                  // todo handle if you success add data
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
                                                           builder: (context) {
