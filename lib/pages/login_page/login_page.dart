@@ -65,10 +65,10 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     HttpClient().isRefresh =false;
     getRemoteConfig();
-    FirebaseAnalyticsService().setCurrentScreen("Login_Register_page");
+    FirebaseAnalyticsService().setCurrentScreen("Login_regristration_page");
     CountlyAnalyticsService(context).getDeviceIDType();
     CountlyAnalyticsService(context)
-        .basicEvent({'key': 'Login_Register_page', 'count': 1});
+        .basicEvent({'key': 'Login_regristration_page', 'count': 1});
     if (widget.tokenExpired == true) {
       if (widget.isFromRegister) {
         WidgetsBinding.instance?.addPostFrameCallback((_) async {
@@ -367,6 +367,8 @@ class _LoginPageState extends State<LoginPage> {
                                 child: ElevatedButton(
                                   child: const Text('Masuk'),
                                   onPressed: () {
+                                    CountlyAnalyticsService(context)
+                                        .basicEvent({'key': 'Login_regristration_page_button_masuk', 'count': 1});
                                     // dismiss active keyboard
                                     FocusScopeNode currentFocus =
                                         FocusScope.of(context);
@@ -421,8 +423,6 @@ class _LoginPageState extends State<LoginPage> {
                                         color: EpregnancyColors.primer),
                                   ),
                                   onPressed: () {
-                                    CountlyAnalyticsService(context)
-                                        .basicEvent({'key': 'Login_Registration_page_button_Daftar', 'count': 1});
                                     Navigator.of(context)
                                         .pushNamed(RouteName.signup);
                                   },
@@ -601,8 +601,6 @@ class _ForgotPasswordButton extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                   ),
                   onPressed: () {
-                    CountlyAnalyticsService(context)
-                        .basicEvent({'key': 'Login_Registration_page_button_lupa_kata_sandi', 'count': 1});
                     Navigator.of(context).pushNamed(RouteName.forgotPassword);
                   },
                 ),
