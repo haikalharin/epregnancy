@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../common/widget/primary_btn.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/string_constans.dart';
 
 class RegistrationSuccessPage extends StatefulWidget {
@@ -24,6 +25,8 @@ class _RegistrationSuccessPageState extends State<RegistrationSuccessPage> {
 
   @override
   void initState() {
+    CountlyAnalyticsService(context)
+        .basicEvent({'key': 'Success_registration_page', 'count': 1});
     super.initState();
 
     Future.delayed(

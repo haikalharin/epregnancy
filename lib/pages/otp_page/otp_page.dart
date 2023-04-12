@@ -15,6 +15,7 @@ import 'package:quiver/async.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/string_constans.dart';
 import '../signup_page/bloc/signup_bloc.dart';
 import 'package:tap_to_dismiss_keyboard/tap_to_dismiss_keyboard.dart';
@@ -70,6 +71,8 @@ class _OtpPageState extends State<OtpPage> {
   @override
   void initState() {
     if(widget.from == "disclaimer") {
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'OTP_email_page', 'count': 1});
       Injector.resolve<SignupBloc>().add(SignupInitEvent());
     }
     Injector.resolve<OtpPageBloc>()

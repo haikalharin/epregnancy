@@ -13,6 +13,7 @@ import 'package:toast/toast.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/remote_utils.dart';
 import '../signup_page/bloc/signup_bloc.dart';
 import 'bloc/disclaimer_page_bloc.dart';
@@ -28,9 +29,17 @@ class DisclaimerPage extends StatefulWidget {
   State<DisclaimerPage> createState() => _DisclaimerPageState();
 }
 
+
 class _DisclaimerPageState extends State<DisclaimerPage> {
   bool? checkedValue = false;
 
+
+  @override
+  void initState() {
+    CountlyAnalyticsService(context)
+        .basicEvent({'key': 'Syarat_dan_ketentuan_page', 'count': 1});
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
