@@ -215,12 +215,7 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                                             children: [
                                               InkWell(
                                                 onTap: () {
-                                                // todo handle choise yes route to input child data
-
-
-
-
-
+                                                  // todo handle choise yes route to input child data
 
                                                   // todo handle if you success add data
                                                   Navigator.push(context,
@@ -480,10 +475,11 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                 children: [
                   Center(
                       child: Container(
-                        decoration: BoxDecoration( color: EpregnancyColors.grey,borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(
+                              color: EpregnancyColors.grey,
+                              borderRadius: BorderRadius.circular(10)),
                           width: 40,
                           height: 4,
-
                           margin: EdgeInsets.only(top: 16))),
                   Center(
                       child: Container(
@@ -492,12 +488,18 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                   Divider(),
                   ListTile(
                       leading: Image.asset('assets/ic_heart_break.png'),
-                      title: Text('Kehilangan',style: TextStyle(fontWeight: FontWeight.bold),),
+                      title: Text(
+                        'Kehilangan',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       onTap: () async {}),
                   Divider(),
                   ListTile(
-          leading: Image.asset('assets/ic_delete.png'),
-                      title: Text('Hapus Data',style: TextStyle(fontWeight: FontWeight.bold),),
+                      leading: Image.asset('assets/ic_delete.png'),
+                      title: Text(
+                        'Hapus Data',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       onTap: () async {}),
                 ],
               ),

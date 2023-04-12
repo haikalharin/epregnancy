@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/pages/login_page/bloc/login_bloc.dart';
+import 'package:PregnancyApp/pages/new_born_page/baby_born_form_page.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,7 @@ class _NewBornSuccessPage extends State<NewBornSuccessPage> {
 
     Future.delayed(
       const Duration(seconds: 3), () {
-      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const BabyBornFromPage()));
       // Injector.resolve<LoginBloc>()
       //     .add(LoginSubmittedFromRegister(widget.username, widget.password));
       },

@@ -226,21 +226,30 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            Container(
+                              margin: EdgeInsets.only(left: 16.w),
+                                child: SvgPicture.asset("assets/ic_baby_appbar.svg")),
                             Expanded(
                               child: state.baby != null &&
                                       state.baby?.baby?.name != ''
-                                  ? Container(
-                                      margin: EdgeInsets.only(
-                                        left: 16.w,
-                                        right: 50,
-                                      ),
-                                      child: Text(
-                                          "Halo, ${state.baby?.baby?.name}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: EpregnancyColors.primer),
-                                          textAlign: TextAlign.start),
-                                    )
+                                  ? Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                      left: 10.w,
+                                      right: 0,
+                                    ),
+                                    child: Text(
+                                        "${state.baby?.baby?.name}",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                        textAlign: TextAlign.start),
+                                  ),
+                                  IconButton(onPressed: (){}, icon: Icon(Icons.keyboard_arrow_down, color: EpregnancyColors.primer,))
+                                ],
+                              )
                                   : InkWell(
                                       onTap: () {
                                         print("Beri nama bayi");
