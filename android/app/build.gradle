@@ -51,7 +51,7 @@ android {
         staging {
             dimension "flavor-type"
             applicationId "co.id.az.komunitaz.staging"
-            resValue "string", "app_name", "Komunitaz staging"
+            resValue "string", "app_name", "Komunitaz uat"
         }
     }
 
@@ -89,10 +89,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storePassword']
+            keyAlias 'upload'
+            keyPassword 'azlife2022*'
+            storeFile  file('/Users/haikalharin1/upload-keystore.jks')
+            storePassword 'azlife2022*'
         }
     }
     buildTypes {

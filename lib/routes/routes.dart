@@ -13,6 +13,7 @@ import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/location_select_page/location_select_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/dashboard_nakes_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
+import 'package:PregnancyApp/pages/new_born_page/questioner_new_born_page.dart';
 import 'package:PregnancyApp/pages/onboarding_page/onboarding_page.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/otp_page/verifikasi_page.dart';
@@ -178,6 +179,10 @@ class Routes {
                   isPatient: getIsPatient(settings.arguments),
                   from: getFrom(settings.arguments),
                 ));
+      case RouteName.questionerNewBorn:
+        return MaterialPageRoute(
+            builder: (_) =>
+                QuestionerNewBornPage(isEdit: getDataValue(settings.arguments)));
 
       // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());

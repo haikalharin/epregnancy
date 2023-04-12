@@ -1,0 +1,90 @@
+part of 'new_born_page_bloc.dart';
+
+@immutable
+abstract class NewBornPageEvent extends Equatable{
+   const NewBornPageEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class NewBornAddDataEvent extends NewBornPageEvent {
+  const NewBornAddDataEvent(this.isPregnant, this.isPlanningPregnancy, this.isHaveBaby, this.isUpdate);
+final bool isUpdate;
+  final bool isPregnant;
+  final bool isPlanningPregnancy;
+  final bool isHaveBaby;
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class NewBornAddDataBabyEvent extends NewBornPageEvent {
+   NewBornAddDataBabyEvent({this.isUpdate =false});
+   bool isUpdate;
+
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class NewBornPageChanged extends NewBornPageEvent {
+  const NewBornPageChanged(this.page);
+
+  final int page;
+
+  @override
+  List<Object> get props => [page];
+}
+
+class NewBornDateChanged extends NewBornPageEvent {
+  const NewBornDateChanged(this.date);
+
+  final String date;
+
+  @override
+  List<Object> get props => [date];
+}
+
+class NewBornBabysNameChanged extends NewBornPageEvent {
+  const NewBornBabysNameChanged(this.name);
+
+  final String name;
+
+  @override
+  List<Object> get props => [name];
+}
+
+class NewBornInitEvent extends NewBornPageEvent {
+  const NewBornInitEvent({this.isUpdate = false});
+  final bool isUpdate;
+
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class NewBornDisposeEvent extends NewBornPageEvent {
+  const NewBornDisposeEvent();
+
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class NewBornChoice extends NewBornPageEvent {
+  const NewBornChoice(this.choice);
+
+  final int choice;
+
+
+  @override
+  List<Object> get props => [];
+}
+
+
+

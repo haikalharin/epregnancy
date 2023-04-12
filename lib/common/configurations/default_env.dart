@@ -9,6 +9,7 @@ class DefaultConfig {
   static const wpUrl = '';
   static const mode = 'prod';
   static const isShowChucker = false;
+  static const isVpn = false;
   static const countlyServerUrl = '';
   static const countlyAppKey = '';
 }

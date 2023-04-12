@@ -7,6 +7,7 @@ import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
 import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
+import 'package:PregnancyApp/pages/new_born_page/bloc/new_born_page_bloc.dart';
 import 'package:PregnancyApp/utils/countly_analytics.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/firebase_analytics.dart';
@@ -291,6 +292,8 @@ class _MyAppState extends State<MyApp> {
             create: (context) => Injector.container.resolve<CommentBloc>()),
         BlocProvider<AudioBloc>(
             create: (context) => Injector.container.resolve<AudioBloc>()),
+    BlocProvider<NewBornPageBloc>(
+        create: (context) => Injector.container.resolve<NewBornPageBloc>()),
       ];
 }
 

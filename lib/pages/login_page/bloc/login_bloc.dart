@@ -24,6 +24,7 @@ import '../../../../data/firebase/g_authentication.dart';
 import '../../../../data/model/person_model/person_model.dart';
 import '../../../../data/shared_preference/app_shared_preference.dart';
 
+import '../../../common/configurations/configurations.dart';
 import '../../../common/exceptions/server_error_exception.dart';
 import '../../../common/services/auth_service.dart';
 import '../../../common/validators/mandatory_field_validator.dart';
@@ -156,11 +157,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       // temporary
       var token;
-      if(Platform.isAndroid){
-         token = await firebaseService.messaging.getDeviceToken();
-         print("fcmTokenDevice : $token");
-      } else {
-         token = "ios";
+      var isVpn = Configurations.isVpn;
+      if(!isVpn) {
+        if (Platform.isAndroid) {
+          token = await firebaseService.messaging.getDeviceToken();
+          print("fcmTokenDevice : $token");
+        } else {
+          token = "ios";
+        }
       }
       ResponseModel response = await userRepository.loginNonOtp(LoginModel(
           username: state.username.value, password: state.password.value, fcmToken: token ?? ""));

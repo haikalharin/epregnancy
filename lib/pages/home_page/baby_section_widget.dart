@@ -170,40 +170,35 @@ class BabySectionWidget extends StatelessWidget {
                               StreamBuilder<bool>(
                                   stream: psTriggerTooltip.stream,
                                   builder: (context, snapshot) {
-                                    return Container(
-                                      height: 200,
-                                      alignment: Alignment(0.3, -0.52),
-                                      child: JustTheTooltip(
-                                        barrierDismissible: false,
-                                        isModal: true,
-                                        backgroundColor:
-                                            EpregnancyColors.primer,
-                                        preferredDirection: AxisDirection.up,
-                                        controller: tooltipController,
-                                        child: Container(
-                                          height: 0,
-                                          width: 0,
-                                          child: Material(
-                                            color: Colors.grey.shade800,
-                                            shape: const CircleBorder(),
-                                            elevation: 4.0,
+                                    return  Stack(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(left: 130),
+                                          padding: EdgeInsets.only(top: 16,left: 24),
+                                          height: 150,
+                                          width: 190,
+                                          alignment: Alignment(0.3, -0.52),
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage('assets/bg_tooltip.png'),
+                                                fit: BoxFit.fill),
                                           ),
-                                        ),
-                                        content: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 6),
-                                          width: 180,
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text(
-                                              state.baby?.textFromBaby ?? "",
-                                              style: TextStyle(
-                                                  color:
-                                                      EpregnancyColors.white),
+                                          child:  Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 8, horizontal: 6),
+                                            width: 180,
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Text(
+                                                state.baby?.textFromBaby ?? "",
+                                                style: TextStyle(
+                                                    color:
+                                                    EpregnancyColors.white),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     );
                                   }),
                             ],
@@ -231,6 +226,7 @@ class BabySectionWidget extends StatelessWidget {
                                         color: EpregnancyColors.black))
                               ]))),
                     ),
+
                   ],
                 ),
               ),
@@ -338,7 +334,7 @@ class BabySectionWidget extends StatelessWidget {
                               child: Hero(
                                 tag: "baby-illustration",
                                 child: Container(
-                                  margin: EdgeInsets.only(top: 16),
+                                  margin: EdgeInsets.only(top: 34),
                                   child: Center(
                                     child:  FadeInImage.memoryNetwork(
                                       placeholder:kTransparentImage,
@@ -362,38 +358,35 @@ class BabySectionWidget extends StatelessWidget {
                             StreamBuilder<bool>(
                                 stream: psTriggerTooltip.stream,
                                 builder: (context, snapshot) {
-                                  return Container(
-                                    height: 200,
-                                    alignment: Alignment(0.3, -0.52),
-                                    child: JustTheTooltip(
-                                      barrierDismissible: false,
-                                      isModal: true,
-                                      backgroundColor: EpregnancyColors.primer,
-                                      preferredDirection: AxisDirection.up,
-                                      controller: tooltipController,
-                                      child: Container(
-                                        height: 0,
-                                        width: 0,
-                                        child: Material(
-                                          color: Colors.grey.shade800,
-                                          shape: const CircleBorder(),
-                                          elevation: 4.0,
+                                  return  Stack(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(left: 130),
+                                        padding: EdgeInsets.only(top: 16,left: 24),
+                                        height: 150,
+                                        width: 190,
+                                        alignment: Alignment(0.3, -0.52),
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage('assets/bg_tooltip.png'),
+                                              fit: BoxFit.fill),
                                         ),
-                                      ),
-                                      content: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 6),
-                                        width: 180,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text(
-                                            state.baby?.textFromBaby ?? "",
-                                            style: TextStyle(
-                                                color: EpregnancyColors.white),
+                                        child:  Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 6),
+                                          width: 180,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Text(
+                                              state.baby?.textFromBaby ?? "",
+                                              style: TextStyle(
+                                                  color:
+                                                  EpregnancyColors.white),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   );
                                 }),
                           ],
@@ -420,6 +413,53 @@ class BabySectionWidget extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       color: EpregnancyColors.black))
                             ]))),
+                  ),
+                  Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                            RouteName.questionerNewBorn,
+                            arguments: false);
+                      },
+                      child:int.parse(state.weeks!) >= 37? Container(
+                        // width: MediaQuery.of(context).size.width/1.,
+                        margin: EdgeInsets.only(bottom: 16,right: 32,left: 32),
+                        padding: EdgeInsets.only(left: 20.w,right: 20.w),
+                        decoration: BoxDecoration(
+                          color: EpregnancyColors.primer,
+                          border: Border.all(
+                            color: EpregnancyColors.primer,
+                          ),
+                          borderRadius:
+                          BorderRadius.circular(10.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment:
+                          CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                child: const Text(
+                                  'Perbarui status kehamilan',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: EpregnancyColors.white,
+                                      fontWeight: FontWeight.bold),
+                                  maxLines: 3,
+                                )),
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons
+                                      .arrow_forward_ios_rounded,
+                                  size: 16,
+                                  color: EpregnancyColors.white,
+                                ))
+                          ],
+                        ),
+                      ):Container(),
+                    ),
                   ),
                 ],
               ),
