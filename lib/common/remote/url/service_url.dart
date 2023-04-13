@@ -101,6 +101,10 @@ class ServiceUrl {
   static String hospitalVisit = '$hospital/visit/';
   static String hospitalList = '$hospital/list';
 
+  //childs
+  static String childs = 'childs';
+
+
 
 
 }

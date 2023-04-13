@@ -67,7 +67,19 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel> forgotPassword(Map data) async {
+    final response = await httpClient.post(ServiceUrl.childs, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> addChild(Map data) async {
     final response = await httpClient.post(ServiceUrl.forgotPassword, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> updateBabyStatus(Map data) async {
+    final response = await httpClient.put(ServiceUrl.updateBaby, data);
 
     return ResponseModel.fromJson(response, UserModel.fromJson);
   }

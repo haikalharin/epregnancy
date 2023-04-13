@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/signup_quest_request.dart';
+import 'package:PregnancyApp/data/repository/child_repository/child_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -22,9 +23,10 @@ part 'new_born_page_event.dart';
 part 'new_born_page_state.dart';
 
 class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
-  NewBornPageBloc(this.userRepository) : super(NewBornPageInitial());
+  NewBornPageBloc(this.userRepository, this.childRepository) : super(NewBornPageInitial());
 
   final UserRepository userRepository;
+  final ChildRepository childRepository;
 
   @override
   Stream<NewBornPageState> mapEventToState(NewBornPageEvent event) async* {
@@ -44,6 +46,24 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
       yield* _mapNewBornInitEventToState(event, state);
     } else if (event is NewBornDisposeEvent) {
       yield _mapNewBornDisposeEventToState(event, state);
+    } else if (event is NewBornAddChildEvent) {
+      yield* _mapNewBordAddChildEvent(event, state);
+    }
+  }
+
+  Stream<NewBornPageState> _mapNewBordAddChildEvent(NewBornAddChildEvent event, NewBornPageState state) async* {
+    try{
+      state.copyWith(type: "adding-child-loading");
+      ResponseModel updateBabyStatusResponse = await childRepository.updateBabyStatus(event.babyId!, event.status!);
+      if(updateBabyStatusResponse.code == 200){
+
+      } else {
+        print("update baby code != 200");
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "adding-child-failed");
+      }
+    }catch(e){
+      print("_mapNewBordAddChildEventError : ${e.toString()}");
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     }
   }
 
@@ -56,12 +76,13 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
 
   Stream<NewBornPageState> _mapNewBornInitEventToState(
       NewBornInitEvent event, NewBornPageState state) async* {
-    try{
+    try {
       var user = await AppSharedPreference.getUser();
       newBaby.NewBabyModel myBaby = const newBaby.NewBabyModel();
       var choice = 0;
       ResponseModel response = await userRepository.getBaby(user);
-      myBaby = response.data != null? response.data : const newBaby.NewBabyModel();
+      myBaby =
+          response.data != null ? response.data : const newBaby.NewBabyModel();
       if (event.isUpdate && response.data != null) {
         // user = await AppSharedPreference.getUser();
 
@@ -76,14 +97,14 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
       if (response.code == 200) {
         if (event.isUpdate && response.data != null) {
           yield NewBornPageState(
-            submitStatus: FormzStatus.submissionSuccess,
+              submitStatus: FormzStatus.submissionSuccess,
               type: 'init-data-NewBorn',
               user: user,
               page: 1,
               date: MandatoryFieldValidator.dirty(
                   myBaby.baby!.lastMenstruationDate!),
               dataBaby:
-              myBaby.baby != null ? myBaby : const newBaby.NewBabyModel(),
+                  myBaby.baby != null ? myBaby : const newBaby.NewBabyModel(),
               choice: choice);
         } else {
           yield NewBornPageState(
@@ -93,7 +114,7 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
               page: 1,
               choice: choice);
         }
-      } else{
+      } else {
         yield NewBornPageState(
             submitStatus: FormzStatus.submissionSuccess,
             type: 'init-data-NewBorn',
@@ -157,7 +178,8 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
       // UserModel user = await AppSharedPreference.getUserRegister();
       UserModel user = await AppSharedPreference.getUser();
       ResponseModel responseBaby = await userRepository.getBaby(user);
-      newBaby.NewBabyModel myBaby = responseBaby.data ?? const newBaby.NewBabyModel();
+      newBaby.NewBabyModel myBaby =
+          responseBaby.data ?? const newBaby.NewBabyModel();
 
       if (event.isUpdate && myBaby != null) {
         user = await AppSharedPreference.getUser();

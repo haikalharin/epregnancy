@@ -226,9 +226,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Container(
+                            state.baby != null &&
+                                state.baby?.baby?.name != '' ? Container(
                               margin: EdgeInsets.only(left: 16.w),
-                                child: SvgPicture.asset("assets/ic_baby_appbar.svg")),
+                                child: SvgPicture.asset("assets/ic_baby_appbar.svg")) : const SizedBox.shrink(),
                             Expanded(
                               child: state.baby != null &&
                                       state.baby?.baby?.name != ''
@@ -261,8 +262,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             });
                                       },
                                       child: Container(
-                                        margin: EdgeInsets.only(
-                                            left: 16.w, right: 60.w),
+                                        margin: EdgeInsets.only(left: 16.w, right: 40.w),
                                         padding: EdgeInsets.only(left: 16.w),
                                         decoration: BoxDecoration(
                                           color: EpregnancyColors.primer,
@@ -273,19 +273,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               BorderRadius.circular(10.0),
                                         ),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Container(
                                                 child: const Text(
                                               'Beri nama bayi',
                                               style: TextStyle(
                                                   fontSize: 12,
+                                                  overflow: TextOverflow.visible,
                                                   color: EpregnancyColors.white,
                                                   fontWeight: FontWeight.bold),
-                                              maxLines: 3,
+                                              maxLines: 1,
                                             )),
                                             IconButton(
                                                 onPressed: () {},

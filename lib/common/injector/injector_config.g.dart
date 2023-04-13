@@ -40,7 +40,8 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => PatientSelectBloc(c<UserRepository>()))
       ..registerSingleton((c) => CommentBloc(c<ConsultationRepository>()))
       ..registerSingleton((c) => AudioBloc())
-      ..registerSingleton((c) => NewBornPageBloc(c<UserRepository>()));
+      ..registerSingleton(
+          (c) => NewBornPageBloc(c<UserRepository>(), c<ChildRepository>()));
   }
 
   @override
@@ -61,7 +62,9 @@ class _$InjectorConfig extends InjectorConfig {
           ConsultationRepositoryImpl(
               c<NetworkInfoImpl>(), c<RemoteDataSource>()))
       ..registerFactory<HospitalRepository>((c) =>
-          HospitalRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
+          HospitalRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()))
+      ..registerFactory<ChildRepository>((c) =>
+          ChildRepositoryImpl(c<NetworkInfoImpl>(), c<RemoteDataSource>()));
   }
 
   @override
