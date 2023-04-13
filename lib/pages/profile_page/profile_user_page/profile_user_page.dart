@@ -50,13 +50,12 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
     return BlocListener<ProfilePageBloc, ProfilePageState>(
       listener: (context, state) async {
         if (state.submitStatus == FormzStatus.submissionFailure) {
-          const snackBar = SnackBar(
-              content: Text("Gagal posting"), backgroundColor: Colors.red);
-          Scaffold.of(context).showSnackBar(snackBar);
+          // const snackBar = SnackBar(content: Text("Gagal posting"), backgroundColor: Colors.red);
+          // Scaffold.of(context).showSnackBar(snackBar);
         } else if (state.submitStatus == FormzStatus.submissionSuccess) {
           if (state.type == 'changePhoto') {
             const snackBar = SnackBar(
-                content: Text("Berhasil"),
+                content: Text("Berhasil Ubah Foto"),
                 backgroundColor: EpregnancyColors.primer);
             Scaffold.of(context).showSnackBar(snackBar);
             await Future.delayed(const Duration(seconds: 1));

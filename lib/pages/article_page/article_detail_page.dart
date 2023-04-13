@@ -111,7 +111,7 @@ class ArticleDetailPage extends StatelessWidget {
                           Container(
                               margin: EdgeInsets.only(top: 10),
                               child: Text(
-                                  article!.title ?? '',
+                                  article!.title?? '',
                                   maxLines: 5,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -121,7 +121,7 @@ class ArticleDetailPage extends StatelessWidget {
                           ),
                           Expanded(
                             child: Container(
-                                margin: EdgeInsets.only(top: 20, bottom: 10),
+                                margin: EdgeInsets.only(top: 5, bottom: 10),
                                 child: Row(
                                   children: [
                                     Container(
