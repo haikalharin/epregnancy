@@ -6,6 +6,7 @@ import 'package:PregnancyApp/utils/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'flavors.dart';
@@ -89,6 +90,12 @@ Future<void> main() async {
   InjectorConfig.setup();
   WidgetsFlutterBinding.ensureInitialized();
 
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
+
   // Bloc.observer = SimpleBlocObserver();
   await Configurations().setConfigurationValues(config.environment);
   runApp(MyApp());
@@ -112,8 +119,7 @@ class _MyAppState extends State<MyApp> {
     CountlyAnalyticsService(context).setInitCountly();
     CountlyAnalyticsService(context).setDeviceIDType();
 
-    _firebaseFuture = FirebaseService()
-        .initializeFlutterFirebase(context);
+    _firebaseFuture = FirebaseService().initializeFlutterFirebase(context);
 
   }
 

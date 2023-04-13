@@ -94,8 +94,7 @@ class FirebaseMessagingService {
         importance: Importance.max);
     var iOS = IOSNotificationDetails();
     var platform = new NotificationDetails(android: android, iOS: iOS);
-    await flutterLocalNotificationsPlugin.show(0, title, body, platform,
-        payload: data);
+    // await flutterLocalNotificationsPlugin.show(0, title, body, platform, payload: data);
     if (F.appFlavor == Flavor.DEVELOPMENT) {
       await dev.flutterLocalNotificationsPlugin
           .show(0, title, body, platform, payload: data);
@@ -113,8 +112,7 @@ class FirebaseMessagingService {
 
   Future<void> setup(BuildContext context) async {
     mContext = context;
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('@drawable/launch_background');
+    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettingsIOs = IOSInitializationSettings();
     var initSetttings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOs);

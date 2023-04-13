@@ -34,7 +34,7 @@ final Map<String, dynamic> devEnvironment = <String, dynamic>{
 final Map<String, dynamic> environment = <String, dynamic>{
   'host': 'https://services.allianz.co.id/',
   'sub_host': '/di/komunitaz/api',
-  'websockets': 'wss://services.allianz.co.id/di/komunitaz/api/user/',
+  'websockets': 'wss://services.allianz.co.id/di/komunitaz/api/ws/user/',
   'image_host': 'https://image.tmdb.org/t/p/',
   'http_client': 'https',
   'wpUrl': 'http://192.168.64.2/panjistore',
