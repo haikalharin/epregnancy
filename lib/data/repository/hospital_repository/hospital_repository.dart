@@ -10,7 +10,7 @@ abstract class HospitalRepository {
   Future<ResponseModel<HospitalModel>> fetchHospitals(String name);
   Future<ResponseModel<HospitalModel>> fetchHospitalsById(String id);
   Future<ResponseModel<MembersSummaryResponse>> fetchMembersSummary();
-  Future<ResponseModel<Member>> fetchMembers(String name, int page, bool isPregnant,String sortBy, String sort);
+  Future<ResponseModel<Member>> fetchMembers(String name, int page, int isPregnant,String sortBy, String sort);
   Future<ResponseModel<Member>> fetchMidwifes(String name, int page);
 
 }

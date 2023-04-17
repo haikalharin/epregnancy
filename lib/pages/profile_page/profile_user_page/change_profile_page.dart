@@ -372,7 +372,37 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                         ),
                       ),
 
-
+                      Container(
+                        color: Colors.white,
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Nomor Telepon Seluler",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 10.sp),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  state.user?.mobile ?? "",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10.sp),
+                                ),
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Colors.white,
+                                    )),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                       Padding(
                         padding:
                         EdgeInsets.only(left: 16.w, top: 16.h, bottom: 8.h),

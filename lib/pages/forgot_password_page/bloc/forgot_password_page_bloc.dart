@@ -102,9 +102,9 @@ class ForgotPasswordPageBloc
         type = "mobile";
       }
       if (state.status.isValidated) {
-        ResponseModel response =
-            await userRepository.checkUserExist(state.userName.value,type);
 
+        final response = await userRepository.checkUserExist(state.userName.value,type);
+        print("response code : ${response.code}");
         if (response.code == 200) {
           if (response.message == StringConstant.mobileActive ||
               response.message == StringConstant.emailActive) {
@@ -131,7 +131,7 @@ class ForgotPasswordPageBloc
             typeMessage: typeMessage);
       }
     } on LoginErrorException catch (e) {
-      print(e);
+      print("Login Error Exception" + e.toString());
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
       if (a is UnAuthorizeException) {

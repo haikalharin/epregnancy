@@ -66,7 +66,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapPointFetchEventToState(event, state);
     } else if (event is HomeEventDeleteSchedule) {
       yield* _mapHomeEventDeleteScheduleToState(event, state);
-    } else if(event is FetchSimpleTipEvent){
+    } else if (event is FetchSimpleTipEvent) {
       yield* _mapFetchSimpleTips(event, state);
     }
   }
@@ -172,7 +172,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       final ResponseModel<UserModel> responseModel =
           await userRepository.getUserInfo();
       UserModel userInfo = responseModel.data;
-      UserModel userEntity = userInfo.copyWith(name: await aesDecryptor(userInfo.name));
+      UserModel userEntity =
+          userInfo.copyWith(name: await aesDecryptor(userInfo.name));
       // await AppSharedPreference.remove(AppSharedPreference.checkIn);
       if (responseModel.code == 200) {
         await AppSharedPreference.setUser(responseModel.data);
@@ -200,13 +201,15 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 
   Stream<HomePageState> _mapFetchSimpleTips(
-      FetchSimpleTipEvent event,
-      HomePageState state,
-      ) async* {
+    FetchSimpleTipEvent event,
+    HomePageState state,
+  ) async* {
     yield state.copyWith(
-        submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-simple-tips");
+        submitStatus: FormzStatus.submissionInProgress,
+        tipe: "fetch-simple-tips");
     try {
-      final ResponseModel<SimpleTipResponse> responseModel = await articleRepository.getSimpleTip();
+      final ResponseModel<SimpleTipResponse> responseModel =
+          await articleRepository.getSimpleTip();
       print("data simple tip : ${responseModel.data.toString()}");
       SimpleTipResponse simpleTipResponse = responseModel.data;
 
@@ -235,7 +238,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 
   Stream<HomePageState> _mapArticleFetchEventToState(
-      ArticleHomeFetchEvent event,
+    ArticleHomeFetchEvent event,
     HomePageState state,
   ) async* {
     yield state.copyWith(
@@ -285,35 +288,48 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       NewBabyModel myBaby = const NewBabyModel();
 
       final UserModel user = await AppSharedPreference.getUser();
-      ResponseModel response = await homeRepository.getBaby(user);
-      if (response.code == 200) {
-        myBaby = response.data;
-        if (myBaby.baby != null ) {
-          pregnancyAgeWeek = myBaby.baby?.pregnancyAgeWeek??0;
-          pregnancyAgeDay = myBaby.baby?.pregnancyAgeDay??0;
+      if (!event.isMidwife) {
+        ResponseModel response = await homeRepository.getBaby(user);
+        if (response.code == 200) {
+          myBaby = response.data;
+          if (myBaby.baby != null) {
+            pregnancyAgeWeek = myBaby.baby?.pregnancyAgeWeek ?? 0;
+            pregnancyAgeDay = myBaby.baby?.pregnancyAgeDay ?? 0;
+          }
+          bool? _showGuide = await AppSharedPreference.getBool(
+              AppSharedPreference.isShowGuide);
+          print('show guide : $_showGuide');
+          await AppSharedPreference.setBabyDataNew(myBaby);
+          yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess,
+            baby: myBaby,
+            days: pregnancyAgeDay.toString(),
+            weeks: pregnancyAgeWeek.toString(),
+            user: user,
+            showGuide: _showGuide ?? true,
+            role: user.isPatient == true
+                ? StringConstant.patient
+                : StringConstant.midwife,
+          );
+        } else if (response.code == 0) {
+          await AppSharedPreference.sessionExpiredEvent();
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionFailure,
+              isNotHaveSession: false);
+        } else {
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
         }
+      } else {
         bool? _showGuide =
             await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
-        print('show guide : $_showGuide');
-        await AppSharedPreference.setBabyDataNew(myBaby);
         yield state.copyWith(
           submitStatus: FormzStatus.submissionSuccess,
-          baby: myBaby,
-          days: pregnancyAgeDay.toString(),
-          weeks: pregnancyAgeWeek.toString(),
           user: user,
-          showGuide: _showGuide ?? true,
+          showGuide: _showGuide,
           role: user.isPatient == true
               ? StringConstant.patient
               : StringConstant.midwife,
         );
-      } else if (response.code == 0) {
-        await AppSharedPreference.sessionExpiredEvent();
-        yield state.copyWith(
-            submitStatus: FormzStatus.submissionFailure,
-            isNotHaveSession: false);
-      } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }
     } on HomeErrorException catch (e) {
       print(e);

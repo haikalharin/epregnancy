@@ -11,7 +11,8 @@ abstract class HomePageEvent extends Equatable{
 }
 
 class HomeFetchDataEvent extends HomePageEvent {
-  const HomeFetchDataEvent();
+  const HomeFetchDataEvent({this.isMidwife =false});
+  final bool isMidwife;
 
 
   @override

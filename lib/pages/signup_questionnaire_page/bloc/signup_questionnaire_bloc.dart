@@ -53,7 +53,14 @@ class SignUpQuestionnaireBloc
 
   SignUpQuestionnaireState _mapSignupInitEventToState(
       SignupInitEvent event, SignUpQuestionnaireState state) {
-    return SignUpQuestionnaireState();
+    print("firstname : ${state.firstName.value}");
+    print("secondName : ${state.secondName.value}");
+    print("dateValid : ${state.dateValid}");
+    final reset = MandatoryFieldValidator.dirty("");
+    final password = PasswordValidator.dirty("");
+    final confirmPassword = ConfirmPasswordValidator.dirty(
+        "", "");
+    return SignUpQuestionnaireState(dateValid: false, firstName: reset, secondName: reset, password: password, confirmPassword: confirmPassword, date: reset);
   }
 
   SignUpQuestionnaireState _mapSignupFirstnameChangedToState(

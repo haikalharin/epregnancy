@@ -40,6 +40,7 @@ import '../model/members_model/member.dart';
 import '../model/response_model/response_model.dart';
 import '../model/user_example_model/user_example_model.dart';
 import '../model/user_model_api/signup_quest_request.dart';
+import '../model/user_model_api/user_availability_response.dart';
 import '../model/visit_hospital_model/visit_hospital_model.dart';
 
 class RemoteDataSource {
@@ -60,7 +61,7 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<LoginResponseData>> login(LoginModel loginModel) async {
-    final response = await httpClient.post(ServiceUrl.newLogin, loginModel);
+    final response = await httpClient.postLogin(ServiceUrl.newLogin, loginModel);
 
     return ResponseModel<LoginResponseData>.fromJson(
         response, LoginResponseData.fromJson);
@@ -231,13 +232,13 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel<UserModel>> checkUserExist(
+  Future<ResponseModel> checkUserExist(
       String user, String type) async {
     try {
       Map<String, String> data = {type: user};
       final response =
           await httpClient.post("${ServiceUrl.checkUserExist}/$type", data);
-      return ResponseModel.fromJson(response, UserModel.fromJson);
+      return ResponseModel.fromJson(response, UserAvailabilityResponse.fromJson);
     } catch (e) {
       return ResponseModel(data: const UserModel());
     }
@@ -324,16 +325,32 @@ class RemoteDataSource {
   Future<ResponseModel<Member>> fetchMembers(
       {String name = '',
       int? page,
-      bool? isPregnant,
+      int? isPregnant,
       String? sortBy,
       String? sort}) async {
     Map<String, String> qParams = {
       'name': name,
-      'isPregnant': isPregnant.toString(),
       'page': page.toString(),
       'size': "10",
       'sort': "$sortBy,$sort",
     };
+    if(isPregnant == 0){
+      qParams = {
+        'name': name,
+        'isPregnant': 'false',
+        'page': page.toString(),
+        'size': "10",
+        'sort': "$sortBy,$sort",
+      };
+    } else if(isPregnant == 1){
+      qParams = {
+        'name': name,
+        'isPregnant': 'true',
+        'page': page.toString(),
+        'size': "10",
+        'sort': "$sortBy,$sort",
+      };
+    }
     final response =
         await httpClient.get(ServiceUrl.patientUsers, queryParameters: qParams);
     return ResponseModel.fromJson(response, Member.fromJson);

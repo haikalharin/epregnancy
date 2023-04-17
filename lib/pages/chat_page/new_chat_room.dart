@@ -504,7 +504,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   _initWebSocket() async {
     UserModel userModel = await AppSharedPreference.getUser();
     Future<WebSocket> futureWebSocket = WebSocket.connect(
-        '${F.appFlavor == Flavor.PRODUCTION ? environment['websockets'] : devEnvironment['websockets']}${userModel.id}');
+        '${F.appFlavor == Flavor.PRODUCTION ? environment['websockets'] : F.appFlavor == Flavor.DEVELOPMENT ? devEnvironment['websockets'] : stagingEnvironment['websockets'] }${userModel.id}');
     // Future<WebSocket> futureWebSocket = WebSocket.connect('${environment['websockets']}${userModel.id}');
     // print('ws url : ${environment['websockets']}${userModel.id}');
     futureWebSocket.then((WebSocket ws) {
@@ -644,8 +644,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
                           onPressed: () {
                             basicLoadinDialog(context);
                             if (widget.isNakes!) {
-                              Injector.resolve<ChatBloc>()
-                                  .add(EndChatEvent(toId));
+                              Injector.resolve<ChatBloc>().add(EndChatEvent(toId));
                               // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
                             } else {
                               Injector.resolve<ChatBloc>()

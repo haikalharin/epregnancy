@@ -50,7 +50,12 @@ class _TabBarEventPageState extends State<TabBarEventPage>
   void dispose() {
     super.dispose();
   }
-
+void event(String date){
+  Future.delayed(const Duration(milliseconds: 1000), () {
+    Injector.resolve<HomePageBloc>()
+        .add(const HomeFetchDataEvent(isMidwife: true));
+  });
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,12 +126,14 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                             dateTime = await DatePickerUtils.getDate(context,
                                     state.eventDate ?? DateTime.now()) ??
                                 DateTime.now();
-                            Injector.resolve<HomePageBloc>().add(
-                                EventFetchEvent(
-                                    _tabController!.index == 0
-                                        ? StringConstant.typePersonal
-                                        :StringConstant.typePublic ,
-                                    dateTime, isMidwife: widget.isMidwife));
+
+                              Injector.resolve<HomePageBloc>().add(
+                                  EventFetchEvent(
+                                      _tabController!.index == 0
+                                          ? StringConstant.typePersonal
+                                          :StringConstant.typePublic ,
+                                      dateTime, isMidwife: widget.isMidwife));
+
                           },
                           child: Container(
                               padding: EdgeInsets.only(right: 16.w, bottom: 5.h),
@@ -155,12 +162,14 @@ class _TabBarEventPageState extends State<TabBarEventPage>
                       InkWell(
                         onTap: () async {
                           var date = state.eventDate?.add(Duration(days: -1));
+
                           Injector.resolve<HomePageBloc>().add(EventFetchEvent(
                               _tabController!.index == 0
                                   ? StringConstant.typePersonal
                                   : StringConstant.typePublic,
                               date ?? DateTime.now(), isMidwife: widget.isMidwife));
                         },
+
                         child: Container(
                             height: 20,
                             width: 20,

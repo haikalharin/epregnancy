@@ -34,11 +34,14 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
   }
 
   void onRefresh() async {
-    Injector.resolve<HomePageBloc>().add(EventFetchEvent(
-        widget.tipeAcara == StringConstant.typeEventJadwalUmum
-            ? StringConstant.typePublic
-            : StringConstant.typePersonal,
-        widget.dateTime ?? DateTime.now(), isMidwife: widget.isMidwife));
+    Future.delayed(const Duration(milliseconds: 1800), ()
+    {
+      Injector.resolve<HomePageBloc>().add(EventFetchEvent(
+          widget.tipeAcara == StringConstant.typeEventJadwalUmum
+              ? StringConstant.typePublic
+              : StringConstant.typePersonal,
+          widget.dateTime ?? DateTime.now(), isMidwife: widget.isMidwife));
+    });
   }
 
   // final String nextMenu, content;
