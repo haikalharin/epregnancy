@@ -110,9 +110,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    if (F.appFlavor != Flavor.PRODUCTION) {
-      subscribeFcmTopic();
-    }
+    subscribeFcmTopic();
     start();
     super.initState();
   }
