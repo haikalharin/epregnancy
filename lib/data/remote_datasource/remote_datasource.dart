@@ -325,16 +325,32 @@ class RemoteDataSource {
   Future<ResponseModel<Member>> fetchMembers(
       {String name = '',
       int? page,
-      bool? isPregnant,
+      int? isPregnant,
       String? sortBy,
       String? sort}) async {
     Map<String, String> qParams = {
       'name': name,
-      'isPregnant': isPregnant.toString(),
       'page': page.toString(),
       'size': "10",
       'sort': "$sortBy,$sort",
     };
+    if(isPregnant == 0){
+      qParams = {
+        'name': name,
+        'isPregnant': 'false',
+        'page': page.toString(),
+        'size': "10",
+        'sort': "$sortBy,$sort",
+      };
+    } else if(isPregnant == 1){
+      qParams = {
+        'name': name,
+        'isPregnant': 'true',
+        'page': page.toString(),
+        'size': "10",
+        'sort': "$sortBy,$sort",
+      };
+    }
     final response =
         await httpClient.get(ServiceUrl.patientUsers, queryParameters: qParams);
     return ResponseModel.fromJson(response, Member.fromJson);
