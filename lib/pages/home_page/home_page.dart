@@ -228,82 +228,144 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(left: 16.w),
-                                child: SvgPicture.asset("assets/ic_baby_appbar.svg")),
+                                margin: EdgeInsets.only(left: 16.w),
+                                child: SvgPicture.asset(
+                                    "assets/ic_baby_appbar.svg")),
                             Expanded(
-                              child: state.baby != null &&
-                                      state.baby?.baby?.name != ''
-                                  ? Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      left: 10.w,
-                                      right: 0,
+                              child: state.baby?.baby?.name == null && state.baby?.baby?.lastMenstruationDate == null
+                                  ? InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      RouteName.surveyPageBaby,
+                                      arguments: {"is_edit": true, "edit_name": false});
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(left: 16.w),
+                                  padding:
+                                  EdgeInsets.only(left: 16.w),
+                                  decoration: BoxDecoration(
+                                    color: EpregnancyColors.primer,
+                                    border: Border.all(
+                                      color: EpregnancyColors.primer,
                                     ),
-                                    child: Text(
-                                        "${state.baby?.baby?.name}",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black),
-                                        textAlign: TextAlign.start),
+                                    borderRadius:
+                                    BorderRadius.circular(10.0),
                                   ),
-                                  IconButton(onPressed: (){}, icon: Icon(Icons.keyboard_arrow_down, color: EpregnancyColors.primer,))
-                                ],
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          child: const Text(
+                                            'Tambah Data Anak',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: EpregnancyColors
+                                                    .white,
+                                                fontWeight:
+                                                FontWeight.bold),
+                                            maxLines: 3,
+                                          )),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons
+                                                .arrow_forward_ios_rounded,
+                                            size: 16,
+                                            color: EpregnancyColors
+                                                .white,
+                                          ))
+                                    ],
+                                  ),
+                                ),
                               )
-                                  : InkWell(
-                                      onTap: () {
-                                        print("Beri nama bayi");
-                                        Navigator.of(context).pushNamed(
-                                            RouteName.surveyPageBaby,
-                                            arguments: {
-                                              "is_edit": true,
-                                              "edit_name": true
-                                            });
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                            left: 16.w, right: 60.w),
-                                        padding: EdgeInsets.only(left: 16.w),
-                                        decoration: BoxDecoration(
-                                          color: EpregnancyColors.primer,
-                                          border: Border.all(
-                                            color: EpregnancyColors.primer,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        child: Row(
+                                  :  state.baby?.baby?.name != null && state.baby?.baby?.name != '' &&
+                                          state.baby?.baby?.status !=
+                                              'KEHILANGAN'
+                                      ? Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              MainAxisAlignment.start,
                                           children: [
                                             Container(
-                                                child: const Text(
-                                              'Beri nama bayi',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: EpregnancyColors.white,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 3,
-                                            )),
+                                              margin: EdgeInsets.only(
+                                                left: 10.w,
+                                                right: 0,
+                                              ),
+                                              child: Text(
+                                                  "${state.baby?.baby?.name}",
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black),
+                                                  textAlign: TextAlign.start),
+                                            ),
                                             IconButton(
                                                 onPressed: () {},
-                                                icon: const Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_rounded,
-                                                  size: 16,
-                                                  color: EpregnancyColors.white,
+                                                icon: Icon(
+                                                  Icons.keyboard_arrow_down,
+                                                  color:
+                                                      EpregnancyColors.primer,
                                                 ))
                                           ],
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            print("Beri nama bayi");
+                                            Navigator.of(context).pushNamed(
+                                                RouteName.surveyPageBaby,
+                                                arguments: {
+                                                  "is_edit": true,
+                                                  "edit_name": true
+                                                });
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(left: 16.w),
+                                            padding:
+                                                EdgeInsets.only(left: 16.w),
+                                            decoration: BoxDecoration(
+                                              color: EpregnancyColors.primer,
+                                              border: Border.all(
+                                                color: EpregnancyColors.primer,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                    child: const Text(
+                                                  'Beri nama bayi',
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: EpregnancyColors
+                                                          .white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  maxLines: 3,
+                                                )),
+                                                IconButton(
+                                                    onPressed: () {},
+                                                    icon: const Icon(
+                                                      Icons
+                                                          .arrow_forward_ios_rounded,
+                                                      size: 16,
+                                                      color: EpregnancyColors
+                                                          .white,
+                                                    ))
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
                             ),
                             // app bar action section
                             SizedBox(
-                              width: MediaQuery.of(context).size.width / 2.5,
+                              width: MediaQuery.of(context).size.width / 2.7,
                               // alignment: Alignment.centerRight,
                               child: Align(
                                 alignment: Alignment.centerRight,
@@ -425,9 +487,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     title: 'Tips',
                                     description:
                                         'Dapatkan info dan tips kehamilan',
-                                    child: TipsKehamilanPage(simpleTipResponse: state.simpleTipResponse??const SimpleTipResponse(),)
-                                  )
-                                :  TipsKehamilanPage(simpleTipResponse: state.simpleTipResponse??const SimpleTipResponse(),),
+                                    child: TipsKehamilanPage(
+                                      simpleTipResponse:
+                                          state.simpleTipResponse ??
+                                              const SimpleTipResponse(),
+                                    ))
+                                : TipsKehamilanPage(
+                                    simpleTipResponse:
+                                        state.simpleTipResponse ??
+                                            const SimpleTipResponse(),
+                                  ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

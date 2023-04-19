@@ -61,7 +61,8 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<LoginResponseData>> login(LoginModel loginModel) async {
-    final response = await httpClient.postLogin(ServiceUrl.newLogin, loginModel);
+    final response =
+        await httpClient.postLogin(ServiceUrl.newLogin, loginModel);
 
     return ResponseModel<LoginResponseData>.fromJson(
         response, LoginResponseData.fromJson);
@@ -159,14 +160,35 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel> updateBaby(BabyModelApi baby) async {
+  Future<ResponseModel> updateBaby(BabyModelApi baby,
+      {bool isUpdateStatus = false}) async {
     try {
-      Map<String, String> data = {
-        'id': baby.id ?? "",
-        'name': baby.name ?? "",
-        'last_menstruation_date': baby.lastMenstruationDate ?? "",
-      };
+      Map<String, String> data ={};
+      if (isUpdateStatus) {
+         data = {
+          'id': baby.id ?? "",
+          'name': baby.name ?? "",
+          'last_menstruation_date': baby.lastMenstruationDate ?? "",
+          'status': baby.status ?? "",
+        };
+      } else {
+         data = {
+          'id': baby.id ?? "",
+          'name': baby.name ?? "",
+          'last_menstruation_date': baby.lastMenstruationDate ?? "",
+        };
+      }
       final response = await httpClient.put(ServiceUrl.updateBaby, data);
+      return ResponseModel.fromJson(response, BabyModelApi.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> deleteBaby(BabyModelApi baby) async {
+    try {
+      final response = await httpClient.delete(
+          ServiceUrl.deleteBaby + '/' + '${baby.id}', null);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -193,16 +215,14 @@ class RemoteDataSource {
     }
   }
 
- Future<ResponseModel> getBaby(UserModel UserModel) async {
+  Future<ResponseModel> getBaby(UserModel UserModel) async {
     try {
-      final response =
-          await httpClient.get(ServiceUrl.myBaby);
+      final response = await httpClient.get(ServiceUrl.myBaby);
       return ResponseModel.fromJson(response, NewBabyModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
-
 
   Future<ResponseModel> requestOtp(Map data) async {
     try {
@@ -232,13 +252,13 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel> checkUserExist(
-      String user, String type) async {
+  Future<ResponseModel> checkUserExist(String user, String type) async {
     try {
       Map<String, String> data = {type: user};
       final response =
           await httpClient.post("${ServiceUrl.checkUserExist}/$type", data);
-      return ResponseModel.fromJson(response, UserAvailabilityResponse.fromJson);
+      return ResponseModel.fromJson(
+          response, UserAvailabilityResponse.fromJson);
     } catch (e) {
       return ResponseModel(data: const UserModel());
     }
@@ -334,7 +354,7 @@ class RemoteDataSource {
       'size': "10",
       'sort': "$sortBy,$sort",
     };
-    if(isPregnant == 0){
+    if (isPregnant == 0) {
       qParams = {
         'name': name,
         'isPregnant': 'false',
@@ -342,7 +362,7 @@ class RemoteDataSource {
         'size': "10",
         'sort': "$sortBy,$sort",
       };
-    } else if(isPregnant == 1){
+    } else if (isPregnant == 1) {
       qParams = {
         'name': name,
         'isPregnant': 'true',
@@ -697,7 +717,7 @@ class RemoteDataSource {
       'sort': "$sortBy,$sort",
     };
     final response =
-    await httpClient.get(ServiceUrl.listArticle, queryParameters: qParams);
+        await httpClient.get(ServiceUrl.listArticle, queryParameters: qParams);
     return ResponseModel.fromJson(response, ArticleModel.fromJson);
   }
 

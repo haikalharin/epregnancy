@@ -24,7 +24,8 @@ abstract class UserRepository {
   Future <ResponseModel>updateHospital(String hospitalId);
   Future <ResponseModel>updateDisclaimer(UserModel userModel);
   Future <ResponseModel>saveQuestionerBaby(BabyModelApi babyModelApi);
-  Future <ResponseModel>updateQuestionerBaby(BabyModelApi babyModelApi);
+  Future <ResponseModel>updateQuestionerBaby(BabyModelApi babyModelApi, {bool isUpdateStatus = false});
+  Future <ResponseModel>deleteBaby(BabyModelApi babyModelApi);
   Future <ResponseModel>getBaby(UserModel userModel);
   Future <ResponseModel>requestOtp(Map data);
   Future <ResponseModel>verifyOtp(OtpModel otpModel);

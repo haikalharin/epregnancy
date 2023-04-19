@@ -76,6 +76,29 @@ class NewBornDisposeEvent extends NewBornPageEvent {
   List<Object> get props => [];
 }
 
+class NewBornUpdateDataBabyEvent extends NewBornPageEvent {
+  const NewBornUpdateDataBabyEvent(this.babyModel, this.status);
+
+  final newBaby.NewBabyModel babyModel;
+  final String status;
+
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class NewBornDeleteDataBabyEvent extends NewBornPageEvent {
+  const NewBornDeleteDataBabyEvent(this.babyModel);
+
+  final newBaby.NewBabyModel babyModel;
+
+
+
+  @override
+  List<Object> get props => [];
+}
+
 class NewBornChoice extends NewBornPageEvent {
   const NewBornChoice(this.choice);
 

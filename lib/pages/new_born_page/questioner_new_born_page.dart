@@ -1,3 +1,5 @@
+import 'package:PregnancyApp/data/model/baby_model/new_baby_model.dart';
+import 'package:PregnancyApp/data/model/baby_model_api/baby_Model_api.dart';
 import 'package:PregnancyApp/flavors.dart';
 import 'package:PregnancyApp/main_development.dart';
 import 'package:PregnancyApp/main_production.dart';
@@ -6,23 +8,27 @@ import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../main_default.dart';
+import '../../utils/basic_loading_dialog.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';
+import '../games_page/bloc/games_bloc.dart';
 import '../login_page/login_page.dart';
 import 'new_born_success_page.dart';
 import 'bloc/new_born_page_bloc.dart';
 
 class QuestionerNewBornPage extends StatefulWidget {
-  const QuestionerNewBornPage({Key? key, this.isEdit = false})
+  const QuestionerNewBornPage({Key? key, this.isEdit = false, this.babyModel})
       : super(key: key);
   final bool? isEdit;
+  final NewBabyModel? babyModel;
 
   @override
   State<QuestionerNewBornPage> createState() => _QuestionerNewBornPageState();
@@ -101,54 +107,15 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                 SnackBar(content: Text("failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess &&
-              state.type == 'submit') {
-            // if (state.choice == 1) {
-            //   if (widget.isEdit == true) {
-            //     Navigator.of(context).pushReplacementNamed(
-            //         RouteName.NewBornPageBaby,
-            //         arguments: {"is_edit": widget.isEdit, "edit_name": false});
-            //   } else{
-            //     Navigator.of(context).pushNamed(
-            //         RouteName.NewBornPageBaby,
-            //         arguments: {"is_edit": widget.isEdit, "edit_name": false});
-            //   }
-            // } else {
-            //   // todo handle edit
-            //   if (widget.isEdit == true) {
-            //     Navigator.of(context).pushNamedAndRemoveUntil(
-            //       RouteName.navBar,
-            //           (Route<dynamic> route) => false,
-            //       arguments: {'role': StringConstant.patient, 'initial_index': 0},
-            //     );
-            //
-            //
-            //   } else {
-            //     if(F.appFlavor == Flavor.PRODUCTION){
-            //       aliceProd
-            //           .getNavigatorKey()
-            //           ?.currentState
-            //           ?.pushAndRemoveUntil(
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) =>
-            //               const LoginPage(
-            //                   tokenExpired: true,
-            //                   isFromRegister: true)),
-            //               (route) => false);
-            //     } else {
-            //       aliceMain
-            //           .getNavigatorKey()
-            //           ?.currentState
-            //           ?.pushAndRemoveUntil(
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) =>
-            //               const LoginPage(
-            //                   tokenExpired: true,
-            //                   isFromRegister: true)),
-            //               (route) => false);
-            //     }
-            //   }
-            // }
-
+              state.type == 'updateBaby') {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteName.navBar,
+                  (Route<dynamic> route) => false,
+              arguments: {
+                'role': StringConstant.patient,
+                'initial_index': 0
+              },
+            );
           }
         },
         child: BlocBuilder<NewBornPageBloc, NewBornPageState>(
@@ -492,7 +459,11 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                         'Kehilangan',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      onTap: () async {}),
+                      onTap: () async {
+                        showAlertDialog(context, widget.babyModel??const NewBabyModel(),
+                            isDelete: true);
+                        // showAlertDialog(context,1);
+                      }),
                   Divider(),
                   ListTile(
                       leading: Image.asset('assets/ic_delete.png'),
@@ -500,7 +471,11 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                         'Hapus Data',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      onTap: () async {}),
+                      onTap: () async {
+                        showAlertDialog(context, widget.babyModel??const NewBabyModel(),
+                            isDelete: true);
+                        // showAlertDialog(context,1);
+                      }),
                 ],
               ),
             ),
@@ -523,4 +498,92 @@ class _Loading extends StatelessWidget {
       }
     });
   }
+}
+
+showAlertDialog(BuildContext context, NewBabyModel babyModel,
+    {bool isDelete = false}) {
+  Widget cancelButton = FlatButton(
+    height: 40.h,
+    shape: RoundedRectangleBorder(
+        side: BorderSide(
+            color: EpregnancyColors.primer, width: 1, style: BorderStyle.solid),
+        borderRadius: BorderRadius.circular(8.w)),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+            child: Center(
+                child: Container(
+                    child: Text(
+          "Tidak, Nanti Saja",
+          textAlign: TextAlign.center,
+        )))),
+      ],
+    ),
+    onPressed: () {
+      Navigator.of(context).pop(true);
+    },
+  );
+  Widget continueButton = FlatButton(
+    height: 40.h,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.w)),
+    color: EpregnancyColors.primer,
+    textColor: EpregnancyColors.white,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+            child: Center(
+                child: Text(
+          "Ya, Hapus Data Anak",
+          textAlign: TextAlign.center,
+        ))),
+      ],
+    ),
+    onPressed: () async {
+      if (isDelete) {
+        Injector.resolve<NewBornPageBloc>()
+            .add(NewBornDeleteDataBabyEvent(babyModel));
+      } else {
+        Injector.resolve<NewBornPageBloc>()
+            .add(NewBornUpdateDataBabyEvent(babyModel,'KEHILANGAN'));
+      }
+    },
+  );
+  AlertDialog alert = AlertDialog(
+    title: Column(
+      children: [
+        const Text(
+          "Sebelum Hapus Data Anak",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+        ),
+        SizedBox(
+          height: 32.h,
+        ),
+        const Text(
+          """ Apakah Anda yakin ? dengan mengkonfirmasi maka Profil Anak akan dihapus secara permanen.""",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+        ),
+      ],
+    ),
+    actions: [
+      continueButton,
+      SizedBox(
+        height: 12,
+      ),
+      cancelButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return WillPopScope(
+          onWillPop: () {
+            return Future.value(false);
+          },
+          child: Container(child: alert));
+    },
+  );
 }
