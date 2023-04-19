@@ -419,7 +419,10 @@ class BabySectionWidget extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).pushNamed(
                             RouteName.questionerNewBorn,
-                            arguments: false);
+                            arguments: {
+                              'is_edit': false,
+                              'baby': state.baby
+                            });
                       },
                       child:int.parse(state.weeks!) >= 37? Container(
                         // width: MediaQuery.of(context).size.width/1.,

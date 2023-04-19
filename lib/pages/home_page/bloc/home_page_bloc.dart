@@ -317,7 +317,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
               submitStatus: FormzStatus.submissionFailure,
               isNotHaveSession: false);
         } else {
-          yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+          yield state.copyWith(baby:const NewBabyModel(),submitStatus: FormzStatus.submissionFailure);
         }
       } else {
         bool? _showGuide =

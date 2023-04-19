@@ -182,7 +182,7 @@ class Routes {
       case RouteName.questionerNewBorn:
         return MaterialPageRoute(
             builder: (_) =>
-                QuestionerNewBornPage(isEdit: getDataValue(settings.arguments)));
+                QuestionerNewBornPage(isEdit: getIsEdit(settings.arguments),babyModel:getDataBaby(settings.arguments) ,));
 
       // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());

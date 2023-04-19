@@ -32,6 +32,10 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
       yield* _mapNewBornAddDataToState(event, state);
     } else if (event is NewBornAddDataBabyEvent) {
       yield* _mapNewBornAddDataBabyToState(event, state);
+    } else if (event is NewBornUpdateDataBabyEvent) {
+      yield* _mapNewBornUpdateDataBabyEventToState(event, state);
+    } else if (event is NewBornDeleteDataBabyEvent) {
+      yield* _mapNewBornDeleteDataBabyEventToState(event, state);
     } else if (event is NewBornDateChanged) {
       yield _mapNewBornDateChangedToState(event, state);
     } else if (event is NewBornBabysNameChanged) {
@@ -56,12 +60,13 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
 
   Stream<NewBornPageState> _mapNewBornInitEventToState(
       NewBornInitEvent event, NewBornPageState state) async* {
-    try{
+    try {
       var user = await AppSharedPreference.getUser();
       newBaby.NewBabyModel myBaby = const newBaby.NewBabyModel();
       var choice = 0;
       ResponseModel response = await userRepository.getBaby(user);
-      myBaby = response.data != null? response.data : const newBaby.NewBabyModel();
+      myBaby =
+          response.data != null ? response.data : const newBaby.NewBabyModel();
       if (event.isUpdate && response.data != null) {
         // user = await AppSharedPreference.getUser();
 
@@ -76,14 +81,14 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
       if (response.code == 200) {
         if (event.isUpdate && response.data != null) {
           yield NewBornPageState(
-            submitStatus: FormzStatus.submissionSuccess,
+              submitStatus: FormzStatus.submissionSuccess,
               type: 'init-data-NewBorn',
               user: user,
               page: 1,
               date: MandatoryFieldValidator.dirty(
                   myBaby.baby!.lastMenstruationDate!),
               dataBaby:
-              myBaby.baby != null ? myBaby : const newBaby.NewBabyModel(),
+                  myBaby.baby != null ? myBaby : const newBaby.NewBabyModel(),
               choice: choice);
         } else {
           yield NewBornPageState(
@@ -93,7 +98,7 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
               page: 1,
               choice: choice);
         }
-      } else{
+      } else {
         yield NewBornPageState(
             submitStatus: FormzStatus.submissionSuccess,
             type: 'init-data-NewBorn',
@@ -157,7 +162,8 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
       // UserModel user = await AppSharedPreference.getUserRegister();
       UserModel user = await AppSharedPreference.getUser();
       ResponseModel responseBaby = await userRepository.getBaby(user);
-      newBaby.NewBabyModel myBaby = responseBaby.data ?? const newBaby.NewBabyModel();
+      newBaby.NewBabyModel myBaby =
+          responseBaby.data ?? const newBaby.NewBabyModel();
 
       if (event.isUpdate && myBaby != null) {
         user = await AppSharedPreference.getUser();
@@ -206,7 +212,7 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
         response = await userRepository.updateQuestionerBaby(BabyModelApi(
             id: state.dataBaby?.baby?.id,
             name: state.name.value,
-            lastMenstruationDate: state.date.value));
+            lastMenstruationDate: state.date.value), isUpdateStatus: true);
       } else {
         String? userId = user.id;
         // if (user.id != null) {
@@ -230,7 +236,86 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
                   lastMenstruationDate: state.date.value)));
         }
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess, type: 'submitBaby');
+            submitStatus: FormzStatus.submissionSuccess,user: user, type: 'submitBaby');
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
+    } on NewBornErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    }
+  }
+
+//
+
+  Stream<NewBornPageState> _mapNewBornUpdateDataBabyEventToState(
+    NewBornUpdateDataBabyEvent event,
+    NewBornPageState state,
+  ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    try {
+      ResponseModel response = ResponseModel.dataEmpty();
+      UserModel user = await AppSharedPreference.getUser();
+      response = await userRepository.updateQuestionerBaby(BabyModelApi(
+          id: event.babyModel.baby?.id,
+          name: event.babyModel.baby?.name,
+          lastMenstruationDate: event.babyModel.baby?.lastMenstruationDate,
+          status: event.status));
+
+      if (response.code == 200) {
+        await AppSharedPreference.setBabyDataNew(newBaby.NewBabyModel(
+            baby: newBaby.Baby(
+                userId: user.id,
+                id: event.babyModel.baby?.id,
+                name: event.babyModel.baby?.name,
+                lastMenstruationDate:
+                    event.babyModel.baby?.lastMenstruationDate,
+                status: event.babyModel.baby?.status)));
+
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess, type: 'updateBaby',user: user);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
+    } on NewBornErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    }
+  }
+
+//
+  Stream<NewBornPageState> _mapNewBornDeleteDataBabyEventToState(
+    NewBornDeleteDataBabyEvent event,
+    NewBornPageState state,
+  ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
+    try {
+      ResponseModel response = ResponseModel.dataEmpty();
+      UserModel user = await AppSharedPreference.getUser();
+      response = await userRepository.deleteBaby(BabyModelApi(
+          id: event.babyModel.baby?.id,
+          name: event.babyModel.baby?.name,
+          lastMenstruationDate: event.babyModel.baby?.lastMenstruationDate,
+          status: event.babyModel.baby?.status));
+
+      if (response.code == 200) {
+        await AppSharedPreference.setBabyDataNew(newBaby.NewBabyModel(
+            baby: newBaby.Baby(
+                userId: user.id,
+                id: event.babyModel.baby?.id,
+                name: event.babyModel.baby?.name,
+                lastMenstruationDate:
+                    event.babyModel.baby?.lastMenstruationDate,
+                status: event.babyModel.baby?.status)));
+
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess, type: 'updateBaby');
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }

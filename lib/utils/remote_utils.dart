@@ -47,6 +47,8 @@ dynamic getHospitalId(dynamic result) => result['hospital_id'];
 
 dynamic getDataCondition(dynamic result) => result['Condition'];
 
+dynamic getDataBaby(dynamic result) => result['baby'];
+
 dynamic cekPersonInRoom(dynamic result) => result['inRoom'];
 
 dynamic getPersonTokenFirebase(dynamic result) => result['token'];
