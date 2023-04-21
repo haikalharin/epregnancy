@@ -102,7 +102,7 @@ Future<void> main() async {
 }
 
 final Alice aliceProd = Alice(
-    showNotification: true,
+    showNotification: false,
     darkTheme: true);
 
 class MyApp extends StatefulWidget {
