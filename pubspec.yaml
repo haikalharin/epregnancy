@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 #dev
-version: 1.0.46-dev+81
+version: 1.0.47-dev+82
 
 #staging
 #version: 1.0.0-stg+1

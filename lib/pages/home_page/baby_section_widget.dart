@@ -3,6 +3,7 @@ import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,8 +11,10 @@ import 'package:showcaseview/showcaseview.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../common/constants/router_constants.dart';
+import '../../common/injector/injector.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/image_utils.dart';
+import '../profile_page/bloc/profile_page_bloc.dart';
 
 class BabySectionWidget extends StatelessWidget {
   BabySectionWidget(
@@ -19,12 +22,13 @@ class BabySectionWidget extends StatelessWidget {
       this.one,
       required this.state,
       required this.tooltipController,
-      required this.psTriggerTooltip})
+      required this.psTriggerTooltip, this.refresh})
       : super(key: key);
   final GlobalKey? one;
   final HomePageState state;
   final JustTheController tooltipController;
   final PublishSubject<bool> psTriggerTooltip;
+  final VoidCallback? refresh;
   var duration = 0;
 
   Path defaultTailBuilder(Offset tip, Offset point2, Offset point3) {
@@ -33,6 +37,94 @@ class BabySectionWidget extends StatelessWidget {
       ..lineTo(point2.dx, point2.dy)
       ..lineTo(point3.dx, point3.dy)
       ..close();
+  }
+
+  void _babyLostDialog(context) {
+     showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return WillPopScope(
+            child: Center(
+              child: Container(
+                width: 300.w,
+                height: MediaQuery.of(context).size.height * 0.5,
+                padding: EdgeInsets.all(20.w),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(4.w))),
+                child: Material(
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: Scrollbar(
+                          isAlwaysShown: true,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: ListView(
+                              children: [
+                                Center(
+                                  child: SvgPicture.asset("assets/ic_baby_lost.svg"),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Center(
+                                  child: Text(
+                                    "Turut Berduka Cita",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: EpregnancyColors.black,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "bold"),
+                                  ),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Text("Komunitaz turut prihatin atas kehilangan yang Bunda alami. Kami berharap Bunda dapat menemukan ketenangan dalam waktu sulit ini. Kedepannya kami tidak lagi mengirimkan pemberitahuan terkait kehamilan.",
+                                textAlign: TextAlign.center,)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        child: Padding(
+                            padding:
+                            EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
+                            child: SizedBox(
+                              height: 46.w,
+                              width: MediaQuery.of(context).size.width,
+                              child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(4.w)),
+                                  color: EpregnancyColors.primer,
+                                  disabledColor: Colors.grey,
+                                  child: Text('Setuju',
+                                      style: TextStyle(
+                                          fontFamily: "bold",
+                                          fontSize: 13.sp,
+                                          color: Colors.white)),
+                                  onPressed: () {
+                                    refresh?.call();
+                                    Navigator.pop(context);
+                                  }),
+                            )),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            onWillPop: () => Future.value(false));
+      },
+    );
   }
 
   @override
@@ -419,7 +511,22 @@ class BabySectionWidget extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).pushNamed(
                             RouteName.questionerNewBorn,
-                            arguments: false);
+                            arguments: {
+                              "is_edit": false,
+                              "baby_id": state.baby?.baby?.id
+                            }).then((value) {
+                              if(value != null){
+                                Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+                                Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
+                                Injector.resolve<HomePageBloc>().add(const ResetBaby());
+                                Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
+                                if(value == "lost-baby"){
+                                  _babyLostDialog(context);
+                                } else {
+                                  refresh?.call();
+                                }
+                              }
+                        });
                       },
                       child:int.parse(state.weeks!) >= 37? Container(
                         // width: MediaQuery.of(context).size.width/1.,
@@ -458,7 +565,7 @@ class BabySectionWidget extends StatelessWidget {
                                 ))
                           ],
                         ),
-                      ):Container(),
+                      ): const SizedBox.shrink(),
                     ),
                   ),
                 ],

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:PregnancyApp/pages/audio_page/bloc/audio_bloc.dart';
+import 'package:PregnancyApp/pages/child_list_page/bloc/child_list_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
@@ -386,6 +387,8 @@ class _MyAppState extends State<MyApp> {
         create: (context) => Injector.container.resolve<AudioBloc>()),
     BlocProvider<NewBornPageBloc>(
         create: (context) => Injector.container.resolve<NewBornPageBloc>()),
+    BlocProvider<ChildListBloc>(
+        create: (context) => Injector.container.resolve<ChildListBloc>()),
       ];
 }
 

@@ -219,6 +219,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   child: ListView(
                     controller: _scrollControler,
                     children: [
+                      // app bar section
                       Container(
                         width: MediaQuery.of(context).size.width,
                         color: EpregnancyColors.white,
@@ -226,8 +227,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            state.baby != null &&
-                                state.baby?.baby?.name != '' ? Container(
+                            state.baby != null && state.baby?.baby?.name != '' ? Container(
                               margin: EdgeInsets.only(left: 16.w),
                                 child: SvgPicture.asset("assets/ic_baby_appbar.svg")) : const SizedBox.shrink(),
                             Expanded(
@@ -251,7 +251,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   IconButton(onPressed: (){}, icon: Icon(Icons.keyboard_arrow_down, color: EpregnancyColors.primer,))
                                 ],
                               )
-                                  : InkWell(
+                              // todo child option widget
+                                  : state.baby == null || state.baby?.baby?.status != "BELUM_LAHIR" ? const SizedBox.shrink() : InkWell(
                                       onTap: () {
                                         print("Beri nama bayi");
                                         Navigator.of(context).pushNamed(
@@ -412,8 +413,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     ? BabySectionWidget(
                                         state: state,
                                         one: widget.one,
+                                        refresh: _handleRefresh,
                                         tooltipController: tooltipController,
                                         psTriggerTooltip: _psTriggerTooltip)
+                                // todo child widget
                                     : Container(),
                               ],
                             ),

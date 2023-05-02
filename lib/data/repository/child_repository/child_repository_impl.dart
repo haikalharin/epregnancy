@@ -1,4 +1,5 @@
 
+import 'package:PregnancyApp/data/model/child_model/child_list_response.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/repository/child_repository/child_repository.dart';
 
@@ -33,6 +34,44 @@ class ChildRepositoryImpl extends ChildRepository {
         "status": status,
       };
       return remoteDatasource.updateBabyStatus(data);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> deleteBaby(String id) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.deleteBaby(id);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<ChildListResponse>> fetchChildList() async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchChildList();
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> updateChild(String? id, String? name, String dob, String gender) async {
+    if (await networkInfo.isConnected) {
+      Map data = {
+        "id": id,
+        "name": name,
+        "dob": dob,
+        "gender": gender
+      };
+      return remoteDatasource.updateChild(data);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> deleteChild(String id) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.deleteChild(id);
     }
     throw NetworkConnectionException();
   }

@@ -27,7 +27,7 @@ import '../../../common/exceptions/server_error_exception.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/article_model/article_model.dart';
 import '../../../data/model/baby_model/baby_model.dart';
-import '../../../data/model/baby_model/new_baby_model.dart';
+import '../../../data/model/baby_model/new_baby_model.dart' as nb;
 import '../../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../../data/model/baby_progress_model/baby_progress_model.dart';
 import '../../../data/model/user_info/user_info.dart';
@@ -58,6 +58,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield _mapHomeInitEventToState(event, state);
     } else if (event is HomeEventDateChanged) {
       yield _mapHomeEventDateChangedEventToState(event, state);
+    } else if (event is ResetBaby) {
+      yield* _resetBaby(event, state);
     } else if (event is ArticleHomeFetchEvent) {
       yield* _mapArticleFetchEventToState(event, state);
     } else if (event is EventFetchEvent) {
@@ -77,6 +79,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   ) {
     final eventDate = event.date;
     return state.copyWith(eventDate: eventDate);
+  }
+
+  Stream<HomePageState>  _resetBaby(
+      ResetBaby event,
+      HomePageState state,
+      ) async* {
+    await AppSharedPreference.remove("babyData");
+    yield state.copyWith(baby: nb.NewBabyModel(baby: nb.Baby(name: "", status: "")));
   }
 
   Stream<HomePageState> _mapEventFetchEventToState(
@@ -282,18 +292,19 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       var pregnancyAgeDay = 0;
       var pregnancyAgeWeek = 0;
-      NewBabyModel myBaby = const NewBabyModel();
+      nb.NewBabyModel myBaby = const nb.NewBabyModel();
 
       final UserModel user = await AppSharedPreference.getUser();
       ResponseModel response = await homeRepository.getBaby(user);
       if (response.code == 200) {
         myBaby = response.data;
+        print("myBaby data : ${myBaby.baby?.name}");
+
         if (myBaby.baby != null ) {
           pregnancyAgeWeek = myBaby.baby?.pregnancyAgeWeek??0;
           pregnancyAgeDay = myBaby.baby?.pregnancyAgeDay??0;
         }
-        bool? _showGuide =
-            await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
+        bool? _showGuide = await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
         print('show guide : $_showGuide');
         await AppSharedPreference.setBabyDataNew(myBaby);
         yield state.copyWith(
@@ -311,20 +322,23 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await AppSharedPreference.sessionExpiredEvent();
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,
+            baby: null,
             isNotHaveSession: false);
-      } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      } else if (response.message == "Baby not found!"){
+        print("Baby Not Found Else If");
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, baby: null);
       }
     } on HomeErrorException catch (e) {
-      print(e);
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      print("Home Error Exception : " + e.toString());
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, baby: null);
     } on Exception catch (a) {
-      print(a);
+      print("Exception : " + a.toString());
+
       if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false);
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false, baby: null);
     }
   }
 

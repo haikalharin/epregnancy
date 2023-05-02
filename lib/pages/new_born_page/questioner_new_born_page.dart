@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
 import 'package:PregnancyApp/flavors.dart';
 import 'package:PregnancyApp/main_development.dart';
 import 'package:PregnancyApp/main_production.dart';
@@ -16,13 +17,15 @@ import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';
 import '../login_page/login_page.dart';
+import '../profile_page/bloc/profile_page_bloc.dart';
 import 'new_born_success_page.dart';
 import 'bloc/new_born_page_bloc.dart';
 
 class QuestionerNewBornPage extends StatefulWidget {
-  const QuestionerNewBornPage({Key? key, this.isEdit = false})
+  const QuestionerNewBornPage({Key? key, this.isEdit = false, this.babyId})
       : super(key: key);
   final bool? isEdit;
+  final String? babyId;
 
   @override
   State<QuestionerNewBornPage> createState() => _QuestionerNewBornPageState();
@@ -98,7 +101,7 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
         listener: (context, state) {
           if (state.submitStatus == FormzStatus.submissionFailure) {
             const snackBar =
-                SnackBar(content: Text("failed"), backgroundColor: Colors.red);
+                SnackBar(content: Text("Failed"), backgroundColor: Colors.red);
             Scaffold.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess &&
               state.type == 'submit') {
@@ -149,6 +152,12 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
             //   }
             // }
 
+          } else if (state.submitStatus == FormzStatus.submissionSuccess && state.type == "lost-baby-success") {
+            Navigator.pop(context, "lost-baby");
+            AppSharedPreference.remove("babyData");
+          } else if (state.submitStatus == FormzStatus.submissionSuccess && state.type == "delete-baby-success") {
+            Navigator.pop(context, "delete-baby");
+            AppSharedPreference.remove("babyData");
           }
         },
         child: BlocBuilder<NewBornPageBloc, NewBornPageState>(
@@ -157,13 +166,13 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
               color: EpregnancyColors.primerSoft,
               child: Stack(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: EpregnancyColors.primerSoft,
-                        image: DecorationImage(
-                            image: AssetImage('assets/bg_survey_baby.png'),
-                            fit: BoxFit.cover)),
-                  ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //       color: EpregnancyColors.primerSoft,
+                  //       image: DecorationImage(
+                  //           image: AssetImage('assets/bg_survey_baby.png'),
+                  //           fit: BoxFit.cover)),
+                  // ),
                   ListView(
                     children: [
                       Container(
@@ -224,6 +233,7 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                                                     return NewBornSuccessPage(
                                                       username: '',
                                                       password: '',
+                                                      babyId: widget.babyId,
                                                     );
                                                   }));
                                                   isYes = true;
@@ -291,13 +301,14 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                                               ),
                                               InkWell(
                                                 onTap: () {
-                                                  Injector.resolve<
-                                                          NewBornPageBloc>()
-                                                      .add(const NewBornChoice(
-                                                          2));
-                                                  _showPicker(context);
-                                                  isNo = true;
-                                                  isEdit = false;
+                                                  // Injector.resolve<
+                                                  //         NewBornPageBloc>()
+                                                  //     .add(const NewBornChoice(
+                                                  //         2));
+                                                  // _showPicker(context);
+                                                  // isNo = true;
+                                                  // isEdit = false;
+                                                  Navigator.pop(context);
                                                 },
                                                 child: Container(
                                                     decoration: (isEdit &&
@@ -371,8 +382,7 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                                                 onTap: () {
                                                   Injector.resolve<
                                                           NewBornPageBloc>()
-                                                      .add(const NewBornChoice(
-                                                          3));
+                                                      .add(const NewBornChoice(3));
                                                   _showPicker(context);
                                                   isEtc = true;
                                                   isEdit = false;
@@ -492,7 +502,10 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                         'Kehilangan',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      onTap: () async {}),
+                      onTap: () async {
+                        Injector.resolve<NewBornPageBloc>().add(LostBabyEvent(widget.babyId));
+                        Navigator.pop(context);
+                      }),
                   Divider(),
                   ListTile(
                       leading: Image.asset('assets/ic_delete.png'),
@@ -500,7 +513,10 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                         'Hapus Data',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      onTap: () async {}),
+                      onTap: () async {
+                        Injector.resolve<NewBornPageBloc>().add(DeleteBabyEvent(widget.babyId));
+                        Navigator.pop(context);
+                      }),
                 ],
               ),
             ),

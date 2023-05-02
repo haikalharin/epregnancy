@@ -12,9 +12,10 @@ import '../../common/widget/primary_btn.dart';
 import '../../utils/string_constans.dart';
 
 class NewBornSuccessPage extends StatefulWidget {
-  const NewBornSuccessPage({Key? key, this.username, this.password}) : super(key: key);
+  const NewBornSuccessPage({Key? key, this.username, this.password, this.babyId}) : super(key: key);
   final String? username;
   final String? password;
+  final String? babyId;
 
   @override
   State<NewBornSuccessPage> createState() => _NewBornSuccessPage();
@@ -30,7 +31,7 @@ class _NewBornSuccessPage extends State<NewBornSuccessPage> {
 
     Future.delayed(
       const Duration(seconds: 3), () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const BabyBornFromPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  BabyBornFromPage(babyId: widget.babyId!,)));
       // Injector.resolve<LoginBloc>()
       //     .add(LoginSubmittedFromRegister(widget.username, widget.password));
       },

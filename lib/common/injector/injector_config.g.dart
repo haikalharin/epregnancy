@@ -41,7 +41,8 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton((c) => CommentBloc(c<ConsultationRepository>()))
       ..registerSingleton((c) => AudioBloc())
       ..registerSingleton(
-          (c) => NewBornPageBloc(c<UserRepository>(), c<ChildRepository>()));
+          (c) => NewBornPageBloc(c<UserRepository>(), c<ChildRepository>()))
+      ..registerSingleton((c) => ChildListBloc(c<ChildRepository>()));
   }
 
   @override

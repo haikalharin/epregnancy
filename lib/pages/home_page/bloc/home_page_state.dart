@@ -3,7 +3,7 @@ part of 'home_page_bloc.dart';
 class HomePageState with FormzMixin {
   final UserModel? user;
   final String? role;
-  final NewBabyModel? baby;
+  final nb.NewBabyModel? baby;
   final FormzStatus? submitStatus;
   final String? tipe;
   final String? days;
@@ -42,7 +42,7 @@ class HomePageState with FormzMixin {
   HomePageState copyWith({FormzStatus? submitStatus,
     UserModel? user,
     String? role,
-    NewBabyModel? baby,
+    nb.NewBabyModel? baby,
     SimpleTipResponse? simpleTipResponse,
     List<ArticleModel>? listArticle,
     List<EventModel>? listEvent,

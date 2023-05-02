@@ -31,6 +31,8 @@ dynamic getInitialIndex(dynamic result) => result['initial_index'];
 
 dynamic getUserId(dynamic result) => result['user_id'];
 
+dynamic getBabyId(dynamic result) => result['baby_id'];
+
 dynamic getIsFromNotif(dynamic result) => result['is_from_notif'];
 
 dynamic getUserName(dynamic result) => result['username'];

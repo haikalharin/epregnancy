@@ -40,6 +40,7 @@ import '../../data/repository/user_repository/user_repository.dart';
 import '../../data/repository/user_repository/user_repository_impl.dart';
 import '../../pages/audio_page/bloc/audio_bloc.dart';
 import '../../pages/change_password_page/bloc/change_password_bloc.dart';
+import '../../pages/child_list_page/bloc/child_list_bloc.dart';
 import '../../pages/consultation_page/bloc/comment_bloc.dart';
 import '../../pages/consultation_page/bloc/consultation_page_bloc.dart';
 import '../../pages/login_page/bloc/login_bloc.dart';
@@ -108,6 +109,7 @@ abstract class InjectorConfig {
   @Register.singleton(CommentBloc)
   @Register.singleton(AudioBloc)
   @Register.singleton(NewBornPageBloc)
+  @Register.singleton(ChildListBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)

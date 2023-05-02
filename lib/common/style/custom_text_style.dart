@@ -6,6 +6,14 @@ Widget blackText16(String text){
   return Text(text, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 16.sp),);
 }
 
+Widget whiteText16(String text){
+  return Text(text, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16.sp),);
+}
+
+Widget blackText12W500(String text){
+  return Text(text, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),);
+}
+
 Widget blackText24(String text){
   return Text(text, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 24.sp),);
 }
