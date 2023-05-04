@@ -256,7 +256,6 @@ class AppSharedPreference {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String encryptedJson = encrypt(json);
     prefs.setString(user, encryptedJson);
-    // prefs.setString(_user, json);
   }
 
   static Future<UserRolesModelFirebase> getUserRoleFirebase() async {

@@ -388,7 +388,8 @@ class __$$_UserAvailabilityResponseCopyWithImpl<$Res>
 
 /// @nodoc
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(
+    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: true)
 class _$_UserAvailabilityResponse
     with DiagnosticableTreeMixin
     implements _UserAvailabilityResponse {

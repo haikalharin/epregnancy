@@ -60,6 +60,7 @@ class _OtpPageState extends State<OtpPage> {
 
     sub.onDone(() {
       isResend = true;
+      wrongOtp = true;
       sub.cancel();
     });
   }
@@ -219,6 +220,7 @@ class _OtpPageState extends State<OtpPage> {
                                   outlineBorderRadius: 10,
                                   style: TextStyle(fontSize: 25),
                                   onChanged: (pin) {
+                                    wrongOtp = false;
                                     print("Changed: " + pin);
                                   },
                                   onCompleted: (pin) {

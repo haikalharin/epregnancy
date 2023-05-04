@@ -1,4 +1,4 @@
-import 'package:PregnancyApp/pages/nakes_page/confirm_visit.dart';
+import 'package:PregnancyApp/pages/nakes_visit_page/confirm_visit.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -2,7 +2,7 @@ import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
 import 'package:PregnancyApp/pages/members_page/members_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/full_qr_screen.dart';
-import 'package:PregnancyApp/pages/nakes_page/member_visit_page.dart';
+import 'package:PregnancyApp/pages/nakes_visit_page/member_visit_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/chat_placeholder_widget.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/consultation_container.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/visit_card.dart';
@@ -47,7 +47,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
   @override
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
-    Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+    Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent(isMidwife: true));
     Injector.resolve<ChatPendingBloc>()
         .add(FetchLastChatEvent(widget.hospitalId));
     Injector.resolve<ChatPendingBloc>()
@@ -107,7 +107,9 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                   fontSize: 16.sp),
             )),
         actions: [
-          InkWell(
+          BlocBuilder<HomePageBloc, HomePageState>(
+  builder: (context, state) {
+    return InkWell(
               onTap: () {
                 showModalBottomSheet(
                     shape: RoundedRectangleBorder(
@@ -165,7 +167,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                   ),
                                 ),
                                 QrImage(
-                                  data: "dummy",
+                                  data: state.user?.qrString??'',
                                   version: QrVersions.auto,
                                   size: 150.w,
                                 ),
@@ -176,7 +178,9 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                       );
                     });
               },
-              child: SvgPicture.asset("assets/ic_qr.svg")),
+              child: SvgPicture.asset("assets/ic_qr.svg"));
+  },
+),
           IconButton(
             onPressed: () {
               // todo notif clicked handle
