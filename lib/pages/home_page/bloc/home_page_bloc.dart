@@ -8,6 +8,7 @@ import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/data/model/user_roles_model_firebase/user_roles_model_firebase.dart';
+import 'package:PregnancyApp/data/model/user_visit_model/user_visit_model.dart';
 import 'package:PregnancyApp/data/repository/article_repository/article_repository.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
 import 'package:PregnancyApp/data/repository/user_repository/user_repository.dart';
@@ -68,6 +69,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapHomeEventDeleteScheduleToState(event, state);
     } else if (event is FetchSimpleTipEvent) {
       yield* _mapFetchSimpleTips(event, state);
+    } else if (event is FetchListVisitEvent) {
+      yield* _mapFetchListPersonDiscussEventToState(event, state);
     }
   }
 
@@ -373,4 +376,79 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false);
     }
   }
+
+  Stream<HomePageState> _mapFetchListPersonDiscussEventToState(
+      FetchListVisitEvent event,
+      HomePageState state,
+      ) async* {
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress,
+        tipe: 'fetching-list-discuss',
+        listUserVisitModel: []);
+    try {
+      var sort = "desc";
+      if (event.sort == SortEnum.asc) {
+        sort = "asc";
+      }
+      ResponseModel response = ResponseModel.dataEmpty();
+      if (event.isNextPage) {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionInProgress,
+            tipe: 'get-next-page-list_discuss',
+            listUserVisitModel: state.listUserVisitModel);
+        response = await userRepository.fetchUserVisit(
+            state.page + 1,
+            event.size??5,
+            event.sortBy ?? "createdDate",
+            sort);
+      } else {
+        response = await userRepository.fetchUserVisit(
+            event.page ?? 0,
+            event.size??5,
+            event.sortBy ?? "createdDate",
+            sort);
+      }
+      List<UserVisitModel> _userVisit = response.data ?? [];
+      List<UserVisitModel> listUserVisit = [];
+      if (event.isNextPage) {
+        listUserVisit = state.listUserVisitModel ?? [];
+      }
+      for (var element in _userVisit) {
+        UserInfoVisit? user = element.user;
+        UserInfoVisit? _userVisit = user?.copyWith(
+          name: await aesDecryptor(user.name),
+        );
+        UserVisitModel? userVisit = element.copyWith(
+          user: _userVisit,
+        );
+        listUserVisit.add(userVisit);
+      }
+      if (response.code == 200) {
+        List<UserVisitModel> allMembers = List<UserVisitModel>.from(state.listUserVisitModel ?? [])
+          ..addAll(listUserVisit);
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess,
+            tipe: 'fetch-user-visit-success',
+            listUserVisitModel: listUserVisit,
+            page: response.pagination?.number,
+            isSearch: event.isSearch,
+            sort: event.sort,
+            sortBy: event.sortBy,
+            lastPageListVisit: response.pagination?.last);
+      } else {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure, tipe: 'fetch-user-visit-failed');
+      }
+    } catch (e) {
+      print('members failed : $e');
+      if (e is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure,
+          tipe: 'Fetch Data Error',
+          errorMessage: e.toString());
+    }
+  }
+
 }

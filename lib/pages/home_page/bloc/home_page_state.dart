@@ -2,6 +2,8 @@ part of 'home_page_bloc.dart';
 
 class HomePageState with FormzMixin {
   final UserModel? user;
+  final UserVisitModel? userVisitModel;
+  final List<UserVisitModel>? listUserVisitModel;
   final String? role;
   final NewBabyModel? baby;
   final FormzStatus? submitStatus;
@@ -19,47 +21,70 @@ class HomePageState with FormzMixin {
   final String? errorMessage;
   final bool? showGuide;
   final bool? isNotHaveSession;
+  final bool? isSearch;
+  final bool lastPageListVisit;
+  final SortEnum? sort;
+  final String? sortBy;
+  final int page;
 
-  HomePageState({this.user,
-    this.role,
-    this.baby,
-    this.submitStatus = FormzStatus.pure,
-    this.listArticle,
-    this.simpleTipResponse,
-    this.listEvent,
-    this.listEventPersonal,
-    this.tipe,
-    this.days,
-    this.weeks,
-    this.eventDateString,
-    this.eventDate,
-    this.articleModel,
-    this.totalPointsEarned,
-    this.showGuide,
-    this.isNotHaveSession,
-    this.errorMessage});
+  HomePageState(
+      {this.user,
+      this.role,
+      this.baby,
+      this.userVisitModel,
+        this.lastPageListVisit =false,
+        this.sortBy,
+        this.sort,
+      this.listUserVisitModel,
+      this.submitStatus = FormzStatus.pure,
+      this.listArticle,
+      this.simpleTipResponse,
+      this.listEvent,
+      this.listEventPersonal,
+      this.tipe,
+      this.days,
+      this.weeks,
+      this.eventDateString,
+      this.eventDate,
+      this.articleModel,
+      this.totalPointsEarned,
+      this.showGuide,
+      this.isNotHaveSession,
+      this.isSearch,
+      this.page = 0,
+      this.errorMessage});
 
-  HomePageState copyWith({FormzStatus? submitStatus,
-    UserModel? user,
-    String? role,
-    NewBabyModel? baby,
-    SimpleTipResponse? simpleTipResponse,
-    List<ArticleModel>? listArticle,
-    List<EventModel>? listEvent,
-    List<EventModel>? listEventPersonal,
-    ArticleModel? articleModel,
-    String? tipe,
-    String? days,
-    String? weeks,
-    String? eventDateString,
-    DateTime? eventDate,
-    int? totalPointsEarned,
-    bool? showGuide,
-    bool? isNotHaveSession,
-    String? errorMessage}) {
+  HomePageState copyWith(
+      {FormzStatus? submitStatus,
+      UserModel? user,
+      UserVisitModel? userVisitModel,
+      List<UserVisitModel>? listUserVisitModel,
+      String? role,
+      NewBabyModel? baby,
+      SimpleTipResponse? simpleTipResponse,
+      List<ArticleModel>? listArticle,
+      List<EventModel>? listEvent,
+      List<EventModel>? listEventPersonal,
+      ArticleModel? articleModel,
+      String? tipe,
+      String? days,
+      String? weeks,
+      String? eventDateString,
+      DateTime? eventDate,
+      int? totalPointsEarned,
+      bool? showGuide,
+      bool? isNotHaveSession,
+      bool? isSearch,
+      int? page,
+        bool? lastPageListVisit,
+        SortEnum? sort,
+        String? sortBy,
+      String? errorMessage}) {
     return HomePageState(
         submitStatus: submitStatus,
         user: user ?? this.user,
+        userVisitModel: userVisitModel ?? this.userVisitModel,
+        listUserVisitModel: listUserVisitModel ?? this.listUserVisitModel,
         role: role ?? this.role,
         baby: baby ?? this.baby,
         simpleTipResponse: simpleTipResponse ?? this.simpleTipResponse,
@@ -75,6 +100,11 @@ class HomePageState with FormzMixin {
         eventDate: eventDate ?? this.eventDate,
         totalPointsEarned: totalPointsEarned ?? this.totalPointsEarned,
         isNotHaveSession: isNotHaveSession,
+        isSearch: isSearch ?? this.isSearch,
+        lastPageListVisit: lastPageListVisit ?? this.lastPageListVisit,
+        page: page ?? this.page,
+        sort: sort ?? this.sort,
+        sortBy: sortBy ?? this.sortBy,
         errorMessage: errorMessage);
   }
 

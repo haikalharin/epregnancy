@@ -26,6 +26,7 @@ import 'package:PregnancyApp/data/model/games_model/games_response.dart';
 import 'package:PregnancyApp/data/model/point_model/checkin_response.dart';
 import 'package:PregnancyApp/data/model/point_model/point_history.dart';
 import 'package:PregnancyApp/data/model/user_info/user_info.dart';
+import 'package:PregnancyApp/data/model/user_visit_model/user_visit_model.dart';
 import 'package:http/http.dart';
 
 import '../../common/network/http/http_client.dart';
@@ -765,4 +766,21 @@ class RemoteDataSource {
       return 500;
     }
   }
+
+  Future<ResponseModel<UserVisitModel>> fetchUserVisit(
+      {
+        int? page,
+        int? size,
+        String? sortBy,
+        String? sort}) async {
+    Map<String, String> qParams = {
+      'page': page.toString(),
+      'size': size.toString(),
+      'sort': "$sortBy,$sort",
+    };
+    final response =
+    await httpClient.get(ServiceUrl.userVisit, queryParameters: qParams);
+    return ResponseModel.fromJson(response, UserVisitModel.fromJson);
+  }
+
 }

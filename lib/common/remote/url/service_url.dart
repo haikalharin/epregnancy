@@ -71,6 +71,9 @@ class ServiceUrl {
   static String patientUsers = '$midwife/patient-users';
   static String midwifeUsers = '$midwife/midwife-users';
 
+  //userVisit
+  static String userVisit = 'user-visits';
+
 
   //game
   static String game = 'game';

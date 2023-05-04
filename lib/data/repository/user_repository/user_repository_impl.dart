@@ -16,6 +16,7 @@ import '../../model/response_model/response_model.dart';
 import '../../model/point_model/checkin_response.dart';
 import '../../model/user_example_model/user_example_model.dart';
 import '../../model/user_model_firebase/user_model_firebase.dart';
+import '../../model/user_visit_model/user_visit_model.dart';
 import '../../remote_datasource/remote_datasource.dart';
 import '../../shared_preference/app_shared_preference.dart';
 import 'user_repository.dart';
@@ -264,4 +265,12 @@ class UserRepositoryImpl extends UserRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel<UserVisitModel>> fetchUserVisit( int page,int size, String sortBy, String sort) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchUserVisit( page: page,sortBy: sortBy,sort: sort,size:size
+      );
+    }
+    throw NetworkConnectionException();
+  }
 }
