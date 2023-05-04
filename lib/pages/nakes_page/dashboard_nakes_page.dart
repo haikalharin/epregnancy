@@ -366,37 +366,69 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                         ? Container(
                                             margin: EdgeInsets.only(),
                                             child: Container())
-                                        : ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index) {
-                                              String outputDate = "";
-                                              var outputFormat =
-                                                  DateFormat.yMMMMd('id');
-                                              outputDate = outputFormat.format(
-                                                  DateTime.parse(state
-                                                          .listUserVisitModel?[
-                                                              index]
-                                                          .createdDate ??
-                                                      "0000-00-00"));
-                                              // 12/3
-                                              return InkWell(
-                                                onTap: () {
-                                                  // Navigator.push(
-                                                  //     context,
-                                                  //     MaterialPageRoute(
-                                                  //         builder: (context) => ArticleDetailPage(
-                                                  //             article: listArticle?[index])));
-                                                },
-                                                child: VisitCard(
-                                                  user:
-                                                      state.listUserVisitModel?[
-                                                          index],
+                                        : Column(
+                                          children: [
+                                            Expanded(
+                                              child: ListView.builder(
+                                                  scrollDirection: Axis.horizontal,
+                                                  itemBuilder: (context, index) {
+                                                    String outputDate = "";
+                                                    var outputFormat =
+                                                        DateFormat.yMMMMd('id');
+                                                    outputDate = outputFormat.format(
+                                                        DateTime.parse(state
+                                                                .listUserVisitModel?[
+                                                                    index]
+                                                                .createdDate ??
+                                                            "0000-00-00"));
+                                                    // 12/3
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        // Navigator.push(
+                                                        //     context,
+                                                        //     MaterialPageRoute(
+                                                        //         builder: (context) => ArticleDetailPage(
+                                                        //             article: listArticle?[index])));
+                                                      },
+                                                      child: VisitCard(
+                                                        user:
+                                                            state.listUserVisitModel?[
+                                                                index],
+                                                      ),
+                                                    );
+                                                  },
+                                                  itemCount: state
+                                                      .listUserVisitModel!.length,
                                                 ),
-                                              );
-                                            },
-                                            itemCount: state
-                                                .listUserVisitModel!.length,
-                                          ),
+                                            ),
+                                            InkWell(
+                                              onTap: (){
+                                                Navigator.push(context, MaterialPageRoute(
+                                                    builder: (context) => const MemberVisitPage()));
+                                              },
+                                              child: Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  border: Border(
+                                                      top: BorderSide(
+                                                          color:
+                                                          EpregnancyColors.greyDivider,
+                                                          width: 1)),
+                                                ),
+                                                padding: EdgeInsets.all(16.w),
+                                                child: Center(
+                                                    child: Text(
+                                                      "Lihat Semua",
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 12.sp,
+                                                          color: EpregnancyColors.primer),
+                                                    )),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                   ),
                                 ),
                               ],
