@@ -30,6 +30,7 @@ import '../../../data/model/baby_model/baby_model.dart';
 import '../../../data/model/baby_model/new_baby_model.dart' as nb;
 import '../../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../../data/model/baby_progress_model/baby_progress_model.dart';
+import '../../../data/model/hospital_model/hospital_model.dart';
 import '../../../data/model/user_info/user_info.dart';
 import '../../../data/repository/event_repository/event_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
@@ -70,6 +71,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapHomeEventDeleteScheduleToState(event, state);
     } else if(event is FetchSimpleTipEvent){
       yield* _mapFetchSimpleTips(event, state);
+    } else if(event is SetHospitalEvent) {
+      yield _setHospitalModelEvent(event, state);
     }
   }
 
@@ -79,6 +82,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   ) {
     final eventDate = event.date;
     return state.copyWith(eventDate: eventDate);
+  }
+
+  HomePageState _setHospitalModelEvent(
+      SetHospitalEvent event,
+      HomePageState state,
+      ) {
+    final hospitalSelected = event.hospitalModel;
+    return state.copyWith(hospitalModel: hospitalSelected);
   }
 
   Stream<HomePageState>  _resetBaby(

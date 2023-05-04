@@ -10,6 +10,7 @@ class HomePageState with FormzMixin {
   final String? weeks;
   final String? eventDateString;
   final DateTime? eventDate;
+  final HospitalModel? hospitalModel;
   final SimpleTipResponse? simpleTipResponse;
   final List<ArticleModel>? listArticle;
   final List<EventModel>? listEvent;
@@ -29,6 +30,7 @@ class HomePageState with FormzMixin {
     this.listEvent,
     this.listEventPersonal,
     this.tipe,
+    this.hospitalModel,
     this.days,
     this.weeks,
     this.eventDateString,
@@ -42,6 +44,7 @@ class HomePageState with FormzMixin {
   HomePageState copyWith({FormzStatus? submitStatus,
     UserModel? user,
     String? role,
+    HospitalModel? hospitalModel,
     nb.NewBabyModel? baby,
     SimpleTipResponse? simpleTipResponse,
     List<ArticleModel>? listArticle,
@@ -62,6 +65,7 @@ class HomePageState with FormzMixin {
         user: user ?? this.user,
         role: role ?? this.role,
         baby: baby ?? this.baby,
+        hospitalModel: hospitalModel ?? this.hospitalModel,
         simpleTipResponse: simpleTipResponse ?? this.simpleTipResponse,
         showGuide: showGuide ?? this.showGuide,
         listArticle: listArticle ?? this.listArticle,
