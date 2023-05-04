@@ -79,10 +79,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool showEditBaby = false;
   final tooltipController = JustTheController();
   final PublishSubject<bool> _psTriggerTooltip = PublishSubject();
-  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
-      GlobalKey<LiquidPullToRefreshState>();
+  final GlobalKey<LiquidPullToRefreshState> refreshIndicatorKey = GlobalKey<LiquidPullToRefreshState>();
 
-  Future<void> _handleRefresh() async {
+  Future<void> handleRefresh() async {
     if (F.appFlavor == Flavor.DEVELOPMENT) {
       // subscribeFcmTopic();
     }
@@ -213,8 +212,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 color: EpregnancyColors.white,
                 child: LiquidPullToRefresh(
                   color: EpregnancyColors.primer,
-                  key: _refreshIndicatorKey,
-                  onRefresh: _handleRefresh,
+                  key: refreshIndicatorKey,
+                  onRefresh: handleRefresh,
                   showChildOpacityTransition: false,
                   child: ListView(
                     controller: _scrollControler,
@@ -412,8 +411,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         state.user?.babies?.length != 0
                                     ? BabySectionWidget(
                                         state: state,
+                                        refreshIndicatorKey: refreshIndicatorKey,
                                         one: widget.one,
-                                        refresh: _handleRefresh,
+                                        refresh: handleRefresh,
                                         tooltipController: tooltipController,
                                         psTriggerTooltip: _psTriggerTooltip)
                                 // todo child widget
@@ -426,7 +426,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     title: 'Tips',
                                     description:
                                         'Dapatkan info dan tips kehamilan',
-                                    child: Container(
+                                    child: state.baby != null && state.baby?.baby?.name  != "" && state.baby?.baby?.status != "" ?  Container(
                                       margin: EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 16.h),
                                       padding: EdgeInsets.all(16.w),
@@ -545,9 +545,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           ),
                                         ],
                                       ),
-                                    ),
+                                    ) : const SizedBox.shrink(),
                             )
-                                : Container(
+                                : state.baby?.baby?.name  != "" && state.baby?.baby?.status != "" && state.baby != null ?  Container(
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 16.h),
                                     padding: EdgeInsets.all(16.w),
@@ -666,7 +666,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ) : const SizedBox.shrink(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

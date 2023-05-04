@@ -1,3 +1,5 @@
+import 'package:PregnancyApp/common/widget/btn_primary_white.dart';
+import 'package:PregnancyApp/common/widget/primary_btn.dart';
 import 'package:PregnancyApp/pages/home_page/baby_tracker_detail_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:flutter/material.dart';
@@ -6,14 +8,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/image_utils.dart';
+import '../new_born_page/bloc/new_born_page_bloc.dart';
 import '../profile_page/bloc/profile_page_bloc.dart';
 
 class BabySectionWidget extends StatelessWidget {
@@ -22,13 +27,14 @@ class BabySectionWidget extends StatelessWidget {
       this.one,
       required this.state,
       required this.tooltipController,
-      required this.psTriggerTooltip, this.refresh})
+      required this.psTriggerTooltip, this.refresh, this.refreshIndicatorKey})
       : super(key: key);
   final GlobalKey? one;
   final HomePageState state;
   final JustTheController tooltipController;
   final PublishSubject<bool> psTriggerTooltip;
   final VoidCallback? refresh;
+  final GlobalKey<LiquidPullToRefreshState>? refreshIndicatorKey;
   var duration = 0;
 
   Path defaultTailBuilder(Offset tip, Offset point2, Offset point3) {
@@ -117,6 +123,91 @@ class BabySectionWidget extends StatelessWidget {
                           Navigator.pop(context);
                         },
                       )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            onWillPop: () => Future.value(false));
+      },
+    );
+  }
+
+  void _babyDeleteDialog(context, String babyId) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return WillPopScope(
+            child: Center(
+              child: Container(
+                width: 300.w,
+                height: MediaQuery.of(context).size.height * 0.33,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8.w))),
+                child: Material(
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: Scrollbar(
+                          isAlwaysShown: true,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: ListView(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    "Sebelum Hapus Data Anak",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: EpregnancyColors.black,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "bold"),
+                                  ),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                  child: Text("Apakah Anda Yakin? dengan mengkonfirmasi maka Profil Anak akan dihapus secara permanen.", textAlign: TextAlign.center, style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500),),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Container(
+                                  child: BtnPrimary(
+                                    text: "Ya, Hapus Data Anak",
+                                    function: (){
+                                      AppSharedPreference.remove("babyData");
+                                      Injector.resolve<NewBornPageBloc>().add(DeleteBabyEvent(babyId));
+                                      Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+                                      Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
+                                      Injector.resolve<HomePageBloc>().add(const ResetBaby());
+                                      Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
+                                      refresh?.call();
+                                      refreshIndicatorKey?.currentState?.activate();
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Container(
+                                  child: BtnPrimaryWhite(
+                                    text: "Tidak, Nanti Saja",
+                                    function: (){
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -516,12 +607,15 @@ class BabySectionWidget extends StatelessWidget {
                               "baby_id": state.baby?.baby?.id
                             }).then((value) {
                               if(value != null){
-                                Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
-                                Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
-                                Injector.resolve<HomePageBloc>().add(const ResetBaby());
-                                Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
                                 if(value == "lost-baby"){
+                                  Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+                                  Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
+                                  Injector.resolve<HomePageBloc>().add(const ResetBaby());
+                                  Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
                                   _babyLostDialog(context);
+                                } else if (value.toString().contains("delete-baby")){
+                                  List strings = value.toString().split(" ");
+                                  _babyDeleteDialog(context, strings[1]);
                                 } else {
                                   refresh?.call();
                                 }
@@ -556,7 +650,26 @@ class BabySectionWidget extends StatelessWidget {
                                   maxLines: 3,
                                 )),
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                      RouteName.questionerNewBorn,
+                                      arguments: {
+                                        "is_edit": false,
+                                        "baby_id": state.baby?.baby?.id
+                                      }).then((value) {
+                                    if(value != null){
+                                      Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+                                      Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
+                                      Injector.resolve<HomePageBloc>().add(const ResetBaby());
+                                      Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
+                                      if(value == "lost-baby"){
+                                        _babyLostDialog(context);
+                                      } else {
+                                        refresh?.call();
+                                      }
+                                    }
+                                  });
+                                },
                                 icon: const Icon(
                                   Icons
                                       .arrow_forward_ios_rounded,

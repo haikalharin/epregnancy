@@ -190,8 +190,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   ),
                                 ),
                                 Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2.1,
+                                    width: MediaQuery.of(context).size.width / 2.1,
                                     margin: EdgeInsets.only(bottom: 18.h),
                                     child: BtnPrimary(
                                         text: "Ubah Data Diri",

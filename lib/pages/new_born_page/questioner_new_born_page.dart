@@ -156,8 +156,8 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
             Navigator.pop(context, "lost-baby");
             AppSharedPreference.remove("babyData");
           } else if (state.submitStatus == FormzStatus.submissionSuccess && state.type == "delete-baby-success") {
-            Navigator.pop(context, "delete-baby");
-            AppSharedPreference.remove("babyData");
+            // Navigator.pop(context, "delete-baby");
+            // AppSharedPreference.remove("babyData");
           }
         },
         child: BlocBuilder<NewBornPageBloc, NewBornPageState>(
@@ -474,13 +474,13 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
 
   void _showPicker(BuildContext context) {
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
             child: Container(
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
               child: Wrap(
                 children: [
                   Center(
@@ -514,8 +514,8 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       onTap: () async {
-                        Injector.resolve<NewBornPageBloc>().add(DeleteBabyEvent(widget.babyId));
                         Navigator.pop(context);
+                        Navigator.pop(context, "delete-baby ${widget.babyId}");
                       }),
                 ],
               ),
