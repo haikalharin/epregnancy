@@ -59,6 +59,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield _mapHomeInitEventToState(event, state);
     } else if (event is HomeEventDateChanged) {
       yield _mapHomeEventDateChangedEventToState(event, state);
+    } else if (event is ChangeNextVisitEvent) {
+      yield _mapChangeNextVisitEventToState(event, state);
+    } else if (event is ChangeDataVisitEvent) {
+      yield _mapChangeDataVisitEventToState(event, state);
     } else if (event is ArticleHomeFetchEvent) {
       yield* _mapArticleFetchEventToState(event, state);
     } else if (event is EventFetchEvent) {
@@ -71,6 +75,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapFetchSimpleTips(event, state);
     } else if (event is FetchListVisitEvent) {
       yield* _mapFetchListPersonDiscussEventToState(event, state);
+    } else if (event is SubmitNextVisitEvent) {
+      yield* _mapSubmitNextVisitEventtToState(event, state);
     }
   }
 
@@ -80,6 +86,25 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   ) {
     final eventDate = event.date;
     return state.copyWith(eventDate: eventDate);
+  }
+
+  HomePageState _mapChangeNextVisitEventToState(
+    ChangeNextVisitEvent event,
+    HomePageState state,
+  ) {
+    final dateNextVisit = event.date;
+    return state.copyWith(nextVisitDate: dateNextVisit);
+  }
+
+  HomePageState _mapChangeDataVisitEventToState(
+    ChangeDataVisitEvent event,
+    HomePageState state,
+  ) {
+    final user = event.user;
+    return state.copyWith(
+        userVisitModel: user,
+        submitStatus: FormzStatus.submissionSuccess,
+        tipe: "konfirmasi-button");
   }
 
   Stream<HomePageState> _mapEventFetchEventToState(
@@ -320,7 +345,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
               submitStatus: FormzStatus.submissionFailure,
               isNotHaveSession: false);
         } else {
-          yield state.copyWith(baby:const NewBabyModel(),submitStatus: FormzStatus.submissionFailure);
+          yield state.copyWith(
+              baby: const NewBabyModel(),
+              submitStatus: FormzStatus.submissionFailure);
         }
       } else {
         bool? _showGuide =
@@ -378,13 +405,20 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 
   Stream<HomePageState> _mapFetchListPersonDiscussEventToState(
-      FetchListVisitEvent event,
-      HomePageState state,
-      ) async* {
-    yield state.copyWith(
-        submitStatus: FormzStatus.submissionInProgress,
-        tipe: 'fetching-list-discuss',
-        listUserVisitModel: []);
+    FetchListVisitEvent event,
+    HomePageState state,
+  ) async* {
+    if (event.isNextPage) {
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionInProgress,
+          tipe: 'get-next-page-list_user-visit',
+          listUserVisitModel: state.listUserVisitModel);
+    } else {
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionInProgress,
+          tipe: 'fetching-list-user-visit',
+          listUserVisitModel: []);
+    }
     try {
       var sort = "desc";
       if (event.sort == SortEnum.asc) {
@@ -392,21 +426,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       }
       ResponseModel response = ResponseModel.dataEmpty();
       if (event.isNextPage) {
-        yield state.copyWith(
-            submitStatus: FormzStatus.submissionInProgress,
-            tipe: 'get-next-page-list_discuss',
-            listUserVisitModel: state.listUserVisitModel);
-        response = await userRepository.fetchUserVisit(
-            state.page + 1,
-            event.size??5,
-            event.sortBy ?? "createdDate",
-            sort);
+        response = await userRepository.fetchUserVisit(state.page + 1,
+            event.size ?? 10, event.sortBy ?? "createdDate", sort);
       } else {
-        response = await userRepository.fetchUserVisit(
-            event.page ?? 0,
-            event.size??5,
-            event.sortBy ?? "createdDate",
-            sort);
+        response = await userRepository.fetchUserVisit(event.page ?? 0,
+            event.size ?? 10, event.sortBy ?? "createdDate", sort);
       }
       List<UserVisitModel> _userVisit = response.data ?? [];
       List<UserVisitModel> listUserVisit = [];
@@ -424,20 +448,23 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         listUserVisit.add(userVisit);
       }
       if (response.code == 200) {
-        List<UserVisitModel> allMembers = List<UserVisitModel>.from(state.listUserVisitModel ?? [])
-          ..addAll(listUserVisit);
+        List<UserVisitModel> allMembers =
+            List<UserVisitModel>.from(state.listUserVisitModel ?? [])
+              ..addAll(listUserVisit);
         yield state.copyWith(
             submitStatus: FormzStatus.submissionSuccess,
             tipe: 'fetch-user-visit-success',
             listUserVisitModel: listUserVisit,
             page: response.pagination?.number,
             isSearch: event.isSearch,
+            isFromSubmit: event.isFromSubmit,
             sort: event.sort,
             sortBy: event.sortBy,
             lastPageListVisit: response.pagination?.last);
       } else {
         yield state.copyWith(
-            submitStatus: FormzStatus.submissionFailure, tipe: 'fetch-user-visit-failed');
+            submitStatus: FormzStatus.submissionFailure,
+            tipe: 'fetch-user-visit-failed');
       }
     } catch (e) {
       print('members failed : $e');
@@ -451,4 +478,46 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
   }
 
+  Stream<HomePageState> _mapSubmitNextVisitEventtToState(
+    SubmitNextVisitEvent event,
+    HomePageState state,
+  ) async* {
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress,
+        tipe: "submit-next-visit");
+    try {
+      final response = await userRepository.submitNextVisit(event.id ?? '',
+          state.nextVisitDate ?? '', event.status ?? '');
+
+      if (response.code == 200) {
+        if (event.status == StringConstant.done) {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              tipe: "submit-next-visit");
+        } else if(event.status == StringConstant.accepted){
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              tipe: "submit-next-visit-accepted");
+        }else if(event.status == StringConstant.rejected){
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              tipe: "submit-next-visit-rejected");
+        }
+      } else {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure,
+            tipe: "submit-next-visit");
+      }
+    } on EventErrorException catch (e) {
+      print(e);
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+    } on Exception catch (a) {
+      print(a);
+      if (a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false);
+    }
+  }
 }

@@ -49,7 +49,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent(isMidwife: true));
-    Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(1));
+    Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
     Injector.resolve<ChatPendingBloc>()
         .add(FetchLastChatEvent(widget.hospitalId));
     Injector.resolve<ChatPendingBloc>()
@@ -370,7 +370,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                           children: [
                                             Expanded(
                                               child: ListView.builder(
-                                                  scrollDirection: Axis.horizontal,
+                                                  scrollDirection: Axis.vertical,
                                                   itemBuilder: (context, index) {
                                                     String outputDate = "";
                                                     var outputFormat =
@@ -390,15 +390,16 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                                         //         builder: (context) => ArticleDetailPage(
                                                         //             article: listArticle?[index])));
                                                       },
-                                                      child: VisitCard(
-                                                        user:
-                                                            state.listUserVisitModel?[
-                                                                index],
+                                                      child: Center(
+                                                        child: VisitCard(
+                                                          user:
+                                                              state.listUserVisitModel?[
+                                                                  index],
+                                                        ),
                                                       ),
                                                     );
                                                   },
-                                                  itemCount: state
-                                                      .listUserVisitModel!.length,
+                                                  itemCount: 5,
                                                 ),
                                             ),
                                             InkWell(

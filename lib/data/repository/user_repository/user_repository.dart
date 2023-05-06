@@ -36,7 +36,7 @@ abstract class UserRepository {
   Future <ResponseModel<UserModel>> fetchUsers(String name);
   Future <ResponseModel>changePhotoProfile(String userId, String imgProfile);
   Future<ResponseModel<UserVisitModel>> fetchUserVisit( int page, int size,String sortBy, String sort);
-
+  Future <ResponseModel> submitNextVisit(String id,String nextVisitDate,String status);
 
 
   Future loginWithGoogle();

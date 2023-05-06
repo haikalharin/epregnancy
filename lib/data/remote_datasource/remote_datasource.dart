@@ -783,4 +783,20 @@ class RemoteDataSource {
     return ResponseModel.fromJson(response, UserVisitModel.fromJson);
   }
 
+  Future<ResponseModel> submitNextVisit(String id,String nextVisitDate,String status) async {
+    try {
+      Map<String, String> data = {
+        'id': id,
+        'status': status,
+        'next_visit_date': nextVisitDate,
+        'next_visit_time': '08:00:00',
+
+      };
+      final response = await httpClient.patch(ServiceUrl.userVisit, data);
+      return ResponseModel.fromJson(response, UserVisitModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
 }

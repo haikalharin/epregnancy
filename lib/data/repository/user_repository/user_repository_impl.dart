@@ -273,4 +273,13 @@ class UserRepositoryImpl extends UserRepository {
     }
     throw NetworkConnectionException();
   }
+  @override
+  Future<ResponseModel> submitNextVisit(String id,String nextVisitDate,String status) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response =
+      await remoteDatasource.submitNextVisit(id,nextVisitDate,status);
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
 }

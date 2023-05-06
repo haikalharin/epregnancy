@@ -15,11 +15,11 @@ class VisitCard extends StatelessWidget {
     String outputDate = "";
     DateFormat outputFormat = DateFormat.yMMMMd('id');
     outputDate = outputFormat.format(DateTime.parse(
-        user?.user?.lastVisit ?? "0000-00-00"));
+        user?.createdDate ?? "0000-00-00"));
     final hours = DateTime.now().difference(DateTime.parse(
-        user?.user?.lastVisit ?? "0000-00-00")).inHours;
+        user?.createdDate ?? "0000-00-00")).inHours;
     if (hours<24){
-      outputDate = "$hours yang lalu";
+      outputDate = "$hours jam yang lalu";
     }
     return Wrap(
       children: [
@@ -29,11 +29,19 @@ class VisitCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(50),
-                child:  FadeInImage(
+                child:  user?.user?.imageUrl!= null? FadeInImage(
                   placeholder: AssetImage(
                       'assets/ic_no_photo_blue.png'),
                   image: NetworkImage(
                       user?.user?.imageUrl??''),
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.cover,
+                ):FadeInImage(
+                  placeholder: AssetImage(
+                      'assets/ic_no_photo_blue.png'),
+                  image: AssetImage(
+                      'assets/ic_no_photo_blue.png'),
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,
@@ -47,29 +55,35 @@ class VisitCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                      children: [
-                        Text(
-                          user?.user?.name??'',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight:
-                              FontWeight.w700,
-                              fontSize: 12.sp),
-                        ),
-                        Text(
-                          outputDate,
-                          style: TextStyle(
-                              color: EpregnancyColors
-                                  .primer,
-                              fontSize: 10.sp,
-                              fontWeight:
-                              FontWeight.w500),
-                        )
-                      ],
+                    Container(
+                      width: MediaQuery.of(context).size.width/1.4.h,
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment
+                            .spaceBetween,
+                        children: [
+                          Text(
+                            user?.user?.name??'',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight:
+                                FontWeight.w700,
+                                fontSize: 12.sp),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 5),
+                            child: Text(
+                              outputDate,
+                              style: TextStyle(
+                                  color: EpregnancyColors
+                                      .primer,
+                                  fontSize: 10.sp,
+                                  fontWeight:
+                                  FontWeight.w500),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -82,7 +96,7 @@ class VisitCard extends StatelessWidget {
                           width: 10.w,
                         ),
                         Text(
-                          'Kehamilan ${user?.user?.pregnancyWeek??''} Minggu',
+                          'Kehamilan ${user?.user?.pregnancyWeek??'0'} Minggu',
                           style: TextStyle(
                               color: EpregnancyColors.primer,
                               fontSize: 10.sp,

@@ -26,15 +26,19 @@ class HomePageState with FormzMixin {
   final SortEnum? sort;
   final String? sortBy;
   final int page;
+  final String? nextVisitDate;
+  final bool? isFromSubmit;
 
   HomePageState(
       {this.user,
       this.role,
+      this.isFromSubmit = false,
+      this.nextVisitDate,
       this.baby,
       this.userVisitModel,
-        this.lastPageListVisit =false,
-        this.sortBy,
-        this.sort,
+      this.lastPageListVisit = false,
+      this.sortBy,
+      this.sort,
       this.listUserVisitModel,
       this.submitStatus = FormzStatus.pure,
       this.listArticle,
@@ -50,7 +54,7 @@ class HomePageState with FormzMixin {
       this.totalPointsEarned,
       this.showGuide,
       this.isNotHaveSession,
-      this.isSearch,
+      this.isSearch = false,
       this.page = 0,
       this.errorMessage});
 
@@ -69,6 +73,7 @@ class HomePageState with FormzMixin {
       String? tipe,
       String? days,
       String? weeks,
+      String? nextVisitDate,
       String? eventDateString,
       DateTime? eventDate,
       int? totalPointsEarned,
@@ -76,9 +81,10 @@ class HomePageState with FormzMixin {
       bool? isNotHaveSession,
       bool? isSearch,
       int? page,
-        bool? lastPageListVisit,
-        SortEnum? sort,
-        String? sortBy,
+      bool? lastPageListVisit,
+      bool? isFromSubmit,
+      SortEnum? sort,
+      String? sortBy,
       String? errorMessage}) {
     return HomePageState(
         submitStatus: submitStatus,
@@ -87,6 +93,7 @@ class HomePageState with FormzMixin {
         listUserVisitModel: listUserVisitModel ?? this.listUserVisitModel,
         role: role ?? this.role,
         baby: baby ?? this.baby,
+        nextVisitDate: nextVisitDate ?? this.nextVisitDate,
         simpleTipResponse: simpleTipResponse ?? this.simpleTipResponse,
         showGuide: showGuide ?? this.showGuide,
         listArticle: listArticle ?? this.listArticle,
@@ -102,6 +109,7 @@ class HomePageState with FormzMixin {
         isNotHaveSession: isNotHaveSession,
         isSearch: isSearch ?? this.isSearch,
         lastPageListVisit: lastPageListVisit ?? this.lastPageListVisit,
+        isFromSubmit: isFromSubmit,
         page: page ?? this.page,
         sort: sort ?? this.sort,
         sortBy: sortBy ?? this.sortBy,

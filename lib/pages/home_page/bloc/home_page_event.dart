@@ -74,9 +74,9 @@ class HomeEventDateChanged extends HomePageEvent {
 
 class FetchListVisitEvent extends HomePageEvent {
   const FetchListVisitEvent( this.page,
-      {this.size = 5,
+      {this.size = 10,
         this.isNextPage = false,
-        this.isSearch = false, this.sortBy = 'createdDate', this.sort= SortEnum.desc});
+        this.isSearch = false, this.isFromSubmit = false, this.sortBy = 'createdDate', this.sort= SortEnum.desc});
 
   final String? sortBy;
   final SortEnum? sort;
@@ -84,6 +84,7 @@ class FetchListVisitEvent extends HomePageEvent {
   final int? size;
   final bool isNextPage;
   final bool isSearch;
+  final bool isFromSubmit;
 
   @override
   List<Object> get props => [];
@@ -93,6 +94,34 @@ class HomeEventDeleteSchedule extends HomePageEvent {
   const HomeEventDeleteSchedule(this.id);
 
   final String id;
+}
+
+class ChangeNextVisitEvent extends HomePageEvent {
+  const ChangeNextVisitEvent(this.date);
+
+  final String? date;
+
+  @override
+  List<Object> get props => [];
+}
+
+class ChangeDataVisitEvent extends HomePageEvent {
+  const ChangeDataVisitEvent(this.user);
+
+  final UserVisitModel? user;
+
+  @override
+  List<Object> get props => [];
+}
+
+class SubmitNextVisitEvent extends HomePageEvent {
+  const SubmitNextVisitEvent(this.id, this.status);
+
+  final String? id;
+  final String? status;
+
+  @override
+  List<Object> get props => [];
 }
 
 
