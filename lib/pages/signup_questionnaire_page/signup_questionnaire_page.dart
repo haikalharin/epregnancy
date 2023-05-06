@@ -445,9 +445,6 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                         ? 'Mohon lengkapi Data'
                                         : null,
                                   ),
-                                  // firstDate: DateTime.now().add(const Duration(days: 10)),
-                                  // lastDate: DateTime.now().add(const Duration(days: 40)),
-                                  // initialDate: DateTime.now().add(const Duration(days: 20)),
                                   onDateSelected: (DateTime value) {
                                     String dateTime =
                                         DateFormat('yyyy-MM-dd').format(value);

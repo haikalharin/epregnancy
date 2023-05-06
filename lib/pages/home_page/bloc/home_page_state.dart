@@ -26,14 +26,14 @@ class HomePageState with FormzMixin {
   final SortEnum? sort;
   final String? sortBy;
   final int page;
-  final String? nextVisitDate;
+  final MandatoryFieldValidator nextVisitDateString;
   final bool? isFromSubmit;
 
   HomePageState(
       {this.user,
       this.role,
       this.isFromSubmit = false,
-      this.nextVisitDate,
+      this.nextVisitDateString = const MandatoryFieldValidator.pure(),
       this.baby,
       this.userVisitModel,
       this.lastPageListVisit = false,
@@ -73,7 +73,7 @@ class HomePageState with FormzMixin {
       String? tipe,
       String? days,
       String? weeks,
-      String? nextVisitDate,
+        MandatoryFieldValidator? nextVisitDateString,
       String? eventDateString,
       DateTime? eventDate,
       int? totalPointsEarned,
@@ -93,7 +93,7 @@ class HomePageState with FormzMixin {
         listUserVisitModel: listUserVisitModel ?? this.listUserVisitModel,
         role: role ?? this.role,
         baby: baby ?? this.baby,
-        nextVisitDate: nextVisitDate ?? this.nextVisitDate,
+        nextVisitDateString: nextVisitDateString ?? this.nextVisitDateString,
         simpleTipResponse: simpleTipResponse ?? this.simpleTipResponse,
         showGuide: showGuide ?? this.showGuide,
         listArticle: listArticle ?? this.listArticle,

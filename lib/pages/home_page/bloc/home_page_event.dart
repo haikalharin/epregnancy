@@ -97,9 +97,9 @@ class HomeEventDeleteSchedule extends HomePageEvent {
 }
 
 class ChangeNextVisitEvent extends HomePageEvent {
-  const ChangeNextVisitEvent(this.date);
+  const ChangeNextVisitEvent(this.dateString);
 
-  final String? date;
+  final String? dateString;
 
   @override
   List<Object> get props => [];

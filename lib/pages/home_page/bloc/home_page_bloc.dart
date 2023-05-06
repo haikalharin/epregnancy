@@ -25,6 +25,7 @@ import '../../../common/exceptions/event_error_exception.dart';
 import '../../../common/exceptions/home_error_exception.dart';
 import '../../../common/exceptions/login_error_exception.dart';
 import '../../../common/exceptions/server_error_exception.dart';
+import '../../../common/validators/mandatory_field_validator.dart';
 import '../../../data/firebase/event/event_user.dart';
 import '../../../data/model/article_model/article_model.dart';
 import '../../../data/model/baby_model/baby_model.dart';
@@ -92,8 +93,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     ChangeNextVisitEvent event,
     HomePageState state,
   ) {
-    final dateNextVisit = event.date;
-    return state.copyWith(nextVisitDate: dateNextVisit);
+    final nextVisitDateString = MandatoryFieldValidator.dirty(event.dateString??'');
+    return state.copyWith(nextVisitDateString: nextVisitDateString);
   }
 
   HomePageState _mapChangeDataVisitEventToState(
@@ -487,25 +488,29 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         tipe: "submit-next-visit");
     try {
       final response = await userRepository.submitNextVisit(event.id ?? '',
-          state.nextVisitDate ?? '', event.status ?? '');
+          state.nextVisitDateString.value, event.status ?? '');
 
       if (response.code == 200) {
-        if (event.status == StringConstant.done) {
+        if (event.status == StringConstant.doneVisit) {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
+              userVisitModel: state.userVisitModel?.copyWith(status: event.status),
               tipe: "submit-next-visit");
-        } else if(event.status == StringConstant.accepted){
+        } else if(event.status == StringConstant.acceptedVisit){
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
+              userVisitModel: state.userVisitModel?.copyWith(status: event.status),
               tipe: "submit-next-visit-accepted");
-        }else if(event.status == StringConstant.rejected){
+        }else if(event.status == StringConstant.rejectedVisit){
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
+              userVisitModel: state.userVisitModel?.copyWith(status: event.status),
               tipe: "submit-next-visit-rejected");
         }
       } else {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,
+            userVisitModel: state.userVisitModel?.copyWith(status: event.status),
             tipe: "submit-next-visit");
       }
     } on EventErrorException catch (e) {

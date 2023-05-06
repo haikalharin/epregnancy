@@ -117,19 +117,34 @@ extension DateHelper on DateTime {
   String formatDate() {
     var outputDate = '';
     final formatter = DateFormat.yMMMMd('id');
-    final hours = DateTime.now().difference(this).inHours;
+    DateFormat formatFixing = DateFormat('yyyy-MM-dd HH:mm:ss');
+    var dateNow = DateTime.parse(formatFixing.format(DateTime.now()));
+    var createDate = DateTime.parse(formatFixing.format(this));
+    final hours = dateNow.difference(createDate).inHours;
+    final minutes = dateNow.difference(createDate).inMinutes;
     outputDate = formatter.format(this);
-    if (hours < 24) {
-      outputDate = "$hours jam yang lalu";
+
+    if (hours<24) {
+      if (minutes < 60) {
+        outputDate = "Beberapa menit yang lalu";
+      } else {
+        outputDate = "$hours jam yang lalu";
+      }
     }
     return outputDate;
   }
 
   bool isSameDate(DateTime other) {
+    DateFormat formatFixing = DateFormat('yyyy-MM-dd HH:mm:ss');
+    var dateNow = DateTime.parse(formatFixing.format(DateTime.now()));
+    var createDate = DateTime.parse(formatFixing.format(this));
+    var createDateOther = DateTime.parse(formatFixing.format(other));
+    final hours = dateNow.difference(createDate).inHours;
+    final hoursOthers = dateNow.difference(createDateOther).inHours;
     return year == other.year &&
         month == other.month &&
         day == other.day &&
-        (hour - DateTime.now().hour == other.hour - DateTime.now().hour);
+        (hours ==  hoursOthers);
   }
 
   int getDifferenceInDaysWithNow() {

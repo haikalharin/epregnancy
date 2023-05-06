@@ -16,10 +16,18 @@ class VisitCard extends StatelessWidget {
     DateFormat outputFormat = DateFormat.yMMMMd('id');
     outputDate = outputFormat.format(DateTime.parse(
         user?.createdDate ?? "0000-00-00"));
-    final hours = DateTime.now().difference(DateTime.parse(
-        user?.createdDate ?? "0000-00-00")).inHours;
+    DateFormat formatFixing = DateFormat('yyyy-MM-dd HH:mm:ss');
+    var dateNow = DateTime.parse(formatFixing.format(DateTime.now()));
+    var createDate = DateTime.parse(formatFixing.format(DateTime.parse(
+        user?.createdDate ?? "0000-00-00")));
+    final hours = dateNow.difference(createDate).inHours;
+    final minutes = dateNow.difference(createDate).inMinutes;
     if (hours<24){
-      outputDate = "$hours jam yang lalu";
+      if(minutes<60){
+        outputDate = "$minutes menit yang lalu";
+      }else {
+        outputDate = "$hours jam yang lalu";
+      }
     }
     return Wrap(
       children: [

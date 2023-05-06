@@ -114,7 +114,8 @@ class StringConstant {
   static const emailCsBidan = 'csbidan.komunitaz@allianz.co.id';
 
   //status visit
-  static const accepted = 'ACCEPTED';
-  static const rejected = 'REJECTED';
-  static const done = 'DONE';
+  static const acceptedVisit = 'ACCEPTED';
+  static const rejectedVisit = 'REJECTED';
+  static const pendingVisit = 'PENDING';
+  static const doneVisit = 'DONE';
 }

@@ -35,7 +35,7 @@ class VisitCardItemList extends StatelessWidget {
             Injector.resolve<HomePageBloc>()
                 .add(ChangeDataVisitEvent(userVisitModel));
             Future.delayed(const Duration(milliseconds: 500));
-            if (userVisitModel?.status == StringConstant.accepted) {
+            if (userVisitModel?.status == StringConstant.acceptedVisit) {
               showModalBottomSheet(
                   context: context,
                   shape: RoundedRectangleBorder(
@@ -86,7 +86,7 @@ class VisitCardItemList extends StatelessWidget {
                                 fontWeight: FontWeight.w700,
                                 fontSize: 12.sp),
                           ),
-                          userVisitModel?.status == StringConstant.done
+                          userVisitModel?.status == StringConstant.doneVisit
                               ? Text(
                                   'Kunjungan Selanjutnya',
                                   maxLines: 5,
@@ -96,20 +96,32 @@ class VisitCardItemList extends StatelessWidget {
                                       fontWeight: FontWeight.w500),
                                 )
                               : userVisitModel?.status ==
-                                      StringConstant.accepted
+                                      StringConstant.acceptedVisit
                                   ? Container(
                             width: MediaQuery.of(context).size.width/2,
                                     child: Text(
-                                        'Atur jadwal',
+                                        'Tap untuk atur jadwal',
                                         textAlign: TextAlign.right,
                                         style: TextStyle(
                                             color: EpregnancyColors
-                                                .greyDarkFontColor,
+                                                .primer,
                                             fontSize: 10.sp,
                                             fontWeight: FontWeight.w500),
                                       ),
                                   )
-                                  : const SizedBox.shrink()
+                                  :userVisitModel?.status == StringConstant.rejectedVisit
+                              ?   Container(
+                            width: MediaQuery.of(context).size.width/2,
+                            child: Text(
+                              'Dibatalkan',
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                  color: EpregnancyColors
+                                      .greyDarkFontColor,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ):const SizedBox.shrink()
                         ],
                       ),
                       SizedBox(
@@ -133,7 +145,7 @@ class VisitCardItemList extends StatelessWidget {
                               )
                             ],
                           ),
-                          userVisitModel?.status == StringConstant.done
+                          userVisitModel?.status == StringConstant.doneVisit
                               ? Text(
                                   outputDate,
                                   style: TextStyle(

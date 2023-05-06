@@ -3,6 +3,8 @@ import 'package:PregnancyApp/pages/nakes_page/widget/confirm_card.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
+import 'package:date_field/date_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,6 +44,8 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
               .add(const FetchListVisitEvent(0, isFromSubmit: true));
         } else  if (state.submitStatus == FormzStatus.submissionSuccess &&
             state.tipe == "submit-next-visit-accepted") {
+          Injector.resolve<HomePageBloc>()
+              .add(const FetchListVisitEvent(0));
           Navigator.pop(context);
           showModalBottomSheet(
               context: context,
@@ -89,7 +93,8 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
                               color: EpregnancyColors.greyPony,
                               borderRadius: BorderRadius.circular(8.w)),
                         ),
-                        state.userVisitModel?.status == StringConstant.pending? blackText16("Konfirmasi Kunjungan"):blackText16("Rekomendasi Kunjungan Selanjutnya"),
+                        state.userVisitModel?.status == StringConstant.pendingVisit?
+                        blackText16("Konfirmasi Kunjungan"):blackText16("Rekomendasi Kunjungan Selanjutnya"),
                         Padding(
                           padding: EdgeInsets.only(
                               top: 16.h, bottom: 4.h, left: 16.w, right: 16.w),
@@ -106,7 +111,7 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
                         ConfirmCard(
                           userVisitModel: state.userVisitModel,
                         ),
-                        state.userVisitModel?.status == StringConstant.pending
+                        state.userVisitModel?.status == StringConstant.pendingVisit
                             ? Column(
                                 children: [
 
@@ -119,7 +124,7 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
                                       onPressed: () async {
                                         Injector.resolve<HomePageBloc>().add(
                                             SubmitNextVisitEvent(
-                                                state.userVisitModel?.id,StringConstant.accepted));
+                                                state.userVisitModel?.id,StringConstant.acceptedVisit));
                                       },
                                       child: Text("Konfirmasi"),
                                       style: ElevatedButton.styleFrom(
@@ -146,7 +151,7 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
                                         onPressed: () {
                                           Injector.resolve<HomePageBloc>().add(
                                               SubmitNextVisitEvent(
-                                                  state.userVisitModel?.id,StringConstant.rejected));
+                                                  state.userVisitModel?.id,StringConstant.rejectedVisit));
                                         },
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0,
@@ -217,6 +222,88 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
                                           );
                                         }),
                                   ),
+                                 _selectedWeekIndex == 3? Column(
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   children: [
+                                     Container(
+                                       margin: EdgeInsets.only(
+                                           left: 16.w, top: 16.h),
+                                       child: Text(
+                                         "Tanggal kunjungan",
+                                         style: TextStyle(
+                                             color: Colors.black,
+                                             fontWeight: FontWeight.bold,
+                                             fontSize: 12),
+                                       ),
+                                     ),
+                                     Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 50.h,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 16.w, vertical: 16.h),
+                                        child:  InkWell(
+                                          // todo used cupertino picker
+                                          onTap: () => _showDialog(
+                                            CupertinoDatePicker(
+                                              initialDateTime: DateTime.now(),
+                                              mode: CupertinoDatePickerMode.date,
+                                              dateOrder: DatePickerDateOrder.dmy,
+                                              minimumDate: DateTime.now(),
+                                              use24hFormat: true,
+                                              // This is called when the user changes the date.
+                                              onDateTimeChanged: (DateTime newDate) {
+                                                DateFormat outputFormat =
+                                                DateFormat('yyyy-MM-dd');
+                                                String outputDate = outputFormat
+                                                    .format(newDate);
+                                                Injector.resolve<HomePageBloc>()
+                                                    .add(ChangeNextVisitEvent(
+                                                    outputDate));
+                                              },
+                                            ),
+                                          ),
+                                          child: DateTimeFormField(
+                                            dateTextStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                                            dateFormat: DateFormat('dd / MM / yyyy'),
+                                            enabled: true,
+                                            firstDate: DateTime.now(),
+                                            mode: DateTimeFieldPickerMode.date,
+                                            decoration: InputDecoration(
+                                              hintStyle: TextStyle(color: Colors.black45),
+                                              errorStyle:
+                                              TextStyle(color: Colors.redAccent),
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(4.w),
+                                              ),
+                                              suffixIcon: Icon(Icons.event_note),
+                                              hintText: 'DD / MM / YYYY',
+                                              label: const Text('dd / MM / yyyy'),
+                                              // labelStyle: TextStyle(
+                                              //   color: Colors.black,
+                                              //   fontWeight: FontWeight.bold,
+                                              // ),
+                                              errorText: state.nextVisitDateString.invalid
+                                                  ? 'Mohon lengkapi Data'
+                                                  : null,
+                                            ),
+                                            onDateSelected: (DateTime value) {
+                                              DateFormat outputFormat =
+                                              DateFormat('yyyy-MM-dd');
+                                              String outputDate = outputFormat
+                                                  .format(value);
+                                              Injector.resolve<HomePageBloc>()
+                                                  .add(ChangeNextVisitEvent(
+                                                  outputDate));
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                   ],
+                                 ):Container(),
                                   Container(
                                     width: MediaQuery.of(context).size.width,
                                     height: 40.h,
@@ -226,7 +313,7 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
                                       onPressed: () async {
                                         Injector.resolve<HomePageBloc>().add(
                                             SubmitNextVisitEvent(
-                                                state.userVisitModel?.id,StringConstant.done));
+                                                state.userVisitModel?.id,StringConstant.doneVisit));
                                       },
                                       child: Text("Kirim Jadwal Ke Bunda"),
                                       style: ElevatedButton.styleFrom(
@@ -264,6 +351,25 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
     } else {
       return "Lainnya";
     }
+  }
+  void _showDialog(Widget child) {
+    showCupertinoModalPopup<void>(
+        context: context,
+        builder: (BuildContext context) => Container(
+          height: 216,
+          padding: const EdgeInsets.only(top: 6.0),
+          // The Bottom margin is provided to align the popup above the system navigation bar.
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          // Provide a background color for the popup.
+          color: CupertinoColors.systemBackground.resolveFrom(context),
+          // Use a SafeArea widget to avoid system overlaps.
+          child: SafeArea(
+            top: false,
+            child: child,
+          ),
+        ));
   }
 }
 
