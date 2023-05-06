@@ -82,6 +82,7 @@ class VisitCard extends StatelessWidget {
                             margin: EdgeInsets.only(left: 5),
                             child: Text(
                               outputDate,
+                              textAlign: TextAlign.right,
                               style: TextStyle(
                                   color: EpregnancyColors
                                       .primer,
