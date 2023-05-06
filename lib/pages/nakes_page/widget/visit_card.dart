@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/data/model/user_visit_model/user_visit_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,12 @@ class VisitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
+    var padding = MediaQuery.of(context).padding;
+    var safeHeight = height - padding.top - padding.bottom;
+    var safeWidth = width - padding.left - padding.right;
     String outputDate = "";
     DateFormat outputFormat = DateFormat.yMMMMd('id');
     outputDate = outputFormat.format(DateTime.parse(
@@ -64,7 +71,7 @@ class VisitCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width/1.4.h,
+                      width: safeWidth/1.6,
                       child: Row(
                         mainAxisAlignment:
                         MainAxisAlignment
@@ -82,7 +89,7 @@ class VisitCard extends StatelessWidget {
                             margin: EdgeInsets.only(left: 5),
                             child: Text(
                               outputDate,
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.left,
                               style: TextStyle(
                                   color: EpregnancyColors
                                       .primer,

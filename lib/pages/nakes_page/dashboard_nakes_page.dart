@@ -82,6 +82,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
   Future<void> _handleRefresh() async {
     // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
+    Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
     Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
     Injector.resolve<ChatPendingBloc>()
         .add(FetchChatPendingByHospitalId(widget.hospitalId));
@@ -121,62 +122,75 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                         ),
                         context: context,
                         builder: (BuildContext bc) {
-                          return Container(
-                            padding: EdgeInsets.all(16.w),
-                            child: Wrap(
-                              alignment: WrapAlignment.center,
-                              children: [
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                              "Kode QR Bidan ${widget.userName}",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 14.sp),
-                                              textAlign: TextAlign.center),
+                          return WillPopScope(
+                            onWillPop:() => Future.value(false),
+                            child: Container(
+                              padding: EdgeInsets.all(16.w),
+                              child: Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                         InkWell( onTap: (){
+                                           Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
+                                           Future.delayed(const Duration(milliseconds: 100));
+                                           Navigator.pop(context);
+                                         },
+                                           child: Icon(
+                                              Icons.close,
+                                              color: EpregnancyColors.primer,
+                                            ),
+                                         ),
+                                          Expanded(
+                                            child: Text(
+                                                "Kode QR Bidan ${widget.userName}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 14.sp),
+                                                textAlign: TextAlign.center),
+                                          ),
+                                          SvgPicture.asset(
+                                            "assets/icShare.svg",
+                                            color: EpregnancyColors.primer,
+                                          )
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 16.h),
+                                        child: Text(
+                                          "Tanggal Kunjungan",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w700),
                                         ),
-                                        SvgPicture.asset(
-                                          "assets/icShare.svg",
-                                          color: EpregnancyColors.primer,
-                                        )
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 16.h),
-                                      child: Text(
-                                        "Tanggal Kunjungan",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w700),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 2.h, bottom: 24.h),
-                                      child: Text(
-                                        DateFormatter.dateFormatWithSpace
-                                            .format(DateTime.now()),
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w400),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 2.h, bottom: 24.h),
+                                        child: Text(
+                                          DateFormatter.dateFormatWithSpace
+                                              .format(DateTime.now()),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w400),
+                                        ),
                                       ),
-                                    ),
-                                    QrImage(
-                                      data: state.user?.qrString ?? '',
-                                      version: QrVersions.auto,
-                                      size: 150.w,
-                                    ),
-                                  ],
-                                )
-                              ],
+                                      QrImage(
+                                        data: state.user?.qrString ?? '',
+                                        version: QrVersions.auto,
+                                        size: 150.w,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           );
                         });
@@ -303,7 +317,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                             child: Stack(
                               children: [
                                 Container(
-                                  height: 70.h,
+                                  height: 75.h,
                                   padding: EdgeInsets.only(
                                       left: 16.w,
                                       top: 16.w,
@@ -352,84 +366,89 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                   right: 0,
                                   bottom: 0,
                                   top: 60.h,
-                                  child: Container(
-                                    padding: EdgeInsets.all(16.w),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(16.w),
-                                          topLeft: Radius.circular(16.w),
-                                          bottomRight: Radius.circular(8.w),
-                                          bottomLeft: Radius.circular(8.w),
-                                        )),
-                                    child: state.listUserVisitModel!.isEmpty
-                                        ? Container(
-                                            margin: EdgeInsets.only(),
-                                            child: Container())
-                                        : Column(
-                                          children: [
-                                            Expanded(
-                                              child: ListView.builder(
-                                                  scrollDirection: Axis.vertical,
-                                                  itemBuilder: (context, index) {
-                                                    String outputDate = "";
-                                                    var outputFormat =
-                                                        DateFormat.yMMMMd('id');
-                                                    outputDate = outputFormat.format(
-                                                        DateTime.parse(state
-                                                                .listUserVisitModel?[
-                                                                    index]
-                                                                .createdDate ??
-                                                            "0000-00-00"));
-                                                    // 12/3
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        // Navigator.push(
-                                                        //     context,
-                                                        //     MaterialPageRoute(
-                                                        //         builder: (context) => ArticleDetailPage(
-                                                        //             article: listArticle?[index])));
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(16.w),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(16.w),
+                                              topLeft: Radius.circular(16.w),
+                                              bottomRight: Radius.circular(8.w),
+                                              bottomLeft: Radius.circular(8.w),
+                                            )),
+                                        child: state.listUserVisitModel!.isEmpty
+                                            ? Container(
+                                                margin: EdgeInsets.only(),
+                                                child: Container())
+                                            : Column(
+                                              children: [
+                                                Expanded(
+                                                  child: ListView.builder(
+                                                      scrollDirection: Axis.vertical,
+                                                      itemBuilder: (context, index) {
+                                                        String outputDate = "";
+                                                        var outputFormat =
+                                                            DateFormat.yMMMMd('id');
+                                                        outputDate = outputFormat.format(
+                                                            DateTime.parse(state
+                                                                    .listUserVisitModel?[
+                                                                        index]
+                                                                    .createdDate ??
+                                                                "0000-00-00"));
+                                                        // 12/3
+                                                        return InkWell(
+                                                          onTap: () {
+                                                            // Navigator.push(
+                                                            //     context,
+                                                            //     MaterialPageRoute(
+                                                            //         builder: (context) => ArticleDetailPage(
+                                                            //             article: listArticle?[index])));
+                                                          },
+                                                          child: Center(
+                                                            child: VisitCard(
+                                                              user:
+                                                                  state.listUserVisitModel?[
+                                                                      index],
+                                                            ),
+                                                          ),
+                                                        );
                                                       },
-                                                      child: Center(
-                                                        child: VisitCard(
-                                                          user:
-                                                              state.listUserVisitModel?[
-                                                                  index],
-                                                        ),
-                                                      ),
-                                                    );
+                                                      itemCount: 5,
+                                                    ),
+                                                ),
+                                                InkWell(
+                                                  onTap: (){
+                                                    Navigator.push(context, MaterialPageRoute(
+                                                        builder: (context) => const MemberVisitPage()));
                                                   },
-                                                  itemCount: 5,
-                                                ),
+                                                  child: Container(
+                                                    width: MediaQuery.of(context).size.width,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      border: Border(
+                                                          top: BorderSide(
+                                                              color:
+                                                              EpregnancyColors.greyDivider,
+                                                              width: 1)),
+                                                    ),
+                                                    padding: EdgeInsets.all(16.w),
+                                                    child: Center(
+                                                        child: Text(
+                                                          "Lihat Semua",
+                                                          style: TextStyle(
+                                                              fontWeight: FontWeight.w700,
+                                                              fontSize: 12.sp,
+                                                              color: EpregnancyColors.primer),
+                                                        )),
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                            InkWell(
-                                              onTap: (){
-                                                Navigator.push(context, MaterialPageRoute(
-                                                    builder: (context) => const MemberVisitPage()));
-                                              },
-                                              child: Container(
-                                                width: MediaQuery.of(context).size.width,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  border: Border(
-                                                      top: BorderSide(
-                                                          color:
-                                                          EpregnancyColors.greyDivider,
-                                                          width: 1)),
-                                                ),
-                                                padding: EdgeInsets.all(16.w),
-                                                child: Center(
-                                                    child: Text(
-                                                      "Lihat Semua",
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 12.sp,
-                                                          color: EpregnancyColors.primer),
-                                                    )),
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                      ),
+                                      _Loading()
+                                    ],
                                   ),
                                 ),
                               ],
@@ -803,5 +822,21 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
         ),
       ),
     );
+  }
+}
+
+class _Loading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
+      if (state.submitStatus == FormzStatus.submissionInProgress &&
+          state.tipe == "fetching-list-user-visit") {
+        return Container(
+            color: Colors.white.withAlpha(90),
+            child: Center(child: CircularProgressIndicator()));
+      } else {
+        return Text("");
+      }
+    });
   }
 }

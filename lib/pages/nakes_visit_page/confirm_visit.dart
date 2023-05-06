@@ -238,7 +238,7 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
                                      ),
                                      Container(
                                         width: MediaQuery.of(context).size.width,
-                                        height: 50.h,
+                                        height: 55.h,
                                         margin: EdgeInsets.symmetric(
                                             horizontal: 16.w, vertical: 16.h),
                                         child:  InkWell(
