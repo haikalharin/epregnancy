@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/common/widget/btn_back_ios_style.dart';
+import 'package:PregnancyApp/data/model/user_visit_model/user_visit_model.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/visit_card_item_list.dart';
@@ -25,6 +26,9 @@ class MemberVisitPage extends StatefulWidget {
 class _MemberVisitPageState extends State<MemberVisitPage> {
   @override
   void initState() {
+    Injector.resolve<HomePageBloc>().add(
+        const ChangeDataVisitEvent(
+            UserVisitModel()));
     Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
     super.initState();
   }
