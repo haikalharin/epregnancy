@@ -246,7 +246,7 @@ class RemoteDataSource {
   Future<ResponseModel> pinSubmitCheckIn(String hospitalId, String pin) async {
     try {
       final response = await httpClient
-          .post(ServiceUrl.hospitalVisit + hospitalId, {"pin": pin});
+          .post(ServiceUrl.userVisit, {"qr_string": pin});
       return ResponseModel.fromJson(response, VisitHospitalModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
