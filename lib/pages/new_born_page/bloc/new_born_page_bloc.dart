@@ -19,6 +19,7 @@ import '../../../data/model/user_model_api/user_model.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../child_list_page/bloc/child_list_bloc.dart';
+import '../../home_page/bloc/home_page_bloc.dart';
 
 part 'new_born_page_event.dart';
 
@@ -70,6 +71,7 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
         if(updateBabyResponse.code == 200){
           ResponseModel addChildResponse = await childRepository.addChild(event.name, event.dob, event.gender);
           if(addChildResponse.code == 200) {
+            Injector.resolve<HomePageBloc>().add(const ResetBaby());
             yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "adding-child-success");
           } else {
             print("add child code != 200");

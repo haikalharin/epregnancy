@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:PregnancyApp/common/injector/injector.dart';
 import 'package:PregnancyApp/data/firebase/event/event_event.dart';
+import 'package:PregnancyApp/data/model/baby_child_model/baby_child_response.dart';
 import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
@@ -73,6 +75,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapFetchSimpleTips(event, state);
     } else if(event is SetHospitalEvent) {
       yield _setHospitalModelEvent(event, state);
+    } else if(event is HomeFetchBabyChildsEvent) {
+      yield* _mapFetchBabyChilds(event, state);
     }
   }
 
@@ -97,7 +101,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       HomePageState state,
       ) async* {
     await AppSharedPreference.remove("babyData");
-    yield state.copyWith(baby: nb.NewBabyModel(baby: nb.Baby(name: "", status: "")));
+    yield state.copyWith(baby: nb.NewBabyModel(baby: nb.Baby(name: "null", status: "null")));
   }
 
   Stream<HomePageState> _mapEventFetchEventToState(
@@ -210,6 +214,37 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(
           submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
+      if (a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure,
+          errorMessage: a.toString(),
+          isNotHaveSession: false);
+    }
+  }
+
+  Stream<HomePageState> _mapFetchBabyChilds(
+      HomeFetchBabyChildsEvent event,
+      HomePageState state,
+      ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-baby-childs-loading", babyChilds: []);
+    try {
+      final ResponseModel response = await homeRepository.fetchBabyChilds();
+      List<BabyChildResponse> _babyChilds = [];
+      if (response.code == 200) {
+        response.data?.forEach((element){
+          _babyChilds.add(element);
+        });
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, tipe: "fetch-baby-childs-success", babyChilds: _babyChilds);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message, tipe: "fetch-baby-childs-failed");
+      }
+    } on HomeErrorException catch (e) {
+      print("home error baby child : ${e.toString()}");
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+    } on Exception catch (a) {
+      print("error exception baby child : ${a.toString()}");
       if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
@@ -336,7 +371,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
             baby: null,
             isNotHaveSession: false);
       } else if (response.message == "Baby not found!"){
-        print("Baby Not Found Else If");
+        Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure, baby: null);
       }
     } on HomeErrorException catch (e) {

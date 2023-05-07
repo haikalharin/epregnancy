@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/baby_child_model/baby_child_response.dart';
 import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
 import 'package:PregnancyApp/data/model/biodata_model/biodata_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_list_response.dart';
@@ -225,9 +226,17 @@ class RemoteDataSource {
 
  Future<ResponseModel> getBaby(UserModel UserModel) async {
     try {
-      final response =
-          await httpClient.get(ServiceUrl.myBaby);
+      final response = await httpClient.get(ServiceUrl.myBaby);
       return ResponseModel.fromJson(response, NewBabyModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> getBabyChilds() async {
+    try {
+      final response = await httpClient.get(ServiceUrl.babyChilds);
+      return ResponseModel.fromJson(response, BabyChildResponse.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }

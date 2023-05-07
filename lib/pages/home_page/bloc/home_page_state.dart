@@ -20,6 +20,7 @@ class HomePageState with FormzMixin {
   final String? errorMessage;
   final bool? showGuide;
   final bool? isNotHaveSession;
+  final List<BabyChildResponse>? babyChilds;
 
   HomePageState({this.user,
     this.role,
@@ -39,7 +40,9 @@ class HomePageState with FormzMixin {
     this.totalPointsEarned,
     this.showGuide,
     this.isNotHaveSession,
-    this.errorMessage});
+    this.errorMessage,
+    this.babyChilds
+  });
 
   HomePageState copyWith({FormzStatus? submitStatus,
     UserModel? user,
@@ -59,7 +62,9 @@ class HomePageState with FormzMixin {
     int? totalPointsEarned,
     bool? showGuide,
     bool? isNotHaveSession,
-    String? errorMessage}) {
+    String? errorMessage,
+    List<BabyChildResponse>? babyChilds
+  }) {
     return HomePageState(
         submitStatus: submitStatus,
         user: user ?? this.user,
@@ -79,7 +84,9 @@ class HomePageState with FormzMixin {
         eventDate: eventDate ?? this.eventDate,
         totalPointsEarned: totalPointsEarned ?? this.totalPointsEarned,
         isNotHaveSession: isNotHaveSession,
-        errorMessage: errorMessage);
+        errorMessage: errorMessage,
+        babyChilds: babyChilds ?? this.babyChilds
+    );
   }
 
   @override

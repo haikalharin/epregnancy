@@ -26,6 +26,13 @@ class ResetBaby extends HomePageEvent {
   List<Object> get props => [];
 }
 
+class HomeFetchBabyChildsEvent extends HomePageEvent {
+  const HomeFetchBabyChildsEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class SetHospitalEvent extends HomePageEvent {
   const SetHospitalEvent(this.hospitalModel);
   final HospitalModel? hospitalModel;

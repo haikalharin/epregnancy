@@ -189,7 +189,7 @@ class BabySectionWidget extends StatelessWidget {
                                       Injector.resolve<HomePageBloc>().add(const ResetBaby());
                                       Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
                                       refresh?.call();
-                                      refreshIndicatorKey?.currentState?.activate();
+                                      // refreshIndicatorKey?.currentState?.activate();
                                       Navigator.pop(context);
                                     },
                                   ),

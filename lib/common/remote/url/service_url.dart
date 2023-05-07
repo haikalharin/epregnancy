@@ -105,6 +105,9 @@ class ServiceUrl {
   //childs
   static String childs = 'childs';
 
+  //baby-childs
+  static String babyChilds = "baby-childs";
+
 
 
 

@@ -246,7 +246,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 state.user?.isPregnant == true &&
-                                        state.user?.babies?.length != 0
+                                    (state.user?.babies?.length ?? 0) >= 1 && state.baby != null && state.baby?.baby?.name != "null"
                                     ? BabySectionWidget(
                                         state: state,
                                         refreshIndicatorKey: refreshIndicatorKey,
@@ -264,7 +264,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     title: 'Tips',
                                     description:
                                         'Dapatkan info dan tips kehamilan',
-                                    child: state.baby != null && state.baby?.baby?.name  != "" && state.baby?.baby?.status != "" ?  Container(
+                                    child: state.baby != null && state.baby?.baby?.name  != "null" && state.baby?.baby?.status != "" ?  Container(
                                       margin: EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 16.h),
                                       padding: EdgeInsets.all(16.w),
@@ -385,7 +385,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       ),
                                     ) : const SizedBox.shrink(),
                             )
-                                : state.baby?.baby?.name  != "" && state.baby?.baby?.status != "" && state.baby != null ?  Container(
+                                : state.baby?.baby?.name  != "null" && state.baby?.baby?.status != "" && state.baby != null ?  Container(
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 16.h),
                                     padding: EdgeInsets.all(16.w),
