@@ -43,7 +43,7 @@ _$_UserInfoVisit _$$_UserInfoVisitFromJson(Map<String, dynamic> json) =>
       imageUrl: json['image_url'] as String?,
       isHaveBaby: json['is_have_baby'] as bool?,
       isPregnant: json['is_pregnant'] as bool?,
-      pregnancyWeek: json['pregnancy_week'] as String?,
+      pregnancyWeek: json['pregnancy_week'] as int?,
       totalVisit: json['total_visit'] as int?,
       createdDate: json['created_date'] as String?,
       lastVisit: json['last_visit'] as String?,

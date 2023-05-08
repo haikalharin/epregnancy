@@ -124,13 +124,13 @@ extension DateHelper on DateTime {
     final minutes = dateNow.difference(createDate).inMinutes;
     outputDate = formatter.format(this);
 
-    if (hours<24) {
-      if (minutes < 60) {
-        outputDate = "Beberapa menit yang lalu";
-      } else {
-        outputDate = "$hours jam yang lalu";
-      }
-    }
+    // if (hours<24) {
+    //   if (minutes < 60) {
+    //     outputDate = "Beberapa menit yang lalu";
+    //   } else {
+    //     outputDate = "$hours jam yang lalu";
+    //   }
+    // }
     return outputDate;
   }
 
@@ -143,8 +143,9 @@ extension DateHelper on DateTime {
     final hoursOthers = dateNow.difference(createDateOther).inHours;
     return year == other.year &&
         month == other.month &&
-        day == other.day &&
-        (hours ==  hoursOthers);
+        day == other.day
+        // && (hours ==  hoursOthers)
+    ;
   }
 
   int getDifferenceInDaysWithNow() {

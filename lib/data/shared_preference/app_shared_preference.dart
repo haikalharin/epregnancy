@@ -46,7 +46,8 @@ class AppSharedPreference {
   static const String bmSignature = "bm_signature";
   static const String checkIn = "checkin";
   static const String hospital = "hospital";
-  static const String dateTime = "dateTime";
+  static const String dateTimeDoandDonts = "dateTimeDoandDonts";
+  static const String dateTimeVisit = "dateTimeVisit";
   static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
   static const String newInstall = "new_install";
@@ -68,19 +69,34 @@ class AppSharedPreference {
   static setShowDialogDoAndDonts(ChatDialogModel data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(dateTime, json);
+    prefs.setString(dateTimeDoandDonts, json);
   }
 
   static Future<ChatDialogModel?> getShowDialogDoAndDonts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String? json = prefs.getString(dateTime);
+    String? json = prefs.getString(dateTimeDoandDonts);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       ChatDialogModel chatDialogModel = ChatDialogModel.fromJson(map);
       return chatDialogModel;
     } else {
       return ChatDialogModel.empty();
+    }
+  }
+
+  static setShowDialogVisit(String data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(dateTimeVisit, data);
+  }
+ static Future<String> getShowDialogVisit() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? data = prefs.getString(dateTimeVisit);
+    if (data != null) {
+      return data;
+    } else {
+      return '';
     }
   }
 

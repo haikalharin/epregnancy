@@ -40,7 +40,7 @@ class UserInfoVisit with _$UserInfoVisit {
     String? imageUrl,
     bool? isHaveBaby,
     bool? isPregnant,
-    String? pregnancyWeek,
+    int? pregnancyWeek,
     int? totalVisit,
     String? createdDate,
     String? lastVisit,

@@ -9,11 +9,11 @@ part of 'visit_hospital_model.dart';
 _$_VisitHospitalModel _$$_VisitHospitalModelFromJson(
         Map<String, dynamic> json) =>
     _$_VisitHospitalModel(
-      isGetPoint: json['is_get_point'] as bool?,
+      firstVisit: json['first_visit'] as bool?,
     );
 
 Map<String, dynamic> _$$_VisitHospitalModelToJson(
         _$_VisitHospitalModel instance) =>
     <String, dynamic>{
-      'is_get_point': instance.isGetPoint,
+      'first_visit': instance.firstVisit,
     };

@@ -355,7 +355,7 @@ mixin _$UserInfoVisit {
   String? get imageUrl => throw _privateConstructorUsedError;
   bool? get isHaveBaby => throw _privateConstructorUsedError;
   bool? get isPregnant => throw _privateConstructorUsedError;
-  String? get pregnancyWeek => throw _privateConstructorUsedError;
+  int? get pregnancyWeek => throw _privateConstructorUsedError;
   int? get totalVisit => throw _privateConstructorUsedError;
   String? get createdDate => throw _privateConstructorUsedError;
   String? get lastVisit => throw _privateConstructorUsedError;
@@ -378,7 +378,7 @@ abstract class $UserInfoVisitCopyWith<$Res> {
       String? imageUrl,
       bool? isHaveBaby,
       bool? isPregnant,
-      String? pregnancyWeek,
+      int? pregnancyWeek,
       int? totalVisit,
       String? createdDate,
       String? lastVisit});
@@ -434,7 +434,7 @@ class _$UserInfoVisitCopyWithImpl<$Res>
       pregnancyWeek: pregnancyWeek == freezed
           ? _value.pregnancyWeek
           : pregnancyWeek // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       totalVisit: totalVisit == freezed
           ? _value.totalVisit
           : totalVisit // ignore: cast_nullable_to_non_nullable
@@ -465,7 +465,7 @@ abstract class _$$_UserInfoVisitCopyWith<$Res>
       String? imageUrl,
       bool? isHaveBaby,
       bool? isPregnant,
-      String? pregnancyWeek,
+      int? pregnancyWeek,
       int? totalVisit,
       String? createdDate,
       String? lastVisit});
@@ -523,7 +523,7 @@ class __$$_UserInfoVisitCopyWithImpl<$Res>
       pregnancyWeek: pregnancyWeek == freezed
           ? _value.pregnancyWeek
           : pregnancyWeek // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       totalVisit: totalVisit == freezed
           ? _value.totalVisit
           : totalVisit // ignore: cast_nullable_to_non_nullable
@@ -572,7 +572,7 @@ class _$_UserInfoVisit implements _UserInfoVisit {
   @override
   final bool? isPregnant;
   @override
-  final String? pregnancyWeek;
+  final int? pregnancyWeek;
   @override
   final int? totalVisit;
   @override
@@ -641,7 +641,7 @@ abstract class _UserInfoVisit implements UserInfoVisit {
       final String? imageUrl,
       final bool? isHaveBaby,
       final bool? isPregnant,
-      final String? pregnancyWeek,
+      final int? pregnancyWeek,
       final int? totalVisit,
       final String? createdDate,
       final String? lastVisit}) = _$_UserInfoVisit;
@@ -662,7 +662,7 @@ abstract class _UserInfoVisit implements UserInfoVisit {
   @override
   bool? get isPregnant => throw _privateConstructorUsedError;
   @override
-  String? get pregnancyWeek => throw _privateConstructorUsedError;
+  int? get pregnancyWeek => throw _privateConstructorUsedError;
   @override
   int? get totalVisit => throw _privateConstructorUsedError;
   @override

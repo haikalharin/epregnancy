@@ -11,7 +11,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
   const SuccessEarnPoinPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {z
     return Scaffold(
       body: BlocBuilder<PinCheckInBloc, PinCheckInState>(
         builder: (context, state) {

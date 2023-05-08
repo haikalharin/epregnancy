@@ -39,7 +39,7 @@ class VisitCard extends StatelessWidget {
     return Wrap(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width/1.h,
+          width: MediaQuery.of(context).size.width/0.8.h,
           child: Row(
             children: [
               ClipRRect(
