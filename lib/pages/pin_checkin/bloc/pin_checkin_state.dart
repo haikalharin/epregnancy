@@ -24,14 +24,14 @@ class PinCheckInState {
       String? errorMessage,
       UserModel? userInfo,
       bool? isActive,
-      bool? isGetPoint}) {
+      bool? firstVisit}) {
     return PinCheckInState(
         submitStatus: submitStatus,
         errorMessage: errorMessage,
         pin: pin ?? this.pin,
         userInfo: userInfo ?? this.userInfo,
         isActive: isActive ?? this.isActive,
-        firstVisit: isGetPoint ?? this.firstVisit,
+        firstVisit: firstVisit ?? this.firstVisit,
     );
   }
 }
