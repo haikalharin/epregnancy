@@ -11,7 +11,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
   const SuccessEarnPoinPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {z
+  Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<PinCheckInBloc, PinCheckInState>(
         builder: (context, state) {
@@ -31,7 +31,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                   SizedBox(
                     height: 36.h,
                   ),
-                  state.isGetPoint == true
+                  state.firstVisit == true
                       ? Text(
                           "Selamat! Anda",
                           style: TextStyle(
@@ -47,7 +47,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                               fontSize: 22.sp),
                           textAlign: TextAlign.center,
                         ),
-                  state.isGetPoint == true
+                  state.firstVisit == true
                       ? Text(
                           "mendapatkan 100 Poin",
                           style: TextStyle(
