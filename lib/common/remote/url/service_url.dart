@@ -108,6 +108,9 @@ class ServiceUrl {
   //baby-childs
   static String babyChilds = "baby-childs";
 
+  //my-child
+  static String myChild = "my-child";
+
 
 
 

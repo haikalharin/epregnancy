@@ -21,6 +21,7 @@ import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/members_model/members_summary_response.dart';
+import 'package:PregnancyApp/data/model/my_child_dashboard/my_child_dashboard.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -237,6 +238,15 @@ class RemoteDataSource {
     try {
       final response = await httpClient.get(ServiceUrl.babyChilds);
       return ResponseModel.fromJson(response, BabyChildResponse.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> getChildForDashboard(String childId) async {
+    try {
+      final response = await httpClient.get("${ServiceUrl.childs}/$childId/${ServiceUrl.myChild}");
+      return ResponseModel.fromJson(response, MyChildDashboard.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }

@@ -20,6 +20,8 @@ class HomePageState with FormzMixin {
   final String? errorMessage;
   final bool? showGuide;
   final bool? isNotHaveSession;
+  final String? selectedChildId;
+  final MyChildDashboard? myChildDashboard;
   final List<BabyChildResponse>? babyChilds;
 
   HomePageState({this.user,
@@ -40,6 +42,8 @@ class HomePageState with FormzMixin {
     this.totalPointsEarned,
     this.showGuide,
     this.isNotHaveSession,
+    this.selectedChildId,
+    this.myChildDashboard,
     this.errorMessage,
     this.babyChilds
   });
@@ -62,7 +66,9 @@ class HomePageState with FormzMixin {
     int? totalPointsEarned,
     bool? showGuide,
     bool? isNotHaveSession,
+    MyChildDashboard? myChildDashboard,
     String? errorMessage,
+    String? selectedChildId,
     List<BabyChildResponse>? babyChilds
   }) {
     return HomePageState(
@@ -84,6 +90,8 @@ class HomePageState with FormzMixin {
         eventDate: eventDate ?? this.eventDate,
         totalPointsEarned: totalPointsEarned ?? this.totalPointsEarned,
         isNotHaveSession: isNotHaveSession,
+        selectedChildId: selectedChildId ?? this.selectedChildId,
+        myChildDashboard: myChildDashboard ?? this.myChildDashboard,
         errorMessage: errorMessage,
         babyChilds: babyChilds ?? this.babyChilds
     );

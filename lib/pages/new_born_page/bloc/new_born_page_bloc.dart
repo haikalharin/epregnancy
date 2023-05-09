@@ -72,6 +72,7 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
           ResponseModel addChildResponse = await childRepository.addChild(event.name, event.dob, event.gender);
           if(addChildResponse.code == 200) {
             Injector.resolve<HomePageBloc>().add(const ResetBaby());
+            Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
             yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "adding-child-success");
           } else {
             print("add child code != 200");
@@ -102,6 +103,7 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
       ResponseModel addChildResponse = await childRepository.updateChild(event.babyId, event.name, event.dob, event.gender);
       if(addChildResponse.code == 200) {
         print('success update child');
+        Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "update-child-success");
       } else {
         print('failed update child');

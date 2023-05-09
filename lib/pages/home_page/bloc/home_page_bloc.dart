@@ -33,6 +33,7 @@ import '../../../data/model/baby_model/new_baby_model.dart' as nb;
 import '../../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../../data/model/baby_progress_model/baby_progress_model.dart';
 import '../../../data/model/hospital_model/hospital_model.dart';
+import '../../../data/model/my_child_dashboard/my_child_dashboard.dart';
 import '../../../data/model/user_info/user_info.dart';
 import '../../../data/repository/event_repository/event_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
@@ -77,6 +78,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield _setHospitalModelEvent(event, state);
     } else if(event is HomeFetchBabyChildsEvent) {
       yield* _mapFetchBabyChilds(event, state);
+    } else if(event is HomeFetchChildForDashboardEvent){
+      yield* _mapFetchChildForDashboard(event, state);
     }
   }
 
@@ -236,6 +239,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         response.data?.forEach((element){
           _babyChilds.add(element);
         });
+
+        if(_babyChilds.isNotEmpty && state.selectedChildId == null){
+          Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(_babyChilds[0].id!));
+        }
+
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, tipe: "fetch-baby-childs-success", babyChilds: _babyChilds);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message, tipe: "fetch-baby-childs-failed");
@@ -245,6 +253,34 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
       print("error exception baby child : ${a.toString()}");
+      if (a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure,
+          errorMessage: a.toString(),
+          isNotHaveSession: false);
+    }
+  }
+
+  Stream<HomePageState> _mapFetchChildForDashboard(
+      HomeFetchChildForDashboardEvent event,
+      HomePageState state,
+      ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-child-dashboard-loading", babyChilds: []);
+    try {
+      final ResponseModel response = await homeRepository.fetchChildForDashBoard(event.id);
+      if (response.code == 200) {
+        MyChildDashboard? _myChildDashboard = response.data;
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, tipe: "fetch-child-dashboard-success", myChildDashboard: _myChildDashboard, selectedChildId: _myChildDashboard?.child?.id);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message, tipe: "fetch-child-dashboard-failed");
+      }
+    } on HomeErrorException catch (e) {
+      print("home error child dashboard : ${e.toString()}");
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+    } on Exception catch (a) {
+      print("error exception child dashboard: ${a.toString()}");
       if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }

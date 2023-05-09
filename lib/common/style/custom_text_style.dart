@@ -26,6 +26,10 @@ Widget whiteText10(String text){
   return Text(text, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 10.sp),);
 }
 
+Widget whiteText12(String text){
+  return Text(text, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12.sp),);
+}
+
 Widget blackText10W500(String text){
   return Text(text, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 10.sp),);
 }

@@ -33,6 +33,14 @@ class HomeFetchBabyChildsEvent extends HomePageEvent {
   List<Object> get props => [];
 }
 
+class HomeFetchChildForDashboardEvent extends HomePageEvent {
+  const HomeFetchChildForDashboardEvent(this.id);
+  final String id;
+
+  @override
+  List<Object> get props => [];
+}
+
 class SetHospitalEvent extends HomePageEvent {
   const SetHospitalEvent(this.hospitalModel);
   final HospitalModel? hospitalModel;

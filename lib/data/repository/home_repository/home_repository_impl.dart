@@ -85,4 +85,13 @@ class HomeRepositoryImpl extends HomeRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel> fetchChildForDashBoard(String id) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response = await remoteDatasource.getChildForDashboard(id);
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
+
 }

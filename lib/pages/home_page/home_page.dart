@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         tooltipController: tooltipController,
                                         psTriggerTooltip: _psTriggerTooltip)
                                 // todo child widget
-                                    : Container(),
+                                    : ChildSectionWidget(state: state, tooltipController: tooltipController, psTriggerTooltip: _psTriggerTooltip)
                               ],
                             ),
                             state.showGuide == true
