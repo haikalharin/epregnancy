@@ -40,6 +40,7 @@ class ServiceUrl {
   static String saveBaby = '$baby/save';
   static String deleteBaby = '$baby/delete/';
   static String updateBaby = '$baby/update';
+  static String deleteBaby = '$baby/delete';
   static String listBaby = '$baby/list';
   static String myBaby = 'my-baby';
 
@@ -70,6 +71,9 @@ class ServiceUrl {
   static String userTotal = '$midwife/user-total';
   static String patientUsers = '$midwife/patient-users';
   static String midwifeUsers = '$midwife/midwife-users';
+
+  //userVisit
+  static String userVisit = 'user-visits';
 
 
   //game

@@ -46,6 +46,8 @@ abstract class UserModel with _$UserModel {
     String? imageUrl,
     @JsonKey(name: 'hospital_id', includeIfNull: false)
     String? hospitalId,
+    @JsonKey(name: 'qr_string', includeIfNull: false)
+    String? qrString,
     HospitalModel? hospital,
     @JsonKey(name:'cover_url',includeIfNull: true)
     dynamic coverUrl,

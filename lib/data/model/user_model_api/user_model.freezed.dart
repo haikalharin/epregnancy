@@ -52,6 +52,8 @@ mixin _$UserModel {
   String? get imageUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'hospital_id', includeIfNull: false)
   String? get hospitalId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'qr_string', includeIfNull: false)
+  String? get qrString => throw _privateConstructorUsedError;
   HospitalModel? get hospital => throw _privateConstructorUsedError;
   @JsonKey(name: 'cover_url', includeIfNull: true)
   dynamic get coverUrl => throw _privateConstructorUsedError;
@@ -127,6 +129,8 @@ abstract class $UserModelCopyWith<$Res> {
           String? imageUrl,
       @JsonKey(name: 'hospital_id', includeIfNull: false)
           String? hospitalId,
+      @JsonKey(name: 'qr_string', includeIfNull: false)
+          String? qrString,
       HospitalModel? hospital,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           dynamic coverUrl,
@@ -187,6 +191,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? totalpointsRedeemed = freezed,
     Object? imageUrl = freezed,
     Object? hospitalId = freezed,
+    Object? qrString = freezed,
     Object? hospital = freezed,
     Object? coverUrl = freezed,
     Object? isVerified = freezed,
@@ -267,6 +272,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
       hospitalId: hospitalId == freezed
           ? _value.hospitalId
           : hospitalId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      qrString: qrString == freezed
+          ? _value.qrString
+          : qrString // ignore: cast_nullable_to_non_nullable
               as String?,
       hospital: hospital == freezed
           ? _value.hospital
@@ -393,6 +402,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
           String? imageUrl,
       @JsonKey(name: 'hospital_id', includeIfNull: false)
           String? hospitalId,
+      @JsonKey(name: 'qr_string', includeIfNull: false)
+          String? qrString,
       HospitalModel? hospital,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           dynamic coverUrl,
@@ -457,6 +468,7 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? totalpointsRedeemed = freezed,
     Object? imageUrl = freezed,
     Object? hospitalId = freezed,
+    Object? qrString = freezed,
     Object? hospital = freezed,
     Object? coverUrl = freezed,
     Object? isVerified = freezed,
@@ -537,6 +549,10 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
       hospitalId: hospitalId == freezed
           ? _value.hospitalId
           : hospitalId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      qrString: qrString == freezed
+          ? _value.qrString
+          : qrString // ignore: cast_nullable_to_non_nullable
               as String?,
       hospital: hospital == freezed
           ? _value.hospital
@@ -638,6 +654,8 @@ class _$_UserModel implements _UserModel {
           this.imageUrl,
       @JsonKey(name: 'hospital_id', includeIfNull: false)
           this.hospitalId,
+      @JsonKey(name: 'qr_string', includeIfNull: false)
+          this.qrString,
       this.hospital,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           this.coverUrl,
@@ -724,6 +742,9 @@ class _$_UserModel implements _UserModel {
   @JsonKey(name: 'hospital_id', includeIfNull: false)
   final String? hospitalId;
   @override
+  @JsonKey(name: 'qr_string', includeIfNull: false)
+  final String? qrString;
+  @override
   final HospitalModel? hospital;
   @override
   @JsonKey(name: 'cover_url', includeIfNull: true)
@@ -798,7 +819,7 @@ class _$_UserModel implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalLogin: $totalLogin, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, hospital: $hospital, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, lastBiodataView: $lastBiodataView, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
+    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalLogin: $totalLogin, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, qrString: $qrString, hospital: $hospital, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, lastBiodataView: $lastBiodataView, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
   }
 
   @override
@@ -827,6 +848,7 @@ class _$_UserModel implements _UserModel {
             const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
             const DeepCollectionEquality()
                 .equals(other.hospitalId, hospitalId) &&
+            const DeepCollectionEquality().equals(other.qrString, qrString) &&
             const DeepCollectionEquality().equals(other.hospital, hospital) &&
             const DeepCollectionEquality().equals(other.coverUrl, coverUrl) &&
             const DeepCollectionEquality()
@@ -872,6 +894,7 @@ class _$_UserModel implements _UserModel {
         const DeepCollectionEquality().hash(totalpointsRedeemed),
         const DeepCollectionEquality().hash(imageUrl),
         const DeepCollectionEquality().hash(hospitalId),
+        const DeepCollectionEquality().hash(qrString),
         const DeepCollectionEquality().hash(hospital),
         const DeepCollectionEquality().hash(coverUrl),
         const DeepCollectionEquality().hash(isVerified),
@@ -934,6 +957,8 @@ abstract class _UserModel implements UserModel {
           final String? imageUrl,
       @JsonKey(name: 'hospital_id', includeIfNull: false)
           final String? hospitalId,
+      @JsonKey(name: 'qr_string', includeIfNull: false)
+          final String? qrString,
       final HospitalModel? hospital,
       @JsonKey(name: 'cover_url', includeIfNull: true)
           final dynamic coverUrl,
@@ -1015,6 +1040,9 @@ abstract class _UserModel implements UserModel {
   @override
   @JsonKey(name: 'hospital_id', includeIfNull: false)
   String? get hospitalId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'qr_string', includeIfNull: false)
+  String? get qrString => throw _privateConstructorUsedError;
   @override
   HospitalModel? get hospital => throw _privateConstructorUsedError;
   @override

@@ -163,9 +163,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               // comment widget
               BlocBuilder<CommentBloc, CommentState>(builder: (context, state) {
                 return Expanded(
-                  child: Hero(
-                    tag: 'comment',
-                    child: Container(
+                  child: Container(
                       width: MediaQuery.of(context).size.width * 0.75,
                       margin: EdgeInsets.symmetric(
                           horizontal: 10.w, vertical: 10.h),
@@ -208,14 +206,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         ),
                         onChanged: (value) {},
                       ),
-                    ),
                   ),
                 );
               }),
               // like button
-              Hero(
-                  tag: 'like',
-                  child: Container(
+              Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: ValueListenableBuilder<bool>(
                           valueListenable: widget.isLiked,
@@ -252,7 +247,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                       fit: BoxFit.fitHeight,
                                     ),
                             );
-                          })))
+                          }))
             ],
           ),
         ],

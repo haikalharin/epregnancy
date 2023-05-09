@@ -23,6 +23,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       totalpointsRedeemed: json['total_points_redeemed'] as int?,
       imageUrl: json['image_url'] as String?,
       hospitalId: json['hospital_id'] as String?,
+      qrString: json['qr_string'] as String?,
       hospital: json['hospital'] == null
           ? null
           : HospitalModel.fromJson(json['hospital'] as Map<String, dynamic>),
@@ -79,6 +80,7 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) {
   }
 
   writeNotNull('hospital_id', instance.hospitalId);
+  writeNotNull('qr_string', instance.qrString);
   val['hospital'] = instance.hospital;
   val['cover_url'] = instance.coverUrl;
   val['is_verified'] = instance.isVerified;

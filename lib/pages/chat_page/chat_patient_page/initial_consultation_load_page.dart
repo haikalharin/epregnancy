@@ -26,15 +26,19 @@ class InitialConsultationLoadPage extends StatefulWidget {
 
 class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPage> {
   List<ChatMessageEntity> chatMessageList = [];
-
+  int hit = 0;
 
 
   @override
   Widget build(BuildContext context) {
+    print("berapa kali build");
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) async {
+
         // todo listener chat patient
-        print('state type : ${state.type}');
+        print('state listener chat bloc type : ${state.type}');
+        print('state listener chat bloc status : ${state.status}');
+
         if(state.type == 'fetch-active-chat-success'){
           List<ChatMessageEntity> chatMessageList = [];
           if(state.chatPendingPatientResponse?.isNotEmpty ?? false){
@@ -119,28 +123,64 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
               }
             });
           }
-        } else if (state.type == 'fetch-active-chat-failed' && state.status != FormzStatus.submissionInProgress) {
+        } else if (state.type == 'fetch-active-chat-failed' && state.status == FormzStatus.submissionFailure) {
+          print("tambah chat pending fired");
           // Navigator.pushNamed(context, RouteName.chatPage, arguments: widget.userId).then((value) {
           //   print('with data from chat page');
           //   if(value != null){
           //     Navigator.pop(context);
           //   }
           // });
-          final UserModel userModel = await AppSharedPreference.getUser();
-          final HospitalModel _hospital = await AppSharedPreference.getHospital();
+          setState(() {
+            hit += 1;
+          });
 
-          ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Hai Bunda ${userModel.name}, selamat datang di tanya Bidan.");
-          ChatPendingSendRequest _chatPendingSendRequest2 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Di sini, Bunda bisa bertanya mengenai informasi umum dan tips seputar kehamilan langsung dengan Bidan.");
-          ChatPendingSendRequest _chatPendingSendRequest3 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Pertanyaan akan dijawab maksimal 3x24 jam.");
-          ChatPendingSendRequest _chatPendingSendRequest4 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Yuk, Bunda bisa mulai bertanya.");
+          if (hit < 2) {
+            final UserModel userModel = await AppSharedPreference.getUser();
+            final HospitalModel _hospital = await AppSharedPreference.getHospital();
 
-          Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest, firsTime: true));
-          await Future.delayed(const Duration(seconds: 1));
-          Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest2, firsTime: true));
-          await Future.delayed(const Duration(seconds: 1));
-          Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest3, firsTime: true));
-          await Future.delayed(const Duration(seconds: 1));
-          Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest4, firsTime: true));
+            for(int i = 0; i < 4; i++){
+              if(i == 0){
+                print("add chat pending pertama");
+                ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Hai Bunda ${userModel.name}, selamat datang di tanya Bidan.");
+                Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest, firsTime: true));
+                await Future.delayed(const Duration(seconds: 2));
+              } else if (i == 1) {
+                print("add chat pending kedua");
+
+                ChatPendingSendRequest _chatPendingSendRequest2 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Di sini, Bunda bisa bertanya mengenai informasi umum dan tips seputar kehamilan langsung dengan Bidan.");
+                Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest2, firsTime: true));
+                await Future.delayed(const Duration(seconds: 2));
+              } else if (i == 2){
+                print("add chat pending ketiga");
+
+                ChatPendingSendRequest _chatPendingSendRequest3 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Pertanyaan akan dijawab maksimal 3x24 jam.");
+                Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest3, firsTime: true));
+                await Future.delayed(const Duration(seconds: 2));
+              } else if ( i == 3) {
+                print("add chat pending keempat");
+
+                ChatPendingSendRequest _chatPendingSendRequest4 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Yuk, Bunda bisa mulai bertanya.");
+                Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest4, firsTime: true));
+                await Future.delayed(const Duration(seconds: 2));
+              }
+            }
+          }
+
+
+
+          // ChatPendingSendRequest _chatPendingSendRequest = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Hai Bunda ${userModel.name}, selamat datang di tanya Bidan.");
+          // ChatPendingSendRequest _chatPendingSendRequest2 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Di sini, Bunda bisa bertanya mengenai informasi umum dan tips seputar kehamilan langsung dengan Bidan.");
+          // ChatPendingSendRequest _chatPendingSendRequest3 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Pertanyaan akan dijawab maksimal 3x24 jam.");
+          // ChatPendingSendRequest _chatPendingSendRequest4 = ChatPendingSendRequest(fromId: userModel.id, hospitalId: _hospital.id, message: "Yuk, Bunda bisa mulai bertanya.");
+          //
+          // Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest, firsTime: true));
+          // await Future.delayed(const Duration(seconds: 1));
+          // Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest2, firsTime: true));
+          // await Future.delayed(const Duration(seconds: 1));
+          // Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest3, firsTime: true));
+          // await Future.delayed(const Duration(seconds: 1));
+          // Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest4, firsTime: true));
         } else if (state.type == 'send-pending-success' && state.chatPendingSendResponse != null) {
           chatMessageList.add(
               ChatMessageEntity(
@@ -151,13 +191,15 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
               )
           );
           print("chat message list pending : ${chatMessageList.length}");
-          if(chatMessageList.length == 3) {
+          if(chatMessageList.length == 4) {
+            HospitalModel? _hospitalModel = await AppSharedPreference.getHospital();
+
             Navigator.push(context, MaterialPageRoute(builder: (context) => NewChatRoom(
               fromId: state.chatPendingSendResponse?.fromId,
               toImageUrl: state.chatPendingSendResponse?.to?.imageUrl,
               toId: state.chatPendingSendResponse?.hospitalId,
               chatMessageList: chatMessageList,
-              toName: state.chatPendingSendResponse?.to?.name ?? hospitalModel?.name ,
+              toName: state.chatPendingSendResponse?.to?.name ?? _hospitalModel.name ,
               pendingChat: true,
             ))).then((value) {
               if(value != null){
@@ -210,21 +252,22 @@ class _InitialConsultationLoadPageState extends State<InitialConsultationLoadPag
     );
   }
 
-  HospitalModel? hospitalModel;
+  // HospitalModel? hospitalModel;
 
-  void getHospital() async {
-    HospitalModel _hospitalModel = await AppSharedPreference.getHospital();
-    if(_hospitalModel != null && mounted){
-      setState(() {
-        hospitalModel = _hospitalModel;
-      });
-    }
-  }
+  // void getHospital() async {
+  //   HospitalModel _hospitalModel = await AppSharedPreference.getHospital();
+  //   if(_hospitalModel != null && mounted){
+  //     setState(() {
+  //       hospitalModel = _hospitalModel;
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
+    Injector.resolve<ChatBloc>().add(const DisposeChatBlocEvent());
     Injector.resolve<ChatBloc>().add(const FetchChatPendingPatientEvent());
-    getHospital();
+    // getHospital();
     // Injector.resolve<ChatBloc>().add(const FetchChatOngoingEvent());
     super.initState();
   }

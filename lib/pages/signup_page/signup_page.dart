@@ -21,6 +21,7 @@ import '../../../common/injector/injector.dart';
 import '../../common/services/auth_service.dart';
 import '../../common/validators/email_address_username_validator.dart';
 import '../../common/validators/phone_validator.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/firebase_analytics.dart';
 import '../../utils/string_constans.dart';
 import 'bloc/signup_bloc.dart';
@@ -51,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void initState() {
-    FirebaseAnalyticsService().setCurrentScreen("register_page");
+    FirebaseAnalyticsService().setCurrentScreen("Daftar_telepon_email_page");
     FirebaseAnalyticsService().sendAnalyticsEvent(
       "current_screen_custom",
       data: <String, dynamic>{
@@ -249,6 +250,8 @@ class _SignUpPageState extends State<SignUpPage> {
               margin: EdgeInsets.all(24.w),
               child: ElevatedButton(
                 onPressed: state.phoneNumber.valid || state.email.valid ? () async {
+                  CountlyAnalyticsService(context)
+                      .basicEvent({'key': 'Daftar_telepon_email_page_button_daftar', 'count': 1});
               Injector.resolve<SignupBloc>()
                   .add(SignupSubmitted());
               isEdit = true;

@@ -15,6 +15,7 @@ import 'package:quiver/async.dart';
 
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/string_constans.dart';
 import '../signup_page/bloc/signup_bloc.dart';
 import 'package:tap_to_dismiss_keyboard/tap_to_dismiss_keyboard.dart';
@@ -59,6 +60,7 @@ class _OtpPageState extends State<OtpPage> {
 
     sub.onDone(() {
       isResend = true;
+      wrongOtp = true;
       sub.cancel();
     });
   }
@@ -70,12 +72,14 @@ class _OtpPageState extends State<OtpPage> {
   @override
   void initState() {
     if(widget.from == "disclaimer") {
+      CountlyAnalyticsService(context)
+          .basicEvent({'key': 'OTP_email_page', 'count': 1});
       Injector.resolve<SignupBloc>().add(SignupInitEvent());
     }
     Injector.resolve<OtpPageBloc>()
         .add(
         RequestResendOtp(true, widget.userName));
-    restartTimer();
+    startTimer();
     super.initState();
   }
 
@@ -107,6 +111,7 @@ class _OtpPageState extends State<OtpPage> {
                   setState(() {
                     wrongOtp = true;
                     isResendLoading = false;
+                    restartTimer();
                   });
                   const snackBar = SnackBar(
                       content: Text("OTP Salah"), backgroundColor: Colors.red);
@@ -216,6 +221,7 @@ class _OtpPageState extends State<OtpPage> {
                                   outlineBorderRadius: 10,
                                   style: TextStyle(fontSize: 25),
                                   onChanged: (pin) {
+                                    wrongOtp = false;
                                     print("Changed: " + pin);
                                   },
                                   onCompleted: (pin) {
@@ -248,7 +254,7 @@ class _OtpPageState extends State<OtpPage> {
                                         .add(
                                         RequestResendOtp(true, widget.userName));
                                   },
-                                  child: Container(
+                                  child: isResendLoading ? const CircularProgressIndicator(color: EpregnancyColors.primer) : Container(
                                     width: MediaQuery.of(context).size.width,
                                     padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
                                     margin: EdgeInsets.symmetric(horizontal: 12.w),
@@ -256,7 +262,7 @@ class _OtpPageState extends State<OtpPage> {
                                       border: Border.all(color: EpregnancyColors.primer),
                                       borderRadius: BorderRadius.circular(12.w)
                                     ),
-                                    child: Center(child: isResendLoading ? const CircularProgressIndicator(color: EpregnancyColors.primer) : Text("Kirim Ulang OTP", style: TextStyle(color: EpregnancyColors.primer, fontSize: 14.sp, fontWeight: FontWeight.w500),),),
+                                    child: Center(child: Text("Kirim Ulang OTP", style: TextStyle(color: EpregnancyColors.primer, fontSize: 14.sp, fontWeight: FontWeight.w500),),),
                                   )) : const SizedBox.shrink()
                                   // : Text("kirim ulang OTP",
                                   // style: TextStyle(

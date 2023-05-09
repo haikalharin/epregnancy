@@ -8,6 +8,7 @@ import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/data/model/point_model/point_history.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_info/user_info.dart';
+import 'package:PregnancyApp/data/model/user_visit_model/user_visit_model.dart';
 
 import '../../model/baby_model_api/baby_Model_api.dart';
 import '../../model/point_model/checkin_response.dart';
@@ -24,7 +25,8 @@ abstract class UserRepository {
   Future <ResponseModel>updateHospital(String hospitalId);
   Future <ResponseModel>updateDisclaimer(UserModel userModel);
   Future <ResponseModel>saveQuestionerBaby(BabyModelApi babyModelApi);
-  Future <ResponseModel>updateQuestionerBaby(BabyModelApi babyModelApi);
+  Future <ResponseModel>updateQuestionerBaby(BabyModelApi babyModelApi, {bool isUpdateStatus = false});
+  Future <ResponseModel>deleteBaby(BabyModelApi babyModelApi);
   Future <ResponseModel>getBaby(UserModel userModel);
   Future <ResponseModel>requestOtp(Map data);
   Future <ResponseModel>verifyOtp(OtpModel otpModel);
@@ -33,6 +35,8 @@ abstract class UserRepository {
   Future <ResponseModel>forgotPassword(Map data);
   Future <ResponseModel<UserModel>> fetchUsers(String name);
   Future <ResponseModel>changePhotoProfile(String userId, String imgProfile);
+  Future<ResponseModel<UserVisitModel>> fetchUserVisit( int page, int size,String sortBy, String sort);
+  Future <ResponseModel> submitNextVisit(String id,String nextVisitDate,String status);
 
 
   Future loginWithGoogle();
@@ -44,7 +48,7 @@ abstract class UserRepository {
 
   Future<ResponseModel<CheckinResponse>> hitCheckIn(String day);
   Future<ResponseModel<PointHistory>> fetchPointHistory();
-  Future<ResponseModel<UserModel>> checkUserExist(String user, String type);
+  Future<ResponseModel> checkUserExist(String user, String type);
 
   logout();
 }

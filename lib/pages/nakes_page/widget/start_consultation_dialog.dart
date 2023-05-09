@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../data/entity/chat_message_entity.dart';
 import '../../../utils/epragnancy_color.dart';
+import '../../chat_page/bloc/chat_bloc/chat_bloc.dart';
 import '../../chat_page/new_chat_room.dart';
 
 class StartConsulationDialog extends StatefulWidget {
@@ -29,6 +30,9 @@ class _StartConsulationDialogState extends State<StartConsulationDialog> {
         List<ChatMessageEntity> chatMessageList = [];
         if(state.type == 'responding-pending-chat-success'){
           Injector.resolve<ChatPendingBloc>().add(FetchChatPendingByHospitalId(widget.hospitalId));
+          Injector.resolve<ChatPendingBloc>().add(FetchLastChatEvent(widget.hospitalId));
+          Injector.resolve<ChatBloc>().add(const FetchChatOngoingEvent());
+
           state.chatPendingResponseList?.forEach((element) {
             chatMessageList.add(
                 ChatMessageEntity(

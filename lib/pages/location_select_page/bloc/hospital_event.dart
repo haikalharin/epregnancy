@@ -21,10 +21,10 @@ class FetchMembersEvent extends HospitalEvent {
       {
         this.isNextPage = false,
         this.isSearch = false,
-        this.isPregnant, this.sortBy, this.sort});
+        this.isPregnant = 2, this.sortBy, this.sort});
 
   final String? name;
-  final bool? isPregnant;
+  final int? isPregnant;
   final String? sortBy;
   final SortEnum? sort;
   final int? page;
@@ -67,6 +67,14 @@ class ChangeHospitalEvent extends HospitalEvent {
   const ChangeHospitalEvent(this.id);
 
   final String? id;
+
+  @override
+  List<Object> get props => [];
+}
+
+class HospitalDispose extends HospitalEvent {
+  const HospitalDispose();
+
 
   @override
   List<Object> get props => [];

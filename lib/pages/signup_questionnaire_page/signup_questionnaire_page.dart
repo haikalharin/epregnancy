@@ -11,6 +11,7 @@ import '../../../common/constants/router_constants.dart';
 import '../../../common/injector/injector.dart';
 import '../../common/constants/regex_constants.dart';
 import '../../common/services/auth_service.dart';
+import '../../utils/countly_analytics.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/string_constans.dart';
 import '../login_page/login_page.dart';
@@ -33,6 +34,12 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
   final TextEditingController _passwordController = TextEditingController();
   String? passwordText;
 
+@override
+  void initState() {
+  CountlyAnalyticsService(context)
+      .basicEvent({'key': 'Regristration_form_page', 'count': 1});
+  super.initState();
+  }
   void _showDialog(Widget child) {
     showCupertinoModalPopup<void>(
         context: context,
@@ -59,6 +66,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
       onWillPop: () {
         Navigator.pop(context);
         Navigator.pop(context);
+        Injector.resolve<SignUpQuestionnaireBloc>()
+            .add(const SignupInitEvent());
         return Future.value(true);
       },
       child: Scaffold(
@@ -87,6 +96,9 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
           },
           child: BlocBuilder<SignUpQuestionnaireBloc, SignUpQuestionnaireState>(
             builder: (context, state) {
+              print('dateValid: ${state.dateValid}');
+              print("firstName : ${state.firstName.value}");
+              print("secondName : ${state.secondName.value}");
               return SingleChildScrollView(
                 child: Stack(
                   children: [
@@ -95,6 +107,8 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                         SizedBox(height: 30),
                         GestureDetector(
                           onTap: () {
+                            Injector.resolve<SignUpQuestionnaireBloc>()
+                                .add(const SignupInitEvent());
                             Navigator.pop(context);
                             Navigator.pop(context);
                           },
@@ -431,9 +445,6 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                         ? 'Mohon lengkapi Data'
                                         : null,
                                   ),
-                                  // firstDate: DateTime.now().add(const Duration(days: 10)),
-                                  // lastDate: DateTime.now().add(const Duration(days: 40)),
-                                  // initialDate: DateTime.now().add(const Duration(days: 20)),
                                   onDateSelected: (DateTime value) {
                                     String dateTime =
                                         DateFormat('yyyy-MM-dd').format(value);
@@ -489,10 +500,12 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                 child: ElevatedButton(
                                   onPressed: state.password.invalid ||
                                           state.confirmPassword.invalid ||
-                                          _passwordController.text.isEmpty || state.dateValid != true || state.firstName.invalid || state.secondName.invalid
+                                          _passwordController.text.isEmpty || state.dateValid != true || state.firstName.value == "" || state.firstName.invalid || state.secondName.invalid || state.secondName.value == ""
                                       ? null
                                       : () async {
-                                          Injector.resolve<
+                                    CountlyAnalyticsService(context)
+                                        .basicEvent({'key': 'Regristration_form_page-button_Daftar', 'count': 1});
+                                    Injector.resolve<
                                                   SignUpQuestionnaireBloc>()
                                               .add(SignupSubmitted());
                                         },
@@ -538,9 +551,12 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
 class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // state.password.invalid ||
+    //     state.confirmPassword.invalid ||
+    //     _passwordController.text.isEmpty || state.dateValid != true || state.firstName.invalid || state.secondName.invalid
     return BlocBuilder<SignUpQuestionnaireBloc, SignUpQuestionnaireState>(
         builder: (context, state) {
-      if (state.submitStatus == FormzStatus.submissionInProgress) {
+          if (state.submitStatus == FormzStatus.submissionInProgress) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

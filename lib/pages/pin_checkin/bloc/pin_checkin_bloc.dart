@@ -46,7 +46,7 @@ class PinCheckInBloc extends Bloc<PinCheckInEvent, PinCheckInState> {
       VisitHospitalModel data = response.data ?? const VisitHospitalModel();
       if (response.code == 200) {
         yield state.copyWith(
-          submitStatus: FormzStatus.submissionSuccess,isGetPoint: data.isGetPoint);
+          submitStatus: FormzStatus.submissionSuccess,firstVisit: data.firstVisit);
       } else {
         yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
       }

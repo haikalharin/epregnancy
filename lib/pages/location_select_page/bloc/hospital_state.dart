@@ -12,7 +12,7 @@ class HospitalState {
   final bool lastPagePatient;
   final bool lastPageMidwife;
   final bool isSearch;
-  final bool isPregnant;
+  final int isPregnant;
   final SortEnum? sort;
   final String? sortBy;
   final String? name;
@@ -29,7 +29,7 @@ class HospitalState {
     this.lastPagePatient = false,
     this.lastPageMidwife = false,
     this.isSearch = false,
-    this.isPregnant = true,
+    this.isPregnant = 0,
     this.sort,
     this.sortBy,
     this.name,
@@ -46,7 +46,7 @@ class HospitalState {
       bool? lastPagePatient,
       bool? lastPageMidwife,
       bool? isSearch,
-      bool? isPregnant,
+      int? isPregnant,
       SortEnum? sort,
       String? sortBy,
       String? name,

@@ -62,11 +62,11 @@ class CountlyAnalyticsService {
             CountlyConsent.feedback,
             CountlyConsent.remoteConfig
           ])
-          ..setLocation(
-              country_code: 'TR',
-              city: 'Istanbul',
-              ipAddress: '41.0082,28.9784',
-              gpsCoordinates: '10.2.33.12') // Set user  location.
+          // ..setLocation(
+          //     country_code: 'TR',
+          //     city: 'Istanbul',
+          //     ipAddress: '41.0082,28.9784',
+          //     gpsCoordinates: '10.2.33.12') // Set user  location.
           ..setCustomCrashSegment(crashSegment)
           ..setUserProperties(userProperties)
           ..recordIndirectAttribution(attributionValues)

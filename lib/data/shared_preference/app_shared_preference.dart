@@ -14,10 +14,13 @@ import 'package:PregnancyApp/main_staging.dart';
 import 'package:PregnancyApp/utils/secure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../common/injector/injector.dart';
 import '../../main_default.dart';
 import '../../main_development.dart';
+import '../../pages/location_select_page/bloc/hospital_bloc.dart';
 import '../../pages/login_page/login_page.dart';
 import '../model/baby_model/baby_model.dart';
 import '../model/baby_model/new_baby_model.dart';
@@ -43,7 +46,8 @@ class AppSharedPreference {
   static const String bmSignature = "bm_signature";
   static const String checkIn = "checkin";
   static const String hospital = "hospital";
-  static const String dateTime = "dateTime";
+  static const String dateTimeDoandDonts = "dateTimeDoandDonts";
+  static const String dateTimeVisit = "dateTimeVisit";
   static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
   static const String newInstall = "new_install";
@@ -65,19 +69,34 @@ class AppSharedPreference {
   static setShowDialogDoAndDonts(ChatDialogModel data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(dateTime, json);
+    prefs.setString(dateTimeDoandDonts, json);
   }
 
   static Future<ChatDialogModel?> getShowDialogDoAndDonts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String? json = prefs.getString(dateTime);
+    String? json = prefs.getString(dateTimeDoandDonts);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       ChatDialogModel chatDialogModel = ChatDialogModel.fromJson(map);
       return chatDialogModel;
     } else {
       return ChatDialogModel.empty();
+    }
+  }
+
+  static setShowDialogVisit(String data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(dateTimeVisit, data);
+  }
+ static Future<String> getShowDialogVisit() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? data = prefs.getString(dateTimeVisit);
+    if (data != null) {
+      return data;
+    } else {
+      return '';
     }
   }
 
@@ -253,7 +272,6 @@ class AppSharedPreference {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String encryptedJson = encrypt(json);
     prefs.setString(user, encryptedJson);
-    // prefs.setString(_user, json);
   }
 
   static Future<UserRolesModelFirebase> getUserRoleFirebase() async {
@@ -447,6 +465,8 @@ class AppSharedPreference {
     await AppSharedPreference.remove(AppSharedPreference.otp);
     await AppSharedPreference.remove(AppSharedPreference.token);
     await AppSharedPreference.remove(AppSharedPreference.cookie);
+    Injector.resolve<HospitalBloc>()
+        .add(const HospitalDispose());
     if (F.appFlavor == Flavor.PRODUCTION) {
       aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(
