@@ -437,10 +437,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionFailure,
               isNotHaveSession: false);
-        } else {
-          yield state.copyWith(
-              baby: const NewBabyModel(),
-              submitStatus: FormzStatus.submissionFailure);
+        } else if (response.message == "Baby not found!"){
+          Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure, baby: null);
         }
       } else {
         bool? _showGuide =

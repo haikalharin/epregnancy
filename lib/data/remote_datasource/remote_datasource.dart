@@ -96,7 +96,7 @@ class RemoteDataSource {
     return ResponseModel.fromJson(response, UserModel.fromJson);
   }
 
-  Future<ResponseModel> deleteBaby(String id) async {
+  Future<ResponseModel> deleteBabyList(String id) async {
     final response = await httpClient.delete(ServiceUrl.deleteBaby + id, {});
 
     return ResponseModel.fromJson(response, UserModel.fromJson);

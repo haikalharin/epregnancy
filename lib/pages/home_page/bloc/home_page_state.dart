@@ -60,6 +60,10 @@ class HomePageState with FormzMixin {
       this.isNotHaveSession,
       this.isSearch = false,
       this.page = 0,
+      this.hospitalModel,
+      this.selectedChildId,
+      this.myChildDashboard,
+      this.babyChilds,
       this.errorMessage});
 
   HomePageState copyWith(
@@ -68,7 +72,7 @@ class HomePageState with FormzMixin {
       UserVisitModel? userVisitModel,
       List<UserVisitModel>? listUserVisitModel,
       String? role,
-      NewBabyModel? baby,
+      nb.NewBabyModel? baby,
       SimpleTipResponse? simpleTipResponse,
       List<ArticleModel>? listArticle,
       List<EventModel>? listEvent,
@@ -77,7 +81,7 @@ class HomePageState with FormzMixin {
       String? tipe,
       String? days,
       String? weeks,
-        MandatoryFieldValidator? nextVisitDateString,
+      MandatoryFieldValidator? nextVisitDateString,
       String? eventDateString,
       DateTime? eventDate,
       int? totalPointsEarned,
@@ -89,7 +93,12 @@ class HomePageState with FormzMixin {
       bool? isFromSubmit,
       SortEnum? sort,
       String? sortBy,
-      String? errorMessage}) {
+      String? errorMessage,
+        HospitalModel? hospitalModel,
+        String? selectedChildId,
+        MyChildDashboard? myChildDashboard,
+        List<BabyChildResponse>? babyChilds
+      }) {
     return HomePageState(
         submitStatus: submitStatus,
         user: user ?? this.user,
@@ -118,10 +127,9 @@ class HomePageState with FormzMixin {
         page: page ?? this.page,
         sort: sort ?? this.sort,
         sortBy: sortBy ?? this.sortBy,
-        errorMessage: errorMessage);
+        errorMessage: errorMessage,
         selectedChildId: selectedChildId ?? this.selectedChildId,
         myChildDashboard: myChildDashboard ?? this.myChildDashboard,
-        errorMessage: errorMessage,
         babyChilds: babyChilds ?? this.babyChilds
     );
   }

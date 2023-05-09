@@ -41,7 +41,7 @@ class ChildRepositoryImpl extends ChildRepository {
   @override
   Future<ResponseModel> deleteBaby(String id) async {
     if (await networkInfo.isConnected) {
-      return remoteDatasource.deleteBaby(id);
+      return remoteDatasource.deleteBabyList(id);
     }
     throw NetworkConnectionException();
   }

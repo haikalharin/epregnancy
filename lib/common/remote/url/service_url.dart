@@ -38,7 +38,7 @@ class ServiceUrl {
   //baby
   static String baby = 'user-baby';
   static String saveBaby = '$baby/save';
-  static String deleteBaby = '$baby/delete/';
+  static String deleteBabyList = '$baby/delete/';
   static String updateBaby = '$baby/update';
   static String deleteBaby = '$baby/delete';
   static String listBaby = '$baby/list';

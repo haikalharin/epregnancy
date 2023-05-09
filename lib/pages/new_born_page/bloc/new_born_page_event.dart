@@ -20,6 +20,18 @@ final bool isUpdate;
   List<Object> get props => [];
 }
 
+class UpdateChildEvent extends NewBornPageEvent {
+  const UpdateChildEvent({this.name, required this.dob, required this.gender, this.babyId});
+
+  final String? name;
+  final String dob;
+  final String gender;
+  final String? babyId;
+
+  @override
+  List<Object> get props => [];
+}
+
 class NewBornAddDataBabyEvent extends NewBornPageEvent {
    NewBornAddDataBabyEvent({this.isUpdate =false});
    bool isUpdate;
@@ -76,6 +88,29 @@ class NewBornDisposeEvent extends NewBornPageEvent {
   List<Object> get props => [];
 }
 
+class NewBornUpdateDataBabyEvent extends NewBornPageEvent {
+  const NewBornUpdateDataBabyEvent(this.babyModel, this.status);
+
+  final newBaby.NewBabyModel babyModel;
+  final String status;
+
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class NewBornDeleteDataBabyEvent extends NewBornPageEvent {
+  const NewBornDeleteDataBabyEvent(this.babyModel);
+
+  final newBaby.NewBabyModel babyModel;
+
+
+
+  @override
+  List<Object> get props => [];
+}
+
 class NewBornAddChildEvent extends NewBornPageEvent {
   const NewBornAddChildEvent({this.name, required this.dob, required this.gender, this.status, this.babyId});
 
@@ -84,18 +119,6 @@ class NewBornAddChildEvent extends NewBornPageEvent {
   final String gender;
   final String? babyId;
   final String? status;
-
-  @override
-  List<Object> get props => [];
-}
-
-class UpdateChildEvent extends NewBornPageEvent {
-  const UpdateChildEvent({this.name, required this.dob, required this.gender, this.babyId});
-
-  final String? name;
-  final String dob;
-  final String gender;
-  final String? babyId;
 
   @override
   List<Object> get props => [];
