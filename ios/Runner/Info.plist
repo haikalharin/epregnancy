@@ -13,6 +13,8 @@
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Need microphone access for taking video from camera</string>
     <string>$(BUNDLE_NAME)</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
