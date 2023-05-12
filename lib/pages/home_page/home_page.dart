@@ -255,7 +255,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         refresh: handleRefresh,
                                         tooltipController: tooltipController,
                                         psTriggerTooltip: _psTriggerTooltip)
-                                // todo child widget
                                     : ChildSectionWidget(state: state, tooltipController: tooltipController, psTriggerTooltip: _psTriggerTooltip)
                               ],
                             ),

@@ -233,13 +233,14 @@ class ChildSectionWidget extends StatelessWidget {
                   _ageChild(state.myChildDashboard),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                            return BabyBornFromPage(
-                              babyId: "",
-                              isEdit: true,
-                            );
-                          }));
+                      // todo baby weight tracker
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) {
+                      //       return BabyBornFromPage(
+                      //         babyId: "",
+                      //         isEdit: true,
+                      //       );
+                      //     }));
                     },
                     child: Container(
                       width: 118.w,

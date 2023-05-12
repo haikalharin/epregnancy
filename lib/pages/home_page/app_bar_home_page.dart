@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
+import 'package:PregnancyApp/pages/child_list_page/child_list_page.dart';
 import 'package:PregnancyApp/pages/child_list_page/widget/add_child_button.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/qr_scanner.dart';
@@ -13,6 +14,7 @@ import '../../common/injector/injector.dart';
 import '../../common/style/custom_text_style.dart';
 import '../../data/model/hospital_model/hospital_model.dart';
 import '../../utils/epragnancy_color.dart';
+import '../notification_page/notification_page.dart';
 
 class AppBarHomePage extends StatefulWidget {
   AppBarHomePage({Key? key}) : super(key: key);
@@ -43,24 +45,32 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      left: 10.w,
-                      right: 0,
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => const ChildListPage()));
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        left: 10.w,
+                        right: 0,
+                      ),
+                      child: Text("${state.myChildDashboard?.child?.name}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                          textAlign: TextAlign.start),
                     ),
-                    child: Text("${state.myChildDashboard?.child?.name}",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                        textAlign: TextAlign.start),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        _showBabyAndChildPicker(context);
-                      },
-                      icon: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: EpregnancyColors.primer,
-                      ))
+                  Expanded(
+                    child: IconButton(
+                        onPressed: () {
+                          _showBabyAndChildPicker(context);
+                        },
+                        icon: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: EpregnancyColors.primer,
+                        )),
+                  )
                 ],
               )),
               // app bar action section
@@ -135,7 +145,10 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                               //   }
                               // });
                             },
-                            child: Container(
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationPage()));
+                              },
                               child: Icon(
                                 Icons.notifications,
                                 color: EpregnancyColors.primer,
