@@ -46,12 +46,7 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => const ChildListPage()));
-                    },
-                    child: Container(
+                  Container(
                       margin: EdgeInsets.only(
                         left: 10.w,
                         right: 0,
@@ -60,7 +55,6 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.black),
                           textAlign: TextAlign.start),
-                    ),
                   ),
                   Expanded(
                     child: IconButton(
@@ -699,7 +693,31 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                           if (index == state.babyChilds?.length) {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              child: const AddChildButton(),
+                              child: InkWell(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) {
+                                        return const ChildListPage();
+                                      }));
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 56.h,
+                                  margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 16.h),
+                                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                  decoration: BoxDecoration(
+                                      color: EpregnancyColors.primer,
+                                      borderRadius: BorderRadius.circular(12.w)
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      whiteText16("Lihat / Tambah Data Anak"),
+                                      Icon(Icons.add, color: Colors.white,)
+                                    ],
+                                  ),
+                                ),
+                              ),
                             );
                           } else {
                             return ListTile(
