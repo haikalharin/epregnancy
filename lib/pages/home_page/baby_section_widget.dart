@@ -620,7 +620,7 @@ class BabySectionWidget extends StatelessWidget {
                       return  Stack(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(left: 130.w,top: 50.h),
+                            margin: EdgeInsets.only(left: 110.w,top: 35.h),
                             padding: EdgeInsets.only(top: 16.h,left: 24.w),
                             height: 150.h,
                             width: 190.w,
