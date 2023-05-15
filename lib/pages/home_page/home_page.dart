@@ -129,6 +129,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   void start() {
     Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+    Injector.resolve<HomePageBloc>().add(HomeFetchNotificationTotalUnreadEvent());
     Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
     Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
     Injector.resolve<HomePageBloc>().add(const PointFetchEvent());
@@ -138,7 +139,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       _scrollControler.addListener(() {
-        print('scrolling');
       });
       _scrollControler.position.isScrollingNotifier.addListener(() {
         if (_scrollControler.position.pixels ==

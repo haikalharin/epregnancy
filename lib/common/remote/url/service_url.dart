@@ -115,6 +115,11 @@ class ServiceUrl {
   //my-child
   static String myChild = "my-child";
 
+  //notification
+  static String notification = "notif";
+  static String notificationList = "$notification/messages";
+  static String notificationTotalUnread = "$notification/total-unread-messages";
+
 
 
 

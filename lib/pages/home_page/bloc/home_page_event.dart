@@ -50,6 +50,13 @@ class SetHospitalEvent extends HomePageEvent {
   List<Object> get props => [];
 }
 
+class HomeFetchNotificationTotalUnreadEvent extends HomePageEvent {
+  const HomeFetchNotificationTotalUnreadEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class HomeInitEvent extends HomePageEvent {
   const HomeInitEvent();
 

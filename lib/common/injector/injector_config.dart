@@ -12,6 +12,8 @@ import 'package:PregnancyApp/data/repository/home_repository/home_repository.dar
 import 'package:PregnancyApp/data/repository/home_repository/home_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/hospital_repository/hospital_repository.dart';
 import 'package:PregnancyApp/data/repository/hospital_repository/hospital_repository_impl.dart';
+import 'package:PregnancyApp/data/repository/notification_repository/notification_repository.dart';
+import 'package:PregnancyApp/data/repository/notification_repository/notification_repository_impl.dart';
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
@@ -24,6 +26,7 @@ import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/bloc/landing_page_bloc.dart';
 import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
 import 'package:PregnancyApp/pages/nakes_page/bloc/chat_pending_bloc.dart';
+import 'package:PregnancyApp/pages/notification_page/bloc/notification_bloc.dart';
 import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/pin_checkin/bloc/pin_checkin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
@@ -110,6 +113,7 @@ abstract class InjectorConfig {
   @Register.singleton(AudioBloc)
   @Register.singleton(NewBornPageBloc)
   @Register.singleton(ChildListBloc)
+  @Register.singleton(NotificationBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)
@@ -120,6 +124,7 @@ abstract class InjectorConfig {
   @Register.factory(ConsultationRepository, from: ConsultationRepositoryImpl)
   @Register.factory(HospitalRepository, from: HospitalRepositoryImpl)
   @Register.factory(ChildRepository, from: ChildRepositoryImpl)
+  @Register.factory(NotificationRepository, from: NotificationRepositoryImpl)
   void _configureRepositories();
 
   @Register.factory(RemoteDataSource)

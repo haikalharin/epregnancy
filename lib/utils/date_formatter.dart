@@ -8,7 +8,6 @@ class DateFormatter {
   static DateFormat hourOnly = DateFormat('HH:mm');
   static DateFormat monthOnly = DateFormat.MMMM('id');
 
-
   static  DateFormat dateFormatHistory =  DateFormat('dd MMM yyyy . HH:mm');
 
   static  DateFormat dateFormatWithSpace =  DateFormat('d MMMM yyyy');

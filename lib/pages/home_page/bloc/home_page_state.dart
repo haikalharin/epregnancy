@@ -32,6 +32,7 @@ class HomePageState with FormzMixin {
   final int page;
   final MandatoryFieldValidator nextVisitDateString;
   final bool? isFromSubmit;
+  final int? totalUnreadNotif;
 
   HomePageState(
       {this.user,
@@ -64,7 +65,8 @@ class HomePageState with FormzMixin {
       this.selectedChildId,
       this.myChildDashboard,
       this.babyChilds,
-      this.errorMessage});
+      this.errorMessage,
+      this.totalUnreadNotif});
 
   HomePageState copyWith(
       {FormzStatus? submitStatus,
@@ -97,7 +99,8 @@ class HomePageState with FormzMixin {
         HospitalModel? hospitalModel,
         String? selectedChildId,
         MyChildDashboard? myChildDashboard,
-        List<BabyChildResponse>? babyChilds
+        List<BabyChildResponse>? babyChilds,
+        int? totalUnreadNotif
       }) {
     return HomePageState(
         submitStatus: submitStatus,
@@ -130,7 +133,8 @@ class HomePageState with FormzMixin {
         errorMessage: errorMessage,
         selectedChildId: selectedChildId ?? this.selectedChildId,
         myChildDashboard: myChildDashboard ?? this.myChildDashboard,
-        babyChilds: babyChilds ?? this.babyChilds
+        babyChilds: babyChilds ?? this.babyChilds,
+        totalUnreadNotif: totalUnreadNotif ?? this.totalUnreadNotif
     );
   }
 

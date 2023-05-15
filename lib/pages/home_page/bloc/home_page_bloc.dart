@@ -5,6 +5,7 @@ import 'package:PregnancyApp/data/firebase/event/event_event.dart';
 import 'package:PregnancyApp/data/model/baby_child_model/baby_child_response.dart';
 import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
+import 'package:PregnancyApp/data/model/notification_model/notification_total_unread_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
@@ -90,6 +91,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapFetchListPersonDiscussEventToState(event, state);
     } else if (event is SubmitNextVisitEvent) {
       yield* _mapSubmitNextVisitEventtToState(event, state);
+    } else if (event is HomeFetchNotificationTotalUnreadEvent) {
+      yield* _mapFetchTotalUnreadNotif(event, state);
     }
   }
 
@@ -311,6 +314,34 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
       print("error exception child dashboard: ${a.toString()}");
+      if (a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      }
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure,
+          errorMessage: a.toString(),
+          isNotHaveSession: false);
+    }
+  }
+
+  Stream<HomePageState> _mapFetchTotalUnreadNotif(
+      HomeFetchNotificationTotalUnreadEvent event,
+      HomePageState state,
+      ) async* {
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-total-unread-loading", totalUnreadNotif: 0);
+    try {
+      final ResponseModel<NotificationTotalUnreadModel> response = await homeRepository.fetchNotificationTotalUnread();
+      if (response.code == 200) {
+        NotificationTotalUnreadModel? _totalUnreadNotif = response.data;
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, tipe: "fetch-total-unread-success", totalUnreadNotif: _totalUnreadNotif?.total);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message, tipe: "fetch-total-unread-failed");
+      }
+    } on HomeErrorException catch (e) {
+      print("home error total unread : ${e.toString()}");
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+    } on Exception catch (a) {
+      print("error exception total unread: ${a.toString()}");
       if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }

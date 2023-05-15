@@ -15,6 +15,7 @@ import '../../common/style/custom_text_style.dart';
 import '../../data/model/hospital_model/hospital_model.dart';
 import '../../utils/epragnancy_color.dart';
 import '../notification_page/notification_page.dart';
+import 'package:badges/badges.dart' as badge;
 
 class AppBarHomePage extends StatefulWidget {
   AppBarHomePage({Key? key}) : super(key: key);
@@ -149,10 +150,14 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationPage()));
                               },
-                              child: Icon(
-                                Icons.notifications,
-                                color: EpregnancyColors.primer,
-                                size: 23.w,
+                              child: badge.Badge(
+                                badgeContent: Center(child: Text(state.totalUnreadNotif.toString(), style: const TextStyle(color: Colors.white),)),
+                                position: badge.BadgePosition.topEnd(top: -10, end: -3),
+                                child: Icon(
+                                  Icons.notifications,
+                                  color: EpregnancyColors.primer,
+                                  size: 23.w,
+                                ),
                               ),
                             ),
                           ),
