@@ -5,13 +5,14 @@ class HomePageState with FormzMixin {
   final UserVisitModel? userVisitModel;
   final List<UserVisitModel>? listUserVisitModel;
   final String? role;
-  final NewBabyModel? baby;
+  final nb.NewBabyModel? baby;
   final FormzStatus? submitStatus;
   final String? tipe;
   final String? days;
   final String? weeks;
   final String? eventDateString;
   final DateTime? eventDate;
+  final HospitalModel? hospitalModel;
   final SimpleTipResponse? simpleTipResponse;
   final List<ArticleModel>? listArticle;
   final List<EventModel>? listEvent;
@@ -21,6 +22,9 @@ class HomePageState with FormzMixin {
   final String? errorMessage;
   final bool? showGuide;
   final bool? isNotHaveSession;
+  final String? selectedChildId;
+  final MyChildDashboard? myChildDashboard;
+  final List<BabyChildResponse>? babyChilds;
   final bool? isSearch;
   final bool lastPageListVisit;
   final SortEnum? sort;
@@ -56,6 +60,10 @@ class HomePageState with FormzMixin {
       this.isNotHaveSession,
       this.isSearch = false,
       this.page = 0,
+      this.hospitalModel,
+      this.selectedChildId,
+      this.myChildDashboard,
+      this.babyChilds,
       this.errorMessage});
 
   HomePageState copyWith(
@@ -64,7 +72,7 @@ class HomePageState with FormzMixin {
       UserVisitModel? userVisitModel,
       List<UserVisitModel>? listUserVisitModel,
       String? role,
-      NewBabyModel? baby,
+      nb.NewBabyModel? baby,
       SimpleTipResponse? simpleTipResponse,
       List<ArticleModel>? listArticle,
       List<EventModel>? listEvent,
@@ -73,7 +81,7 @@ class HomePageState with FormzMixin {
       String? tipe,
       String? days,
       String? weeks,
-        MandatoryFieldValidator? nextVisitDateString,
+      MandatoryFieldValidator? nextVisitDateString,
       String? eventDateString,
       DateTime? eventDate,
       int? totalPointsEarned,
@@ -85,7 +93,12 @@ class HomePageState with FormzMixin {
       bool? isFromSubmit,
       SortEnum? sort,
       String? sortBy,
-      String? errorMessage}) {
+      String? errorMessage,
+        HospitalModel? hospitalModel,
+        String? selectedChildId,
+        MyChildDashboard? myChildDashboard,
+        List<BabyChildResponse>? babyChilds
+      }) {
     return HomePageState(
         submitStatus: submitStatus,
         user: user ?? this.user,
@@ -94,6 +107,7 @@ class HomePageState with FormzMixin {
         role: role ?? this.role,
         baby: baby ?? this.baby,
         nextVisitDateString: nextVisitDateString ?? this.nextVisitDateString,
+        hospitalModel: hospitalModel ?? this.hospitalModel,
         simpleTipResponse: simpleTipResponse ?? this.simpleTipResponse,
         showGuide: showGuide ?? this.showGuide,
         listArticle: listArticle ?? this.listArticle,
@@ -113,7 +127,11 @@ class HomePageState with FormzMixin {
         page: page ?? this.page,
         sort: sort ?? this.sort,
         sortBy: sortBy ?? this.sortBy,
-        errorMessage: errorMessage);
+        errorMessage: errorMessage,
+        selectedChildId: selectedChildId ?? this.selectedChildId,
+        myChildDashboard: myChildDashboard ?? this.myChildDashboard,
+        babyChilds: babyChilds ?? this.babyChilds
+    );
   }
 
   @override

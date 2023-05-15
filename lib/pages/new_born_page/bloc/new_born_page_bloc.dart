@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:PregnancyApp/common/injector/injector.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/signup_quest_request.dart';
+import 'package:PregnancyApp/data/repository/child_repository/child_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -16,15 +18,18 @@ import '../../../data/model/baby_model_api/baby_Model_api.dart';
 import '../../../data/model/user_model_api/user_model.dart';
 import '../../../data/repository/user_repository/user_repository.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../child_list_page/bloc/child_list_bloc.dart';
+import '../../home_page/bloc/home_page_bloc.dart';
 
 part 'new_born_page_event.dart';
 
 part 'new_born_page_state.dart';
 
 class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
-  NewBornPageBloc(this.userRepository) : super(NewBornPageInitial());
+  NewBornPageBloc(this.userRepository, this.childRepository) : super(NewBornPageInitial());
 
   final UserRepository userRepository;
+  final ChildRepository childRepository;
 
   @override
   Stream<NewBornPageState> mapEventToState(NewBornPageEvent event) async* {
@@ -48,6 +53,121 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
       yield* _mapNewBornInitEventToState(event, state);
     } else if (event is NewBornDisposeEvent) {
       yield _mapNewBornDisposeEventToState(event, state);
+    } else if (event is NewBornAddChildEvent) {
+      yield* _mapNewBordAddChildEvent(event, state);
+    } else if (event is LostBabyEvent) {
+      yield* _lostBabyEvent(event, state);
+    } else if (event is DeleteBabyEvent) {
+      yield* _deleteBabyEvent(event, state);
+    } else if(event is UpdateChildEvent){
+      yield* _mapUpdateChildEvent(event, state);
+    } else if (event is DeleteChildEvent) {
+      yield* _deleteChildEvent(event, state);
+    }
+  }
+
+  Stream<NewBornPageState> _mapNewBordAddChildEvent(NewBornAddChildEvent event, NewBornPageState state) async* {
+    try{
+      yield state.copyWith(type: "adding-child-loading", submitStatus: FormzStatus.submissionInProgress);
+      if(event.babyId != "") {
+        ResponseModel updateBabyResponse = await childRepository.updateBabyStatus(event.babyId!, event.status!);
+
+        if(updateBabyResponse.code == 200){
+          ResponseModel addChildResponse = await childRepository.addChild(event.name, event.dob, event.gender);
+          if(addChildResponse.code == 200) {
+            Injector.resolve<HomePageBloc>().add(const ResetBaby());
+            Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
+            yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "adding-child-success");
+          } else {
+            print("add child code != 200");
+            yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "adding-child-failed");
+          }
+        } else {
+          print("update baby code != 200");
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "adding-child-failed");
+        }
+      } else {
+        ResponseModel addChildResponse = await childRepository.addChild(event.name, event.dob, event.gender);
+        if(addChildResponse.code == 200) {
+          yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "adding-child-success");
+        } else {
+          print("add child code != 200");
+          yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "adding-child-failed");
+        }
+      }
+    }catch(e){
+      print("_mapNewBordAddChildEventError : ${e.toString()}");
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "adding-child-failed");
+    }
+  }
+
+  Stream<NewBornPageState> _mapUpdateChildEvent(UpdateChildEvent event, NewBornPageState state) async* {
+    try{
+      yield state.copyWith(type: "update-child-loading", submitStatus: FormzStatus.submissionInProgress);
+      ResponseModel addChildResponse = await childRepository.updateChild(event.babyId, event.name, event.dob, event.gender);
+      if(addChildResponse.code == 200) {
+        print('success update child');
+        Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "update-child-success");
+      } else {
+        print('failed update child');
+        print("add child code != 200");
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "update-child-failed");
+      }
+    }catch(e){
+      print("_mapUpdateChildEventError : ${e.toString()}");
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "update-child-failed");
+    }
+  }
+
+  Stream<NewBornPageState> _lostBabyEvent(LostBabyEvent event, NewBornPageState state) async* {
+    try{
+      state.copyWith(type: "lost-baby-loading", submitStatus: FormzStatus.submissionInProgress);
+      ResponseModel updateBabyStatusResponse = await childRepository.updateBabyStatus(event.babyId!, "KEHILANGAN");
+      if(updateBabyStatusResponse.code == 200){
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "lost-baby-success");
+
+      } else {
+        print("Terjadi Kesalahan!");
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "lost-baby-failed");
+      }
+    }catch(e){
+      print("update baby lost error : ${e.toString()}");
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "lost-baby-failed");
+    }
+  }
+
+  Stream<NewBornPageState> _deleteBabyEvent(DeleteBabyEvent event, NewBornPageState state) async* {
+    try{
+      state.copyWith(type: "delete-baby-loading", submitStatus: FormzStatus.submissionInProgress);
+      ResponseModel updateBabyStatusResponse = await childRepository.deleteBaby(event.babyId!);
+      if(updateBabyStatusResponse.code == 200){
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "delete-baby-success");
+
+      } else {
+        print("Somethings went wrong!");
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "delete-baby-failed");
+      }
+    }catch(e){
+      print("update baby delete error : ${e.toString()}");
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "delete-baby-failed");
+    }
+  }
+
+  Stream<NewBornPageState> _deleteChildEvent(DeleteChildEvent event, NewBornPageState state) async* {
+    try{
+      state.copyWith(type: "delete-child-loading", submitStatus: FormzStatus.submissionInProgress);
+      ResponseModel updateBabyStatusResponse = await childRepository.deleteChild(event.id!);
+      if(updateBabyStatusResponse.code == 200){
+        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "delete-child-success");
+        Injector.resolve<ChildListBloc>().add(const FetchChildListEvent());
+      } else {
+        print("Somethings went wrong!");
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "delete-child-failed");
+      }
+    }catch(e){
+      print("update child delete error : ${e.toString()}");
+      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, type: "delete-child-failed");
     }
   }
 

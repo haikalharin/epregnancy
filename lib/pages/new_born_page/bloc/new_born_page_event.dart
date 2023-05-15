@@ -20,6 +20,18 @@ final bool isUpdate;
   List<Object> get props => [];
 }
 
+class UpdateChildEvent extends NewBornPageEvent {
+  const UpdateChildEvent({this.name, required this.dob, required this.gender, this.babyId});
+
+  final String? name;
+  final String dob;
+  final String gender;
+  final String? babyId;
+
+  @override
+  List<Object> get props => [];
+}
+
 class NewBornAddDataBabyEvent extends NewBornPageEvent {
    NewBornAddDataBabyEvent({this.isUpdate =false});
    bool isUpdate;
@@ -99,10 +111,53 @@ class NewBornDeleteDataBabyEvent extends NewBornPageEvent {
   List<Object> get props => [];
 }
 
+class NewBornAddChildEvent extends NewBornPageEvent {
+  const NewBornAddChildEvent({this.name, required this.dob, required this.gender, this.status, this.babyId});
+
+  final String? name;
+  final String dob;
+  final String gender;
+  final String? babyId;
+  final String? status;
+
+  @override
+  List<Object> get props => [];
+}
+
 class NewBornChoice extends NewBornPageEvent {
   const NewBornChoice(this.choice);
 
   final int choice;
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class LostBabyEvent extends NewBornPageEvent {
+  const LostBabyEvent(this.babyId);
+
+  final String? babyId;
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class DeleteBabyEvent extends NewBornPageEvent {
+  const DeleteBabyEvent(this.babyId);
+
+  final String? babyId;
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class DeleteChildEvent extends NewBornPageEvent {
+  const DeleteChildEvent(this.id);
+
+  final String? id;
 
 
   @override

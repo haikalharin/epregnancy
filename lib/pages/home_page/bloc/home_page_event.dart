@@ -19,6 +19,37 @@ class HomeFetchDataEvent extends HomePageEvent {
   List<Object> get props => [];
 }
 
+class ResetBaby extends HomePageEvent {
+  const ResetBaby();
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class HomeFetchBabyChildsEvent extends HomePageEvent {
+  const HomeFetchBabyChildsEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class HomeFetchChildForDashboardEvent extends HomePageEvent {
+  const HomeFetchChildForDashboardEvent(this.id);
+  final String id;
+
+  @override
+  List<Object> get props => [];
+}
+
+class SetHospitalEvent extends HomePageEvent {
+  const SetHospitalEvent(this.hospitalModel);
+  final HospitalModel? hospitalModel;
+
+  @override
+  List<Object> get props => [];
+}
+
 class HomeInitEvent extends HomePageEvent {
   const HomeInitEvent();
 

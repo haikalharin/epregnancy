@@ -1,17 +1,25 @@
+import 'package:PregnancyApp/common/widget/btn_primary_white.dart';
+import 'package:PregnancyApp/common/widget/primary_btn.dart';
 import 'package:PregnancyApp/pages/home_page/baby_tracker_detail_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../common/constants/router_constants.dart';
+import '../../common/injector/injector.dart';
+import '../../data/shared_preference/app_shared_preference.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/image_utils.dart';
+import '../new_born_page/bloc/new_born_page_bloc.dart';
+import '../profile_page/bloc/profile_page_bloc.dart';
 
 class BabySectionWidget extends StatelessWidget {
   BabySectionWidget(
@@ -19,12 +27,14 @@ class BabySectionWidget extends StatelessWidget {
       this.one,
       required this.state,
       required this.tooltipController,
-      required this.psTriggerTooltip})
+      required this.psTriggerTooltip, this.refresh, this.refreshIndicatorKey})
       : super(key: key);
   final GlobalKey? one;
   final HomePageState state;
   final JustTheController tooltipController;
   final PublishSubject<bool> psTriggerTooltip;
+  final VoidCallback? refresh;
+  final GlobalKey<LiquidPullToRefreshState>? refreshIndicatorKey;
   var duration = 0;
 
   Path defaultTailBuilder(Offset tip, Offset point2, Offset point3) {
@@ -33,6 +43,179 @@ class BabySectionWidget extends StatelessWidget {
       ..lineTo(point2.dx, point2.dy)
       ..lineTo(point3.dx, point3.dy)
       ..close();
+  }
+
+  void _babyLostDialog(context) {
+     showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return WillPopScope(
+            child: Center(
+              child: Container(
+                width: 300.w,
+                height: MediaQuery.of(context).size.height * 0.5,
+                padding: EdgeInsets.all(20.w),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(4.w))),
+                child: Material(
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: Scrollbar(
+                          isAlwaysShown: true,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: ListView(
+                              children: [
+                                Center(
+                                  child: SvgPicture.asset("assets/ic_baby_lost.svg"),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Center(
+                                  child: Text(
+                                    "Turut Berduka Cita",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: EpregnancyColors.black,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "bold"),
+                                  ),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Text("Komunitaz turut prihatin atas kehilangan yang Bunda alami. Kami berharap Bunda dapat menemukan ketenangan dalam waktu sulit ini. Kedepannya kami tidak lagi mengirimkan pemberitahuan terkait kehamilan.",
+                                textAlign: TextAlign.center,)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        child: Padding(
+                            padding:
+                            EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
+                            child: SizedBox(
+                              height: 46.w,
+                              width: MediaQuery.of(context).size.width,
+                              child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(4.w)),
+                                  color: EpregnancyColors.primer,
+                                  disabledColor: Colors.grey,
+                                  child: Text('Setuju',
+                                      style: TextStyle(
+                                          fontFamily: "bold",
+                                          fontSize: 13.sp,
+                                          color: Colors.white)),
+                                  onPressed: () {
+                                    refresh?.call();
+                                    Navigator.pop(context);
+                                  }),
+                            )),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            onWillPop: () => Future.value(false));
+      },
+    );
+  }
+
+  void _babyDeleteDialog(context, String babyId) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return WillPopScope(
+            child: Center(
+              child: Container(
+                width: 300.w,
+                height: MediaQuery.of(context).size.height * 0.33,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8.w))),
+                child: Material(
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: Scrollbar(
+                          isAlwaysShown: true,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: ListView(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    "Sebelum Hapus Data Anak",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: EpregnancyColors.black,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "bold"),
+                                  ),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                  child: Text("Apakah Anda Yakin? dengan mengkonfirmasi maka Profil Anak akan dihapus secara permanen.", textAlign: TextAlign.center, style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500),),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Container(
+                                  child: BtnPrimary(
+                                    text: "Ya, Hapus Data Anak",
+                                    function: (){
+                                      AppSharedPreference.remove("babyData");
+                                      Injector.resolve<NewBornPageBloc>().add(DeleteBabyEvent(babyId));
+                                      Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+                                      Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
+                                      Injector.resolve<HomePageBloc>().add(const ResetBaby());
+                                      Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
+                                      refresh?.call();
+                                      // refreshIndicatorKey?.currentState?.activate();
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                                SizedBox(height: 16.h,),
+                                Container(
+                                  child: BtnPrimaryWhite(
+                                    text: "Tidak, Nanti Saja",
+                                    function: (){
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            onWillPop: () => Future.value(false));
+      },
+    );
   }
 
   @override

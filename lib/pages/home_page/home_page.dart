@@ -7,6 +7,7 @@ import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/flavors.dart';
+import 'package:PregnancyApp/pages/home_page/app_bar_home_page.dart';
 import 'package:PregnancyApp/pages/home_page/baby_section_widget.dart';
 import 'package:PregnancyApp/pages/home_page/game_card_section.dart';
 import 'package:PregnancyApp/pages/home_page/poin_card_section.dart';
@@ -82,10 +83,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool showEditBaby = false;
   final tooltipController = JustTheController();
   final PublishSubject<bool> _psTriggerTooltip = PublishSubject();
-  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
-      GlobalKey<LiquidPullToRefreshState>();
+  final GlobalKey<LiquidPullToRefreshState> refreshIndicatorKey = GlobalKey<LiquidPullToRefreshState>();
 
-  Future<void> _handleRefresh() async {
+  Future<void> handleRefresh() async {
     if (F.appFlavor == Flavor.DEVELOPMENT) {
       // subscribeFcmTopic();
     }
@@ -96,10 +96,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void getHospitalFromLocal() async {
     HospitalModel _hospital = await AppSharedPreference.getHospital();
     if (_hospital != null && mounted) {
-      setState(() {
-        _hospitalModel = _hospital;
-      });
+      Injector.resolve<HomePageBloc>().add(SetHospitalEvent(_hospital));
+      // setState(() {
+      //   _hospitalModel = _hospital;
+      // });
     }
+  }
+
+  void setHospitalModelFromSelection(HospitalModel? selectedHospitalModel) {
+    setState(() {
+      _hospitalModel = selectedHospitalModel;
+    });
   }
 
   bool isExpanded = false;
@@ -214,247 +221,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 color: EpregnancyColors.white,
                 child: LiquidPullToRefresh(
                   color: EpregnancyColors.primer,
-                  key: _refreshIndicatorKey,
-                  onRefresh: _handleRefresh,
+                  key: refreshIndicatorKey,
+                  onRefresh: handleRefresh,
                   showChildOpacityTransition: false,
                   child: ListView(
                     controller: _scrollControler,
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: EpregnancyColors.white,
-                        margin: EdgeInsets.only(bottom: 12, top: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(left: 16.w),
-                                child: SvgPicture.asset(
-                                    "assets/ic_baby_appbar.svg")),
-                            Expanded(
-                              child: state.baby?.baby?.name == null && state.baby?.baby?.lastMenstruationDate == null
-                                  ? InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(
-                                      RouteName.surveyPageBaby,
-                                      arguments: {"is_edit": true, "edit_name": false});
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 16.w),
-                                  padding:
-                                  EdgeInsets.only(left: 16.w),
-                                  decoration: BoxDecoration(
-                                    color: EpregnancyColors.primer,
-                                    border: Border.all(
-                                      color: EpregnancyColors.primer,
-                                    ),
-                                    borderRadius:
-                                    BorderRadius.circular(10.0),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                          child: const Text(
-                                            'Tambah Data Anak',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: EpregnancyColors
-                                                    .white,
-                                                fontWeight:
-                                                FontWeight.bold),
-                                            maxLines: 3,
-                                          )),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons
-                                                .arrow_forward_ios_rounded,
-                                            size: 16,
-                                            color: EpregnancyColors
-                                                .white,
-                                          ))
-                                    ],
-                                  ),
-                                ),
-                              )
-                                  :  state.baby?.baby?.name != null && state.baby?.baby?.name != '' &&
-                                          state.baby?.baby?.status !=
-                                              'KEHILANGAN'
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                left: 10.w,
-                                                right: 0,
-                                              ),
-                                              child: Text(
-                                                  "${state.baby?.baby?.name}",
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black),
-                                                  textAlign: TextAlign.start),
-                                            ),
-                                            IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(
-                                                  Icons.keyboard_arrow_down,
-                                                  color:
-                                                      EpregnancyColors.primer,
-                                                ))
-                                          ],
-                                        )
-                                      : InkWell(
-                                          onTap: () {
-                                            print("Beri nama bayi");
-                                            Navigator.of(context).pushNamed(
-                                                RouteName.surveyPageBaby,
-                                                arguments: {
-                                                  "is_edit": true,
-                                                  "edit_name": true
-                                                });
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(left: 16.w),
-                                            padding:
-                                                EdgeInsets.only(left: 16.w),
-                                            decoration: BoxDecoration(
-                                              color: EpregnancyColors.primer,
-                                              border: Border.all(
-                                                color: EpregnancyColors.primer,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                    child: const Text(
-                                                  'Beri nama bayi',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: EpregnancyColors
-                                                          .white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  maxLines: 3,
-                                                )),
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon: const Icon(
-                                                      Icons
-                                                          .arrow_forward_ios_rounded,
-                                                      size: 16,
-                                                      color: EpregnancyColors
-                                                          .white,
-                                                    ))
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                            ),
-                            // app bar action section
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 2.7,
-                              // alignment: Alignment.centerRight,
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.only(left: 0.w, right: 10.w),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            if (_hospitalModel?.name == '') {
-                                              Navigator.pushNamed(context,
-                                                      RouteName.locationSelect)
-                                                  .then((value) {
-                                                if (value != null) {
-                                                  setState(() {
-                                                    _hospitalModel =
-                                                        value as HospitalModel?;
-                                                  });
-                                                }
-                                              });
-                                            } else {
-                                              // todo implement barcode scanner
-                                              Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const QrScanner()))
-                                                  .then((value) {
-                                                // todo handel pin checkin from barcode
-                                                print("scan result : $value");
-                                              });
-                                              // showModalBottomSheet(
-                                              //     context: context,
-                                              //     isScrollControlled: false,
-                                              //     builder: (context) {
-                                              //       return PinCheckInPage();
-                                              //     });
-                                            }
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 16),
-                                            child: Icon(
-                                              Icons.qr_code,
-                                              color: EpregnancyColors.primer,
-                                              size: 23.w,
-                                            ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Toast.show(
-                                                "Fitur ini akan segera hadir");
-                                            // Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                            //   if (value != null) {
-                                            //     setState(() {
-                                            //       _hospitalModel = value
-                                            //           as HospitalModel?;
-                                            //     });
-                                            //   }
-                                            // });
-                                          },
-                                          child: Container(
-                                            child: Icon(
-                                              Icons.notifications,
-                                              color: EpregnancyColors.primer,
-                                              size: 23.w,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10.w,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                      // app bar section
+                      AppBarHomePage(),
+                      // baby section
                       Container(
                         padding: EdgeInsets.only(top: 20),
                         decoration: const BoxDecoration(
@@ -472,13 +247,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 state.user?.isPregnant == true &&
-                                        state.user?.babies?.length != 0
+                                    (state.user?.babies?.length ?? 0) >= 1 && state.baby != null && state.baby?.baby?.name != "null"
                                     ? BabySectionWidget(
                                         state: state,
+                                        refreshIndicatorKey: refreshIndicatorKey,
                                         one: widget.one,
+                                        refresh: handleRefresh,
                                         tooltipController: tooltipController,
                                         psTriggerTooltip: _psTriggerTooltip)
-                                    : Container(),
+                                // todo child widget
+                                    : ChildSectionWidget(state: state, tooltipController: tooltipController, psTriggerTooltip: _psTriggerTooltip)
                               ],
                             ),
                             state.showGuide == true

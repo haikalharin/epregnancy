@@ -4,6 +4,8 @@ import 'package:PregnancyApp/data/repository/article_repository/article_reposito
 import 'package:PregnancyApp/data/repository/article_repository/article_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/chat_repository/chat_repository.dart';
 import 'package:PregnancyApp/data/repository/chat_repository/chat_repository_impl.dart';
+import 'package:PregnancyApp/data/repository/child_repository/child_repository.dart';
+import 'package:PregnancyApp/data/repository/child_repository/child_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/event_repository/event_repository.dart';
 import 'package:PregnancyApp/data/repository/event_repository/event_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
@@ -38,6 +40,7 @@ import '../../data/repository/user_repository/user_repository.dart';
 import '../../data/repository/user_repository/user_repository_impl.dart';
 import '../../pages/audio_page/bloc/audio_bloc.dart';
 import '../../pages/change_password_page/bloc/change_password_bloc.dart';
+import '../../pages/child_list_page/bloc/child_list_bloc.dart';
 import '../../pages/consultation_page/bloc/comment_bloc.dart';
 import '../../pages/consultation_page/bloc/consultation_page_bloc.dart';
 import '../../pages/login_page/bloc/login_bloc.dart';
@@ -106,6 +109,7 @@ abstract class InjectorConfig {
   @Register.singleton(CommentBloc)
   @Register.singleton(AudioBloc)
   @Register.singleton(NewBornPageBloc)
+  @Register.singleton(ChildListBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)
@@ -115,6 +119,7 @@ abstract class InjectorConfig {
   @Register.factory(EventRepository, from: EventRepositoryImpl)
   @Register.factory(ConsultationRepository, from: ConsultationRepositoryImpl)
   @Register.factory(HospitalRepository, from: HospitalRepositoryImpl)
+  @Register.factory(ChildRepository, from: ChildRepositoryImpl)
   void _configureRepositories();
 
   @Register.factory(RemoteDataSource)

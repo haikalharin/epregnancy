@@ -38,6 +38,7 @@ class ServiceUrl {
   //baby
   static String baby = 'user-baby';
   static String saveBaby = '$baby/save';
+  static String deleteBabyList = '$baby/delete/';
   static String updateBaby = '$baby/update';
   static String deleteBaby = '$baby/delete';
   static String listBaby = '$baby/list';
@@ -104,6 +105,16 @@ class ServiceUrl {
   static String hospital = 'hospital';
   static String hospitalVisit = '$hospital/visit/';
   static String hospitalList = '$hospital/list';
+
+  //childs
+  static String childs = 'childs';
+
+  //baby-childs
+  static String babyChilds = "baby-childs";
+
+  //my-child
+  static String myChild = "my-child";
+
 
 
 

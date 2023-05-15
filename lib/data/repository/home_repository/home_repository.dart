@@ -10,6 +10,8 @@ abstract class HomeRepository {
   Future <ResponseModel>getBaby(UserModel UserModel);
   Future <ResponseModel>fetchListArticle();
 
+  Future <ResponseModel>fetchBabyChilds();
+  Future <ResponseModel>fetchChildForDashBoard(String id);
 
   Future<ResponseModel<GamesResponse>> fetchGameList();
   Future<ResponseModel<PlayGameResponse>> getPointFromGame(String gameId);

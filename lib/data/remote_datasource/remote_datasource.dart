@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/baby_child_model/baby_child_response.dart';
 import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
 import 'package:PregnancyApp/data/model/biodata_model/biodata_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_list_response.dart';
@@ -8,6 +9,7 @@ import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
 import 'package:PregnancyApp/data/model/chat_model/last_chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
+import 'package:PregnancyApp/data/model/child_model/child_list_response.dart';
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
@@ -19,6 +21,7 @@ import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/members_model/members_summary_response.dart';
+import 'package:PregnancyApp/data/model/my_child_dashboard/my_child_dashboard.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -71,6 +74,36 @@ class RemoteDataSource {
 
   Future<ResponseModel> forgotPassword(Map data) async {
     final response = await httpClient.post(ServiceUrl.forgotPassword, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> addChild(Map data) async {
+    final response = await httpClient.post(ServiceUrl.childs, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> updateChild(Map data) async {
+    final response = await httpClient.put(ServiceUrl.childs, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> updateBabyStatus(Map data) async {
+    final response = await httpClient.put(ServiceUrl.updateBaby, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> deleteBabyList(String id) async {
+    final response = await httpClient.delete(ServiceUrl.deleteBaby + id, {});
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> deleteChild(String id) async {
+    final response = await httpClient.delete(ServiceUrl.childs + "/$id", {});
 
     return ResponseModel.fromJson(response, UserModel.fromJson);
   }
@@ -216,14 +249,34 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel> getBaby(UserModel UserModel) async {
+ Future<ResponseModel> getBaby(UserModel UserModel) async {
     try {
-      final response = await httpClient.get(ServiceUrl.myBaby);
+      final response =
+          await httpClient.get(ServiceUrl.myBaby);
       return ResponseModel.fromJson(response, NewBabyModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
+
+  Future<ResponseModel> getBabyChilds() async {
+    try {
+      final response = await httpClient.get(ServiceUrl.babyChilds);
+      return ResponseModel.fromJson(response, BabyChildResponse.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> getChildForDashboard(String childId) async {
+    try {
+      final response = await httpClient.get("${ServiceUrl.childs}/$childId/${ServiceUrl.myChild}");
+      return ResponseModel.fromJson(response, MyChildDashboard.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
 
   Future<ResponseModel> requestOtp(Map data) async {
     try {
@@ -525,6 +578,12 @@ class RemoteDataSource {
     final response = await httpClient.get(ServiceUrl.gameList);
 
     return ResponseModel.fromJson(response, GamesResponse.fromJson);
+  }
+
+  Future<ResponseModel<ChildListResponse>> fetchChildList() async {
+    final response = await httpClient.get(ServiceUrl.childs);
+
+    return ResponseModel.fromJson(response, ChildListResponse.fromJson);
   }
 
   Future<ResponseModel> changePassword(
