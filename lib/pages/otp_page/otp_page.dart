@@ -79,7 +79,7 @@ class _OtpPageState extends State<OtpPage> {
     }
     Injector.resolve<OtpPageBloc>()
         .add(RequestResendOtp(true, widget.userName));
-    startTimer();
+    // startTimer();
     super.initState();
   }
 

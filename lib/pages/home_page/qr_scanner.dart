@@ -78,10 +78,8 @@ class _QrScannerState extends State<QrScanner> {
           listener: (context, state) {
             if (state.submitStatus == FormzStatus.submissionSuccess) {
               // snackBar("Selamat Anda Berhasil CheckIn!");
-              // Injector.resolve<HomePageBloc>().add(PointFetchEvent());
-              if( state.firstVisit == false){
+              Injector.resolve<HomePageBloc>().add(PointFetchEvent());
               Navigator.push(context, MaterialPageRoute(builder: (context) => const SuccessEarnPoinPage()));
-              }
               // Navigator.pop(context);
             } else if (state.submitStatus == FormzStatus.submissionFailure) {
               // snackBar("Terjadi Kesalahan, Silahkan Coba Lagi!");
