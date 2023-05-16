@@ -40,7 +40,7 @@ class HospitalRepositoryImpl extends HospitalRepository {
   }
 
   @override
-  Future<ResponseModel<Member>> fetchMembers(String name, int page, bool isPregnant,String sortBy, String sort) async {
+  Future<ResponseModel<Member>> fetchMembers(String name, int page, int isPregnant,String sortBy, String sort) async {
     if (await networkInfo.isConnected) {
       return remoteDatasource.fetchMembers(name: name, page: page,isPregnant: isPregnant,sortBy: sortBy,sort: sort);
     }

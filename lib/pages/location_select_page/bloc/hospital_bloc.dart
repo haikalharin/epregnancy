@@ -141,14 +141,14 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
         response = await hospitalRepository.fetchMembers(
             event.name ?? "",
             state.page + 1,
-            event.isPregnant ?? true,
+            event.isPregnant??2,
             event.sortBy ?? "name",
             sort);
       } else {
         response = await hospitalRepository.fetchMembers(
             event.name ?? "",
             event.page ?? 0,
-            event.isPregnant ?? true,
+            event.isPregnant??2,
             event.sortBy ?? "name",
             sort);
       }
@@ -172,7 +172,7 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
             members: members,
             page: response.pagination?.number,
             isSearch: event.isSearch,
-            isPregnant: event.isPregnant,
+            isPregnant: event.isPregnant??2,
             sort: event.sort,
             sortBy: event.sortBy,
             name: event.name,

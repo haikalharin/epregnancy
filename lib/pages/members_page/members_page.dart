@@ -278,12 +278,12 @@ class _MembersPageState extends State<MembersPage>
                                         color: EpregnancyColors.primer,
                                         key: _refreshIndicatorKey,
                                         onRefresh: () async {
-                                              Injector.resolve<HospitalBloc>().add(
-                                                  FetchMembersEvent("", 0,
-                                                      isSearch: state.isSearch,
-                                                      isPregnant: state.isPregnant,
-                                                      sort: state.sort,
-                                                      sortBy: state.sortBy));
+                                          Injector.resolve<HospitalBloc>().add(
+                                              FetchMembersEvent("", 0,
+                                                  isSearch: state.isSearch,
+                                                  isPregnant: state.isPregnant,
+                                                  sort: state.sort,
+                                                  sortBy: state.sortBy));
                                         },
                                         showChildOpacityTransition: false,
                                         child: ListView.builder(
@@ -490,10 +490,9 @@ class _MembersPageState extends State<MembersPage>
                                     BoxConstraints(maxWidth: 40, maxHeight: 21),
                                 suffixIcon: InkWell(
                                   onTap: () {
-                                    _midwifeSearchTextController
-                                        .clear();
-                                    Injector.resolve<HospitalBloc>().add(
-                                        const FetchMidwifesEvent("", 0));
+                                    _midwifeSearchTextController.clear();
+                                    Injector.resolve<HospitalBloc>()
+                                        .add(const FetchMidwifesEvent("", 0));
                                     // _midwifeSearchTextController.clear();
                                     // Injector.resolve<PatientSelectBloc>().add(FetchPatientEvent(''));
                                   },
@@ -664,10 +663,11 @@ class _MembersPageState extends State<MembersPage>
                                   condition1 = false;
                                   condition2 = false;
                                 });
-                                Injector.resolve<HospitalBloc>()
-                                    .add(const FetchMembersEvent("", 0,  sortBy: "name",
-                                    isPregnant: true,
-                                    sort: SortEnum.asc));
+                                Injector.resolve<HospitalBloc>().add(
+                                    const FetchMembersEvent("", 0,
+                                        sortBy: "name",
+                                        isPregnant: 2,
+                                        sort: SortEnum.asc));
                                 Navigator.pop(context);
                                 keyboardFocusNode.unfocus();
                               },
@@ -1063,6 +1063,7 @@ class _MembersPageState extends State<MembersPage>
                       children: [
                         InkWell(
                           onTap: () {
+                            _streamFilter.sink.add(true);
                             _streamCondition.sink.add(true);
                             setState(() {
                               if (condition1) {
@@ -1110,6 +1111,7 @@ class _MembersPageState extends State<MembersPage>
                         ),
                         InkWell(
                           onTap: () {
+                            _streamFilter.sink.add(true);
                             _streamCondition.sink.add(true);
                             setState(() {
                               if (condition2) {
@@ -1179,7 +1181,9 @@ class _MembersPageState extends State<MembersPage>
                                             filter3 ||
                                             filter4 ||
                                             filter5 ||
-                                            filter6)
+                                            filter6 ||
+                                            condition1 ||
+                                            condition2)
                                         ? EpregnancyColors.primer
                                         : EpregnancyColors.primerSoft2,
                                     child: Padding(
@@ -1196,9 +1200,12 @@ class _MembersPageState extends State<MembersPage>
                                           BorderRadius.all(Radius.circular(7)),
                                     ),
                                     onPressed: () async {
-                                      bool isPregnant = true;
+                                      int isPregnant = 2;
+                                      if (condition1) {
+                                        isPregnant = 1;
+                                      }
                                       if (condition2) {
-                                        isPregnant = false;
+                                        isPregnant = 0;
                                       }
                                       if (filter1 ||
                                           filter2 ||
@@ -1206,6 +1213,8 @@ class _MembersPageState extends State<MembersPage>
                                           filter4 ||
                                           filter5 ||
                                           filter6 ||
+                                          condition1 ||
+                                          condition2 ||
                                           resetFilter) {
                                         var sortBy = "name";
                                         var sort = SortEnum.asc;
