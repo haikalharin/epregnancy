@@ -31,15 +31,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                   SizedBox(
                     height: 36.h,
                   ),
-                  state.firstVisit == true
-                      ? Text(
-                          "Selamat! Anda",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22.sp),
-                        )
-                      : Text(
+                 Text(
                           "Hai Bunda,",
                           style: TextStyle(
                               color: Colors.black,
@@ -47,15 +39,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                               fontSize: 22.sp),
                           textAlign: TextAlign.center,
                         ),
-                  state.firstVisit == true
-                      ? Text(
-                          "mendapatkan 100 Poin",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22.sp),
-                        )
-                      : Text(
+                Text(
                           "poin kunjungan Puskesmas sudah diperoleh hari ini. Bunda dapat kembali check-in saat kunjungan berikutnya",
                           style: TextStyle(
                               color: Colors.black,

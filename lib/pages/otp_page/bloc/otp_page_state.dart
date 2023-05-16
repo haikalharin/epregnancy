@@ -10,11 +10,13 @@ class OtpPageState {
   final bool? otpResendSuccess;
   final bool? isActive;
   final String? typeEvent;
+  final int? differentTime;
 
   OtpPageState(
       {this.otp,
       this.submitStatus = FormzStatus.pure,
       this.errorMessage,
+      this.differentTime = 0,
       this.otpResendSuccess,
       this.userInfo,
       this.typeEvent,
@@ -23,6 +25,7 @@ class OtpPageState {
   OtpPageState copyWith(
       {FormzStatus? submitStatus,
       String? otp,
+      int? differentTime,
       String? errorMessage,
       UserModel? userInfo,
       String? typeEvent,
@@ -33,6 +36,7 @@ class OtpPageState {
         errorMessage: errorMessage,
         otp: otp ?? this.otp,
         otpResendSuccess: otpResendSuccess ?? this.otpResendSuccess,
+        differentTime: differentTime ?? this.differentTime,
         userInfo: userInfo ?? this.userInfo,
         typeEvent: typeEvent ?? this.typeEvent,
         isActive: isActive ?? this.isActive);
