@@ -15,7 +15,7 @@ class NotificationItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.w, horizontal: 16.w),
       decoration:  BoxDecoration(
-          color: !isRead  ? EpregnancyColors.primer : Colors.white,
+          color: !isRead  ? EpregnancyColors.primer.withOpacity(0.25) : Colors.white,
           border: const Border(top: BorderSide(color: EpregnancyColors.greyDivider, width: 1,), bottom: BorderSide(color: EpregnancyColors.greyDivider, width: 1))
       ),
       child: Column(

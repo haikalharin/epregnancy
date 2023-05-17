@@ -264,7 +264,7 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                                                         const EdgeInsets.only(
                                                             right: 30,
                                                             left: 30,
-                                                            bottom: 30),
+                                                            bottom: 20),
                                                     child: Container(
                                                       margin:
                                                           const EdgeInsets.only(
@@ -335,7 +335,7 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                                                         const EdgeInsets.only(
                                                             right: 30,
                                                             left: 30,
-                                                            bottom: 30),
+                                                            bottom: 20),
                                                     child: Container(
                                                       margin:
                                                           const EdgeInsets.only(
@@ -503,6 +503,7 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       onTap: () async {
+                        print("widget baby id : ${widget.babyId}");
                         Injector.resolve<NewBornPageBloc>().add(LostBabyEvent(widget.babyId));
                         Navigator.pop(context);
                       }),

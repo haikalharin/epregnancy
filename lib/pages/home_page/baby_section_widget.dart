@@ -49,12 +49,12 @@ class BabySectionWidget extends StatelessWidget {
      showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) {
+      builder: (dialogContext) {
         return WillPopScope(
             child: Center(
               child: Container(
                 width: 300.w,
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(dialogContext).size.height * 0.5,
                 padding: EdgeInsets.all(20.w),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -96,8 +96,7 @@ class BabySectionWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      InkWell(
-                        child: Padding(
+                      Padding(
                             padding:
                             EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 0.w),
                             child: SizedBox(
@@ -116,13 +115,9 @@ class BabySectionWidget extends StatelessWidget {
                                           color: Colors.white)),
                                   onPressed: () {
                                     refresh?.call();
-                                    Navigator.pop(context);
+                                    Navigator.pop(dialogContext);
                                   }),
-                            )),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      )
+                            ))
                     ],
                   ),
                 ),
@@ -188,7 +183,6 @@ class BabySectionWidget extends StatelessWidget {
                                       Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
                                       Injector.resolve<HomePageBloc>().add(const ResetBaby());
                                       Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
-                                      refresh?.call();
                                       // refreshIndicatorKey?.currentState?.activate();
                                       Navigator.pop(context);
                                     },
@@ -567,13 +561,29 @@ class BabySectionWidget extends StatelessWidget {
                             Navigator.of(context).pushNamed(
                                 RouteName.questionerNewBorn,
                                 arguments: {
-                                  'is_edit': false,
-                                  'baby': state.baby
-                                });
+                                  "is_edit": false,
+                                  "baby_id": state.baby?.baby?.id
+                                }).then((value) {
+                              if(value != null){
+                                if(value == "lost-baby"){
+                                  _babyLostDialog(context);
+                                  Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+                                  Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
+                                  Injector.resolve<HomePageBloc>().add(const ResetBaby());
+                                  Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
+                                } else if (value.toString().contains("delete-baby")){
+                                  List strings = value.toString().split(" ");
+                                  _babyDeleteDialog(context, strings[1]);
+                                } else {
+                                  refresh?.call();
+                                }
+                              }
+                            });
                           },
                           child:int.parse(state.weeks!) >= 37? Container(
                             // width: MediaQuery.of(context).size.width/1.,
-                            margin: EdgeInsets.only(bottom: 16,right: 32,left: 32),
+                            margin: EdgeInsets.only(bottom: 16),
+                            width: MediaQuery.of(context).size.width * 0.55,
                             padding: EdgeInsets.only(left: 20.w,right: 20.w),
                             decoration: BoxDecoration(
                               color: EpregnancyColors.primer,
@@ -584,10 +594,8 @@ class BabySectionWidget extends StatelessWidget {
                               BorderRadius.circular(10.0),
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.center,
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
                                     child: const Text(
@@ -596,16 +604,18 @@ class BabySectionWidget extends StatelessWidget {
                                           fontSize: 12,
                                           color: EpregnancyColors.white,
                                           fontWeight: FontWeight.bold),
-                                      maxLines: 3,
+                                      maxLines: 1,
                                     )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons
-                                          .arrow_forward_ios_rounded,
-                                      size: 16,
-                                      color: EpregnancyColors.white,
-                                    ))
+                                Expanded(
+                                  child: IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons
+                                            .arrow_forward_ios_rounded,
+                                        size: 16,
+                                        color: EpregnancyColors.white,
+                                      )),
+                                )
                               ],
                             ),
                           ):Container(),

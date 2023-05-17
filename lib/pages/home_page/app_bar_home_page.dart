@@ -327,7 +327,7 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                state.baby != null && state.baby?.baby?.name != 'null'
+                state.baby != null && state.baby?.baby?.name != 'null' && state.baby?.baby?.name != ""
                     ? Container(
                         margin: EdgeInsets.only(left: 16.w),
                         child: SvgPicture.asset("assets/ic_baby_appbar.svg"))

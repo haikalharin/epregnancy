@@ -123,6 +123,7 @@ class NewBornPageBloc extends Bloc<NewBornPageEvent, NewBornPageState> {
   Stream<NewBornPageState> _lostBabyEvent(LostBabyEvent event, NewBornPageState state) async* {
     try{
       state.copyWith(type: "lost-baby-loading", submitStatus: FormzStatus.submissionInProgress);
+      print("_lostBabyEvent-babyid : ${event.babyId}");
       ResponseModel updateBabyStatusResponse = await childRepository.updateBabyStatus(event.babyId!, "KEHILANGAN");
       if(updateBabyStatusResponse.code == 200){
         yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, type: "lost-baby-success");
