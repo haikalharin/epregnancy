@@ -300,7 +300,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       HomeFetchChildForDashboardEvent event,
       HomePageState state,
       ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-child-dashboard-loading", babyChilds: []);
+    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-child-dashboard-loading", myChildDashboard: null, selectedChildId: null );
     try {
       final ResponseModel response = await homeRepository.fetchChildForDashBoard(event.id);
       if (response.code == 200) {

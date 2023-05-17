@@ -120,6 +120,8 @@ class ServiceUrl {
   static String notificationList = "$notification/messages";
   static String notificationTotalUnread = "$notification/total-unread-messages";
 
+  static String growths = "growths";
+
 
 
 

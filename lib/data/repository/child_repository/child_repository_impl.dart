@@ -75,4 +75,19 @@ class ChildRepositoryImpl extends ChildRepository {
     }
     throw NetworkConnectionException();
   }
+
+  @override
+  Future<ResponseModel> addChildGrowth({String? visitDate, double? length, double? weight, double? headCircumference, String? babyId}) async {
+    if (await networkInfo.isConnected) {
+      Map data = {
+        "visit_date": visitDate,
+        "length": length,
+        "weight": weight,
+        "head_circumference": headCircumference
+      };
+
+      return remoteDatasource.addGrowth(data, babyId);
+    }
+    throw NetworkConnectionException();
+  }
 }

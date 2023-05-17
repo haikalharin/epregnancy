@@ -15,6 +15,7 @@ import '../../common/constants/router_constants.dart';
 import '../../common/style/custom_text_style.dart';
 import '../../utils/epragnancy_color.dart';
 import '../../utils/image_utils.dart';
+import '../child_list_page/growth_tracker_form.dart';
 import '../new_born_page/baby_born_form_page.dart';
 
 class ChildSectionWidget extends StatelessWidget {
@@ -233,14 +234,12 @@ class ChildSectionWidget extends StatelessWidget {
                   _ageChild(state.myChildDashboard),
                   InkWell(
                     onTap: () {
-                      // todo baby weight tracker
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) {
-                      //       return BabyBornFromPage(
-                      //         babyId: "",
-                      //         isEdit: true,
-                      //       );
-                      //     }));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return GrowthTrackerForm(
+                                babyId: state.myChildDashboard!.child!.id!
+                            );
+                          }));
                     },
                     child: Container(
                       width: 118.w,
