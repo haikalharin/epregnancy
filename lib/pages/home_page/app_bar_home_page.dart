@@ -144,7 +144,7 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationPage()));
                               },
-                              child: badge.Badge(
+                              child: (state.totalUnreadNotif ?? 0) >= 1 ? badge.Badge(
                                 badgeContent: Center(child: Text(state.totalUnreadNotif.toString(), style: const TextStyle(color: Colors.white),)),
                                 position: badge.BadgePosition.topEnd(top: -10, end: -3),
                                 child: Icon(
@@ -152,6 +152,10 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                                   color: EpregnancyColors.primer,
                                   size: 23.w,
                                 ),
+                              ) : Icon(
+                                Icons.notifications,
+                                color: EpregnancyColors.primer,
+                                size: 23.w,
                               ),
                             ),
                           ),

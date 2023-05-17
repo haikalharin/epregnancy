@@ -9,7 +9,9 @@ import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
 import '../../../common/exceptions/server_error_exception.dart';
+import '../../../common/injector/injector.dart';
 import '../../../data/shared_preference/app_shared_preference.dart';
+import '../../home_page/bloc/home_page_bloc.dart';
 
 part 'notification_event.dart';
 
@@ -25,6 +27,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   Stream<NotificationState> mapEventToState(NotificationEvent event) async* {
     if (event is NotificationFetchEvent) {
       yield* _mapNotificationFetchEventToState(event, state);
+    } else if (event is NotificationReadEvent){
+      yield* _mapReadNotificationEvent(event, state);
     }
   }
 
@@ -74,6 +78,37 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       yield state.copyWith(
           submitStatus: FormzStatus.submissionFailure,
           type: 'fetch-notifications-failed');
+      if (a is UnAuthorizeException) {
+        await AppSharedPreference.sessionExpiredEvent();
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
+    }
+  }
+
+  Stream<NotificationState> _mapReadNotificationEvent(
+      NotificationReadEvent event,
+      NotificationState state,
+      ) async* {
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress,
+        type: 'read-notification-progress');
+    try {
+      ResponseModel response = await notificationRepository.readNotification(event.id);
+      if(response.code == 200){
+        Injector.resolve<HomePageBloc>().add(const HomeFetchNotificationTotalUnreadEvent());
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess,
+            type: 'read-notification-success');
+      } else {
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure,
+            type: 'read-notification--failed');
+      }
+    } on Exception catch (a) {
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure,
+          type: 'read-notification--failed');
       if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       } else {

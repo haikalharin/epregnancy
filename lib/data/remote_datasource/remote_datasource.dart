@@ -86,6 +86,12 @@ class RemoteDataSource {
     return ResponseModel.fromJson(response, UserModel.fromJson);
   }
 
+  Future<ResponseModel> readNotification(Map data) async {
+    final response = await httpClient.patch(ServiceUrl.notificationList, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
   Future<ResponseModel> addGrowth(Map data, String? childId) async {
     final response = await httpClient.post(ServiceUrl.childs + "/$childId/${ServiceUrl.growths}", data);
 

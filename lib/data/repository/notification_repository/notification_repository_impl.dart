@@ -22,4 +22,17 @@ class NotificationRepositoryImpl extends NotificationRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel> readNotification(String? id) async {
+    if (await networkInfo.isConnected) {
+      Map data = {
+        "id": id,
+        "read": true
+      };
+
+      return remoteDatasource.readNotification(data);
+    }
+    throw NetworkConnectionException();
+  }
+
 }

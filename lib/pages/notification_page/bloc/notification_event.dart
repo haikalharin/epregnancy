@@ -18,8 +18,7 @@ class NotificationFetchEvent extends NotificationEvent {
 }
 
 class NotificationReadEvent extends NotificationEvent {
-  const NotificationReadEvent(this.id,);
-
+  const NotificationReadEvent(this.id);
   final String id;
 
   @override
