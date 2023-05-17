@@ -45,7 +45,6 @@ class _GrowthTrackerFormState extends State<GrowthTrackerForm> {
             const snackBar = SnackBar(
                 content: Text("Pertumbuhan Anak Berhasil Ditambah!", style: TextStyle(color: Colors.white),), backgroundColor: EpregnancyColors.primer);
             Scaffold.of(context).showSnackBar(snackBar);
-            // todo injector refresh home
             Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
             Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(widget.babyId));
             Navigator.pop(context);

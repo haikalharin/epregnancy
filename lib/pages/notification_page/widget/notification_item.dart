@@ -24,10 +24,10 @@ class _NotificationItemState extends State<NotificationItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        print("notif clicked");
         setState(() {
           read = true;
           Injector.resolve<NotificationBloc>().add(NotificationReadEvent(widget.id));
+          Injector.resolve<NotificationBloc>().add(const NotificationFetchEvent(0));
         });
       },
       child: Container(

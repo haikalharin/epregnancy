@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../common/style/custom_text_style.dart';
 import '../../../data/model/child_model/child_list_response.dart';
+import '../../home_page/bloc/home_page_bloc.dart';
 import '../../new_born_page/baby_born_form_page.dart';
 import '../bloc/child_list_bloc.dart';
 
@@ -61,6 +62,9 @@ class _ChildCardState extends State<ChildCard> {
       });
       Injector.resolve<NewBornPageBloc>()
           .add(DeleteChildEvent(widget.child.id!));
+      Injector.resolve<HomePageBloc>().add(const HomeFetchDataEvent());
+      Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
+      Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(widget.child.id!));
     }
   }
 
