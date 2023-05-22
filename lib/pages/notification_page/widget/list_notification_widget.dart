@@ -24,7 +24,7 @@ class ListNotificationWidget extends StatelessWidget {
         itemComparator: (item1, item2) => DateFormatter.dateFormatChat.format(DateTime.parse(item1.createdDate!)).compareTo(DateFormatter.dateFormatChat.format(DateTime.parse(item2.createdDate!))), // optional
         useStickyGroupSeparators: true, // optional
         floatingHeader: false, // optional
-        order: GroupedListOrder.ASC, // optional
+        order: GroupedListOrder.DESC, // optional
       );
     });
   }

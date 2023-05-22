@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
-import 'package:intl/intl.dart';
 
 import '../../../common/style/custom_text_style.dart';
 
@@ -22,18 +21,18 @@ class _ListNotifSeperatorState extends State<ListNotifSeperator> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: blackText12W500(widget.date),
+      child: blackText12W500(_dateBuilder(widget.date)),
     );
   }
 
   String _dateBuilder(String date){
 
-    DateTime dateTime = DateTime.parse(date);
     DateTime now = DateTime.now();
+    String? yesterday = DateFormatter.dateFormatChat.format(DateTime(now.year, now.month, now.day - 1));
 
     if(date == today){
       return "Hari ini";
-    } else if (dateTime == DateTime(now.year, now.month, now.day - 1)){
+    } else if (date == yesterday) {
       return "Kemarin";
     } else {
       return date;

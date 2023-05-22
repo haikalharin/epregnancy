@@ -35,8 +35,9 @@ class HomeFetchBabyChildsEvent extends HomePageEvent {
 }
 
 class HomeFetchChildForDashboardEvent extends HomePageEvent {
-  const HomeFetchChildForDashboardEvent(this.id);
+  const HomeFetchChildForDashboardEvent(this.id, this.isBorn);
   final String id;
+  final bool isBorn;
 
   @override
   List<Object> get props => [];

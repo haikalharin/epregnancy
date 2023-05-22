@@ -23,6 +23,7 @@ class HomePageState with FormzMixin {
   final bool? showGuide;
   final bool? isNotHaveSession;
   final String? selectedChildId;
+  final bool? isBorn;
   final MyChildDashboard? myChildDashboard;
   final List<BabyChildResponse>? babyChilds;
   final bool? isSearch;
@@ -63,6 +64,7 @@ class HomePageState with FormzMixin {
       this.page = 0,
       this.hospitalModel,
       this.selectedChildId,
+      this.isBorn,
       this.myChildDashboard,
       this.babyChilds,
       this.errorMessage,
@@ -90,6 +92,7 @@ class HomePageState with FormzMixin {
       bool? showGuide,
       bool? isNotHaveSession,
       bool? isSearch,
+      bool? isBorn,
       int? page,
       bool? lastPageListVisit,
       bool? isFromSubmit,
@@ -127,6 +130,7 @@ class HomePageState with FormzMixin {
         isSearch: isSearch ?? this.isSearch,
         lastPageListVisit: lastPageListVisit ?? this.lastPageListVisit,
         isFromSubmit: isFromSubmit,
+        isBorn: isBorn ?? this.isBorn,
         page: page ?? this.page,
         sort: sort ?? this.sort,
         sortBy: sortBy ?? this.sortBy,

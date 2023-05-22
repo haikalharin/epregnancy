@@ -30,7 +30,7 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
     return BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
       print("childs length : ${state.babyChilds?.length}");
 
-      if ((state.babyChilds?.length ?? 0) >= 1) {
+      if ((state.babyChilds?.length ?? 0) >= 1 && state.isBorn == true) {
         // have a child widget
         return Container(
           width: MediaQuery.of(context).size.width,
@@ -47,14 +47,14 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                      margin: EdgeInsets.only(
-                        left: 10.w,
-                        right: 0,
-                      ),
-                      child: Text("${state.myChildDashboard?.child?.name}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.black),
-                          textAlign: TextAlign.start),
+                    margin: EdgeInsets.only(
+                      left: 10.w,
+                      right: 0,
+                    ),
+                    child: Text("${state.myChildDashboard?.child?.name}",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                        textAlign: TextAlign.start),
                   ),
                   Expanded(
                     child: IconButton(
@@ -130,33 +130,32 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                           ),
                           InkWell(
                             onTap: () {
-                              Toast.show("Fitur ini akan segera hadir");
-                              // Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                              //   if (value != null) {
-                              //     setState(() {
-                              //       widget.hospitalModel = value
-                              //           as HospitalModel?;
-                              //     });
-                              //   }
-                              // });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                      const NotificationPage()));
                             },
-                            child: InkWell(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationPage()));
-                              },
-                              child: (state.totalUnreadNotif ?? 0) >= 1 ? badge.Badge(
-                                badgeContent: Center(child: Text(state.totalUnreadNotif.toString(), style: const TextStyle(color: Colors.white),)),
-                                position: badge.BadgePosition.topEnd(top: -10, end: -3),
-                                child: Icon(
-                                  Icons.notifications,
-                                  color: EpregnancyColors.primer,
-                                  size: 23.w,
-                                ),
-                              ) : Icon(
+                            child: (state.totalUnreadNotif ?? 0) >= 1
+                                ? badge.Badge(
+                              badgeContent: Center(
+                                  child: Text(
+                                    state.totalUnreadNotif.toString(),
+                                    style: const TextStyle(
+                                        color: Colors.white),
+                                  )),
+                              position: badge.BadgePosition.topEnd(
+                                  top: -10, end: -3),
+                              child: Icon(
                                 Icons.notifications,
                                 color: EpregnancyColors.primer,
                                 size: 23.w,
                               ),
+                            )
+                                : Icon(
+                              Icons.notifications,
+                              color: EpregnancyColors.primer,
+                              size: 23.w,
                             ),
                           ),
                           SizedBox(
@@ -292,23 +291,33 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                             ),
                             InkWell(
                               onTap: () {
-                                Toast.show("Fitur ini akan segera hadir");
-                                // Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                //   if (value != null) {
-                                //     setState(() {
-                                //       widget.hospitalModel = value
-                                //           as HospitalModel?;
-                                //     });
-                                //   }
-                                // });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const NotificationPage()));
                               },
-                              child: Container(
-                                child: Icon(
-                                  Icons.notifications,
-                                  color: EpregnancyColors.primer,
-                                  size: 23.w,
-                                ),
-                              ),
+                              child: (state.totalUnreadNotif ?? 0) >= 1
+                                  ? badge.Badge(
+                                      badgeContent: Center(
+                                          child: Text(
+                                        state.totalUnreadNotif.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      )),
+                                      position: badge.BadgePosition.topEnd(
+                                          top: -10, end: -3),
+                                      child: Icon(
+                                        Icons.notifications,
+                                        color: EpregnancyColors.primer,
+                                        size: 23.w,
+                                      ),
+                                    )
+                                  : Icon(
+                                      Icons.notifications,
+                                      color: EpregnancyColors.primer,
+                                      size: 23.w,
+                                    ),
                             ),
                             SizedBox(
                               width: 10.w,
@@ -331,7 +340,9 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                state.baby != null && state.baby?.baby?.name != 'null' && state.baby?.baby?.name != ""
+                state.baby != null &&
+                        state.baby?.baby?.name != 'null' &&
+                        state.baby?.baby?.name != ""
                     ? Container(
                         margin: EdgeInsets.only(left: 16.w),
                         child: SvgPicture.asset("assets/ic_baby_appbar.svg"))
@@ -441,22 +452,32 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                             ),
                             InkWell(
                               onTap: () {
-                                Toast.show("Fitur ini akan segera hadir");
-                                // Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                //   if (value != null) {
-                                //     setState(() {
-                                //       widget.hospitalModel = value
-                                //           as HospitalModel?;
-                                //     });
-                                //   }
-                                // });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                        const NotificationPage()));
                               },
-                              child: Container(
+                              child: (state.totalUnreadNotif ?? 0) >= 1
+                                  ? badge.Badge(
+                                badgeContent: Center(
+                                    child: Text(
+                                      state.totalUnreadNotif.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white),
+                                    )),
+                                position: badge.BadgePosition.topEnd(
+                                    top: -10, end: -3),
                                 child: Icon(
                                   Icons.notifications,
                                   color: EpregnancyColors.primer,
                                   size: 23.w,
                                 ),
+                              )
+                                  : Icon(
+                                Icons.notifications,
+                                color: EpregnancyColors.primer,
+                                size: 23.w,
                               ),
                             ),
                             SizedBox(
@@ -501,7 +522,9 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                                   textAlign: TextAlign.start),
                             ),
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _showBabyAndChildPicker(context);
+                                },
                                 icon: Icon(
                                   Icons.keyboard_arrow_down,
                                   color: EpregnancyColors.primer,
@@ -621,22 +644,32 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                             ),
                             InkWell(
                               onTap: () {
-                                Toast.show("Fitur ini akan segera hadir");
-                                // Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                //   if (value != null) {
-                                //     setState(() {
-                                //       widget.hospitalModel = value
-                                //           as HospitalModel?;
-                                //     });
-                                //   }
-                                // });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                        const NotificationPage()));
                               },
-                              child: Container(
+                              child: (state.totalUnreadNotif ?? 0) >= 1
+                                  ? badge.Badge(
+                                badgeContent: Center(
+                                    child: Text(
+                                      state.totalUnreadNotif.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white),
+                                    )),
+                                position: badge.BadgePosition.topEnd(
+                                    top: -10, end: -3),
                                 child: Icon(
                                   Icons.notifications,
                                   color: EpregnancyColors.primer,
                                   size: 23.w,
                                 ),
+                              )
+                                  : Icon(
+                                Icons.notifications,
+                                color: EpregnancyColors.primer,
+                                size: 23.w,
                               ),
                             ),
                             SizedBox(
@@ -698,26 +731,32 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.w),
                               child: InkWell(
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) {
-                                        return const ChildListPage();
-                                      }));
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const ChildListPage();
+                                  }));
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
                                   height: 56.h,
-                                  margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 16.h),
-                                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 2.w, vertical: 16.h),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
                                   decoration: BoxDecoration(
                                       color: EpregnancyColors.primer,
-                                      borderRadius: BorderRadius.circular(12.w)
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.circular(12.w)),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       whiteText16("Lihat / Tambah Data Anak"),
-                                      Icon(Icons.add, color: Colors.white,)
+                                      Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      )
                                     ],
                                   ),
                                 ),
@@ -726,13 +765,19 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                           } else {
                             return ListTile(
                               leading:
-                              SvgPicture.asset("assets/ic_baby_appbar.svg"),
-                              title: _childNameWithGender(state.babyChilds?[index].name ?? "", state.babyChilds?[index].gender ?? "L"),
+                                  SvgPicture.asset("assets/ic_baby_appbar.svg"),
+                              title: _childNameWithGender(
+                                  state.babyChilds?[index].name ?? "N/A",
+                                  state.babyChilds?[index].gender),
                               onTap: () async {
-                                Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(state.babyChilds![index].id!));
+                                Injector.resolve<HomePageBloc>().add(
+                                    HomeFetchChildForDashboardEvent(state.babyChilds![index].id!, state.babyChilds![index].born!));
                                 Navigator.pop(context);
                               },
-                              trailing: state.selectedChildId == state.babyChilds?[index].id ? const Icon(Icons.radio_button_checked) : const Icon(Icons.radio_button_off),
+                              trailing: state.selectedChildId ==
+                                      state.babyChilds?[index].id
+                                  ? const Icon(Icons.radio_button_checked)
+                                  : const Icon(Icons.radio_button_off),
                             );
                           }
                         },
@@ -748,11 +793,14 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
         });
   }
 
-  Widget _childNameWithGender(String name, String gender) {
-    if(gender == "L"){
+  Widget _childNameWithGender(String name, String? gender) {
+    print("gender : $gender");
+    if (gender == "L") {
       return blackText16("$name ♂");
-    } else {
+    } else if (gender == "P") {
       return blackText16("$name ♀");
+    } else {
+      return blackText16("$name");
     }
   }
 }
