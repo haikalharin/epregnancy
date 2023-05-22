@@ -27,18 +27,22 @@ class SuccessEarnPoinPage extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 4,
                   ),
-                  SvgPicture.asset("assets/ic_earned_poin.svg"),
+                  SvgPicture.asset("assets/ic_launcher.svg"),
                   SizedBox(
                     height: 36.h,
                   ),
-                  state.firstVisit == true
-                      ? Text(
-                          "Check-in kunjungan Puskesmas sedang di proses",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22.sp),
-                        )
+                  state.firstVisit == false
+                      ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                            "Check-in kunjungan Puskesmas sedang di proses",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 22.sp),
+                    textAlign: TextAlign.center,
+                          ),
+                      )
                       : Text(
                           "Hai Bunda,",
                           style: TextStyle(
@@ -47,14 +51,18 @@ class SuccessEarnPoinPage extends StatelessWidget {
                               fontSize: 22.sp),
                           textAlign: TextAlign.center,
                         ),
-                  state.firstVisit == true
-                      ? Text(
-                          "telah berhasil memindai kode QR",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22.sp),
-                        )
+                  state.firstVisit == false
+                      ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                        child: Text(
+                            "telah berhasil memindai kode QR",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 22.sp),
+                    textAlign: TextAlign.center,
+                          ),
+                      )
                       : Text(
                           "Bunda dapat menunggu konfirmasi dari bidan",
                           style: TextStyle(

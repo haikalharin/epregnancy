@@ -230,7 +230,7 @@ class _OtpPageState extends State<OtpPage> {
                                   Text(
                                     widget.userName!.contains("@")
                                         ? widget.userName ?? ""
-                                        : "+${widget.userName?.replaceAll("62", "62 ")}",
+                                        : "+${widget.userName?.replaceAll("62", "62 ").substring(0,( widget.userName?.length??0) - 2)}xxx",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Colors.black,

@@ -50,6 +50,8 @@ class AppSharedPreference {
   static const String dateTimeVisit = "dateTimeVisit";
   static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
+  static const String oldToken = "oldToken";
+  static const String lastTimeGetToken = "lastTimeGetToken";
   static const String newInstall = "new_install";
   static const String isFirstLaunch = "isFirstLaunch";
   static const String isShowGuide = "show_guide";

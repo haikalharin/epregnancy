@@ -477,6 +477,25 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               //     ),
                               //   ),
                               // ),
+                              SizedBox(height: 20),
+                              TextField(
+                                onChanged: (value) {
+                                  Injector.resolve<SignUpQuestionnaireBloc>()
+                                      .add(SignupReferralCodeChanged(value));
+                                },
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4.w),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(color: Colors.grey[500]),
+                                  fillColor: Colors.white70,
+                                  label: Text("kode referal"),
+                                  errorText: state.secondName.invalid
+                                      ? 'Mohon lengkapi Data'
+                                      : null,
+                                ),
+                              ),
                               SizedBox(height: 30),
                             ],
                           ),
