@@ -64,7 +64,7 @@ class _ChildCardState extends State<ChildCard> {
           .add(DeleteChildEvent(widget.child.id!));
       Injector.resolve<HomePageBloc>().add(const HomeFetchDataEvent());
       Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
-      Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(widget.child.id!));
+      Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(widget.child.id!, true));
     }
   }
 

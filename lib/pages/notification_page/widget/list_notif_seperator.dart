@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
-import 'package:intl/intl.dart';
 
 import '../../../common/style/custom_text_style.dart';
 
@@ -33,7 +32,7 @@ class _ListNotifSeperatorState extends State<ListNotifSeperator> {
 
     if(date == today){
       return "Hari ini";
-    } else if (date == yesterday){
+    } else if (date == yesterday) {
       return "Kemarin";
     } else {
       return date;

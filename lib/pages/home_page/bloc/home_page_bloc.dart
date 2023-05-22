@@ -81,11 +81,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield* _mapHomeEventDeleteScheduleToState(event, state);
     } else if (event is FetchSimpleTipEvent) {
       yield* _mapFetchSimpleTips(event, state);
-    } else if(event is SetHospitalEvent) {
+    } else if (event is SetHospitalEvent) {
       yield _setHospitalModelEvent(event, state);
-    } else if(event is HomeFetchBabyChildsEvent) {
+    } else if (event is HomeFetchBabyChildsEvent) {
       yield* _mapFetchBabyChilds(event, state);
-    } else if(event is HomeFetchChildForDashboardEvent){
+    } else if (event is HomeFetchChildForDashboardEvent) {
       yield* _mapFetchChildForDashboard(event, state);
     } else if (event is FetchListVisitEvent) {
       yield* _mapFetchListPersonDiscussEventToState(event, state);
@@ -105,26 +105,28 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 
   HomePageState _setHospitalModelEvent(
-      SetHospitalEvent event,
-      HomePageState state,
-      ) {
+    SetHospitalEvent event,
+    HomePageState state,
+  ) {
     final hospitalSelected = event.hospitalModel;
     return state.copyWith(hospitalModel: hospitalSelected);
   }
 
-  Stream<HomePageState>  _resetBaby(
-      ResetBaby event,
-      HomePageState state,
-      ) async* {
+  Stream<HomePageState> _resetBaby(
+    ResetBaby event,
+    HomePageState state,
+  ) async* {
     await AppSharedPreference.remove("babyData");
-    yield state.copyWith(baby: nb.NewBabyModel(baby: nb.Baby(name: "null", status: "null")));
+    yield state.copyWith(
+        baby: nb.NewBabyModel(baby: nb.Baby(name: "null", status: "null")));
   }
 
   HomePageState _mapChangeNextVisitEventToState(
     ChangeNextVisitEvent event,
     HomePageState state,
   ) {
-    final nextVisitDateString = MandatoryFieldValidator.dirty(event.dateString??'');
+    final nextVisitDateString =
+        MandatoryFieldValidator.dirty(event.dateString ?? '');
     return state.copyWith(nextVisitDateString: nextVisitDateString);
   }
 
@@ -261,29 +263,40 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 
   Stream<HomePageState> _mapFetchBabyChilds(
-      HomeFetchBabyChildsEvent event,
-      HomePageState state,
-      ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-baby-childs-loading", babyChilds: []);
+    HomeFetchBabyChildsEvent event,
+    HomePageState state,
+  ) async* {
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress,
+        tipe: "fetch-baby-childs-loading",
+        babyChilds: []);
     try {
       final ResponseModel response = await homeRepository.fetchBabyChilds();
       List<BabyChildResponse> _babyChilds = [];
       if (response.code == 200) {
-        response.data?.forEach((element){
+        response.data?.forEach((element) {
           _babyChilds.add(element);
         });
 
-        if(_babyChilds.isNotEmpty && state.selectedChildId == null){
-          Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(_babyChilds[0].id!));
+        if (_babyChilds.isNotEmpty && state.selectedChildId == null) {
+          Injector.resolve<HomePageBloc>()
+              .add(HomeFetchChildForDashboardEvent(_babyChilds[0].id!, _babyChilds[0].born!));
         }
 
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, tipe: "fetch-baby-childs-success", babyChilds: _babyChilds);
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess,
+            tipe: "fetch-baby-childs-success",
+            babyChilds: _babyChilds);
       } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message, tipe: "fetch-baby-childs-failed");
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure,
+            errorMessage: response.message,
+            tipe: "fetch-baby-childs-failed");
       }
     } on HomeErrorException catch (e) {
       print("home error baby child : ${e.toString()}");
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
       print("error exception baby child : ${a.toString()}");
       if (a is UnAuthorizeException) {
@@ -297,21 +310,74 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 
   Stream<HomePageState> _mapFetchChildForDashboard(
-      HomeFetchChildForDashboardEvent event,
-      HomePageState state,
-      ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-child-dashboard-loading", myChildDashboard: null, selectedChildId: null );
+    HomeFetchChildForDashboardEvent event,
+    HomePageState state,
+  ) async* {
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress,
+        tipe: "fetch-child-dashboard-loading",
+        myChildDashboard: null,
+        selectedChildId: null);
     try {
-      final ResponseModel response = await homeRepository.fetchChildForDashBoard(event.id);
-      if (response.code == 200) {
-        MyChildDashboard? _myChildDashboard = response.data;
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, tipe: "fetch-child-dashboard-success", myChildDashboard: _myChildDashboard, selectedChildId: _myChildDashboard?.child?.id);
+      if(event.isBorn == true){
+        final ResponseModel response = await homeRepository.fetchChildForDashBoard(event.id);
+        if (response.code == 200) {
+          nb.NewBabyModel myBaby = const nb.NewBabyModel();
+          MyChildDashboard? _myChildDashboard = response.data;
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              tipe: "fetch-child-dashboard-success",
+              myChildDashboard: _myChildDashboard,
+              baby: myBaby,
+              selectedChildId: _myChildDashboard?.child?.id,
+              isBorn: event.isBorn);
+        } else {
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionFailure,
+              errorMessage: response.message,
+              tipe: "fetch-child-dashboard-failed");
+        }
       } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message, tipe: "fetch-child-dashboard-failed");
+        var pregnancyAgeDay = 0;
+        var pregnancyAgeWeek = 0;
+        nb.NewBabyModel myBaby = const nb.NewBabyModel();
+
+        final UserModel user = await AppSharedPreference.getUser();
+        ResponseModel response = await homeRepository.getBaby(user);
+        if (response.code == 200) {
+          myBaby = response.data;
+          if (myBaby.baby != null) {
+            pregnancyAgeWeek = myBaby.baby?.pregnancyAgeWeek ?? 0;
+            pregnancyAgeDay = myBaby.baby?.pregnancyAgeDay ?? 0;
+          }
+          bool? _showGuide = await AppSharedPreference.getBool(AppSharedPreference.isShowGuide);
+          print('show guide : $_showGuide');
+          await AppSharedPreference.setBabyDataNew(myBaby);
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              baby: myBaby,
+              days: pregnancyAgeDay.toString(),
+              weeks: pregnancyAgeWeek.toString(),
+              user: user,
+              isBorn: false,
+              selectedChildId: event.id,
+              showGuide: _showGuide ?? true,
+              role: StringConstant.patient);
+        } else if (response.code == 0) {
+          await AppSharedPreference.sessionExpiredEvent();
+          yield state.copyWith(
+              submitStatus: FormzStatus.submissionFailure,
+              isNotHaveSession: false);
+        } else if (response.message == "Baby not found!") {
+          print("baby not found");
+          // Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
+          // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, baby: null);
+        }
       }
     } on HomeErrorException catch (e) {
       print("home error child dashboard : ${e.toString()}");
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
       print("error exception child dashboard: ${a.toString()}");
       if (a is UnAuthorizeException) {
@@ -325,21 +391,32 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 
   Stream<HomePageState> _mapFetchTotalUnreadNotif(
-      HomeFetchNotificationTotalUnreadEvent event,
-      HomePageState state,
-      ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, tipe: "fetch-total-unread-loading", totalUnreadNotif: 0);
+    HomeFetchNotificationTotalUnreadEvent event,
+    HomePageState state,
+  ) async* {
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress,
+        tipe: "fetch-total-unread-loading",
+        totalUnreadNotif: 0);
     try {
-      final ResponseModel<NotificationTotalUnreadModel> response = await homeRepository.fetchNotificationTotalUnread();
+      final ResponseModel<NotificationTotalUnreadModel> response =
+          await homeRepository.fetchNotificationTotalUnread();
       if (response.code == 200) {
         NotificationTotalUnreadModel? _totalUnreadNotif = response.data;
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, tipe: "fetch-total-unread-success", totalUnreadNotif: _totalUnreadNotif?.total);
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess,
+            tipe: "fetch-total-unread-success",
+            totalUnreadNotif: _totalUnreadNotif?.total);
       } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: response.message, tipe: "fetch-total-unread-failed");
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure,
+            errorMessage: response.message,
+            tipe: "fetch-total-unread-failed");
       }
     } on HomeErrorException catch (e) {
       print("home error total unread : ${e.toString()}");
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, errorMessage: e.message);
     } on Exception catch (a) {
       print("error exception total unread: ${a.toString()}");
       if (a is UnAuthorizeException) {
@@ -441,36 +518,63 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       final UserModel user = await AppSharedPreference.getUser();
       if (!event.isMidwife) {
-        ResponseModel response = await homeRepository.getBaby(user);
+        final ResponseModel response = await homeRepository.fetchBabyChilds();
+        List<BabyChildResponse> _babyChilds = [];
         if (response.code == 200) {
-          myBaby = response.data;
-          if (myBaby.baby != null) {
-            pregnancyAgeWeek = myBaby.baby?.pregnancyAgeWeek ?? 0;
-            pregnancyAgeDay = myBaby.baby?.pregnancyAgeDay ?? 0;
+          response.data?.forEach((element) {
+            _babyChilds.add(element);
+          });
+
+          if (_babyChilds.isNotEmpty) {
+            if (_babyChilds[0].born == true) {
+              Injector.resolve<HomePageBloc>().add(
+                  HomeFetchChildForDashboardEvent(
+                      _babyChilds[0].id!, _babyChilds[0].born!));
+              yield state.copyWith(
+                submitStatus: FormzStatus.submissionSuccess,
+                tipe: "fetch-baby-childs-success",
+                babyChilds: _babyChilds,
+                user: user,
+              );
+            } else {
+              ResponseModel response = await homeRepository.getBaby(user);
+              if (response.code == 200) {
+                myBaby = response.data;
+                if (myBaby.baby != null) {
+                  pregnancyAgeWeek = myBaby.baby?.pregnancyAgeWeek ?? 0;
+                  pregnancyAgeDay = myBaby.baby?.pregnancyAgeDay ?? 0;
+                }
+                bool? _showGuide = await AppSharedPreference.getBool(
+                    AppSharedPreference.isShowGuide);
+                print('show guide : $_showGuide');
+                await AppSharedPreference.setBabyDataNew(myBaby);
+                yield state.copyWith(
+                    submitStatus: FormzStatus.submissionSuccess,
+                    baby: myBaby,
+                    days: pregnancyAgeDay.toString(),
+                    weeks: pregnancyAgeWeek.toString(),
+                    user: user,
+                    babyChilds: _babyChilds,
+                    isBorn: false,
+                    showGuide: _showGuide ?? true,
+                    role: StringConstant.patient);
+              } else if (response.code == 0) {
+                await AppSharedPreference.sessionExpiredEvent();
+                yield state.copyWith(
+                    submitStatus: FormzStatus.submissionFailure,
+                    isNotHaveSession: false);
+              } else if (response.message == "Baby not found!") {
+                print("baby not found");
+                // Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
+                // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, baby: null);
+              }
+            }
           }
-          bool? _showGuide = await AppSharedPreference.getBool(
-              AppSharedPreference.isShowGuide);
-          print('show guide : $_showGuide');
-          await AppSharedPreference.setBabyDataNew(myBaby);
-          yield state.copyWith(
-            submitStatus: FormzStatus.submissionSuccess,
-            baby: myBaby,
-            days: pregnancyAgeDay.toString(),
-            weeks: pregnancyAgeWeek.toString(),
-            user: user,
-            showGuide: _showGuide ?? true,
-            role: user.isPatient == true
-                ? StringConstant.patient
-                : StringConstant.midwife,
-          );
-        } else if (response.code == 0) {
-          await AppSharedPreference.sessionExpiredEvent();
+        } else {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionFailure,
-              isNotHaveSession: false);
-        } else if (response.message == "Baby not found!"){
-          Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
-          yield state.copyWith(submitStatus: FormzStatus.submissionFailure, baby: null);
+              errorMessage: response.message,
+              tipe: "fetch-baby-childs-failed");
         }
       } else {
         bool? _showGuide =
@@ -486,7 +590,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       }
     } on HomeErrorException catch (e) {
       print("Home Error Exception : " + e.toString());
-      yield state.copyWith(submitStatus: FormzStatus.submissionFailure, baby: null);
+      yield state.copyWith(
+          submitStatus: FormzStatus.submissionFailure, baby: null);
     } on Exception catch (a) {
       print("Exception : " + a.toString());
 
@@ -494,7 +599,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(
-          submitStatus: FormzStatus.submissionFailure, isNotHaveSession: false, baby: null);
+          submitStatus: FormzStatus.submissionFailure,
+          isNotHaveSession: false,
+          baby: null);
     }
   }
 
@@ -610,30 +717,34 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         submitStatus: FormzStatus.submissionInProgress,
         tipe: "submit-next-visit");
     try {
-      final response = await userRepository.submitNextVisit(event.id ?? '',
-          state.nextVisitDateString.value, event.status ?? '');
+      final response = await userRepository.submitNextVisit(
+          event.id ?? '', state.nextVisitDateString.value, event.status ?? '');
 
       if (response.code == 200) {
         if (event.status == StringConstant.doneVisit) {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
-              userVisitModel: state.userVisitModel?.copyWith(status: event.status),
+              userVisitModel:
+                  state.userVisitModel?.copyWith(status: event.status),
               tipe: "submit-next-visit");
-        } else if(event.status == StringConstant.acceptedVisit){
+        } else if (event.status == StringConstant.acceptedVisit) {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
-              userVisitModel: state.userVisitModel?.copyWith(status: event.status),
+              userVisitModel:
+                  state.userVisitModel?.copyWith(status: event.status),
               tipe: "submit-next-visit-accepted");
-        }else if(event.status == StringConstant.rejectedVisit){
+        } else if (event.status == StringConstant.rejectedVisit) {
           yield state.copyWith(
               submitStatus: FormzStatus.submissionSuccess,
-              userVisitModel: state.userVisitModel?.copyWith(status: event.status),
+              userVisitModel:
+                  state.userVisitModel?.copyWith(status: event.status),
               tipe: "submit-next-visit-rejected");
         }
       } else {
         yield state.copyWith(
             submitStatus: FormzStatus.submissionFailure,
-            userVisitModel: state.userVisitModel?.copyWith(status: event.status),
+            userVisitModel:
+                state.userVisitModel?.copyWith(status: event.status),
             tipe: "submit-next-visit");
       }
     } on EventErrorException catch (e) {

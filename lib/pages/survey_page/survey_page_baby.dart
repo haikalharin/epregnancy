@@ -23,6 +23,7 @@ import '../../utils/countly_analytics.dart';
 import '../../utils/epragnancy_color.dart';
 
 import '../../utils/string_constans.dart';
+import '../home_page/bloc/home_page_bloc.dart';
 import '../login_page/login_page.dart';
 import 'bloc/survey_page_bloc.dart';
 
@@ -84,6 +85,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
               //   'role': StringConstant.patient,
               //   'initial_index': 0
               // });
+              Injector.resolve<HomePageBloc>().add(const HomeFetchDataEvent());
               Navigator.of(context).pushNamedAndRemoveUntil(
                 RouteName.navBar,
                 (Route<dynamic> route) => false,
@@ -91,25 +93,15 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
               );
             } else {
               // Navigator.of(context).pushNamed(RouteName.landingPage);
-              if (F.appFlavor == Flavor.PRODUCTION) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  RouteName.navBar,
-                  (Route<dynamic> route) => false,
-                  arguments: {
-                    'role': StringConstant.patient,
-                    'initial_index': 0
-                  },
-                );
-              } else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  RouteName.navBar,
-                  (Route<dynamic> route) => false,
-                  arguments: {
-                    'role': StringConstant.patient,
-                    'initial_index': 0
-                  },
-                );
-              }
+              Injector.resolve<HomePageBloc>().add(const HomeFetchDataEvent());
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                RouteName.navBar,
+                    (Route<dynamic> route) => false,
+                arguments: {
+                  'role': StringConstant.patient,
+                  'initial_index': 0
+                },
+              );
             }
             // Navigator.of(context).pushNamedAndRemoveUntil(
             //                 RouteName.homeScreen,
@@ -310,58 +302,20 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                                           'Siapa_nama_bayi_welcome_page_button_selanjutnya',
                                                           'count': 1
                                                         });
-                                                        Injector.resolve<
-                                                                SurveyPageBloc>()
-                                                            .add(
-                                                                SurveyPageChanged(
-                                                                    3));
-                                                      } else if (state.page ==
-                                                              3 &&
-                                                          state.name.valid) {
-                                                        if (widget.isEdit ==
-                                                            true) {
-                                                          CountlyAnalyticsService(
-                                                                  context)
-                                                              .basicEvent({
-                                                            'key':
-                                                                'Siapa_nama_bayi_welcome_page_button_simpan',
-                                                            'count': 1
+                                                        Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(3));
+                                                      } else if (state.page == 3 && state.name.valid) {
+                                                        if (widget.isEdit == true) {
+                                                          CountlyAnalyticsService(context).basicEvent({'key': 'Siapa_nama_bayi_welcome_page_button_simpan', 'count': 1
                                                           });
                                                         } else {
-                                                          CountlyAnalyticsService(
-                                                                  context)
-                                                              .basicEvent({
-                                                            'key':
-                                                                'Kapan_hari_haid_pertama_welcome_page_button_selanjutnya',
-                                                            'count': 1
+                                                          CountlyAnalyticsService(context).basicEvent({'key': 'Kapan_hari_haid_pertama_welcome_page_button_selanjutnya', 'count': 1
                                                           });
-                                                          Injector.resolve<
-                                                                  SurveyPageBloc>()
-                                                              .add(
-                                                                  const SurveyPageChanged(
-                                                                      2));
+                                                          Injector.resolve<SurveyPageBloc>().add(const SurveyPageChanged(2));
                                                         }
-                                                        Injector.resolve<
-                                                                SurveyPageBloc>()
-                                                            .add(SurveyAddDataEvent(
-                                                                true,
-                                                                false,
-                                                                false,
-                                                                widget
-                                                                    .isEdit!));
-                                                        Injector.resolve<
-                                                                SurveyPageBloc>()
-                                                            .add(SurveyAddDataBabyEvent(
-                                                                isUpdate: widget
-                                                                    .isEdit!));
-                                                      } else if (state.page ==
-                                                              1 &&
-                                                          state.name.valid) {
-                                                        Injector.resolve<
-                                                                SurveyPageBloc>()
-                                                            .add(
-                                                                SurveyPageChanged(
-                                                                    2));
+                                                        Injector.resolve<SurveyPageBloc>().add(SurveyAddDataEvent(true, false, false, widget.isEdit!));
+                                                        Injector.resolve<SurveyPageBloc>().add(SurveyAddDataBabyEvent(isUpdate: widget.isEdit!));
+                                                      } else if (state.page == 1 && state.name.valid) {
+                                                        Injector.resolve<SurveyPageBloc>().add(SurveyPageChanged(2));
                                                       }
                                                     },
                                                   ),

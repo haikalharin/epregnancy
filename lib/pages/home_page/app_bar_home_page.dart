@@ -30,7 +30,7 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
     return BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
       print("childs length : ${state.babyChilds?.length}");
 
-      if ((state.babyChilds?.length ?? 0) >= 1) {
+      if ((state.babyChilds?.length ?? 0) >= 1 && state.isBorn == true) {
         // have a child widget
         return Container(
           width: MediaQuery.of(context).size.width,
@@ -522,7 +522,9 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                                   textAlign: TextAlign.start),
                             ),
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _showBabyAndChildPicker(context);
+                                },
                                 icon: Icon(
                                   Icons.keyboard_arrow_down,
                                   color: EpregnancyColors.primer,
@@ -765,12 +767,11 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                               leading:
                                   SvgPicture.asset("assets/ic_baby_appbar.svg"),
                               title: _childNameWithGender(
-                                  state.babyChilds?[index].name ?? "",
-                                  state.babyChilds?[index].gender ?? "L"),
+                                  state.babyChilds?[index].name ?? "N/A",
+                                  state.babyChilds?[index].gender),
                               onTap: () async {
                                 Injector.resolve<HomePageBloc>().add(
-                                    HomeFetchChildForDashboardEvent(
-                                        state.babyChilds![index].id!));
+                                    HomeFetchChildForDashboardEvent(state.babyChilds![index].id!, state.babyChilds![index].born!));
                                 Navigator.pop(context);
                               },
                               trailing: state.selectedChildId ==
@@ -792,11 +793,14 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
         });
   }
 
-  Widget _childNameWithGender(String name, String gender) {
+  Widget _childNameWithGender(String name, String? gender) {
+    print("gender : $gender");
     if (gender == "L") {
       return blackText16("$name ♂");
-    } else {
+    } else if (gender == "P") {
       return blackText16("$name ♀");
+    } else {
+      return blackText16("$name");
     }
   }
 }

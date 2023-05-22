@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 state.user?.isPregnant == true &&
-                                    (state.user?.babies?.length ?? 0) >= 1 && state.baby != null && state.baby?.baby?.name != "null"
+                                    (state.user?.babies?.length ?? 0) >= 1 && state.baby != null && state.baby?.baby?.name != "null" && state.isBorn == false
                                     ? BabySectionWidget(
                                         state: state,
                                         refreshIndicatorKey: refreshIndicatorKey,
@@ -269,17 +269,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           state.simpleTipResponse ??
                                               const SimpleTipResponse(),
                                     ))
-                                : TipsKehamilanPage(
+                                : (state.babyChilds?.length ?? 0) >= 1 ? TipsKehamilanPage(
                                     simpleTipResponse:
                                         state.simpleTipResponse ??
                                             const SimpleTipResponse(),
-                                  ),
+                                  ) : Container(
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   padding: EdgeInsets.only(
-                                      left: 20, right: 20, bottom: 8),
+                                      left: 20, right: 20, bottom: 8, top: 16.w),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
