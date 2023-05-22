@@ -55,6 +55,16 @@ class SignupDateChanged extends SignUpQuestionnaireEvent {
   List<Object> get props => [date];
 }
 
+class SignupReferralCodeChanged extends SignUpQuestionnaireEvent {
+  const SignupReferralCodeChanged(this.referralCode);
+
+  final String referralCode;
+
+  @override
+  List<Object> get props => [referralCode];
+}
+
+
 class SignupSubmitted extends SignUpQuestionnaireEvent {
   const SignupSubmitted();
 }

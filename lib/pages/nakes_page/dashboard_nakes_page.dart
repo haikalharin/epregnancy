@@ -48,24 +48,124 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
   @override
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
-    Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent(isMidwife: true));
-    Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
-    Injector.resolve<ChatPendingBloc>()
-        .add(FetchLastChatEvent(widget.hospitalId));
-    Injector.resolve<ChatPendingBloc>()
-        .add(FetchChatPendingByHospitalId(widget.hospitalId));
-    Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
-    Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-    Injector.resolve<HospitalBloc>()
-        .add(FetchHospitalsByIdEvent(widget.hospitalId));
-    Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
-    Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
+    homeFetch().then((value) => fetchMemberSummaryEvent().then((value) =>
+        fetchListVisitEvent().then((value) => fetchLastChatEvent().then((value) =>
+            fetchChatPendingByHospitalId().then((value) => articleHomeFetchEvent()
+                .then((value) => fetchChatOngoingEvent().then((value) =>
+                    fetchHospitalsByIdEvent().then((value) => homeEventDateChanged()))))))));
+    // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent(isMidwife: true));
+    // Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
+    // Injector.resolve<ChatPendingBloc>()
+    //     .add(FetchLastChatEvent(widget.hospitalId));
+    // Injector.resolve<ChatPendingBloc>()
+    //     .add(FetchChatPendingByHospitalId(widget.hospitalId));
+    // Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
+    // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+    // Injector.resolve<HospitalBloc>()
+    //     .add(FetchHospitalsByIdEvent(widget.hospitalId));
+    // Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
+    // Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
     getHospital();
   }
 
   HospitalModel? hospitalModel;
+
+  Future<bool> homeFetch() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>()
+            .add(HomeFetchDataEvent(isMidwife: true));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchListVisitEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchLastChatEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<ChatPendingBloc>()
+            .add(FetchLastChatEvent(widget.hospitalId));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchChatPendingByHospitalId() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<ChatPendingBloc>()
+            .add(FetchChatPendingByHospitalId(widget.hospitalId));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> articleHomeFetchEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>().add(const ArticleHomeFetchEvent());
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchChatOngoingEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchHospitalsByIdEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HospitalBloc>()
+            .add(FetchHospitalsByIdEvent(widget.hospitalId));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchMemberSummaryEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
+      },
+    );
+    return true;
+  }
+
+  Future<bool> homeEventDateChanged() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>()
+            .add(HomeEventDateChanged(DateTime.now()));
+      },
+    );
+    return true;
+  }
 
   void getHospital() async {
     HospitalModel _hospitalModel = await AppSharedPreference.getHospital();
@@ -80,12 +180,15 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
       GlobalKey<LiquidPullToRefreshState>();
 
   Future<void> _handleRefresh() async {
+    articleHomeFetchEvent().then((value) => fetchMemberSummaryEvent().then((value) => fetchListVisitEvent().then(
+        (value) => fetchChatOngoingEvent()
+            .then((value) => fetchChatPendingByHospitalId()))));
     // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
-    Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
-    Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
-    Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-    Injector.resolve<ChatPendingBloc>()
-        .add(FetchChatPendingByHospitalId(widget.hospitalId));
+    // Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
+    // Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
+    // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+    // Injector.resolve<ChatPendingBloc>()
+    //     .add(FetchChatPendingByHospitalId(widget.hospitalId));
   }
 
   @override
@@ -123,7 +226,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                         context: context,
                         builder: (BuildContext bc) {
                           return WillPopScope(
-                            onWillPop:() => Future.value(false),
+                            onWillPop: () => Future.value(false),
                             child: Container(
                               padding: EdgeInsets.all(16.w),
                               child: Wrap(
@@ -135,16 +238,19 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                         InkWell( onTap: (){
-                                           Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
-                                           Future.delayed(const Duration(milliseconds: 100));
-                                           Navigator.pop(context);
-                                         },
-                                           child: Icon(
+                                          InkWell(
+                                            onTap: () {
+                                              Injector.resolve<HomePageBloc>()
+                                                  .add(FetchListVisitEvent(0));
+                                              Future.delayed(const Duration(
+                                                  milliseconds: 100));
+                                              Navigator.pop(context);
+                                            },
+                                            child: Icon(
                                               Icons.close,
                                               color: EpregnancyColors.primer,
                                             ),
-                                         ),
+                                          ),
                                           Expanded(
                                             child: Text(
                                                 "Kode QR Bidan ${widget.userName}",
@@ -154,10 +260,11 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                                     fontSize: 14.sp),
                                                 textAlign: TextAlign.center),
                                           ),
-                                          SvgPicture.asset(
-                                            "assets/icShare.svg",
-                                            color: EpregnancyColors.primer,
-                                          )
+                                          Container()
+                                          // SvgPicture.asset(
+                                          //   "assets/icShare.svg",
+                                          //   color: EpregnancyColors.primer,
+                                          // )
                                         ],
                                       ),
                                       Padding(
@@ -383,14 +490,17 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                                 margin: EdgeInsets.only(),
                                                 child: Container())
                                             : Column(
-                                              children: [
-                                                Expanded(
-                                                  child: ListView.builder(
-                                                      scrollDirection: Axis.vertical,
-                                                      itemBuilder: (context, index) {
+                                                children: [
+                                                  Expanded(
+                                                    child: ListView.builder(
+                                                      scrollDirection:
+                                                          Axis.vertical,
+                                                      itemBuilder:
+                                                          (context, index) {
                                                         String outputDate = "";
                                                         var outputFormat =
-                                                            DateFormat.yMMMMd('id');
+                                                            DateFormat.yMMMMd(
+                                                                'id');
                                                         outputDate = outputFormat.format(
                                                             DateTime.parse(state
                                                                     .listUserVisitModel?[
@@ -408,44 +518,54 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                                           },
                                                           child: Center(
                                                             child: VisitCard(
-                                                              user:
-                                                                  state.listUserVisitModel?[
-                                                                      index],
+                                                              user: state
+                                                                      .listUserVisitModel?[
+                                                                  index],
                                                             ),
                                                           ),
                                                         );
                                                       },
                                                       itemCount: 5,
                                                     ),
-                                                ),
-                                                InkWell(
-                                                  onTap: (){
-                                                    Navigator.push(context, MaterialPageRoute(
-                                                        builder: (context) => const MemberVisitPage()));
-                                                  },
-                                                  child: Container(
-                                                    width: MediaQuery.of(context).size.width,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      border: Border(
-                                                          top: BorderSide(
-                                                              color:
-                                                              EpregnancyColors.greyDivider,
-                                                              width: 1)),
-                                                    ),
-                                                    padding: EdgeInsets.all(16.w),
-                                                    child: Center(
-                                                        child: Text(
-                                                          "Lihat Semua",
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight.w700,
-                                                              fontSize: 12.sp,
-                                                              color: EpregnancyColors.primer),
-                                                        )),
                                                   ),
-                                                )
-                                              ],
-                                            ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const MemberVisitPage()));
+                                                    },
+                                                    child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        border: Border(
+                                                            top: BorderSide(
+                                                                color: EpregnancyColors
+                                                                    .greyDivider,
+                                                                width: 1)),
+                                                      ),
+                                                      padding:
+                                                          EdgeInsets.all(16.w),
+                                                      child: Center(
+                                                          child: Text(
+                                                        "Lihat Semua",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: 12.sp,
+                                                            color:
+                                                                EpregnancyColors
+                                                                    .primer),
+                                                      )),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                       ),
                                       _Loading()
                                     ],
