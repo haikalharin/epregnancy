@@ -31,7 +31,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                   SizedBox(
                     height: 36.h,
                   ),
-                  state.firstVisit == false
+                  state.firstVisit == true
                       ? Container(
                     margin: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
@@ -51,7 +51,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                               fontSize: 22.sp),
                           textAlign: TextAlign.center,
                         ),
-                  state.firstVisit == false
+                  state.firstVisit == true
                       ? Container(
                     margin: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
                         child: Text(
