@@ -265,7 +265,7 @@ class _OtpPageState extends State<OtpPage> {
                                               left: 12.w,
                                               right: 12.w),
                                           child: Text(
-                                            "Kode OTP yang Anda masukan salah. Silahkan ketik atau menunggu untuk kirim ulang",
+                                            "Kode OTP yang Anda masukan salah. Silahkan ketik kembali atau kirim ulang kode OTP",
                                             maxLines: 2,
                                             style: TextStyle(
                                                 color: Colors.red,
