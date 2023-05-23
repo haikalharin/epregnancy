@@ -12,7 +12,7 @@ class DateFormatter {
 
   static  DateFormat dateFormatWithSpace =  DateFormat('d MMMM yyyy');
   static  DateFormat dateFormatdMMyyyy =  DateFormat('d MMM yyyy');
-  static  DateFormat dateFormatChat =  DateFormat('d MMM yyyy');
+  static  DateFormat dateFormatChat =  DateFormat('d MMM yyyy', 'id');
   static  DateFormat dateFormatChatToday =  DateFormat('HH:mm');
   static  DateFormat dateWithDay =  DateFormat.yMMMMEEEEd('id');
 

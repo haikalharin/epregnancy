@@ -24,6 +24,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:root_detector/root_detector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
+import 'common/constants/bloc_providers.dart';
 import 'flavors.dart';
 
 // void main() {
@@ -174,7 +175,7 @@ class _MyAppState extends State<MyApp> {
             splitScreenMode: true,
             builder: (context, child) {
               return MultiBlocProvider(
-                  providers: _getProviders(),
+                  providers: getProviders(),
                   child: OverlaySupport.global(
                     child: Portal(
                         child: Provider.value(
@@ -226,75 +227,6 @@ class _MyAppState extends State<MyApp> {
       },
     );
   }
-
-  List<BlocProvider> _getProviders() => [
-        BlocProvider<LoginExampleBloc>(
-            create: (context) =>
-                Injector.container.resolve<LoginExampleBloc>()),
-        BlocProvider<SignupBloc>(
-            create: (context) => Injector.container.resolve<SignupBloc>()),
-        BlocProvider<LoginBloc>(
-            create: (context) => Injector.container.resolve<LoginBloc>()),
-        BlocProvider<HomePageBloc>(
-            create: (context) => Injector.container.resolve<HomePageBloc>()),
-        BlocProvider<SurveyPageBloc>(
-            create: (context) => Injector.container.resolve<SurveyPageBloc>()),
-        BlocProvider<ArticlePageBloc>(
-            create: (context) => Injector.container.resolve<ArticlePageBloc>()),
-        BlocProvider<SignUpQuestionnaireBloc>(
-            create: (context) =>
-                Injector.container.resolve<SignUpQuestionnaireBloc>()),
-        BlocProvider<SplashscreenBloc>(
-            create: (context) =>
-                Injector.container.resolve<SplashscreenBloc>()),
-        BlocProvider<EventPageBloc>(
-            create: (context) => Injector.container.resolve<EventPageBloc>()),
-        BlocProvider<PoinBloc>(
-            create: (context) => Injector.container.resolve<PoinBloc>()),
-        BlocProvider<PointHistoryBloc>(
-            create: (context) =>
-                Injector.container.resolve<PointHistoryBloc>()),
-        BlocProvider<GamesBloc>(
-            create: (context) => Injector.container.resolve<GamesBloc>()),
-        BlocProvider<OtpPageBloc>(
-            create: (context) => Injector.container.resolve<OtpPageBloc>()),
-        BlocProvider<LandingPageBloc>(
-            create: (context) => Injector.container.resolve<LandingPageBloc>()),
-        BlocProvider<ConsultationPageBloc>(
-            create: (context) =>
-                Injector.container.resolve<ConsultationPageBloc>()),
-        BlocProvider<ChangePasswordBloc>(
-            create: (context) =>
-                Injector.container.resolve<ChangePasswordBloc>()),
-        BlocProvider<ChatBloc>(
-            create: (context) => Injector.container.resolve<ChatBloc>()),
-        BlocProvider<ConsultationPageBloc>(
-            create: (context) =>
-                Injector.container.resolve<ConsultationPageBloc>()),
-        BlocProvider<HospitalBloc>(
-            create: (context) => Injector.container.resolve<HospitalBloc>()),
-        BlocProvider<ChatPendingBloc>(
-            create: (context) => Injector.container.resolve<ChatPendingBloc>()),
-        BlocProvider<ProfilePageBloc>(
-            create: (context) => Injector.container.resolve<ProfilePageBloc>()),
-        BlocProvider<ForgotPasswordPageBloc>(
-            create: (context) =>
-                Injector.container.resolve<ForgotPasswordPageBloc>()),
-        BlocProvider<PinCheckInBloc>(
-            create: (context) => Injector.container.resolve<PinCheckInBloc>()),
-        BlocProvider<DisclaimerPageBloc>(
-            create: (context) =>
-                Injector.container.resolve<DisclaimerPageBloc>()),
-        BlocProvider<PatientSelectBloc>(
-            create: (context) =>
-                Injector.container.resolve<PatientSelectBloc>()),
-        BlocProvider<CommentBloc>(
-            create: (context) => Injector.container.resolve<CommentBloc>()),
-        BlocProvider<AudioBloc>(
-            create: (context) => Injector.container.resolve<AudioBloc>()),
-    BlocProvider<NewBornPageBloc>(
-        create: (context) => Injector.container.resolve<NewBornPageBloc>()),
-      ];
 }
 
 class HexColor extends Color {

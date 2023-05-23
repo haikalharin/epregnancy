@@ -1,5 +1,6 @@
 
 import 'package:PregnancyApp/data/model/child_model/child_list_response.dart';
+import 'package:PregnancyApp/data/model/growth_model/growth_model.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/repository/child_repository/child_repository.dart';
 
@@ -87,6 +88,14 @@ class ChildRepositoryImpl extends ChildRepository {
       };
 
       return remoteDatasource.addGrowth(data, babyId);
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<GrowthModel>> fetchAllGrowth(String id) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.getAllGrowth(id);
     }
     throw NetworkConnectionException();
   }

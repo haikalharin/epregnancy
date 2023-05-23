@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 
 import '../../common/injector/injector.dart';
 import '../../utils/epragnancy_color.dart';
+import '../growth_page/bloc/growth_bloc.dart';
 import '../home_page/bloc/home_page_bloc.dart';
 
 class GrowthTrackerForm extends StatefulWidget {
@@ -45,6 +46,7 @@ class _GrowthTrackerFormState extends State<GrowthTrackerForm> {
             const snackBar = SnackBar(
                 content: Text("Pertumbuhan Anak Berhasil Ditambah!", style: TextStyle(color: Colors.white),), backgroundColor: EpregnancyColors.primer);
             Scaffold.of(context).showSnackBar(snackBar);
+            Injector.resolve<GrowthBloc>().add(FetchGrowthEvent(widget.babyId));
             Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
             Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(widget.babyId, true));
             Navigator.pop(context);

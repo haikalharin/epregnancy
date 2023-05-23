@@ -40,6 +40,7 @@ import '../model/article_model/article_model.dart';
 import '../model/baby_model/new_baby_model.dart';
 import '../model/baby_model_api/baby_Model_api.dart';
 import '../model/consultation_model/consultation_model.dart';
+import '../model/growth_model/growth_model.dart';
 import '../model/login_model/login_model.dart';
 import '../model/members_model/member.dart';
 import '../model/notification_model/notification_list_model.dart';
@@ -111,7 +112,7 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel> deleteBabyList(String id) async {
-    final response = await httpClient.delete(ServiceUrl.deleteBaby + id, {});
+    final response = await httpClient.delete(ServiceUrl.deleteBaby + "/" + id, {});
 
     return ResponseModel.fromJson(response, UserModel.fromJson);
   }
@@ -289,6 +290,12 @@ class RemoteDataSource {
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
+  }
+
+
+  Future<ResponseModel<GrowthModel>> getAllGrowth(String childId) async {
+    final response = await httpClient.get("${ServiceUrl.childs}/$childId/${ServiceUrl.growths}");
+    return ResponseModel.fromJson(response, GrowthModel.fromJson);
   }
 
   Future<ResponseModel> requestOtp(Map data) async {

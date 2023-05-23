@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/data/model/my_child_dashboard/my_child_dashboard.dart';
+import 'package:PregnancyApp/pages/growth_page/growth_page.dart';
 import 'package:PregnancyApp/pages/home_page/baby_tracker_detail_page.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:flutter/material.dart';
@@ -310,13 +311,14 @@ class ChildSectionWidget extends StatelessWidget {
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          state.myChildDashboard?.growthStatus?.weight ??
-                              "Tidak ada data",
-                          style: _styleBuilder(state.myChildDashboard
-                              ?.growthStatus?.weight ??
-                              "Tidak ada data"),
-                        ),
+                        // disable temporary
+                        // Text(
+                        //   state.myChildDashboard?.growthStatus?.weight ??
+                        //       "Tidak ada data",
+                        //   style: _styleBuilder(state.myChildDashboard
+                        //       ?.growthStatus?.weight ??
+                        //       "Tidak ada data"),
+                        // ),
                       ],
                     ),
                     Container(
@@ -348,13 +350,14 @@ class ChildSectionWidget extends StatelessWidget {
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          state.myChildDashboard?.growthStatus?.length ??
-                              "Tidak ada data",
-                          style: _styleBuilder(state.myChildDashboard
-                              ?.growthStatus?.length ??
-                              "Tidak ada data"),
-                        ),
+                        // disable temporary
+                        // Text(
+                        //   state.myChildDashboard?.growthStatus?.length ??
+                        //       "Tidak ada data",
+                        //   style: _styleBuilder(state.myChildDashboard
+                        //       ?.growthStatus?.length ??
+                        //       "Tidak ada data"),
+                        // ),
                       ],
                     ),
                     Container(
@@ -385,13 +388,13 @@ class ChildSectionWidget extends StatelessWidget {
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            state.myChildDashboard?.growthStatus
-                                ?.headCircumference ??
-                                "Tidak ada data",
-                            style: _styleBuilder(state.myChildDashboard
-                                ?.growthStatus?.headCircumference ??
-                                "Tidak ada data")),
+                        // Text(
+                        //     state.myChildDashboard?.growthStatus
+                        //         ?.headCircumference ??
+                        //         "Tidak ada data",
+                        //     style: _styleBuilder(state.myChildDashboard
+                        //         ?.growthStatus?.headCircumference ??
+                        //         "Tidak ada data")),
                       ],
                     ),
                     Container(
@@ -399,10 +402,16 @@ class ChildSectionWidget extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: EpregnancyColors.primer,
-                            size: 18,
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_forward_ios,
+                              color: EpregnancyColors.primer,
+                              size: 18,
+                            ),
+                            onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => GrowthPage(childId: state.myChildDashboard!.child!.id!)));
+                            },
                           ),
                           SizedBox(
                             height: 10,

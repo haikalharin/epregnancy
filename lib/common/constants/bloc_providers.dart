@@ -14,6 +14,7 @@ import '../../pages/event_page/bloc/patient_select_bloc.dart';
 import '../../pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import '../../pages/forgot_password_page/bloc/forgot_password_page_bloc.dart';
 import '../../pages/games_page/bloc/games_bloc.dart';
+import '../../pages/growth_page/bloc/growth_bloc.dart';
 import '../../pages/home_page/bloc/home_page_bloc.dart';
 import '../../pages/landing_page/bloc/landing_page_bloc.dart';
 import '../../pages/location_select_page/bloc/hospital_bloc.dart';
@@ -98,4 +99,6 @@ List<BlocProvider> getProviders() => [
           create: (context) => Injector.container.resolve<ChildListBloc>()),
       BlocProvider<NotificationBloc>(
           create: (context) => Injector.container.resolve<NotificationBloc>()),
+      BlocProvider<GrowthBloc>(
+          create: (context) => Injector.container.resolve<GrowthBloc>()),
     ];
