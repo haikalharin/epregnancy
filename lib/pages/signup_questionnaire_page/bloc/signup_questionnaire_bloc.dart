@@ -171,7 +171,7 @@ class SignUpQuestionnaireBloc
               mobile: phoneNumber,
               email: email,
               dob: state.date.value,
-              referralCode: state.referralCode.value,
+              referrer: state.referralCode.value,
               password: state.password.value,
               isPregnant: true,
               isPatient: true,
