@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/common/injector/injector.dart';
+import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
 import 'package:PregnancyApp/pages/child_list_page/growth_tracker_form.dart';
 import 'package:PregnancyApp/pages/new_born_page/bloc/new_born_page_bloc.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
@@ -25,8 +26,7 @@ class _ChildCardState extends State<ChildCard> {
   bool edit = false;
   bool delete = false;
 
-  void setMenuPopUp(int value) {
-    // todo edit & delete child data
+  void setMenuPopUp(int value) async {
     if (value == 1) {
       if (delete) delete = false;
       setState(() {
@@ -60,8 +60,8 @@ class _ChildCardState extends State<ChildCard> {
         delete = !delete;
         edit = edit;
       });
-      Injector.resolve<NewBornPageBloc>()
-          .add(DeleteChildEvent(widget.child.id!));
+      await AppSharedPreference.remove("babyDataNew");
+      Injector.resolve<NewBornPageBloc>().add(DeleteChildEvent(widget.child.id!));
       Injector.resolve<HomePageBloc>().add(const HomeFetchDataEvent());
       Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
       Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(widget.child.id!, true));
