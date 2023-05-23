@@ -526,14 +526,15 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           });
 
           if (_babyChilds.isNotEmpty) {
-            if (_babyChilds[0].born == true) {
-              Injector.resolve<HomePageBloc>().add(
-                  HomeFetchChildForDashboardEvent(
-                      _babyChilds[0].id!, _babyChilds[0].born!));
+            String childId = await AppSharedPreference.getSelectedChildId();
+            int i = _babyChilds.indexWhere((element) => element.id == childId);
+            if (_babyChilds[i == -1 ? 0 : i].born == true) {
+              Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(_babyChilds[i == -1 ? 0 : i].id!, _babyChilds[i == -1 ? 0 : i].born!));
               yield state.copyWith(
                 submitStatus: FormzStatus.submissionSuccess,
                 tipe: "fetch-baby-childs-success",
                 babyChilds: _babyChilds,
+                selectedChildId:  _babyChilds[i == -1 ? 0 : i].id,
                 user: user,
               );
             } else {

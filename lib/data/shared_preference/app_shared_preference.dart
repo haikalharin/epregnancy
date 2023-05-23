@@ -47,6 +47,7 @@ class AppSharedPreference {
   static const String checkIn = "checkin";
   static const String hospital = "hospital";
   static const String dateTimeDoandDonts = "dateTimeDoandDonts";
+  static const String selectedChildId = "selected_child_id";
   static const String dateTimeVisit = "dateTimeVisit";
   static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
@@ -72,6 +73,17 @@ class AppSharedPreference {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(dateTimeDoandDonts, json);
+  }
+
+  static setSelectedChildId(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(selectedChildId, id);
+  }
+
+  static Future<String> getSelectedChildId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? data = prefs.getString(selectedChildId);
+    return data ?? '';
   }
 
   static Future<ChatDialogModel?> getShowDialogDoAndDonts() async {
@@ -467,6 +479,7 @@ class AppSharedPreference {
     await AppSharedPreference.remove(AppSharedPreference.otp);
     await AppSharedPreference.remove(AppSharedPreference.token);
     await AppSharedPreference.remove(AppSharedPreference.cookie);
+    await AppSharedPreference.remove(AppSharedPreference.selectedChildId);
     Injector.resolve<HospitalBloc>()
         .add(const HospitalDispose());
     if (F.appFlavor == Flavor.PRODUCTION) {

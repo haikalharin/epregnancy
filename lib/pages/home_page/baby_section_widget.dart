@@ -178,6 +178,7 @@ class BabySectionWidget extends StatelessWidget {
                                     text: "Ya, Hapus Data Anak",
                                     function: (){
                                       AppSharedPreference.remove("babyData");
+                                      AppSharedPreference.remove("babyDataNew");
                                       Injector.resolve<NewBornPageBloc>().add(DeleteBabyEvent(babyId));
                                       Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
                                       Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
@@ -567,6 +568,9 @@ class BabySectionWidget extends StatelessWidget {
                               if(value != null){
                                 if(value == "lost-baby"){
                                   _babyLostDialog(context);
+                                  // todo remove baby session
+                                  AppSharedPreference.remove("babyData");
+                                  AppSharedPreference.remove("babyDataNew");
                                   Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
                                   Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
                                   Injector.resolve<HomePageBloc>().add(const ResetBaby());

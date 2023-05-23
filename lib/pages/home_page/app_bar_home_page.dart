@@ -1,4 +1,5 @@
 import 'package:PregnancyApp/data/model/chat_model/chat_pending_response_list.dart';
+import 'package:PregnancyApp/data/shared_preference/app_shared_preference.dart';
 import 'package:PregnancyApp/pages/child_list_page/child_list_page.dart';
 import 'package:PregnancyApp/pages/child_list_page/widget/add_child_button.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
@@ -798,8 +799,8 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                                   state.babyChilds?[index].name ?? "N/A",
                                   state.babyChilds?[index].gender),
                               onTap: () async {
-                                Injector.resolve<HomePageBloc>().add(
-                                    HomeFetchChildForDashboardEvent(state.babyChilds![index].id!, state.babyChilds![index].born!));
+                                await AppSharedPreference.setSelectedChildId(state.babyChilds![index].id!);
+                                Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(state.babyChilds![index].id!, state.babyChilds![index].born!));
                                 Navigator.pop(context);
                               },
                               trailing: state.selectedChildId ==

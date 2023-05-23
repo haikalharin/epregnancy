@@ -443,7 +443,9 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                                   ),
                                   IconButton(
                                       onPressed: () {
-
+                                        Navigator.of(context).pushNamed(
+                                            RouteName.surveyPageBaby,
+                                            arguments: {"is_edit": true, "edit_name": false});
                                       },
                                       icon: Icon(
                                         Icons.arrow_forward_ios_rounded,
