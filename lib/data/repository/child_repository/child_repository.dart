@@ -1,5 +1,7 @@
 
 
+import 'package:PregnancyApp/data/model/growth_model/growth_model.dart';
+
 import '../../model/child_model/child_list_response.dart';
 import '../../model/response_model/response_model.dart';
 
@@ -11,5 +13,6 @@ abstract class ChildRepository {
   Future<ResponseModel> deleteBaby(String id);
   Future<ResponseModel> deleteChild(String id);
   Future<ResponseModel<ChildListResponse>> fetchChildList();
+  Future<ResponseModel<GrowthModel>> fetchAllGrowth(String id);
 
 }

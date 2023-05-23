@@ -26,8 +26,11 @@ import '../article_page/list_shimmer_verticle.dart';
 import '../chat_page/bloc/chat_bloc/chat_bloc.dart';
 import '../home_page/list_article.dart';
 import '../home_page/tab_bar_event_page.dart';
+import '../notification_page/notification_page.dart';
 import 'bloc/chat_pending_bloc.dart';
 import 'package:flutter_countdown_timer/index.dart';
+import 'package:badges/badges.dart' as badge;
+
 
 class DashBoardNakesPage extends StatefulWidget {
   const DashBoardNakesPage(
@@ -48,11 +51,11 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
   @override
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
-    homeFetch().then((value) => fetchMemberSummaryEvent().then((value) =>
+    homeFetch().then((value) => fetchTotalUnreadNotification().then((value) => fetchMemberSummaryEvent().then((value) =>
         fetchListVisitEvent().then((value) => fetchLastChatEvent().then((value) =>
             fetchChatPendingByHospitalId().then((value) => articleHomeFetchEvent()
                 .then((value) => fetchChatOngoingEvent().then((value) =>
-                    fetchHospitalsByIdEvent().then((value) => homeEventDateChanged()))))))));
+                    fetchHospitalsByIdEvent().then((value) => homeEventDateChanged())))))))));
     // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent(isMidwife: true));
     // Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
     // Injector.resolve<ChatPendingBloc>()
@@ -156,6 +159,16 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
     return true;
   }
 
+  Future<bool> fetchTotalUnreadNotification() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>().add(const HomeFetchNotificationTotalUnreadEvent());
+      },
+    );
+    return true;
+  }
+
   Future<bool> homeEventDateChanged() async {
     await Future.delayed(
       const Duration(milliseconds: 1500),
@@ -180,9 +193,9 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
       GlobalKey<LiquidPullToRefreshState>();
 
   Future<void> _handleRefresh() async {
-    articleHomeFetchEvent().then((value) => fetchMemberSummaryEvent().then((value) => fetchListVisitEvent().then(
-        (value) => fetchChatOngoingEvent()
-            .then((value) => fetchChatPendingByHospitalId()))));
+    articleHomeFetchEvent().then((value) => fetchTotalUnreadNotification().then((value) => fetchMemberSummaryEvent().then(
+        (value) => fetchListVisitEvent().then((value) => fetchChatOngoingEvent()
+            .then((value) => fetchChatPendingByHospitalId())))));
     // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
     // Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
     // Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
@@ -305,16 +318,56 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                   child: SvgPicture.asset("assets/ic_qr.svg"));
             },
           ),
-          IconButton(
-            onPressed: () {
-              // todo notif clicked handle
-            },
-            icon: const Icon(
-              Icons.notifications,
-              color: EpregnancyColors.primer,
-              size: 30,
-            ),
-          )
+          BlocBuilder<HomePageBloc, HomePageState>(
+              builder: (context, state){
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const NotificationPage()));
+                    },
+                    child: (state.totalUnreadNotif ?? 0) >= 1
+                        ? (state.totalUnreadNotif ?? 0) > 9 ? badge.Badge(
+                      badgeContent: const Center(
+                          child: Text(
+                            "9+",
+                            style: const TextStyle(
+                                color: Colors.white),
+                          )),
+                      position: badge.BadgePosition.topEnd(
+                          top: -10, end: -3),
+                      child: Icon(
+                        Icons.notifications,
+                        color: EpregnancyColors.primer,
+                        size: 23.w,
+                      ),
+                    ): badge.Badge(
+                      badgeContent: Center(
+                          child: Text(
+                            state.totalUnreadNotif.toString(),
+                            style: const TextStyle(
+                                color: Colors.white),
+                          )),
+                      position: badge.BadgePosition.topEnd(
+                          top: -10, end: -3),
+                      child: Icon(
+                        Icons.notifications,
+                        color: EpregnancyColors.primer,
+                        size: 23.w,
+                      ),
+                    )
+                        : Icon(
+                      Icons.notifications,
+                      color: EpregnancyColors.primer,
+                      size: 23.w,
+                    ),
+                  ),
+                );
+              })
         ],
       ),
       body: BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {

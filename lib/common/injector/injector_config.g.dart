@@ -43,7 +43,8 @@ class _$InjectorConfig extends InjectorConfig {
       ..registerSingleton(
           (c) => NewBornPageBloc(c<UserRepository>(), c<ChildRepository>()))
       ..registerSingleton((c) => ChildListBloc(c<ChildRepository>()))
-      ..registerSingleton((c) => NotificationBloc(c<NotificationRepository>()));
+      ..registerSingleton((c) => NotificationBloc(c<NotificationRepository>()))
+      ..registerSingleton((c) => GrowthBloc(c<ChildRepository>()));
   }
 
   @override

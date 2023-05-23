@@ -22,6 +22,7 @@ import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/forgot_password_page/bloc/forgot_password_page_bloc.dart';
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
+import 'package:PregnancyApp/pages/growth_page/bloc/growth_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/bloc/landing_page_bloc.dart';
 import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
@@ -114,6 +115,7 @@ abstract class InjectorConfig {
   @Register.singleton(NewBornPageBloc)
   @Register.singleton(ChildListBloc)
   @Register.singleton(NotificationBloc)
+  @Register.singleton(GrowthBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)
