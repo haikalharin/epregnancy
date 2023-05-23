@@ -31,7 +31,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                   SizedBox(
                     height: 36.h,
                   ),
-                  state.firstVisit == false
+                  state.firstVisit == true
                       ? Container(
                     margin: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
@@ -51,11 +51,11 @@ class SuccessEarnPoinPage extends StatelessWidget {
                               fontSize: 22.sp),
                           textAlign: TextAlign.center,
                         ),
-                  state.firstVisit == false
+                  state.firstVisit == true
                       ? Container(
                     margin: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
                         child: Text(
-                            "telah berhasil memindai kode QR",
+                            "Bunda dapat menunggu konfirmasi dari Bidan",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w700,
@@ -64,7 +64,7 @@ class SuccessEarnPoinPage extends StatelessWidget {
                           ),
                       )
                       : Text(
-                          "Bunda dapat menunggu konfirmasi dari bidan",
+                          "poin kunjungan Puskesmas sudah diperoleh hari ini. Bunda dapat kembali check-in saat kunjungan berikutnya",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w700,
