@@ -29,7 +29,7 @@ class HospitalState {
     this.lastPagePatient = false,
     this.lastPageMidwife = false,
     this.isSearch = false,
-    this.isPregnant = 0,
+    this.isPregnant = 2,
     this.sort,
     this.sortBy,
     this.name,

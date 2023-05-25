@@ -76,70 +76,80 @@ class ArticleDetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Stack(
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(top: 5),
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(
-                                          10.0),
-                                      color:
-                                      EpregnancyColors.primer),
-                                  height: 20,
-                                  width: 80,
-                                  child: Center(
-                                      child: Text(
-                                        "Berita",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                  ),
-                                ),
-                                Icon(Icons.ios_share),
-                              ],
-                            ),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(top: 10),
-                              child: Text(
-                                  article!.title ?? '',
-                                  maxLines: 5,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                  overflow: TextOverflow.clip,
-                              ),
-                          ),
-                          Expanded(
-                            child: Container(
-                                margin: EdgeInsets.only(top: 20, bottom: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 10),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                        child: Icon(
-                                      Icons.access_time,
-                                      size: 18,
-                                    )),
-                                    SizedBox(
-                                      width: 5,
+                                      margin: EdgeInsets.only(top: 5),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              10.0),
+                                          color:
+                                          EpregnancyColors.primer),
+                                      height: 20,
+                                      width: 80,
+                                      child: Center(
+                                          child: Text(
+                                            "Berita",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                      ),
                                     ),
-                                    Container(
-                                        child: Text(
-                                      outputDate,
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.black),
-                                    )),
+                                    Icon(Icons.ios_share),
                                   ],
-                                )),
+                                ),
+                              ),
+                              Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  child: Text(
+                                      article!.title ?? '',
+                                      maxLines: 5,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                      overflow: TextOverflow.clip,
+                                  ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                    margin: EdgeInsets.only(top: 20, bottom: 10),),
+                              ),
+                            ],
+                          ),
+                          Align(alignment: Alignment.bottomLeft,
+                            child: Expanded(
+                              child: Container(
+                                  margin: EdgeInsets.only(top: 20, bottom: 10),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                          child: Icon(
+                                            Icons.access_time,
+                                            size: 18,
+                                          )),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                          child: Text(
+                                            outputDate,
+                                            style: TextStyle(
+                                                fontSize: 16, color: Colors.black),
+                                          )),
+                                    ],
+                                  )),
+                            ),
                           ),
                         ],
                       ),
