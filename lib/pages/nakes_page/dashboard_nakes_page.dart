@@ -578,7 +578,11 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                                           ),
                                                         );
                                                       },
-                                                      itemCount: 5,
+                                                      itemCount: (state.listUserVisitModel??[])
+                                                          .length < 5
+                                                          ? state.listUserVisitModel!
+                                                          .length
+                                                          : 5,
                                                     ),
                                                   ),
                                                   InkWell(

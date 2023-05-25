@@ -25,6 +25,8 @@ mixin _$UserModel {
   @JsonKey(includeIfNull: true, name: 'referral_code')
   String? get referralCode => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: true)
+  String? get referrer => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: true)
   String? get password => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_patient', includeIfNull: true)
   bool? get isPatient => throw _privateConstructorUsedError;
@@ -102,6 +104,8 @@ abstract class $UserModelCopyWith<$Res> {
       @JsonKey(includeIfNull: true, name: 'referral_code')
           String? referralCode,
       @JsonKey(includeIfNull: true)
+          String? referrer,
+      @JsonKey(includeIfNull: true)
           String? password,
       @JsonKey(name: 'is_patient', includeIfNull: true)
           bool? isPatient,
@@ -177,6 +181,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? referralCode = freezed,
+    Object? referrer = freezed,
     Object? password = freezed,
     Object? isPatient = freezed,
     Object? isMidwife = freezed,
@@ -216,6 +221,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
       referralCode: referralCode == freezed
           ? _value.referralCode
           : referralCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      referrer: referrer == freezed
+          ? _value.referrer
+          : referrer // ignore: cast_nullable_to_non_nullable
               as String?,
       password: password == freezed
           ? _value.password
@@ -375,6 +384,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       @JsonKey(includeIfNull: true, name: 'referral_code')
           String? referralCode,
       @JsonKey(includeIfNull: true)
+          String? referrer,
+      @JsonKey(includeIfNull: true)
           String? password,
       @JsonKey(name: 'is_patient', includeIfNull: true)
           bool? isPatient,
@@ -454,6 +465,7 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? referralCode = freezed,
+    Object? referrer = freezed,
     Object? password = freezed,
     Object? isPatient = freezed,
     Object? isMidwife = freezed,
@@ -493,6 +505,10 @@ class __$$_UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
       referralCode: referralCode == freezed
           ? _value.referralCode
           : referralCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      referrer: referrer == freezed
+          ? _value.referrer
+          : referrer // ignore: cast_nullable_to_non_nullable
               as String?,
       password: password == freezed
           ? _value.password
@@ -627,6 +643,8 @@ class _$_UserModel implements _UserModel {
       @JsonKey(includeIfNull: true, name: 'referral_code')
           this.referralCode,
       @JsonKey(includeIfNull: true)
+          this.referrer,
+      @JsonKey(includeIfNull: true)
           this.password,
       @JsonKey(name: 'is_patient', includeIfNull: true)
           this.isPatient,
@@ -699,6 +717,9 @@ class _$_UserModel implements _UserModel {
   @override
   @JsonKey(includeIfNull: true, name: 'referral_code')
   final String? referralCode;
+  @override
+  @JsonKey(includeIfNull: true)
+  final String? referrer;
   @override
   @JsonKey(includeIfNull: true)
   final String? password;
@@ -819,7 +840,7 @@ class _$_UserModel implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, referralCode: $referralCode, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalLogin: $totalLogin, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, qrString: $qrString, hospital: $hospital, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, lastBiodataView: $lastBiodataView, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
+    return 'UserModel(id: $id, referralCode: $referralCode, referrer: $referrer, password: $password, isPatient: $isPatient, isMidwife: $isMidwife, name: $name, dob: $dob, username: $username, email: $email, mobile: $mobile, token: $token, totalpointsEarned: $totalpointsEarned, totalLogin: $totalLogin, totalpointsRedeemed: $totalpointsRedeemed, imageUrl: $imageUrl, hospitalId: $hospitalId, qrString: $qrString, hospital: $hospital, coverUrl: $coverUrl, isVerified: $isVerified, isPregnant: $isPregnant, isPlanningPregnancy: $isPlanningPregnancy, isHaveBaby: $isHaveBaby, lastBiodataView: $lastBiodataView, status: $status, gamificationpoints: $gamificationpoints, redeemHistory: $redeemHistory, lastItemRedeemed: $lastItemRedeemed, checkins: $checkins, babies: $babies, isAgree: $isAgree, fcmToken: $fcmToken)';
   }
 
   @override
@@ -830,6 +851,7 @@ class _$_UserModel implements _UserModel {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality()
                 .equals(other.referralCode, referralCode) &&
+            const DeepCollectionEquality().equals(other.referrer, referrer) &&
             const DeepCollectionEquality().equals(other.password, password) &&
             const DeepCollectionEquality().equals(other.isPatient, isPatient) &&
             const DeepCollectionEquality().equals(other.isMidwife, isMidwife) &&
@@ -880,6 +902,7 @@ class _$_UserModel implements _UserModel {
         runtimeType,
         const DeepCollectionEquality().hash(id),
         const DeepCollectionEquality().hash(referralCode),
+        const DeepCollectionEquality().hash(referrer),
         const DeepCollectionEquality().hash(password),
         const DeepCollectionEquality().hash(isPatient),
         const DeepCollectionEquality().hash(isMidwife),
@@ -929,6 +952,8 @@ abstract class _UserModel implements UserModel {
           final String? id,
       @JsonKey(includeIfNull: true, name: 'referral_code')
           final String? referralCode,
+      @JsonKey(includeIfNull: true)
+          final String? referrer,
       @JsonKey(includeIfNull: true)
           final String? password,
       @JsonKey(name: 'is_patient', includeIfNull: true)
@@ -998,6 +1023,9 @@ abstract class _UserModel implements UserModel {
   @override
   @JsonKey(includeIfNull: true, name: 'referral_code')
   String? get referralCode => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(includeIfNull: true)
+  String? get referrer => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: true)
   String? get password => throw _privateConstructorUsedError;

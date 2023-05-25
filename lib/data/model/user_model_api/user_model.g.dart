@@ -9,6 +9,7 @@ part of 'user_model.dart';
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       id: json['id'] as String?,
       referralCode: json['referral_code'] as String?,
+      referrer: json['referrer'] as String?,
       password: json['password'] as String?,
       isPatient: json['is_patient'] as bool?,
       isMidwife: json['is_midwife'] as bool?,
@@ -58,6 +59,7 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) {
   final val = <String, dynamic>{
     'id': instance.id,
     'referral_code': instance.referralCode,
+    'referrer': instance.referrer,
     'password': instance.password,
     'is_patient': instance.isPatient,
     'is_midwife': instance.isMidwife,
