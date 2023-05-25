@@ -62,6 +62,7 @@ class _ChildCardState extends State<ChildCard> {
       });
       await AppSharedPreference.remove("babyDataNew");
       Injector.resolve<NewBornPageBloc>().add(DeleteChildEvent(widget.child.id!));
+      Future.delayed(const Duration(seconds: 2));
       Injector.resolve<HomePageBloc>().add(const HomeFetchDataEvent());
       Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
       Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(widget.child.id!, true));

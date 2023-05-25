@@ -570,6 +570,15 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
                 // yield state.copyWith(submitStatus: FormzStatus.submissionFailure, baby: null);
               }
             }
+          } else {
+            yield state.copyWith(
+              submitStatus: FormzStatus.submissionSuccess,
+              tipe: "fetch-baby-childs-null",
+              babyChilds: [],
+              myChildDashboard: const MyChildDashboard(),
+              selectedChildId:  "",
+              user: user,
+            );
           }
         } else {
           yield state.copyWith(

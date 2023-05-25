@@ -20,8 +20,8 @@ class ListNotificationWidget extends StatelessWidget {
         groupBy: (element) => DateFormatter.dateFormatChat.format(DateTime.parse(element.createdDate!)),
         groupSeparatorBuilder: (String groupByValue) => ListNotifSeperator(date: groupByValue),
         itemBuilder: (context, NotificationListModel element) => NotificationItem(isRead: element.read!, title: element.title, desc: element.body, id: element.id!,),
-        // itemComparator: (item1, item2) => item1.createdDate!.compareTo(item2.createdDate!), // optional
-        itemComparator: (item1, item2) => DateFormatter.dateFormatChat.format(DateTime.parse(item1.createdDate!)).compareTo(DateFormatter.dateFormatChat.format(DateTime.parse(item2.createdDate!))), // optional
+        itemComparator: (item1, item2) => item1.createdDate!.compareTo(item2.createdDate!), // optional
+        // itemComparator: (item1, item2) => DateFormatter.dateFormatChat.format(DateTime.parse(item1.createdDate!)).compareTo(DateFormatter.dateFormatChat.format(DateTime.parse(item2.createdDate!))), // optional
         useStickyGroupSeparators: true, // optional
         floatingHeader: false, // optional
         order: GroupedListOrder.DESC, // optional

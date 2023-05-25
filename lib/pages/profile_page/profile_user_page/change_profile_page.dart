@@ -436,7 +436,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                               child: Row(
                                 children: [
                                   Text(
-                                    "Kehamilan Minggu ke-${state.ageBabyInWeeks.toString()}",
+                                    state.ageBabyInWeeks == 0 ? "Perbarui Status Kehamilan" : "Kehamilan Minggu ke-${state.ageBabyInWeeks.toString()}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 10.sp),

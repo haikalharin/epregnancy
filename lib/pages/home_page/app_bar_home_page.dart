@@ -33,6 +33,7 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
 
       if ((state.babyChilds?.length ?? 0) >= 1 && state.isBorn == true) {
         // have a child widget
+        print("have child widget");
         return Container(
           width: MediaQuery.of(context).size.width,
           color: EpregnancyColors.white,
@@ -173,7 +174,7 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
         );
       } else {
         // perbarui status kehamilan
-        if (state.baby == null || state.baby?.baby?.name == "null") {
+        if (state.baby == null || state.baby?.baby?.name == "null" || state.baby?.baby == null) {
           print('perbarui status kehamilan');
           return Container(
             width: MediaQuery.of(context).size.width,
@@ -182,11 +183,7 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                state.baby != null && state.baby?.baby?.name != 'null'
-                    ? Container(
-                        margin: EdgeInsets.only(left: 16.w),
-                        child: SvgPicture.asset("assets/ic_baby_appbar.svg"))
-                    : const SizedBox.shrink(),
+                const SizedBox.shrink(),
                 Expanded(
                   child: InkWell(
                     onTap: () {

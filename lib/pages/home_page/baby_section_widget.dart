@@ -180,6 +180,7 @@ class BabySectionWidget extends StatelessWidget {
                                       AppSharedPreference.remove("babyData");
                                       AppSharedPreference.remove("babyDataNew");
                                       Injector.resolve<NewBornPageBloc>().add(DeleteBabyEvent(babyId));
+                                      Future.delayed(Duration(seconds: 1));
                                       Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
                                       Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
                                       Injector.resolve<HomePageBloc>().add(const ResetBaby());

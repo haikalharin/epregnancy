@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
 import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
+import 'package:PregnancyApp/data/model/my_child_dashboard/my_child_dashboard.dart';
 import 'package:PregnancyApp/data/model/response_model/response_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 import 'package:PregnancyApp/flavors.dart';
@@ -247,7 +248,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 state.user?.isPregnant == true &&
-                                    (state.user?.babies?.length ?? 0) >= 1 && state.baby != null && state.baby?.baby?.name != "null" && state.isBorn == false
+                                    (state.user?.babies?.length ?? 0) >= 1 && state.baby?.baby != null && state.baby?.baby?.name != "null" && state.isBorn == false
                                     ? BabySectionWidget(
                                         state: state,
                                         refreshIndicatorKey: refreshIndicatorKey,
@@ -255,7 +256,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         refresh: handleRefresh,
                                         tooltipController: tooltipController,
                                         psTriggerTooltip: _psTriggerTooltip)
-                                    : ChildSectionWidget(state: state, tooltipController: tooltipController, psTriggerTooltip: _psTriggerTooltip)
+                                    : state.selectedChildId != "" || state.myChildDashboard != const MyChildDashboard() ? ChildSectionWidget(state: state, tooltipController: tooltipController, psTriggerTooltip: _psTriggerTooltip)
+                                    : const SizedBox.shrink()
                               ],
                             ),
                             state.showGuide == true
