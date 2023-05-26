@@ -676,8 +676,23 @@ class _AppBarHomePageState extends State<AppBarHomePage> {
                                         builder: (context) =>
                                         const NotificationPage()));
                               },
+                              // todo badge 9+
                               child: (state.totalUnreadNotif ?? 0) >= 1
-                                  ? badge.Badge(
+                                  ? (state.totalUnreadNotif ?? 0) >= 9 ? badge.Badge(
+                                badgeContent: const Center(
+                                    child: Text(
+                                      "9+",
+                                      style: const TextStyle(
+                                          color: Colors.white),
+                                    )),
+                                position: badge.BadgePosition.topEnd(
+                                    top: -10, end: -3),
+                                child: Icon(
+                                  Icons.notifications,
+                                  color: EpregnancyColors.primer,
+                                  size: 23.w,
+                                ),
+                              ): badge.Badge(
                                 badgeContent: Center(
                                     child: Text(
                                       state.totalUnreadNotif.toString(),
