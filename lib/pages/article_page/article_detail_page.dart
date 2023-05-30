@@ -128,28 +128,26 @@ class ArticleDetailPage extends StatelessWidget {
                             ],
                           ),
                           Align(alignment: Alignment.bottomLeft,
-                            child: Expanded(
-                              child: Container(
-                                  margin: EdgeInsets.only(top: 20, bottom: 10),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          child: Icon(
-                                            Icons.access_time,
-                                            size: 18,
-                                          )),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Container(
-                                          child: Text(
-                                            outputDate,
-                                            style: TextStyle(
-                                                fontSize: 16, color: Colors.black),
-                                          )),
-                                    ],
-                                  )),
-                            ),
+                            child: Container(
+                                margin: EdgeInsets.only(top: 20, bottom: 10),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                        child: Icon(
+                                          Icons.access_time,
+                                          size: 18,
+                                        )),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          outputDate,
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.black),
+                                        )),
+                                  ],
+                                )),
                           ),
                         ],
                       ),
