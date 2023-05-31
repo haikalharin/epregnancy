@@ -478,6 +478,17 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               //   ),
                               // ),
                               SizedBox(height: 20),
+                              Divider(),
+                              SizedBox(height: 16),
+                              Text(
+                                "Punya kode referensi?",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14.sp),
+                              ),
+                              SizedBox(height: 10),
                               TextField(
                                 onChanged: (value) {
                                   Injector.resolve<SignUpQuestionnaireBloc>()
@@ -490,7 +501,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                   filled: true,
                                   hintStyle: TextStyle(color: Colors.grey[500]),
                                   fillColor: Colors.white70,
-                                  label: Text("kode referal"),
+                                  label: Text("kode Referensi"),
                                   errorText: state.secondName.invalid
                                       ? 'Mohon lengkapi Data'
                                       : null,
