@@ -47,21 +47,20 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     }
   }
 
-  SurveyPageState _mapSurveyDisposeEventToState(
-    SurveyDisposeEvent event,
-    SurveyPageState state,
-  ) {
+  SurveyPageState _mapSurveyDisposeEventToState(SurveyDisposeEvent event,
+      SurveyPageState state,) {
     return SurveyPageState();
   }
 
-  Stream<SurveyPageState> _mapSurveyInitEventToState(
-      SurveyInitEvent event, SurveyPageState state) async* {
-    try{
+  Stream<SurveyPageState> _mapSurveyInitEventToState(SurveyInitEvent event,
+      SurveyPageState state) async* {
+    try {
       var user = await AppSharedPreference.getUser();
       newBaby.NewBabyModel myBaby = const newBaby.NewBabyModel();
       var choice = 0;
       ResponseModel response = await userRepository.getBaby(user);
-      myBaby = response.data != null? response.data : const newBaby.NewBabyModel();
+      myBaby =
+      response.data != null ? response.data : const newBaby.NewBabyModel();
       if (event.isUpdate && response.data != null) {
         // user = await AppSharedPreference.getUser();
 
@@ -76,7 +75,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
       if (response.code == 200) {
         if (event.isUpdate && response.data != null) {
           yield SurveyPageState(
-            submitStatus: FormzStatus.submissionSuccess,
+              submitStatus: FormzStatus.submissionSuccess,
               type: 'init-data-survey',
               user: user,
               page: 1,
@@ -93,7 +92,7 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
               page: 1,
               choice: choice);
         }
-      } else{
+      } else {
         yield SurveyPageState(
             submitStatus: FormzStatus.submissionSuccess,
             type: 'init-data-survey',
@@ -110,54 +109,46 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
     }
   }
 
-  SurveyPageState _mapSurveySurveyChoiceToState(
-    SurveyChoice event,
-    SurveyPageState state,
-  ) {
+  SurveyPageState _mapSurveySurveyChoiceToState(SurveyChoice event,
+      SurveyPageState state,) {
     return state.copyWith(
       choice: event.choice,
     );
   }
 
-  SurveyPageState _mapSurveyPageChangedToState(
-    SurveyPageChanged event,
-    SurveyPageState state,
-  ) {
+  SurveyPageState _mapSurveyPageChangedToState(SurveyPageChanged event,
+      SurveyPageState state,) {
     return state.copyWith(
       page: event.page,
     );
   }
 
   SurveyPageState _mapSurveyBabysNameChangedToState(
-    SurveyBabysNameChanged event,
-    SurveyPageState state,
-  ) {
+      SurveyBabysNameChanged event,
+      SurveyPageState state,) {
     final name = MandatoryFieldValidator.dirty(event.name);
     return state.copyWith(
       name: name,
     );
   }
 
-  SurveyPageState _mapSurveyDateChangedToState(
-    SurveyDateChanged event,
-    SurveyPageState state,
-  ) {
+  SurveyPageState _mapSurveyDateChangedToState(SurveyDateChanged event,
+      SurveyPageState state,) {
     final date = MandatoryFieldValidator.dirty(event.date);
     return state.copyWith(
       date: date,
     );
   }
 
-  Stream<SurveyPageState> _mapSurveyAddDataToState(
-    SurveyAddDataEvent event,
-    SurveyPageState state,
-  ) async* {
+  Stream<SurveyPageState> _mapSurveyAddDataToState(SurveyAddDataEvent event,
+      SurveyPageState state,) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       // UserModel user = await AppSharedPreference.getUserRegister();
       UserModel user = await AppSharedPreference.getUser();
       ResponseModel responseBaby = await userRepository.getBaby(user);
-      newBaby.NewBabyModel myBaby = responseBaby.data ?? const newBaby.NewBabyModel();
+      newBaby.NewBabyModel myBaby = responseBaby.data ??
+          const newBaby.NewBabyModel();
 
       if (event.isUpdate && myBaby != null) {
         user = await AppSharedPreference.getUser();
@@ -193,9 +184,8 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
 //
 
   Stream<SurveyPageState> _mapSurveyAddDataBabyToState(
-    SurveyAddDataBabyEvent event,
-    SurveyPageState state,
-  ) async* {
+      SurveyAddDataBabyEvent event,
+      SurveyPageState state,) async* {
     yield state.copyWith(submitStatus: FormzStatus.submissionInProgress);
     try {
       UserModel user = event.isUpdate == false
@@ -226,7 +216,9 @@ class SurveyPageBloc extends Bloc<SurveyPageEvent, SurveyPageState> {
           await AppSharedPreference.setBabyDataNew(newBaby.NewBabyModel(
               baby: newBaby.Baby(
                   userId: user.id,
+                  id: state.dataBaby?.baby?.id,
                   name: state.name.value,
+                  status: state.dataBaby?.baby?.status,
                   lastMenstruationDate: state.date.value)));
         }
         yield state.copyWith(

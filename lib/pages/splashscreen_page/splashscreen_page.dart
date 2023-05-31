@@ -17,6 +17,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../main_development.dart' as dev;
+import '../audio_page/bloc/audio_bloc.dart';
 import 'bloc/splash_screen_bloc.dart';
 import 'package:intl/intl_standalone.dart';
 
@@ -93,6 +94,60 @@ final playlist = ConcatenatingAudioSource(children: [
   //             "https://lh3.googleusercontent.com/-kxVDXfXqEXA/YVsZmqZ-GQI/AAAAAAABe1c/gY88VU3gT50-ww0zDs0oG5MzeZizDzd2QCLcBGAsYHQ/w1200-h630-p-k-no-nu/image.png")))
 ]);
 
+final playlistMusic = ConcatenatingAudioSource(children: [
+  // AudioSource.uri(Uri.parse("assets/audio/al_fatihah.mp3"),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/before-i-met-you.wav"), tag: const MediaItem(
+    title: 'Before I Met You',
+    id: "0",
+    artist: "Before I Met You",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/first-love.wav"), tag: const MediaItem(
+    title: 'First Love',
+    id: "1",
+    artist: "First Love",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/light-of-my-life.wav"), tag: const MediaItem(
+    title: 'Light of My Life',
+    id: "3",
+    artist: "Light of My Life",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/little-miracle.wav"), tag: const MediaItem(
+    title: "Little Miracle",
+    id: "4",
+    artist: "Little Miracle",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/message-of-love.wav"), tag: const MediaItem(
+    title: 'Message of Love',
+    id: "5",
+    artist: "Message of Love",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/new-chapter.wav"), tag: const MediaItem(
+    title: 'New Chapter',
+    id: "6",
+    artist: "New Chapter",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/pure-happines.wav"), tag: const MediaItem(
+    title: "Pure Happiness",
+    id: "7",
+    artist: "Pure Hapiness",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/sweet-dream.wav"), tag: const MediaItem(
+    title: 'Sweet Dream',
+    id: "8",
+    artist: "Sweet Dream",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/sweet-moment.wav"), tag: const MediaItem(
+    title: 'Sweet Moment',
+    id: "10",
+    artist: "Sweet Moment",
+    album: "Music",)),
+  LockCachingAudioSource(Uri.parse("https://igbeyewo.allianz.co.id/di/epregnancy/api/stream/musics/tiny-kiss.wav"), tag: const MediaItem(
+    title: 'Tiny Kiss',
+    id: "11",
+    artist: "Tiny Kiss",
+    album: "Music",)),
+]);
+
 final AudioPlayer playerDev = AudioPlayer();
 
 
@@ -143,6 +198,9 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
         });
     try {
       await playerDev.setAudioSource(playlist);
+      await AppSharedPreference.setString(AppSharedPreference.playlist, "Murottal");
+      Injector.resolve<AudioBloc>().add(const AudioEventChangePlaylist("Murottal"));
+
     } catch (e, stackTrace) {
       // Catch load errors: 404, invalid url ...
       print("Error loading playlist: $e");

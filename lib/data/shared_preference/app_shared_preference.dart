@@ -46,13 +46,18 @@ class AppSharedPreference {
   static const String bmSignature = "bm_signature";
   static const String checkIn = "checkin";
   static const String hospital = "hospital";
-  static const String dateTime = "dateTime";
+  static const String dateTimeDoandDonts = "dateTimeDoandDonts";
+  static const String selectedChildId = "selected_child_id";
+  static const String dateTimeVisit = "dateTimeVisit";
   static const String haveBpjsorKis = "haveBpjsorKis";
   static const String token = "token";
+  static const String oldToken = "oldToken";
+  static const String lastTimeGetToken = "lastTimeGetToken";
   static const String newInstall = "new_install";
   static const String isFirstLaunch = "isFirstLaunch";
   static const String isShowGuide = "show_guide";
   static const String cookie = "cookie";
+  static const String playlist = "playlist";
 
   static clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -67,19 +72,45 @@ class AppSharedPreference {
   static setShowDialogDoAndDonts(ChatDialogModel data) async {
     String json = jsonEncode(data.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(dateTime, json);
+    prefs.setString(dateTimeDoandDonts, json);
+  }
+
+  static setSelectedChildId(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(selectedChildId, id);
+  }
+
+  static Future<String> getSelectedChildId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? data = prefs.getString(selectedChildId);
+    return data ?? '';
   }
 
   static Future<ChatDialogModel?> getShowDialogDoAndDonts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String? json = prefs.getString(dateTime);
+    String? json = prefs.getString(dateTimeDoandDonts);
     if (json != null) {
       Map<String, dynamic> map = jsonDecode(json);
       ChatDialogModel chatDialogModel = ChatDialogModel.fromJson(map);
       return chatDialogModel;
     } else {
       return ChatDialogModel.empty();
+    }
+  }
+
+  static setShowDialogVisit(String data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(dateTimeVisit, data);
+  }
+ static Future<String> getShowDialogVisit() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? data = prefs.getString(dateTimeVisit);
+    if (data != null) {
+      return data;
+    } else {
+      return '';
     }
   }
 
@@ -255,7 +286,6 @@ class AppSharedPreference {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String encryptedJson = encrypt(json);
     prefs.setString(user, encryptedJson);
-    // prefs.setString(_user, json);
   }
 
   static Future<UserRolesModelFirebase> getUserRoleFirebase() async {
@@ -449,6 +479,7 @@ class AppSharedPreference {
     await AppSharedPreference.remove(AppSharedPreference.otp);
     await AppSharedPreference.remove(AppSharedPreference.token);
     await AppSharedPreference.remove(AppSharedPreference.cookie);
+    await AppSharedPreference.remove(AppSharedPreference.selectedChildId);
     Injector.resolve<HospitalBloc>()
         .add(const HospitalDispose());
     if (F.appFlavor == Flavor.PRODUCTION) {

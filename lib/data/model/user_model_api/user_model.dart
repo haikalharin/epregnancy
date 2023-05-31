@@ -19,6 +19,8 @@ abstract class UserModel with _$UserModel {
     @JsonKey(includeIfNull: true, name:'referral_code')
     String? referralCode,
     @JsonKey(includeIfNull: true)
+    String? referrer,
+    @JsonKey(includeIfNull: true)
     String? password,
     @JsonKey(name:'is_patient',includeIfNull: true)
     bool? isPatient,
@@ -46,6 +48,8 @@ abstract class UserModel with _$UserModel {
     String? imageUrl,
     @JsonKey(name: 'hospital_id', includeIfNull: false)
     String? hospitalId,
+    @JsonKey(name: 'qr_string', includeIfNull: false)
+    String? qrString,
     HospitalModel? hospital,
     @JsonKey(name:'cover_url',includeIfNull: true)
     dynamic coverUrl,

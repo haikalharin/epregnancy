@@ -3,14 +3,18 @@ import 'package:PregnancyApp/pages/audio_page/audio_player_page/audio_player_pag
 import 'package:PregnancyApp/pages/audio_page/widgets/item_playlist.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../../common/constants/router_constants.dart';
+import '../../../common/injector/injector.dart';
+import '../../../data/shared_preference/app_shared_preference.dart';
 import '../../../main_development.dart';
 import '../../../utils/epragnancy_color.dart';
 import '../../splashscreen_page/splashscreen_page.dart';
+import '../bloc/audio_bloc.dart';
 import '../widgets/bottom_sheet_player.dart';
 import '../widgets/music_card.dart';
 
@@ -99,30 +103,40 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     ),
                   ),
                   SizedBox(width: 10.w,),
-                  InkWell(
-                    onTap: (){
-                      if(playerDev.playing){
-                        playerDev.pause();
-                      } else {
-                        playerDev.play();
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(13.w),
-                      decoration: BoxDecoration(
-                          color: EpregnancyColors.primerSoft2,
-                          borderRadius: BorderRadius.circular(8.w)),
-                      child: Center(
-                        child: playerDev.playing ? SvgPicture.asset(
-                          'assets/icPause.svg',
-                          color: EpregnancyColors.primer,
-                        ) : SvgPicture.asset(
-                          'assets/icPlay.svg',
-                          color: EpregnancyColors.primer,
-                        ),
-                      ),
-                    ),
-                  )
+                  BlocBuilder<AudioBloc, AudioState>(
+                      builder: (context, state) {
+                        return InkWell(
+                          onTap: () async {
+                            if(playerDev.playing){
+                              playerDev.pause();
+                            } else {
+                              if(state.currentPlaylist == "Murottal"){
+                                playerDev.play();
+                              } else {
+                                Injector.resolve<AudioBloc>().add(const AudioEventChangePlaylist("Murottal"));
+                                await playerDev.setAudioSource(playlist);
+                                await playerDev.seek(Duration.zero, index: 0);
+                                playerDev.play();
+                              }
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(13.w),
+                            decoration: BoxDecoration(
+                                color: EpregnancyColors.primerSoft2,
+                                borderRadius: BorderRadius.circular(8.w)),
+                            child: Center(
+                              child: playerDev.playing ? SvgPicture.asset(
+                                'assets/icPause.svg',
+                                color: EpregnancyColors.primer,
+                              ) : SvgPicture.asset(
+                                'assets/icPlay.svg',
+                                color: EpregnancyColors.primer,
+                              ),
+                            ),
+                          ),
+                        );
+                      })
                 ],
               ),
               SizedBox(
@@ -132,18 +146,18 @@ class _PlaylistPageState extends State<PlaylistPage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 children:  [
-                  ItemPlayList(title: "1. Surat Al-Fatihah", index: 0),
-                  ItemPlayList(title: "2. Surat Al-Imran ayat 35", index: 1),
-                  ItemPlayList(title: "3. Surat Al-Imran ayat 36", index: 2),
-                  ItemPlayList(title: "4. Surat Al-Imran ayat 38", index: 3),
-                  ItemPlayList(title: """5. Surat Al-A'raf ayat 54""", index: 4),
-                  ItemPlayList(title: "6. Surat Ibrahim ayat 40", index: 5),
-                  ItemPlayList(title: "7. Surat Maryam ayat 4-5", index: 6),
-                  ItemPlayList(title: "8. Surat Maryam ayat 19-21", index: 7),
-                  ItemPlayList(title: """9. Surat Al-Mu'minun ayat 12-14""", index: 8),
-                  ItemPlayList(title: "10. Surat Al-Furqan ayat 74", index: 9),
-                  ItemPlayList(title: "11. Surat Luqman ayat 14", index: 10),
-                  ItemPlayList(title: "12. Surat As-Saffat ayat 100", index: 11),
+                  ItemPlayList(title: "Surat Al-Fatihah", index: 0, playlist: "Murottal"),
+                  ItemPlayList(title: "Surat Al-Imran ayat 35", index: 1, playlist: "Murottal",),
+                  ItemPlayList(title: "Surat Al-Imran ayat 36", index: 2, playlist: "Murottal",),
+                  ItemPlayList(title: "Surat Al-Imran ayat 38", index: 3, playlist: "Murottal",),
+                  ItemPlayList(title: """Surat Al-A'raf ayat 54""", index: 4, playlist: "Murottal"),
+                  ItemPlayList(title: "Surat Ibrahim ayat 40", index: 5, playlist: "Murottal"),
+                  ItemPlayList(title: "Surat Maryam ayat 4-5", index: 6, playlist: "Murottal"),
+                  ItemPlayList(title: "Surat Maryam ayat 19-21", index: 7, playlist: "Murottal"),
+                  ItemPlayList(title: """Surat Al-Mu'minun ayat 12-14""", index: 8, playlist: "Murottal"),
+                  ItemPlayList(title: "Surat Al-Furqan ayat 74", index: 9, playlist: "Murottal"),
+                  ItemPlayList(title: "Surat Luqman ayat 14", index: 10, playlist: "Murottal"),
+                  ItemPlayList(title: "Surat As-Saffat ayat 100", index: 11, playlist: "Murottal"),
 
 
 
@@ -207,10 +221,20 @@ class _PlaylistPageState extends State<PlaylistPage> {
   bool shuffleActive = false;
 
 
+  void _getCurrentPlaylist() async {
+    String? _currentPlaylist = await AppSharedPreference.getString(AppSharedPreference.playlist);
+    setState(() {
+      currentPlaylist = _currentPlaylist;
+    });
+  }
+
+  String? currentPlaylist;
+
   @override
   void initState() {
     super.initState();
 
+    _getCurrentPlaylist();
 
     playerDev.shuffleModeEnabledStream.listen((shuffle) {
       if(mounted){

@@ -35,8 +35,8 @@ class _AudioMainPageState extends State<AudioMainPage> {
             end: Alignment.bottomCenter
           )
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Audio", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 22.sp),),
             SizedBox(height: 10.h,),
@@ -58,36 +58,75 @@ class _AudioMainPageState extends State<AudioMainPage> {
               ),
             ),
             SizedBox(height: 10.h,),
-            InkWell(
-              onTap: (){
-                Navigator.pushNamed(context, RouteName.playlist);
-              },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.w)
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical :16.w, horizontal: 20.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Hero(
-                        tag: 'img-banner',
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.w),
-                            child: Image.asset('assets/music_murottal.png', height: 100.h, width: MediaQuery.of(context).size.width, fit: BoxFit.fill,)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.pushNamed(context, RouteName.playlistMusic);
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.w)
                       ),
-                      SizedBox(height: 10.h,),
-                      Text("Murottal", maxLines: 3, textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),),
-                      SizedBox(height: 10.h,),
-                      Text("Menyejukan, menenangkan hati dan mengajak bayi untuk lebih dekat dengan nasihat Allah dalam Al-Quran", style: TextStyle(
-                         fontWeight: FontWeight.w500, fontSize: 12.sp, color: EpregnancyColors.black
-                        ),),
-                    ],
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical :16.w, horizontal: 5.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Hero(
+                              tag: 'musik-kehamilan',
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.w),
+                                  child: Image.asset('assets/musik_image.png', height: 100.h, width: 150.w, fit: BoxFit.contain,)),
+                            ),
+                            SizedBox(height: 10.h,),
+                            Text("Musik Kehamilan", maxLines: 3, textAlign: TextAlign.start,
+                              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),),
+                            SizedBox(height: 10.h,),
+                            Text("Membantu Bunda lebih santai, bahagia dan menstimulasi perkembangan otak bayi\n", style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 12.sp, color: EpregnancyColors.black
+                            ),),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(width: 10.w,),
+                Expanded(child: InkWell(
+                  onTap: (){
+                    Navigator.pushNamed(context, RouteName.playlist);
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.w)
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical :16.w, horizontal: 5.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Hero(
+                            tag: 'img-banner',
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.w),
+                                child: Image.asset('assets/music_murottal.png', height: 100.h, width: 150.w, fit: BoxFit.contain,)),
+                          ),
+                          SizedBox(height: 10.h,),
+                          Text("Murottal", maxLines: 3, textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),),
+                          SizedBox(height: 10.h,),
+                          Text("Menyejukan, menenangkan hati dan mengajak bayi untuk lebih dekat dengan nasihat Allah dalam Al-Quran", style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 12.sp, color: EpregnancyColors.black
+                          ),),
+                        ],
+                      ),
+                    ),
+                  ),
+                ))
+              ],
             )
           ],
         )

@@ -189,8 +189,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                   ),
                                 ),
                                 Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2.1,
+                                    width: MediaQuery.of(context).size.width / 2.1,
                                     margin: EdgeInsets.only(bottom: 18.h),
                                     child: BtnPrimary(
                                         text: "Ubah Data Diri",
@@ -200,9 +199,12 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                           var _user = await AppSharedPreference.getUser();
                                           DateTime cdt = DateTime.now();
                                           DateTime lastBiodataView = DateTime.parse(_user.lastBiodataView ?? DateTime.now().toString());
-                                          DateTime lastBiodateViewDateTime = lastBiodataView.add(Duration(hours: F.appFlavor == Flavor.PRODUCTION ?  0 : 0));
+                                          DateTime lastBiodateViewDateTime = lastBiodataView.add(Duration(hours: 0));
                                           Duration diff = cdt.difference(lastBiodateViewDateTime);
-                                          if(diff.inMinutes >= 30){
+                                          print("last biodata view : $lastBiodateViewDateTime");
+                                          print("date time now : $cdt");
+                                          print("diff in minutes : ${diff.inMinutes}");
+                                          if(diff.inMinutes >= 15){
                                             Navigator.of(context).push( MaterialPageRoute(
                                                 builder: (BuildContext context) {
                                                   return const  RequestPasswordPage();
@@ -511,7 +513,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                     height: 5.h,
                                   ),
                                   Text(
-                                    'App Versi 1.0.4',
+                                    'App Versi 1.0.3',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,

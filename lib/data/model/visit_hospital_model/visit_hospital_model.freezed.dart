@@ -20,8 +20,8 @@ VisitHospitalModel _$VisitHospitalModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VisitHospitalModel {
-  @JsonKey(name: 'is_get_point', includeIfNull: true)
-  bool? get isGetPoint => throw _privateConstructorUsedError;
+  @JsonKey(name: 'first_visit', includeIfNull: true)
+  bool? get firstVisit => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $VisitHospitalModelCopyWith<$Res> {
           VisitHospitalModel value, $Res Function(VisitHospitalModel) then) =
       _$VisitHospitalModelCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'is_get_point', includeIfNull: true) bool? isGetPoint});
+      {@JsonKey(name: 'first_visit', includeIfNull: true) bool? firstVisit});
 }
 
 /// @nodoc
@@ -49,12 +49,12 @@ class _$VisitHospitalModelCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? isGetPoint = freezed,
+    Object? firstVisit = freezed,
   }) {
     return _then(_value.copyWith(
-      isGetPoint: isGetPoint == freezed
-          ? _value.isGetPoint
-          : isGetPoint // ignore: cast_nullable_to_non_nullable
+      firstVisit: firstVisit == freezed
+          ? _value.firstVisit
+          : firstVisit // ignore: cast_nullable_to_non_nullable
               as bool?,
     ));
   }
@@ -68,7 +68,7 @@ abstract class _$$_VisitHospitalModelCopyWith<$Res>
       __$$_VisitHospitalModelCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'is_get_point', includeIfNull: true) bool? isGetPoint});
+      {@JsonKey(name: 'first_visit', includeIfNull: true) bool? firstVisit});
 }
 
 /// @nodoc
@@ -84,12 +84,12 @@ class __$$_VisitHospitalModelCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? isGetPoint = freezed,
+    Object? firstVisit = freezed,
   }) {
     return _then(_$_VisitHospitalModel(
-      isGetPoint: isGetPoint == freezed
-          ? _value.isGetPoint
-          : isGetPoint // ignore: cast_nullable_to_non_nullable
+      firstVisit: firstVisit == freezed
+          ? _value.firstVisit
+          : firstVisit // ignore: cast_nullable_to_non_nullable
               as bool?,
     ));
   }
@@ -99,18 +99,18 @@ class __$$_VisitHospitalModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_VisitHospitalModel implements _VisitHospitalModel {
   const _$_VisitHospitalModel(
-      {@JsonKey(name: 'is_get_point', includeIfNull: true) this.isGetPoint});
+      {@JsonKey(name: 'first_visit', includeIfNull: true) this.firstVisit});
 
   factory _$_VisitHospitalModel.fromJson(Map<String, dynamic> json) =>
       _$$_VisitHospitalModelFromJson(json);
 
   @override
-  @JsonKey(name: 'is_get_point', includeIfNull: true)
-  final bool? isGetPoint;
+  @JsonKey(name: 'first_visit', includeIfNull: true)
+  final bool? firstVisit;
 
   @override
   String toString() {
-    return 'VisitHospitalModel(isGetPoint: $isGetPoint)';
+    return 'VisitHospitalModel(firstVisit: $firstVisit)';
   }
 
   @override
@@ -119,13 +119,13 @@ class _$_VisitHospitalModel implements _VisitHospitalModel {
         (other.runtimeType == runtimeType &&
             other is _$_VisitHospitalModel &&
             const DeepCollectionEquality()
-                .equals(other.isGetPoint, isGetPoint));
+                .equals(other.firstVisit, firstVisit));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(isGetPoint));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(firstVisit));
 
   @JsonKey(ignore: true)
   @override
@@ -141,15 +141,15 @@ class _$_VisitHospitalModel implements _VisitHospitalModel {
 
 abstract class _VisitHospitalModel implements VisitHospitalModel {
   const factory _VisitHospitalModel(
-      {@JsonKey(name: 'is_get_point', includeIfNull: true)
-          final bool? isGetPoint}) = _$_VisitHospitalModel;
+      {@JsonKey(name: 'first_visit', includeIfNull: true)
+          final bool? firstVisit}) = _$_VisitHospitalModel;
 
   factory _VisitHospitalModel.fromJson(Map<String, dynamic> json) =
       _$_VisitHospitalModel.fromJson;
 
   @override
-  @JsonKey(name: 'is_get_point', includeIfNull: true)
-  bool? get isGetPoint => throw _privateConstructorUsedError;
+  @JsonKey(name: 'first_visit', includeIfNull: true)
+  bool? get firstVisit => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_VisitHospitalModelCopyWith<_$_VisitHospitalModel> get copyWith =>

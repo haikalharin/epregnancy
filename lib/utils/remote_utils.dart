@@ -31,6 +31,8 @@ dynamic getInitialIndex(dynamic result) => result['initial_index'];
 
 dynamic getUserId(dynamic result) => result['user_id'];
 
+dynamic getBabyId(dynamic result) => result['baby_id'];
+
 dynamic getIsFromNotif(dynamic result) => result['is_from_notif'];
 
 dynamic getUserName(dynamic result) => result['username'];
@@ -46,6 +48,8 @@ dynamic getImageUrl(dynamic result) => result['image_url'];
 dynamic getHospitalId(dynamic result) => result['hospital_id'];
 
 dynamic getDataCondition(dynamic result) => result['Condition'];
+
+dynamic getDataBaby(dynamic result) => result['baby'];
 
 dynamic cekPersonInRoom(dynamic result) => result['inRoom'];
 

@@ -5,6 +5,7 @@ class SignUpQuestionnaireState with FormzMixin {
   final UserModel? userModel;
   final MandatoryFieldValidator firstName;
   final MandatoryFieldValidator secondName;
+  final MandatoryFieldValidator referralCode;
   final PasswordValidator password;
   final ConfirmPasswordValidator confirmPassword;
   final MandatoryFieldValidator date;
@@ -15,6 +16,7 @@ class SignUpQuestionnaireState with FormzMixin {
   SignUpQuestionnaireState(
       {this.firstName = const MandatoryFieldValidator.pure(),
       this.secondName = const MandatoryFieldValidator.pure(),
+      this.referralCode = const MandatoryFieldValidator.pure(),
       this.password = const PasswordValidator.pure(),
       this.confirmPassword = const ConfirmPasswordValidator.pure(''),
       this.date = const MandatoryFieldValidator.pure(),
@@ -30,6 +32,7 @@ class SignUpQuestionnaireState with FormzMixin {
       UserModel? userModel,
       MandatoryFieldValidator? firstName,
       MandatoryFieldValidator? secondName,
+      MandatoryFieldValidator? referralCode,
       PasswordValidator? password,
       ConfirmPasswordValidator? confirmPassword,
       MandatoryFieldValidator? date,
@@ -39,6 +42,7 @@ class SignUpQuestionnaireState with FormzMixin {
         submitStatus: submitStatus ?? this.submitStatus,
         firstName: firstName ?? this.firstName,
         secondName: secondName ?? this.secondName,
+        referralCode: referralCode ?? this.referralCode,
         password: password ?? this.password,
         confirmPassword: confirmPassword ?? this.confirmPassword,
         date: date ?? this.date,

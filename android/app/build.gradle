@@ -51,7 +51,7 @@ android {
         staging {
             dimension "flavor-type"
             applicationId "co.id.az.komunitaz.staging"
-            resValue "string", "app_name", "Komunitaz staging"
+            resValue "string", "app_name", "Komunitaz uat"
         }
     }
 

@@ -40,6 +40,8 @@ class SignUpQuestionnaireBloc
       yield _mapSignupFirstnameChangedToState(event, state);
     } else if (event is SignupSecondnameChanged) {
       yield _mapSignupSecondnameChangedToState(event, state);
+    } else if (event is SignupReferralCodeChanged) {
+      yield _mapSignupReferralCodeChangedToState(event, state);
     } else if (event is SignupPasswordChanged) {
       yield _mapSignupPasswordChangedToState(event, state);
     } else if (event is SignupConfirmPasswordChanged) {
@@ -82,6 +84,17 @@ class SignUpQuestionnaireBloc
     return state.copyWith(
       secondName: secondName,
       submitStatus: Formz.validate([secondName]),
+    );
+  }
+
+  SignUpQuestionnaireState _mapSignupReferralCodeChangedToState(
+      SignupReferralCodeChanged event,
+      SignUpQuestionnaireState state,
+      ) {
+    final referralCode = MandatoryFieldValidator.dirty(event.referralCode);
+    return state.copyWith(
+      referralCode: referralCode,
+      submitStatus: Formz.validate([referralCode]),
     );
   }
 
@@ -158,6 +171,7 @@ class SignUpQuestionnaireBloc
               mobile: phoneNumber,
               email: email,
               dob: state.date.value,
+              referrer: state.referralCode.value,
               password: state.password.value,
               isPregnant: true,
               isPatient: true,

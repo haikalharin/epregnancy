@@ -445,9 +445,6 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                                         ? 'Mohon lengkapi Data'
                                         : null,
                                   ),
-                                  // firstDate: DateTime.now().add(const Duration(days: 10)),
-                                  // lastDate: DateTime.now().add(const Duration(days: 40)),
-                                  // initialDate: DateTime.now().add(const Duration(days: 20)),
                                   onDateSelected: (DateTime value) {
                                     String dateTime =
                                         DateFormat('yyyy-MM-dd').format(value);
@@ -480,6 +477,36 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
                               //     ),
                               //   ),
                               // ),
+                              SizedBox(height: 20),
+                              Divider(),
+                              SizedBox(height: 16),
+                              Text(
+                                "Punya kode referensi?",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14.sp),
+                              ),
+                              SizedBox(height: 10),
+                              TextField(
+                                onChanged: (value) {
+                                  Injector.resolve<SignUpQuestionnaireBloc>()
+                                      .add(SignupReferralCodeChanged(value));
+                                },
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4.w),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(color: Colors.grey[500]),
+                                  fillColor: Colors.white70,
+                                  label: Text("kode Referensi"),
+                                  errorText: state.secondName.invalid
+                                      ? 'Mohon lengkapi Data'
+                                      : null,
+                                ),
+                              ),
                               SizedBox(height: 30),
                             ],
                           ),

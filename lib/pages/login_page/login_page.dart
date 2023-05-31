@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 fontSize: 13.sp,
                                                 color: Colors.white)),
                                         onPressed: () {
-                                          // Navigator.pop(context);
+
                                           if (F.appFlavor ==
                                               Flavor.PRODUCTION) {
                                             aliceProd

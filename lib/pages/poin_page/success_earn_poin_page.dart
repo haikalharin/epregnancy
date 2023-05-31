@@ -27,18 +27,22 @@ class SuccessEarnPoinPage extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 4,
                   ),
-                  SvgPicture.asset("assets/ic_earned_poin.svg"),
+                  SvgPicture.asset("assets/ic_launcher.svg"),
                   SizedBox(
                     height: 36.h,
                   ),
-                  state.isGetPoint == true
-                      ? Text(
-                          "Selamat! Anda",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22.sp),
-                        )
+                  state.firstVisit == true
+                      ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                            "Check-in kunjungan Puskesmas sedang di proses",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 22.sp),
+                    textAlign: TextAlign.center,
+                          ),
+                      )
                       : Text(
                           "Hai Bunda,",
                           style: TextStyle(
@@ -47,14 +51,18 @@ class SuccessEarnPoinPage extends StatelessWidget {
                               fontSize: 22.sp),
                           textAlign: TextAlign.center,
                         ),
-                  state.isGetPoint == true
-                      ? Text(
-                          "mendapatkan 100 Poin",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22.sp),
-                        )
+                  state.firstVisit == true
+                      ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                        child: Text(
+                            "Bunda dapat menunggu konfirmasi dari Bidan",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 22.sp),
+                    textAlign: TextAlign.center,
+                          ),
+                      )
                       : Text(
                           "poin kunjungan Puskesmas sudah diperoleh hari ini. Bunda dapat kembali check-in saat kunjungan berikutnya",
                           style: TextStyle(

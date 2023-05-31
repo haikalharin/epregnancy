@@ -112,4 +112,10 @@ class StringConstant {
   //contact
   static const emailCsUser = 'cs.komunitaz@allianz.co.id';
   static const emailCsBidan = 'csbidan.komunitaz@allianz.co.id';
+
+  //status visit
+  static const acceptedVisit = 'ACCEPTED';
+  static const rejectedVisit = 'REJECTED';
+  static const pendingVisit = 'PENDING';
+  static const doneVisit = 'DONE';
 }

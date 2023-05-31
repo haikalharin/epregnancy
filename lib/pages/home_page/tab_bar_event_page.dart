@@ -67,7 +67,7 @@ void event(String date){
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-                margin: EdgeInsets.only(left: 16.w),
+                margin: EdgeInsets.only(left: 16.w, top: 16.h),
                 child:  Text(
                   "Kalendar",
                   style: TextStyle(

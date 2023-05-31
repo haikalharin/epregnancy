@@ -43,6 +43,8 @@ class RouteName {
   static const disclaimer = '/disclaimer';
   static const audio = '/audio';
   static const playlist = '/playlist';
+  static const playlistMusic = '/playlist-musik';
   static const audioPlayer = '/audioPlayer';
+  static const questionerNewBorn = '/questionerNewBorn';
 
 }

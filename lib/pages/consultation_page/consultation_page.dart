@@ -55,8 +55,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
   String? _userId;
 
   void onRefresh() async {
-    Injector.resolve<ConsultationPageBloc>()
-        .add(const ConsultationFetchEvent());
+    Injector.resolve<ConsultationPageBloc>().add(const ConsultationFetchEvent());
     Injector.resolve<ConsultationPageBloc>()
         .add(const ConsultationDisposeEvent());
     setState(() {

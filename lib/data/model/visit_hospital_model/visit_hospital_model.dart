@@ -15,8 +15,8 @@ String visitHospitalModelToJson(VisitHospitalModel data) => json.encode(data.toJ
 @freezed
 class VisitHospitalModel with _$VisitHospitalModel {
   const factory VisitHospitalModel({
-    @JsonKey(name: 'is_get_point',includeIfNull: true)
-    bool? isGetPoint,
+    @JsonKey(name: 'first_visit',includeIfNull: true)
+    bool? firstVisit,
   }) = _VisitHospitalModel;
 
   factory VisitHospitalModel.fromJson(Map<String, dynamic> json) => _$VisitHospitalModelFromJson(json);

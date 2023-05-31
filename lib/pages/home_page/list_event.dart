@@ -27,7 +27,7 @@ class _ListEventWidgetState extends State<ListEventWidget> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(milliseconds: 1400), ()
+    Future.delayed(const Duration(milliseconds: 0), ()
     {
       Injector.resolve<HomePageBloc>().add(EventFetchEvent(
           widget.tipeAcara == StringConstant.typeEventJadwalUmum

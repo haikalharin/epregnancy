@@ -21,7 +21,7 @@ class RequestPasswordPage extends StatefulWidget {
 class _RequestPasswordPageState extends State<RequestPasswordPage> {
   bool _isHiddenPassword = true;
   final TextEditingController _passwordEditingController =
-      TextEditingController();
+  TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
@@ -31,7 +31,6 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
     return Stack(
       children: [
         Scaffold(
-          resizeToAvoidBottomInset: true,
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
@@ -51,7 +50,7 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const ChangeProfilePage(withPassword: true)));
+                        const ChangeProfilePage(withPassword: true)));
               }
             },
             child: Container(
@@ -62,8 +61,6 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
                 key: _formKey,
                 autovalidateMode: _autovalidateMode,
                 child: ListView(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
                         child: SvgPicture.asset("assets/icKeyCircle.svg")),
@@ -92,7 +89,7 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
                       enableInteractiveSelection: false,
                       autovalidateMode: AutovalidateMode.disabled,
                       validator: (val) {
-                        if (val == null || val.isEmpty) {
+                        if (val == null) {
                           return "Password Tidak Boleh Kosong";
                         }
                         return null;
@@ -166,15 +163,15 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
                   ),
                   onPressed: _formKey.currentState?.validate() == true
                       ? () async {
-                          // todo save to local
-                          Injector.resolve<ProfilePageBloc>().add(
-                              BiodataViewEvent(
-                                  _passwordEditingController.text));
-                          // await AppSharedPreference.setHospital(_hospitalModel!);
-                          // await AppSharedPreference.setBool(
-                          //     AppSharedPreference.haveBpjsorKis, haveBpjs);
-                          // Navigator.pop(context, _hospitalModel);
-                        }
+                    // todo save to local
+                    Injector.resolve<ProfilePageBloc>().add(
+                        BiodataViewEvent(
+                            _passwordEditingController.text));
+                    // await AppSharedPreference.setHospital(_hospitalModel!);
+                    // await AppSharedPreference.setBool(
+                    //     AppSharedPreference.haveBpjsorKis, haveBpjs);
+                    // Navigator.pop(context, _hospitalModel);
+                  }
                       : (){
                     setState(() {
                       _autovalidateMode = AutovalidateMode.always;
@@ -186,8 +183,8 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
                           EpregnancyColors.greyText),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ))))),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ))))),
         ),
         _Loading()
       ],
@@ -200,13 +197,13 @@ class _Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfilePageBloc, ProfilePageState>(
         builder: (context, state) {
-      if (state.submitStatus == FormzStatus.submissionInProgress) {
-        return Container(
-            color: Colors.white.withAlpha(90),
-            child: Center(child: CircularProgressIndicator()));
-      } else {
-        return Text("");
-      }
-    });
+          if (state.submitStatus == FormzStatus.submissionInProgress) {
+            return Container(
+                color: Colors.white.withAlpha(90),
+                child: Center(child: CircularProgressIndicator()));
+          } else {
+            return Text("");
+          }
+        });
   }
 }

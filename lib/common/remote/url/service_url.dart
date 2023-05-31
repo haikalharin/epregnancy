@@ -38,7 +38,9 @@ class ServiceUrl {
   //baby
   static String baby = 'user-baby';
   static String saveBaby = '$baby/save';
+  static String deleteBabyList = '$baby/delete/';
   static String updateBaby = '$baby/update';
+  static String deleteBaby = '$baby/delete';
   static String listBaby = '$baby/list';
   static String myBaby = 'my-baby';
 
@@ -70,6 +72,9 @@ class ServiceUrl {
   static String patientUsers = '$midwife/patient-users';
   static String midwifeUsers = '$midwife/midwife-users';
 
+  //userVisit
+  static String userVisit = 'user-visits';
+
 
   //game
   static String game = 'game';
@@ -100,6 +105,23 @@ class ServiceUrl {
   static String hospital = 'hospital';
   static String hospitalVisit = '$hospital/visit/';
   static String hospitalList = '$hospital/list';
+
+  //childs
+  static String childs = 'childs';
+
+  //baby-childs
+  static String babyChilds = "baby-childs";
+
+  //my-child
+  static String myChild = "my-child";
+
+  //notification
+  static String notification = "notif";
+  static String notificationList = "$notification/messages";
+  static String notificationTotalUnread = "$notification/total-unread-messages";
+
+  static String growths = "growths";
+
 
 
 
