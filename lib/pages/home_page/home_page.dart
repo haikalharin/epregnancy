@@ -376,7 +376,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     child: PoinCardSection(
                                         point: state.totalPointsEarned ?? 0)),
                             // Games Section
-                            const GameCardSection(),
+                            Platform.isAndroid ? const GameCardSection() : const SizedBox.shrink(),
 
                             Container(
                                 color: Colors.white,

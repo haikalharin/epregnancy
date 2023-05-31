@@ -61,13 +61,13 @@
 	<string>Use for schedule feature</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Use for QR Scanner Feature</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need microphone access to record audio from camera</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used for Accessing Gallery to Change Profile Picture</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
-		<string>fetch</string>
-		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
