@@ -109,6 +109,19 @@ class ArticleDetailPage extends StatelessWidget {
                                     Icon(Icons.ios_share),
                                   ],
                                 ),
+                                Icon(Icons.ios_share),
+                              ],
+                            ),
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Text(
+                                  article!.title?? '',
+                                  maxLines: 5,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.clip,
                               ),
                               Container(
                                   margin: EdgeInsets.only(top: 10),
@@ -129,7 +142,7 @@ class ArticleDetailPage extends StatelessWidget {
                           ),
                           Align(alignment: Alignment.bottomLeft,
                             child: Container(
-                                margin: EdgeInsets.only(top: 20, bottom: 10),
+                                margin: EdgeInsets.only(top: 5, bottom: 10),
                                 child: Row(
                                   children: [
                                     Container(
