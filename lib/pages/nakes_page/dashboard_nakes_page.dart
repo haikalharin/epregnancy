@@ -2,8 +2,10 @@ import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
 import 'package:PregnancyApp/pages/members_page/members_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/full_qr_screen.dart';
+import 'package:PregnancyApp/pages/nakes_visit_page/member_visit_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/chat_placeholder_widget.dart';
 import 'package:PregnancyApp/pages/nakes_page/widget/consultation_container.dart';
+import 'package:PregnancyApp/pages/nakes_page/widget/visit_card.dart';
 import 'package:PregnancyApp/utils/date_formatter.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/string_constans.dart';
@@ -12,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
+import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -19,13 +22,15 @@ import '../../common/constants/router_constants.dart';
 import '../../common/injector/injector.dart';
 import '../../data/model/hospital_model/hospital_model.dart';
 import '../../data/shared_preference/app_shared_preference.dart';
-import '../../flavors.dart';
 import '../article_page/list_shimmer_verticle.dart';
 import '../chat_page/bloc/chat_bloc/chat_bloc.dart';
 import '../home_page/list_article.dart';
 import '../home_page/tab_bar_event_page.dart';
+import '../notification_page/notification_page.dart';
 import 'bloc/chat_pending_bloc.dart';
 import 'package:flutter_countdown_timer/index.dart';
+import 'package:badges/badges.dart' as badge;
+
 
 class DashBoardNakesPage extends StatefulWidget {
   const DashBoardNakesPage(
@@ -46,14 +51,134 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
   @override
   void initState() {
     print('hosptalId : ${widget.hospitalId}');
-    _handleRefresh();
+    homeFetch().then((value) => fetchTotalUnreadNotification().then((value) => fetchMemberSummaryEvent().then((value) =>
+        fetchListVisitEvent().then((value) => fetchLastChatEvent().then((value) =>
+            fetchChatPendingByHospitalId().then((value) => articleHomeFetchEvent()
+                .then((value) => fetchChatOngoingEvent().then((value) =>
+                    fetchHospitalsByIdEvent().then((value) => homeEventDateChanged())))))))));
+    // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent(isMidwife: true));
+    // Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
+    // Injector.resolve<ChatPendingBloc>()
+    //     .add(FetchLastChatEvent(widget.hospitalId));
+    // Injector.resolve<ChatPendingBloc>()
+    //     .add(FetchChatPendingByHospitalId(widget.hospitalId));
+    // Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
+    // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+    // Injector.resolve<HospitalBloc>()
+    //     .add(FetchHospitalsByIdEvent(widget.hospitalId));
+    // Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
+    // Injector.resolve<HomePageBloc>().add(HomeEventDateChanged(DateTime.now()));
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
     getHospital();
   }
 
   HospitalModel? hospitalModel;
-  int endtime =0;
+
+  Future<bool> homeFetch() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>()
+            .add(HomeFetchDataEvent(isMidwife: true));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchListVisitEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchLastChatEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<ChatPendingBloc>()
+            .add(FetchLastChatEvent(widget.hospitalId));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchChatPendingByHospitalId() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<ChatPendingBloc>()
+            .add(FetchChatPendingByHospitalId(widget.hospitalId));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> articleHomeFetchEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>().add(const ArticleHomeFetchEvent());
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchChatOngoingEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchHospitalsByIdEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HospitalBloc>()
+            .add(FetchHospitalsByIdEvent(widget.hospitalId));
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchMemberSummaryEvent() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
+      },
+    );
+    return true;
+  }
+
+  Future<bool> fetchTotalUnreadNotification() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>().add(const HomeFetchNotificationTotalUnreadEvent());
+      },
+    );
+    return true;
+  }
+
+  Future<bool> homeEventDateChanged() async {
+    await Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        Injector.resolve<HomePageBloc>()
+            .add(HomeEventDateChanged(DateTime.now()));
+      },
+    );
+    return true;
+  }
 
   void getHospital() async {
     HospitalModel _hospitalModel = await AppSharedPreference.getHospital();
@@ -68,46 +193,182 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
       GlobalKey<LiquidPullToRefreshState>();
 
   Future<void> _handleRefresh() async {
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      Injector.resolve<HomePageBloc>()
-          .add(const HomeFetchDataEvent(isMidwife: true));
-    });
-    Future.delayed(const Duration(milliseconds: 1800), () {
-      Injector.resolve<ChatPendingBloc>()
-          .add(FetchLastChatEvent(widget.hospitalId));
-    });
-    Future.delayed(const Duration(milliseconds: 2200), () {
-      Injector.resolve<ChatPendingBloc>()
-          .add(FetchChatPendingByHospitalId(widget.hospitalId));
-    });
-    Future.delayed(const Duration(milliseconds: 2600), () {
-      Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
-    });
-    Future.delayed(const Duration(milliseconds: 3000), () {
-      Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
-    });
-    Future.delayed(const Duration(milliseconds: 3400), () {
-      Injector.resolve<HospitalBloc>()
-          .add(FetchHospitalsByIdEvent(widget.hospitalId));
-    });
-    Future.delayed(const Duration(milliseconds: 3800), () {
-      Injector.resolve<HospitalBloc>().add(FetchMemberSummaryEvent());
-    });
-    Future.delayed(const Duration(milliseconds: 4000), () {
-      Injector.resolve<HomePageBloc>()
-          .add(HomeEventDateChanged(DateTime.now()));
-    });
-    _tabController = TabController(length: 2, vsync: this);
+    articleHomeFetchEvent().then((value) => fetchTotalUnreadNotification().then((value) => fetchMemberSummaryEvent().then(
+        (value) => fetchListVisitEvent().then((value) => fetchChatOngoingEvent()
+            .then((value) => fetchChatPendingByHospitalId())))));
+    // Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+    // Injector.resolve<HomePageBloc>().add(ArticleHomeFetchEvent());
+    // Injector.resolve<HomePageBloc>().add(FetchListVisitEvent(0));
+    // Injector.resolve<ChatBloc>().add(FetchChatOngoingEvent());
+    // Injector.resolve<ChatPendingBloc>()
+    //     .add(FetchChatPendingByHospitalId(widget.hospitalId));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(10),
-        child: Container(
-          color: Colors.white,
-        ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.profileNakesPage,
+                  arguments: {
+                    "name": widget.userName,
+                    "image_url": widget.imageUrl
+                  });
+            },
+            child: Text(
+              'Halo, ${widget.userName} ',
+              style: TextStyle(
+                  color: EpregnancyColors.primer,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16.sp),
+            )),
+        actions: [
+          BlocBuilder<HomePageBloc, HomePageState>(
+            builder: (context, state) {
+              return InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(8.w),
+                              topLeft: Radius.circular(8.w)),
+                        ),
+                        context: context,
+                        builder: (BuildContext bc) {
+                          return WillPopScope(
+                            onWillPop: () => Future.value(false),
+                            child: Container(
+                              padding: EdgeInsets.all(16.w),
+                              child: Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Injector.resolve<HomePageBloc>()
+                                                  .add(FetchListVisitEvent(0));
+                                              Future.delayed(const Duration(
+                                                  milliseconds: 100));
+                                              Navigator.pop(context);
+                                            },
+                                            child: Icon(
+                                              Icons.close,
+                                              color: EpregnancyColors.primer,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                                "Kode QR Bidan ${widget.userName}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 14.sp),
+                                                textAlign: TextAlign.center),
+                                          ),
+                                          Container()
+                                          // SvgPicture.asset(
+                                          //   "assets/icShare.svg",
+                                          //   color: EpregnancyColors.primer,
+                                          // )
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 16.h),
+                                        child: Text(
+                                          "Tanggal Kunjungan",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 2.h, bottom: 24.h),
+                                        child: Text(
+                                          DateFormatter.dateFormatWithSpace
+                                              .format(DateTime.now()),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                      QrImage(
+                                        data: state.user?.qrString ?? '',
+                                        version: QrVersions.auto,
+                                        size: 150.w,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                  },
+                  child: SvgPicture.asset("assets/ic_qr.svg"));
+            },
+          ),
+          BlocBuilder<HomePageBloc, HomePageState>(
+              builder: (context, state){
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const NotificationPage()));
+                    },
+                    child: (state.totalUnreadNotif ?? 0) >= 1
+                        ? (state.totalUnreadNotif ?? 0) > 9 ? badge.Badge(
+                      badgeContent: const Center(
+                          child: Text(
+                            "9+",
+                            style: const TextStyle(
+                                color: Colors.white),
+                          )),
+                      position: badge.BadgePosition.topEnd(
+                          top: -10, end: -3),
+                      child: Icon(
+                        Icons.notifications,
+                        color: EpregnancyColors.primer,
+                        size: 23.w,
+                      ),
+                    ): badge.Badge(
+                      badgeContent: Center(
+                          child: Text(
+                            state.totalUnreadNotif.toString(),
+                            style: const TextStyle(
+                                color: Colors.white),
+                          )),
+                      position: badge.BadgePosition.topEnd(
+                          top: -10, end: -3),
+                      child: Icon(
+                        Icons.notifications,
+                        color: EpregnancyColors.primer,
+                        size: 23.w,
+                      ),
+                    )
+                        : Icon(
+                      Icons.notifications,
+                      color: EpregnancyColors.primer,
+                      size: 23.w,
+                    ),
+                  ),
+                );
+              })
+        ],
       ),
       body: BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
         return LiquidPullToRefresh(
@@ -116,57 +377,19 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
           showChildOpacityTransition: false,
           child: ListView(
             shrinkWrap: true,
-            // physics: NeverScrollableScrollPhysics(),
-            // mainAxisAlignment: MainAxisAlignment.start,
-            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // DASHBOARD HEADER
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, RouteName.profileNakesPage,
-                                  arguments: {
-                                    "name": widget.userName,
-                                    "image_url": widget.imageUrl
-                                  });
-                            },
-                            child: Text(
-                              'Halo, ${widget.userName} ',
-                              style: TextStyle(
-                                  color: EpregnancyColors.primer,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16.sp),
-                            )),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          color: EpregnancyColors.primer,
-                        )
-                      ],
-                    ),
-                    Text(
-                      DateFormatter.dateFormatWithSpace.format(DateTime.now()),
-                      style: TextStyle(
-                          color: EpregnancyColors.primer,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14.sp),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 16.h,
-              ),
-
               // total pasien box
               Container(
-                color: EpregnancyColors.primerSoft,
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                  colors: [
+                    EpregnancyColors.whiteBlue,
+                    Colors.white,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                )),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -187,11 +410,8 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                               height: 40.h,
                               width: 40.w,
                               child: Center(
-                                child: Icon(
-                                  Icons.groups_rounded,
-                                  color: EpregnancyColors.primer,
-                                ),
-                              ),
+                                  child: SvgPicture.asset(
+                                      "assets/ic_community.svg")),
                             ),
                             Expanded(
                               child: InkWell(onTap: () {
@@ -248,12 +468,179 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                 ))
                           ],
                         )),
+
+                    // kunjungan anggota widget
+                    state.listUserVisitModel != null
+                        ? Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16.w),
+                            height: 355.h,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: 75.h,
+                                  padding: EdgeInsets.only(
+                                      left: 16.w,
+                                      top: 16.w,
+                                      right: 16.w,
+                                      bottom: 30.w),
+                                  decoration: BoxDecoration(
+                                      color: EpregnancyColors.primer,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(8.w),
+                                          topRight: Radius.circular(8.w))),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Kunjungan Anggota",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 14.sp),
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            DateFormatter.dateFormatdMMyyyy
+                                                .format(DateTime.now()),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          Text(
+                                            "${state.listUserVisitModel?.length} Kunjungan",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  bottom: 0,
+                                  top: 60.h,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(16.w),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(16.w),
+                                              topLeft: Radius.circular(16.w),
+                                              bottomRight: Radius.circular(8.w),
+                                              bottomLeft: Radius.circular(8.w),
+                                            )),
+                                        child: state.listUserVisitModel!.isEmpty
+                                            ? Container(
+                                                margin: EdgeInsets.only(),
+                                                child: Container())
+                                            : Column(
+                                                children: [
+                                                  Expanded(
+                                                    child: ListView.builder(
+                                                      scrollDirection:
+                                                          Axis.vertical,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        String outputDate = "";
+                                                        var outputFormat =
+                                                            DateFormat.yMMMMd(
+                                                                'id');
+                                                        outputDate = outputFormat.format(
+                                                            DateTime.parse(state
+                                                                    .listUserVisitModel?[
+                                                                        index]
+                                                                    .createdDate ??
+                                                                "0000-00-00"));
+                                                        // 12/3
+                                                        return InkWell(
+                                                          onTap: () {
+                                                            // Navigator.push(
+                                                            //     context,
+                                                            //     MaterialPageRoute(
+                                                            //         builder: (context) => ArticleDetailPage(
+                                                            //             article: listArticle?[index])));
+                                                          },
+                                                          child: Center(
+                                                            child: VisitCard(
+                                                              user: state
+                                                                      .listUserVisitModel?[
+                                                                  index],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      itemCount: (state.listUserVisitModel??[])
+                                                          .length < 5
+                                                          ? state.listUserVisitModel!
+                                                          .length
+                                                          : 5,
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const MemberVisitPage()));
+                                                    },
+                                                    child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        border: Border(
+                                                            top: BorderSide(
+                                                                color: EpregnancyColors
+                                                                    .greyDivider,
+                                                                width: 1)),
+                                                      ),
+                                                      padding:
+                                                          EdgeInsets.all(16.w),
+                                                      child: Center(
+                                                          child: Text(
+                                                        "Lihat Semua",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: 12.sp,
+                                                            color:
+                                                                EpregnancyColors
+                                                                    .primer),
+                                                      )),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                      ),
+                                      _Loading()
+                                    ],
+                                  ),
+                                ),
+                              ],
+                              overflow: Overflow.visible,
+                            ),
+                          )
+                        : Container(),
+
                     // start tanya bidan box
                     Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.w),
                       ),
-                      margin: EdgeInsets.symmetric(horizontal: 16.w),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 16.h),
                       child: Container(
                         padding: EdgeInsets.only(top: 16.w),
                         decoration: BoxDecoration(
@@ -415,165 +802,129 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
               ),
               // end tanya bidan box
 
+              // kunjungan anggota
+
               // artikel section
-              Container(
-                  // height: 200,
-                  color: Colors.white,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 10, bottom: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding:
-                              EdgeInsets.only(left: 20, right: 20, bottom: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  child: const Text(
-                                StringConstant.publishedArticle,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w700),
-                              )),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(RouteName.dashboardArticle);
-                                },
-                                child: Container(
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.only(right: 5),
-                                          child: Text(
-                                            StringConstant.otherArticle,
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey),
-                                          )),
-                                      Container(
-                                        child: const Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 20,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            state.submitStatus ==
-                                        FormzStatus.submissionInProgress &&
-                                    state.tipe == 'listArticle'
-                                ? Expanded(child: ListShimmer())
-                                : Expanded(
-                                    child: ListArticle(
-                                    listArticle: state.listArticle ?? [],
-                                  ))
-                          ],
-                        ),
-                      ],
-                    ),
-                  )),
+              // Container(
+              //     // height: 200,
+              //     color: Colors.white,
+              //     child: Container(
+              //       padding: EdgeInsets.only(top: 10, bottom: 20),
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Container(
+              //             padding: EdgeInsets.only(
+              //                 left: 20, right: 20, bottom: 5),
+              //             child: Row(
+              //               mainAxisAlignment:
+              //                   MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Container(
+              //                     child: const Text(
+              //                   StringConstant.publishedArticle,
+              //                   style: TextStyle(
+              //                       fontSize: 16,
+              //                       fontWeight: FontWeight.w700),
+              //                 )),
+              //                 InkWell(
+              //                   onTap: () {
+              //                     Navigator.of(context).pushNamed(
+              //                         RouteName.dashboardArticle);
+              //                   },
+              //                   child: Container(
+              //                     child: Row(
+              //                       children: [
+              //                         Container(
+              //                             margin: EdgeInsets.only(right: 5),
+              //                             child: Text(
+              //                               StringConstant.otherArticle,
+              //                               style: TextStyle(
+              //                                   fontSize: 12,
+              //                                   fontWeight: FontWeight.w500,
+              //                                   color: Colors.grey),
+              //                             )),
+              //                         Container(
+              //                           child: const Icon(
+              //                             Icons.arrow_forward_ios,
+              //                             size: 20,
+              //                             color: Colors.grey,
+              //                           ),
+              //                         ),
+              //                       ],
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //           Row(
+              //             children: [
+              //               state.submitStatus ==
+              //                           FormzStatus.submissionInProgress &&
+              //                       state.tipe == 'listArticle'
+              //                   ? Expanded(child: ListShimmer())
+              //                   : Expanded(
+              //                       child: ListArticle(
+              //                       listArticle: state.listArticle ?? [],
+              //                     ))
+              //             ],
+              //           ),
+              //         ],
+              //       ),
+              //     )),
 
-              BlocBuilder<HospitalBloc, HospitalState>(
-                // buildWhen: (previous, current) => previous.hospitals?[0].pinValidEnd != current.hospitals?[0].pinValidEnd,
-                builder: (context, state) {
-                  if (state.type == 'fetch-hospital-success') {
-                    return Container(
-                            // height: 200.h,
-                            margin: EdgeInsets.only(
-                                left: 16.w, top: 5.h, bottom: 20.h),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "QR Check-in Pasien",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp),
-                                ),
-                                SizedBox(
-                                  height: 0.h,
-                                ),
-                                // Center(
-                                //   child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
-                                // ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                FullQrScreen(
-                                                  value:
-                                                      "KomunitAZ-${state.hospitals?[0].pin.toString()}",
-                                                )));
-                                  },
-                                  child: Hero(
-                                    tag: 'qr-hero',
-                                    child: Center(
-                                      child: QrImage(
-                                        data:
-                                            "KomunitAZ-${state.hospitals?[0].pin.toString()}",
-                                        version: QrVersions.auto,
-                                        size: 150.w,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                // SizedBox(height: 20.h,),
-                                Center(
-                                  child: CountdownTimer(
-                                    endTime:DateTime.parse(state.hospitals?[0].pinValidEnd ??
-                                                    DateTime.now().toString())
-                                                .millisecondsSinceEpoch,
-                                    widgetBuilder: (context, time) {
-                                      print("pin valid value : ${state.hospitals?[0].pin}");
-                                      print("hospital id : ${state.hospitals?[0].id}");
-                                      print("pin valid end : ${state.hospitals?[0].pinValidEnd}");
-                                      // print("date valid end : ${DateTime.parse(state.hospitals?[0].pinValidEnd ??
-                                      //     DateTime.now().toString())
-                                      //     .add(const Duration(seconds: 10))
-                                      //     .millisecondsSinceEpoch}");
-                                      return Text(
-                                        "Akan Expired Pada ${time?.min != null ? time?.min.toString().padLeft(2, "0") : "00"} : ${time?.sec != null ? time?.sec.toString().padLeft(2, "0") : "00"}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      );
-                                    },
-                                    // todo data valid start & end ngaco di response
-                                    onEnd: () async {
-                                      Future.delayed(const Duration(seconds: 2), (){
-                                        Injector.resolve<HospitalBloc>().add(
-                                            FetchHospitalsByIdEvent(
-                                                widget.hospitalId));
-                                      });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ));
-
-                  } else {
-                    return Container(
-                      height: 100.h,
-                      width: 100.w,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                },
-              ),
+              // BlocBuilder<HospitalBloc, HospitalState>(
+              //   builder: (context, state) {
+              //     if(state.type == 'fetch-hospital-success'){
+              //       return Container(
+              //         // height: 200.h,
+              //           margin: EdgeInsets.only(left: 16.w, top: 5.h, bottom: 20.h),
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: [
+              //               Text("QR Check-in Pasien", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),),
+              //               SizedBox(height: 0.h,),
+              //               // Center(
+              //               //   child: Text(state.hospitals?[0].pin.toString() ?? "", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24.sp),),
+              //               // ),
+              //               InkWell(
+              //                 onTap: (){
+              //                   Navigator.push(context, MaterialPageRoute(builder: (context) =>  FullQrScreen(value: "KomunitAZ-${state.hospitals?[0].pin.toString()}",)));
+              //                 },
+              //                 child: Hero(
+              //                   tag: 'qr-hero',
+              //                   child: Center(
+              //                     child: QrImage(
+              //                       data: "KomunitAZ-${state.hospitals?[0].pin.toString()}",
+              //                       version: QrVersions.auto,
+              //                       size: 150.w,
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //               // SizedBox(height: 20.h,),
+              //               Center(
+              //                 child: CountdownTimer(
+              //                   endTime: DateTime.parse(state.hospitals?[0].pinValidEnd ?? DateTime.now().toString()).millisecondsSinceEpoch,
+              //                   widgetBuilder: (context, time){
+              //                     return Text("Akan Expired Pada ${time?.min.toString().padLeft(2, "0")} : ${time?.sec.toString().padLeft(2, "0")}",
+              //                       style: TextStyle(fontWeight: FontWeight.bold),);
+              //                   },
+              //                   // todo data valid start & end ngaco di response
+              //                   onEnd: (){
+              //                     Injector.resolve<HospitalBloc>().add(FetchHospitalsByIdEvent(widget.hospitalId));
+              //                   },
+              //                 ),
+              //               )
+              //             ],
+              //           )
+              //       );
+              //     } else {
+              //       return Container();
+              //     }
+              //   },
+              // ),
 
               Container(
                   color: Colors.white,
@@ -648,5 +999,21 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
         ),
       ),
     );
+  }
+}
+
+class _Loading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
+      if (state.submitStatus == FormzStatus.submissionInProgress &&
+          state.tipe == "fetching-list-user-visit") {
+        return Container(
+            color: Colors.white.withAlpha(90),
+            child: Center(child: CircularProgressIndicator()));
+      } else {
+        return Text("");
+      }
+    });
   }
 }

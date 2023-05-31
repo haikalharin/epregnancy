@@ -8,14 +8,14 @@ class PinCheckInState {
   final String? pin;
   final UserModel? userInfo;
   final bool? isActive;
-  final bool? isGetPoint;
+  final bool? firstVisit;
 
   PinCheckInState(
       {this.pin,
       this.submitStatus = FormzStatus.pure,
       this.errorMessage,
       this.userInfo,
-      this.isGetPoint,
+      this.firstVisit,
       this.isActive});
 
   PinCheckInState copyWith(
@@ -24,14 +24,14 @@ class PinCheckInState {
       String? errorMessage,
       UserModel? userInfo,
       bool? isActive,
-      bool? isGetPoint}) {
+      bool? firstVisit}) {
     return PinCheckInState(
         submitStatus: submitStatus,
         errorMessage: errorMessage,
         pin: pin ?? this.pin,
         userInfo: userInfo ?? this.userInfo,
         isActive: isActive ?? this.isActive,
-        isGetPoint: isGetPoint ?? this.isGetPoint,
+        firstVisit: firstVisit ?? this.firstVisit,
     );
   }
 }

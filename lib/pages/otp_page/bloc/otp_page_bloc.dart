@@ -36,12 +36,12 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
     }
   }
 
-
   Stream<OtpPageState> _mapResendOtp(
-      RequestResendOtp event,
-      OtpPageState state,
-      ) async* {
-    yield state.copyWith(submitStatus: FormzStatus.submissionInProgress, typeEvent:"sendOtp" );
+    RequestResendOtp event,
+    OtpPageState state,
+  ) async* {
+    yield state.copyWith(
+        submitStatus: FormzStatus.submissionInProgress, typeEvent: "sendOtp");
     try {
       var type = '';
       if (event.userId!.contains('@')) {
@@ -51,15 +51,35 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
       }
       var data = {
         'type': type,
-        'value':  event.userId,
+        'value': event.userId,
       };
       ResponseModel response = await userRepository.requestOtp(data);
-      OtpModel otpModel = OtpModel(otp: "",type: type,value: event.userId);
+      OtpModel otpModel = OtpModel(otp: "", type: type, value: event.userId);
       if (response.code == 200) {
         await AppSharedPreference.setOtp(otpModel);
-        yield state.copyWith(submitStatus: FormzStatus.submissionSuccess, otpResendSuccess: true);
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess,
+            otpResendSuccess: true);
       } else {
-        yield state.copyWith(submitStatus: FormzStatus.submissionFailure, otpResendSuccess: false);
+        OtpModel responseData = response.data;
+        var lastTimeSendOtp = responseData.createdDate;
+
+        var time = 0;
+        if (lastTimeSendOtp != null) {
+          DateTime lastDate = DateTime.parse(lastTimeSendOtp);
+          DateTime lastDateAfterAdd = lastDate.add(const Duration(hours: 1));
+          int differentTime =
+              lastDateAfterAdd.difference(DateTime.now()).inSeconds;
+          if (differentTime > 0) {
+            time = differentTime;
+          }
+        }
+
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionFailure,
+            otpResendSuccess: false,
+            differentTime: time,
+            errorMessage: response.message);
       }
     } on LoginErrorException catch (e) {
       print(e);
@@ -79,26 +99,25 @@ class OtpPageBloc extends Bloc<OtpPageEvent, OtpPageState> {
       UserModel? userModel = await AppSharedPreference.getUserRegister();
       OtpModel? otpModel = await AppSharedPreference.getOtp();
 
-        bool isActive = false;
-        ResponseModel response =
-        await userRepository.verifyOtp(
-            OtpModel(otp: event.otp, type: otpModel.type,value: otpModel.value));
-
-        if (response.code == 200) {
-
-            // await AppSharedPreference.setUser(response.data);
-            // await AppSharedPreference.setString(
-            //     AppSharedPreference.token, userModel.token ?? '');
-            yield state.copyWith(
-                submitStatus: FormzStatus.submissionSuccess,otp: event.otp, otpResendSuccess: false);
-        } else {
-          yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
-        }
+      bool isActive = false;
+      ResponseModel response = await userRepository.verifyOtp(
+          OtpModel(otp: event.otp, type: otpModel.type, value: otpModel.value));
+      if (response.code == 200) {
+        // await AppSharedPreference.setUser(response.data);
+        // await AppSharedPreference.setString(
+        //     AppSharedPreference.token, userModel.token ?? '');
+        yield state.copyWith(
+            submitStatus: FormzStatus.submissionSuccess,
+            otp: event.otp,
+            otpResendSuccess: false);
+      } else {
+        yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
+      }
     } on OtpErrorException catch (e) {
       print(e);
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);
     } on Exception catch (a) {
-      if( a is UnAuthorizeException) {
+      if (a is UnAuthorizeException) {
         await AppSharedPreference.sessionExpiredEvent();
       }
       yield state.copyWith(submitStatus: FormzStatus.submissionFailure);

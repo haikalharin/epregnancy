@@ -4,12 +4,16 @@ import 'package:PregnancyApp/data/repository/article_repository/article_reposito
 import 'package:PregnancyApp/data/repository/article_repository/article_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/chat_repository/chat_repository.dart';
 import 'package:PregnancyApp/data/repository/chat_repository/chat_repository_impl.dart';
+import 'package:PregnancyApp/data/repository/child_repository/child_repository.dart';
+import 'package:PregnancyApp/data/repository/child_repository/child_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/event_repository/event_repository.dart';
 import 'package:PregnancyApp/data/repository/event_repository/event_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository.dart';
 import 'package:PregnancyApp/data/repository/home_repository/home_repository_impl.dart';
 import 'package:PregnancyApp/data/repository/hospital_repository/hospital_repository.dart';
 import 'package:PregnancyApp/data/repository/hospital_repository/hospital_repository_impl.dart';
+import 'package:PregnancyApp/data/repository/notification_repository/notification_repository.dart';
+import 'package:PregnancyApp/data/repository/notification_repository/notification_repository_impl.dart';
 import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
 import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
 import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
@@ -18,10 +22,12 @@ import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
 import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
 import 'package:PregnancyApp/pages/forgot_password_page/bloc/forgot_password_page_bloc.dart';
 import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
+import 'package:PregnancyApp/pages/growth_page/bloc/growth_bloc.dart';
 import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:PregnancyApp/pages/landing_page/bloc/landing_page_bloc.dart';
 import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
 import 'package:PregnancyApp/pages/nakes_page/bloc/chat_pending_bloc.dart';
+import 'package:PregnancyApp/pages/notification_page/bloc/notification_bloc.dart';
 import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
 import 'package:PregnancyApp/pages/pin_checkin/bloc/pin_checkin_bloc.dart';
 import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
@@ -36,10 +42,13 @@ import '../../data/repository/consultation_repository/consultation_repository.da
 import '../../data/repository/consultation_repository/consultation_repository_impl.dart';
 import '../../data/repository/user_repository/user_repository.dart';
 import '../../data/repository/user_repository/user_repository_impl.dart';
+import '../../pages/audio_page/bloc/audio_bloc.dart';
 import '../../pages/change_password_page/bloc/change_password_bloc.dart';
+import '../../pages/child_list_page/bloc/child_list_bloc.dart';
 import '../../pages/consultation_page/bloc/comment_bloc.dart';
 import '../../pages/consultation_page/bloc/consultation_page_bloc.dart';
 import '../../pages/login_page/bloc/login_bloc.dart';
+import '../../pages/new_born_page/bloc/new_born_page_bloc.dart';
 import '../../pages/profile_page/bloc/profile_page_bloc.dart';
 import '../../pages/signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
 import '../../pages/splashscreen_page/bloc/splash_screen_bloc.dart';
@@ -102,6 +111,11 @@ abstract class InjectorConfig {
   @Register.singleton(DisclaimerPageBloc)
   @Register.singleton(PatientSelectBloc)
   @Register.singleton(CommentBloc)
+  @Register.singleton(AudioBloc)
+  @Register.singleton(NewBornPageBloc)
+  @Register.singleton(ChildListBloc)
+  @Register.singleton(NotificationBloc)
+  @Register.singleton(GrowthBloc)
   void _configureBlocs();
 
   @Register.factory(UserRepository, from: UserRepositoryImpl)
@@ -111,6 +125,8 @@ abstract class InjectorConfig {
   @Register.factory(EventRepository, from: EventRepositoryImpl)
   @Register.factory(ConsultationRepository, from: ConsultationRepositoryImpl)
   @Register.factory(HospitalRepository, from: HospitalRepositoryImpl)
+  @Register.factory(ChildRepository, from: ChildRepositoryImpl)
+  @Register.factory(NotificationRepository, from: NotificationRepositoryImpl)
   void _configureRepositories();
 
   @Register.factory(RemoteDataSource)

@@ -16,6 +16,7 @@ import '../../model/response_model/response_model.dart';
 import '../../model/point_model/checkin_response.dart';
 import '../../model/user_example_model/user_example_model.dart';
 import '../../model/user_model_firebase/user_model_firebase.dart';
+import '../../model/user_visit_model/user_visit_model.dart';
 import '../../remote_datasource/remote_datasource.dart';
 import '../../shared_preference/app_shared_preference.dart';
 import 'user_repository.dart';
@@ -100,9 +101,17 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<ResponseModel> updateQuestionerBaby(BabyModelApi baby) async {
+  Future<ResponseModel> updateQuestionerBaby(BabyModelApi baby,{bool isUpdateStatus = false}) async {
     if (await networkInfo.isConnected) {
-      ResponseModel responseModel = await remoteDatasource.updateBaby(baby);
+      ResponseModel responseModel = await remoteDatasource.updateBaby(baby,isUpdateStatus:isUpdateStatus );
+      return responseModel;
+    }
+    throw NetworkConnectionException();
+  }
+  @override
+  Future<ResponseModel> deleteBaby(BabyModelApi baby) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel responseModel = await remoteDatasource.deleteBaby(baby);
       return responseModel;
     }
     throw NetworkConnectionException();
@@ -256,4 +265,21 @@ class UserRepositoryImpl extends UserRepository {
     throw NetworkConnectionException();
   }
 
+  @override
+  Future<ResponseModel<UserVisitModel>> fetchUserVisit( int page,int size, String sortBy, String sort) async {
+    if (await networkInfo.isConnected) {
+      return remoteDatasource.fetchUserVisit( page: page,sortBy: sortBy,sort: sort,size:size
+      );
+    }
+    throw NetworkConnectionException();
+  }
+  @override
+  Future<ResponseModel> submitNextVisit(String id,String nextVisitDate,String status) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response =
+      await remoteDatasource.submitNextVisit(id,nextVisitDate,status);
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
 }

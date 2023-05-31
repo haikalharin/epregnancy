@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/pages/article_page/article_detail_page.dart';
 import 'package:PregnancyApp/pages/audio_page/playlist_page/playlist_page.dart';
+import 'package:PregnancyApp/pages/audio_page/playlist_page/playlist_page_musik.dart';
 import 'package:PregnancyApp/pages/change_password_page/change_password_page.dart';
 import 'package:PregnancyApp/pages/chat_page/dashboard.dart';
 import 'package:PregnancyApp/pages/article_page/dashboard_article.dart';
@@ -12,6 +13,7 @@ import 'package:PregnancyApp/pages/home_page/home_page.dart';
 import 'package:PregnancyApp/pages/location_select_page/location_select_page.dart';
 import 'package:PregnancyApp/pages/nakes_page/dashboard_nakes_page.dart';
 import 'package:PregnancyApp/pages/navbar_page/bottom_nav.dart';
+import 'package:PregnancyApp/pages/new_born_page/questioner_new_born_page.dart';
 import 'package:PregnancyApp/pages/onboarding_page/onboarding_page.dart';
 import 'package:PregnancyApp/pages/otp_page/otp_page.dart';
 import 'package:PregnancyApp/pages/otp_page/verifikasi_page.dart';
@@ -158,6 +160,9 @@ class Routes {
       case RouteName.playlist:
         return MaterialPageRoute(
             builder: (_) => const PlaylistPage());
+      case RouteName.playlistMusic:
+        return MaterialPageRoute(
+            builder: (_) => const PlaylistPageMusic());
       case RouteName.audioPlayer:
         return MaterialPageRoute(
             builder: (_) => const AudioPlayerPage());
@@ -174,6 +179,10 @@ class Routes {
                   isPatient: getIsPatient(settings.arguments),
                   from: getFrom(settings.arguments),
                 ));
+      case RouteName.questionerNewBorn:
+        return MaterialPageRoute(
+            builder: (_) =>
+                QuestionerNewBornPage(isEdit: getIsEdit(settings.arguments), babyId: getBabyId(settings.arguments),));
 
       // case RouteName.order:
       //   return MaterialPageRoute(builder: (_) => OrderPage());

@@ -1,5 +1,6 @@
 import 'package:PregnancyApp/data/model/games_model/games_response.dart';
 import 'package:PregnancyApp/data/model/games_model/play_game_response.dart';
+import 'package:PregnancyApp/data/model/notification_model/notification_total_unread_model.dart';
 import 'package:PregnancyApp/data/model/user_model_firebase/user_model_firebase.dart';
 
 import '../../../common/exceptions/network_connection_exception.dart';
@@ -72,6 +73,33 @@ class HomeRepositoryImpl extends HomeRepository {
     if (await networkInfo.isConnected) {
       ResponseModel<PlayGameResponse> playGameResponse = await remoteDatasource.pointForPlayGame(gameId);
       return playGameResponse;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> fetchBabyChilds() async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response = await remoteDatasource.getBabyChilds();
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel> fetchChildForDashBoard(String id) async {
+    if (await networkInfo.isConnected) {
+      ResponseModel response = await remoteDatasource.getChildForDashboard(id);
+      return response;
+    }
+    throw NetworkConnectionException();
+  }
+
+  @override
+  Future<ResponseModel<NotificationTotalUnreadModel>> fetchNotificationTotalUnread() async {
+    if (await networkInfo.isConnected) {
+      ResponseModel<NotificationTotalUnreadModel> response = await remoteDatasource.fetchNotificationTotalUnread();
+      return response;
     }
     throw NetworkConnectionException();
   }

@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:PregnancyApp/common/injector/injector.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+
+import '../pages/home_page/bloc/home_page_bloc.dart';
+import '../pages/notification_page/bloc/notification_bloc.dart';
 
 class NotifController {
   static Future initLocalNotification() async {
@@ -109,6 +113,8 @@ class NotifController {
       }
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+        Injector.resolve<NotificationBloc>().add(const NotificationFetchEvent(0));
+        Injector.resolve<HomePageBloc>().add(const HomeFetchNotificationTotalUnreadEvent());
         print('A new onMessageOpenedApp event was published!');
       });
     } catch (e) {

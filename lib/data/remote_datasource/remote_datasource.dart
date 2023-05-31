@@ -1,3 +1,4 @@
+import 'package:PregnancyApp/data/model/baby_child_model/baby_child_response.dart';
 import 'package:PregnancyApp/data/model/baby_progress_model/simple_tip_response.dart';
 import 'package:PregnancyApp/data/model/biodata_model/biodata_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_list_response.dart';
@@ -8,6 +9,7 @@ import 'package:PregnancyApp/data/model/chat_model/chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/chat_send_request.dart';
 import 'package:PregnancyApp/data/model/chat_model/last_chat_response.dart';
 import 'package:PregnancyApp/data/model/chat_model/patient/chat_pending_patient_response.dart';
+import 'package:PregnancyApp/data/model/child_model/child_list_response.dart';
 import 'dart:math';
 
 import 'package:PregnancyApp/data/model/event_model/event_model.dart';
@@ -19,6 +21,8 @@ import 'package:PregnancyApp/data/model/hospital_model/hospital_model.dart';
 import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/login_model/login_response_data.dart';
 import 'package:PregnancyApp/data/model/members_model/members_summary_response.dart';
+import 'package:PregnancyApp/data/model/my_child_dashboard/my_child_dashboard.dart';
+import 'package:PregnancyApp/data/model/notification_model/notification_total_unread_model.dart';
 import 'package:PregnancyApp/data/model/otp_model/otp_model.dart';
 import 'package:PregnancyApp/data/model/user_model_api/user_model.dart';
 
@@ -26,6 +30,7 @@ import 'package:PregnancyApp/data/model/games_model/games_response.dart';
 import 'package:PregnancyApp/data/model/point_model/checkin_response.dart';
 import 'package:PregnancyApp/data/model/point_model/point_history.dart';
 import 'package:PregnancyApp/data/model/user_info/user_info.dart';
+import 'package:PregnancyApp/data/model/user_visit_model/user_visit_model.dart';
 import 'package:http/http.dart';
 
 import '../../common/network/http/http_client.dart';
@@ -35,8 +40,10 @@ import '../model/article_model/article_model.dart';
 import '../model/baby_model/new_baby_model.dart';
 import '../model/baby_model_api/baby_Model_api.dart';
 import '../model/consultation_model/consultation_model.dart';
+import '../model/growth_model/growth_model.dart';
 import '../model/login_model/login_model.dart';
 import '../model/members_model/member.dart';
+import '../model/notification_model/notification_list_model.dart';
 import '../model/response_model/response_model.dart';
 import '../model/user_example_model/user_example_model.dart';
 import '../model/user_model_api/signup_quest_request.dart';
@@ -61,7 +68,8 @@ class RemoteDataSource {
   }
 
   Future<ResponseModel<LoginResponseData>> login(LoginModel loginModel) async {
-    final response = await httpClient.postLogin(ServiceUrl.newLogin, loginModel);
+    final response =
+        await httpClient.postLogin(ServiceUrl.newLogin, loginModel);
 
     return ResponseModel<LoginResponseData>.fromJson(
         response, LoginResponseData.fromJson);
@@ -69,6 +77,48 @@ class RemoteDataSource {
 
   Future<ResponseModel> forgotPassword(Map data) async {
     final response = await httpClient.post(ServiceUrl.forgotPassword, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> addChild(Map data) async {
+    final response = await httpClient.post(ServiceUrl.childs, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> readNotification(Map data) async {
+    final response = await httpClient.patch(ServiceUrl.notificationList, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> addGrowth(Map data, String? childId) async {
+    final response = await httpClient.post(ServiceUrl.childs + "/$childId/${ServiceUrl.growths}", data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> updateChild(Map data) async {
+    final response = await httpClient.put(ServiceUrl.childs, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> updateBabyStatus(Map data) async {
+    final response = await httpClient.put(ServiceUrl.updateBaby, data);
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> deleteBabyList(String id) async {
+    final response = await httpClient.delete(ServiceUrl.deleteBaby + "/" + id, {});
+
+    return ResponseModel.fromJson(response, UserModel.fromJson);
+  }
+
+  Future<ResponseModel> deleteChild(String id) async {
+    final response = await httpClient.delete(ServiceUrl.childs + "/$id", {});
 
     return ResponseModel.fromJson(response, UserModel.fromJson);
   }
@@ -159,14 +209,35 @@ class RemoteDataSource {
     }
   }
 
-  Future<ResponseModel> updateBaby(BabyModelApi baby) async {
+  Future<ResponseModel> updateBaby(BabyModelApi baby,
+      {bool isUpdateStatus = false}) async {
     try {
-      Map<String, String> data = {
-        'id': baby.id ?? "",
-        'name': baby.name ?? "",
-        'last_menstruation_date': baby.lastMenstruationDate ?? "",
-      };
+      Map<String, String> data = {};
+      if (isUpdateStatus) {
+        data = {
+          'id': baby.id ?? "",
+          'name': baby.name ?? "",
+          'last_menstruation_date': baby.lastMenstruationDate ?? "",
+          'status': baby.status ?? "",
+        };
+      } else {
+        data = {
+          'id': baby.id ?? "",
+          'name': baby.name ?? "",
+          'last_menstruation_date': baby.lastMenstruationDate ?? "",
+        };
+      }
       final response = await httpClient.put(ServiceUrl.updateBaby, data);
+      return ResponseModel.fromJson(response, BabyModelApi.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> deleteBaby(BabyModelApi baby) async {
+    try {
+      final response = await httpClient.delete(
+          ServiceUrl.deleteBaby + '/' + '${baby.id}', null);
       return ResponseModel.fromJson(response, BabyModelApi.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
@@ -193,16 +264,39 @@ class RemoteDataSource {
     }
   }
 
- Future<ResponseModel> getBaby(UserModel UserModel) async {
+  Future<ResponseModel> getBaby(UserModel UserModel) async {
     try {
-      final response =
-          await httpClient.get(ServiceUrl.myBaby);
+      final response = await httpClient.get(ServiceUrl.myBaby);
       return ResponseModel.fromJson(response, NewBabyModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
 
+  Future<ResponseModel> getBabyChilds() async {
+    try {
+      final response = await httpClient.get(ServiceUrl.babyChilds);
+      return ResponseModel.fromJson(response, BabyChildResponse.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+  Future<ResponseModel> getChildForDashboard(String childId) async {
+    try {
+      final response = await httpClient
+          .get("${ServiceUrl.childs}/$childId/${ServiceUrl.myChild}");
+      return ResponseModel.fromJson(response, MyChildDashboard.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
+    }
+  }
+
+
+  Future<ResponseModel<GrowthModel>> getAllGrowth(String childId) async {
+    final response = await httpClient.get("${ServiceUrl.childs}/$childId/${ServiceUrl.growths}");
+    return ResponseModel.fromJson(response, GrowthModel.fromJson);
+  }
 
   Future<ResponseModel> requestOtp(Map data) async {
     try {
@@ -224,21 +318,21 @@ class RemoteDataSource {
 
   Future<ResponseModel> pinSubmitCheckIn(String hospitalId, String pin) async {
     try {
-      final response = await httpClient
-          .post(ServiceUrl.hospitalVisit + hospitalId, {"pin": pin});
+      final response =
+          await httpClient.post(ServiceUrl.userVisit, {"qr_string": pin});
       return ResponseModel.fromJson(response, VisitHospitalModel.fromJson);
     } catch (e) {
       return ResponseModel.dataEmpty();
     }
   }
 
-  Future<ResponseModel> checkUserExist(
-      String user, String type) async {
+  Future<ResponseModel> checkUserExist(String user, String type) async {
     try {
       Map<String, String> data = {type: user};
       final response =
           await httpClient.post("${ServiceUrl.checkUserExist}/$type", data);
-      return ResponseModel.fromJson(response, UserAvailabilityResponse.fromJson);
+      return ResponseModel.fromJson(
+          response, UserAvailabilityResponse.fromJson);
     } catch (e) {
       return ResponseModel(data: const UserModel());
     }
@@ -334,7 +428,7 @@ class RemoteDataSource {
       'size': "10",
       'sort': "$sortBy,$sort",
     };
-    if(isPregnant == 0){
+    if (isPregnant == 0) {
       qParams = {
         'name': name,
         'isPregnant': 'false',
@@ -342,7 +436,7 @@ class RemoteDataSource {
         'size': "10",
         'sort': "$sortBy,$sort",
       };
-    } else if(isPregnant == 1){
+    } else if (isPregnant == 1) {
       qParams = {
         'name': name,
         'isPregnant': 'true',
@@ -504,6 +598,12 @@ class RemoteDataSource {
     final response = await httpClient.get(ServiceUrl.gameList);
 
     return ResponseModel.fromJson(response, GamesResponse.fromJson);
+  }
+
+  Future<ResponseModel<ChildListResponse>> fetchChildList() async {
+    final response = await httpClient.get(ServiceUrl.childs);
+
+    return ResponseModel.fromJson(response, ChildListResponse.fromJson);
   }
 
   Future<ResponseModel> changePassword(
@@ -697,8 +797,24 @@ class RemoteDataSource {
       'sort': "$sortBy,$sort",
     };
     final response =
-    await httpClient.get(ServiceUrl.listArticle, queryParameters: qParams);
+        await httpClient.get(ServiceUrl.listArticle, queryParameters: qParams);
     return ResponseModel.fromJson(response, ArticleModel.fromJson);
+  }
+
+  Future<ResponseModel<NotificationListModel>> fetchNotification(
+      {int? page}) async {
+    Map<String, String> qParams = {
+      'page': page.toString(),
+      'size': "10",
+    };
+    final response = await httpClient.get(ServiceUrl.notificationList,
+        queryParameters: qParams);
+    return ResponseModel.fromJson(response, NotificationListModel.fromJson);
+  }
+
+  Future<ResponseModel<NotificationTotalUnreadModel>> fetchNotificationTotalUnread() async {
+    final response = await httpClient.get(ServiceUrl.notificationTotalUnread);
+    return ResponseModel.fromJson(response, NotificationTotalUnreadModel.fromJson);
   }
 
   Future<List<ArticleModel>> searchArticle(
@@ -743,6 +859,34 @@ class RemoteDataSource {
     } catch (e) {
       print('error end chat ${e.toString()}');
       return 500;
+    }
+  }
+
+  Future<ResponseModel<UserVisitModel>> fetchUserVisit(
+      {int? page, int? size, String? sortBy, String? sort}) async {
+    Map<String, String> qParams = {
+      'page': page.toString(),
+      'size': size.toString(),
+      'sort': "$sortBy,$sort",
+    };
+    final response =
+        await httpClient.get(ServiceUrl.userVisit, queryParameters: qParams);
+    return ResponseModel.fromJson(response, UserVisitModel.fromJson);
+  }
+
+  Future<ResponseModel> submitNextVisit(
+      String id, String nextVisitDate, String status) async {
+    try {
+      Map<String, String> data = {
+        'id': id,
+        'status': status,
+        'next_visit_date': nextVisitDate,
+        'next_visit_time': '08:00:00',
+      };
+      final response = await httpClient.patch(ServiceUrl.userVisit, data);
+      return ResponseModel.fromJson(response, UserVisitModel.fromJson);
+    } catch (e) {
+      return ResponseModel.dataEmpty();
     }
   }
 }

@@ -34,7 +34,7 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
   }
 
   void onRefresh() async {
-    Future.delayed(const Duration(milliseconds: 1800), ()
+    Future.delayed(const Duration(milliseconds: 0), ()
     {
       Injector.resolve<HomePageBloc>().add(EventFetchEvent(
           widget.tipeAcara == StringConstant.typeEventJadwalUmum
