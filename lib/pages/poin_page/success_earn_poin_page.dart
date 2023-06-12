@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:PregnancyApp/common/widget/primary_btn.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -77,12 +79,15 @@ class SuccessEarnPoinPage extends StatelessWidget {
           );
         },
       ),
-      bottomSheet: BtnPrimary(
-        function: () {
-          Navigator.pop(context, "earned-point");
-          Navigator.pop(context, "earned-point");
-        },
-        text: "Kembali ke Beranda",
+      bottomSheet: Container(
+        margin: EdgeInsets.only(bottom: Platform.isIOS ? 16:0),
+        child: BtnPrimary(
+          function: () {
+            Navigator.pop(context, "earned-point");
+            Navigator.pop(context, "earned-point");
+          },
+          text: "Kembali ke Beranda",
+        ),
       ),
     );
   }
