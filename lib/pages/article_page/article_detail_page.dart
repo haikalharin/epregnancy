@@ -109,19 +109,6 @@ class ArticleDetailPage extends StatelessWidget {
                                     Icon(Icons.ios_share),
                                   ],
                                 ),
-                                Icon(Icons.ios_share),
-                              ],
-                            ),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(top: 10),
-                              child: Text(
-                                  article!.title?? '',
-                                  maxLines: 5,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                  overflow: TextOverflow.clip,
                               ),
                               Container(
                                   margin: EdgeInsets.only(top: 10),

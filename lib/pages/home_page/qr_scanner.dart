@@ -108,11 +108,13 @@ class _QrScannerState extends State<QrScanner> {
                         // Navigator.pop(context, code);
                       }
                     }),
-                Center(
-                  child: Container(
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      height: 300.w,
-                      child: Lottie.asset("assets/lottie/qr_scanner_lottie.json", repeat: true)),
+                Semantics(label: ,
+                  child: Center(
+                    child: Container(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        height: 300.w,
+                        child: Lottie.asset("assets/lottie/qr_scanner_lottie.json", repeat: true)),
+                  ),
                 ),
               ],
             ),

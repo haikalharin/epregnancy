@@ -2,60 +2,24 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:PregnancyApp/common/constants/bloc_providers.dart';
-import 'package:PregnancyApp/pages/audio_page/bloc/audio_bloc.dart';
-import 'package:PregnancyApp/pages/child_list_page/bloc/child_list_bloc.dart';
-import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
-import 'package:PregnancyApp/pages/consultation_page/bloc/comment_bloc.dart';
-import 'package:PregnancyApp/pages/disclaimer_page/bloc/disclaimer_page_bloc.dart';
-import 'package:PregnancyApp/pages/event_page/bloc/patient_select_bloc.dart';
-import 'package:PregnancyApp/pages/new_born_page/bloc/new_born_page_bloc.dart';
 import 'package:PregnancyApp/utils/countly_analytics.dart';
 import 'package:PregnancyApp/utils/epragnancy_color.dart';
 import 'package:PregnancyApp/utils/firebase_analytics.dart';
 import 'package:PregnancyApp/utils/firebase_service.dart';
-import 'package:audio_session/audio_session.dart';
 import 'package:countly_flutter/countly_flutter.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:root_detector/root_detector.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'app.dart';
 import 'flavors.dart';
 
-// void main() {
-//   F.appFlavor = Flavor.DEVELOPMENT;
-//   runApp(App());
-// }
 
 import 'dart:io';
 
-import 'package:PregnancyApp/pages/article_page/bloc/article_bloc.dart';
-import 'package:PregnancyApp/pages/change_password_page/bloc/change_password_bloc.dart';
-import 'package:PregnancyApp/pages/consultation_page/bloc/consultation_page_bloc.dart';
-import 'package:PregnancyApp/pages/chat_page/bloc/chat_bloc/chat_bloc.dart';
-import 'package:PregnancyApp/pages/event_page/bloc/event_page_bloc.dart';
-import 'package:PregnancyApp/pages/example_dashboard_chat_page/login_example_page/bloc/login_example_bloc.dart';
-import 'package:PregnancyApp/pages/forgot_password_page/bloc/forgot_password_page_bloc.dart';
-import 'package:PregnancyApp/pages/games_page/bloc/games_bloc.dart';
-import 'package:PregnancyApp/pages/home_page/bloc/home_page_bloc.dart';
-import 'package:PregnancyApp/pages/landing_page/bloc/landing_page_bloc.dart';
-import 'package:PregnancyApp/pages/location_select_page/bloc/hospital_bloc.dart';
-import 'package:PregnancyApp/pages/nakes_page/bloc/chat_pending_bloc.dart';
-import 'package:PregnancyApp/pages/otp_page/bloc/otp_page_bloc.dart';
-import 'package:PregnancyApp/pages/pin_checkin/bloc/pin_checkin_bloc.dart';
-import 'package:PregnancyApp/pages/poin_page/bloc/poin_bloc.dart';
-import 'package:PregnancyApp/pages/poin_page/bloc/point_history_bloc.dart';
-import 'package:PregnancyApp/pages/profile_page/bloc/profile_page_bloc.dart';
-import 'package:PregnancyApp/pages/signup_page/bloc/signup_bloc.dart';
-import 'package:PregnancyApp/pages/signup_questionnaire_page/bloc/signup_questionnaire_bloc.dart';
-import 'package:PregnancyApp/pages/splashscreen_page/bloc/splash_screen_bloc.dart';
 import 'package:PregnancyApp/pages/splashscreen_page/splashscreen_page.dart';
-import 'package:PregnancyApp/pages/survey_page/bloc/survey_page_bloc.dart';
 import 'package:PregnancyApp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,10 +28,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'common/configurations/configurations.dart';
-import 'common/injector/injector.dart';
 import 'common/injector/injector_config.dart';
 import 'env.dart' as config;
-import 'pages/login_page/bloc/login_bloc.dart';
 import 'package:flutter_alice/alice.dart';
 import 'package:secure_content/secure_content.dart';
 import 'package:flutter_portal/flutter_portal.dart';
