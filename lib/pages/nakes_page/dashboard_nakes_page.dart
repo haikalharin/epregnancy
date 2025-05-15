@@ -302,7 +302,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                               fontWeight: FontWeight.w400),
                                         ),
                                       ),
-                                      QrImage(
+                                      QrImageView(
                                         data: state.user?.qrString ?? '',
                                         version: QrVersions.auto,
                                         size: 150.w,
@@ -629,8 +629,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                                   ),
                                 ),
                               ],
-                              overflow: Overflow.visible,
-                            ),
+                                clipBehavior: Clip.none                            ),
                           )
                         : Container(),
 
@@ -955,33 +954,12 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
           width: MediaQuery.of(context).size.width / 2,
           height: 50,
           child: ElevatedButton(
-            color: EpregnancyColors.primer,
-            child: Padding(
-                padding: EdgeInsets.zero,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 10.h),
-                      child: Text(
-                        "+",
-                        style: TextStyle(color: Colors.white, fontSize: 40.sp),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.h),
-                      child: Text(
-                        "Tambah Jadwal",
-                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                      ),
-                    ),
-                  ],
-                )),
-            elevation: 8,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: EpregnancyColors.primer,
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             onPressed: () async {
               Navigator.of(context)
@@ -995,9 +973,32 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
                     isMidwife: true));
               });
             },
+            child: Padding(
+              padding: EdgeInsets.zero,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10.h),
+                    child: Text(
+                      "+",
+                      style: TextStyle(color: Colors.white, fontSize: 40.sp),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Padding(
+                    padding: EdgeInsets.only(top: 3.h),
+                    child: Text(
+                      "Tambah Jadwal",
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
+
     );
   }
 }

@@ -1175,29 +1175,30 @@ class _MembersPageState extends State<MembersPage>
                                   margin: EdgeInsets.only(top: 10, bottom: 10),
                                   width: MediaQuery.of(context).size.width - 40,
                                   height: 50,
-                                  child: ElevatedButton(
-                                    color: (filter1 ||
-                                            filter2 ||
-                                            filter3 ||
-                                            filter4 ||
-                                            filter5 ||
-                                            filter6 ||
-                                            condition1 ||
-                                            condition2)
-                                        ? EpregnancyColors.primer
-                                        : EpregnancyColors.primerSoft2,
-                                    child: Padding(
-                                      padding: EdgeInsets.zero,
-                                      child: Text(
-                                        "Terapkan",
-                                        style: TextStyle(
-                                            fontSize: 16, color: Colors.white),
+                                  child:ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: (filter1 ||
+                                          filter2 ||
+                                          filter3 ||
+                                          filter4 ||
+                                          filter5 ||
+                                          filter6 ||
+                                          condition1 ||
+                                          condition2)
+                                          ? EpregnancyColors.primer
+                                          : EpregnancyColors.primerSoft2,
+                                      elevation: 8,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(7),
                                       ),
+                                      padding: EdgeInsets.zero,
                                     ),
-                                    elevation: 8,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(7)),
+                                    child: Text(
+                                      "Terapkan",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                     onPressed: () async {
                                       int isPregnant = 2;
@@ -1237,15 +1238,20 @@ class _MembersPageState extends State<MembersPage>
                                           sort = SortEnum.desc;
                                         }
                                         Injector.resolve<HospitalBloc>().add(
-                                            FetchMembersEvent("", 0,
-                                                sortBy: sortBy,
-                                                isPregnant: isPregnant,
-                                                sort: sort));
+                                          FetchMembersEvent(
+                                            "",
+                                            0,
+                                            sortBy: sortBy,
+                                            isPregnant: isPregnant,
+                                            sort: sort,
+                                          ),
+                                        );
                                         Navigator.pop(context);
                                         keyboardFocusNode.unfocus();
                                       }
                                     },
                                   ),
+
                                 ),
                               ),
                             ],

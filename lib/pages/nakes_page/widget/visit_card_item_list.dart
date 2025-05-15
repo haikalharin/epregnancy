@@ -175,12 +175,12 @@ class VisitCardItemList extends StatelessWidget {
                         },
                         child: Text("Konfirmasi"),
                         style: ElevatedButton.styleFrom(
-                          primary: EpregnancyColors.primer,
-                          onPrimary: Colors.white,
+                          backgroundColor: EpregnancyColors.primer, // was primary
+                          foregroundColor: Colors.white,             // was onPrimary
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                        ),
+                        )
                       )
                     : const SizedBox.shrink()
               ],

@@ -162,7 +162,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                                 const BoxDecoration(shape: BoxShape.circle),
                             child: state.user?.imageUrl != null
                                 ? Stack(
-                                    overflow: Overflow.visible,
+                              clipBehavior: Clip.none,
                                     children: [
                                       Container(
                                         // width: 62,
@@ -209,7 +209,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                                     ],
                                   )
                                 : Stack(
-                                    overflow: Overflow.visible,
+                              clipBehavior: Clip.none,
                                     children: [
                                       Container(
                                         // width: 62,

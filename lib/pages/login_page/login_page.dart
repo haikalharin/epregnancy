@@ -124,43 +124,34 @@ class _LoginPageState extends State<LoginPage> {
                                     height: 46.w,
                                     width: MediaQuery.of(context).size.width,
                                     child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: EpregnancyColors.blueDark,
+                                        disabledBackgroundColor: Colors.grey,
                                         shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(4.w)),
-                                        color: EpregnancyColors.blueDark,
-                                        disabledColor: Colors.grey,
-                                        child: Text('Oke',
-                                            style: TextStyle(
-                                                fontFamily: "bold",
-                                                fontSize: 13.sp,
-                                                color: Colors.white)),
-                                        onPressed: () {
+                                          borderRadius: BorderRadius.circular(4.w),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Oke',
+                                        style: TextStyle(
+                                          fontFamily: "bold",
+                                          fontSize: 13.sp,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        if (F.appFlavor == Flavor.PRODUCTION) {
+                                          navigatorKeyProd.currentState?.pop();
+                                        } else if (F.appFlavor == Flavor.DEVELOPMENT) {
+                                          navigatorKeyDev.currentState?.pop();
+                                        } else if (F.appFlavor == Flavor.STAGING) {
+                                          navigatorKeyStaging.currentState?.pop();
+                                        } else {
+                                          navigatorKey.currentState?.pop();
+                                        }
+                                      },
+                                    )
 
-                                          if (F.appFlavor ==
-                                              Flavor.PRODUCTION) {
-                                            aliceProd
-                                                .getNavigatorKey()
-                                                ?.currentState
-                                                ?.pop();
-                                          } else if (F.appFlavor ==
-                                              Flavor.DEVELOPMENT) {
-                                            aliceDev
-                                                .getNavigatorKey()
-                                                ?.currentState
-                                                ?.pop();
-                                          }else if (F.appFlavor ==
-                                              Flavor.STAGING) {
-                                            aliceStaging
-                                                .getNavigatorKey()
-                                                ?.currentState
-                                                ?.pop();
-                                          } else{
-                                            aliceMain
-                                                .getNavigatorKey()
-                                                ?.currentState
-                                                ?.pop();
-                                          }
-                                        }),
                                   )),
                               onTap: () {
                                 Navigator.pop(context);
@@ -380,12 +371,13 @@ class _LoginPageState extends State<LoginPage> {
                                     Injector.resolve<LoginBloc>()
                                         .add(LoginSubmitted());
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: EpregnancyColors.primer,
+                                  style:ElevatedButton.styleFrom(
+                                    backgroundColor: EpregnancyColors.primer,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                   ),
+
                                 )),
                             // SizedBox(height: 10),
                             // Container(
@@ -429,13 +421,16 @@ class _LoginPageState extends State<LoginPage> {
                                   style: ElevatedButton.styleFrom(
                                     elevation: 0,
                                     side: BorderSide(
-                                        width: 1.w,
-                                        color: EpregnancyColors.primer),
-                                    primary: EpregnancyColors.white,
+                                      width: 1.w,
+                                      color: EpregnancyColors.primer,
+                                    ),
+                                    backgroundColor: EpregnancyColors.white,
+                                    foregroundColor: EpregnancyColors.primer, // untuk teks dan icon
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                   ),
+
                                 )),
                             // _PasswordTextField(),
                           ],

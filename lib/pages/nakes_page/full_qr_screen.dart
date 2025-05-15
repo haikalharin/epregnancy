@@ -22,7 +22,7 @@ class FullQrScreen extends StatelessWidget {
         child: Hero(
           tag: 'qr-hero',
           child: Center(
-            child: QrImage(
+            child: QrImageView(
               data: value,
               version: QrVersions.auto,
               size: 200.w,
