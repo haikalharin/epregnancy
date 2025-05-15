@@ -30,6 +30,12 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      case TargetPlatform.fuchsia:
+        // TODO: Handle this case.
+      case TargetPlatform.linux:
+        // TODO: Handle this case.
+      case TargetPlatform.windows:
+        // TODO: Handle this case.
     }
 
     throw UnsupportedError(

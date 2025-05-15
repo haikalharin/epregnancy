@@ -68,14 +68,13 @@ import 'common/injector/injector.dart';
 import 'common/injector/injector_config.dart';
 import 'env.dart' as config;
 import 'pages/login_page/bloc/login_bloc.dart';
-import 'package:flutter_alice/alice.dart';
 import 'package:secure_content/secure_content.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:provider/provider.dart';
 
 // void main() => runApp(MyApp());
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKeyStaging = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,7 +99,7 @@ Future<void> main() async {
 
 }
 
-final Alice aliceStaging = Alice(showNotification: true, darkTheme: true);
+// final Alice aliceStaging = Alice(showNotification: true, darkTheme: true);
 
 
 class MyApp extends StatefulWidget {
@@ -186,7 +185,7 @@ class _MyAppState extends State<MyApp> {
                             void Function() onDispose) {
                           return MaterialApp(
                             debugShowCheckedModeBanner: false,
-                            navigatorKey: aliceStaging.getNavigatorKey(),
+                            navigatorKey: navigatorKeyStaging,
                             title: 'Komunitaz',
                             home: SplashscreenPage(),
                             onGenerateRoute: Routes.generateRoute,

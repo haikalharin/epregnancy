@@ -101,12 +101,13 @@ class _OtpPageState extends State<EmailVerificationPage> {
                           },
                           child: Text("Ke aplikasi email"),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            onPrimary: Colors.white,
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
+
                         ),
                       ),
                       Container(
@@ -120,12 +121,13 @@ class _OtpPageState extends State<EmailVerificationPage> {
                           },
                           child: Text("Lewati sekarang"),
                           style: ElevatedButton.styleFrom(
-                            primary: HexColor("#F1F6FB"),
-                            onPrimary: Colors.black,
+                            backgroundColor: HexColor("#F1F6FB"),
+                            foregroundColor: Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
+
                         ),
                       ),
                       SizedBox(height: 20),

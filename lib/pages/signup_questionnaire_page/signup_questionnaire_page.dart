@@ -79,7 +79,7 @@ class _SignUpQuestionnairePage extends State<SignUpQuestionnairePage> {
               var message = state.errorMessage ?? '';
               final snackBar =
                   SnackBar(content: Text(message), backgroundColor: Colors.red);
-              Scaffold.of(context).showSnackBar(snackBar);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else if (state.submitStatus == FormzStatus.submissionSuccess) {
               // todo login page
               print('username : ${state.userModel?.username}');

@@ -72,7 +72,7 @@ class _ConfirmVisitState extends State<ConfirmVisit> {
               content: Text(
                   state.errorMessage != null ? state.errorMessage! : 'failed'),
               backgroundColor: Colors.red);
-          Scaffold.of(context).showSnackBar(snackBar);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       },
       child: BlocBuilder<HomePageBloc, HomePageState>(

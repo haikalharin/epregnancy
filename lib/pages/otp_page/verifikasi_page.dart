@@ -119,7 +119,7 @@ class _VerifikasiPageState extends State<VerifikasiPage> {
                             Container(
                               width: MediaQuery.of(context).size.width,
                               height: 50,
-                              child: RaisedButton(
+                              child: ElevatedButton(
                                 color:
                                     EpregnancyColors
                                     .primer,
@@ -150,7 +150,7 @@ class _VerifikasiPageState extends State<VerifikasiPage> {
                             Container(
                               width: MediaQuery.of(context).size.width,
                               height: 50,
-                              child: RaisedButton(
+                              child: ElevatedButton(
                                 color:
                                 EpregnancyColors
                                     .greyBlue,

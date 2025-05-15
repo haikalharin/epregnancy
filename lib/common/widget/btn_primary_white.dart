@@ -20,10 +20,10 @@ class BtnPrimaryWhite extends StatelessWidget {
           padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
           child: Text(text ?? "", style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500, color: EpregnancyColors.primer),),
         ),
-        style: ElevatedButton.styleFrom(
-          primary: Colors.white,
-          // onSurface: EpregnancyColors.primer.withOpacity(0.25),
-          onPrimary: Colors.white,
+        style:ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          // onSurface: EpregnancyColors.primer.withOpacity(0.25), // masih bisa dipakai jika perlu
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),

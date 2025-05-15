@@ -51,15 +51,20 @@ class _ListContactExampleState extends State<ListContactExample> {
               textAlignVertical: TextAlignVertical.bottom,
             ),
             SizedBox(height: 16),
-            RaisedButton(
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+              ),
               child: Text('Add'),
-              color: Colors.blue,
-              textColor: Colors.white,
               onPressed: () => Navigator.pop(context, 'add'),
             ),
-            OutlineButton(
+
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.blue,
+              ),
               child: Text('Close'),
-              textColor: Colors.blue,
               onPressed: () => Navigator.pop(context),
             ),
           ],

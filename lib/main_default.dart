@@ -68,7 +68,6 @@ import 'env.dart' as config;
 import 'pages/login_page/bloc/login_bloc.dart';
 import 'pages/login_page/login_page.dart';
 import 'utils/simple_bloc_observer.dart';
-import 'package:flutter_alice/alice.dart';
 
 // void main() => runApp(MyApp());
 SharedPreferences? sharedPreferences;
@@ -93,9 +92,9 @@ Future<void> main() async {
 
 
 
-final Alice aliceMain = Alice(
-    showNotification: false,
-    darkTheme: true);
+// final Alice aliceMain = Alice(
+//     showNotification: false,
+//     darkTheme: true);
 
 class MyApp extends StatefulWidget {
   @override
@@ -129,7 +128,7 @@ class _MyAppState extends State<MyApp> {
                   child: OverlaySupport.global(
                     child: MaterialApp(
                       debugShowCheckedModeBanner: false,
-                      navigatorKey: aliceMain.getNavigatorKey(),
+                      navigatorKey: navigatorKey,
                       title: 'Komunitaz',
                       home: SplashscreenPage(),
                       onGenerateRoute: Routes.generateRoute,

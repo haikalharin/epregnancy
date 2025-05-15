@@ -45,7 +45,7 @@ class _GrowthTrackerFormState extends State<GrowthTrackerForm> {
           if(state.submitStatus == FormzStatus.submissionSuccess){
             const snackBar = SnackBar(
                 content: Text("Pertumbuhan Anak Berhasil Ditambah!", style: TextStyle(color: Colors.white),), backgroundColor: EpregnancyColors.primer);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Injector.resolve<GrowthBloc>().add(FetchGrowthEvent(widget.babyId));
             Injector.resolve<HomePageBloc>().add(const HomeFetchBabyChildsEvent());
             Injector.resolve<HomePageBloc>().add(HomeFetchChildForDashboardEvent(widget.babyId, true));
@@ -53,7 +53,7 @@ class _GrowthTrackerFormState extends State<GrowthTrackerForm> {
           } else if (state.submitStatus == FormzStatus.submissionFailure){
             const snackBar = SnackBar(
                 content: Text("Terjadi Kesalahan, Silahkan Coba Lagi!", style: TextStyle(color: Colors.white),), backgroundColor: Colors.red);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         },
         child: Container(
@@ -80,8 +80,8 @@ class _GrowthTrackerFormState extends State<GrowthTrackerForm> {
                     },
                   ),
                 ),
-                child: DateTimeFormField(
-                  dateTextStyle: TextStyle(
+                child:DateTimeFormField(
+                  dateTextStyle: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w700,
                   ),
@@ -92,44 +92,34 @@ class _GrowthTrackerFormState extends State<GrowthTrackerForm> {
                   lastDate: DateTime.now(),
                   mode: DateTimeFieldPickerMode.date,
                   decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Colors.black45),
-                      errorStyle: TextStyle(color: Colors.redAccent),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color:  EpregnancyColors.primer, width: 2.w)
+                    hintStyle: const TextStyle(color: Colors.black45),
+                    errorStyle: const TextStyle(color: Colors.redAccent),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: EpregnancyColors.primer, width: 2.w),
+                      borderRadius: BorderRadius.circular(4.w),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4.w),
+                    ),
+                    suffixIcon: const Icon(Icons.event_note),
+                    hintText: 'DD / MM / YYYY',
+                    label: const Text(
+                      "Tanggal cek",
+                      style: TextStyle(
+                        color: EpregnancyColors.primer,
+                        fontWeight: FontWeight.w700,
                       ),
-                      // disabledBorder: OutlineInputBorder(
-                      //   borderSide: BorderSide(
-                      //     color: EpregnancyColors.greyDivider, width: 1.w
-                      //   )
-                      // ),
-                      border: OutlineInputBorder(
-                        // borderSide: BorderSide(color: EpregnancyColors.primer, width: 1.w),
-                        borderRadius: BorderRadius.circular(4.w),
-                      ),
-                      suffixIcon: Icon(Icons.event_note),
-                      hintText: 'DD / MM / YYYY',
-                      label: Text("Tanggal cek"),
-                      labelStyle: TextStyle(color:EpregnancyColors.primer, fontWeight: FontWeight.w700)
-                    // labelStyle: TextStyle(
-                    //   color: Colors.black,
-                    //   fontWeight: FontWeight.bold,
-                    // ),
-                    // errorText: state.date.invalid
-                    //     ? 'Mohon lengkapi Data'
-                    //     : null,
+                    ),
                   ),
-                  // firstDate: DateTime.now().add(const Duration(days: 10)),
-                  // lastDate: DateTime.now().add(const Duration(days: 40)),
-                  // initialDate: DateTime.now().add(const Duration(days: 20)),
-                  onDateSelected: (DateTime value) {
-
-                    setState(() {
-                      _checkDate = DateFormat('yyyy-MM-dd').format(value).toString();
-                    });
-                    // Injector.resolve<SignUpQuestionnaireBloc>()
-                    //     .add(SignupDateChanged(dateTime));
+                  onChanged: (DateTime? value) {
+                    if (value != null) {
+                      setState(() {
+                        _checkDate = DateFormat('yyyy-MM-dd').format(value);
+                      });
+                    }
                   },
                 ),
+
               ),
               SizedBox(
                 height: 16.h,
@@ -216,14 +206,14 @@ class _GrowthTrackerFormState extends State<GrowthTrackerForm> {
               ));
             },
             style: ElevatedButton.styleFrom(
-              primary: EpregnancyColors.primer,
-              onSurface: EpregnancyColors.primer
-                  .withOpacity(0.25),
-              onPrimary: Colors.white,
+              backgroundColor: EpregnancyColors.primer,
+              disabledBackgroundColor: EpregnancyColors.primer.withOpacity(0.25),
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
             ),
+
           )),
     );
   }

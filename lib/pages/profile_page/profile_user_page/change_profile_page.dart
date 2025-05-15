@@ -61,7 +61,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
   }
 
   void pickAndCropImageCamera() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
       imageQuality: 25,
     );
@@ -83,7 +83,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
   }
 
   void pickAndCropImageGallery() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );

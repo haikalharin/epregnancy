@@ -151,11 +151,11 @@ class ProfileNakesPage extends StatelessWidget {
           title: Text('Konfirmasi'),
           content: Text('Apakah Anda Yakin Ingin Keluar?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: Text('Tidak'),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () =>  Navigator.of(context).pushNamedAndRemoveUntil(
                   RouteName.login, (Route<dynamic> route) => false, arguments: {'token_expired': false, 'is_from_register': false}),
               child: Text('Ya'),

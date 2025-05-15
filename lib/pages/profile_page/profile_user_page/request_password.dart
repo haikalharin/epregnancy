@@ -44,7 +44,7 @@ class _RequestPasswordPageState extends State<RequestPasswordPage> {
                         ? state.errorMessage!
                         : 'Terjadi Kesalahan, Silahkan Coba Lagi'),
                     backgroundColor: Colors.red);
-                Scaffold.of(context).showSnackBar(snackBar);
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
               } else if (state.submitStatus == FormzStatus.submissionSuccess) {
                 Navigator.push(
                     context,

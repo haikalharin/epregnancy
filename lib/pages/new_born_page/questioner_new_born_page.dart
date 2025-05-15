@@ -102,7 +102,7 @@ class _QuestionerNewBornPageState extends State<QuestionerNewBornPage> {
           if (state.submitStatus == FormzStatus.submissionFailure) {
             const snackBar =
                 SnackBar(content: Text("Failed"), backgroundColor: Colors.red);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess &&
               state.type == 'submit') {
             // if (state.choice == 1) {

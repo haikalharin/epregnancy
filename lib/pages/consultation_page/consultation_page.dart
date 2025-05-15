@@ -112,13 +112,13 @@ class _ConsultationPageState extends State<ConsultationPage> {
             if (state.submitStatus == FormzStatus.submissionFailure) {
               SnackBar snackBar = SnackBar(
                   content: Text("Gagal posting ${state.errorMessage}"), backgroundColor: Colors.red);
-              Scaffold.of(context).showSnackBar(snackBar);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else if (state.submitStatus == FormzStatus.submissionSuccess) {
               if (state.type == 'update' || state.type == 'delete-post-success') {
                 const snackBar = SnackBar(
                     content: Text("Berhasil"),
                     backgroundColor: EpregnancyColors.primer);
-                Scaffold.of(context).showSnackBar(snackBar);
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 await Future.delayed(const Duration(seconds: 1));
                 onRefresh();
                 FocusScope.of(context).requestFocus(FocusNode());
@@ -182,66 +182,49 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                           borderRadius:
                                           BorderRadius.circular(15.0),
                                         ),
-                                        child: FlatButton(
-                                          minWidth: MediaQuery.of(context)
-                                              .size
-                                              .width /
-                                              4,
-                                          padding: EdgeInsets.only(
-                                              top: 20,
-                                              bottom: 20,
-                                              right: 10,
-                                              left: 10),
-                                          onPressed: () async {
-                                            // new method for hubungi profesional
-                                            if(_hospitalModel?.name == ''){
-                                              Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                                if(value != null){
-                                                  setState(() {
-                                                    _hospitalModel = value as HospitalModel?;
-                                                  });
-                                                }
-                                              });
-                                            } else {
-                                              Navigator.push(
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context).size.width / 4,
+                                          child: TextButton(
+                                            style: TextButton.styleFrom(
+                                              padding: const EdgeInsets.only(top: 20, bottom: 20, right: 10, left: 10),
+                                            ),
+                                            onPressed: () async {
+                                              if (_hospitalModel?.name == '') {
+                                                Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                                  if (value != null) {
+                                                    setState(() {
+                                                      _hospitalModel = value as HospitalModel?;
+                                                    });
+                                                  }
+                                                });
+                                              } else {
+                                                Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          InitialConsultationLoadPage(userId: _userId??'',)));
-                                            }
-                                          },
-                                          child: Container(
+                                                    builder: (context) => InitialConsultationLoadPage(userId: _userId ?? ''),
+                                                  ),
+                                                );
+                                              }
+                                            },
                                             child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
+                                                const SizedBox(width: 5),
                                                 Image.asset(
-                                                    'assets/icon-hubungi-profesional.png',
-                                                    height: 25),
-                                                SizedBox(
-                                                  width: 10,
+                                                  'assets/icon-hubungi-profesional.png',
+                                                  height: 25,
                                                 ),
-                                                widget.role == "PATIENT"
-                                                    ? Text(
-                                                  "Tanya Bidan",
-                                                  style: TextStyle(
-                                                      fontSize: 12),
-                                                )
-                                                    : Text(
-                                                  "Cek Diskusi",
-                                                  style: TextStyle(
-                                                      fontSize: 12),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  widget.role == "PATIENT" ? "Tanya Bidan" : "Cek Diskusi",
+                                                  style: const TextStyle(fontSize: 12),
                                                 ),
-                                                SizedBox(
-                                                  width: 5,
-                                                )
+                                                const SizedBox(width: 5),
                                               ],
                                             ),
                                           ),
-                                        ),
+                                        )
+
                                       ),
                                     ),
                                   ],
@@ -376,7 +359,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                           //               10.0),
                                           //       color:
                                           //           EpregnancyColors.primer),
-                                          //   child: FlatButton(
+                                          //   child: TextButton(
                                           //     minWidth: MediaQuery.of(context)
                                           //             .size
                                           //             .width /
@@ -490,66 +473,49 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                         borderRadius:
                                         BorderRadius.circular(15.0),
                                       ),
-                                      child: FlatButton(
-                                        minWidth: MediaQuery.of(context)
-                                            .size
-                                            .width /
-                                            4,
-                                        padding: EdgeInsets.only(
-                                            top: 20,
-                                            bottom: 20,
-                                            right: 10,
-                                            left: 10),
-                                        onPressed: () async {
-                                          // new method for hubungi profesional
-                                          if(_hospitalModel?.name == ''){
-                                            Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
-                                              if(value != null){
-                                                setState(() {
-                                                  _hospitalModel = value as HospitalModel?;
-                                                });
-                                              }
-                                            });
-                                          } else {
-                                            Navigator.push(
+                                      child:SizedBox(
+                                        width: MediaQuery.of(context).size.width / 4,
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                            padding: const EdgeInsets.only(top: 20, bottom: 20, right: 10, left: 10),
+                                          ),
+                                          onPressed: () async {
+                                            if (_hospitalModel?.name == '') {
+                                              Navigator.pushNamed(context, RouteName.locationSelect).then((value) {
+                                                if (value != null) {
+                                                  setState(() {
+                                                    _hospitalModel = value as HospitalModel?;
+                                                  });
+                                                }
+                                              });
+                                            } else {
+                                              Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        InitialConsultationLoadPage(userId: _userId??'',)));
-                                          }
-                                        },
-                                        child: Container(
+                                                  builder: (context) => InitialConsultationLoadPage(userId: _userId ?? ''),
+                                                ),
+                                              );
+                                            }
+                                          },
                                           child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              SizedBox(
-                                                width: 5,
-                                              ),
+                                              const SizedBox(width: 5),
                                               Image.asset(
-                                                  'assets/icon-hubungi-profesional.png',
-                                                  height: 25),
-                                              SizedBox(
-                                                width: 10,
+                                                'assets/icon-hubungi-profesional.png',
+                                                height: 25,
                                               ),
-                                              widget.role == "PATIENT"
-                                                  ? Text(
-                                                "Tanya Bidan",
-                                                style: TextStyle(
-                                                    fontSize: 12),
-                                              )
-                                                  : Text(
-                                                "Cek Diskusi",
-                                                style: TextStyle(
-                                                    fontSize: 12),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                widget.role == "PATIENT" ? "Tanya Bidan" : "Cek Diskusi",
+                                                style: const TextStyle(fontSize: 12),
                                               ),
-                                              SizedBox(
-                                                width: 5,
-                                              )
+                                              const SizedBox(width: 5),
                                             ],
                                           ),
                                         ),
-                                      ),
+                                      )
+
                                     ),
                                   ),
                                 ],
@@ -683,7 +649,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
                                         //               10.0),
                                         //       color:
                                         //           EpregnancyColors.primer),
-                                        //   child: FlatButton(
+                                        //   child: TextButton(
                                         //     minWidth: MediaQuery.of(context)
                                         //             .size
                                         //             .width /
@@ -740,7 +706,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
   }
 
   void pickAndCropImageGallery() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );
@@ -772,7 +738,7 @@ class _ConsultationPageState extends State<ConsultationPage> {
   }
 
   void pickAndCropImageCamera() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
       imageQuality: 25,
     );
@@ -878,11 +844,11 @@ class _Loading extends StatelessWidget {
 }
 
 showAlertDialog(BuildContext context) {
-  Widget cancelButton = FlatButton(
+  Widget cancelButton = TextButton(
     child: Text("Batal"),
     onPressed: () => Navigator.of(context).pop(false),
   );
-  Widget continueButton = FlatButton(
+  Widget continueButton = TextButton(
     child: Text("Lanjutkan"),
     onPressed: () {
       Navigator.of(context).pop(true);

@@ -260,7 +260,7 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
           title: Text('Konfirmasi'),
           content: Text('Apakah Anda Yakin Ingin menghapus ?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Injector.resolve<HomePageBloc>()
                     .add(HomeEventDeleteSchedule(id));
@@ -268,7 +268,7 @@ class _ListEventPersonalWidgetState extends State<ListEventPersonalWidget> {
               },
               child: Text('Ya'),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               child: Text('Tidak'),
             ),

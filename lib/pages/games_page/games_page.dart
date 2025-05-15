@@ -98,33 +98,35 @@ class _GamesPageState extends State<GamesPage> {
 }
 
 showAlertDialog(BuildContext context, GamesState state, int index) {
-  Widget cancelButton = FlatButton(
-    minWidth: 200.w,
-    height: 40.h,
-    shape: RoundedRectangleBorder(
+  Widget cancelButton = TextButton(
+    style: TextButton.styleFrom(
+      minimumSize: Size(200.w, 40.h),
+      shape: RoundedRectangleBorder(
         side: BorderSide(
-            color: EpregnancyColors.primer, width: 1, style: BorderStyle.solid),
-        borderRadius: BorderRadius.circular(8.w)),
-    child: Container( child: Text("Kembali", textAlign: TextAlign.center,)),
+          color: EpregnancyColors.primer,
+          width: 1,
+          style: BorderStyle.solid,
+        ),
+        borderRadius: BorderRadius.circular(8.w),
+      ),
+    ),
     onPressed: () {
       Navigator.of(context).pop(true);
     },
+    child: Text(
+      "Kembali",
+      textAlign: TextAlign.center,
+    ),
   );
-  Widget continueButton = FlatButton(
-    height: 40.h,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.w)),
-    color: EpregnancyColors.primer,
-    textColor: EpregnancyColors.white,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-            child: Center(
-                child: Text(
-          "Lanjut Bermain",
-          textAlign: TextAlign.center,
-        ))),
-      ],
+
+  Widget continueButton = TextButton(
+    style: TextButton.styleFrom(
+      minimumSize: Size(double.infinity, 40.h), // Lebar penuh dan tinggi 40.h
+      backgroundColor: EpregnancyColors.primer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.w),
+      ),
+      foregroundColor: EpregnancyColors.white, // textColor sekarang pakai foregroundColor
     ),
     onPressed: () async {
       Navigator.of(context).pop(true);
@@ -133,7 +135,21 @@ showAlertDialog(BuildContext context, GamesState state, int index) {
       Injector.resolve<GamesBloc>()
           .add(PlayGameEvent(state.gamesResponse?[index].id));
     },
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Center(
+            child: Text(
+              "Lanjut Bermain",
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
+    ),
   );
+
   AlertDialog alert = AlertDialog(
     title: Column(
       children: [

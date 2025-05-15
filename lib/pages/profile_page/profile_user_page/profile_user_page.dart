@@ -57,7 +57,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
             const snackBar = SnackBar(
                 content: Text("Berhasil Ubah Foto"),
                 backgroundColor: EpregnancyColors.primer);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
             await Future.delayed(const Duration(seconds: 1));
           }
         }
@@ -329,7 +329,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                                                     backgroundColor:
                                                         EpregnancyColors
                                                             .primer);
-                                                Scaffold.of(context)
+                                              ScaffoldMessenger.of(context)
                                                     .showSnackBar(snackBar);
                                               });
                                             },
@@ -595,11 +595,11 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
           title: Text('Konfirmasi'),
           content: Text('Apakah Anda Yakin Ingin Keluar?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: Text('Tidak'),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Injector.resolve<SurveyPageBloc>()
                     .add(const SurveyDisposeEvent());
@@ -619,7 +619,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
   }
 
   void pickAndCropImageGallery() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );
@@ -641,7 +641,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
   }
 
   void pickAndCropImageCamera() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
       imageQuality: 25,
     );

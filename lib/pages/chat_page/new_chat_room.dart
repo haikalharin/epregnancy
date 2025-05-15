@@ -123,7 +123,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   }
 
   void pickAndCropImageGallery() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );
@@ -165,7 +165,7 @@ class _NewChatRoomState extends State<NewChatRoom> {
   }
 
   void pickAndCropImageCamera() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
       imageQuality: 25,
     );
@@ -326,61 +326,53 @@ class _NewChatRoomState extends State<NewChatRoom> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Expanded(
-                            child: Scrollbar(
-                              isAlwaysShown: true,
+                            child:Scrollbar(
+                              controller: _scrollController,
+                              thumbVisibility: true,  // ganti isAlwaysShown jadi thumbVisibility
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: ListView(
+                                  controller: _scrollController,
                                   children: [
                                     Center(
                                       child: Text(
-                                        "Boleh dan tidak boleh dilakukan pada fitur \"Tanya Bidan\"",
+                                        'Boleh dan tidak boleh dilakukan pada fitur "Tanya Bidan"',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: EpregnancyColors.blueDark,
-                                            fontSize: 14.sp,
-                                            fontFamily: "bold"),
+                                          color: EpregnancyColors.blueDark,
+                                          fontSize: 14.sp,
+                                          fontFamily: "bold",
+                                        ),
                                       ),
                                     ),
                                     widget.isNakes == true
-                                        ? SizedBox(
-                                            height: 0.h,
-                                          )
-                                        : SizedBox(
-                                            height: 10.h,
-                                          ),
+                                        ? SizedBox(height: 0.h)
+                                        : SizedBox(height: 10.h),
                                     widget.isNakes == true
                                         ? Container()
                                         : Center(
-                                            child: Text(
-                                              widget.isNakes == true
-                                                  ? ""
-                                                  : "Disclaimer!",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color:
-                                                      EpregnancyColors.blueDark,
-                                                  fontSize: 12.sp,
-                                                  fontFamily: "bold"),
-                                            ),
-                                          ),
+                                      child: Text(
+                                        widget.isNakes == true ? "" : "Disclaimer!",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: EpregnancyColors.blueDark,
+                                          fontSize: 12.sp,
+                                          fontFamily: "bold",
+                                        ),
+                                      ),
+                                    ),
                                     widget.isNakes == true
                                         ? const SizedBox.shrink()
                                         : Padding(
-                                            padding: EdgeInsets.only(top: 4.w),
-                                            child: Html(
-                                                data: remoteConfigGetString(
-                                                    StringConstant
-                                                        .doesAndDontsHeaderUser),
-                                                style: {
-                                                  "body": Style(
-                                                    fontSize: FontSize(10.0),
-                                                  ),
-                                                }),
-                                          ),
-                                    SizedBox(
-                                      height: 10.h,
+                                      padding: EdgeInsets.only(top: 4.w),
+                                      child: Html(
+                                        data: remoteConfigGetString(StringConstant.doesAndDontsHeaderUser),
+                                        style: {
+                                          "body": Style(fontSize: FontSize(10.0)),
+                                        },
+                                      ),
                                     ),
+                                    SizedBox(height: 10.h),
                                     Center(
                                       child: Text(
                                         widget.isNakes == true
@@ -388,39 +380,32 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                             : "Tidak perlu bingung Moms, ini yang boleh dilakukan!",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: EpregnancyColors.blueDark,
-                                            fontSize: 14.sp,
-                                            fontFamily: "bold"),
+                                          color: EpregnancyColors.blueDark,
+                                          fontSize: 14.sp,
+                                          fontFamily: "bold",
+                                        ),
                                       ),
                                     ),
                                     widget.isNakes == true
                                         ? Padding(
-                                            padding: EdgeInsets.only(top: 4.w),
-                                            child: Html(
-                                                data: remoteConfigGetString(
-                                                    StringConstant
-                                                        .doesBodyMidwife),
-                                                style: {
-                                                  "body": Style(
-                                                    fontSize: FontSize(10.0),
-                                                  ),
-                                                }),
-                                          )
+                                      padding: EdgeInsets.only(top: 4.w),
+                                      child: Html(
+                                        data: remoteConfigGetString(StringConstant.doesBodyMidwife),
+                                        style: {
+                                          "body": Style(fontSize: FontSize(10.0)),
+                                        },
+                                      ),
+                                    )
                                         : Padding(
-                                            padding: EdgeInsets.only(top: 4.w),
-                                            child: Html(
-                                                data: remoteConfigGetString(
-                                                    StringConstant
-                                                        .doesBodyUser),
-                                                style: {
-                                                  "body": Style(
-                                                    fontSize: FontSize(10.0),
-                                                  ),
-                                                }),
-                                          ),
-                                    SizedBox(
-                                      height: 4.h,
+                                      padding: EdgeInsets.only(top: 4.w),
+                                      child: Html(
+                                        data: remoteConfigGetString(StringConstant.doesBodyUser),
+                                        style: {
+                                          "body": Style(fontSize: FontSize(10.0)),
+                                        },
+                                      ),
                                     ),
+                                    SizedBox(height: 4.h),
                                     Center(
                                       child: Text(
                                         widget.isNakes == true
@@ -428,36 +413,31 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                             : "Eitss.. Moms tidak boleh melakukan hal ini ya!",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: EpregnancyColors.blueDark,
-                                            fontSize: 14.sp,
-                                            fontFamily: "bold"),
+                                          color: EpregnancyColors.blueDark,
+                                          fontSize: 14.sp,
+                                          fontFamily: "bold",
+                                        ),
                                       ),
                                     ),
                                     widget.isNakes == true
                                         ? Padding(
-                                            padding: EdgeInsets.only(top: 4.w),
-                                            child: Html(
-                                                data: remoteConfigGetString(
-                                                    StringConstant
-                                                        .dontsBodyMidewife),
-                                                style: {
-                                                  "body": Style(
-                                                    fontSize: FontSize(10.0),
-                                                  ),
-                                                }),
-                                          )
+                                      padding: EdgeInsets.only(top: 4.w),
+                                      child: Html(
+                                        data: remoteConfigGetString(StringConstant.dontsBodyMidewife),
+                                        style: {
+                                          "body": Style(fontSize: FontSize(10.0)),
+                                        },
+                                      ),
+                                    )
                                         : Padding(
-                                            padding: EdgeInsets.only(top: 4.w),
-                                            child: Html(
-                                                data: remoteConfigGetString(
-                                                    StringConstant
-                                                        .dontsBodyUser),
-                                                style: {
-                                                  "body": Style(
-                                                    fontSize: FontSize(10.0),
-                                                  ),
-                                                }),
-                                          ),
+                                      padding: EdgeInsets.only(top: 4.w),
+                                      child: Html(
+                                        data: remoteConfigGetString(StringConstant.dontsBodyUser),
+                                        style: {
+                                          "body": Style(fontSize: FontSize(10.0)),
+                                        },
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -470,20 +450,27 @@ class _NewChatRoomState extends State<NewChatRoom> {
                                 child: SizedBox(
                                   height: 46.w,
                                   width: MediaQuery.of(context).size.width,
-                                  child: FlatButton(
+                                  child: TextButton(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: EpregnancyColors.blueDark,
+                                      disabledBackgroundColor: Colors.grey,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4.w)),
-                                      color: EpregnancyColors.blueDark,
-                                      disabledColor: Colors.grey,
-                                      child: Text('Oke',
-                                          style: TextStyle(
-                                              fontFamily: "bold",
-                                              fontSize: 13.sp,
-                                              color: Colors.white)),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      }),
+                                        borderRadius: BorderRadius.circular(4.w),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Oke',
+                                      style: TextStyle(
+                                        fontFamily: "bold",
+                                        fontSize: 13.sp,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+
                                 )),
                             onTap: () {
                               Navigator.pop(context);

@@ -66,13 +66,14 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
             Injector.resolve<ForgotPasswordPageBloc>().add(const ForgotPasswordSubmitted());
           },
           child: Text("Kirim"),
-          style: ElevatedButton.styleFrom(
-            primary: EpregnancyColors.primer,
-            onPrimary: Colors.white,
+          style:ElevatedButton.styleFrom(
+            backgroundColor: EpregnancyColors.primer,
+            foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
+
         ),
       ),
       body: BlocListener<ForgotPasswordPageBloc, ForgotPasswordPageState>(
@@ -81,14 +82,14 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
             var message = '${state.typeMessage} tidak tersedia';
             final snackBar =
                 SnackBar(content: Text(message), backgroundColor: Colors.red);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess &&
               state.typeEvent == 'checkUserExist') {
             final snackBar = SnackBar(
                 content: Text(
                     "OTP berhasil dikirim, Silahkan cek ${state.typeMessage == "Nomor" ? "kotak pesan" : "email"} anda"),
                 backgroundColor: Colors.blue);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
             await Future.delayed(const Duration(seconds: 1));
             Navigator.of(context).pushNamed(RouteName.otpPage, arguments: {
               'username': state.userName.value,

@@ -41,9 +41,9 @@ class CheckinWidget extends StatelessWidget {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                primary: EpregnancyColors.primer,
-                onSurface: EpregnancyColors.primer.withOpacity(0.25),
-                onPrimary: Colors.white,
+                backgroundColor: EpregnancyColors.primer,                 // ganti dari primary
+                disabledBackgroundColor: EpregnancyColors.primer.withOpacity(0.25),  // ganti dari onSurface
+                foregroundColor: Colors.white,                             // ganti dari onPrimary
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),

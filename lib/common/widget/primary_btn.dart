@@ -21,13 +21,14 @@ class BtnPrimary extends StatelessWidget {
           child: Text(text ?? "", style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),),
         ),
         style: ElevatedButton.styleFrom(
-          primary: EpregnancyColors.primer,
-          onSurface: EpregnancyColors.primer.withOpacity(0.25),
-          onPrimary: Colors.white,
+          backgroundColor: EpregnancyColors.primer,
+          disabledBackgroundColor: EpregnancyColors.primer.withOpacity(0.25),
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
+
       ),
     );
   }

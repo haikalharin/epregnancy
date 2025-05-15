@@ -62,12 +62,12 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
             var message = state.errorMessage ?? 'gagal';
             final snackBar =
                 SnackBar(content: Text(message), backgroundColor: Colors.red);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess &&
               state.type == 'change-password-success') {
             final snackBar = SnackBar(
                 content: Text("Berhasil"), backgroundColor: Colors.blue);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
             await Future.delayed(const Duration(seconds: 1));
             Navigator.pop(context);
           }
@@ -381,8 +381,8 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                             },
                             child: Text("Konfirmasi Kata Sandi"),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
-                              onPrimary: Colors.white,
+                              backgroundColor: Colors.blue,   // instead of primary
+                              foregroundColor: Colors.white,  // instead of onPrimary
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),

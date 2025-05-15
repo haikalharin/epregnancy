@@ -63,7 +63,7 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
             var message = state.errorMessage ?? 'gagal';
             final snackBar =
                 SnackBar(content: Text(message), backgroundColor: Colors.red);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
             if (widget.isPatient == true) {
               if (state.userModel!.totalLogin! > 1) {
@@ -159,42 +159,41 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
                                 margin: EdgeInsets.only(top: 10, bottom: 10),
                                 width: MediaQuery.of(context).size.width - 40,
                                 height: 50,
-                                child: RaisedButton(
-                                  color: checkedValue == true
-                                      ? EpregnancyColors.primer
-                                      : EpregnancyColors.primer
-                                          .withOpacity(0.25),
+                                child:ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: checkedValue == true
+                                        ? EpregnancyColors.primer
+                                        : EpregnancyColors.primer.withOpacity(0.25),
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(12.w)),
+                                    ),
+                                  ),
+                                  onPressed: checkedValue == true
+                                      ? () async {
+                                    if (widget.from == "login") {
+                                      Injector.resolve<DisclaimerPageBloc>().add(DisclaimerAddDataEvent());
+                                    } else {
+                                      Navigator.of(context)
+                                          .pushNamed(
+                                        RouteName.otpPage,
+                                        arguments: {
+                                          'username': widget.userId,
+                                          'from': "disclaimer",
+                                        },
+                                      )
+                                          .then((value) => Navigator.pop(context));
+                                    }
+                                  }
+                                      : null, // disable button kalau checkedValue false
                                   child: Padding(
                                     padding: EdgeInsets.zero,
                                     child: Text(
                                       "Saya Setuju",
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white),
+                                      style: TextStyle(fontSize: 16, color: Colors.white),
                                     ),
                                   ),
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12.w)),
-                                  ),
-                                  onPressed: () async {
-                                    if (checkedValue == true) {
-                                      if (widget.from == "login") {
-                                        Injector.resolve<DisclaimerPageBloc>()
-                                            .add(DisclaimerAddDataEvent());
-                                      } else {
-                                        Navigator.of(context).pushNamed(
-                                            RouteName.otpPage,
-                                            arguments: {
-                                              'username': widget.userId,
-                                              'from': "disclaimer"
-                                            }).then((value) {
-                                          Navigator.pop(context);
-                                        });
-                                      }
-                                    }
-                                  },
-                                ),
+                                )
                               ),
                             ],
                           ),

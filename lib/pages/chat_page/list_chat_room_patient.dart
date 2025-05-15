@@ -84,35 +84,42 @@ class _ListChatRoomPatientState extends State<ListChatRoomPatient> {
               .size
               .width / 2,
           height: 50,
-          child: RaisedButton(
-            color: EpregnancyColors.primer,
-            child: Padding(
-                padding: EdgeInsets.zero,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding:  EdgeInsets.only(bottom: 10.h),
-                      child: Text("+", style: TextStyle(color: Colors.white, fontSize: 40.sp),),
-                    ),
-                    SizedBox(width: 10,),
-                    Padding(
-                      padding:  EdgeInsets.only(top: 3.h),
-                      child: Text("Mulai Diskusi", style: TextStyle(color: Colors.white, fontSize: 14.sp),),
-                    ),
-                  ],
-                )
-            ),
-            elevation: 8,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+          child:ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: EpregnancyColors.primer, // ganti dari color ke backgroundColor
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              padding: EdgeInsets.zero, // supaya padding-nya tetap sama
             ),
             onPressed: () async {
               var data = await Navigator.of(context).pushNamed(RouteName.chatPage);
-              if (data != null){
+              if (data != null) {
                 Injector.resolve<ChatBloc>().add(FetchChatPendingEvent());
               }
             },
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10.h),
+                  child: Text(
+                    "+",
+                    style: TextStyle(color: Colors.white, fontSize: 40.sp),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Padding(
+                  padding: EdgeInsets.only(top: 3.h),
+                  child: Text(
+                    "Mulai Diskusi",
+                    style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                  ),
+                ),
+              ],
+            ),
           ),
+
         ),
       ),
       );

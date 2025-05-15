@@ -94,7 +94,7 @@ class _SurveyPageState extends State<SurveyPage> {
           if (state.submitStatus == FormzStatus.submissionFailure) {
             const snackBar =
                 SnackBar(content: Text("failed"), backgroundColor: Colors.red);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess && state.type == 'submit') {
               if (state.choice == 1) {
                 if (widget.isEdit == true) {
@@ -503,7 +503,7 @@ class _SurveyPageState extends State<SurveyPage> {
                             margin: EdgeInsets.only(top: 10, bottom: 10),
                             width: MediaQuery.of(context).size.width - 40,
                             height: 50,
-                            child: RaisedButton(
+                            child: ElevatedButton(
                               color: (state.user?.isPregnant != false &&
                                           state.user?.isPregnant != false &&
                                           state.user?.isPregnant != false) ||

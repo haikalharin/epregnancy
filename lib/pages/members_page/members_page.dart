@@ -1175,7 +1175,7 @@ class _MembersPageState extends State<MembersPage>
                                   margin: EdgeInsets.only(top: 10, bottom: 10),
                                   width: MediaQuery.of(context).size.width - 40,
                                   height: 50,
-                                  child: RaisedButton(
+                                  child: ElevatedButton(
                                     color: (filter1 ||
                                             filter2 ||
                                             filter3 ||

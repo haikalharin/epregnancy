@@ -75,12 +75,11 @@ import 'pages/login_page/bloc/login_bloc.dart';
 import 'pages/login_page/login_page.dart';
 import 'utils/firebase_analytics.dart';
 import 'utils/simple_bloc_observer.dart';
-import 'package:flutter_alice/alice.dart';
 
 // void main() => runApp(MyApp());
 SharedPreferences? sharedPreferences;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKeyProd = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -103,9 +102,9 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-final Alice aliceProd = Alice(
-    showNotification: false,
-    darkTheme: true);
+// final Alice aliceProd = Alice(
+//     showNotification: false,
+//     darkTheme: true);
 
 class MyApp extends StatefulWidget {
   @override
@@ -142,7 +141,7 @@ class _MyAppState extends State<MyApp> {
                   child: OverlaySupport.global(
                     child: MaterialApp(
                       debugShowCheckedModeBanner: false,
-                      navigatorKey: aliceProd.getNavigatorKey(),
+                      navigatorKey: navigatorKeyProd,
                       navigatorObservers: <NavigatorObserver>[FirebaseAnalyticsService.observer],
                       title: 'Komunitaz',
                       home: SplashscreenPage(),

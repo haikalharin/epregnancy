@@ -37,6 +37,7 @@ class BabySectionWidget extends StatelessWidget {
   final GlobalKey<LiquidPullToRefreshState>? refreshIndicatorKey;
   var duration = 0;
 
+  final ScrollController _scrollController = ScrollController();
   Path defaultTailBuilder(Offset tip, Offset point2, Offset point3) {
     return Path()
       ..moveTo(tip.dx, tip.dy)
@@ -67,30 +68,35 @@ class BabySectionWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Expanded(
-                        child: Scrollbar(
-                          isAlwaysShown: true,
+                        child:Scrollbar(
+                          thumbVisibility: true,  // ganti isAlwaysShown
+                          controller: _scrollController,
                           child: Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: ListView(
+                              controller: _scrollController,  // pasang controller juga di ListView
                               children: [
                                 Center(
                                   child: SvgPicture.asset("assets/ic_baby_lost.svg"),
                                 ),
-                                SizedBox(height: 16.h,),
+                                SizedBox(height: 16.h),
                                 Center(
                                   child: Text(
                                     "Turut Berduka Cita",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: EpregnancyColors.black,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "bold"),
+                                      color: EpregnancyColors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "bold",
+                                    ),
                                   ),
                                 ),
-                                SizedBox(height: 16.h,),
-                                Text("Komunitaz turut prihatin atas kehilangan yang Bunda alami. Kami berharap Bunda dapat menemukan ketenangan dalam waktu sulit ini. Kedepannya kami tidak lagi mengirimkan pemberitahuan terkait kehamilan.",
-                                textAlign: TextAlign.center,)
+                                SizedBox(height: 16.h),
+                                Text(
+                                  "Komunitaz turut prihatin atas kehilangan yang Bunda alami. Kami berharap Bunda dapat menemukan ketenangan dalam waktu sulit ini. Kedepannya kami tidak lagi mengirimkan pemberitahuan terkait kehamilan.",
+                                  textAlign: TextAlign.center,
+                                ),
                               ],
                             ),
                           ),
@@ -102,21 +108,28 @@ class BabySectionWidget extends StatelessWidget {
                             child: SizedBox(
                               height: 46.w,
                               width: MediaQuery.of(context).size.width,
-                              child: FlatButton(
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: EpregnancyColors.primer,
+                                  disabledBackgroundColor: Colors.grey,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(4.w)),
-                                  color: EpregnancyColors.primer,
-                                  disabledColor: Colors.grey,
-                                  child: Text('Setuju',
-                                      style: TextStyle(
-                                          fontFamily: "bold",
-                                          fontSize: 13.sp,
-                                          color: Colors.white)),
-                                  onPressed: () {
-                                    refresh?.call();
-                                    Navigator.pop(dialogContext);
-                                  }),
+                                    borderRadius: BorderRadius.circular(4.w),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Setuju',
+                                  style: TextStyle(
+                                    fontFamily: "bold",
+                                    fontSize: 13.sp,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  refresh?.call();
+                                  Navigator.pop(dialogContext);
+                                },
+                              ),
+
                             ))
                     ],
                   ),
@@ -151,7 +164,7 @@ class BabySectionWidget extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: Scrollbar(
-                          isAlwaysShown: true,
+                          thumbVisibility: true,
                           child: Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: ListView(
@@ -161,48 +174,52 @@ class BabySectionWidget extends StatelessWidget {
                                     "Sebelum Hapus Data Anak",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: EpregnancyColors.black,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "bold"),
+                                      color: EpregnancyColors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "bold",
+                                    ),
                                   ),
                                 ),
-                                SizedBox(height: 16.h,),
+                                SizedBox(height: 16.h),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                                  child: Text("Apakah Anda Yakin? dengan mengkonfirmasi maka Profil Anak akan dihapus secara permanen.", textAlign: TextAlign.center, style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500),),
-                                ),
-                                SizedBox(height: 16.h,),
-                                Container(
-                                  child: BtnPrimary(
-                                    text: "Ya, Hapus Data Anak",
-                                    function: (){
-                                      AppSharedPreference.remove("babyData");
-                                      AppSharedPreference.remove("babyDataNew");
-                                      Injector.resolve<NewBornPageBloc>().add(DeleteBabyEvent(babyId));
-                                      Future.delayed(Duration(seconds: 1));
-                                      Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
-                                      Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
-                                      Injector.resolve<HomePageBloc>().add(const ResetBaby());
-                                      Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
-                                      // refreshIndicatorKey?.currentState?.activate();
-                                      Navigator.pop(context);
-                                    },
+                                  child: Text(
+                                    "Apakah Anda Yakin? dengan mengkonfirmasi maka Profil Anak akan dihapus secara permanen.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
-                                SizedBox(height: 16.h,),
-                                Container(
-                                  child: BtnPrimaryWhite(
-                                    text: "Tidak, Nanti Saja",
-                                    function: (){
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                )
+                                SizedBox(height: 16.h),
+                                BtnPrimary(
+                                  text: "Ya, Hapus Data Anak",
+                                  function: () {
+                                    AppSharedPreference.remove("babyData");
+                                    AppSharedPreference.remove("babyDataNew");
+                                    Injector.resolve<NewBornPageBloc>().add(DeleteBabyEvent(babyId));
+                                    Future.delayed(Duration(seconds: 1));
+                                    Injector.resolve<HomePageBloc>().add(HomeFetchDataEvent());
+                                    Injector.resolve<HomePageBloc>().add(FetchSimpleTipEvent());
+                                    Injector.resolve<HomePageBloc>().add(const ResetBaby());
+                                    Injector.resolve<ProfilePageBloc>().add(const InitialProfileEvent());
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                SizedBox(height: 16.h),
+                                BtnPrimaryWhite(
+                                  text: "Tidak, Nanti Saja",
+                                  function: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
                               ],
                             ),
                           ),
                         ),
+
                       ),
                     ],
                   ),

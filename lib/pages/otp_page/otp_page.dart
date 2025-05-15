@@ -133,7 +133,7 @@ class _OtpPageState extends State<OtpPage> {
                     const snackBar = SnackBar(
                         content: Text("OTP Salah"),
                         backgroundColor: Colors.red);
-                    Scaffold.of(context).showSnackBar(snackBar);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                 } else if (state.submitStatus ==
                         FormzStatus.submissionSuccess &&

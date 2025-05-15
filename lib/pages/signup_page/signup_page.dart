@@ -110,7 +110,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             ? state.errorMessage!
                             : 'failed'),
                         backgroundColor: Colors.red);
-                    Scaffold.of(context).showSnackBar(snackBar);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else if (state.submitStatus ==
                       FormzStatus.submissionSuccess) {
                     if (state.isExist == true) {
@@ -119,7 +119,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             content: Text("Akun Telah Terdaftar"),
                             backgroundColor: Colors.red);
                         Injector.resolve<SignupBloc>().add(SignupInitEvent());
-                        Scaffold.of(context).showSnackBar(snackBar);
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       } else {
                         Navigator.of(context)
                             .pushNamed(RouteName.surveyPage, arguments: false);

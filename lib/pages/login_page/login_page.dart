@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                                   child: SizedBox(
                                     height: 46.w,
                                     width: MediaQuery.of(context).size.width,
-                                    child: FlatButton(
+                                    child: TextButton(
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(4.w)),
@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                             ? state.errorMessage!
                             : 'Gagal mendaftar'),
                         backgroundColor: Colors.red);
-                    Scaffold.of(context).showSnackBar(snackBar);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
                     var snackBar = SnackBar(
                         content: RichText(
@@ -227,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         backgroundColor: Colors.red);
-                    Scaffold.of(context).showSnackBar(snackBar);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                 } else if (state.submitStatus ==
                     FormzStatus.submissionSuccess) {
@@ -237,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                         var snackBar = SnackBar(
                             content: Text("Akun Telah Terdaftar"),
                             backgroundColor: Colors.red);
-                        Scaffold.of(context).showSnackBar(snackBar);
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       } else {
                         Navigator.of(context)
                             .pushNamed(RouteName.surveyPage, arguments: false);

@@ -30,7 +30,6 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   List<SliderModal> slides = [];
 
-  // List<SliderModal> slides = new List<SliderModal>();
   int currentIndex = 0;
   late PageController _controller;
 
@@ -49,28 +48,21 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: BlocListener<LandingPageBloc, LandingPageState>(
         listener: (context, state) {
           if (state.submitStatus == FormzStatus.submissionFailure) {
             const snackBar =
-                SnackBar(content: Text("failed"), backgroundColor: Colors.red);
-            Scaffold.of(context).showSnackBar(snackBar);
+            SnackBar(content: Text("failed"), backgroundColor: Colors.red);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess) {
-            if(F.appFlavor == Flavor.PRODUCTION){
-              aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const LoginPage(
-                          tokenExpired: true, isFromRegister: true)),
-                      (route) => false);
-            } else {
-              aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const LoginPage(
-                          tokenExpired: true, isFromRegister: true)),
-                      (route) => false);
-            }
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (BuildContext context) => const LoginPage(
+                    tokenExpired: true, isFromRegister: true),
+              ),
+                  (route) => false,
+            );
           }
         },
         child: BlocBuilder<LandingPageBloc, LandingPageState>(
@@ -89,7 +81,6 @@ class _LandingPageState extends State<LandingPage> {
                           });
                         },
                         itemCount: slides.length,
-                        // itemBuilder: (BuildContext context, int index) {
                         itemBuilder: (context, index) {
                           return SliderList(
                             image: slides[index].getImage(),
@@ -104,77 +95,49 @@ class _LandingPageState extends State<LandingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
                           slides.length,
-                          (index) => buildDot(index, context),
+                              (index) => buildDot(index, context),
                         ),
                       ),
                     ),
                     Container(
-                      // height: 60,
-                      // margin: EdgeInsets.all(40),
-                      // width: double.infinity,
-                      // color: Color.fromRGBO(255, 127, 144, 1),
-                      // child: TextButton(onPressed: () {
-                      //   if(currentIndex == slides.length - 1) {
-                      //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginExamplePage()));
-                      //   }
-                      // },
-                      // child: Text(
-                      //   currentIndex == slides.length - 1 ? "Selanjutnya": "Mulai Sekarang", style: TextStyle(color: Colors.white)
-                      // ),
-                      // ),
                       height: 60,
                       margin: EdgeInsets.all(40),
                       width: double.infinity,
                       color: EpregnancyColors.primer,
-
-                      // Button
-                      child: FlatButton(
-                        color: EpregnancyColors.primer,
-                        child: Text(currentIndex == slides.length - 1
-                            ? "Mulai Sekarang"
-                            : "Selanjutnya"),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: EpregnancyColors.primer,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        child: Text(
+                          currentIndex == slides.length - 1
+                              ? "Mulai Sekarang"
+                              : "Selanjutnya",
+                          style: const TextStyle(color: Colors.white),
+                        ),
                         onPressed: () async {
                           if (currentIndex == slides.length - 1) {
-                            // Navigate to next screen
-                            if(F.appFlavor == Flavor.PRODUCTION){
-                              aliceProd
-                                  .getNavigatorKey()
-                                  ?.currentState
-                                  ?.pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                      const LoginPage(
-                                          tokenExpired: true,
-                                          isFromRegister: true)),
-                                      (route) => false);
-                            } else {
-                              aliceMain
-                                  .getNavigatorKey()
-                                  ?.currentState
-                                  ?.pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                      const LoginPage(
-                                          tokenExpired: true,
-                                          isFromRegister: true)),
-                                      (route) => false);
-                            }
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                  const LoginPage(
+                                      tokenExpired: true,
+                                      isFromRegister: true)),
+                                  (route) => false,
+                            );
+                          } else {
+                            _controller.nextPage(
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.bounceIn);
                           }
-                          _controller.nextPage(
-                              duration: Duration(milliseconds: 100),
-                              curve: Curves.bounceIn);
                         },
-                        textColor: Colors.white,
-
-                        // Border radius to button
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
                       ),
                     ),
                   ],
                 ),
-                _Loading()
+                const _Loading(),
               ],
             );
           },
@@ -198,17 +161,21 @@ class _LandingPageState extends State<LandingPage> {
 }
 
 class _Loading extends StatelessWidget {
+  const _Loading({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LandingPageBloc, LandingPageState>(
-        builder: (context, state) {
-      if (state.submitStatus == FormzStatus.submissionInProgress) {
-        return Container(
+      builder: (context, state) {
+        if (state.submitStatus == FormzStatus.submissionInProgress) {
+          return Container(
             color: Colors.white.withAlpha(90),
-            child: Center(child: CircularProgressIndicator()));
-      } else {
-        return Text("");
-      }
-    });
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }

@@ -38,7 +38,7 @@ class _DashboardExampleState extends State<DashboardExample> {
   }
 
   void pickAndCropPhoto() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );
@@ -73,11 +73,11 @@ class _DashboardExampleState extends State<DashboardExample> {
         title: Text('Logout'),
         content: Text('You sure for logout?'),
         actions: [
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text('No'),
           ),
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.pop(context, 'logout'),
             child: Text('Yes'),
           ),
@@ -118,22 +118,27 @@ class _DashboardExampleState extends State<DashboardExample> {
               obscureText: true,
             ),
             SizedBox(height: 16),
-            RaisedButton(
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+              ),
               child: Text('Delete'),
-              color: Colors.blue,
-              textColor: Colors.white,
               onPressed: () {
-                if (_controllerPassword.text != null &&
-                    _controllerPassword.text != '') {
+                if (_controllerPassword.text.isNotEmpty) {
                   Navigator.pop(context, 'delete');
                 }
               },
             ),
-            OutlineButton(
+
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.blue,
+              ),
               child: Text('Close'),
-              textColor: Colors.blue,
               onPressed: () => Navigator.pop(context),
             ),
+
           ],
         );
       },

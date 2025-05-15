@@ -77,7 +77,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
           if (state.submitStatus == FormzStatus.submissionFailure) {
             const snackBar =
                 SnackBar(content: Text("failed"), backgroundColor: Colors.red);
-            Scaffold.of(context).showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else if (state.submitStatus == FormzStatus.submissionSuccess &&
               state.type == 'submitBaby') {
             if (widget.isEdit == true) {
@@ -256,7 +256,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                                           .width -
                                                       40,
                                                   height: 50,
-                                                  child: RaisedButton(
+                                                  child: ElevatedButton(
                                                     color: state.page == 2
                                                         ? state.date.valid
                                                             ? EpregnancyColors
@@ -335,7 +335,7 @@ class _SurveyPageBabyState extends State<SurveyPageBaby> {
                                                                 .width -
                                                             40,
                                                         height: 50,
-                                                        child: RaisedButton(
+                                                        child: ElevatedButton(
                                                           color:
                                                               EpregnancyColors
                                                                   .primer,

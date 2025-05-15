@@ -196,7 +196,7 @@ class _ChatArchiveState extends State<ChatArchive> with WidgetsBindingObserver {
   }
 
   void pickAndCropImage() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );

@@ -204,7 +204,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   }
 
   void pickAndCropImageGallery() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );
@@ -230,7 +230,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
     getMyPerson();
   }
   void pickAndCropImageCamera() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
       imageQuality: 25,
     );

@@ -167,10 +167,8 @@ class GAuthentication {
                       ],
                     ),
                     actions: <Widget>[
-                      FlatButton(
-                        child: Text("Confirm"),
-                        textColor: Colors.white,
-                        color: Colors.blue,
+                      TextButton(
+                        child: Text("Confirm",style: TextStyle(color: Colors.white),),
                         onPressed: () async {
                           final code = codeController.text.trim();
                           PhoneAuthCredential credential =

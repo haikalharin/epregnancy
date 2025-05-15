@@ -90,7 +90,7 @@ class _AddEventPageState extends State<AddEventPage> {
           const snackBar = SnackBar(
               content: Text("Berhasil"),
               backgroundColor: EpregnancyColors.primer);
-          Scaffold.of(context).showSnackBar(snackBar);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
           await Future.delayed(const Duration(seconds: 1));
 
@@ -115,47 +115,34 @@ class _AddEventPageState extends State<AddEventPage> {
                         margin: EdgeInsets.only(top: 10, bottom: 10),
                         width: MediaQuery.of(context).size.width - 40,
                         height: 50,
-                        child: RaisedButton(
-                          color: widget.consulType ==
-                                      StringConstant.visitHospital ||
-                                  widget.consulType == StringConstant.other
-                              ? state.status.isValidated &&
-                                      state.isTimeCorrect == true
-                                  ? EpregnancyColors.primer
-                                  : EpregnancyColors.primerSoft
-                              : state.status.isValidated
-                                  ? EpregnancyColors.primer
-                                  : EpregnancyColors.primerSoft,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: (widget.consulType == StringConstant.visitHospital || widget.consulType == StringConstant.other)
+                                ? (state.status.isValidated && state.isTimeCorrect == true
+                                ? EpregnancyColors.primer
+                                : EpregnancyColors.primerSoft)
+                                : (state.status.isValidated ? EpregnancyColors.primer : EpregnancyColors.primerSoft),
+                            elevation: 8,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(7)),
+                            ),
+                          ),
+                          onPressed: ((widget.consulType == StringConstant.visitHospital || widget.consulType == StringConstant.other)
+                              ? (state.status.isValidated && state.isTimeCorrect == true)
+                              : state.status.isValidated)
+                              ? () {
+                            Injector.resolve<EventPageBloc>().add(EventAddSubmitted());
+                          }
+                              : null,
                           child: Padding(
                             padding: EdgeInsets.zero,
                             child: Text(
                               "Buat Jadwal",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                              style: TextStyle(fontSize: 16, color: Colors.white),
                             ),
                           ),
-                          elevation: 8,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                          ),
-                          onPressed: () async {
-                            if (widget.consulType ==
-                                    StringConstant.visitHospital ||
-                                widget.consulType == StringConstant.other) {
-                              if (state.isTimeCorrect == true) {
-                                if (state.status.isValidated) {
-                                  Injector.resolve<EventPageBloc>()
-                                      .add(EventAddSubmitted());
-                                }
-                              }
-                            } else {
-                              if (state.status.isValidated) {
-                                Injector.resolve<EventPageBloc>()
-                                    .add(EventAddSubmitted());
-                              }
-                            }
-                          },
                         ),
+
                       ),
                     ),
                   ],
@@ -936,7 +923,7 @@ class _AddTimeInput extends StatelessWidget {
               var message = 'Silahkan pilih tanggal terlebih dahulu';
               final snackBar =
               SnackBar(content: Text(message), backgroundColor: Colors.red);
-              Scaffold.of(context).showSnackBar(snackBar);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else{
               TimeOfDay initialTime = state.time ?? TimeOfDay.now();
               var pickedTime = await showTimePicker(

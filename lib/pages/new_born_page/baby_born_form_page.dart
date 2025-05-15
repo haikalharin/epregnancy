@@ -119,7 +119,7 @@ class _BabyBornFromPageState extends State<BabyBornFromPage> {
             } else if (state.type == "update-child-failed" || state.type == "adding-child-failed" && state.submitStatus == FormzStatus.submissionFailure){
               const snackBar = SnackBar(
                   content: Text("Terjadi Kesalahan, Silahkan Coba Lagi!",), backgroundColor: Colors.red);
-              Scaffold.of(context).showSnackBar(snackBar);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else if (state.submitStatus == FormzStatus.submissionSuccess && state.type == "update-child-success") {
               print('sukses update child listener fired');
               Injector.resolve<NewBornPageBloc>().add(const NewBornDisposeEvent());

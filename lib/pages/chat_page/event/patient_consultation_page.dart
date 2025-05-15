@@ -43,7 +43,7 @@ class _PatientConsultationPageState extends State<PatientConsultationPage> {
   }
 
   void pickAndCropPhoto() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );

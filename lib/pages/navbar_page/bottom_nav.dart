@@ -431,11 +431,11 @@ class _NavbarPageState extends State<NavbarPage> with TickerProviderStateMixin {
           title: Text('Konfirmasi'),
           content: Text('Apakah Anda Yakin Ingin Keluar?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: Text('Tidak'),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               child: Text('Ya'),
             ),

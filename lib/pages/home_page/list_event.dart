@@ -237,11 +237,11 @@ class _ListEventWidgetState extends State<ListEventWidget> {
                                   ],
                                 ),
                                 isExpanded
-                                    ? FlatButton(
+                                    ? TextButton(
                                         child: const Text('Read less'),
                                         onPressed: () =>
                                             setState(() => isExpanded = false))
-                                    : FlatButton(
+                                    : TextButton(
                                         child: const Text('Read More'),
                                         onPressed: () =>
                                             setState(() => isExpanded = true))

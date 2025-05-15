@@ -49,7 +49,7 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
   }
 
   void pickAndCropPhoto() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );
@@ -84,11 +84,11 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
         title: Text('Logout'),
         content: Text('You sure for logout?'),
         actions: [
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text('No'),
           ),
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.pop(context, 'logout'),
             child: Text('Yes'),
           ),
@@ -130,22 +130,26 @@ class _DashboardMidwifeState extends State<DashboardMidwife> {
               obscureText: true,
             ),
             SizedBox(height: 16),
-            RaisedButton(
-              child: Text('Delete'),
-              color: Colors.blue,
-              textColor: Colors.white,
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // warna background
+                foregroundColor: Colors.white, // warna teks
+              ),
               onPressed: () {
-                if (_controllerPassword.text != null &&
-                    _controllerPassword.text != '') {
+                if (_controllerPassword.text.isNotEmpty) {
                   Navigator.pop(context, 'delete');
                 }
               },
+              child: Text('Delete'),
             ),
-            OutlineButton(
-              child: Text('Close'),
-              textColor: Colors.blue,
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.blue, // warna teks dan border
+              ),
               onPressed: () => Navigator.pop(context),
+              child: Text('Close'),
             ),
+
           ],
         );
       },

@@ -483,21 +483,21 @@ class AppSharedPreference {
     Injector.resolve<HospitalBloc>()
         .add(const HospitalDispose());
     if (F.appFlavor == Flavor.PRODUCTION) {
-      aliceProd.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+      navigatorKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) => const LoginPage(
                     tokenExpired: true,
                   )),
           (route) => false);
     } else if(F.appFlavor == Flavor.STAGING) {
-      aliceStaging.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+      navigatorKeyStaging.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) => const LoginPage(
                 tokenExpired: true,
               )),
               (route) => false);
     }else {
-      aliceDev.getNavigatorKey()?.currentState?.pushAndRemoveUntil(
+    navigatorKeyDev.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) => const LoginPage(
                     tokenExpired: true,

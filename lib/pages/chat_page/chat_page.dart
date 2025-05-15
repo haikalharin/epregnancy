@@ -323,18 +323,14 @@ class _ChatPageState extends State<ChatPage> {
                             margin: EdgeInsets.only(top: 10,bottom: 10),
                             width: MediaQuery.of(context).size.width-40,
                             height: 50,
-                            child: RaisedButton(
-                              color: type!= 0?EpregnancyColors.primer:Colors.grey.shade200,
-                              child: Padding(
-                                padding: EdgeInsets.zero,
-                                child: Text(
-                                  "Mulai Diskusi",
-                                  style: TextStyle(fontSize: 16, color: Colors.white),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: type != 0 ? EpregnancyColors.primer : Colors.grey.shade200,
+                                elevation: 8,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7),
                                 ),
-                              ),
-                              elevation: 8,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(7)),
+                                padding: EdgeInsets.zero, // sama dengan Padding widget sebelumnya
                               ),
                               onPressed: () async {
                                 // with firebase
@@ -369,7 +365,12 @@ class _ChatPageState extends State<ChatPage> {
 
                                 Injector.resolve<ChatBloc>().add(SendChatPendingEvent(_chatPendingSendRequest, firsTime: true));
                               },
-                            ),
+                              child: Text(
+                                "Mulai Diskusi",
+                                style: TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                            )
+
                           ),
                         ),
                       ],

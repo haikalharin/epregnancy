@@ -31,7 +31,7 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
                 if (state.status == FormzStatus.submissionFailure) {
                   const snackBar = SnackBar(
                       content: Text("failed"), backgroundColor: Colors.red);
-                  Scaffold.of(context).showSnackBar(snackBar);
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 } else if (state.status == FormzStatus.submissionSuccess) {
                   if(state.userModelFirebase!.status == StringConstant.usernameActive){
                     // Navigator.of(context).pushNamed(RouteName.navBar,arguments: 0);
@@ -61,7 +61,7 @@ class _LoginExamplePageState extends State<LoginExamplePage> {
                           _PasswordInput(),
                           // _PasswordTextField(),
                           SizedBox(height: 16),
-                          RaisedButton(
+                          ElevatedButton(
                             onPressed: () async {
 
 

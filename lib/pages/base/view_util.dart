@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 
 extension ViewUtil on String {
   showSnackbar(BuildContext context) {
-    return Scaffold.of(context)
+    return ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(content: Text(this)),
       );
   }
-// ···
 }
 
 extension ViewUtil2 on BuildContext {
   showSnackbar(String message) {
-    return Scaffold.of(this)
+    return ScaffoldMessenger.of(this)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(content: Text(message)),
       );
   }
-// ···
 }
 
 extension NumberParsing on String {

@@ -30,14 +30,13 @@ import 'package:overlay_support/overlay_support.dart';
 import 'common/configurations/configurations.dart';
 import 'common/injector/injector_config.dart';
 import 'env.dart' as config;
-import 'package:flutter_alice/alice.dart';
 import 'package:secure_content/secure_content.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:provider/provider.dart';
 
 // void main() => runApp(MyApp());
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKeyDev = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +61,7 @@ Future<void> main() async {
 
 }
 
-final Alice aliceDev = Alice(showNotification: true, darkTheme: true);
+// final Alice aliceDev = Alice(showNotification: true, darkTheme: true);
 // final AudioPlayer playerDev = AudioPlayer();
 
 
@@ -241,7 +240,7 @@ class _MyAppState extends State<MyApp> {
                             void Function() onDispose) {
                           return MaterialApp(
                             debugShowCheckedModeBanner: false,
-                            navigatorKey: aliceDev.getNavigatorKey(),
+                            navigatorKey: navigatorKeyDev,
                             title: 'Komunitaz',
                             home: SplashscreenPage(),
                             onGenerateRoute: Routes.generateRoute,

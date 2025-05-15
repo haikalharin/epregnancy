@@ -41,7 +41,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void pickAndCropPhoto() async {
-    final pickedFile = await ImagePicker().getImage(
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 25,
     );
@@ -76,11 +76,11 @@ class _DashboardState extends State<Dashboard> {
         title: Text('Logout'),
         content: Text('You sure for logout?'),
         actions: [
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text('No'),
           ),
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.pop(context, 'logout'),
             child: Text('Yes'),
           ),
@@ -121,21 +121,25 @@ class _DashboardState extends State<Dashboard> {
               obscureText: true,
             ),
             SizedBox(height: 16),
-            RaisedButton(
-              child: Text('Delete'),
-              color: Colors.blue,
-              textColor: Colors.white,
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // ganti dari 'color'
+                foregroundColor: Colors.white, // ganti dari 'textColor'
+              ),
               onPressed: () {
-                if (_controllerPassword.text != null &&
-                    _controllerPassword.text != '') {
+                if (_controllerPassword.text.isNotEmpty) {
                   Navigator.pop(context, 'delete');
                 }
               },
+              child: Text('Delete'),
             ),
-            OutlineButton(
-              child: Text('Close'),
-              textColor: Colors.blue,
+
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.blue, // untuk warna teks dan ikon
+              ),
               onPressed: () => Navigator.pop(context),
+              child: Text('Close'),
             ),
           ],
         );

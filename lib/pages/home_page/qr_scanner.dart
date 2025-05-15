@@ -94,21 +94,38 @@ class _QrScannerState extends State<QrScanner> {
               children: [
 
                 MobileScanner(
-                    allowDuplicates: false,
-                    controller: cameraController,
-                    onDetect: (barcode, args) {
-                      if (barcode.rawValue == null) {
-                        debugPrint('Failed to scan Barcode');
-                      } else {
-                        final String code = barcode.rawValue!;
-                        debugPrint('Barcode found! $code');
-                        //KomunitAZ
-                        Injector.resolve<PinCheckInBloc>()
-                            .add(PinSubmitted(code.replaceAll("KomunitAZ-", "")));
-                        // Navigator.pop(context, code);
-                      }
-                    }),
-                Semantics(label: ,
+                  controller: cameraController,
+                  fit: BoxFit.cover,
+                  onDetect: (barcode) {
+                    final rawValue = barcode.raw;
+                    if (rawValue == null) {
+                      debugPrint('Failed to scan Barcode');
+                      return;
+                    }
+
+                    debugPrint('Barcode found! $rawValue');
+
+                    final code = rawValue.replaceAll("KomunitAZ-", "");
+
+                    Injector.resolve<PinCheckInBloc>().add(PinSubmitted(code));
+
+                    // Jika ingin langsung close scanner setelah scan, bisa pakai ini:
+                    // Navigator.pop(context, rawValue);
+                  },
+                  onScannerStarted: (value) {
+                    debugPrint('Scanner started');
+                  },
+                  // Kamu bisa aktifkan errorBuilder kalau mau handle error camera:
+                  // errorBuilder: (context, error, child) => Center(child: Text('Error: $error')),
+                  // placeholderBuilder: (context, child) => Center(child: CircularProgressIndicator()),
+                  startDelay: false,
+                  // overlay: customWidgetOverlay, // kalau kamu mau overlay scan area custom
+                  // scanWindow: Rect.fromLTWH(50, 100, 300, 300), // untuk membatasi area scan
+                ),
+
+
+
+                Semantics(label: '',
                   child: Center(
                     child: Container(
                         width: MediaQuery.of(context).size.width * 0.75,

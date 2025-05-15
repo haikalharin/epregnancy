@@ -954,7 +954,7 @@ class _DashBoardNakesPageState extends State<DashBoardNakesPage>
           margin: EdgeInsets.only(top: 10, bottom: 10),
           width: MediaQuery.of(context).size.width / 2,
           height: 50,
-          child: RaisedButton(
+          child: ElevatedButton(
             color: EpregnancyColors.primer,
             child: Padding(
                 padding: EdgeInsets.zero,
